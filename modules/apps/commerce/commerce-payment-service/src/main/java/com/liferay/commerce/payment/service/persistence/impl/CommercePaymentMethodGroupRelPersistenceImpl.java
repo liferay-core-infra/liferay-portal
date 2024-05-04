@@ -602,7 +602,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -610,22 +610,11 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -639,16 +628,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -742,7 +723,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -758,18 +739,10 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -794,16 +767,9 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -824,12 +790,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -841,14 +802,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommercePaymentMethodGroupRelImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
-		}
+		sqlQuery.addEntity(
+			_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -953,7 +908,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_COMMERCEPAYMENTMETHODGROUPREL_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), CommercePaymentMethodGroupRel.class.getName(),
@@ -987,6 +942,9 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"commercePaymentMethodGroupRel.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"CommercePaymentMethodGroupRel.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_A;
 	private FinderPath _finderPathWithoutPaginationFindByG_A;
@@ -1535,7 +1493,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_A_ACTIVE_2_SQL);
 
@@ -1545,22 +1503,11 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1574,16 +1521,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE,
-					CommercePaymentMethodGroupRelImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1681,7 +1620,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_A_ACTIVE_2_SQL);
 
@@ -1699,18 +1638,10 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1735,16 +1666,9 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1765,12 +1689,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommercePaymentMethodGroupRelModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1782,14 +1701,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommercePaymentMethodGroupRelImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
-		}
+		sqlQuery.addEntity(
+			_FILTER_ENTITY_TABLE, CommercePaymentMethodGroupRelImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1904,7 +1817,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_COMMERCEPAYMENTMETHODGROUPREL_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_A_ACTIVE_2_SQL);
 
@@ -1943,11 +1856,14 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 	private static final String _FINDER_COLUMN_G_A_GROUPID_2 =
 		"commercePaymentMethodGroupRel.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_A_GROUPID_2_SQL =
+		"CommercePaymentMethodGroupRel.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_A_ACTIVE_2 =
 		"commercePaymentMethodGroupRel.active = ?";
 
 	private static final String _FINDER_COLUMN_G_A_ACTIVE_2_SQL =
-		"commercePaymentMethodGroupRel.active_ = ?";
+		"CommercePaymentMethodGroupRel.active_ = ?";
 
 	private FinderPath _finderPathFetchByG_P;
 	private FinderPath _finderPathCountByG_P;
@@ -2942,11 +2858,11 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		"SELECT COUNT(commercePaymentMethodGroupRel) FROM CommercePaymentMethodGroupRel commercePaymentMethodGroupRel WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"commercePaymentMethodGroupRel.CPaymentMethodGroupRelId";
+		"CommercePaymentMethodGroupRel.CPaymentMethodGroupRelId";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_WHERE =
-			"SELECT DISTINCT {commercePaymentMethodGroupRel.*} FROM CommercePaymentMethodGroupRel commercePaymentMethodGroupRel WHERE ";
+			"SELECT DISTINCT {CommercePaymentMethodGroupRel.*} FROM CommercePaymentMethodGroupRel WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEPAYMENTMETHODGROUPREL_NO_INLINE_DISTINCT_WHERE_1 =
@@ -2958,7 +2874,7 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 	private static final String
 		_FILTER_SQL_COUNT_COMMERCEPAYMENTMETHODGROUPREL_WHERE =
-			"SELECT COUNT(DISTINCT commercePaymentMethodGroupRel.CPaymentMethodGroupRelId) AS COUNT_VALUE FROM CommercePaymentMethodGroupRel commercePaymentMethodGroupRel WHERE ";
+			"SELECT COUNT(DISTINCT CommercePaymentMethodGroupRel.CPaymentMethodGroupRelId) AS COUNT_VALUE FROM CommercePaymentMethodGroupRel WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS =
 		"commercePaymentMethodGroupRel";

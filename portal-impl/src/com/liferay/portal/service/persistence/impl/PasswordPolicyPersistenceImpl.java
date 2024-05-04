@@ -623,22 +623,11 @@ public class PasswordPolicyPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -652,14 +641,7 @@ public class PasswordPolicyPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -775,18 +757,10 @@ public class PasswordPolicyPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -811,16 +785,9 @@ public class PasswordPolicyPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -841,12 +808,7 @@ public class PasswordPolicyPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -858,12 +820,7 @@ public class PasswordPolicyPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1035,10 +992,10 @@ public class PasswordPolicyPersistenceImpl
 		"(passwordPolicy.uuid IS NULL OR passwordPolicy.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"passwordPolicy.uuid_ = ?";
+		"PasswordPolicy.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(passwordPolicy.uuid_ IS NULL OR passwordPolicy.uuid_ = '')";
+		"(PasswordPolicy.uuid_ IS NULL OR PasswordPolicy.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1618,7 +1575,7 @@ public class PasswordPolicyPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1626,22 +1583,11 @@ public class PasswordPolicyPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1655,14 +1601,7 @@ public class PasswordPolicyPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1770,7 +1709,7 @@ public class PasswordPolicyPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1786,18 +1725,10 @@ public class PasswordPolicyPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1822,16 +1753,9 @@ public class PasswordPolicyPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1852,12 +1776,7 @@ public class PasswordPolicyPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1869,12 +1788,7 @@ public class PasswordPolicyPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2018,7 +1932,7 @@ public class PasswordPolicyPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), PasswordPolicy.class.getName(),
@@ -2061,13 +1975,16 @@ public class PasswordPolicyPersistenceImpl
 		"(passwordPolicy.uuid IS NULL OR passwordPolicy.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"passwordPolicy.uuid_ = ? AND ";
+		"PasswordPolicy.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(passwordPolicy.uuid_ IS NULL OR passwordPolicy.uuid_ = '') AND ";
+		"(PasswordPolicy.uuid_ IS NULL OR PasswordPolicy.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"passwordPolicy.companyId = ?";
+
+	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2_SQL =
+		"PasswordPolicy.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
@@ -2570,7 +2487,7 @@ public class PasswordPolicyPersistenceImpl
 				_FILTER_SQL_SELECT_PASSWORDPOLICY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2578,22 +2495,11 @@ public class PasswordPolicyPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2607,14 +2513,7 @@ public class PasswordPolicyPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2701,7 +2600,7 @@ public class PasswordPolicyPersistenceImpl
 				_FILTER_SQL_SELECT_PASSWORDPOLICY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2717,18 +2616,10 @@ public class PasswordPolicyPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2753,16 +2644,9 @@ public class PasswordPolicyPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2783,12 +2667,7 @@ public class PasswordPolicyPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2800,12 +2679,7 @@ public class PasswordPolicyPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2911,7 +2785,7 @@ public class PasswordPolicyPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_PASSWORDPOLICY_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), PasswordPolicy.class.getName(),
@@ -2945,6 +2819,9 @@ public class PasswordPolicyPersistenceImpl
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"passwordPolicy.companyId = ?";
+
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL =
+		"PasswordPolicy.companyId = ?";
 
 	private FinderPath _finderPathFetchByC_DP;
 	private FinderPath _finderPathCountByC_DP;
@@ -4133,10 +4010,10 @@ public class PasswordPolicyPersistenceImpl
 		"SELECT COUNT(passwordPolicy) FROM PasswordPolicy passwordPolicy WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"passwordPolicy.passwordPolicyId";
+		"PasswordPolicy.passwordPolicyId";
 
 	private static final String _FILTER_SQL_SELECT_PASSWORDPOLICY_WHERE =
-		"SELECT DISTINCT {passwordPolicy.*} FROM PasswordPolicy passwordPolicy WHERE ";
+		"SELECT DISTINCT {PasswordPolicy.*} FROM PasswordPolicy WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_PASSWORDPOLICY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4147,7 +4024,7 @@ public class PasswordPolicyPersistenceImpl
 			") TEMP_TABLE INNER JOIN PasswordPolicy ON TEMP_TABLE.passwordPolicyId = PasswordPolicy.passwordPolicyId";
 
 	private static final String _FILTER_SQL_COUNT_PASSWORDPOLICY_WHERE =
-		"SELECT COUNT(DISTINCT passwordPolicy.passwordPolicyId) AS COUNT_VALUE FROM PasswordPolicy passwordPolicy WHERE ";
+		"SELECT COUNT(DISTINCT PasswordPolicy.passwordPolicyId) AS COUNT_VALUE FROM PasswordPolicy WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "passwordPolicy";
 

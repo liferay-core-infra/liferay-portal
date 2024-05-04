@@ -1990,7 +1990,7 @@ public class JournalFeedPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFEED_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1998,22 +1998,11 @@ public class JournalFeedPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFeedModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFeedModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFeedModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2027,12 +2016,7 @@ public class JournalFeedPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalFeedImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFeedImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFeedImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2118,7 +2102,7 @@ public class JournalFeedPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFEED_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2134,18 +2118,10 @@ public class JournalFeedPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2170,16 +2146,9 @@ public class JournalFeedPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2200,12 +2169,7 @@ public class JournalFeedPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFeedModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFeedModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFeedModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2217,12 +2181,7 @@ public class JournalFeedPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalFeedImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFeedImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFeedImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2332,7 +2291,7 @@ public class JournalFeedPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALFEED_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalFeed.class.getName(),
@@ -2366,6 +2325,9 @@ public class JournalFeedPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"journalFeed.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"JournalFeed.groupId = ?";
 
 	private FinderPath _finderPathFetchByG_F;
 	private FinderPath _finderPathCountByG_F;
@@ -3631,10 +3593,10 @@ public class JournalFeedPersistenceImpl
 		"SELECT COUNT(journalFeed) FROM JournalFeed journalFeed WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"journalFeed.id_";
+		"JournalFeed.id_";
 
 	private static final String _FILTER_SQL_SELECT_JOURNALFEED_WHERE =
-		"SELECT DISTINCT {journalFeed.*} FROM JournalFeed journalFeed WHERE ";
+		"SELECT DISTINCT {JournalFeed.*} FROM JournalFeed WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_JOURNALFEED_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3645,7 +3607,7 @@ public class JournalFeedPersistenceImpl
 			") TEMP_TABLE INNER JOIN JournalFeed ON TEMP_TABLE.id_ = JournalFeed.id_";
 
 	private static final String _FILTER_SQL_COUNT_JOURNALFEED_WHERE =
-		"SELECT COUNT(DISTINCT journalFeed.id_) AS COUNT_VALUE FROM JournalFeed journalFeed WHERE ";
+		"SELECT COUNT(DISTINCT JournalFeed.id_) AS COUNT_VALUE FROM JournalFeed WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "journalFeed";
 

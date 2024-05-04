@@ -640,22 +640,11 @@ public class DispatchTriggerPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -669,14 +658,7 @@ public class DispatchTriggerPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -793,18 +775,10 @@ public class DispatchTriggerPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -829,16 +803,9 @@ public class DispatchTriggerPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -859,12 +826,7 @@ public class DispatchTriggerPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -876,12 +838,7 @@ public class DispatchTriggerPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1052,10 +1009,10 @@ public class DispatchTriggerPersistenceImpl
 		"(dispatchTrigger.uuid IS NULL OR dispatchTrigger.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"dispatchTrigger.uuid_ = ?";
+		"DispatchTrigger.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(dispatchTrigger.uuid_ IS NULL OR dispatchTrigger.uuid_ = '')";
+		"(DispatchTrigger.uuid_ IS NULL OR DispatchTrigger.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1635,7 +1592,7 @@ public class DispatchTriggerPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1643,22 +1600,11 @@ public class DispatchTriggerPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1672,14 +1618,7 @@ public class DispatchTriggerPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1787,7 +1726,7 @@ public class DispatchTriggerPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1803,18 +1742,10 @@ public class DispatchTriggerPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1839,16 +1770,9 @@ public class DispatchTriggerPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1869,12 +1793,7 @@ public class DispatchTriggerPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1886,12 +1805,7 @@ public class DispatchTriggerPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2034,7 +1948,7 @@ public class DispatchTriggerPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DispatchTrigger.class.getName(),
@@ -2077,13 +1991,16 @@ public class DispatchTriggerPersistenceImpl
 		"(dispatchTrigger.uuid IS NULL OR dispatchTrigger.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"dispatchTrigger.uuid_ = ? AND ";
+		"DispatchTrigger.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(dispatchTrigger.uuid_ IS NULL OR dispatchTrigger.uuid_ = '') AND ";
+		"(DispatchTrigger.uuid_ IS NULL OR DispatchTrigger.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"dispatchTrigger.companyId = ?";
+
+	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2_SQL =
+		"DispatchTrigger.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
@@ -2589,7 +2506,7 @@ public class DispatchTriggerPersistenceImpl
 				_FILTER_SQL_SELECT_DISPATCHTRIGGER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2597,22 +2514,11 @@ public class DispatchTriggerPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2626,14 +2532,7 @@ public class DispatchTriggerPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2721,7 +2620,7 @@ public class DispatchTriggerPersistenceImpl
 				_FILTER_SQL_SELECT_DISPATCHTRIGGER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2737,18 +2636,10 @@ public class DispatchTriggerPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2773,16 +2664,9 @@ public class DispatchTriggerPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2803,12 +2687,7 @@ public class DispatchTriggerPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2820,12 +2699,7 @@ public class DispatchTriggerPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2930,7 +2804,7 @@ public class DispatchTriggerPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DISPATCHTRIGGER_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DispatchTrigger.class.getName(),
@@ -2964,6 +2838,9 @@ public class DispatchTriggerPersistenceImpl
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"dispatchTrigger.companyId = ?";
+
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL =
+		"DispatchTrigger.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U;
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
@@ -3502,9 +3379,9 @@ public class DispatchTriggerPersistenceImpl
 				_FILTER_SQL_SELECT_DISPATCHTRIGGER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_U_USERID_2);
+		sb.append(_FINDER_COLUMN_C_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3512,22 +3389,11 @@ public class DispatchTriggerPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3541,14 +3407,7 @@ public class DispatchTriggerPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3641,9 +3500,9 @@ public class DispatchTriggerPersistenceImpl
 				_FILTER_SQL_SELECT_DISPATCHTRIGGER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_U_USERID_2);
+		sb.append(_FINDER_COLUMN_C_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3659,18 +3518,10 @@ public class DispatchTriggerPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3695,16 +3546,9 @@ public class DispatchTriggerPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3725,12 +3569,7 @@ public class DispatchTriggerPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3742,12 +3581,7 @@ public class DispatchTriggerPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3862,9 +3696,9 @@ public class DispatchTriggerPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DISPATCHTRIGGER_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_U_USERID_2);
+		sb.append(_FINDER_COLUMN_C_U_USERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DispatchTrigger.class.getName(),
@@ -3901,8 +3735,14 @@ public class DispatchTriggerPersistenceImpl
 	private static final String _FINDER_COLUMN_C_U_COMPANYID_2 =
 		"dispatchTrigger.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_U_COMPANYID_2_SQL =
+		"DispatchTrigger.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_U_USERID_2 =
 		"dispatchTrigger.userId = ?";
+
+	private static final String _FINDER_COLUMN_C_U_USERID_2_SQL =
+		"DispatchTrigger.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_DTET;
 	private FinderPath _finderPathWithoutPaginationFindByC_DTET;
@@ -4488,17 +4328,17 @@ public class DispatchTriggerPersistenceImpl
 				_FILTER_SQL_SELECT_DISPATCHTRIGGER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2_SQL);
 
 		boolean bindDispatchTaskExecutorType = false;
 
 		if (dispatchTaskExecutorType.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3);
+			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3_SQL);
 		}
 		else {
 			bindDispatchTaskExecutorType = true;
 
-			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2);
+			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -4507,22 +4347,11 @@ public class DispatchTriggerPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4536,14 +4365,7 @@ public class DispatchTriggerPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4644,17 +4466,17 @@ public class DispatchTriggerPersistenceImpl
 				_FILTER_SQL_SELECT_DISPATCHTRIGGER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2_SQL);
 
 		boolean bindDispatchTaskExecutorType = false;
 
 		if (dispatchTaskExecutorType.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3);
+			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3_SQL);
 		}
 		else {
 			bindDispatchTaskExecutorType = true;
 
-			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2);
+			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -4671,18 +4493,10 @@ public class DispatchTriggerPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4707,16 +4521,9 @@ public class DispatchTriggerPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4737,12 +4544,7 @@ public class DispatchTriggerPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4754,12 +4556,7 @@ public class DispatchTriggerPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4899,17 +4696,17 @@ public class DispatchTriggerPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DISPATCHTRIGGER_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_DTET_COMPANYID_2_SQL);
 
 		boolean bindDispatchTaskExecutorType = false;
 
 		if (dispatchTaskExecutorType.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3);
+			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3_SQL);
 		}
 		else {
 			bindDispatchTaskExecutorType = true;
 
-			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2);
+			sb.append(_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4949,6 +4746,9 @@ public class DispatchTriggerPersistenceImpl
 	private static final String _FINDER_COLUMN_C_DTET_COMPANYID_2 =
 		"dispatchTrigger.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_DTET_COMPANYID_2_SQL =
+		"DispatchTrigger.companyId = ? AND ";
+
 	private static final String
 		_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2 =
 			"dispatchTrigger.dispatchTaskExecutorType = ?";
@@ -4956,6 +4756,14 @@ public class DispatchTriggerPersistenceImpl
 	private static final String
 		_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3 =
 			"(dispatchTrigger.dispatchTaskExecutorType IS NULL OR dispatchTrigger.dispatchTaskExecutorType = '')";
+
+	private static final String
+		_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_2_SQL =
+			"DispatchTrigger.dispatchTaskExecutorType = ?";
+
+	private static final String
+		_FINDER_COLUMN_C_DTET_DISPATCHTASKEXECUTORTYPE_3_SQL =
+			"(DispatchTrigger.dispatchTaskExecutorType IS NULL OR DispatchTrigger.dispatchTaskExecutorType = '')";
 
 	private FinderPath _finderPathFetchByC_N;
 	private FinderPath _finderPathCountByC_N;
@@ -5757,7 +5565,7 @@ public class DispatchTriggerPersistenceImpl
 
 		sb.append(_FINDER_COLUMN_A_DTCM_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2);
+		sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5765,22 +5573,11 @@ public class DispatchTriggerPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5794,14 +5591,7 @@ public class DispatchTriggerPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5898,7 +5688,7 @@ public class DispatchTriggerPersistenceImpl
 
 		sb.append(_FINDER_COLUMN_A_DTCM_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2);
+		sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5914,18 +5704,10 @@ public class DispatchTriggerPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5950,16 +5732,9 @@ public class DispatchTriggerPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5980,12 +5755,7 @@ public class DispatchTriggerPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5997,12 +5767,7 @@ public class DispatchTriggerPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6114,7 +5879,7 @@ public class DispatchTriggerPersistenceImpl
 		if (dispatchTaskClusterModes.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_7);
+			sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_7_SQL);
 
 			sb.append(StringUtil.merge(dispatchTaskClusterModes));
 
@@ -6132,22 +5897,11 @@ public class DispatchTriggerPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DispatchTriggerModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -6161,14 +5915,7 @@ public class DispatchTriggerPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DispatchTriggerImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DispatchTriggerImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6555,7 +6302,7 @@ public class DispatchTriggerPersistenceImpl
 
 		sb.append(_FINDER_COLUMN_A_DTCM_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2);
+		sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DispatchTrigger.class.getName(),
@@ -6621,7 +6368,7 @@ public class DispatchTriggerPersistenceImpl
 		if (dispatchTaskClusterModes.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_7);
+			sb.append(_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_7_SQL);
 
 			sb.append(StringUtil.merge(dispatchTaskClusterModes));
 
@@ -6667,7 +6414,7 @@ public class DispatchTriggerPersistenceImpl
 		"dispatchTrigger.active = ? AND ";
 
 	private static final String _FINDER_COLUMN_A_DTCM_ACTIVE_2_SQL =
-		"dispatchTrigger.active_ = ? AND ";
+		"DispatchTrigger.active_ = ? AND ";
 
 	private static final String
 		_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2 =
@@ -6676,6 +6423,14 @@ public class DispatchTriggerPersistenceImpl
 	private static final String
 		_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_7 =
 			"dispatchTrigger.dispatchTaskClusterMode IN (";
+
+	private static final String
+		_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_2_SQL =
+			"DispatchTrigger.dispatchTaskClusterMode = ?";
+
+	private static final String
+		_FINDER_COLUMN_A_DTCM_DISPATCHTASKCLUSTERMODE_7_SQL =
+			"DispatchTrigger.dispatchTaskClusterMode IN (";
 
 	private FinderPath _finderPathFetchByERC_C;
 	private FinderPath _finderPathCountByERC_C;
@@ -7799,10 +7554,10 @@ public class DispatchTriggerPersistenceImpl
 		"SELECT COUNT(dispatchTrigger) FROM DispatchTrigger dispatchTrigger WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"dispatchTrigger.dispatchTriggerId";
+		"DispatchTrigger.dispatchTriggerId";
 
 	private static final String _FILTER_SQL_SELECT_DISPATCHTRIGGER_WHERE =
-		"SELECT DISTINCT {dispatchTrigger.*} FROM DispatchTrigger dispatchTrigger WHERE ";
+		"SELECT DISTINCT {DispatchTrigger.*} FROM DispatchTrigger WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DISPATCHTRIGGER_NO_INLINE_DISTINCT_WHERE_1 =
@@ -7813,7 +7568,7 @@ public class DispatchTriggerPersistenceImpl
 			") TEMP_TABLE INNER JOIN DispatchTrigger ON TEMP_TABLE.dispatchTriggerId = DispatchTrigger.dispatchTriggerId";
 
 	private static final String _FILTER_SQL_COUNT_DISPATCHTRIGGER_WHERE =
-		"SELECT COUNT(DISTINCT dispatchTrigger.dispatchTriggerId) AS COUNT_VALUE FROM DispatchTrigger dispatchTrigger WHERE ";
+		"SELECT COUNT(DISTINCT DispatchTrigger.dispatchTriggerId) AS COUNT_VALUE FROM DispatchTrigger WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "dispatchTrigger";
 

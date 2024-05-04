@@ -1995,7 +1995,7 @@ public class DDLRecordSetPersistenceImpl
 				_FILTER_SQL_SELECT_DDLRECORDSET_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2003,22 +2003,11 @@ public class DDLRecordSetPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2032,14 +2021,7 @@ public class DDLRecordSetPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DDLRecordSetImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2126,7 +2108,7 @@ public class DDLRecordSetPersistenceImpl
 				_FILTER_SQL_SELECT_DDLRECORDSET_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2142,18 +2124,10 @@ public class DDLRecordSetPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2178,16 +2152,9 @@ public class DDLRecordSetPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2208,12 +2175,7 @@ public class DDLRecordSetPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2225,12 +2187,7 @@ public class DDLRecordSetPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDLRecordSetImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2327,7 +2284,7 @@ public class DDLRecordSetPersistenceImpl
 		if (groupIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7_SQL);
 
 			sb.append(StringUtil.merge(groupIds));
 
@@ -2345,22 +2302,11 @@ public class DDLRecordSetPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDLRecordSetModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2374,14 +2320,7 @@ public class DDLRecordSetPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DDLRecordSetImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDLRecordSetImpl.class);
 
 			return (List<DDLRecordSet>)QueryUtil.list(
 				sqlQuery, getDialect(), start, end);
@@ -2738,7 +2677,7 @@ public class DDLRecordSetPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DDLRECORDSET_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DDLRecordSet.class.getName(),
@@ -2796,7 +2735,7 @@ public class DDLRecordSetPersistenceImpl
 		if (groupIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7_SQL);
 
 			sb.append(StringUtil.merge(groupIds));
 
@@ -2839,6 +2778,12 @@ public class DDLRecordSetPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_7 =
 		"ddlRecordSet.groupId IN (";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"DDLRecordSet.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_7_SQL =
+		"DDLRecordSet.groupId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByDDMStructureId;
 	private FinderPath _finderPathWithoutPaginationFindByDDMStructureId;
@@ -4936,10 +4881,10 @@ public class DDLRecordSetPersistenceImpl
 		"SELECT COUNT(ddlRecordSet) FROM DDLRecordSet ddlRecordSet WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ddlRecordSet.recordSetId";
+		"DDLRecordSet.recordSetId";
 
 	private static final String _FILTER_SQL_SELECT_DDLRECORDSET_WHERE =
-		"SELECT DISTINCT {ddlRecordSet.*} FROM DDLRecordSet ddlRecordSet WHERE ";
+		"SELECT DISTINCT {DDLRecordSet.*} FROM DDLRecordSet WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DDLRECORDSET_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4950,7 +4895,7 @@ public class DDLRecordSetPersistenceImpl
 			") TEMP_TABLE INNER JOIN DDLRecordSet ON TEMP_TABLE.recordSetId = DDLRecordSet.recordSetId";
 
 	private static final String _FILTER_SQL_COUNT_DDLRECORDSET_WHERE =
-		"SELECT COUNT(DISTINCT ddlRecordSet.recordSetId) AS COUNT_VALUE FROM DDLRecordSet ddlRecordSet WHERE ";
+		"SELECT COUNT(DISTINCT DDLRecordSet.recordSetId) AS COUNT_VALUE FROM DDLRecordSet WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ddlRecordSet";
 

@@ -594,7 +594,7 @@ public class ExpandoColumnPersistenceImpl
 				_FILTER_SQL_SELECT_EXPANDOCOLUMN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_TABLEID_TABLEID_2);
+		sb.append(_FINDER_COLUMN_TABLEID_TABLEID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -602,22 +602,11 @@ public class ExpandoColumnPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ExpandoColumnModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ExpandoColumnModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ExpandoColumnModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -631,14 +620,7 @@ public class ExpandoColumnPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, ExpandoColumnImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, ExpandoColumnImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ExpandoColumnImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -725,7 +707,7 @@ public class ExpandoColumnPersistenceImpl
 				_FILTER_SQL_SELECT_EXPANDOCOLUMN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_TABLEID_TABLEID_2);
+		sb.append(_FINDER_COLUMN_TABLEID_TABLEID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -741,18 +723,10 @@ public class ExpandoColumnPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -777,16 +751,9 @@ public class ExpandoColumnPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -807,12 +774,7 @@ public class ExpandoColumnPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(ExpandoColumnModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(ExpandoColumnModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(ExpandoColumnModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -824,12 +786,7 @@ public class ExpandoColumnPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, ExpandoColumnImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ExpandoColumnImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, ExpandoColumnImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -940,7 +897,7 @@ public class ExpandoColumnPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_EXPANDOCOLUMN_WHERE);
 
-		sb.append(_FINDER_COLUMN_TABLEID_TABLEID_2);
+		sb.append(_FINDER_COLUMN_TABLEID_TABLEID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), ExpandoColumn.class.getName(),
@@ -974,6 +931,9 @@ public class ExpandoColumnPersistenceImpl
 
 	private static final String _FINDER_COLUMN_TABLEID_TABLEID_2 =
 		"expandoColumn.tableId = ?";
+
+	private static final String _FINDER_COLUMN_TABLEID_TABLEID_2_SQL =
+		"ExpandoColumn.tableId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_N;
 	private FinderPath _finderPathWithoutPaginationFindByT_N;
@@ -1576,17 +1536,17 @@ public class ExpandoColumnPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_EXPANDOCOLUMN_WHERE);
 
-		sb.append(_FINDER_COLUMN_T_N_TABLEID_2);
+		sb.append(_FINDER_COLUMN_T_N_TABLEID_2_SQL);
 
 		boolean bindName = false;
 
 		if (name.isEmpty()) {
-			sb.append(_FINDER_COLUMN_T_N_NAME_3);
+			sb.append(_FINDER_COLUMN_T_N_NAME_3_SQL);
 		}
 		else {
 			bindName = true;
 
-			sb.append(_FINDER_COLUMN_T_N_NAME_2);
+			sb.append(_FINDER_COLUMN_T_N_NAME_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1651,7 +1611,7 @@ public class ExpandoColumnPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_EXPANDOCOLUMN_WHERE);
 
-		sb.append(_FINDER_COLUMN_T_N_TABLEID_2);
+		sb.append(_FINDER_COLUMN_T_N_TABLEID_2_SQL);
 
 		if (names.length > 0) {
 			sb.append("(");
@@ -1660,10 +1620,10 @@ public class ExpandoColumnPersistenceImpl
 				String name = names[i];
 
 				if (name.isEmpty()) {
-					sb.append(_FINDER_COLUMN_T_N_NAME_3);
+					sb.append(_FINDER_COLUMN_T_N_NAME_3_SQL);
 				}
 				else {
-					sb.append(_FINDER_COLUMN_T_N_NAME_2);
+					sb.append(_FINDER_COLUMN_T_N_NAME_2_SQL);
 				}
 
 				if ((i + 1) < names.length) {
@@ -1716,11 +1676,20 @@ public class ExpandoColumnPersistenceImpl
 	private static final String _FINDER_COLUMN_T_N_TABLEID_2 =
 		"expandoColumn.tableId = ? AND ";
 
+	private static final String _FINDER_COLUMN_T_N_TABLEID_2_SQL =
+		"ExpandoColumn.tableId = ? AND ";
+
 	private static final String _FINDER_COLUMN_T_N_NAME_2 =
 		"expandoColumn.name = ?";
 
 	private static final String _FINDER_COLUMN_T_N_NAME_3 =
 		"(expandoColumn.name IS NULL OR expandoColumn.name = '')";
+
+	private static final String _FINDER_COLUMN_T_N_NAME_2_SQL =
+		"ExpandoColumn.name = ?";
+
+	private static final String _FINDER_COLUMN_T_N_NAME_3_SQL =
+		"(ExpandoColumn.name IS NULL OR ExpandoColumn.name = '')";
 
 	public ExpandoColumnPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -2620,10 +2589,10 @@ public class ExpandoColumnPersistenceImpl
 		"SELECT COUNT(expandoColumn) FROM ExpandoColumn expandoColumn WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"expandoColumn.columnId";
+		"ExpandoColumn.columnId";
 
 	private static final String _FILTER_SQL_SELECT_EXPANDOCOLUMN_WHERE =
-		"SELECT DISTINCT {expandoColumn.*} FROM ExpandoColumn expandoColumn WHERE ";
+		"SELECT DISTINCT {ExpandoColumn.*} FROM ExpandoColumn WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_EXPANDOCOLUMN_NO_INLINE_DISTINCT_WHERE_1 =
@@ -2634,7 +2603,7 @@ public class ExpandoColumnPersistenceImpl
 			") TEMP_TABLE INNER JOIN ExpandoColumn ON TEMP_TABLE.columnId = ExpandoColumn.columnId";
 
 	private static final String _FILTER_SQL_COUNT_EXPANDOCOLUMN_WHERE =
-		"SELECT COUNT(DISTINCT expandoColumn.columnId) AS COUNT_VALUE FROM ExpandoColumn expandoColumn WHERE ";
+		"SELECT COUNT(DISTINCT ExpandoColumn.columnId) AS COUNT_VALUE FROM ExpandoColumn WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "expandoColumn";
 

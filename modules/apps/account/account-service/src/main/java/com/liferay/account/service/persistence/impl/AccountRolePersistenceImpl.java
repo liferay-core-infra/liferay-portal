@@ -584,7 +584,7 @@ public class AccountRolePersistenceImpl
 				_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -592,22 +592,11 @@ public class AccountRolePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -621,12 +610,7 @@ public class AccountRolePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -713,7 +697,7 @@ public class AccountRolePersistenceImpl
 				_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -729,18 +713,10 @@ public class AccountRolePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -765,16 +741,9 @@ public class AccountRolePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -795,12 +764,7 @@ public class AccountRolePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -812,12 +776,7 @@ public class AccountRolePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -921,7 +880,7 @@ public class AccountRolePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_ACCOUNTROLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), AccountRole.class.getName(),
@@ -955,6 +914,9 @@ public class AccountRolePersistenceImpl
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"accountRole.companyId = ?";
+
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL =
+		"AccountRole.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByAccountEntryId;
 	private FinderPath _finderPathWithoutPaginationFindByAccountEntryId;
@@ -1461,7 +1423,7 @@ public class AccountRolePersistenceImpl
 				_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2);
+		sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1469,22 +1431,11 @@ public class AccountRolePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1498,12 +1449,7 @@ public class AccountRolePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1590,7 +1536,7 @@ public class AccountRolePersistenceImpl
 				_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2);
+		sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1606,18 +1552,10 @@ public class AccountRolePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1642,16 +1580,9 @@ public class AccountRolePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1672,12 +1603,7 @@ public class AccountRolePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1689,12 +1615,7 @@ public class AccountRolePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1794,7 +1715,7 @@ public class AccountRolePersistenceImpl
 		if (accountEntryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_7);
+			sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_7_SQL);
 
 			sb.append(StringUtil.merge(accountEntryIds));
 
@@ -1812,22 +1733,11 @@ public class AccountRolePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1841,12 +1751,7 @@ public class AccountRolePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 			return (List<AccountRole>)QueryUtil.list(
 				sqlQuery, getDialect(), start, end);
@@ -2189,7 +2094,7 @@ public class AccountRolePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_ACCOUNTROLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2);
+		sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), AccountRole.class.getName(),
@@ -2247,7 +2152,7 @@ public class AccountRolePersistenceImpl
 		if (accountEntryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_7);
+			sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_7_SQL);
 
 			sb.append(StringUtil.merge(accountEntryIds));
 
@@ -2290,6 +2195,14 @@ public class AccountRolePersistenceImpl
 
 	private static final String _FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_7 =
 		"accountRole.accountEntryId IN (";
+
+	private static final String
+		_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2_SQL =
+			"AccountRole.accountEntryId = ?";
+
+	private static final String
+		_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_7_SQL =
+			"AccountRole.accountEntryId IN (";
 
 	private FinderPath _finderPathFetchByRoleId;
 	private FinderPath _finderPathCountByRoleId;
@@ -3040,9 +2953,9 @@ public class AccountRolePersistenceImpl
 				_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_2);
+		sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3050,22 +2963,11 @@ public class AccountRolePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3079,12 +2981,7 @@ public class AccountRolePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3177,9 +3074,9 @@ public class AccountRolePersistenceImpl
 				_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_2);
+		sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3195,18 +3092,10 @@ public class AccountRolePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3231,16 +3120,9 @@ public class AccountRolePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3261,12 +3143,7 @@ public class AccountRolePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3278,12 +3155,7 @@ public class AccountRolePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3386,12 +3258,12 @@ public class AccountRolePersistenceImpl
 				_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
 		if (accountEntryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_7);
+			sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_7_SQL);
 
 			sb.append(StringUtil.merge(accountEntryIds));
 
@@ -3409,22 +3281,11 @@ public class AccountRolePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(AccountRoleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(AccountRoleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3438,12 +3299,7 @@ public class AccountRolePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, AccountRoleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, AccountRoleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3818,9 +3674,9 @@ public class AccountRolePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_ACCOUNTROLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_2);
+		sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), AccountRole.class.getName(),
@@ -3878,12 +3734,12 @@ public class AccountRolePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_ACCOUNTROLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
 		if (accountEntryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_7);
+			sb.append(_FINDER_COLUMN_C_A_ACCOUNTENTRYID_7_SQL);
 
 			sb.append(StringUtil.merge(accountEntryIds));
 
@@ -3928,11 +3784,20 @@ public class AccountRolePersistenceImpl
 	private static final String _FINDER_COLUMN_C_A_COMPANYID_2 =
 		"accountRole.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_A_COMPANYID_2_SQL =
+		"AccountRole.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_A_ACCOUNTENTRYID_2 =
 		"accountRole.accountEntryId = ?";
 
 	private static final String _FINDER_COLUMN_C_A_ACCOUNTENTRYID_7 =
 		"accountRole.accountEntryId IN (";
+
+	private static final String _FINDER_COLUMN_C_A_ACCOUNTENTRYID_2_SQL =
+		"AccountRole.accountEntryId = ?";
+
+	private static final String _FINDER_COLUMN_C_A_ACCOUNTENTRYID_7_SQL =
+		"AccountRole.accountEntryId IN (";
 
 	public AccountRolePersistenceImpl() {
 		setModelClass(AccountRole.class);
@@ -4591,10 +4456,10 @@ public class AccountRolePersistenceImpl
 		"SELECT COUNT(accountRole) FROM AccountRole accountRole WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"accountRole.accountRoleId";
+		"AccountRole.accountRoleId";
 
 	private static final String _FILTER_SQL_SELECT_ACCOUNTROLE_WHERE =
-		"SELECT DISTINCT {accountRole.*} FROM AccountRole accountRole WHERE ";
+		"SELECT DISTINCT {AccountRole.*} FROM AccountRole WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_ACCOUNTROLE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4605,7 +4470,7 @@ public class AccountRolePersistenceImpl
 			") TEMP_TABLE INNER JOIN AccountRole ON TEMP_TABLE.accountRoleId = AccountRole.accountRoleId";
 
 	private static final String _FILTER_SQL_COUNT_ACCOUNTROLE_WHERE =
-		"SELECT COUNT(DISTINCT accountRole.accountRoleId) AS COUNT_VALUE FROM AccountRole accountRole WHERE ";
+		"SELECT COUNT(DISTINCT AccountRole.accountRoleId) AS COUNT_VALUE FROM AccountRole WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "accountRole";
 

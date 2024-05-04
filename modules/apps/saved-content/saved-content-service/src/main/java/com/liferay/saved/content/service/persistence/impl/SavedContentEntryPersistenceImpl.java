@@ -2010,7 +2010,7 @@ public class SavedContentEntryPersistenceImpl
 				_FILTER_SQL_SELECT_SAVEDCONTENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2018,22 +2018,11 @@ public class SavedContentEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2047,14 +2036,8 @@ public class SavedContentEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SavedContentEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2143,7 +2126,7 @@ public class SavedContentEntryPersistenceImpl
 				_FILTER_SQL_SELECT_SAVEDCONTENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2159,18 +2142,10 @@ public class SavedContentEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2195,16 +2170,9 @@ public class SavedContentEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2225,12 +2193,7 @@ public class SavedContentEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2242,14 +2205,7 @@ public class SavedContentEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, SavedContentEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2360,7 +2316,7 @@ public class SavedContentEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_SAVEDCONTENTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), SavedContentEntry.class.getName(),
@@ -2394,6 +2350,9 @@ public class SavedContentEntryPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"savedContentEntry.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"SavedContentEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
@@ -3446,9 +3405,9 @@ public class SavedContentEntryPersistenceImpl
 				_FILTER_SQL_SELECT_SAVEDCONTENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3456,22 +3415,11 @@ public class SavedContentEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3485,14 +3433,8 @@ public class SavedContentEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SavedContentEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3586,9 +3528,9 @@ public class SavedContentEntryPersistenceImpl
 				_FILTER_SQL_SELECT_SAVEDCONTENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3604,18 +3546,10 @@ public class SavedContentEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3640,16 +3574,9 @@ public class SavedContentEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3670,12 +3597,7 @@ public class SavedContentEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3687,14 +3609,7 @@ public class SavedContentEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, SavedContentEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3815,9 +3730,9 @@ public class SavedContentEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_SAVEDCONTENTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_U_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_USERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), SavedContentEntry.class.getName(),
@@ -3854,8 +3769,14 @@ public class SavedContentEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_GROUPID_2 =
 		"savedContentEntry.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_U_GROUPID_2_SQL =
+		"SavedContentEntry.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_U_USERID_2 =
 		"savedContentEntry.userId = ?";
+
+	private static final String _FINDER_COLUMN_G_U_USERID_2_SQL =
+		"SavedContentEntry.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_C;
 	private FinderPath _finderPathWithoutPaginationFindByU_C;
@@ -4992,11 +4913,11 @@ public class SavedContentEntryPersistenceImpl
 				_FILTER_SQL_SELECT_SAVEDCONTENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5004,22 +4925,11 @@ public class SavedContentEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5033,14 +4943,8 @@ public class SavedContentEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SavedContentEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5140,11 +5044,11 @@ public class SavedContentEntryPersistenceImpl
 				_FILTER_SQL_SELECT_SAVEDCONTENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5160,18 +5064,10 @@ public class SavedContentEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5196,16 +5092,9 @@ public class SavedContentEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5226,12 +5115,7 @@ public class SavedContentEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SavedContentEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5243,14 +5127,7 @@ public class SavedContentEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, SavedContentEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SavedContentEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5382,11 +5259,11 @@ public class SavedContentEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_SAVEDCONTENTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), SavedContentEntry.class.getName(),
@@ -5425,11 +5302,20 @@ public class SavedContentEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_C_GROUPID_2 =
 		"savedContentEntry.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_C_GROUPID_2_SQL =
+		"SavedContentEntry.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_C_CLASSNAMEID_2 =
 		"savedContentEntry.classNameId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL =
+		"SavedContentEntry.classNameId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_C_CLASSPK_2 =
 		"savedContentEntry.classPK = ?";
+
+	private static final String _FINDER_COLUMN_G_C_C_CLASSPK_2_SQL =
+		"SavedContentEntry.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_C;
 	private FinderPath _finderPathWithoutPaginationFindByC_C_C;
@@ -8139,10 +8025,10 @@ public class SavedContentEntryPersistenceImpl
 		"SELECT COUNT(savedContentEntry) FROM SavedContentEntry savedContentEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"savedContentEntry.savedContentEntryId";
+		"SavedContentEntry.savedContentEntryId";
 
 	private static final String _FILTER_SQL_SELECT_SAVEDCONTENTENTRY_WHERE =
-		"SELECT DISTINCT {savedContentEntry.*} FROM SavedContentEntry savedContentEntry WHERE ";
+		"SELECT DISTINCT {SavedContentEntry.*} FROM SavedContentEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_SAVEDCONTENTENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -8153,7 +8039,7 @@ public class SavedContentEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN SavedContentEntry ON TEMP_TABLE.savedContentEntryId = SavedContentEntry.savedContentEntryId";
 
 	private static final String _FILTER_SQL_COUNT_SAVEDCONTENTENTRY_WHERE =
-		"SELECT COUNT(DISTINCT savedContentEntry.savedContentEntryId) AS COUNT_VALUE FROM SavedContentEntry savedContentEntry WHERE ";
+		"SELECT COUNT(DISTINCT SavedContentEntry.savedContentEntryId) AS COUNT_VALUE FROM SavedContentEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "savedContentEntry";
 

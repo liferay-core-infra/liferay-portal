@@ -2005,7 +2005,7 @@ public class DDMFormInstancePersistenceImpl
 				_FILTER_SQL_SELECT_DDMFORMINSTANCE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2013,22 +2013,11 @@ public class DDMFormInstancePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2042,14 +2031,7 @@ public class DDMFormInstancePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DDMFormInstanceImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2137,7 +2119,7 @@ public class DDMFormInstancePersistenceImpl
 				_FILTER_SQL_SELECT_DDMFORMINSTANCE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2153,18 +2135,10 @@ public class DDMFormInstancePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2189,16 +2163,9 @@ public class DDMFormInstancePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2219,12 +2186,7 @@ public class DDMFormInstancePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2236,12 +2198,7 @@ public class DDMFormInstancePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DDMFormInstanceImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2339,7 +2296,7 @@ public class DDMFormInstancePersistenceImpl
 		if (groupIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7_SQL);
 
 			sb.append(StringUtil.merge(groupIds));
 
@@ -2357,22 +2314,11 @@ public class DDMFormInstancePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DDMFormInstanceModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2386,14 +2332,7 @@ public class DDMFormInstancePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DDMFormInstanceImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DDMFormInstanceImpl.class);
 
 			return (List<DDMFormInstance>)QueryUtil.list(
 				sqlQuery, getDialect(), start, end);
@@ -2750,7 +2689,7 @@ public class DDMFormInstancePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DDMFORMINSTANCE_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DDMFormInstance.class.getName(),
@@ -2808,7 +2747,7 @@ public class DDMFormInstancePersistenceImpl
 		if (groupIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7_SQL);
 
 			sb.append(StringUtil.merge(groupIds));
 
@@ -2851,6 +2790,12 @@ public class DDMFormInstancePersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_7 =
 		"ddmFormInstance.groupId IN (";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"DDMFormInstance.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_7_SQL =
+		"DDMFormInstance.groupId IN (";
 
 	public DDMFormInstancePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -3858,10 +3803,10 @@ public class DDMFormInstancePersistenceImpl
 		"SELECT COUNT(ddmFormInstance) FROM DDMFormInstance ddmFormInstance WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ddmFormInstance.formInstanceId";
+		"DDMFormInstance.formInstanceId";
 
 	private static final String _FILTER_SQL_SELECT_DDMFORMINSTANCE_WHERE =
-		"SELECT DISTINCT {ddmFormInstance.*} FROM DDMFormInstance ddmFormInstance WHERE ";
+		"SELECT DISTINCT {DDMFormInstance.*} FROM DDMFormInstance WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DDMFORMINSTANCE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3872,7 +3817,7 @@ public class DDMFormInstancePersistenceImpl
 			") TEMP_TABLE INNER JOIN DDMFormInstance ON TEMP_TABLE.formInstanceId = DDMFormInstance.formInstanceId";
 
 	private static final String _FILTER_SQL_COUNT_DDMFORMINSTANCE_WHERE =
-		"SELECT COUNT(DISTINCT ddmFormInstance.formInstanceId) AS COUNT_VALUE FROM DDMFormInstance ddmFormInstance WHERE ";
+		"SELECT COUNT(DISTINCT DDMFormInstance.formInstanceId) AS COUNT_VALUE FROM DDMFormInstance WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ddmFormInstance";
 

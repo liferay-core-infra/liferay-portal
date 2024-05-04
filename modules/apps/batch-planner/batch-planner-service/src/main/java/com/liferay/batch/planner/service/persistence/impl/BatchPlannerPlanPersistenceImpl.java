@@ -593,7 +593,7 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -601,22 +601,11 @@ public class BatchPlannerPlanPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -630,14 +619,8 @@ public class BatchPlannerPlanPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -726,7 +709,7 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -742,18 +725,10 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -778,16 +753,9 @@ public class BatchPlannerPlanPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -808,12 +776,7 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -825,14 +788,7 @@ public class BatchPlannerPlanPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -937,7 +893,7 @@ public class BatchPlannerPlanPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_BATCHPLANNERPLAN_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), BatchPlannerPlan.class.getName(),
@@ -971,6 +927,9 @@ public class BatchPlannerPlanPersistenceImpl
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"batchPlannerPlan.companyId = ?";
+
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL =
+		"BatchPlannerPlan.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_U;
 	private FinderPath _finderPathWithoutPaginationFindByC_U;
@@ -1510,9 +1469,9 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_U_USERID_2);
+		sb.append(_FINDER_COLUMN_C_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1520,22 +1479,11 @@ public class BatchPlannerPlanPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1549,14 +1497,8 @@ public class BatchPlannerPlanPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1650,9 +1592,9 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_U_USERID_2);
+		sb.append(_FINDER_COLUMN_C_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1668,18 +1610,10 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1704,16 +1638,9 @@ public class BatchPlannerPlanPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1734,12 +1661,7 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1751,14 +1673,7 @@ public class BatchPlannerPlanPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1873,9 +1788,9 @@ public class BatchPlannerPlanPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_BATCHPLANNERPLAN_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_U_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_U_USERID_2);
+		sb.append(_FINDER_COLUMN_C_U_USERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), BatchPlannerPlan.class.getName(),
@@ -1912,8 +1827,14 @@ public class BatchPlannerPlanPersistenceImpl
 	private static final String _FINDER_COLUMN_C_U_COMPANYID_2 =
 		"batchPlannerPlan.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_U_COMPANYID_2_SQL =
+		"BatchPlannerPlan.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_U_USERID_2 =
 		"batchPlannerPlan.userId = ?";
+
+	private static final String _FINDER_COLUMN_C_U_USERID_2_SQL =
+		"BatchPlannerPlan.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_E;
 	private FinderPath _finderPathWithoutPaginationFindByC_E;
@@ -2455,9 +2376,9 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_E_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_E_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_EXPORT_2);
+		sb.append(_FINDER_COLUMN_C_E_EXPORT_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2465,22 +2386,11 @@ public class BatchPlannerPlanPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2494,14 +2404,8 @@ public class BatchPlannerPlanPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2595,9 +2499,9 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_E_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_E_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_EXPORT_2);
+		sb.append(_FINDER_COLUMN_C_E_EXPORT_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2613,18 +2517,10 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2649,16 +2545,9 @@ public class BatchPlannerPlanPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2679,12 +2568,7 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2696,14 +2580,7 @@ public class BatchPlannerPlanPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2818,9 +2695,9 @@ public class BatchPlannerPlanPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_BATCHPLANNERPLAN_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_E_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_E_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_EXPORT_2);
+		sb.append(_FINDER_COLUMN_C_E_EXPORT_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), BatchPlannerPlan.class.getName(),
@@ -2857,8 +2734,14 @@ public class BatchPlannerPlanPersistenceImpl
 	private static final String _FINDER_COLUMN_C_E_COMPANYID_2 =
 		"batchPlannerPlan.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_E_COMPANYID_2_SQL =
+		"BatchPlannerPlan.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_E_EXPORT_2 =
 		"batchPlannerPlan.export = ?";
+
+	private static final String _FINDER_COLUMN_C_E_EXPORT_2_SQL =
+		"BatchPlannerPlan.export = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_N;
 	private FinderPath _finderPathWithoutPaginationFindByC_N;
@@ -3425,17 +3308,17 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_N_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_N_COMPANYID_2_SQL);
 
 		boolean bindName = false;
 
 		if (name.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_N_NAME_3);
+			sb.append(_FINDER_COLUMN_C_N_NAME_3_SQL);
 		}
 		else {
 			bindName = true;
 
-			sb.append(_FINDER_COLUMN_C_N_NAME_2);
+			sb.append(_FINDER_COLUMN_C_N_NAME_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -3444,22 +3327,11 @@ public class BatchPlannerPlanPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3473,14 +3345,8 @@ public class BatchPlannerPlanPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3578,17 +3444,17 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_N_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_N_COMPANYID_2_SQL);
 
 		boolean bindName = false;
 
 		if (name.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_N_NAME_3);
+			sb.append(_FINDER_COLUMN_C_N_NAME_3_SQL);
 		}
 		else {
 			bindName = true;
 
-			sb.append(_FINDER_COLUMN_C_N_NAME_2);
+			sb.append(_FINDER_COLUMN_C_N_NAME_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -3605,18 +3471,10 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3641,16 +3499,9 @@ public class BatchPlannerPlanPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3671,12 +3522,7 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3688,14 +3534,7 @@ public class BatchPlannerPlanPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3827,17 +3666,17 @@ public class BatchPlannerPlanPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_BATCHPLANNERPLAN_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_N_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_N_COMPANYID_2_SQL);
 
 		boolean bindName = false;
 
 		if (name.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_N_NAME_3);
+			sb.append(_FINDER_COLUMN_C_N_NAME_3_SQL);
 		}
 		else {
 			bindName = true;
 
-			sb.append(_FINDER_COLUMN_C_N_NAME_2);
+			sb.append(_FINDER_COLUMN_C_N_NAME_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3877,11 +3716,20 @@ public class BatchPlannerPlanPersistenceImpl
 	private static final String _FINDER_COLUMN_C_N_COMPANYID_2 =
 		"batchPlannerPlan.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_N_COMPANYID_2_SQL =
+		"BatchPlannerPlan.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_N_NAME_2 =
 		"batchPlannerPlan.name = ?";
 
 	private static final String _FINDER_COLUMN_C_N_NAME_3 =
 		"(batchPlannerPlan.name IS NULL OR batchPlannerPlan.name = '')";
+
+	private static final String _FINDER_COLUMN_C_N_NAME_2_SQL =
+		"BatchPlannerPlan.name = ?";
+
+	private static final String _FINDER_COLUMN_C_N_NAME_3_SQL =
+		"(BatchPlannerPlan.name IS NULL OR BatchPlannerPlan.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
@@ -4424,9 +4272,9 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_T_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_T_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_T_TEMPLATE_2);
+		sb.append(_FINDER_COLUMN_C_T_TEMPLATE_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -4434,22 +4282,11 @@ public class BatchPlannerPlanPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4463,14 +4300,8 @@ public class BatchPlannerPlanPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4564,9 +4395,9 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_T_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_T_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_T_TEMPLATE_2);
+		sb.append(_FINDER_COLUMN_C_T_TEMPLATE_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -4582,18 +4413,10 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4618,16 +4441,9 @@ public class BatchPlannerPlanPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4648,12 +4464,7 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4665,14 +4476,7 @@ public class BatchPlannerPlanPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4787,9 +4591,9 @@ public class BatchPlannerPlanPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_BATCHPLANNERPLAN_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_T_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_T_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_T_TEMPLATE_2);
+		sb.append(_FINDER_COLUMN_C_T_TEMPLATE_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), BatchPlannerPlan.class.getName(),
@@ -4826,8 +4630,14 @@ public class BatchPlannerPlanPersistenceImpl
 	private static final String _FINDER_COLUMN_C_T_COMPANYID_2 =
 		"batchPlannerPlan.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_T_COMPANYID_2_SQL =
+		"BatchPlannerPlan.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_T_TEMPLATE_2 =
 		"batchPlannerPlan.template = ?";
+
+	private static final String _FINDER_COLUMN_C_T_TEMPLATE_2_SQL =
+		"BatchPlannerPlan.template = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_E_T;
 	private FinderPath _finderPathWithoutPaginationFindByC_E_T;
@@ -5403,11 +5213,11 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_E_T_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_E_T_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_T_EXPORT_2);
+		sb.append(_FINDER_COLUMN_C_E_T_EXPORT_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_T_TEMPLATE_2);
+		sb.append(_FINDER_COLUMN_C_E_T_TEMPLATE_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5415,22 +5225,11 @@ public class BatchPlannerPlanPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5444,14 +5243,8 @@ public class BatchPlannerPlanPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5551,11 +5344,11 @@ public class BatchPlannerPlanPersistenceImpl
 				_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_E_T_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_E_T_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_T_EXPORT_2);
+		sb.append(_FINDER_COLUMN_C_E_T_EXPORT_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_T_TEMPLATE_2);
+		sb.append(_FINDER_COLUMN_C_E_T_TEMPLATE_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5571,18 +5364,10 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5607,16 +5392,9 @@ public class BatchPlannerPlanPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5637,12 +5415,7 @@ public class BatchPlannerPlanPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(BatchPlannerPlanModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5654,14 +5427,7 @@ public class BatchPlannerPlanPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, BatchPlannerPlanImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, BatchPlannerPlanImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5789,11 +5555,11 @@ public class BatchPlannerPlanPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_BATCHPLANNERPLAN_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_E_T_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_E_T_COMPANYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_T_EXPORT_2);
+		sb.append(_FINDER_COLUMN_C_E_T_EXPORT_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_E_T_TEMPLATE_2);
+		sb.append(_FINDER_COLUMN_C_E_T_TEMPLATE_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), BatchPlannerPlan.class.getName(),
@@ -5832,11 +5598,20 @@ public class BatchPlannerPlanPersistenceImpl
 	private static final String _FINDER_COLUMN_C_E_T_COMPANYID_2 =
 		"batchPlannerPlan.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_E_T_COMPANYID_2_SQL =
+		"BatchPlannerPlan.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_E_T_EXPORT_2 =
 		"batchPlannerPlan.export = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_E_T_EXPORT_2_SQL =
+		"BatchPlannerPlan.export = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_E_T_TEMPLATE_2 =
 		"batchPlannerPlan.template = ?";
+
+	private static final String _FINDER_COLUMN_C_E_T_TEMPLATE_2_SQL =
+		"BatchPlannerPlan.template = ?";
 
 	public BatchPlannerPlanPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -6571,10 +6346,10 @@ public class BatchPlannerPlanPersistenceImpl
 		"SELECT COUNT(batchPlannerPlan) FROM BatchPlannerPlan batchPlannerPlan WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"batchPlannerPlan.batchPlannerPlanId";
+		"BatchPlannerPlan.batchPlannerPlanId";
 
 	private static final String _FILTER_SQL_SELECT_BATCHPLANNERPLAN_WHERE =
-		"SELECT DISTINCT {batchPlannerPlan.*} FROM BatchPlannerPlan batchPlannerPlan WHERE ";
+		"SELECT DISTINCT {BatchPlannerPlan.*} FROM BatchPlannerPlan WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_BATCHPLANNERPLAN_NO_INLINE_DISTINCT_WHERE_1 =
@@ -6585,7 +6360,7 @@ public class BatchPlannerPlanPersistenceImpl
 			") TEMP_TABLE INNER JOIN BatchPlannerPlan ON TEMP_TABLE.batchPlannerPlanId = BatchPlannerPlan.batchPlannerPlanId";
 
 	private static final String _FILTER_SQL_COUNT_BATCHPLANNERPLAN_WHERE =
-		"SELECT COUNT(DISTINCT batchPlannerPlan.batchPlannerPlanId) AS COUNT_VALUE FROM BatchPlannerPlan batchPlannerPlan WHERE ";
+		"SELECT COUNT(DISTINCT BatchPlannerPlan.batchPlannerPlanId) AS COUNT_VALUE FROM BatchPlannerPlan WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "batchPlannerPlan";
 

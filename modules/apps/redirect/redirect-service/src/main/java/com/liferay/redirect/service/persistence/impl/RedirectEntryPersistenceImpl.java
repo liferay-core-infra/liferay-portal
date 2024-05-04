@@ -1954,7 +1954,7 @@ public class RedirectEntryPersistenceImpl
 				_FILTER_SQL_SELECT_REDIRECTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1962,22 +1962,11 @@ public class RedirectEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1991,14 +1980,7 @@ public class RedirectEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, RedirectEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2085,7 +2067,7 @@ public class RedirectEntryPersistenceImpl
 				_FILTER_SQL_SELECT_REDIRECTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2101,18 +2083,10 @@ public class RedirectEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2137,16 +2111,9 @@ public class RedirectEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2167,12 +2134,7 @@ public class RedirectEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2184,12 +2146,7 @@ public class RedirectEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, RedirectEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2294,7 +2251,7 @@ public class RedirectEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_REDIRECTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), RedirectEntry.class.getName(),
@@ -2328,6 +2285,9 @@ public class RedirectEntryPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"redirectEntry.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"RedirectEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_D;
 	private FinderPath _finderPathWithoutPaginationFindByG_D;
@@ -2900,17 +2860,17 @@ public class RedirectEntryPersistenceImpl
 				_FILTER_SQL_SELECT_REDIRECTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_D_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_D_GROUPID_2_SQL);
 
 		boolean bindDestinationURL = false;
 
 		if (destinationURL.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_3);
+			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_3_SQL);
 		}
 		else {
 			bindDestinationURL = true;
 
-			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_2);
+			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -2919,22 +2879,11 @@ public class RedirectEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2948,14 +2897,7 @@ public class RedirectEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, RedirectEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3052,17 +2994,17 @@ public class RedirectEntryPersistenceImpl
 				_FILTER_SQL_SELECT_REDIRECTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_D_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_D_GROUPID_2_SQL);
 
 		boolean bindDestinationURL = false;
 
 		if (destinationURL.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_3);
+			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_3_SQL);
 		}
 		else {
 			bindDestinationURL = true;
 
-			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_2);
+			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -3079,18 +3021,10 @@ public class RedirectEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3115,16 +3049,9 @@ public class RedirectEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3145,12 +3072,7 @@ public class RedirectEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(RedirectEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3162,12 +3084,7 @@ public class RedirectEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, RedirectEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, RedirectEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3299,17 +3216,17 @@ public class RedirectEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_REDIRECTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_D_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_D_GROUPID_2_SQL);
 
 		boolean bindDestinationURL = false;
 
 		if (destinationURL.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_3);
+			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_3_SQL);
 		}
 		else {
 			bindDestinationURL = true;
 
-			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_2);
+			sb.append(_FINDER_COLUMN_G_D_DESTINATIONURL_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3349,11 +3266,20 @@ public class RedirectEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_G_D_GROUPID_2 =
 		"redirectEntry.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_D_GROUPID_2_SQL =
+		"RedirectEntry.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_D_DESTINATIONURL_2 =
 		"redirectEntry.destinationURL = ?";
 
 	private static final String _FINDER_COLUMN_G_D_DESTINATIONURL_3 =
 		"(redirectEntry.destinationURL IS NULL OR redirectEntry.destinationURL = '')";
+
+	private static final String _FINDER_COLUMN_G_D_DESTINATIONURL_2_SQL =
+		"RedirectEntry.destinationURL = ?";
+
+	private static final String _FINDER_COLUMN_G_D_DESTINATIONURL_3_SQL =
+		"(RedirectEntry.destinationURL IS NULL OR RedirectEntry.destinationURL = '')";
 
 	private FinderPath _finderPathFetchByG_S;
 	private FinderPath _finderPathCountByG_S;
@@ -4384,10 +4310,10 @@ public class RedirectEntryPersistenceImpl
 		"SELECT COUNT(redirectEntry) FROM RedirectEntry redirectEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"redirectEntry.redirectEntryId";
+		"RedirectEntry.redirectEntryId";
 
 	private static final String _FILTER_SQL_SELECT_REDIRECTENTRY_WHERE =
-		"SELECT DISTINCT {redirectEntry.*} FROM RedirectEntry redirectEntry WHERE ";
+		"SELECT DISTINCT {RedirectEntry.*} FROM RedirectEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_REDIRECTENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4398,7 +4324,7 @@ public class RedirectEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN RedirectEntry ON TEMP_TABLE.redirectEntryId = RedirectEntry.redirectEntryId";
 
 	private static final String _FILTER_SQL_COUNT_REDIRECTENTRY_WHERE =
-		"SELECT COUNT(DISTINCT redirectEntry.redirectEntryId) AS COUNT_VALUE FROM RedirectEntry redirectEntry WHERE ";
+		"SELECT COUNT(DISTINCT RedirectEntry.redirectEntryId) AS COUNT_VALUE FROM RedirectEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "redirectEntry";
 

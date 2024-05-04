@@ -675,7 +675,7 @@ public class FilterFindEntryPersistenceImpl
 				_FILTER_SQL_SELECT_FILTERFINDENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_I_T_INTEGER_2_SQL);
 
@@ -696,22 +696,11 @@ public class FilterFindEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(FilterFindEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(FilterFindEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(FilterFindEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -725,14 +714,7 @@ public class FilterFindEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, FilterFindEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, FilterFindEntryImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, FilterFindEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -833,7 +815,7 @@ public class FilterFindEntryPersistenceImpl
 				_FILTER_SQL_SELECT_FILTERFINDENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_I_T_INTEGER_2_SQL);
 
@@ -862,18 +844,10 @@ public class FilterFindEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -898,16 +872,9 @@ public class FilterFindEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -928,12 +895,7 @@ public class FilterFindEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(FilterFindEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(FilterFindEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(FilterFindEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -945,12 +907,7 @@ public class FilterFindEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, FilterFindEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, FilterFindEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, FilterFindEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1065,7 +1022,7 @@ public class FilterFindEntryPersistenceImpl
 				_FILTER_SQL_SELECT_FILTERFINDENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_I_T_INTEGER_2_SQL);
 
@@ -1099,22 +1056,11 @@ public class FilterFindEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(FilterFindEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(FilterFindEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(FilterFindEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1128,14 +1074,7 @@ public class FilterFindEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, FilterFindEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, FilterFindEntryImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, FilterFindEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1593,7 +1532,7 @@ public class FilterFindEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_FILTERFINDENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_I_T_INTEGER_2_SQL);
 
@@ -1673,7 +1612,7 @@ public class FilterFindEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_FILTERFINDENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_I_T_GROUPID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_I_T_INTEGER_2_SQL);
 
@@ -1742,11 +1681,14 @@ public class FilterFindEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_G_I_T_GROUPID_2 =
 		"filterFindEntry.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_I_T_GROUPID_2_SQL =
+		"FilterFindEntry.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_I_T_INTEGER_2 =
 		"filterFindEntry.integer = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_I_T_INTEGER_2_SQL =
-		"filterFindEntry.integer_ = ? AND ";
+		"FilterFindEntry.integer_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_I_T_TYPE_2 =
 		"filterFindEntry.type = ?";
@@ -1755,10 +1697,10 @@ public class FilterFindEntryPersistenceImpl
 		"(filterFindEntry.type IS NULL OR filterFindEntry.type = '')";
 
 	private static final String _FINDER_COLUMN_G_I_T_TYPE_2_SQL =
-		"filterFindEntry.type_ = ?";
+		"FilterFindEntry.type_ = ?";
 
 	private static final String _FINDER_COLUMN_G_I_T_TYPE_3_SQL =
-		"(filterFindEntry.type_ IS NULL OR filterFindEntry.type_ = '')";
+		"(FilterFindEntry.type_ IS NULL OR FilterFindEntry.type_ = '')";
 
 	public FilterFindEntryPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -2352,10 +2294,10 @@ public class FilterFindEntryPersistenceImpl
 		"SELECT COUNT(filterFindEntry) FROM FilterFindEntry filterFindEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"filterFindEntry.filterFindEntryId";
+		"FilterFindEntry.filterFindEntryId";
 
 	private static final String _FILTER_SQL_SELECT_FILTERFINDENTRY_WHERE =
-		"SELECT DISTINCT {filterFindEntry.*} FROM FilterFindEntry filterFindEntry WHERE ";
+		"SELECT DISTINCT {FilterFindEntry.*} FROM FilterFindEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_FILTERFINDENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -2366,7 +2308,7 @@ public class FilterFindEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN FilterFindEntry ON TEMP_TABLE.filterFindEntryId = FilterFindEntry.filterFindEntryId";
 
 	private static final String _FILTER_SQL_COUNT_FILTERFINDENTRY_WHERE =
-		"SELECT COUNT(DISTINCT filterFindEntry.filterFindEntryId) AS COUNT_VALUE FROM FilterFindEntry filterFindEntry WHERE ";
+		"SELECT COUNT(DISTINCT FilterFindEntry.filterFindEntryId) AS COUNT_VALUE FROM FilterFindEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "filterFindEntry";
 

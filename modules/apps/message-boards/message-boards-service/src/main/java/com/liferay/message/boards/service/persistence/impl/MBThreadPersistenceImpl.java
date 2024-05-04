@@ -1992,29 +1992,18 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2028,12 +2017,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2119,7 +2103,7 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -2134,18 +2118,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2170,16 +2146,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2200,12 +2169,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2217,12 +2181,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2332,7 +2291,7 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -2366,6 +2325,9 @@ public class MBThreadPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"mbThread.groupId = ? AND mbThread.categoryId != -1";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND mbThread.categoryId != -1";
 
 	private FinderPath _finderPathFetchByRootMessageId;
 	private FinderPath _finderPathCountByRootMessageId;
@@ -3132,31 +3094,20 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3170,12 +3121,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3266,9 +3212,9 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -3283,18 +3229,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3319,16 +3257,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3349,12 +3280,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3366,12 +3292,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3470,12 +3391,12 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_GROUPID_2_SQL);
 
 		if (categoryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_C_CATEGORYID_7);
+			sb.append(_FINDER_COLUMN_G_C_CATEGORYID_7_SQL);
 
 			sb.append(StringUtil.merge(categoryIds));
 
@@ -3492,22 +3413,11 @@ public class MBThreadPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3521,12 +3431,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3918,9 +3823,9 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_CATEGORYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -3978,12 +3883,12 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_GROUPID_2_SQL);
 
 		if (categoryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_C_CATEGORYID_7);
+			sb.append(_FINDER_COLUMN_G_C_CATEGORYID_7_SQL);
 
 			sb.append(StringUtil.merge(categoryIds));
 
@@ -4028,11 +3933,20 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_CATEGORYID_2 =
 		"mbThread.categoryId = ?";
 
 	private static final String _FINDER_COLUMN_G_C_CATEGORYID_7 =
 		"mbThread.categoryId IN (";
+
+	private static final String _FINDER_COLUMN_G_C_CATEGORYID_2_SQL =
+		"MBThread.categoryId = ?";
+
+	private static final String _FINDER_COLUMN_G_C_CATEGORYID_7_SQL =
+		"MBThread.categoryId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotC;
 	private FinderPath _finderPathWithPaginationCountByG_NotC;
@@ -4562,31 +4476,20 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_CATEGORYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4600,12 +4503,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4696,9 +4594,9 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_CATEGORYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -4713,18 +4611,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4749,16 +4639,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4779,12 +4662,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4796,12 +4674,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4921,9 +4794,9 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_CATEGORYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -4960,8 +4833,14 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_NOTC_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_NOTC_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_NOTC_CATEGORYID_2 =
 		"mbThread.categoryId != ?";
+
+	private static final String _FINDER_COLUMN_G_NOTC_CATEGORYID_2_SQL =
+		"MBThread.categoryId != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
@@ -5497,31 +5376,20 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5535,12 +5403,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5629,9 +5492,9 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -5646,18 +5509,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5682,16 +5537,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5712,12 +5560,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5729,12 +5572,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5854,9 +5692,9 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -5893,8 +5731,14 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_S_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_S_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_S_STATUS_2 =
 		"mbThread.status = ? AND mbThread.categoryId != -1";
+
+	private static final String _FINDER_COLUMN_G_S_STATUS_2_SQL =
+		"MBThread.status = ? AND mbThread.categoryId != -1";
 
 	private FinderPath _finderPathWithPaginationFindByC_P;
 	private FinderPath _finderPathWithoutPaginationFindByC_P;
@@ -7637,19 +7481,19 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_L_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_CATEGORYID_2_SQL);
 
 		boolean bindLastPostDate = false;
 
 		if (lastPostDate == null) {
-			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_1);
+			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_1_SQL);
 		}
 		else {
 			bindLastPostDate = true;
 
-			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_2);
+			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -7657,22 +7501,11 @@ public class MBThreadPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7686,12 +7519,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7788,19 +7616,19 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_L_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_CATEGORYID_2_SQL);
 
 		boolean bindLastPostDate = false;
 
 		if (lastPostDate == null) {
-			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_1);
+			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_1_SQL);
 		}
 		else {
 			bindLastPostDate = true;
 
-			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_2);
+			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -7816,18 +7644,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -7852,16 +7672,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -7882,12 +7695,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7899,12 +7707,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -8052,19 +7855,19 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_L_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_CATEGORYID_2_SQL);
 
 		boolean bindLastPostDate = false;
 
 		if (lastPostDate == null) {
-			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_1);
+			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_1_SQL);
 		}
 		else {
 			bindLastPostDate = true;
 
-			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_2);
+			sb.append(_FINDER_COLUMN_G_C_L_LASTPOSTDATE_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -8106,14 +7909,26 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_L_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_L_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_L_CATEGORYID_2 =
 		"mbThread.categoryId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_C_L_CATEGORYID_2_SQL =
+		"MBThread.categoryId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_C_L_LASTPOSTDATE_1 =
 		"mbThread.lastPostDate IS NULL";
 
 	private static final String _FINDER_COLUMN_G_C_L_LASTPOSTDATE_2 =
 		"mbThread.lastPostDate = ?";
+
+	private static final String _FINDER_COLUMN_G_C_L_LASTPOSTDATE_1_SQL =
+		"MBThread.lastPostDate IS NULL";
+
+	private static final String _FINDER_COLUMN_G_C_L_LASTPOSTDATE_2_SQL =
+		"MBThread.lastPostDate = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_S;
 	private FinderPath _finderPathWithoutPaginationFindByG_C_S;
@@ -8689,33 +8504,22 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -8729,12 +8533,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -8829,11 +8628,11 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -8848,18 +8647,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -8884,16 +8675,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -8914,12 +8698,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -8931,12 +8710,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -9044,12 +8818,12 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2_SQL);
 
 		if (categoryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_7);
+			sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_7_SQL);
 
 			sb.append(StringUtil.merge(categoryIds));
 
@@ -9060,7 +8834,7 @@ public class MBThreadPersistenceImpl
 			sb.append(WHERE_AND);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2_SQL);
 
 		sb.setStringAt(
 			removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
@@ -9070,22 +8844,11 @@ public class MBThreadPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -9099,12 +8862,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -9527,11 +9285,11 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -9594,12 +9352,12 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_S_GROUPID_2_SQL);
 
 		if (categoryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_7);
+			sb.append(_FINDER_COLUMN_G_C_S_CATEGORYID_7_SQL);
 
 			sb.append(StringUtil.merge(categoryIds));
 
@@ -9610,7 +9368,7 @@ public class MBThreadPersistenceImpl
 			sb.append(WHERE_AND);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_S_STATUS_2_SQL);
 
 		sb.setStringAt(
 			removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
@@ -9650,14 +9408,26 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_S_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_S_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_S_CATEGORYID_2 =
 		"mbThread.categoryId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_C_S_CATEGORYID_7 =
 		"mbThread.categoryId IN (";
 
+	private static final String _FINDER_COLUMN_G_C_S_CATEGORYID_2_SQL =
+		"MBThread.categoryId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_C_S_CATEGORYID_7_SQL =
+		"MBThread.categoryId IN (";
+
 	private static final String _FINDER_COLUMN_G_C_S_STATUS_2 =
 		"mbThread.status = ?";
+
+	private static final String _FINDER_COLUMN_G_C_S_STATUS_2_SQL =
+		"MBThread.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_NotS;
 	private FinderPath _finderPathWithPaginationCountByG_C_NotS;
@@ -10222,33 +9992,22 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -10262,12 +10021,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10362,11 +10116,11 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -10381,18 +10135,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -10417,16 +10163,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -10447,12 +10186,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -10464,12 +10198,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10577,12 +10306,12 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2_SQL);
 
 		if (categoryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_7);
+			sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_7_SQL);
 
 			sb.append(StringUtil.merge(categoryIds));
 
@@ -10593,7 +10322,7 @@ public class MBThreadPersistenceImpl
 			sb.append(WHERE_AND);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2_SQL);
 
 		sb.setStringAt(
 			removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
@@ -10603,22 +10332,11 @@ public class MBThreadPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -10632,12 +10350,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -11062,11 +10775,11 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -11129,12 +10842,12 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_GROUPID_2_SQL);
 
 		if (categoryIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_7);
+			sb.append(_FINDER_COLUMN_G_C_NOTS_CATEGORYID_7_SQL);
 
 			sb.append(StringUtil.merge(categoryIds));
 
@@ -11145,7 +10858,7 @@ public class MBThreadPersistenceImpl
 			sb.append(WHERE_AND);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_C_NOTS_STATUS_2_SQL);
 
 		sb.setStringAt(
 			removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
@@ -11185,14 +10898,26 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_NOTS_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_NOTS_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_NOTS_CATEGORYID_2 =
 		"mbThread.categoryId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_C_NOTS_CATEGORYID_7 =
 		"mbThread.categoryId IN (";
 
+	private static final String _FINDER_COLUMN_G_C_NOTS_CATEGORYID_2_SQL =
+		"MBThread.categoryId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_C_NOTS_CATEGORYID_7_SQL =
+		"MBThread.categoryId IN (";
+
 	private static final String _FINDER_COLUMN_G_C_NOTS_STATUS_2 =
 		"mbThread.status != ?";
+
+	private static final String _FINDER_COLUMN_G_C_NOTS_STATUS_2_SQL =
+		"MBThread.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotC_S;
 	private FinderPath _finderPathWithPaginationCountByG_NotC_S;
@@ -11757,33 +11482,22 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11797,12 +11511,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -11897,11 +11606,11 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -11916,18 +11625,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -11952,16 +11653,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -11982,12 +11676,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11999,12 +11688,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -12135,11 +11819,11 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -12178,11 +11862,20 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_NOTC_S_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_NOTC_S_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_NOTC_S_CATEGORYID_2 =
 		"mbThread.categoryId != ? AND ";
 
+	private static final String _FINDER_COLUMN_G_NOTC_S_CATEGORYID_2_SQL =
+		"MBThread.categoryId != ? AND ";
+
 	private static final String _FINDER_COLUMN_G_NOTC_S_STATUS_2 =
 		"mbThread.status = ?";
+
+	private static final String _FINDER_COLUMN_G_NOTC_S_STATUS_2_SQL =
+		"MBThread.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotC_NotS;
 	private FinderPath _finderPathWithPaginationCountByG_NotC_NotS;
@@ -12747,33 +12440,22 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -12787,12 +12469,7 @@ public class MBThreadPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -12887,11 +12564,11 @@ public class MBThreadPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_2);
@@ -12906,18 +12583,10 @@ public class MBThreadPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -12942,16 +12611,9 @@ public class MBThreadPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -12972,12 +12634,7 @@ public class MBThreadPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(MBThreadModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(MBThreadModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(MBThreadModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -12989,12 +12646,7 @@ public class MBThreadPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, MBThreadImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, MBThreadImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -13125,11 +12777,11 @@ public class MBThreadPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_MBTHREAD_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_NOTC_NOTS_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), MBThread.class.getName(),
@@ -13168,11 +12820,20 @@ public class MBThreadPersistenceImpl
 	private static final String _FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2 =
 		"mbThread.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_NOTC_NOTS_GROUPID_2_SQL =
+		"MBThread.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2 =
 		"mbThread.categoryId != ? AND ";
 
+	private static final String _FINDER_COLUMN_G_NOTC_NOTS_CATEGORYID_2_SQL =
+		"MBThread.categoryId != ? AND ";
+
 	private static final String _FINDER_COLUMN_G_NOTC_NOTS_STATUS_2 =
 		"mbThread.status != ?";
+
+	private static final String _FINDER_COLUMN_G_NOTC_NOTS_STATUS_2_SQL =
+		"MBThread.status != ?";
 
 	public MBThreadPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -14394,10 +14055,10 @@ public class MBThreadPersistenceImpl
 		"SELECT COUNT(mbThread) FROM MBThread mbThread WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"mbThread.threadId";
+		"MBThread.threadId";
 
 	private static final String _FILTER_SQL_SELECT_MBTHREAD_WHERE =
-		"SELECT DISTINCT {mbThread.*} FROM MBThread mbThread WHERE ";
+		"SELECT DISTINCT {MBThread.*} FROM MBThread WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_MBTHREAD_NO_INLINE_DISTINCT_WHERE_1 =
@@ -14408,7 +14069,7 @@ public class MBThreadPersistenceImpl
 			") TEMP_TABLE INNER JOIN MBThread ON TEMP_TABLE.threadId = MBThread.threadId";
 
 	private static final String _FILTER_SQL_COUNT_MBTHREAD_WHERE =
-		"SELECT COUNT(DISTINCT mbThread.threadId) AS COUNT_VALUE FROM MBThread mbThread WHERE ";
+		"SELECT COUNT(DISTINCT MBThread.threadId) AS COUNT_VALUE FROM MBThread WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "mbThread";
 

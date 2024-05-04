@@ -3054,9 +3054,9 @@ public class DLFileShortcutPersistenceImpl
 				_FILTER_SQL_SELECT_DLFILESHORTCUT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3064,22 +3064,11 @@ public class DLFileShortcutPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3093,14 +3082,7 @@ public class DLFileShortcutPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DLFileShortcutImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3193,9 +3175,9 @@ public class DLFileShortcutPersistenceImpl
 				_FILTER_SQL_SELECT_DLFILESHORTCUT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3211,18 +3193,10 @@ public class DLFileShortcutPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3247,16 +3221,9 @@ public class DLFileShortcutPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3277,12 +3244,7 @@ public class DLFileShortcutPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3294,12 +3256,7 @@ public class DLFileShortcutPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DLFileShortcutImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3420,9 +3377,9 @@ public class DLFileShortcutPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DLFILESHORTCUT_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DLFileShortcut.class.getName(),
@@ -3459,8 +3416,14 @@ public class DLFileShortcutPersistenceImpl
 	private static final String _FINDER_COLUMN_G_F_GROUPID_2 =
 		"dlFileShortcut.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_F_GROUPID_2_SQL =
+		"DLFileShortcut.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_F_FOLDERID_2 =
 		"dlFileShortcut.folderId = ?";
+
+	private static final String _FINDER_COLUMN_G_F_FOLDERID_2_SQL =
+		"DLFileShortcut.folderId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_NotS;
 	private FinderPath _finderPathWithPaginationCountByC_NotS;
@@ -4578,9 +4541,9 @@ public class DLFileShortcutPersistenceImpl
 				_FILTER_SQL_SELECT_DLFILESHORTCUT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_FOLDERID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_F_A_ACTIVE_2_SQL);
 
@@ -4590,22 +4553,11 @@ public class DLFileShortcutPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4619,14 +4571,7 @@ public class DLFileShortcutPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DLFileShortcutImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4722,9 +4667,9 @@ public class DLFileShortcutPersistenceImpl
 				_FILTER_SQL_SELECT_DLFILESHORTCUT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_FOLDERID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_F_A_ACTIVE_2_SQL);
 
@@ -4742,18 +4687,10 @@ public class DLFileShortcutPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4778,16 +4715,9 @@ public class DLFileShortcutPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4808,12 +4738,7 @@ public class DLFileShortcutPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4825,12 +4750,7 @@ public class DLFileShortcutPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DLFileShortcutImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4960,9 +4880,9 @@ public class DLFileShortcutPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DLFILESHORTCUT_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_FOLDERID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_F_A_ACTIVE_2_SQL);
 
@@ -5003,14 +4923,20 @@ public class DLFileShortcutPersistenceImpl
 	private static final String _FINDER_COLUMN_G_F_A_GROUPID_2 =
 		"dlFileShortcut.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_F_A_GROUPID_2_SQL =
+		"DLFileShortcut.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_F_A_FOLDERID_2 =
 		"dlFileShortcut.folderId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_F_A_FOLDERID_2_SQL =
+		"DLFileShortcut.folderId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_F_A_ACTIVE_2 =
 		"dlFileShortcut.active = ?";
 
 	private static final String _FINDER_COLUMN_G_F_A_ACTIVE_2_SQL =
-		"dlFileShortcut.active_ = ?";
+		"DLFileShortcut.active_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_F_A_S;
 	private FinderPath _finderPathWithoutPaginationFindByG_F_A_S;
@@ -5625,13 +5551,13 @@ public class DLFileShortcutPersistenceImpl
 				_FILTER_SQL_SELECT_DLFILESHORTCUT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_FOLDERID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_F_A_S_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5639,22 +5565,11 @@ public class DLFileShortcutPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5668,14 +5583,7 @@ public class DLFileShortcutPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DLFileShortcutImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5775,13 +5683,13 @@ public class DLFileShortcutPersistenceImpl
 				_FILTER_SQL_SELECT_DLFILESHORTCUT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_FOLDERID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_F_A_S_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5797,18 +5705,10 @@ public class DLFileShortcutPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5833,16 +5733,9 @@ public class DLFileShortcutPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5863,12 +5756,7 @@ public class DLFileShortcutPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileShortcutModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5880,12 +5768,7 @@ public class DLFileShortcutPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DLFileShortcutImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileShortcutImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6032,13 +5915,13 @@ public class DLFileShortcutPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DLFILESHORTCUT_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_FOLDERID_2_SQL);
 
 		sb.append(_FINDER_COLUMN_G_F_A_S_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_A_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_A_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DLFileShortcut.class.getName(),
@@ -6079,17 +5962,26 @@ public class DLFileShortcutPersistenceImpl
 	private static final String _FINDER_COLUMN_G_F_A_S_GROUPID_2 =
 		"dlFileShortcut.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_F_A_S_GROUPID_2_SQL =
+		"DLFileShortcut.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_F_A_S_FOLDERID_2 =
 		"dlFileShortcut.folderId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_F_A_S_FOLDERID_2_SQL =
+		"DLFileShortcut.folderId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_F_A_S_ACTIVE_2 =
 		"dlFileShortcut.active = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_F_A_S_ACTIVE_2_SQL =
-		"dlFileShortcut.active_ = ? AND ";
+		"DLFileShortcut.active_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_F_A_S_STATUS_2 =
 		"dlFileShortcut.status = ?";
+
+	private static final String _FINDER_COLUMN_G_F_A_S_STATUS_2_SQL =
+		"DLFileShortcut.status = ?";
 
 	public DLFileShortcutPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -7145,10 +7037,10 @@ public class DLFileShortcutPersistenceImpl
 		"SELECT COUNT(dlFileShortcut) FROM DLFileShortcut dlFileShortcut WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"dlFileShortcut.fileShortcutId";
+		"DLFileShortcut.fileShortcutId";
 
 	private static final String _FILTER_SQL_SELECT_DLFILESHORTCUT_WHERE =
-		"SELECT DISTINCT {dlFileShortcut.*} FROM DLFileShortcut dlFileShortcut WHERE ";
+		"SELECT DISTINCT {DLFileShortcut.*} FROM DLFileShortcut WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DLFILESHORTCUT_NO_INLINE_DISTINCT_WHERE_1 =
@@ -7159,7 +7051,7 @@ public class DLFileShortcutPersistenceImpl
 			") TEMP_TABLE INNER JOIN DLFileShortcut ON TEMP_TABLE.fileShortcutId = DLFileShortcut.fileShortcutId";
 
 	private static final String _FILTER_SQL_COUNT_DLFILESHORTCUT_WHERE =
-		"SELECT COUNT(DISTINCT dlFileShortcut.fileShortcutId) AS COUNT_VALUE FROM DLFileShortcut dlFileShortcut WHERE ";
+		"SELECT COUNT(DISTINCT DLFileShortcut.fileShortcutId) AS COUNT_VALUE FROM DLFileShortcut WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "dlFileShortcut";
 

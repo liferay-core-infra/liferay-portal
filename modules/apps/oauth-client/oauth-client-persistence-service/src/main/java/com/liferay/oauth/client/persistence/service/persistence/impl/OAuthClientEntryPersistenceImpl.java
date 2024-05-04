@@ -591,7 +591,7 @@ public class OAuthClientEntryPersistenceImpl
 				_FILTER_SQL_SELECT_OAUTHCLIENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -599,22 +599,11 @@ public class OAuthClientEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -628,14 +617,8 @@ public class OAuthClientEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, OAuthClientEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -724,7 +707,7 @@ public class OAuthClientEntryPersistenceImpl
 				_FILTER_SQL_SELECT_OAUTHCLIENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -740,18 +723,10 @@ public class OAuthClientEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -776,16 +751,9 @@ public class OAuthClientEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -806,12 +774,7 @@ public class OAuthClientEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -823,14 +786,7 @@ public class OAuthClientEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, OAuthClientEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -935,7 +891,7 @@ public class OAuthClientEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_OAUTHCLIENTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), OAuthClientEntry.class.getName(),
@@ -969,6 +925,9 @@ public class OAuthClientEntryPersistenceImpl
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"oAuthClientEntry.companyId = ?";
+
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL =
+		"OAuthClientEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
@@ -1470,7 +1429,7 @@ public class OAuthClientEntryPersistenceImpl
 				_FILTER_SQL_SELECT_OAUTHCLIENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_USERID_USERID_2);
+		sb.append(_FINDER_COLUMN_USERID_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1478,22 +1437,11 @@ public class OAuthClientEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1507,14 +1455,8 @@ public class OAuthClientEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, OAuthClientEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1603,7 +1545,7 @@ public class OAuthClientEntryPersistenceImpl
 				_FILTER_SQL_SELECT_OAUTHCLIENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_USERID_USERID_2);
+		sb.append(_FINDER_COLUMN_USERID_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1619,18 +1561,10 @@ public class OAuthClientEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1655,16 +1589,9 @@ public class OAuthClientEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1685,12 +1612,7 @@ public class OAuthClientEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1702,14 +1624,7 @@ public class OAuthClientEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, OAuthClientEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1814,7 +1729,7 @@ public class OAuthClientEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_OAUTHCLIENTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_USERID_USERID_2);
+		sb.append(_FINDER_COLUMN_USERID_USERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), OAuthClientEntry.class.getName(),
@@ -1848,6 +1763,9 @@ public class OAuthClientEntryPersistenceImpl
 
 	private static final String _FINDER_COLUMN_USERID_USERID_2 =
 		"oAuthClientEntry.userId = ?";
+
+	private static final String _FINDER_COLUMN_USERID_USERID_2_SQL =
+		"OAuthClientEntry.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A;
 	private FinderPath _finderPathWithoutPaginationFindByC_A;
@@ -2429,17 +2347,17 @@ public class OAuthClientEntryPersistenceImpl
 				_FILTER_SQL_SELECT_OAUTHCLIENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
 		boolean bindAuthServerWellKnownURI = false;
 
 		if (authServerWellKnownURI.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3);
+			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3_SQL);
 		}
 		else {
 			bindAuthServerWellKnownURI = true;
 
-			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2);
+			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -2448,22 +2366,11 @@ public class OAuthClientEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2477,14 +2384,8 @@ public class OAuthClientEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, OAuthClientEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2585,17 +2486,17 @@ public class OAuthClientEntryPersistenceImpl
 				_FILTER_SQL_SELECT_OAUTHCLIENTENTRY_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
 		boolean bindAuthServerWellKnownURI = false;
 
 		if (authServerWellKnownURI.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3);
+			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3_SQL);
 		}
 		else {
 			bindAuthServerWellKnownURI = true;
 
-			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2);
+			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -2612,18 +2513,10 @@ public class OAuthClientEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2648,16 +2541,9 @@ public class OAuthClientEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2678,12 +2564,7 @@ public class OAuthClientEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(OAuthClientEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2695,14 +2576,7 @@ public class OAuthClientEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, OAuthClientEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, OAuthClientEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2834,17 +2708,17 @@ public class OAuthClientEntryPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_OAUTHCLIENTENTRY_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_A_COMPANYID_2_SQL);
 
 		boolean bindAuthServerWellKnownURI = false;
 
 		if (authServerWellKnownURI.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3);
+			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3_SQL);
 		}
 		else {
 			bindAuthServerWellKnownURI = true;
 
-			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2);
+			sb.append(_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2884,11 +2758,22 @@ public class OAuthClientEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_C_A_COMPANYID_2 =
 		"oAuthClientEntry.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_A_COMPANYID_2_SQL =
+		"OAuthClientEntry.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2 =
 		"oAuthClientEntry.authServerWellKnownURI = ?";
 
 	private static final String _FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3 =
 		"(oAuthClientEntry.authServerWellKnownURI IS NULL OR oAuthClientEntry.authServerWellKnownURI = '')";
+
+	private static final String
+		_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_2_SQL =
+			"OAuthClientEntry.authServerWellKnownURI = ?";
+
+	private static final String
+		_FINDER_COLUMN_C_A_AUTHSERVERWELLKNOWNURI_3_SQL =
+			"(OAuthClientEntry.authServerWellKnownURI IS NULL OR OAuthClientEntry.authServerWellKnownURI = '')";
 
 	private FinderPath _finderPathFetchByC_A_C;
 	private FinderPath _finderPathCountByC_A_C;
@@ -3899,10 +3784,10 @@ public class OAuthClientEntryPersistenceImpl
 		"SELECT COUNT(oAuthClientEntry) FROM OAuthClientEntry oAuthClientEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"oAuthClientEntry.oAuthClientEntryId";
+		"OAuthClientEntry.oAuthClientEntryId";
 
 	private static final String _FILTER_SQL_SELECT_OAUTHCLIENTENTRY_WHERE =
-		"SELECT DISTINCT {oAuthClientEntry.*} FROM OAuthClientEntry oAuthClientEntry WHERE ";
+		"SELECT DISTINCT {OAuthClientEntry.*} FROM OAuthClientEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_OAUTHCLIENTENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3913,7 +3798,7 @@ public class OAuthClientEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN OAuthClientEntry ON TEMP_TABLE.oAuthClientEntryId = OAuthClientEntry.oAuthClientEntryId";
 
 	private static final String _FILTER_SQL_COUNT_OAUTHCLIENTENTRY_WHERE =
-		"SELECT COUNT(DISTINCT oAuthClientEntry.oAuthClientEntryId) AS COUNT_VALUE FROM OAuthClientEntry oAuthClientEntry WHERE ";
+		"SELECT COUNT(DISTINCT OAuthClientEntry.oAuthClientEntryId) AS COUNT_VALUE FROM OAuthClientEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "oAuthClientEntry";
 

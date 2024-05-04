@@ -2530,7 +2530,7 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2538,22 +2538,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2567,14 +2556,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2660,7 +2642,7 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2676,18 +2658,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2712,16 +2686,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2742,12 +2709,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2759,12 +2721,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2875,7 +2832,7 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -2909,6 +2866,9 @@ public class JournalArticlePersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"journalArticle.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"JournalArticle.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
@@ -7509,9 +7469,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -7519,22 +7479,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7548,14 +7497,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7648,9 +7590,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_USERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -7666,18 +7608,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -7702,16 +7636,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -7732,12 +7659,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7749,12 +7671,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7875,9 +7792,9 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_U_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_USERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -7914,8 +7831,14 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_U_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_U_USERID_2 =
 		"journalArticle.userId = ?";
+
+	private static final String _FINDER_COLUMN_G_U_USERID_2_SQL =
+		"JournalArticle.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_ERC;
 	private FinderPath _finderPathWithoutPaginationFindByG_ERC;
@@ -8499,17 +8422,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2_SQL);
 
 		boolean bindExternalReferenceCode = false;
 
 		if (externalReferenceCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL);
 		}
 		else {
 			bindExternalReferenceCode = true;
 
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -8518,22 +8441,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -8547,14 +8459,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -8651,17 +8556,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2_SQL);
 
 		boolean bindExternalReferenceCode = false;
 
 		if (externalReferenceCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL);
 		}
 		else {
 			bindExternalReferenceCode = true;
 
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -8678,18 +8583,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -8714,16 +8611,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -8744,12 +8634,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -8761,12 +8646,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -8904,17 +8784,17 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2_SQL);
 
 		boolean bindExternalReferenceCode = false;
 
 		if (externalReferenceCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL);
 		}
 		else {
 			bindExternalReferenceCode = true;
 
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -8954,11 +8834,22 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_ERC_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_ERC_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2 =
 		"journalArticle.externalReferenceCode = ?";
 
 	private static final String _FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3 =
 		"(journalArticle.externalReferenceCode IS NULL OR journalArticle.externalReferenceCode = '')";
+
+	private static final String
+		_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL =
+			"JournalArticle.externalReferenceCode = ?";
+
+	private static final String
+		_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL =
+			"(JournalArticle.externalReferenceCode IS NULL OR JournalArticle.externalReferenceCode = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_F;
 	private FinderPath _finderPathWithoutPaginationFindByG_F;
@@ -9503,9 +9394,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -9513,22 +9404,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -9542,14 +9422,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -9642,9 +9515,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -9660,18 +9533,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -9696,16 +9561,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -9726,12 +9584,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -9743,12 +9596,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -9850,12 +9698,12 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
 		if (folderIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_F_FOLDERID_7);
+			sb.append(_FINDER_COLUMN_G_F_FOLDERID_7_SQL);
 
 			sb.append(StringUtil.merge(folderIds));
 
@@ -9873,22 +9721,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -9902,14 +9739,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10302,9 +10132,9 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_FOLDERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -10362,12 +10192,12 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_GROUPID_2_SQL);
 
 		if (folderIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_F_FOLDERID_7);
+			sb.append(_FINDER_COLUMN_G_F_FOLDERID_7_SQL);
 
 			sb.append(StringUtil.merge(folderIds));
 
@@ -10412,11 +10242,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_F_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_F_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_F_FOLDERID_2 =
 		"journalArticle.folderId = ?";
 
 	private static final String _FINDER_COLUMN_G_F_FOLDERID_7 =
 		"journalArticle.folderId IN (";
+
+	private static final String _FINDER_COLUMN_G_F_FOLDERID_2_SQL =
+		"JournalArticle.folderId = ?";
+
+	private static final String _FINDER_COLUMN_G_F_FOLDERID_7_SQL =
+		"JournalArticle.folderId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_A;
 	private FinderPath _finderPathWithoutPaginationFindByG_A;
@@ -10990,17 +10829,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -11009,22 +10848,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11038,14 +10866,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -11142,17 +10963,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -11169,18 +10990,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -11205,16 +11018,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -11235,12 +11041,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11252,12 +11053,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -11395,17 +11191,17 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_A_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ARTICLEID_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11445,11 +11241,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_A_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_A_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_A_ARTICLEID_2 =
 		"journalArticle.articleId = ?";
 
 	private static final String _FINDER_COLUMN_G_A_ARTICLEID_3 =
 		"(journalArticle.articleId IS NULL OR journalArticle.articleId = '')";
+
+	private static final String _FINDER_COLUMN_G_A_ARTICLEID_2_SQL =
+		"JournalArticle.articleId = ?";
+
+	private static final String _FINDER_COLUMN_G_A_ARTICLEID_3_SQL =
+		"(JournalArticle.articleId IS NULL OR JournalArticle.articleId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_UT;
 	private FinderPath _finderPathWithoutPaginationFindByG_UT;
@@ -12023,17 +11828,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_UT_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_UT_GROUPID_2_SQL);
 
 		boolean bindUrlTitle = false;
 
 		if (urlTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_3);
+			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_3_SQL);
 		}
 		else {
 			bindUrlTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_2);
+			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -12042,22 +11847,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -12071,14 +11865,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -12175,17 +11962,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_UT_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_UT_GROUPID_2_SQL);
 
 		boolean bindUrlTitle = false;
 
 		if (urlTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_3);
+			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_3_SQL);
 		}
 		else {
 			bindUrlTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_2);
+			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -12202,18 +11989,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -12238,16 +12017,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -12268,12 +12040,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -12285,12 +12052,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -12428,17 +12190,17 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_UT_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_UT_GROUPID_2_SQL);
 
 		boolean bindUrlTitle = false;
 
 		if (urlTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_3);
+			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_3_SQL);
 		}
 		else {
 			bindUrlTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_2);
+			sb.append(_FINDER_COLUMN_G_UT_URLTITLE_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -12478,11 +12240,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_UT_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_UT_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_UT_URLTITLE_2 =
 		"journalArticle.urlTitle = ?";
 
 	private static final String _FINDER_COLUMN_G_UT_URLTITLE_3 =
 		"(journalArticle.urlTitle IS NULL OR journalArticle.urlTitle = '')";
+
+	private static final String _FINDER_COLUMN_G_UT_URLTITLE_2_SQL =
+		"JournalArticle.urlTitle = ?";
+
+	private static final String _FINDER_COLUMN_G_UT_URLTITLE_3_SQL =
+		"(JournalArticle.urlTitle IS NULL OR JournalArticle.urlTitle = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_DDMSI;
 	private FinderPath _finderPathWithoutPaginationFindByG_DDMSI;
@@ -13034,9 +12805,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_DDMSI_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_DDMSI_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2);
+		sb.append(_FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -13044,22 +12815,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -13073,14 +12833,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -13173,9 +12926,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_DDMSI_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_DDMSI_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2);
+		sb.append(_FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -13191,18 +12944,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -13227,16 +12972,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -13257,12 +12995,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -13274,12 +13007,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -13400,9 +13128,9 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_DDMSI_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_DDMSI_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2);
+		sb.append(_FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -13439,8 +13167,14 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_DDMSI_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_DDMSI_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2 =
 		"journalArticle.DDMStructureId = ?";
+
+	private static final String _FINDER_COLUMN_G_DDMSI_DDMSTRUCTUREID_2_SQL =
+		"JournalArticle.DDMStructureId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_DDMTK;
 	private FinderPath _finderPathWithoutPaginationFindByG_DDMTK;
@@ -14020,17 +13754,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2_SQL);
 
 		boolean bindDDMTemplateKey = false;
 
 		if (DDMTemplateKey.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
+			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3_SQL);
 		}
 		else {
 			bindDDMTemplateKey = true;
 
-			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
+			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -14039,22 +13773,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -14068,14 +13791,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -14172,17 +13888,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2_SQL);
 
 		boolean bindDDMTemplateKey = false;
 
 		if (DDMTemplateKey.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
+			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3_SQL);
 		}
 		else {
 			bindDDMTemplateKey = true;
 
-			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
+			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -14199,18 +13915,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -14235,16 +13943,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -14265,12 +13966,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -14282,12 +13978,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -14425,17 +14116,17 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_DDMTK_GROUPID_2_SQL);
 
 		boolean bindDDMTemplateKey = false;
 
 		if (DDMTemplateKey.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3);
+			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3_SQL);
 		}
 		else {
 			bindDDMTemplateKey = true;
 
-			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2);
+			sb.append(_FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -14475,11 +14166,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_DDMTK_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_DDMTK_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2 =
 		"journalArticle.DDMTemplateKey = ?";
 
 	private static final String _FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3 =
 		"(journalArticle.DDMTemplateKey IS NULL OR journalArticle.DDMTemplateKey = '')";
+
+	private static final String _FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_2_SQL =
+		"JournalArticle.DDMTemplateKey = ?";
+
+	private static final String _FINDER_COLUMN_G_DDMTK_DDMTEMPLATEKEY_3_SQL =
+		"(JournalArticle.DDMTemplateKey IS NULL OR JournalArticle.DDMTemplateKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_L;
 	private FinderPath _finderPathWithoutPaginationFindByG_L;
@@ -15055,17 +14755,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_L_GROUPID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -15074,22 +14774,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -15103,14 +14792,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -15207,17 +14889,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_L_GROUPID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -15234,18 +14916,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -15270,16 +14944,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -15300,12 +14967,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -15317,12 +14979,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -15460,17 +15117,17 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_L_GROUPID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_L_LAYOUTUUID_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -15510,11 +15167,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_L_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_L_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_L_LAYOUTUUID_2 =
 		"journalArticle.layoutUuid = ?";
 
 	private static final String _FINDER_COLUMN_G_L_LAYOUTUUID_3 =
 		"(journalArticle.layoutUuid IS NULL OR journalArticle.layoutUuid = '')";
+
+	private static final String _FINDER_COLUMN_G_L_LAYOUTUUID_2_SQL =
+		"JournalArticle.layoutUuid = ?";
+
+	private static final String _FINDER_COLUMN_G_L_LAYOUTUUID_3_SQL =
+		"(JournalArticle.layoutUuid IS NULL OR JournalArticle.layoutUuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotL;
 	private FinderPath _finderPathWithPaginationCountByG_NotL;
@@ -16078,17 +15744,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -16097,22 +15763,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -16126,14 +15781,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -16230,17 +15878,17 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -16257,18 +15905,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -16293,16 +15933,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -16323,12 +15956,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -16340,12 +15968,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -16454,7 +16077,7 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2_SQL);
 
 		if (layoutUuids.length > 0) {
 			sb.append("(");
@@ -16463,10 +16086,10 @@ public class JournalArticlePersistenceImpl
 				String layoutUuid = layoutUuids[i];
 
 				if (layoutUuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3);
+					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3_SQL);
 				}
 				else {
-					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2);
+					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2_SQL);
 				}
 
 				if ((i + 1) < layoutUuids.length) {
@@ -16486,22 +16109,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -16515,14 +16127,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -16977,17 +16582,17 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -17052,7 +16657,7 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_NOTL_GROUPID_2_SQL);
 
 		if (layoutUuids.length > 0) {
 			sb.append("(");
@@ -17061,10 +16666,10 @@ public class JournalArticlePersistenceImpl
 				String layoutUuid = layoutUuids[i];
 
 				if (layoutUuid.isEmpty()) {
-					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3);
+					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_3_SQL);
 				}
 				else {
-					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2);
+					sb.append(_FINDER_COLUMN_G_NOTL_LAYOUTUUID_2_SQL);
 				}
 
 				if ((i + 1) < layoutUuids.length) {
@@ -17117,11 +16722,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_NOTL_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_NOTL_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_NOTL_LAYOUTUUID_2 =
 		"journalArticle.layoutUuid != ?";
 
 	private static final String _FINDER_COLUMN_G_NOTL_LAYOUTUUID_3 =
 		"(journalArticle.layoutUuid IS NULL OR journalArticle.layoutUuid != '')";
+
+	private static final String _FINDER_COLUMN_G_NOTL_LAYOUTUUID_2_SQL =
+		"JournalArticle.layoutUuid != ?";
+
+	private static final String _FINDER_COLUMN_G_NOTL_LAYOUTUUID_3_SQL =
+		"(JournalArticle.layoutUuid IS NULL OR JournalArticle.layoutUuid != '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_ST;
 	private FinderPath _finderPathWithoutPaginationFindByG_ST;
@@ -17664,9 +17278,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -17674,22 +17288,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -17703,14 +17306,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -17803,9 +17399,9 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -17821,18 +17417,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -17857,16 +17445,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -17887,12 +17468,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -17904,12 +17480,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -18030,9 +17601,9 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_ST_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -18069,8 +17640,14 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_ST_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_ST_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_ST_STATUS_2 =
 		"journalArticle.status = ?";
+
+	private static final String _FINDER_COLUMN_G_ST_STATUS_2_SQL =
+		"JournalArticle.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_V;
 	private FinderPath _finderPathWithoutPaginationFindByC_V;
@@ -21781,11 +21358,11 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_C_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_USERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_CLASSNAMEID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -21793,22 +21370,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -21822,14 +21388,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -21925,11 +21484,11 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_C_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_USERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_CLASSNAMEID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -21945,18 +21504,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -21981,16 +21532,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -22011,12 +21555,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -22028,12 +21567,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -22163,11 +21697,11 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_U_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_C_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_USERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_U_C_CLASSNAMEID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -22206,11 +21740,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_C_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_U_C_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_U_C_USERID_2 =
 		"journalArticle.userId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_U_C_USERID_2_SQL =
+		"JournalArticle.userId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_U_C_CLASSNAMEID_2 =
 		"journalArticle.classNameId = ?";
+
+	private static final String _FINDER_COLUMN_G_U_C_CLASSNAMEID_2_SQL =
+		"JournalArticle.classNameId = ?";
 
 	private FinderPath _finderPathFetchByG_ERC_V;
 	private FinderPath _finderPathCountByG_ERC_V;
@@ -23083,11 +22626,11 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -23095,22 +22638,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -23124,14 +22656,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -23227,11 +22752,11 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -23247,18 +22772,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -23283,16 +22800,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -23313,12 +22823,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -23330,12 +22835,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -23445,14 +22945,14 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2_SQL);
 
 		if (statuses.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_F_ST_STATUS_7);
+			sb.append(_FINDER_COLUMN_G_F_ST_STATUS_7_SQL);
 
 			sb.append(StringUtil.merge(statuses));
 
@@ -23470,22 +22970,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -23499,14 +22988,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -23926,11 +23408,11 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -23993,14 +23475,14 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_ST_FOLDERID_2_SQL);
 
 		if (statuses.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_F_ST_STATUS_7);
+			sb.append(_FINDER_COLUMN_G_F_ST_STATUS_7_SQL);
 
 			sb.append(StringUtil.merge(statuses));
 
@@ -24047,14 +23529,26 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_F_ST_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_F_ST_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_F_ST_FOLDERID_2 =
 		"journalArticle.folderId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_F_ST_FOLDERID_2_SQL =
+		"JournalArticle.folderId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_F_ST_STATUS_2 =
 		"journalArticle.status = ?";
 
 	private static final String _FINDER_COLUMN_G_F_ST_STATUS_7 =
 		"journalArticle.status IN (";
+
+	private static final String _FINDER_COLUMN_G_F_ST_STATUS_2_SQL =
+		"JournalArticle.status = ?";
+
+	private static final String _FINDER_COLUMN_G_F_ST_STATUS_7_SQL =
+		"JournalArticle.status IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C;
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C;
@@ -24633,11 +24127,11 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -24645,22 +24139,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -24674,14 +24157,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -24777,11 +24253,11 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -24797,18 +24273,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -24833,16 +24301,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -24863,12 +24324,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -24880,12 +24336,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -25017,11 +24468,11 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_G_C_C_CLASSPK_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -25060,11 +24511,20 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_C_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_C_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_C_CLASSNAMEID_2 =
 		"journalArticle.classNameId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_C_CLASSNAMEID_2_SQL =
+		"JournalArticle.classNameId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_C_CLASSPK_2 =
 		"journalArticle.classPK = ?";
+
+	private static final String _FINDER_COLUMN_G_C_C_CLASSPK_2_SQL =
+		"JournalArticle.classPK = ?";
 
 	private FinderPath _finderPathFetchByG_C_DDMSI;
 	private FinderPath _finderPathCountByG_C_DDMSI;
@@ -25961,19 +25421,19 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2_SQL);
 
 		boolean bindDDMTemplateKey = false;
 
 		if (DDMTemplateKey.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
+			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3_SQL);
 		}
 		else {
 			bindDDMTemplateKey = true;
 
-			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
+			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -25982,22 +25442,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -26011,14 +25460,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -26118,19 +25560,19 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2_SQL);
 
 		boolean bindDDMTemplateKey = false;
 
 		if (DDMTemplateKey.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
+			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3_SQL);
 		}
 		else {
 			bindDDMTemplateKey = true;
 
-			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
+			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -26147,18 +25589,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -26183,16 +25617,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -26213,12 +25640,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -26230,12 +25652,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -26390,19 +25807,19 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_DDMTK_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2_SQL);
 
 		boolean bindDDMTemplateKey = false;
 
 		if (DDMTemplateKey.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3);
+			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3_SQL);
 		}
 		else {
 			bindDDMTemplateKey = true;
 
-			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2);
+			sb.append(_FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -26444,14 +25861,26 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_DDMTK_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_DDMTK_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2 =
 		"journalArticle.classNameId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_C_DDMTK_CLASSNAMEID_2_SQL =
+		"JournalArticle.classNameId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2 =
 		"journalArticle.DDMTemplateKey = ?";
 
 	private static final String _FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3 =
 		"(journalArticle.DDMTemplateKey IS NULL OR journalArticle.DDMTemplateKey = '')";
+
+	private static final String _FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_2_SQL =
+		"JournalArticle.DDMTemplateKey = ?";
+
+	private static final String _FINDER_COLUMN_G_C_DDMTK_DDMTEMPLATEKEY_3_SQL =
+		"(JournalArticle.DDMTemplateKey IS NULL OR JournalArticle.DDMTemplateKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_L;
 	private FinderPath _finderPathWithoutPaginationFindByG_C_L;
@@ -27065,19 +26494,19 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_L_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_CLASSNAMEID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -27086,22 +26515,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -27115,14 +26533,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -27222,19 +26633,19 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_L_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_CLASSNAMEID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -27251,18 +26662,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -27287,16 +26690,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -27317,12 +26713,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -27334,12 +26725,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -27492,19 +26878,19 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_C_L_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_C_L_CLASSNAMEID_2_SQL);
 
 		boolean bindLayoutUuid = false;
 
 		if (layoutUuid.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_3);
+			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_3_SQL);
 		}
 		else {
 			bindLayoutUuid = true;
 
-			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_2);
+			sb.append(_FINDER_COLUMN_G_C_L_LAYOUTUUID_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -27546,14 +26932,26 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_L_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_C_L_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_C_L_CLASSNAMEID_2 =
 		"journalArticle.classNameId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_C_L_CLASSNAMEID_2_SQL =
+		"JournalArticle.classNameId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_C_L_LAYOUTUUID_2 =
 		"journalArticle.layoutUuid = ?";
 
 	private static final String _FINDER_COLUMN_G_C_L_LAYOUTUUID_3 =
 		"(journalArticle.layoutUuid IS NULL OR journalArticle.layoutUuid = '')";
+
+	private static final String _FINDER_COLUMN_G_C_L_LAYOUTUUID_2_SQL =
+		"JournalArticle.layoutUuid = ?";
+
+	private static final String _FINDER_COLUMN_G_C_L_LAYOUTUUID_3_SQL =
+		"(JournalArticle.layoutUuid IS NULL OR JournalArticle.layoutUuid = '')";
 
 	private FinderPath _finderPathFetchByG_A_V;
 	private FinderPath _finderPathCountByG_A_V;
@@ -28446,20 +27844,20 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -28467,22 +27865,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -28496,14 +27883,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -28603,20 +27983,20 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -28632,18 +28012,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -28668,16 +28040,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -28698,12 +28063,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -28715,12 +28075,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -28834,23 +28189,23 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2_SQL);
 		}
 
 		if (statuses.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_A_ST_STATUS_7);
+			sb.append(_FINDER_COLUMN_G_A_ST_STATUS_7_SQL);
 
 			sb.append(StringUtil.merge(statuses));
 
@@ -28868,22 +28223,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -28897,14 +28241,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -29367,20 +28704,20 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -29447,23 +28784,23 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_ST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_ST_ARTICLEID_2_SQL);
 		}
 
 		if (statuses.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_G_A_ST_STATUS_7);
+			sb.append(_FINDER_COLUMN_G_A_ST_STATUS_7_SQL);
 
 			sb.append(StringUtil.merge(statuses));
 
@@ -29512,17 +28849,32 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_A_ST_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_A_ST_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_A_ST_ARTICLEID_2 =
 		"journalArticle.articleId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_A_ST_ARTICLEID_3 =
 		"(journalArticle.articleId IS NULL OR journalArticle.articleId = '') AND ";
 
+	private static final String _FINDER_COLUMN_G_A_ST_ARTICLEID_2_SQL =
+		"JournalArticle.articleId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_A_ST_ARTICLEID_3_SQL =
+		"(JournalArticle.articleId IS NULL OR JournalArticle.articleId = '') AND ";
+
 	private static final String _FINDER_COLUMN_G_A_ST_STATUS_2 =
 		"journalArticle.status = ?";
 
 	private static final String _FINDER_COLUMN_G_A_ST_STATUS_7 =
 		"journalArticle.status IN (";
+
+	private static final String _FINDER_COLUMN_G_A_ST_STATUS_2_SQL =
+		"JournalArticle.status = ?";
+
+	private static final String _FINDER_COLUMN_G_A_ST_STATUS_7_SQL =
+		"JournalArticle.status IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_A_NotST;
 	private FinderPath _finderPathWithPaginationCountByG_A_NotST;
@@ -30118,20 +29470,20 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_NOTST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_NOTST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_NOTST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_A_NOTST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -30139,22 +29491,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -30168,14 +29509,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -30275,20 +29609,20 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_NOTST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_NOTST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_NOTST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_A_NOTST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -30304,18 +29638,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -30340,16 +29666,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -30370,12 +29689,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -30387,12 +29701,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -30541,20 +29850,20 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_A_NOTST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_A_NOTST_GROUPID_2_SQL);
 
 		boolean bindArticleId = false;
 
 		if (articleId.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_3);
+			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_3_SQL);
 		}
 		else {
 			bindArticleId = true;
 
-			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_2);
+			sb.append(_FINDER_COLUMN_G_A_NOTST_ARTICLEID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_A_NOTST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_A_NOTST_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -30595,14 +29904,26 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_A_NOTST_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_A_NOTST_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_A_NOTST_ARTICLEID_2 =
 		"journalArticle.articleId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_A_NOTST_ARTICLEID_3 =
 		"(journalArticle.articleId IS NULL OR journalArticle.articleId = '') AND ";
 
+	private static final String _FINDER_COLUMN_G_A_NOTST_ARTICLEID_2_SQL =
+		"JournalArticle.articleId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_A_NOTST_ARTICLEID_3_SQL =
+		"(JournalArticle.articleId IS NULL OR JournalArticle.articleId = '') AND ";
+
 	private static final String _FINDER_COLUMN_G_A_NOTST_STATUS_2 =
 		"journalArticle.status != ?";
+
+	private static final String _FINDER_COLUMN_G_A_NOTST_STATUS_2_SQL =
+		"JournalArticle.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_UT_ST;
 	private FinderPath _finderPathWithoutPaginationFindByG_UT_ST;
@@ -31208,20 +30529,20 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_UT_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_UT_ST_GROUPID_2_SQL);
 
 		boolean bindUrlTitle = false;
 
 		if (urlTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_3);
+			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_3_SQL);
 		}
 		else {
 			bindUrlTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_2);
+			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_UT_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_UT_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -31229,22 +30550,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -31258,14 +30568,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -31365,20 +30668,20 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_UT_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_UT_ST_GROUPID_2_SQL);
 
 		boolean bindUrlTitle = false;
 
 		if (urlTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_3);
+			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_3_SQL);
 		}
 		else {
 			bindUrlTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_2);
+			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_UT_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_UT_ST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -31394,18 +30697,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -31430,16 +30725,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -31460,12 +30748,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -31477,12 +30760,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -31629,20 +30907,20 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_UT_ST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_UT_ST_GROUPID_2_SQL);
 
 		boolean bindUrlTitle = false;
 
 		if (urlTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_3);
+			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_3_SQL);
 		}
 		else {
 			bindUrlTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_2);
+			sb.append(_FINDER_COLUMN_G_UT_ST_URLTITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_UT_ST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_UT_ST_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -31683,14 +30961,26 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_UT_ST_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_UT_ST_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_UT_ST_URLTITLE_2 =
 		"journalArticle.urlTitle = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_UT_ST_URLTITLE_3 =
 		"(journalArticle.urlTitle IS NULL OR journalArticle.urlTitle = '') AND ";
 
+	private static final String _FINDER_COLUMN_G_UT_ST_URLTITLE_2_SQL =
+		"JournalArticle.urlTitle = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_UT_ST_URLTITLE_3_SQL =
+		"(JournalArticle.urlTitle IS NULL OR JournalArticle.urlTitle = '') AND ";
+
 	private static final String _FINDER_COLUMN_G_UT_ST_STATUS_2 =
 		"journalArticle.status = ?";
+
+	private static final String _FINDER_COLUMN_G_UT_ST_STATUS_2_SQL =
+		"JournalArticle.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_V_ST;
 	private FinderPath _finderPathWithoutPaginationFindByC_V_ST;
@@ -32879,13 +32169,13 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -32893,22 +32183,11 @@ public class JournalArticlePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -32922,14 +32201,7 @@ public class JournalArticlePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -33028,13 +32300,13 @@ public class JournalArticlePersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -33050,18 +32322,10 @@ public class JournalArticlePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -33086,16 +32350,9 @@ public class JournalArticlePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -33116,12 +32373,7 @@ public class JournalArticlePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalArticleModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalArticleModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -33133,12 +32385,7 @@ public class JournalArticlePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalArticleImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalArticleImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -33285,13 +32532,13 @@ public class JournalArticlePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALARTICLE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_F_C_NOTST_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_F_C_NOTST_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalArticle.class.getName(),
@@ -33332,14 +32579,26 @@ public class JournalArticlePersistenceImpl
 	private static final String _FINDER_COLUMN_G_F_C_NOTST_GROUPID_2 =
 		"journalArticle.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_F_C_NOTST_GROUPID_2_SQL =
+		"JournalArticle.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2 =
 		"journalArticle.folderId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_F_C_NOTST_FOLDERID_2_SQL =
+		"JournalArticle.folderId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2 =
 		"journalArticle.classNameId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_F_C_NOTST_CLASSNAMEID_2_SQL =
+		"JournalArticle.classNameId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_F_C_NOTST_STATUS_2 =
 		"journalArticle.status != ?";
+
+	private static final String _FINDER_COLUMN_G_F_C_NOTST_STATUS_2_SQL =
+		"JournalArticle.status != ?";
 
 	public JournalArticlePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -35190,10 +34449,10 @@ public class JournalArticlePersistenceImpl
 		"SELECT COUNT(journalArticle) FROM JournalArticle journalArticle WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"journalArticle.resourcePrimKey";
+		"JournalArticle.resourcePrimKey";
 
 	private static final String _FILTER_SQL_SELECT_JOURNALARTICLE_WHERE =
-		"SELECT DISTINCT {journalArticle.*} FROM JournalArticle journalArticle WHERE ";
+		"SELECT DISTINCT {JournalArticle.*} FROM JournalArticle WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_JOURNALARTICLE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -35204,7 +34463,7 @@ public class JournalArticlePersistenceImpl
 			") TEMP_TABLE INNER JOIN JournalArticle ON TEMP_TABLE.id_ = JournalArticle.id_";
 
 	private static final String _FILTER_SQL_COUNT_JOURNALARTICLE_WHERE =
-		"SELECT COUNT(DISTINCT journalArticle.id_) AS COUNT_VALUE FROM JournalArticle journalArticle WHERE ";
+		"SELECT COUNT(DISTINCT JournalArticle.id_) AS COUNT_VALUE FROM JournalArticle WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "journalArticle";
 

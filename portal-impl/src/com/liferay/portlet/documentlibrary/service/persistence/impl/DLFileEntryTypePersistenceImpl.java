@@ -2001,7 +2001,7 @@ public class DLFileEntryTypePersistenceImpl
 				_FILTER_SQL_SELECT_DLFILEENTRYTYPE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2009,22 +2009,11 @@ public class DLFileEntryTypePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileEntryTypeModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileEntryTypeModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileEntryTypeModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2038,14 +2027,7 @@ public class DLFileEntryTypePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DLFileEntryTypeImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DLFileEntryTypeImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileEntryTypeImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2133,7 +2115,7 @@ public class DLFileEntryTypePersistenceImpl
 				_FILTER_SQL_SELECT_DLFILEENTRYTYPE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2149,18 +2131,10 @@ public class DLFileEntryTypePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2185,16 +2159,9 @@ public class DLFileEntryTypePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2215,12 +2182,7 @@ public class DLFileEntryTypePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileEntryTypeModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileEntryTypeModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileEntryTypeModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2232,12 +2194,7 @@ public class DLFileEntryTypePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, DLFileEntryTypeImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileEntryTypeImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileEntryTypeImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2335,7 +2292,7 @@ public class DLFileEntryTypePersistenceImpl
 		if (groupIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7_SQL);
 
 			sb.append(StringUtil.merge(groupIds));
 
@@ -2353,22 +2310,11 @@ public class DLFileEntryTypePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(DLFileEntryTypeModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(DLFileEntryTypeModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(DLFileEntryTypeModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2382,14 +2328,7 @@ public class DLFileEntryTypePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, DLFileEntryTypeImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, DLFileEntryTypeImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, DLFileEntryTypeImpl.class);
 
 			return (List<DLFileEntryType>)QueryUtil.list(
 				sqlQuery, getDialect(), start, end);
@@ -2746,7 +2685,7 @@ public class DLFileEntryTypePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DLFILEENTRYTYPE_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DLFileEntryType.class.getName(),
@@ -2804,7 +2743,7 @@ public class DLFileEntryTypePersistenceImpl
 		if (groupIds.length > 0) {
 			sb.append("(");
 
-			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7);
+			sb.append(_FINDER_COLUMN_GROUPID_GROUPID_7_SQL);
 
 			sb.append(StringUtil.merge(groupIds));
 
@@ -2847,6 +2786,12 @@ public class DLFileEntryTypePersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_7 =
 		"dlFileEntryType.groupId IN (";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"DLFileEntryType.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_7_SQL =
+		"DLFileEntryType.groupId IN (";
 
 	private FinderPath _finderPathFetchByG_DDI;
 	private FinderPath _finderPathCountByG_DDI;
@@ -4722,10 +4667,10 @@ public class DLFileEntryTypePersistenceImpl
 		"SELECT COUNT(dlFileEntryType) FROM DLFileEntryType dlFileEntryType WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"dlFileEntryType.fileEntryTypeId";
+		"DLFileEntryType.fileEntryTypeId";
 
 	private static final String _FILTER_SQL_SELECT_DLFILEENTRYTYPE_WHERE =
-		"SELECT DISTINCT {dlFileEntryType.*} FROM DLFileEntryType dlFileEntryType WHERE ";
+		"SELECT DISTINCT {DLFileEntryType.*} FROM DLFileEntryType WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_DLFILEENTRYTYPE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4736,7 +4681,7 @@ public class DLFileEntryTypePersistenceImpl
 			") TEMP_TABLE INNER JOIN DLFileEntryType ON TEMP_TABLE.fileEntryTypeId = DLFileEntryType.fileEntryTypeId";
 
 	private static final String _FILTER_SQL_COUNT_DLFILEENTRYTYPE_WHERE =
-		"SELECT COUNT(DISTINCT dlFileEntryType.fileEntryTypeId) AS COUNT_VALUE FROM DLFileEntryType dlFileEntryType WHERE ";
+		"SELECT COUNT(DISTINCT DLFileEntryType.fileEntryTypeId) AS COUNT_VALUE FROM DLFileEntryType WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "dlFileEntryType";
 

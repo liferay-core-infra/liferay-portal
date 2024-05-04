@@ -617,7 +617,7 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		sb.append(
-			_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2);
+			_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -625,22 +625,11 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -654,14 +643,8 @@ public class NotificationQueueEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -757,7 +740,7 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		sb.append(
-			_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2);
+			_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -773,18 +756,10 @@ public class NotificationQueueEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -809,16 +784,9 @@ public class NotificationQueueEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -839,12 +807,7 @@ public class NotificationQueueEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -856,14 +819,8 @@ public class NotificationQueueEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-		}
+		sqlQuery.addEntity(
+			_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -973,7 +930,7 @@ public class NotificationQueueEntryPersistenceImpl
 		sb.append(_FILTER_SQL_COUNT_NOTIFICATIONQUEUEENTRY_WHERE);
 
 		sb.append(
-			_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2);
+			_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), NotificationQueueEntry.class.getName(),
@@ -1008,6 +965,10 @@ public class NotificationQueueEntryPersistenceImpl
 	private static final String
 		_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2 =
 			"notificationQueueEntry.notificationTemplateId = ?";
+
+	private static final String
+		_FINDER_COLUMN_NOTIFICATIONTEMPLATEID_NOTIFICATIONTEMPLATEID_2_SQL =
+			"NotificationQueueEntry.notificationTemplateId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtSentDate;
 	private FinderPath _finderPathWithPaginationCountByLtSentDate;
@@ -1536,12 +1497,12 @@ public class NotificationQueueEntryPersistenceImpl
 		boolean bindSentDate = false;
 
 		if (sentDate == null) {
-			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_1);
+			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_1_SQL);
 		}
 		else {
 			bindSentDate = true;
 
-			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_2);
+			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -1550,22 +1511,11 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1579,14 +1529,8 @@ public class NotificationQueueEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1683,12 +1627,12 @@ public class NotificationQueueEntryPersistenceImpl
 		boolean bindSentDate = false;
 
 		if (sentDate == null) {
-			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_1);
+			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_1_SQL);
 		}
 		else {
 			bindSentDate = true;
 
-			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_2);
+			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -1705,18 +1649,10 @@ public class NotificationQueueEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1741,16 +1677,9 @@ public class NotificationQueueEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1771,12 +1700,7 @@ public class NotificationQueueEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1788,14 +1712,8 @@ public class NotificationQueueEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-		}
+		sqlQuery.addEntity(
+			_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1916,12 +1834,12 @@ public class NotificationQueueEntryPersistenceImpl
 		boolean bindSentDate = false;
 
 		if (sentDate == null) {
-			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_1);
+			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_1_SQL);
 		}
 		else {
 			bindSentDate = true;
 
-			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_2);
+			sb.append(_FINDER_COLUMN_LTSENTDATE_SENTDATE_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1961,6 +1879,12 @@ public class NotificationQueueEntryPersistenceImpl
 
 	private static final String _FINDER_COLUMN_LTSENTDATE_SENTDATE_2 =
 		"notificationQueueEntry.sentDate < ?";
+
+	private static final String _FINDER_COLUMN_LTSENTDATE_SENTDATE_1_SQL =
+		"NotificationQueueEntry.sentDate IS NULL";
+
+	private static final String _FINDER_COLUMN_LTSENTDATE_SENTDATE_2_SQL =
+		"NotificationQueueEntry.sentDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_S;
 	private FinderPath _finderPathWithoutPaginationFindByT_S;
@@ -2541,7 +2465,7 @@ public class NotificationQueueEntryPersistenceImpl
 			sb.append(_FINDER_COLUMN_T_S_TYPE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_T_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_T_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2549,22 +2473,11 @@ public class NotificationQueueEntryPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2578,14 +2491,8 @@ public class NotificationQueueEntryPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2695,7 +2602,7 @@ public class NotificationQueueEntryPersistenceImpl
 			sb.append(_FINDER_COLUMN_T_S_TYPE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_T_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_T_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2711,18 +2618,10 @@ public class NotificationQueueEntryPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2747,16 +2646,9 @@ public class NotificationQueueEntryPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2777,12 +2669,7 @@ public class NotificationQueueEntryPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(NotificationQueueEntryModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2794,14 +2681,8 @@ public class NotificationQueueEntryPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, NotificationQueueEntryImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
-		}
+		sqlQuery.addEntity(
+			_FILTER_ENTITY_TABLE, NotificationQueueEntryImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2943,7 +2824,7 @@ public class NotificationQueueEntryPersistenceImpl
 			sb.append(_FINDER_COLUMN_T_S_TYPE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_T_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_T_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), NotificationQueueEntry.class.getName(),
@@ -2986,13 +2867,16 @@ public class NotificationQueueEntryPersistenceImpl
 		"(notificationQueueEntry.type IS NULL OR notificationQueueEntry.type = '') AND ";
 
 	private static final String _FINDER_COLUMN_T_S_TYPE_2_SQL =
-		"notificationQueueEntry.type_ = ? AND ";
+		"NotificationQueueEntry.type_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_T_S_TYPE_3_SQL =
-		"(notificationQueueEntry.type_ IS NULL OR notificationQueueEntry.type_ = '') AND ";
+		"(NotificationQueueEntry.type_ IS NULL OR NotificationQueueEntry.type_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_T_S_STATUS_2 =
 		"notificationQueueEntry.status = ?";
+
+	private static final String _FINDER_COLUMN_T_S_STATUS_2_SQL =
+		"NotificationQueueEntry.status = ?";
 
 	public NotificationQueueEntryPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -3693,11 +3577,11 @@ public class NotificationQueueEntryPersistenceImpl
 		"SELECT COUNT(notificationQueueEntry) FROM NotificationQueueEntry notificationQueueEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"notificationQueueEntry.notificationQueueEntryId";
+		"NotificationQueueEntry.notificationQueueEntryId";
 
 	private static final String
 		_FILTER_SQL_SELECT_NOTIFICATIONQUEUEENTRY_WHERE =
-			"SELECT DISTINCT {notificationQueueEntry.*} FROM NotificationQueueEntry notificationQueueEntry WHERE ";
+			"SELECT DISTINCT {NotificationQueueEntry.*} FROM NotificationQueueEntry WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_NOTIFICATIONQUEUEENTRY_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3708,7 +3592,7 @@ public class NotificationQueueEntryPersistenceImpl
 			") TEMP_TABLE INNER JOIN NotificationQueueEntry ON TEMP_TABLE.notificationQueueEntryId = NotificationQueueEntry.notificationQueueEntryId";
 
 	private static final String _FILTER_SQL_COUNT_NOTIFICATIONQUEUEENTRY_WHERE =
-		"SELECT COUNT(DISTINCT notificationQueueEntry.notificationQueueEntryId) AS COUNT_VALUE FROM NotificationQueueEntry notificationQueueEntry WHERE ";
+		"SELECT COUNT(DISTINCT NotificationQueueEntry.notificationQueueEntryId) AS COUNT_VALUE FROM NotificationQueueEntry WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "notificationQueueEntry";
 

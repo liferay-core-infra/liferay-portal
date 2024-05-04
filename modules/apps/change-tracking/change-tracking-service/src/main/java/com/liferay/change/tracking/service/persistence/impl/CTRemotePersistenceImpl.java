@@ -579,29 +579,18 @@ public class CTRemotePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_CTREMOTE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_CTREMOTE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTRemoteModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTRemoteModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTRemoteModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -615,12 +604,7 @@ public class CTRemotePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CTRemoteImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTRemoteImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTRemoteImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -706,7 +690,7 @@ public class CTRemotePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_CTREMOTE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_CTREMOTE_NO_INLINE_DISTINCT_WHERE_2);
@@ -721,18 +705,10 @@ public class CTRemotePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -757,16 +733,9 @@ public class CTRemotePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -787,12 +756,7 @@ public class CTRemotePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CTRemoteModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CTRemoteModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CTRemoteModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -804,12 +768,7 @@ public class CTRemotePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, CTRemoteImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTRemoteImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CTRemoteImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -913,7 +872,7 @@ public class CTRemotePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_CTREMOTE_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), CTRemote.class.getName(),
@@ -947,6 +906,9 @@ public class CTRemotePersistenceImpl
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"ctRemote.companyId = ?";
+
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL =
+		"CTRemote.companyId = ?";
 
 	public CTRemotePersistenceImpl() {
 		setModelClass(CTRemote.class);
@@ -1554,10 +1516,10 @@ public class CTRemotePersistenceImpl
 		"SELECT COUNT(ctRemote) FROM CTRemote ctRemote WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"ctRemote.ctRemoteId";
+		"CTRemote.ctRemoteId";
 
 	private static final String _FILTER_SQL_SELECT_CTREMOTE_WHERE =
-		"SELECT DISTINCT {ctRemote.*} FROM CTRemote ctRemote WHERE ";
+		"SELECT DISTINCT {CTRemote.*} FROM CTRemote WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_CTREMOTE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -1568,7 +1530,7 @@ public class CTRemotePersistenceImpl
 			") TEMP_TABLE INNER JOIN CTRemote ON TEMP_TABLE.ctRemoteId = CTRemote.ctRemoteId";
 
 	private static final String _FILTER_SQL_COUNT_CTREMOTE_WHERE =
-		"SELECT COUNT(DISTINCT ctRemote.ctRemoteId) AS COUNT_VALUE FROM CTRemote ctRemote WHERE ";
+		"SELECT COUNT(DISTINCT CTRemote.ctRemoteId) AS COUNT_VALUE FROM CTRemote WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "ctRemote";
 

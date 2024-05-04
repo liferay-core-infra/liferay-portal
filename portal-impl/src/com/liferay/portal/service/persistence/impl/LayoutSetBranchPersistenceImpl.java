@@ -579,7 +579,7 @@ public class LayoutSetBranchPersistenceImpl
 				_FILTER_SQL_SELECT_LAYOUTSETBRANCH_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -587,22 +587,11 @@ public class LayoutSetBranchPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -616,14 +605,7 @@ public class LayoutSetBranchPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, LayoutSetBranchImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -711,7 +693,7 @@ public class LayoutSetBranchPersistenceImpl
 				_FILTER_SQL_SELECT_LAYOUTSETBRANCH_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -727,18 +709,10 @@ public class LayoutSetBranchPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -763,16 +737,9 @@ public class LayoutSetBranchPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -793,12 +760,7 @@ public class LayoutSetBranchPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -810,12 +772,7 @@ public class LayoutSetBranchPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, LayoutSetBranchImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -921,7 +878,7 @@ public class LayoutSetBranchPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_LAYOUTSETBRANCH_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), LayoutSetBranch.class.getName(),
@@ -955,6 +912,9 @@ public class LayoutSetBranchPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"layoutSetBranch.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"LayoutSetBranch.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P;
 	private FinderPath _finderPathWithoutPaginationFindByG_P;
@@ -1499,9 +1459,9 @@ public class LayoutSetBranchPersistenceImpl
 				_FILTER_SQL_SELECT_LAYOUTSETBRANCH_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PRIVATELAYOUT_2);
+		sb.append(_FINDER_COLUMN_G_P_PRIVATELAYOUT_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1509,22 +1469,11 @@ public class LayoutSetBranchPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1538,14 +1487,7 @@ public class LayoutSetBranchPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, LayoutSetBranchImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1639,9 +1581,9 @@ public class LayoutSetBranchPersistenceImpl
 				_FILTER_SQL_SELECT_LAYOUTSETBRANCH_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PRIVATELAYOUT_2);
+		sb.append(_FINDER_COLUMN_G_P_PRIVATELAYOUT_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1657,18 +1599,10 @@ public class LayoutSetBranchPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1693,16 +1627,9 @@ public class LayoutSetBranchPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1723,12 +1650,7 @@ public class LayoutSetBranchPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1740,12 +1662,7 @@ public class LayoutSetBranchPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, LayoutSetBranchImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1861,9 +1778,9 @@ public class LayoutSetBranchPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_LAYOUTSETBRANCH_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PRIVATELAYOUT_2);
+		sb.append(_FINDER_COLUMN_G_P_PRIVATELAYOUT_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), LayoutSetBranch.class.getName(),
@@ -1900,8 +1817,14 @@ public class LayoutSetBranchPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_GROUPID_2 =
 		"layoutSetBranch.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_GROUPID_2_SQL =
+		"LayoutSetBranch.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_PRIVATELAYOUT_2 =
 		"layoutSetBranch.privateLayout = ?";
+
+	private static final String _FINDER_COLUMN_G_P_PRIVATELAYOUT_2_SQL =
+		"LayoutSetBranch.privateLayout = ?";
 
 	private FinderPath _finderPathFetchByG_P_N;
 	private FinderPath _finderPathCountByG_P_N;
@@ -2757,11 +2680,11 @@ public class LayoutSetBranchPersistenceImpl
 				_FILTER_SQL_SELECT_LAYOUTSETBRANCH_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_M_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_M_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2);
+		sb.append(_FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_M_MASTER_2);
+		sb.append(_FINDER_COLUMN_G_P_M_MASTER_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2769,22 +2692,11 @@ public class LayoutSetBranchPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2798,14 +2710,7 @@ public class LayoutSetBranchPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, LayoutSetBranchImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2904,11 +2809,11 @@ public class LayoutSetBranchPersistenceImpl
 				_FILTER_SQL_SELECT_LAYOUTSETBRANCH_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_M_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_M_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2);
+		sb.append(_FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_M_MASTER_2);
+		sb.append(_FINDER_COLUMN_G_P_M_MASTER_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2924,18 +2829,10 @@ public class LayoutSetBranchPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2960,16 +2857,9 @@ public class LayoutSetBranchPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2990,12 +2880,7 @@ public class LayoutSetBranchPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(LayoutSetBranchModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3007,12 +2892,7 @@ public class LayoutSetBranchPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, LayoutSetBranchImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, LayoutSetBranchImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3143,11 +3023,11 @@ public class LayoutSetBranchPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_LAYOUTSETBRANCH_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_P_M_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_M_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2);
+		sb.append(_FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_M_MASTER_2);
+		sb.append(_FINDER_COLUMN_G_P_M_MASTER_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), LayoutSetBranch.class.getName(),
@@ -3186,11 +3066,20 @@ public class LayoutSetBranchPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_M_GROUPID_2 =
 		"layoutSetBranch.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_M_GROUPID_2_SQL =
+		"LayoutSetBranch.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2 =
 		"layoutSetBranch.privateLayout = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_M_PRIVATELAYOUT_2_SQL =
+		"LayoutSetBranch.privateLayout = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_M_MASTER_2 =
 		"layoutSetBranch.master = ?";
+
+	private static final String _FINDER_COLUMN_G_P_M_MASTER_2_SQL =
+		"LayoutSetBranch.master = ?";
 
 	public LayoutSetBranchPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -3875,10 +3764,10 @@ public class LayoutSetBranchPersistenceImpl
 		"SELECT COUNT(layoutSetBranch) FROM LayoutSetBranch layoutSetBranch WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"layoutSetBranch.layoutSetBranchId";
+		"LayoutSetBranch.layoutSetBranchId";
 
 	private static final String _FILTER_SQL_SELECT_LAYOUTSETBRANCH_WHERE =
-		"SELECT DISTINCT {layoutSetBranch.*} FROM LayoutSetBranch layoutSetBranch WHERE ";
+		"SELECT DISTINCT {LayoutSetBranch.*} FROM LayoutSetBranch WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_LAYOUTSETBRANCH_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3889,7 +3778,7 @@ public class LayoutSetBranchPersistenceImpl
 			") TEMP_TABLE INNER JOIN LayoutSetBranch ON TEMP_TABLE.layoutSetBranchId = LayoutSetBranch.layoutSetBranchId";
 
 	private static final String _FILTER_SQL_COUNT_LAYOUTSETBRANCH_WHERE =
-		"SELECT COUNT(DISTINCT layoutSetBranch.layoutSetBranchId) AS COUNT_VALUE FROM LayoutSetBranch layoutSetBranch WHERE ";
+		"SELECT COUNT(DISTINCT LayoutSetBranch.layoutSetBranchId) AS COUNT_VALUE FROM LayoutSetBranch WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "layoutSetBranch";
 

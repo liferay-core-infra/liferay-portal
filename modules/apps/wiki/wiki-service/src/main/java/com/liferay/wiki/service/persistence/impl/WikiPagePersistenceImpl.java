@@ -5225,17 +5225,17 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2_SQL);
 
 		boolean bindExternalReferenceCode = false;
 
 		if (externalReferenceCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL);
 		}
 		else {
 			bindExternalReferenceCode = true;
 
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -5243,22 +5243,11 @@ public class WikiPagePersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5272,12 +5261,7 @@ public class WikiPagePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5373,17 +5357,17 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2_SQL);
 
 		boolean bindExternalReferenceCode = false;
 
 		if (externalReferenceCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL);
 		}
 		else {
 			bindExternalReferenceCode = true;
 
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -5399,18 +5383,10 @@ public class WikiPagePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5435,16 +5411,9 @@ public class WikiPagePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5465,12 +5434,7 @@ public class WikiPagePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5482,12 +5446,7 @@ public class WikiPagePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5624,17 +5583,17 @@ public class WikiPagePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_WIKIPAGE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_ERC_GROUPID_2_SQL);
 
 		boolean bindExternalReferenceCode = false;
 
 		if (externalReferenceCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL);
 		}
 		else {
 			bindExternalReferenceCode = true;
 
-			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2);
+			sb.append(_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5674,11 +5633,22 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_ERC_GROUPID_2 =
 		"wikiPage.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_ERC_GROUPID_2_SQL =
+		"WikiPage.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2 =
 		"wikiPage.externalReferenceCode = ?";
 
 	private static final String _FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3 =
 		"(wikiPage.externalReferenceCode IS NULL OR wikiPage.externalReferenceCode = '')";
+
+	private static final String
+		_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_2_SQL =
+			"WikiPage.externalReferenceCode = ?";
+
+	private static final String
+		_FINDER_COLUMN_G_ERC_EXTERNALREFERENCECODE_3_SQL =
+			"(WikiPage.externalReferenceCode IS NULL OR WikiPage.externalReferenceCode = '')";
 
 	private FinderPath _finderPathWithPaginationFindByN_T;
 	private FinderPath _finderPathWithoutPaginationFindByN_T;
@@ -10825,33 +10795,22 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_HEAD_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -10865,12 +10824,7 @@ public class WikiPagePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -10965,11 +10919,11 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_HEAD_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
@@ -10984,18 +10938,10 @@ public class WikiPagePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -11020,16 +10966,9 @@ public class WikiPagePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -11050,12 +10989,7 @@ public class WikiPagePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11067,12 +11001,7 @@ public class WikiPagePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -11201,11 +11130,11 @@ public class WikiPagePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_WIKIPAGE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_N_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_HEAD_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), WikiPage.class.getName(),
@@ -11244,11 +11173,20 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_N_H_GROUPID_2 =
 		"wikiPage.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_H_GROUPID_2_SQL =
+		"WikiPage.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_H_NODEID_2 =
 		"wikiPage.nodeId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_H_NODEID_2_SQL =
+		"WikiPage.nodeId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_H_HEAD_2 =
 		"wikiPage.head = ?";
+
+	private static final String _FINDER_COLUMN_G_N_H_HEAD_2_SQL =
+		"WikiPage.head = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_N_S;
 	private FinderPath _finderPathWithoutPaginationFindByG_N_S;
@@ -11821,33 +11759,22 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -11861,12 +11788,7 @@ public class WikiPagePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -11961,11 +11883,11 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
@@ -11980,18 +11902,10 @@ public class WikiPagePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -12016,16 +11930,9 @@ public class WikiPagePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -12046,12 +11953,7 @@ public class WikiPagePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -12063,12 +11965,7 @@ public class WikiPagePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -12197,11 +12094,11 @@ public class WikiPagePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_WIKIPAGE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_N_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), WikiPage.class.getName(),
@@ -12240,11 +12137,20 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_N_S_GROUPID_2 =
 		"wikiPage.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_S_GROUPID_2_SQL =
+		"WikiPage.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_S_NODEID_2 =
 		"wikiPage.nodeId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_S_NODEID_2_SQL =
+		"WikiPage.nodeId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_S_STATUS_2 =
 		"wikiPage.status = ?";
+
+	private static final String _FINDER_COLUMN_G_N_S_STATUS_2_SQL =
+		"WikiPage.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_N_S;
 	private FinderPath _finderPathWithoutPaginationFindByU_N_S;
@@ -17371,35 +17277,24 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_USERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -17413,12 +17308,7 @@ public class WikiPagePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -17516,13 +17406,13 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_USERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
@@ -17537,18 +17427,10 @@ public class WikiPagePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -17573,16 +17455,9 @@ public class WikiPagePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -17603,12 +17478,7 @@ public class WikiPagePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -17620,12 +17490,7 @@ public class WikiPagePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -17771,13 +17636,13 @@ public class WikiPagePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_WIKIPAGE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_USERID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_USERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_U_N_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_U_N_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), WikiPage.class.getName(),
@@ -17818,14 +17683,26 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_U_N_S_GROUPID_2 =
 		"wikiPage.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_U_N_S_GROUPID_2_SQL =
+		"WikiPage.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_U_N_S_USERID_2 =
 		"wikiPage.userId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_U_N_S_USERID_2_SQL =
+		"WikiPage.userId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_U_N_S_NODEID_2 =
 		"wikiPage.nodeId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_U_N_S_NODEID_2_SQL =
+		"WikiPage.nodeId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_U_N_S_STATUS_2 =
 		"wikiPage.status = ?";
+
+	private static final String _FINDER_COLUMN_G_U_N_S_STATUS_2_SQL =
+		"WikiPage.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_N_T_H;
 	private FinderPath _finderPathWithoutPaginationFindByG_N_T_H;
@@ -18459,44 +18336,33 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_NODEID_2_SQL);
 
 		boolean bindTitle = false;
 
 		if (title.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_3);
+			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_3_SQL);
 		}
 		else {
 			bindTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_2);
+			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_HEAD_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -18510,12 +18376,7 @@ public class WikiPagePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -18617,22 +18478,22 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_NODEID_2_SQL);
 
 		boolean bindTitle = false;
 
 		if (title.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_3);
+			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_3_SQL);
 		}
 		else {
 			bindTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_2);
+			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_HEAD_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
@@ -18647,18 +18508,10 @@ public class WikiPagePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -18683,16 +18536,9 @@ public class WikiPagePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -18713,12 +18559,7 @@ public class WikiPagePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -18730,12 +18571,7 @@ public class WikiPagePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -18896,22 +18732,22 @@ public class WikiPagePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_WIKIPAGE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_NODEID_2_SQL);
 
 		boolean bindTitle = false;
 
 		if (title.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_3);
+			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_3_SQL);
 		}
 		else {
 			bindTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_2);
+			sb.append(_FINDER_COLUMN_G_N_T_H_TITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_T_H_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_T_H_HEAD_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), WikiPage.class.getName(),
@@ -18954,8 +18790,14 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_N_T_H_GROUPID_2 =
 		"wikiPage.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_T_H_GROUPID_2_SQL =
+		"WikiPage.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_T_H_NODEID_2 =
 		"wikiPage.nodeId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_N_T_H_NODEID_2_SQL =
+		"WikiPage.nodeId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_N_T_H_TITLE_2 =
 		"lower(wikiPage.title) = ? AND ";
@@ -18963,8 +18805,17 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_N_T_H_TITLE_3 =
 		"(wikiPage.title IS NULL OR wikiPage.title = '') AND ";
 
+	private static final String _FINDER_COLUMN_G_N_T_H_TITLE_2_SQL =
+		"lower(WikiPage.title) = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_N_T_H_TITLE_3_SQL =
+		"(WikiPage.title IS NULL OR WikiPage.title = '') AND ";
+
 	private static final String _FINDER_COLUMN_G_N_T_H_HEAD_2 =
 		"wikiPage.head = ?";
+
+	private static final String _FINDER_COLUMN_G_N_T_H_HEAD_2_SQL =
+		"WikiPage.head = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_N_H_S;
 	private FinderPath _finderPathWithoutPaginationFindByG_N_H_S;
@@ -19569,35 +19420,24 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_HEAD_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -19611,12 +19451,7 @@ public class WikiPagePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -19714,13 +19549,13 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_HEAD_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
@@ -19735,18 +19570,10 @@ public class WikiPagePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -19771,16 +19598,9 @@ public class WikiPagePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -19801,12 +19621,7 @@ public class WikiPagePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -19818,12 +19633,7 @@ public class WikiPagePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -19967,13 +19777,13 @@ public class WikiPagePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_WIKIPAGE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_HEAD_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_H_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), WikiPage.class.getName(),
@@ -20014,14 +19824,26 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_N_H_S_GROUPID_2 =
 		"wikiPage.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_H_S_GROUPID_2_SQL =
+		"WikiPage.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_H_S_NODEID_2 =
 		"wikiPage.nodeId = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_N_H_S_NODEID_2_SQL =
+		"WikiPage.nodeId = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_N_H_S_HEAD_2 =
 		"wikiPage.head = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_H_S_HEAD_2_SQL =
+		"WikiPage.head = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_H_S_STATUS_2 =
 		"wikiPage.status = ?";
+
+	private static final String _FINDER_COLUMN_G_N_H_S_STATUS_2_SQL =
+		"WikiPage.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByN_H_P_S;
 	private FinderPath _finderPathWithoutPaginationFindByN_H_P_S;
@@ -23365,46 +23187,35 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_HEAD_2_SQL);
 
 		boolean bindParentTitle = false;
 
 		if (parentTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3);
+			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3_SQL);
 		}
 		else {
 			bindParentTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2);
+			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -23418,12 +23229,7 @@ public class WikiPagePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -23530,24 +23336,24 @@ public class WikiPagePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_HEAD_2_SQL);
 
 		boolean bindParentTitle = false;
 
 		if (parentTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3);
+			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3_SQL);
 		}
 		else {
 			bindParentTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2);
+			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_2);
@@ -23562,18 +23368,10 @@ public class WikiPagePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -23598,16 +23396,9 @@ public class WikiPagePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -23628,12 +23419,7 @@ public class WikiPagePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(WikiPageModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(WikiPageModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(WikiPageModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -23645,12 +23431,7 @@ public class WikiPagePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, WikiPageImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, WikiPageImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -23825,24 +23606,24 @@ public class WikiPagePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_WIKIPAGE_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_NODEID_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_NODEID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_HEAD_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_HEAD_2_SQL);
 
 		boolean bindParentTitle = false;
 
 		if (parentTitle.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3);
+			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3_SQL);
 		}
 		else {
 			bindParentTitle = true;
 
-			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2);
+			sb.append(_FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_G_N_H_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_N_H_P_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), WikiPage.class.getName(),
@@ -23887,11 +23668,20 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_N_H_P_S_GROUPID_2 =
 		"wikiPage.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_H_P_S_GROUPID_2_SQL =
+		"WikiPage.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_H_P_S_NODEID_2 =
 		"wikiPage.nodeId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_N_H_P_S_NODEID_2_SQL =
+		"WikiPage.nodeId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_N_H_P_S_HEAD_2 =
 		"wikiPage.head = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_N_H_P_S_HEAD_2_SQL =
+		"WikiPage.head = ? AND ";
 
 	private static final String _FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2 =
 		"lower(wikiPage.parentTitle) = ? AND ";
@@ -23899,8 +23689,17 @@ public class WikiPagePersistenceImpl
 	private static final String _FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3 =
 		"(wikiPage.parentTitle IS NULL OR wikiPage.parentTitle = '') AND ";
 
+	private static final String _FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_2_SQL =
+		"lower(WikiPage.parentTitle) = ? AND ";
+
+	private static final String _FINDER_COLUMN_G_N_H_P_S_PARENTTITLE_3_SQL =
+		"(WikiPage.parentTitle IS NULL OR WikiPage.parentTitle = '') AND ";
+
 	private static final String _FINDER_COLUMN_G_N_H_P_S_STATUS_2 =
 		"wikiPage.status = ?";
+
+	private static final String _FINDER_COLUMN_G_N_H_P_S_STATUS_2_SQL =
+		"WikiPage.status = ?";
 
 	public WikiPagePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -25712,10 +25511,10 @@ public class WikiPagePersistenceImpl
 		"SELECT COUNT(wikiPage) FROM WikiPage wikiPage WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"wikiPage.resourcePrimKey";
+		"WikiPage.resourcePrimKey";
 
 	private static final String _FILTER_SQL_SELECT_WIKIPAGE_WHERE =
-		"SELECT DISTINCT {wikiPage.*} FROM WikiPage wikiPage WHERE ";
+		"SELECT DISTINCT {WikiPage.*} FROM WikiPage WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_WIKIPAGE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -25726,7 +25525,7 @@ public class WikiPagePersistenceImpl
 			") TEMP_TABLE INNER JOIN WikiPage ON TEMP_TABLE.pageId = WikiPage.pageId";
 
 	private static final String _FILTER_SQL_COUNT_WIKIPAGE_WHERE =
-		"SELECT COUNT(DISTINCT wikiPage.pageId) AS COUNT_VALUE FROM WikiPage wikiPage WHERE ";
+		"SELECT COUNT(DISTINCT WikiPage.pageId) AS COUNT_VALUE FROM WikiPage WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "wikiPage";
 

@@ -643,22 +643,11 @@ public class CommerceDiscountPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -672,14 +661,8 @@ public class CommerceDiscountPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -797,18 +780,10 @@ public class CommerceDiscountPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -833,16 +808,9 @@ public class CommerceDiscountPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -863,12 +831,7 @@ public class CommerceDiscountPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -880,14 +843,7 @@ public class CommerceDiscountPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1058,10 +1014,10 @@ public class CommerceDiscountPersistenceImpl
 		"(commerceDiscount.uuid IS NULL OR commerceDiscount.uuid = '')";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_2_SQL =
-		"commerceDiscount.uuid_ = ?";
+		"CommerceDiscount.uuid_ = ?";
 
 	private static final String _FINDER_COLUMN_UUID_UUID_3_SQL =
-		"(commerceDiscount.uuid_ IS NULL OR commerceDiscount.uuid_ = '')";
+		"(CommerceDiscount.uuid_ IS NULL OR CommerceDiscount.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
@@ -1642,7 +1598,7 @@ public class CommerceDiscountPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1650,22 +1606,11 @@ public class CommerceDiscountPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1679,14 +1624,8 @@ public class CommerceDiscountPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -1795,7 +1734,7 @@ public class CommerceDiscountPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1811,18 +1750,10 @@ public class CommerceDiscountPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1847,16 +1778,9 @@ public class CommerceDiscountPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -1877,12 +1801,7 @@ public class CommerceDiscountPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1894,14 +1813,7 @@ public class CommerceDiscountPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2044,7 +1956,7 @@ public class CommerceDiscountPersistenceImpl
 			sb.append(_FINDER_COLUMN_UUID_C_UUID_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_UUID_C_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), CommerceDiscount.class.getName(),
@@ -2087,13 +1999,16 @@ public class CommerceDiscountPersistenceImpl
 		"(commerceDiscount.uuid IS NULL OR commerceDiscount.uuid = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_2_SQL =
-		"commerceDiscount.uuid_ = ? AND ";
+		"CommerceDiscount.uuid_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_UUID_3_SQL =
-		"(commerceDiscount.uuid_ IS NULL OR commerceDiscount.uuid_ = '') AND ";
+		"(CommerceDiscount.uuid_ IS NULL OR CommerceDiscount.uuid_ = '') AND ";
 
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"commerceDiscount.companyId = ?";
+
+	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2_SQL =
+		"CommerceDiscount.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
@@ -2600,7 +2515,7 @@ public class CommerceDiscountPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEDISCOUNT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2608,22 +2523,11 @@ public class CommerceDiscountPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2637,14 +2541,8 @@ public class CommerceDiscountPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2733,7 +2631,7 @@ public class CommerceDiscountPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEDISCOUNT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2749,18 +2647,10 @@ public class CommerceDiscountPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2785,16 +2675,9 @@ public class CommerceDiscountPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2815,12 +2698,7 @@ public class CommerceDiscountPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2832,14 +2710,7 @@ public class CommerceDiscountPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2944,7 +2815,7 @@ public class CommerceDiscountPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_COMMERCEDISCOUNT_WHERE);
 
-		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), CommerceDiscount.class.getName(),
@@ -2978,6 +2849,9 @@ public class CommerceDiscountPersistenceImpl
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"commerceDiscount.companyId = ?";
+
+	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2_SQL =
+		"CommerceDiscount.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
@@ -3549,17 +3423,17 @@ public class CommerceDiscountPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEDISCOUNT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_C_COMPANYID_2_SQL);
 
 		boolean bindCouponCode = false;
 
 		if (couponCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_3);
+			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_3_SQL);
 		}
 		else {
 			bindCouponCode = true;
 
-			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_2);
+			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -3568,22 +3442,11 @@ public class CommerceDiscountPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3597,14 +3460,8 @@ public class CommerceDiscountPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3703,17 +3560,17 @@ public class CommerceDiscountPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEDISCOUNT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_C_COMPANYID_2_SQL);
 
 		boolean bindCouponCode = false;
 
 		if (couponCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_3);
+			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_3_SQL);
 		}
 		else {
 			bindCouponCode = true;
 
-			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_2);
+			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_2_SQL);
 		}
 
 		if (!getDB().isSupportsInlineDistinct()) {
@@ -3730,18 +3587,10 @@ public class CommerceDiscountPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3766,16 +3615,9 @@ public class CommerceDiscountPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3796,12 +3638,7 @@ public class CommerceDiscountPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3813,14 +3650,7 @@ public class CommerceDiscountPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3952,17 +3782,17 @@ public class CommerceDiscountPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_COMMERCEDISCOUNT_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_C_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_C_COMPANYID_2_SQL);
 
 		boolean bindCouponCode = false;
 
 		if (couponCode.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_3);
+			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_3_SQL);
 		}
 		else {
 			bindCouponCode = true;
 
-			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_2);
+			sb.append(_FINDER_COLUMN_C_C_COUPONCODE_2_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4002,11 +3832,20 @@ public class CommerceDiscountPersistenceImpl
 	private static final String _FINDER_COLUMN_C_C_COMPANYID_2 =
 		"commerceDiscount.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_C_COMPANYID_2_SQL =
+		"CommerceDiscount.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_C_COUPONCODE_2 =
 		"lower(commerceDiscount.couponCode) = ?";
 
 	private static final String _FINDER_COLUMN_C_C_COUPONCODE_3 =
 		"(commerceDiscount.couponCode IS NULL OR commerceDiscount.couponCode = '')";
+
+	private static final String _FINDER_COLUMN_C_C_COUPONCODE_2_SQL =
+		"lower(CommerceDiscount.couponCode) = ?";
+
+	private static final String _FINDER_COLUMN_C_C_COUPONCODE_3_SQL =
+		"(CommerceDiscount.couponCode IS NULL OR CommerceDiscount.couponCode = '')";
 
 	private FinderPath _finderPathWithPaginationFindByLtD_S;
 	private FinderPath _finderPathWithPaginationCountByLtD_S;
@@ -4565,15 +4404,15 @@ public class CommerceDiscountPersistenceImpl
 		boolean bindDisplayDate = false;
 
 		if (displayDate == null) {
-			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_1);
+			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_1_SQL);
 		}
 		else {
 			bindDisplayDate = true;
 
-			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_2);
+			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_LTD_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_LTD_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -4581,22 +4420,11 @@ public class CommerceDiscountPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4610,14 +4438,8 @@ public class CommerceDiscountPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4716,15 +4538,15 @@ public class CommerceDiscountPersistenceImpl
 		boolean bindDisplayDate = false;
 
 		if (displayDate == null) {
-			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_1);
+			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_1_SQL);
 		}
 		else {
 			bindDisplayDate = true;
 
-			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_2);
+			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_LTD_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_LTD_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -4740,18 +4562,10 @@ public class CommerceDiscountPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4776,16 +4590,9 @@ public class CommerceDiscountPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4806,12 +4613,7 @@ public class CommerceDiscountPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4823,14 +4625,7 @@ public class CommerceDiscountPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4961,15 +4756,15 @@ public class CommerceDiscountPersistenceImpl
 		boolean bindDisplayDate = false;
 
 		if (displayDate == null) {
-			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_1);
+			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_1_SQL);
 		}
 		else {
 			bindDisplayDate = true;
 
-			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_2);
+			sb.append(_FINDER_COLUMN_LTD_S_DISPLAYDATE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_LTD_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_LTD_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), CommerceDiscount.class.getName(),
@@ -5011,8 +4806,17 @@ public class CommerceDiscountPersistenceImpl
 	private static final String _FINDER_COLUMN_LTD_S_DISPLAYDATE_2 =
 		"commerceDiscount.displayDate < ? AND ";
 
+	private static final String _FINDER_COLUMN_LTD_S_DISPLAYDATE_1_SQL =
+		"CommerceDiscount.displayDate IS NULL AND ";
+
+	private static final String _FINDER_COLUMN_LTD_S_DISPLAYDATE_2_SQL =
+		"CommerceDiscount.displayDate < ? AND ";
+
 	private static final String _FINDER_COLUMN_LTD_S_STATUS_2 =
 		"commerceDiscount.status = ?";
+
+	private static final String _FINDER_COLUMN_LTD_S_STATUS_2_SQL =
+		"CommerceDiscount.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtE_S;
 	private FinderPath _finderPathWithPaginationCountByLtE_S;
@@ -5571,15 +5375,15 @@ public class CommerceDiscountPersistenceImpl
 		boolean bindExpirationDate = false;
 
 		if (expirationDate == null) {
-			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_1);
+			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_1_SQL);
 		}
 		else {
 			bindExpirationDate = true;
 
-			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2);
+			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_LTE_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_LTE_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5587,22 +5391,11 @@ public class CommerceDiscountPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5616,14 +5409,8 @@ public class CommerceDiscountPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5722,15 +5509,15 @@ public class CommerceDiscountPersistenceImpl
 		boolean bindExpirationDate = false;
 
 		if (expirationDate == null) {
-			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_1);
+			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_1_SQL);
 		}
 		else {
 			bindExpirationDate = true;
 
-			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2);
+			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_LTE_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_LTE_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5746,18 +5533,10 @@ public class CommerceDiscountPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5782,16 +5561,9 @@ public class CommerceDiscountPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5812,12 +5584,7 @@ public class CommerceDiscountPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5829,14 +5596,7 @@ public class CommerceDiscountPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5967,15 +5727,15 @@ public class CommerceDiscountPersistenceImpl
 		boolean bindExpirationDate = false;
 
 		if (expirationDate == null) {
-			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_1);
+			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_1_SQL);
 		}
 		else {
 			bindExpirationDate = true;
 
-			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2);
+			sb.append(_FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2_SQL);
 		}
 
-		sb.append(_FINDER_COLUMN_LTE_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_LTE_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), CommerceDiscount.class.getName(),
@@ -6017,8 +5777,17 @@ public class CommerceDiscountPersistenceImpl
 	private static final String _FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2 =
 		"commerceDiscount.expirationDate < ? AND ";
 
+	private static final String _FINDER_COLUMN_LTE_S_EXPIRATIONDATE_1_SQL =
+		"CommerceDiscount.expirationDate IS NULL AND ";
+
+	private static final String _FINDER_COLUMN_LTE_S_EXPIRATIONDATE_2_SQL =
+		"CommerceDiscount.expirationDate < ? AND ";
+
 	private static final String _FINDER_COLUMN_LTE_S_STATUS_2 =
 		"commerceDiscount.status = ?";
+
+	private static final String _FINDER_COLUMN_LTE_S_STATUS_2_SQL =
+		"CommerceDiscount.status = ?";
 
 	private FinderPath _finderPathFetchByC_C_A;
 	private FinderPath _finderPathCountByC_C_A;
@@ -6948,7 +6717,7 @@ public class CommerceDiscountPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEDISCOUNT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_L_A_S_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_L_A_S_COMPANYID_2_SQL);
 
 		boolean bindLevel = false;
 
@@ -6963,7 +6732,7 @@ public class CommerceDiscountPersistenceImpl
 
 		sb.append(_FINDER_COLUMN_C_L_A_S_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_L_A_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_C_L_A_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -6971,22 +6740,11 @@ public class CommerceDiscountPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7000,14 +6758,8 @@ public class CommerceDiscountPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7114,7 +6866,7 @@ public class CommerceDiscountPersistenceImpl
 				_FILTER_SQL_SELECT_COMMERCEDISCOUNT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_C_L_A_S_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_L_A_S_COMPANYID_2_SQL);
 
 		boolean bindLevel = false;
 
@@ -7129,7 +6881,7 @@ public class CommerceDiscountPersistenceImpl
 
 		sb.append(_FINDER_COLUMN_C_L_A_S_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_L_A_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_C_L_A_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -7145,18 +6897,10 @@ public class CommerceDiscountPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -7181,16 +6925,9 @@ public class CommerceDiscountPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -7211,12 +6948,7 @@ public class CommerceDiscountPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(CommerceDiscountModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -7228,14 +6960,7 @@ public class CommerceDiscountPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, CommerceDiscountImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, CommerceDiscountImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -7391,7 +7116,7 @@ public class CommerceDiscountPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_COMMERCEDISCOUNT_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_L_A_S_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_L_A_S_COMPANYID_2_SQL);
 
 		boolean bindLevel = false;
 
@@ -7406,7 +7131,7 @@ public class CommerceDiscountPersistenceImpl
 
 		sb.append(_FINDER_COLUMN_C_L_A_S_ACTIVE_2_SQL);
 
-		sb.append(_FINDER_COLUMN_C_L_A_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_C_L_A_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), CommerceDiscount.class.getName(),
@@ -7449,6 +7174,9 @@ public class CommerceDiscountPersistenceImpl
 	private static final String _FINDER_COLUMN_C_L_A_S_COMPANYID_2 =
 		"commerceDiscount.companyId = ? AND ";
 
+	private static final String _FINDER_COLUMN_C_L_A_S_COMPANYID_2_SQL =
+		"CommerceDiscount.companyId = ? AND ";
+
 	private static final String _FINDER_COLUMN_C_L_A_S_LEVEL_2 =
 		"commerceDiscount.level = ? AND ";
 
@@ -7456,19 +7184,22 @@ public class CommerceDiscountPersistenceImpl
 		"(commerceDiscount.level IS NULL OR commerceDiscount.level = '') AND ";
 
 	private static final String _FINDER_COLUMN_C_L_A_S_LEVEL_2_SQL =
-		"commerceDiscount.levelType = ? AND ";
+		"CommerceDiscount.levelType = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_L_A_S_LEVEL_3_SQL =
-		"(commerceDiscount.levelType IS NULL OR commerceDiscount.levelType = '') AND ";
+		"(CommerceDiscount.levelType IS NULL OR CommerceDiscount.levelType = '') AND ";
 
 	private static final String _FINDER_COLUMN_C_L_A_S_ACTIVE_2 =
 		"commerceDiscount.active = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_L_A_S_ACTIVE_2_SQL =
-		"commerceDiscount.active_ = ? AND ";
+		"CommerceDiscount.active_ = ? AND ";
 
 	private static final String _FINDER_COLUMN_C_L_A_S_STATUS_2 =
 		"commerceDiscount.status = ?";
+
+	private static final String _FINDER_COLUMN_C_L_A_S_STATUS_2_SQL =
+		"CommerceDiscount.status = ?";
 
 	private FinderPath _finderPathFetchByERC_C;
 	private FinderPath _finderPathCountByERC_C;
@@ -8621,10 +8352,10 @@ public class CommerceDiscountPersistenceImpl
 		"SELECT COUNT(commerceDiscount) FROM CommerceDiscount commerceDiscount WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"commerceDiscount.commerceDiscountId";
+		"CommerceDiscount.commerceDiscountId";
 
 	private static final String _FILTER_SQL_SELECT_COMMERCEDISCOUNT_WHERE =
-		"SELECT DISTINCT {commerceDiscount.*} FROM CommerceDiscount commerceDiscount WHERE ";
+		"SELECT DISTINCT {CommerceDiscount.*} FROM CommerceDiscount WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_COMMERCEDISCOUNT_NO_INLINE_DISTINCT_WHERE_1 =
@@ -8635,7 +8366,7 @@ public class CommerceDiscountPersistenceImpl
 			") TEMP_TABLE INNER JOIN CommerceDiscount ON TEMP_TABLE.commerceDiscountId = CommerceDiscount.commerceDiscountId";
 
 	private static final String _FILTER_SQL_COUNT_COMMERCEDISCOUNT_WHERE =
-		"SELECT COUNT(DISTINCT commerceDiscount.commerceDiscountId) AS COUNT_VALUE FROM CommerceDiscount commerceDiscount WHERE ";
+		"SELECT COUNT(DISTINCT CommerceDiscount.commerceDiscountId) AS COUNT_VALUE FROM CommerceDiscount WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "commerceDiscount";
 

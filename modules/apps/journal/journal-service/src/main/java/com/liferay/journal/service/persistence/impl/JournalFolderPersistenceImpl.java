@@ -2005,7 +2005,7 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2013,22 +2013,11 @@ public class JournalFolderPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2042,14 +2031,7 @@ public class JournalFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2136,7 +2118,7 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2152,18 +2134,10 @@ public class JournalFolderPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2188,16 +2162,9 @@ public class JournalFolderPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2218,12 +2185,7 @@ public class JournalFolderPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2235,12 +2197,7 @@ public class JournalFolderPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2351,7 +2308,7 @@ public class JournalFolderPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalFolder.class.getName(),
@@ -2385,6 +2342,9 @@ public class JournalFolderPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"journalFolder.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"JournalFolder.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
@@ -3442,9 +3402,9 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_PARENTFOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3452,22 +3412,11 @@ public class JournalFolderPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3481,14 +3430,7 @@ public class JournalFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3581,9 +3523,9 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_PARENTFOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -3599,18 +3541,10 @@ public class JournalFolderPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3635,16 +3569,9 @@ public class JournalFolderPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -3665,12 +3592,7 @@ public class JournalFolderPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -3682,12 +3604,7 @@ public class JournalFolderPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -3808,9 +3725,9 @@ public class JournalFolderPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_PARENTFOLDERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalFolder.class.getName(),
@@ -3847,8 +3764,14 @@ public class JournalFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_GROUPID_2 =
 		"journalFolder.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_GROUPID_2_SQL =
+		"JournalFolder.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_PARENTFOLDERID_2 =
 		"journalFolder.parentFolderId = ?";
+
+	private static final String _FINDER_COLUMN_G_P_PARENTFOLDERID_2_SQL =
+		"JournalFolder.parentFolderId = ?";
 
 	private FinderPath _finderPathFetchByG_N;
 	private FinderPath _finderPathCountByG_N;
@@ -5531,11 +5454,11 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_PARENTFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5543,22 +5466,11 @@ public class JournalFolderPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5572,14 +5484,7 @@ public class JournalFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5675,11 +5580,11 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_PARENTFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -5695,18 +5600,10 @@ public class JournalFolderPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5731,16 +5628,9 @@ public class JournalFolderPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -5761,12 +5651,7 @@ public class JournalFolderPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -5778,12 +5663,7 @@ public class JournalFolderPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -5917,11 +5797,11 @@ public class JournalFolderPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_PARENTFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalFolder.class.getName(),
@@ -5960,11 +5840,20 @@ public class JournalFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_S_GROUPID_2 =
 		"journalFolder.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_S_GROUPID_2_SQL =
+		"JournalFolder.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_S_PARENTFOLDERID_2 =
 		"journalFolder.parentFolderId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_S_PARENTFOLDERID_2_SQL =
+		"JournalFolder.parentFolderId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_S_STATUS_2 =
 		"journalFolder.status = ?";
+
+	private static final String _FINDER_COLUMN_G_P_S_STATUS_2_SQL =
+		"JournalFolder.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_NotS;
 	private FinderPath _finderPathWithPaginationCountByG_P_NotS;
@@ -6536,11 +6425,11 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -6548,22 +6437,11 @@ public class JournalFolderPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -6577,14 +6455,7 @@ public class JournalFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6680,11 +6551,11 @@ public class JournalFolderPersistenceImpl
 				_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -6700,18 +6571,10 @@ public class JournalFolderPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -6736,16 +6599,9 @@ public class JournalFolderPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -6766,12 +6622,7 @@ public class JournalFolderPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(JournalFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(JournalFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -6783,12 +6634,7 @@ public class JournalFolderPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, JournalFolderImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, JournalFolderImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -6924,11 +6770,11 @@ public class JournalFolderPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_JOURNALFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_NOTS_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_NOTS_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), JournalFolder.class.getName(),
@@ -6967,11 +6813,20 @@ public class JournalFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_NOTS_GROUPID_2 =
 		"journalFolder.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_NOTS_GROUPID_2_SQL =
+		"JournalFolder.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2 =
 		"journalFolder.parentFolderId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_NOTS_PARENTFOLDERID_2_SQL =
+		"JournalFolder.parentFolderId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_NOTS_STATUS_2 =
 		"journalFolder.status != ?";
+
+	private static final String _FINDER_COLUMN_G_P_NOTS_STATUS_2_SQL =
+		"JournalFolder.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByGtF_C_P_NotS;
 	private FinderPath _finderPathWithPaginationCountByGtF_C_P_NotS;
@@ -8950,10 +8805,10 @@ public class JournalFolderPersistenceImpl
 		"SELECT COUNT(journalFolder) FROM JournalFolder journalFolder WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"journalFolder.folderId";
+		"JournalFolder.folderId";
 
 	private static final String _FILTER_SQL_SELECT_JOURNALFOLDER_WHERE =
-		"SELECT DISTINCT {journalFolder.*} FROM JournalFolder journalFolder WHERE ";
+		"SELECT DISTINCT {JournalFolder.*} FROM JournalFolder WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_JOURNALFOLDER_NO_INLINE_DISTINCT_WHERE_1 =
@@ -8964,7 +8819,7 @@ public class JournalFolderPersistenceImpl
 			") TEMP_TABLE INNER JOIN JournalFolder ON TEMP_TABLE.folderId = JournalFolder.folderId";
 
 	private static final String _FILTER_SQL_COUNT_JOURNALFOLDER_WHERE =
-		"SELECT COUNT(DISTINCT journalFolder.folderId) AS COUNT_VALUE FROM JournalFolder journalFolder WHERE ";
+		"SELECT COUNT(DISTINCT JournalFolder.folderId) AS COUNT_VALUE FROM JournalFolder WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "journalFolder";
 

@@ -1992,29 +1992,18 @@ public class KBTemplatePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_KBTEMPLATE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_KBTEMPLATE_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2028,12 +2017,7 @@ public class KBTemplatePersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBTemplateImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBTemplateImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBTemplateImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2119,7 +2103,7 @@ public class KBTemplatePersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_KBTEMPLATE_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_KBTEMPLATE_NO_INLINE_DISTINCT_WHERE_2);
@@ -2134,18 +2118,10 @@ public class KBTemplatePersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2170,16 +2146,9 @@ public class KBTemplatePersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2200,12 +2169,7 @@ public class KBTemplatePersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBTemplateModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBTemplateModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBTemplateModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2217,12 +2181,7 @@ public class KBTemplatePersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBTemplateImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBTemplateImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBTemplateImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2332,7 +2291,7 @@ public class KBTemplatePersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_KBTEMPLATE_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), KBTemplate.class.getName(),
@@ -2366,6 +2325,9 @@ public class KBTemplatePersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"kbTemplate.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"KBTemplate.groupId = ?";
 
 	public KBTemplatePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -3356,10 +3318,10 @@ public class KBTemplatePersistenceImpl
 		"SELECT COUNT(kbTemplate) FROM KBTemplate kbTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"kbTemplate.kbTemplateId";
+		"KBTemplate.kbTemplateId";
 
 	private static final String _FILTER_SQL_SELECT_KBTEMPLATE_WHERE =
-		"SELECT DISTINCT {kbTemplate.*} FROM KBTemplate kbTemplate WHERE ";
+		"SELECT DISTINCT {KBTemplate.*} FROM KBTemplate WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_KBTEMPLATE_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3370,7 +3332,7 @@ public class KBTemplatePersistenceImpl
 			") TEMP_TABLE INNER JOIN KBTemplate ON TEMP_TABLE.kbTemplateId = KBTemplate.kbTemplateId";
 
 	private static final String _FILTER_SQL_COUNT_KBTEMPLATE_WHERE =
-		"SELECT COUNT(DISTINCT kbTemplate.kbTemplateId) AS COUNT_VALUE FROM KBTemplate kbTemplate WHERE ";
+		"SELECT COUNT(DISTINCT KBTemplate.kbTemplateId) AS COUNT_VALUE FROM KBTemplate WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "kbTemplate";
 

@@ -1945,7 +1945,7 @@ public class KaleoProcessPersistenceImpl
 				_FILTER_SQL_SELECT_KALEOPROCESS_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -1953,22 +1953,11 @@ public class KaleoProcessPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KaleoProcessModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KaleoProcessModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KaleoProcessModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -1982,14 +1971,7 @@ public class KaleoProcessPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, KaleoProcessImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, KaleoProcessImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KaleoProcessImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2076,7 +2058,7 @@ public class KaleoProcessPersistenceImpl
 				_FILTER_SQL_SELECT_KALEOPROCESS_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2092,18 +2074,10 @@ public class KaleoProcessPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2128,16 +2102,9 @@ public class KaleoProcessPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2158,12 +2125,7 @@ public class KaleoProcessPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KaleoProcessModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KaleoProcessModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KaleoProcessModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2175,12 +2137,7 @@ public class KaleoProcessPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KaleoProcessImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KaleoProcessImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KaleoProcessImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2284,7 +2241,7 @@ public class KaleoProcessPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_KALEOPROCESS_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), KaleoProcess.class.getName(),
@@ -2318,6 +2275,9 @@ public class KaleoProcessPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"kaleoProcess.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"KaleoProcess.groupId = ?";
 
 	private FinderPath _finderPathFetchByDDLRecordSetId;
 	private FinderPath _finderPathCountByDDLRecordSetId;
@@ -3252,10 +3212,10 @@ public class KaleoProcessPersistenceImpl
 		"SELECT COUNT(kaleoProcess) FROM KaleoProcess kaleoProcess WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"kaleoProcess.kaleoProcessId";
+		"KaleoProcess.kaleoProcessId";
 
 	private static final String _FILTER_SQL_SELECT_KALEOPROCESS_WHERE =
-		"SELECT DISTINCT {kaleoProcess.*} FROM KaleoProcess kaleoProcess WHERE ";
+		"SELECT DISTINCT {KaleoProcess.*} FROM KaleoProcess WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_KALEOPROCESS_NO_INLINE_DISTINCT_WHERE_1 =
@@ -3266,7 +3226,7 @@ public class KaleoProcessPersistenceImpl
 			") TEMP_TABLE INNER JOIN KaleoProcess ON TEMP_TABLE.kaleoProcessId = KaleoProcess.kaleoProcessId";
 
 	private static final String _FILTER_SQL_COUNT_KALEOPROCESS_WHERE =
-		"SELECT COUNT(DISTINCT kaleoProcess.kaleoProcessId) AS COUNT_VALUE FROM KaleoProcess kaleoProcess WHERE ";
+		"SELECT COUNT(DISTINCT KaleoProcess.kaleoProcessId) AS COUNT_VALUE FROM KaleoProcess WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "kaleoProcess";
 

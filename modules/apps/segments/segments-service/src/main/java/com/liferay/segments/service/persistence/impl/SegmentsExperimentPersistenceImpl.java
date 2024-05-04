@@ -2013,7 +2013,7 @@ public class SegmentsExperimentPersistenceImpl
 				_FILTER_SQL_SELECT_SEGMENTSEXPERIMENT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2021,22 +2021,11 @@ public class SegmentsExperimentPersistenceImpl
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SegmentsExperimentModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SegmentsExperimentModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SegmentsExperimentModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2050,14 +2039,8 @@ public class SegmentsExperimentPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_ALIAS, SegmentsExperimentImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(
-					_FILTER_ENTITY_TABLE, SegmentsExperimentImpl.class);
-			}
+			sqlQuery.addEntity(
+				_FILTER_ENTITY_TABLE, SegmentsExperimentImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2146,7 +2129,7 @@ public class SegmentsExperimentPersistenceImpl
 				_FILTER_SQL_SELECT_SEGMENTSEXPERIMENT_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(
@@ -2162,18 +2145,10 @@ public class SegmentsExperimentPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2198,16 +2173,9 @@ public class SegmentsExperimentPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2228,12 +2196,7 @@ public class SegmentsExperimentPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(SegmentsExperimentModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(SegmentsExperimentModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(SegmentsExperimentModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2245,14 +2208,7 @@ public class SegmentsExperimentPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_ALIAS, SegmentsExperimentImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(
-				_FILTER_ENTITY_TABLE, SegmentsExperimentImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, SegmentsExperimentImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2363,7 +2319,7 @@ public class SegmentsExperimentPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_SEGMENTSEXPERIMENT_WHERE);
 
-		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2);
+		sb.append(_FINDER_COLUMN_GROUPID_GROUPID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), SegmentsExperiment.class.getName(),
@@ -2397,6 +2353,9 @@ public class SegmentsExperimentPersistenceImpl
 
 	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2 =
 		"segmentsExperiment.groupId = ?";
+
+	private static final String _FINDER_COLUMN_GROUPID_GROUPID_2_SQL =
+		"SegmentsExperiment.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySegmentsExperimentKey;
 	private FinderPath _finderPathWithoutPaginationFindBySegmentsExperimentKey;
@@ -4597,10 +4556,10 @@ public class SegmentsExperimentPersistenceImpl
 		"SELECT COUNT(segmentsExperiment) FROM SegmentsExperiment segmentsExperiment WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"segmentsExperiment.segmentsExperimentId";
+		"SegmentsExperiment.segmentsExperimentId";
 
 	private static final String _FILTER_SQL_SELECT_SEGMENTSEXPERIMENT_WHERE =
-		"SELECT DISTINCT {segmentsExperiment.*} FROM SegmentsExperiment segmentsExperiment WHERE ";
+		"SELECT DISTINCT {SegmentsExperiment.*} FROM SegmentsExperiment WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_SEGMENTSEXPERIMENT_NO_INLINE_DISTINCT_WHERE_1 =
@@ -4611,7 +4570,7 @@ public class SegmentsExperimentPersistenceImpl
 			") TEMP_TABLE INNER JOIN SegmentsExperiment ON TEMP_TABLE.segmentsExperimentId = SegmentsExperiment.segmentsExperimentId";
 
 	private static final String _FILTER_SQL_COUNT_SEGMENTSEXPERIMENT_WHERE =
-		"SELECT COUNT(DISTINCT segmentsExperiment.segmentsExperimentId) AS COUNT_VALUE FROM SegmentsExperiment segmentsExperiment WHERE ";
+		"SELECT COUNT(DISTINCT SegmentsExperiment.segmentsExperimentId) AS COUNT_VALUE FROM SegmentsExperiment WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "segmentsExperiment";
 

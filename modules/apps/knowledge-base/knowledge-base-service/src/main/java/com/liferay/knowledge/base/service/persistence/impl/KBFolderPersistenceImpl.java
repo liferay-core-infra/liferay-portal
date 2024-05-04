@@ -2537,31 +2537,20 @@ public class KBFolderPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PARENTKBFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_PARENTKBFOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2575,12 +2564,7 @@ public class KBFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2671,9 +2655,9 @@ public class KBFolderPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PARENTKBFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_PARENTKBFOLDERID_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_2);
@@ -2688,18 +2672,10 @@ public class KBFolderPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2724,16 +2700,9 @@ public class KBFolderPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -2754,12 +2723,7 @@ public class KBFolderPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -2771,12 +2735,7 @@ public class KBFolderPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBFolderImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -2896,9 +2855,9 @@ public class KBFolderPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_KBFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_P_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_PARENTKBFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_PARENTKBFOLDERID_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), KBFolder.class.getName(),
@@ -2935,8 +2894,14 @@ public class KBFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_GROUPID_2 =
 		"kbFolder.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_GROUPID_2_SQL =
+		"KBFolder.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_PARENTKBFOLDERID_2 =
 		"kbFolder.parentKBFolderId = ?";
+
+	private static final String _FINDER_COLUMN_G_P_PARENTKBFOLDERID_2_SQL =
+		"KBFolder.parentKBFolderId = ?";
 
 	private FinderPath _finderPathFetchByG_P_N;
 	private FinderPath _finderPathCountByG_P_N;
@@ -4127,33 +4092,22 @@ public class KBFolderPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_2);
 		}
 
 		if (orderByComparator != null) {
-			if (getDB().isSupportsInlineDistinct()) {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
-			}
-			else {
-				appendOrderByComparator(
-					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
-			}
+			appendOrderByComparator(
+				sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4167,12 +4121,7 @@ public class KBFolderPersistenceImpl
 
 			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			if (getDB().isSupportsInlineDistinct()) {
-				sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBFolderImpl.class);
-			}
-			else {
-				sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
-			}
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
 
 			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4268,11 +4217,11 @@ public class KBFolderPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_2);
@@ -4287,18 +4236,10 @@ public class KBFolderPersistenceImpl
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
-							true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
-							true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+						true));
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4323,16 +4264,9 @@ public class KBFolderPersistenceImpl
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				if (getDB().isSupportsInlineDistinct()) {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
-				}
-				else {
-					sb.append(
-						getColumnName(
-							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
-				}
+				sb.append(
+					getColumnName(
+						_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
@@ -4353,12 +4287,7 @@ public class KBFolderPersistenceImpl
 			}
 		}
 		else {
-			if (getDB().isSupportsInlineDistinct()) {
-				sb.append(KBFolderModelImpl.ORDER_BY_JPQL);
-			}
-			else {
-				sb.append(KBFolderModelImpl.ORDER_BY_SQL);
-			}
+			sb.append(KBFolderModelImpl.ORDER_BY_SQL);
 		}
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
@@ -4370,12 +4299,7 @@ public class KBFolderPersistenceImpl
 		sqlQuery.setFirstResult(0);
 		sqlQuery.setMaxResults(2);
 
-		if (getDB().isSupportsInlineDistinct()) {
-			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, KBFolderImpl.class);
-		}
-		else {
-			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
-		}
+		sqlQuery.addEntity(_FILTER_ENTITY_TABLE, KBFolderImpl.class);
 
 		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
@@ -4508,11 +4432,11 @@ public class KBFolderPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_KBFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_GROUPID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2);
+		sb.append(_FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2_SQL);
 
-		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2);
+		sb.append(_FINDER_COLUMN_G_P_S_STATUS_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), KBFolder.class.getName(),
@@ -4551,11 +4475,20 @@ public class KBFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_S_GROUPID_2 =
 		"kbFolder.groupId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_S_GROUPID_2_SQL =
+		"KBFolder.groupId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2 =
 		"kbFolder.parentKBFolderId = ? AND ";
 
+	private static final String _FINDER_COLUMN_G_P_S_PARENTKBFOLDERID_2_SQL =
+		"KBFolder.parentKBFolderId = ? AND ";
+
 	private static final String _FINDER_COLUMN_G_P_S_STATUS_2 =
 		"kbFolder.status = ?";
+
+	private static final String _FINDER_COLUMN_G_P_S_STATUS_2_SQL =
+		"KBFolder.status = ?";
 
 	private FinderPath _finderPathFetchByERC_G;
 	private FinderPath _finderPathCountByERC_G;
@@ -5984,10 +5917,10 @@ public class KBFolderPersistenceImpl
 		"SELECT COUNT(kbFolder) FROM KBFolder kbFolder WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"kbFolder.kbFolderId";
+		"KBFolder.kbFolderId";
 
 	private static final String _FILTER_SQL_SELECT_KBFOLDER_WHERE =
-		"SELECT DISTINCT {kbFolder.*} FROM KBFolder kbFolder WHERE ";
+		"SELECT DISTINCT {KBFolder.*} FROM KBFolder WHERE ";
 
 	private static final String
 		_FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_1 =
@@ -5998,7 +5931,7 @@ public class KBFolderPersistenceImpl
 			") TEMP_TABLE INNER JOIN KBFolder ON TEMP_TABLE.kbFolderId = KBFolder.kbFolderId";
 
 	private static final String _FILTER_SQL_COUNT_KBFOLDER_WHERE =
-		"SELECT COUNT(DISTINCT kbFolder.kbFolderId) AS COUNT_VALUE FROM KBFolder kbFolder WHERE ";
+		"SELECT COUNT(DISTINCT KBFolder.kbFolderId) AS COUNT_VALUE FROM KBFolder WHERE ";
 
 	private static final String _FILTER_ENTITY_ALIAS = "kbFolder";
 

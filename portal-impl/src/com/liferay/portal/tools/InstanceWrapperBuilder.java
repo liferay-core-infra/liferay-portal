@@ -10,6 +10,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -39,15 +40,15 @@ public class InstanceWrapperBuilder {
 	public static void main(String[] args) {
 		ToolDependencies.wireBasic();
 
-		if (args.length == 1) {
-			new InstanceWrapperBuilder(args[0]);
+		if (args.length == 2) {
+			new InstanceWrapperBuilder(args[0], args[1]);
 		}
 		else {
 			throw new IllegalArgumentException();
 		}
 	}
 
-	public InstanceWrapperBuilder(String xml) {
+	public InstanceWrapperBuilder(String xml, String copyrightFileName) {
 		try {
 			File file = new File(xml);
 
@@ -64,7 +65,7 @@ public class InstanceWrapperBuilder {
 				String srcFile = instanceWrapperElement.attributeValue(
 					"src-file");
 
-				_createIW(parentDir, srcFile);
+				_createIW(parentDir, srcFile, FileUtil.read(copyrightFileName));
 			}
 		}
 		catch (Exception exception) {
@@ -72,7 +73,7 @@ public class InstanceWrapperBuilder {
 		}
 	}
 
-	private void _createIW(String parentDir, String srcFile)
+	private void _createIW(String parentDir, String srcFile, String copyright)
 		throws IOException {
 
 		JavaClass javaClass = _getJavaClass(parentDir, srcFile);
@@ -85,6 +86,7 @@ public class InstanceWrapperBuilder {
 
 		JavaPackage javaPackage = javaClass.getPackage();
 
+		sb.append(copyright);
 		sb.append("package ");
 		sb.append(javaPackage.getName());
 		sb.append(";\n\n");

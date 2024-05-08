@@ -53,6 +53,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		>
 			<jvmarg value="-Dexternal-properties=com/liferay/portal/tools/dependencies/portal-tools.properties" />
 			<arg value="src/com/liferay/portal/tools/instance_wrappers.xml" />
+			<arg value="src/com/liferay/portal/tools/copyright.txt" />
 		</java>
 	</target>
 

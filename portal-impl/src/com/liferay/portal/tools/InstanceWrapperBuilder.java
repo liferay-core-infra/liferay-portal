@@ -48,11 +48,13 @@ public class InstanceWrapperBuilder {
 		}
 	}
 
-	public InstanceWrapperBuilder(String xml, String copyrightFileName) {
-		try {
-			File file = new File(xml);
+	public InstanceWrapperBuilder(
+		String xmlFileName, String copyrightFileName) {
 
-			Document document = UnsecureSAXReaderUtil.read(file);
+		try {
+			File xmlFile = new File(xmlFileName);
+
+			Document document = UnsecureSAXReaderUtil.read(xmlFile);
 
 			Element rootElement = document.getRootElement();
 
@@ -112,118 +114,7 @@ public class InstanceWrapperBuilder {
 		sb.append("_IW getInstance() {\n\t\treturn _instance;\n\t}\n\n");
 
 		for (JavaMethod javaMethod : javaMethods) {
-			if (!javaMethod.isPublic() || !javaMethod.isStatic()) {
-				continue;
-			}
-
-			String methodName = javaMethod.getName();
-
-			if (methodName.equals("getInstance")) {
-				methodName = "getWrappedInstance";
-			}
-
-			DocletTag[] docletTags = javaMethod.getTagsByName("deprecated");
-
-			if (ArrayUtil.isNotEmpty(docletTags)) {
-				sb.append("\t/**\n");
-				sb.append("\t * @deprecated\n");
-				sb.append("\t */\n");
-				sb.append("\t@Deprecated\n");
-			}
-
-			sb.append("\tpublic ");
-
-			TypeVariable[] typeParameters = javaMethod.getTypeParameters();
-
-			if (typeParameters.length > 0) {
-				sb.append(" <");
-
-				for (TypeVariable typeParameter : typeParameters) {
-					sb.append(typeParameter.getName());
-					sb.append(", ");
-				}
-
-				sb.setIndex(sb.index() - 1);
-
-				sb.append("> ");
-			}
-
-			sb.append(_getTypeGenericsName(javaMethod.getReturnType()));
-			sb.append(" ");
-			sb.append(methodName);
-			sb.append(StringPool.OPEN_PARENTHESIS);
-
-			JavaParameter[] javaParameters = javaMethod.getParameters();
-
-			for (JavaParameter javaParameter : javaParameters) {
-				sb.append(_getTypeGenericsName(javaParameter.getType()));
-
-				if (javaParameter.isVarArgs()) {
-					sb.append("...");
-				}
-
-				sb.append(" ");
-				sb.append(javaParameter.getName());
-				sb.append(", ");
-			}
-
-			if (javaParameters.length > 0) {
-				sb.setIndex(sb.index() - 1);
-			}
-
-			sb.append(StringPool.CLOSE_PARENTHESIS);
-
-			Type[] thrownExceptions = javaMethod.getExceptions();
-
-			Set<String> newExceptions = new LinkedHashSet<>();
-
-			for (Type thrownException : thrownExceptions) {
-				newExceptions.add(thrownException.getValue());
-			}
-
-			if (!newExceptions.isEmpty()) {
-				sb.append("\n\t\tthrows ");
-
-				for (String newException : newExceptions) {
-					sb.append(newException);
-					sb.append(", ");
-				}
-
-				sb.setIndex(sb.index() - 1);
-			}
-
-			sb.append(" {\n");
-
-			if (!newExceptions.isEmpty()) {
-				sb.append(StringPool.NEW_LINE);
-			}
-
-			Type returnType = javaMethod.getReturnType();
-
-			String returnTypeValue = returnType.getValue();
-
-			if (!returnTypeValue.equals("void")) {
-				sb.append("\t\treturn ");
-			}
-			else {
-				sb.append("\t\t");
-			}
-
-			sb.append(javaClass.getName());
-			sb.append(".");
-			sb.append(javaMethod.getName());
-			sb.append("(");
-
-			for (JavaParameter javaParameter : javaParameters) {
-				sb.append(javaParameter.getName());
-				sb.append(", ");
-			}
-
-			if (javaParameters.length > 0) {
-				sb.setIndex(sb.index() - 1);
-			}
-
-			sb.append(");\n\t}\n\n");
+			_createWrapperMethod(sb, javaClass, javaMethod);
 		}
 
 		// Private constructor
@@ -253,6 +144,123 @@ public class InstanceWrapperBuilder {
 				javaClass.getName(), "_IW.java"));
 
 		ToolsUtil.writeFileRaw(file, sb.toString(), null);
+	}
+
+	private void _createWrapperMethod(
+		StringBundler sb, JavaClass javaClass, JavaMethod javaMethod) {
+
+		if (!javaMethod.isPublic() || !javaMethod.isStatic()) {
+			return;
+		}
+
+		String methodName = javaMethod.getName();
+
+		if (methodName.equals("getInstance")) {
+			methodName = "getWrappedInstance";
+		}
+
+		DocletTag[] docletTags = javaMethod.getTagsByName("deprecated");
+
+		if (ArrayUtil.isNotEmpty(docletTags)) {
+			sb.append("\t/**\n");
+			sb.append("\t * @deprecated\n");
+			sb.append("\t */\n");
+			sb.append("\t@Deprecated\n");
+		}
+
+		sb.append("\tpublic ");
+
+		TypeVariable[] typeParameters = javaMethod.getTypeParameters();
+
+		if (typeParameters.length > 0) {
+			sb.append(" <");
+
+			for (TypeVariable typeParameter : typeParameters) {
+				sb.append(typeParameter.getName());
+				sb.append(", ");
+			}
+
+			sb.setIndex(sb.index() - 1);
+
+			sb.append("> ");
+		}
+
+		sb.append(_getTypeGenericsName(javaMethod.getReturnType()));
+		sb.append(" ");
+		sb.append(methodName);
+		sb.append(StringPool.OPEN_PARENTHESIS);
+
+		JavaParameter[] javaParameters = javaMethod.getParameters();
+
+		for (JavaParameter javaParameter : javaParameters) {
+			sb.append(_getTypeGenericsName(javaParameter.getType()));
+
+			if (javaParameter.isVarArgs()) {
+				sb.append("...");
+			}
+
+			sb.append(" ");
+			sb.append(javaParameter.getName());
+			sb.append(", ");
+		}
+
+		if (javaParameters.length > 0) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		sb.append(StringPool.CLOSE_PARENTHESIS);
+
+		Type[] thrownExceptions = javaMethod.getExceptions();
+
+		Set<String> newExceptions = new LinkedHashSet<>();
+
+		for (Type thrownException : thrownExceptions) {
+			newExceptions.add(thrownException.getValue());
+		}
+
+		if (!newExceptions.isEmpty()) {
+			sb.append("\n\t\tthrows ");
+
+			for (String newException : newExceptions) {
+				sb.append(newException);
+				sb.append(", ");
+			}
+
+			sb.setIndex(sb.index() - 1);
+		}
+
+		sb.append(" {\n");
+
+		if (!newExceptions.isEmpty()) {
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		Type returnType = javaMethod.getReturnType();
+
+		String returnTypeValue = returnType.getValue();
+
+		if (!returnTypeValue.equals("void")) {
+			sb.append("\t\treturn ");
+		}
+		else {
+			sb.append("\t\t");
+		}
+
+		sb.append(javaClass.getName());
+		sb.append(".");
+		sb.append(javaMethod.getName());
+		sb.append("(");
+
+		for (JavaParameter javaParameter : javaParameters) {
+			sb.append(javaParameter.getName());
+			sb.append(", ");
+		}
+
+		if (javaParameters.length > 0) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		sb.append(");\n\t}\n\n");
 	}
 
 	private String _getDimensions(Type type) {

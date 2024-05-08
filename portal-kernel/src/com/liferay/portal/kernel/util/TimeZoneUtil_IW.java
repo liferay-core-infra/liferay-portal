@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class TimeZoneUtil_IW {
+
 	public static TimeZoneUtil_IW getInstance() {
 		return _instance;
 	}
@@ -33,4 +36,5 @@ public class TimeZoneUtil_IW {
 	}
 
 	private static TimeZoneUtil_IW _instance = new TimeZoneUtil_IW();
+
 }

@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.portlet;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class PortletModeFactory_IW {
+
 	public static PortletModeFactory_IW getInstance() {
 		return _instance;
 	}
@@ -17,8 +20,7 @@ public class PortletModeFactory_IW {
 		return PortletModeFactory.getPortletMode(name);
 	}
 
-	public javax.portlet.PortletMode getPortletMode(java.lang.String name,
-		int portletMajorVersion) {
+	public javax.portlet.PortletMode getPortletMode(java.lang.String name, int portletMajorVersion) {
 		return PortletModeFactory.getPortletMode(name, portletMajorVersion);
 	}
 
@@ -26,4 +28,5 @@ public class PortletModeFactory_IW {
 	}
 
 	private static PortletModeFactory_IW _instance = new PortletModeFactory_IW();
+
 }

@@ -7,14 +7,16 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class HtmlUtil_IW {
+
 	public static HtmlUtil_IW getInstance() {
 		return _instance;
 	}
 
-	public java.lang.String buildData(
-		java.util.Map<java.lang.String, java.lang.Object> data) {
+	public java.lang.String buildData(java.util.Map<java.lang.String, java.lang.Object> data) {
 		return HtmlUtil.buildData(data);
 	}
 
@@ -50,8 +52,7 @@ public class HtmlUtil_IW {
 		return HtmlUtil.escapeXPath(xPath);
 	}
 
-	public java.lang.String escapeXPathAttribute(
-		java.lang.String xPathAttribute) {
+	public java.lang.String escapeXPathAttribute(java.lang.String xPathAttribute) {
 		return HtmlUtil.escapeXPathAttribute(xPathAttribute);
 	}
 
@@ -67,8 +68,7 @@ public class HtmlUtil_IW {
 		return HtmlUtil.replaceNewLine(html);
 	}
 
-	public java.lang.String stripBetween(java.lang.String text,
-		java.lang.String tag) {
+	public java.lang.String stripBetween(java.lang.String text, java.lang.String tag) {
 		return HtmlUtil.stripBetween(text, tag);
 	}
 
@@ -100,4 +100,5 @@ public class HtmlUtil_IW {
 	}
 
 	private static HtmlUtil_IW _instance = new HtmlUtil_IW();
+
 }

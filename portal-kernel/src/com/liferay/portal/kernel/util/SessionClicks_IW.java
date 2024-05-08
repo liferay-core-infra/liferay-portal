@@ -7,54 +7,44 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class SessionClicks_IW {
+
 	public static SessionClicks_IW getInstance() {
 		return _instance;
 	}
 
-	public java.lang.String get(
-		javax.servlet.http.HttpServletRequest httpServletRequest,
-		java.lang.String key, java.lang.String defaultValue) {
+	public java.lang.String get(javax.servlet.http.HttpServletRequest httpServletRequest, java.lang.String key, java.lang.String defaultValue) {
 		return SessionClicks.get(httpServletRequest, key, defaultValue);
 	}
 
-	public java.lang.String get(
-		javax.servlet.http.HttpServletRequest httpServletRequest,
-		java.lang.String namespace, java.lang.String key,
-		java.lang.String defaultValue) {
-		return SessionClicks.get(httpServletRequest, namespace, key,
-			defaultValue);
+	public java.lang.String get(javax.servlet.http.HttpServletRequest httpServletRequest, java.lang.String namespace, java.lang.String key, java.lang.String defaultValue) {
+		return SessionClicks.get(httpServletRequest, namespace, key, defaultValue);
 	}
 
-	public java.lang.String get(javax.servlet.http.HttpSession httpSession,
-		java.lang.String key, java.lang.String defaultValue) {
+	public java.lang.String get(javax.servlet.http.HttpSession httpSession, java.lang.String key, java.lang.String defaultValue) {
 		return SessionClicks.get(httpSession, key, defaultValue);
 	}
 
-	public java.lang.String get(javax.servlet.http.HttpSession httpSession,
-		java.lang.String namespace, java.lang.String key,
-		java.lang.String defaultValue) {
+	public java.lang.String get(javax.servlet.http.HttpSession httpSession, java.lang.String namespace, java.lang.String key, java.lang.String defaultValue) {
 		return SessionClicks.get(httpSession, namespace, key, defaultValue);
 	}
 
-	public void put(javax.servlet.http.HttpServletRequest httpServletRequest,
-		java.lang.String key, java.lang.String value) {
+	public void put(javax.servlet.http.HttpServletRequest httpServletRequest, java.lang.String key, java.lang.String value) {
 		SessionClicks.put(httpServletRequest, key, value);
 	}
 
-	public void put(javax.servlet.http.HttpServletRequest httpServletRequest,
-		java.lang.String namespace, java.lang.String key, java.lang.String value) {
+	public void put(javax.servlet.http.HttpServletRequest httpServletRequest, java.lang.String namespace, java.lang.String key, java.lang.String value) {
 		SessionClicks.put(httpServletRequest, namespace, key, value);
 	}
 
-	public void put(javax.servlet.http.HttpSession httpSession,
-		java.lang.String key, java.lang.String value) {
+	public void put(javax.servlet.http.HttpSession httpSession, java.lang.String key, java.lang.String value) {
 		SessionClicks.put(httpSession, key, value);
 	}
 
-	public void put(javax.servlet.http.HttpSession httpSession,
-		java.lang.String namespace, java.lang.String key, java.lang.String value) {
+	public void put(javax.servlet.http.HttpSession httpSession, java.lang.String namespace, java.lang.String key, java.lang.String value) {
 		SessionClicks.put(httpSession, namespace, key, value);
 	}
 
@@ -62,4 +52,5 @@ public class SessionClicks_IW {
 	}
 
 	private static SessionClicks_IW _instance = new SessionClicks_IW();
+
 }

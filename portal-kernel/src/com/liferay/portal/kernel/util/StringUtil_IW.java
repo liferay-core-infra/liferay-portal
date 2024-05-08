@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class StringUtil_IW {
+
 	public static StringUtil_IW getInstance() {
 		return _instance;
 	}
@@ -17,23 +20,19 @@ public class StringUtil_IW {
 		return StringUtil.add(s, add);
 	}
 
-	public java.lang.String add(java.lang.String s, java.lang.String add,
-		java.lang.String delimiter) {
+	public java.lang.String add(java.lang.String s, java.lang.String add, java.lang.String delimiter) {
 		return StringUtil.add(s, add, delimiter);
 	}
 
-	public java.lang.String add(java.lang.String s, java.lang.String add,
-		java.lang.String delimiter, boolean allowDuplicates) {
+	public java.lang.String add(java.lang.String s, java.lang.String add, java.lang.String delimiter, boolean allowDuplicates) {
 		return StringUtil.add(s, add, delimiter, allowDuplicates);
 	}
 
-	public java.lang.String appendParentheticalSuffix(java.lang.String s,
-		int suffix) {
+	public java.lang.String appendParentheticalSuffix(java.lang.String s, int suffix) {
 		return StringUtil.appendParentheticalSuffix(s, suffix);
 	}
 
-	public java.lang.String appendParentheticalSuffix(java.lang.String s,
-		java.lang.String suffix) {
+	public java.lang.String appendParentheticalSuffix(java.lang.String s, java.lang.String suffix) {
 		return StringUtil.appendParentheticalSuffix(s, suffix);
 	}
 
@@ -49,8 +48,7 @@ public class StringUtil_IW {
 		return StringUtil.contains(s, text);
 	}
 
-	public boolean contains(java.lang.String s, java.lang.String text,
-		java.lang.String delimiter) {
+	public boolean contains(java.lang.String s, java.lang.String text, java.lang.String delimiter) {
 		return StringUtil.contains(s, text, delimiter);
 	}
 
@@ -58,8 +56,7 @@ public class StringUtil_IW {
 		return StringUtil.containsIgnoreCase(s, text);
 	}
 
-	public boolean containsIgnoreCase(java.lang.String s,
-		java.lang.String text, java.lang.String delimiter) {
+	public boolean containsIgnoreCase(java.lang.String s, java.lang.String text, java.lang.String delimiter) {
 		return StringUtil.containsIgnoreCase(s, text, delimiter);
 	}
 
@@ -71,8 +68,7 @@ public class StringUtil_IW {
 		return StringUtil.count(s, start, end, c);
 	}
 
-	public int count(java.lang.String s, int start, int end,
-		java.lang.String text) {
+	public int count(java.lang.String s, int start, int end, java.lang.String text) {
 		return StringUtil.count(s, start, end, text);
 	}
 
@@ -92,8 +88,7 @@ public class StringUtil_IW {
 		return StringUtil.equals(s1, s2);
 	}
 
-	public boolean equalsIgnoreBreakLine(java.lang.String s1,
-		java.lang.String s2) {
+	public boolean equalsIgnoreBreakLine(java.lang.String s1, java.lang.String s2) {
 		return StringUtil.equalsIgnoreBreakLine(s1, s2);
 	}
 
@@ -117,8 +112,7 @@ public class StringUtil_IW {
 		return StringUtil.extractFirst(s, delimiter);
 	}
 
-	public java.lang.String extractFirst(java.lang.String s,
-		java.lang.String delimiter) {
+	public java.lang.String extractFirst(java.lang.String s, java.lang.String delimiter) {
 		return StringUtil.extractFirst(s, delimiter);
 	}
 
@@ -126,8 +120,7 @@ public class StringUtil_IW {
 		return StringUtil.extractLast(s, delimiter);
 	}
 
-	public java.lang.String extractLast(java.lang.String s,
-		java.lang.String delimiter) {
+	public java.lang.String extractLast(java.lang.String s, java.lang.String delimiter) {
 		return StringUtil.extractLast(s, delimiter);
 	}
 
@@ -135,8 +128,7 @@ public class StringUtil_IW {
 		return StringUtil.extractLeadingDigits(s);
 	}
 
-	public java.lang.String getTitleCase(java.lang.String s, boolean allowDash,
-		java.lang.String... exceptions) {
+	public java.lang.String getTitleCase(java.lang.String s, boolean allowDash, java.lang.String... exceptions) {
 		return StringUtil.getTitleCase(s, allowDash, exceptions);
 	}
 
@@ -152,8 +144,7 @@ public class StringUtil_IW {
 		return StringUtil.indexOfAny(s, chars, fromIndex);
 	}
 
-	public int indexOfAny(java.lang.String s, char[] chars, int fromIndex,
-		int toIndex) {
+	public int indexOfAny(java.lang.String s, char[] chars, int fromIndex, int toIndex) {
 		return StringUtil.indexOfAny(s, chars, fromIndex, toIndex);
 	}
 
@@ -161,18 +152,15 @@ public class StringUtil_IW {
 		return StringUtil.indexOfAny(s, texts);
 	}
 
-	public int indexOfAny(java.lang.String s, java.lang.String[] texts,
-		int fromIndex) {
+	public int indexOfAny(java.lang.String s, java.lang.String[] texts, int fromIndex) {
 		return StringUtil.indexOfAny(s, texts, fromIndex);
 	}
 
-	public int indexOfAny(java.lang.String s, java.lang.String[] texts,
-		int fromIndex, int toIndex) {
+	public int indexOfAny(java.lang.String s, java.lang.String[] texts, int fromIndex, int toIndex) {
 		return StringUtil.indexOfAny(s, texts, fromIndex, toIndex);
 	}
 
-	public java.lang.String insert(java.lang.String s, java.lang.String insert,
-		int offset) {
+	public java.lang.String insert(java.lang.String s, java.lang.String insert, int offset) {
 		return StringUtil.insert(s, insert, offset);
 	}
 
@@ -192,8 +180,7 @@ public class StringUtil_IW {
 		return StringUtil.lastIndexOfAny(s, chars, toIndex);
 	}
 
-	public int lastIndexOfAny(java.lang.String s, char[] chars, int fromIndex,
-		int toIndex) {
+	public int lastIndexOfAny(java.lang.String s, char[] chars, int fromIndex, int toIndex) {
 		return StringUtil.lastIndexOfAny(s, chars, fromIndex, toIndex);
 	}
 
@@ -201,13 +188,11 @@ public class StringUtil_IW {
 		return StringUtil.lastIndexOfAny(s, texts);
 	}
 
-	public int lastIndexOfAny(java.lang.String s, java.lang.String[] texts,
-		int toIndex) {
+	public int lastIndexOfAny(java.lang.String s, java.lang.String[] texts, int toIndex) {
 		return StringUtil.lastIndexOfAny(s, texts, toIndex);
 	}
 
-	public int lastIndexOfAny(java.lang.String s, java.lang.String[] texts,
-		int fromIndex, int toIndex) {
+	public int lastIndexOfAny(java.lang.String s, java.lang.String[] texts, int fromIndex, int toIndex) {
 		return StringUtil.lastIndexOfAny(s, texts, fromIndex, toIndex);
 	}
 
@@ -227,8 +212,7 @@ public class StringUtil_IW {
 		return StringUtil.matches(s, pattern);
 	}
 
-	public boolean matchesIgnoreCase(java.lang.String s,
-		java.lang.String pattern) {
+	public boolean matchesIgnoreCase(java.lang.String s, java.lang.String pattern) {
 		return StringUtil.matchesIgnoreCase(s, pattern);
 	}
 
@@ -248,13 +232,12 @@ public class StringUtil_IW {
 		return StringUtil.merge(array, delimiter);
 	}
 
-	public java.lang.String merge(java.util.Collection<?> col) {
-		return StringUtil.merge(col);
+	public java.lang.String merge(java.util.Collection<?> collection) {
+		return StringUtil.merge(collection);
 	}
 
-	public java.lang.String merge(java.util.Collection<?> col,
-		java.lang.String delimiter) {
-		return StringUtil.merge(col, delimiter);
+	public java.lang.String merge(java.util.Collection<?> collection, java.lang.String delimiter) {
+		return StringUtil.merge(collection, delimiter);
 	}
 
 	public java.lang.String merge(double[] array) {
@@ -293,8 +276,7 @@ public class StringUtil_IW {
 		return StringUtil.merge(array);
 	}
 
-	public java.lang.String merge(java.lang.Object[] array,
-		java.lang.String delimiter) {
+	public java.lang.String merge(java.lang.Object[] array, java.lang.String delimiter) {
 		return StringUtil.merge(array, delimiter);
 	}
 
@@ -338,24 +320,27 @@ public class StringUtil_IW {
 		return StringUtil.read(clazz, name);
 	}
 
-	public java.lang.String read(java.lang.ClassLoader classLoader,
-		java.lang.String name) throws java.io.IOException {
+	public java.lang.String read(java.lang.ClassLoader classLoader, java.lang.String name)
+		throws java.io.IOException {
+
 		return StringUtil.read(classLoader, name);
 	}
 
-	public java.lang.String read(java.lang.ClassLoader classLoader,
-		java.lang.String name, boolean all) throws java.io.IOException {
+	public java.lang.String read(java.lang.ClassLoader classLoader, java.lang.String name, boolean all)
+		throws java.io.IOException {
+
 		return StringUtil.read(classLoader, name, all);
 	}
 
 	public java.lang.String read(java.io.InputStream inputStream)
 		throws java.io.IOException {
+
 		return StringUtil.read(inputStream);
 	}
 
-	public void readLines(java.io.InputStream inputStream,
-		java.util.Collection<java.lang.String> lines)
+	public void readLines(java.io.InputStream inputStream, java.util.Collection<java.lang.String> lines)
 		throws java.io.IOException {
+
 		StringUtil.readLines(inputStream, lines);
 	}
 
@@ -367,33 +352,27 @@ public class StringUtil_IW {
 		return StringUtil.removeChars(s, oldSubs);
 	}
 
-	public java.lang.String removeFirst(java.lang.String s,
-		java.lang.String oldSub) {
+	public java.lang.String removeFirst(java.lang.String s, java.lang.String oldSub) {
 		return StringUtil.removeFirst(s, oldSub);
 	}
 
-	public java.lang.String removeFromList(java.lang.String s,
-		java.lang.String element) {
+	public java.lang.String removeFromList(java.lang.String s, java.lang.String element) {
 		return StringUtil.removeFromList(s, element);
 	}
 
-	public java.lang.String removeFromList(java.lang.String s,
-		java.lang.String element, java.lang.String delimiter) {
+	public java.lang.String removeFromList(java.lang.String s, java.lang.String element, java.lang.String delimiter) {
 		return StringUtil.removeFromList(s, element, delimiter);
 	}
 
-	public java.lang.String removeLast(java.lang.String s,
-		java.lang.String oldSub) {
+	public java.lang.String removeLast(java.lang.String s, java.lang.String oldSub) {
 		return StringUtil.removeLast(s, oldSub);
 	}
 
-	public java.lang.String removeSubstring(java.lang.String s,
-		java.lang.String oldSub) {
+	public java.lang.String removeSubstring(java.lang.String s, java.lang.String oldSub) {
 		return StringUtil.removeSubstring(s, oldSub);
 	}
 
-	public java.lang.String removeSubstrings(java.lang.String s,
-		java.lang.String... oldSubs) {
+	public java.lang.String removeSubstrings(java.lang.String s, java.lang.String... oldSubs) {
 		return StringUtil.removeSubstrings(s, oldSubs);
 	}
 
@@ -401,102 +380,79 @@ public class StringUtil_IW {
 		return StringUtil.replace(s, oldSub, newSub);
 	}
 
-	public java.lang.String replace(java.lang.String s, char oldSub,
-		java.lang.String newSub) {
+	public java.lang.String replace(java.lang.String s, char oldSub, java.lang.String newSub) {
 		return StringUtil.replace(s, oldSub, newSub);
 	}
 
-	public java.lang.String replace(java.lang.String s, char[] oldSubs,
-		char[] newSubs) {
+	public java.lang.String replace(java.lang.String s, char[] oldSubs, char[] newSubs) {
 		return StringUtil.replace(s, oldSubs, newSubs);
 	}
 
-	public java.lang.String replace(java.lang.String s, char[] oldSubs,
-		java.lang.String[] newSubs) {
+	public java.lang.String replace(java.lang.String s, char[] oldSubs, java.lang.String[] newSubs) {
 		return StringUtil.replace(s, oldSubs, newSubs);
 	}
 
-	public java.lang.String replace(java.lang.String s,
-		java.lang.String oldSub, java.lang.String newSub) {
+	public java.lang.String replace(java.lang.String s, java.lang.String oldSub, java.lang.String newSub) {
 		return StringUtil.replace(s, oldSub, newSub);
 	}
 
-	public java.lang.String replace(java.lang.String s,
-		java.lang.String oldSub, java.lang.String newSub, int fromIndex) {
+	public java.lang.String replace(java.lang.String s, java.lang.String oldSub, java.lang.String newSub, int fromIndex) {
 		return StringUtil.replace(s, oldSub, newSub, fromIndex);
 	}
 
-	public java.lang.String replace(java.lang.String s, java.lang.String begin,
-		java.lang.String end,
-		java.util.Map<java.lang.String, java.lang.String> values) {
+	public java.lang.String replace(java.lang.String s, java.lang.String begin, java.lang.String end, java.util.Map<java.lang.String, java.lang.String> values) {
 		return StringUtil.replace(s, begin, end, values);
 	}
 
-	public java.lang.String replace(java.lang.String s,
-		java.lang.String[] oldSubs, java.lang.String[] newSubs) {
+	public java.lang.String replace(java.lang.String s, java.lang.String[] oldSubs, java.lang.String[] newSubs) {
 		return StringUtil.replace(s, oldSubs, newSubs);
 	}
 
-	public java.lang.String replace(java.lang.String s,
-		java.lang.String[] oldSubs, java.lang.String[] newSubs,
-		boolean exactMatch) {
+	public java.lang.String replace(java.lang.String s, java.lang.String[] oldSubs, java.lang.String[] newSubs, boolean exactMatch) {
 		return StringUtil.replace(s, oldSubs, newSubs, exactMatch);
 	}
 
-	public java.lang.String replaceFirst(java.lang.String s, char oldSub,
-		char newSub) {
+	public java.lang.String replaceFirst(java.lang.String s, char oldSub, char newSub) {
 		return StringUtil.replaceFirst(s, oldSub, newSub);
 	}
 
-	public java.lang.String replaceFirst(java.lang.String s, char oldSub,
-		java.lang.String newSub) {
+	public java.lang.String replaceFirst(java.lang.String s, char oldSub, java.lang.String newSub) {
 		return StringUtil.replaceFirst(s, oldSub, newSub);
 	}
 
-	public java.lang.String replaceFirst(java.lang.String s,
-		java.lang.String oldSub, java.lang.String newSub) {
+	public java.lang.String replaceFirst(java.lang.String s, java.lang.String oldSub, java.lang.String newSub) {
 		return StringUtil.replaceFirst(s, oldSub, newSub);
 	}
 
-	public java.lang.String replaceFirst(java.lang.String s,
-		java.lang.String oldSub, java.lang.String newSub, int fromIndex) {
+	public java.lang.String replaceFirst(java.lang.String s, java.lang.String oldSub, java.lang.String newSub, int fromIndex) {
 		return StringUtil.replaceFirst(s, oldSub, newSub, fromIndex);
 	}
 
-	public java.lang.String replaceFirst(java.lang.String s,
-		java.lang.String[] oldSubs, java.lang.String[] newSubs) {
+	public java.lang.String replaceFirst(java.lang.String s, java.lang.String[] oldSubs, java.lang.String[] newSubs) {
 		return StringUtil.replaceFirst(s, oldSubs, newSubs);
 	}
 
-	public java.lang.String replaceLast(java.lang.String s, char oldSub,
-		char newSub) {
+	public java.lang.String replaceLast(java.lang.String s, char oldSub, char newSub) {
 		return StringUtil.replaceLast(s, oldSub, newSub);
 	}
 
-	public java.lang.String replaceLast(java.lang.String s, char oldSub,
-		java.lang.String newSub) {
+	public java.lang.String replaceLast(java.lang.String s, char oldSub, java.lang.String newSub) {
 		return StringUtil.replaceLast(s, oldSub, newSub);
 	}
 
-	public java.lang.String replaceLast(java.lang.String s,
-		java.lang.String oldSub, java.lang.String newSub) {
+	public java.lang.String replaceLast(java.lang.String s, java.lang.String oldSub, java.lang.String newSub) {
 		return StringUtil.replaceLast(s, oldSub, newSub);
 	}
 
-	public java.lang.String replaceLast(java.lang.String s,
-		java.lang.String[] oldSubs, java.lang.String[] newSubs) {
+	public java.lang.String replaceLast(java.lang.String s, java.lang.String[] oldSubs, java.lang.String[] newSubs) {
 		return StringUtil.replaceLast(s, oldSubs, newSubs);
 	}
 
-	public com.liferay.petra.string.StringBundler replaceToStringBundler(
-		java.lang.String s, java.lang.String begin, java.lang.String end,
-		java.util.Map<java.lang.String, java.lang.String> values) {
+	public com.liferay.petra.string.StringBundler replaceToStringBundler(java.lang.String s, java.lang.String begin, java.lang.String end, java.util.Map<java.lang.String, java.lang.String> values) {
 		return StringUtil.replaceToStringBundler(s, begin, end, values);
 	}
 
-	public com.liferay.petra.string.StringBundler replaceWithStringBundler(
-		java.lang.String s, java.lang.String begin, java.lang.String end,
-		java.util.Map<java.lang.String, com.liferay.petra.string.StringBundler> values) {
+	public com.liferay.petra.string.StringBundler replaceWithStringBundler(java.lang.String s, java.lang.String begin, java.lang.String end, java.util.Map<java.lang.String, com.liferay.petra.string.StringBundler> values) {
 		return StringUtil.replaceWithStringBundler(s, begin, end, values);
 	}
 
@@ -508,8 +464,7 @@ public class StringUtil_IW {
 		return StringUtil.shorten(s, length);
 	}
 
-	public java.lang.String shorten(java.lang.String s, int length,
-		java.lang.String suffix) {
+	public java.lang.String shorten(java.lang.String s, int length, java.lang.String suffix) {
 		return StringUtil.shorten(s, length, suffix);
 	}
 
@@ -549,18 +504,15 @@ public class StringUtil_IW {
 		return StringUtil.split(s, x);
 	}
 
-	public java.lang.String[] split(java.lang.String s,
-		java.lang.String delimiter) {
+	public java.lang.String[] split(java.lang.String s, java.lang.String delimiter) {
 		return StringUtil.split(s, delimiter);
 	}
 
-	public boolean[] split(java.lang.String s, java.lang.String delimiter,
-		boolean x) {
+	public boolean[] split(java.lang.String s, java.lang.String delimiter, boolean x) {
 		return StringUtil.split(s, delimiter, x);
 	}
 
-	public double[] split(java.lang.String s, java.lang.String delimiter,
-		double x) {
+	public double[] split(java.lang.String s, java.lang.String delimiter, double x) {
 		return StringUtil.split(s, delimiter, x);
 	}
 
@@ -596,8 +548,7 @@ public class StringUtil_IW {
 		return StringUtil.startsWithWeight(s1, s2);
 	}
 
-	public java.lang.String stripBetween(java.lang.String s,
-		java.lang.String begin, java.lang.String end) {
+	public java.lang.String stripBetween(java.lang.String s, java.lang.String begin, java.lang.String end) {
 		return StringUtil.stripBetween(s, begin, end);
 	}
 
@@ -629,8 +580,7 @@ public class StringUtil_IW {
 		return StringUtil.toLowerCase(s);
 	}
 
-	public java.lang.String toLowerCase(java.lang.String s,
-		java.util.Locale locale) {
+	public java.lang.String toLowerCase(java.lang.String s, java.util.Locale locale) {
 		return StringUtil.toLowerCase(s, locale);
 	}
 
@@ -638,8 +588,7 @@ public class StringUtil_IW {
 		return StringUtil.toUpperCase(s);
 	}
 
-	public java.lang.String toUpperCase(java.lang.String s,
-		java.util.Locale locale) {
+	public java.lang.String toUpperCase(java.lang.String s, java.util.Locale locale) {
 		return StringUtil.toUpperCase(s, locale);
 	}
 
@@ -691,16 +640,13 @@ public class StringUtil_IW {
 		return StringUtil.upperCaseFirstLetter(s);
 	}
 
-	public boolean wildcardMatches(java.lang.String s,
-		java.lang.String wildcard, char singleWildcardCharacter,
-		char multipleWildcardCharacter, char escapeWildcardCharacter,
-		boolean caseSensitive) {
-		return StringUtil.wildcardMatches(s, wildcard, singleWildcardCharacter,
-			multipleWildcardCharacter, escapeWildcardCharacter, caseSensitive);
+	public boolean wildcardMatches(java.lang.String s, java.lang.String wildcard, char singleWildcardCharacter, char multipleWildcardCharacter, char escapeWildcardCharacter, boolean caseSensitive) {
+		return StringUtil.wildcardMatches(s, wildcard, singleWildcardCharacter, multipleWildcardCharacter, escapeWildcardCharacter, caseSensitive);
 	}
 
 	private StringUtil_IW() {
 	}
 
 	private static StringUtil_IW _instance = new StringUtil_IW();
+
 }

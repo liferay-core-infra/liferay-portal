@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class DateUtil_IW {
+
 	public static DateUtil_IW getInstance() {
 		return _instance;
 	}
@@ -21,30 +24,25 @@ public class DateUtil_IW {
 		return DateUtil.equals(date1, date2);
 	}
 
-	public java.lang.String formatDate(java.lang.String fromPattern,
-		java.lang.String dateString, java.util.Locale locale)
+	public java.lang.String formatDate(java.lang.String fromPattern, java.lang.String dateString, java.util.Locale locale)
 		throws java.text.ParseException {
+
 		return DateUtil.formatDate(fromPattern, dateString, locale);
 	}
 
-	public java.lang.String getCurrentDate(java.lang.String pattern,
-		java.util.Locale locale) {
+	public java.lang.String getCurrentDate(java.lang.String pattern, java.util.Locale locale) {
 		return DateUtil.getCurrentDate(pattern, locale);
 	}
 
-	public java.lang.String getCurrentDate(java.lang.String pattern,
-		java.util.Locale locale, java.util.TimeZone timeZone) {
+	public java.lang.String getCurrentDate(java.lang.String pattern, java.util.Locale locale, java.util.TimeZone timeZone) {
 		return DateUtil.getCurrentDate(pattern, locale, timeZone);
 	}
 
-	public java.lang.String getDate(java.util.Date date,
-		java.lang.String pattern, java.util.Locale locale) {
+	public java.lang.String getDate(java.util.Date date, java.lang.String pattern, java.util.Locale locale) {
 		return DateUtil.getDate(date, pattern, locale);
 	}
 
-	public java.lang.String getDate(java.util.Date date,
-		java.lang.String pattern, java.util.Locale locale,
-		java.util.TimeZone timeZone) {
+	public java.lang.String getDate(java.util.Date date, java.lang.String pattern, java.util.Locale locale, java.util.TimeZone timeZone) {
 		return DateUtil.getDate(date, pattern, locale, timeZone);
 	}
 
@@ -52,8 +50,7 @@ public class DateUtil_IW {
 		return DateUtil.getDaysBetween(date1, date2);
 	}
 
-	public int getDaysBetween(java.util.Date date1, java.util.Date date2,
-		java.util.TimeZone timeZone) {
+	public int getDaysBetween(java.util.Date date1, java.util.Date date2, java.util.TimeZone timeZone) {
 		return DateUtil.getDaysBetween(date1, date2, timeZone);
 	}
 
@@ -97,14 +94,15 @@ public class DateUtil_IW {
 		return DateUtil.newTime();
 	}
 
-	public java.util.Date parseDate(java.lang.String dateString,
-		java.util.Locale locale) throws java.text.ParseException {
+	public java.util.Date parseDate(java.lang.String dateString, java.util.Locale locale)
+		throws java.text.ParseException {
+
 		return DateUtil.parseDate(dateString, locale);
 	}
 
-	public java.util.Date parseDate(java.lang.String pattern,
-		java.lang.String dateString, java.util.Locale locale)
+	public java.util.Date parseDate(java.lang.String pattern, java.lang.String dateString, java.util.Locale locale)
 		throws java.text.ParseException {
+
 		return DateUtil.parseDate(pattern, dateString, locale);
 	}
 
@@ -112,4 +110,5 @@ public class DateUtil_IW {
 	}
 
 	private static DateUtil_IW _instance = new DateUtil_IW();
+
 }

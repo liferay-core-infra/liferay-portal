@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class URLCodec_IW {
+
 	public static URLCodec_IW getInstance() {
 		return _instance;
 	}
@@ -17,8 +20,7 @@ public class URLCodec_IW {
 		return URLCodec.decodeURL(encodedURLString);
 	}
 
-	public java.lang.String decodeURL(java.lang.String encodedURLString,
-		java.lang.String charsetName) {
+	public java.lang.String decodeURL(java.lang.String encodedURLString, java.lang.String charsetName) {
 		return URLCodec.decodeURL(encodedURLString, charsetName);
 	}
 
@@ -26,13 +28,11 @@ public class URLCodec_IW {
 		return URLCodec.encodeURL(rawURLString);
 	}
 
-	public java.lang.String encodeURL(java.lang.String rawURLString,
-		boolean escapeSpaces) {
+	public java.lang.String encodeURL(java.lang.String rawURLString, boolean escapeSpaces) {
 		return URLCodec.encodeURL(rawURLString, escapeSpaces);
 	}
 
-	public java.lang.String encodeURL(java.lang.String rawURLString,
-		java.lang.String charsetName, boolean escapeSpaces) {
+	public java.lang.String encodeURL(java.lang.String rawURLString, java.lang.String charsetName, boolean escapeSpaces) {
 		return URLCodec.encodeURL(rawURLString, charsetName, escapeSpaces);
 	}
 
@@ -40,4 +40,5 @@ public class URLCodec_IW {
 	}
 
 	private static URLCodec_IW _instance = new URLCodec_IW();
+
 }

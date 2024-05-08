@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class Validator_IW {
+
 	public static Validator_IW getInstance() {
 		return _instance;
 	}
@@ -41,8 +44,7 @@ public class Validator_IW {
 		return Validator.equalsSorted(longArray1, longArray2);
 	}
 
-	public boolean equalsSorted(java.lang.Object[] objArray1,
-		java.lang.Object[] objArray2) {
+	public boolean equalsSorted(java.lang.Object[] objArray1, java.lang.Object[] objArray2) {
 		return Validator.equalsSorted(objArray1, objArray2);
 	}
 
@@ -226,4 +228,5 @@ public class Validator_IW {
 	}
 
 	private static Validator_IW _instance = new Validator_IW();
+
 }

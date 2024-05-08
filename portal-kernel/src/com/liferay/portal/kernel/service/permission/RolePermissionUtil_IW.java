@@ -7,29 +7,26 @@ package com.liferay.portal.kernel.service.permission;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class RolePermissionUtil_IW {
+
 	public static RolePermissionUtil_IW getInstance() {
 		return _instance;
 	}
 
-	public void check(
-		com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker,
-		long roleId, java.lang.String actionId)
+	public void check(com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker, long roleId, java.lang.String actionId)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
+
 		RolePermissionUtil.check(permissionChecker, roleId, actionId);
 	}
 
-	public boolean contains(
-		com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker,
-		long groupId, long roleId, java.lang.String actionId) {
-		return RolePermissionUtil.contains(permissionChecker, groupId, roleId,
-			actionId);
+	public boolean contains(com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker, long groupId, long roleId, java.lang.String actionId) {
+		return RolePermissionUtil.contains(permissionChecker, groupId, roleId, actionId);
 	}
 
-	public boolean contains(
-		com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker,
-		long roleId, java.lang.String actionId) {
+	public boolean contains(com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker, long roleId, java.lang.String actionId) {
 		return RolePermissionUtil.contains(permissionChecker, roleId, actionId);
 	}
 
@@ -37,4 +34,5 @@ public class RolePermissionUtil_IW {
 	}
 
 	private static RolePermissionUtil_IW _instance = new RolePermissionUtil_IW();
+
 }

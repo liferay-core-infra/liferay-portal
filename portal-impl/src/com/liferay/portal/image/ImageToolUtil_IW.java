@@ -7,55 +7,54 @@ package com.liferay.portal.image;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class ImageToolUtil_IW {
+
 	public static ImageToolUtil_IW getInstance() {
 		return _instance;
 	}
 
-	public java.util.concurrent.Future<java.awt.image.RenderedImage> convertCMYKtoRGB(
-		byte[] bytes, java.lang.String type) {
+	public java.util.concurrent.Future<java.awt.image.RenderedImage> convertCMYKtoRGB(byte[] bytes, java.lang.String type) {
 		return ImageToolUtil.convertCMYKtoRGB(bytes, type);
 	}
 
-	public java.awt.image.BufferedImage convertImageType(
-		java.awt.image.BufferedImage sourceImage, int type) {
+	public java.awt.image.BufferedImage convertImageType(java.awt.image.BufferedImage sourceImage, int type) {
 		return ImageToolUtil.convertImageType(sourceImage, type);
 	}
 
-	public java.awt.image.RenderedImage crop(
-		java.awt.image.RenderedImage renderedImage, int height, int width,
-		int x, int y) {
+	public java.awt.image.RenderedImage crop(java.awt.image.RenderedImage renderedImage, int height, int width, int x, int y) {
 		return ImageToolUtil.crop(renderedImage, height, width, x, y);
 	}
 
-	public void encodeGIF(java.awt.image.RenderedImage renderedImage,
-		java.io.OutputStream outputStream) throws java.io.IOException {
+	public void encodeGIF(java.awt.image.RenderedImage renderedImage, java.io.OutputStream outputStream)
+		throws java.io.IOException {
+
 		ImageToolUtil.encodeGIF(renderedImage, outputStream);
 	}
 
-	public void encodeWBMP(java.awt.image.RenderedImage renderedImage,
-		java.io.OutputStream outputStream) throws java.io.IOException {
+	public void encodeWBMP(java.awt.image.RenderedImage renderedImage, java.io.OutputStream outputStream)
+		throws java.io.IOException {
+
 		ImageToolUtil.encodeWBMP(renderedImage, outputStream);
 	}
 
-	public java.awt.image.RenderedImage flipHorizontal(
-		java.awt.image.RenderedImage renderedImage) {
+	public java.awt.image.RenderedImage flipHorizontal(java.awt.image.RenderedImage renderedImage) {
 		return ImageToolUtil.flipHorizontal(renderedImage);
 	}
 
-	public java.awt.image.RenderedImage flipVertical(
-		java.awt.image.RenderedImage renderedImage) {
+	public java.awt.image.RenderedImage flipVertical(java.awt.image.RenderedImage renderedImage) {
 		return ImageToolUtil.flipVertical(renderedImage);
 	}
 
-	public java.awt.image.BufferedImage getBufferedImage(
-		java.awt.image.RenderedImage renderedImage) {
+	public java.awt.image.BufferedImage getBufferedImage(java.awt.image.RenderedImage renderedImage) {
 		return ImageToolUtil.getBufferedImage(renderedImage);
 	}
 
-	public byte[] getBytes(java.awt.image.RenderedImage renderedImage,
-		java.lang.String contentType) throws java.io.IOException {
+	public byte[] getBytes(java.awt.image.RenderedImage renderedImage, java.lang.String contentType)
+		throws java.io.IOException {
+
 		return ImageToolUtil.getBytes(renderedImage, contentType);
 	}
 
@@ -84,28 +83,26 @@ public class ImageToolUtil_IW {
 	}
 
 	public com.liferay.portal.kernel.model.Image getImage(byte[] bytes)
-		throws com.liferay.portal.kernel.exception.ImageResolutionException,
-			java.io.IOException {
+		throws com.liferay.portal.kernel.exception.ImageResolutionException, java.io.IOException {
+
 		return ImageToolUtil.getImage(bytes);
 	}
 
 	public com.liferay.portal.kernel.model.Image getImage(java.io.File file)
-		throws com.liferay.portal.kernel.exception.ImageResolutionException,
-			java.io.IOException {
+		throws com.liferay.portal.kernel.exception.ImageResolutionException, java.io.IOException {
+
 		return ImageToolUtil.getImage(file);
 	}
 
-	public com.liferay.portal.kernel.model.Image getImage(
-		java.io.InputStream inputStream)
-		throws com.liferay.portal.kernel.exception.ImageResolutionException,
-			java.io.IOException {
+	public com.liferay.portal.kernel.model.Image getImage(java.io.InputStream inputStream)
+		throws com.liferay.portal.kernel.exception.ImageResolutionException, java.io.IOException {
+
 		return ImageToolUtil.getImage(inputStream);
 	}
 
-	public com.liferay.portal.kernel.model.Image getImage(
-		java.io.InputStream inputStream, boolean cleanUpStream)
-		throws com.liferay.portal.kernel.exception.ImageResolutionException,
-			java.io.IOException {
+	public com.liferay.portal.kernel.model.Image getImage(java.io.InputStream inputStream, boolean cleanUpStream)
+		throws com.liferay.portal.kernel.exception.ImageResolutionException, java.io.IOException {
+
 		return ImageToolUtil.getImage(inputStream, cleanUpStream);
 	}
 
@@ -114,42 +111,38 @@ public class ImageToolUtil_IW {
 	}
 
 	public com.liferay.portal.kernel.image.ImageBag read(byte[] bytes)
-		throws com.liferay.portal.kernel.exception.ImageResolutionException,
-			java.io.IOException {
+		throws com.liferay.portal.kernel.exception.ImageResolutionException, java.io.IOException {
+
 		return ImageToolUtil.read(bytes);
 	}
 
 	public com.liferay.portal.kernel.image.ImageBag read(java.io.File file)
-		throws com.liferay.portal.kernel.exception.ImageResolutionException,
-			java.io.IOException {
+		throws com.liferay.portal.kernel.exception.ImageResolutionException, java.io.IOException {
+
 		return ImageToolUtil.read(file);
 	}
 
-	public com.liferay.portal.kernel.image.ImageBag read(
-		java.io.InputStream inputStream)
-		throws com.liferay.portal.kernel.exception.ImageResolutionException,
-			java.io.IOException {
+	public com.liferay.portal.kernel.image.ImageBag read(java.io.InputStream inputStream)
+		throws com.liferay.portal.kernel.exception.ImageResolutionException, java.io.IOException {
+
 		return ImageToolUtil.read(inputStream);
 	}
 
-	public java.awt.image.RenderedImage rotate(
-		java.awt.image.RenderedImage renderedImage, int degrees) {
+	public java.awt.image.RenderedImage rotate(java.awt.image.RenderedImage renderedImage, int degrees) {
 		return ImageToolUtil.rotate(renderedImage, degrees);
 	}
 
-	public java.awt.image.RenderedImage scale(
-		java.awt.image.RenderedImage renderedImage, int width) {
+	public java.awt.image.RenderedImage scale(java.awt.image.RenderedImage renderedImage, int width) {
 		return ImageToolUtil.scale(renderedImage, width);
 	}
 
-	public java.awt.image.RenderedImage scale(
-		java.awt.image.RenderedImage renderedImage, int maxHeight, int maxWidth) {
+	public java.awt.image.RenderedImage scale(java.awt.image.RenderedImage renderedImage, int maxHeight, int maxWidth) {
 		return ImageToolUtil.scale(renderedImage, maxHeight, maxWidth);
 	}
 
-	public void write(java.awt.image.RenderedImage renderedImage,
-		java.lang.String contentType, java.io.OutputStream outputStream)
+	public void write(java.awt.image.RenderedImage renderedImage, java.lang.String contentType, java.io.OutputStream outputStream)
 		throws java.io.IOException {
+
 		ImageToolUtil.write(renderedImage, contentType, outputStream);
 	}
 
@@ -157,4 +150,5 @@ public class ImageToolUtil_IW {
 	}
 
 	private static ImageToolUtil_IW _instance = new ImageToolUtil_IW();
+
 }

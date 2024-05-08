@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class ArrayUtil_IW {
+
 	public static ArrayUtil_IW getInstance() {
 		return _instance;
 	}
@@ -77,23 +80,23 @@ public class ArrayUtil_IW {
 		return ArrayUtil.append(array, value);
 	}
 
-	public <T> T[] append(T[]... arrays) {
+	public  <T> T[] append(T[]... arrays) {
 		return ArrayUtil.append(arrays);
 	}
 
-	public <T> T[] append(T[] array, T value) {
+	public  <T> T[] append(T[] array, T value) {
 		return ArrayUtil.append(array, value);
 	}
 
-	public <T> T[] append(T[] array1, T[] array2) {
+	public  <T> T[] append(T[] array1, T[] array2) {
 		return ArrayUtil.append(array1, array2);
 	}
 
-	public <T> T[][] append(T[][] array1, T[] value) {
+	public  <T> T[][] append(T[][] array1, T[] value) {
 		return ArrayUtil.append(array1, value);
 	}
 
-	public <T> T[][] append(T[][] array1, T[][] array2) {
+	public  <T> T[][] append(T[][] array1, T[][] array2) {
 		return ArrayUtil.append(array1, array2);
 	}
 
@@ -161,24 +164,23 @@ public class ArrayUtil_IW {
 		return ArrayUtil.clone(array, from, to);
 	}
 
-	public <T> T[] clone(T[] array) {
+	public  <T> T[] clone(T[] array) {
 		return ArrayUtil.clone(array);
 	}
 
-	public <T> T[] clone(T[] array, int from, int to) {
+	public  <T> T[] clone(T[] array, int from, int to) {
 		return ArrayUtil.clone(array, from, to);
 	}
 
-	public <T> T[][] clone(T[][] array) {
+	public  <T> T[][] clone(T[][] array) {
 		return ArrayUtil.clone(array);
 	}
 
-	public <T> T[][] clone(T[][] array, int from, int to) {
+	public  <T> T[][] clone(T[][] array, int from, int to) {
 		return ArrayUtil.clone(array, from, to);
 	}
 
-	public void combine(java.lang.Object[] array1, java.lang.Object[] array2,
-		java.lang.Object[] combinedArray) {
+	public void combine(java.lang.Object[] array1, java.lang.Object[] array2, java.lang.Object[] combinedArray) {
 		ArrayUtil.combine(array1, array2, combinedArray);
 	}
 
@@ -218,8 +220,7 @@ public class ArrayUtil_IW {
 		return ArrayUtil.contains(array, value);
 	}
 
-	public boolean contains(java.lang.String[] array, java.lang.String value,
-		boolean ignoreCase) {
+	public boolean contains(java.lang.String[] array, java.lang.String value, boolean ignoreCase) {
 		return ArrayUtil.contains(array, value, ignoreCase);
 	}
 
@@ -251,8 +252,7 @@ public class ArrayUtil_IW {
 		return ArrayUtil.containsAll(array1, array2);
 	}
 
-	public boolean containsAll(java.lang.Object[] array1,
-		java.lang.Object[] array2) {
+	public boolean containsAll(java.lang.Object[] array1, java.lang.Object[] array2) {
 		return ArrayUtil.containsAll(array1, array2);
 	}
 
@@ -260,7 +260,7 @@ public class ArrayUtil_IW {
 		return ArrayUtil.containsAll(array1, array2);
 	}
 
-	public <T> int count(T[] array, java.util.function.Predicate<T> predicate) {
+	public  <T> int count(T[] array, java.util.function.Predicate<T> predicate) {
 		return ArrayUtil.count(array, predicate);
 	}
 
@@ -268,58 +268,47 @@ public class ArrayUtil_IW {
 		return ArrayUtil.distinct(array);
 	}
 
-	public java.lang.String[] distinct(java.lang.String[] array,
-		java.util.Comparator<java.lang.String> comparator) {
+	public java.lang.String[] distinct(java.lang.String[] array, java.util.Comparator<java.lang.String> comparator) {
 		return ArrayUtil.distinct(array, comparator);
 	}
 
-	public <T> boolean exists(T[] array,
-		java.util.function.Predicate<T> predicate) {
+	public  <T> boolean exists(T[] array, java.util.function.Predicate<T> predicate) {
 		return ArrayUtil.exists(array, predicate);
 	}
 
-	public boolean[] filter(boolean[] array,
-		java.util.function.Predicate<java.lang.Boolean> predicate) {
+	public boolean[] filter(boolean[] array, java.util.function.Predicate<java.lang.Boolean> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public byte[] filter(byte[] array,
-		java.util.function.Predicate<java.lang.Byte> predicate) {
+	public byte[] filter(byte[] array, java.util.function.Predicate<java.lang.Byte> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public char[] filter(char[] array,
-		java.util.function.Predicate<java.lang.Character> predicate) {
+	public char[] filter(char[] array, java.util.function.Predicate<java.lang.Character> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public double[] filter(double[] array,
-		java.util.function.Predicate<java.lang.Double> predicate) {
+	public double[] filter(double[] array, java.util.function.Predicate<java.lang.Double> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public float[] filter(float[] array,
-		java.util.function.Predicate<java.lang.Float> predicate) {
+	public float[] filter(float[] array, java.util.function.Predicate<java.lang.Float> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public int[] filter(int[] array,
-		java.util.function.Predicate<java.lang.Integer> predicate) {
+	public int[] filter(int[] array, java.util.function.Predicate<java.lang.Integer> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public long[] filter(long[] array,
-		java.util.function.Predicate<java.lang.Long> predicate) {
+	public long[] filter(long[] array, java.util.function.Predicate<java.lang.Long> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public short[] filter(short[] array,
-		java.util.function.Predicate<java.lang.Short> predicate) {
+	public short[] filter(short[] array, java.util.function.Predicate<java.lang.Short> predicate) {
 		return ArrayUtil.filter(array, predicate);
 	}
 
-	public <T> T[] filter(T[] array,
-		java.util.function.Predicate<T> filterPredicate) {
+	public  <T> T[] filter(T[] array, java.util.function.Predicate<T> filterPredicate) {
 		return ArrayUtil.filter(array, filterPredicate);
 	}
 
@@ -403,8 +392,7 @@ public class ArrayUtil_IW {
 		return ArrayUtil.isNotEmpty(array);
 	}
 
-	public <T> void isNotEmptyForEach(T[] array,
-		java.util.function.Consumer<T> consumer) {
+	public  <T> void isNotEmptyForEach(T[] array, java.util.function.Consumer<T> consumer) {
 		ArrayUtil.isNotEmptyForEach(array, consumer);
 	}
 
@@ -440,22 +428,19 @@ public class ArrayUtil_IW {
 		return ArrayUtil.remove(array, value);
 	}
 
-	public java.lang.String[] remove(java.lang.String[] array,
-		java.lang.String value) {
+	public java.lang.String[] remove(java.lang.String[] array, java.lang.String value) {
 		return ArrayUtil.remove(array, value);
 	}
 
-	public <T> T[] remove(T[] array, T value) {
+	public  <T> T[] remove(T[] array, T value) {
 		return ArrayUtil.remove(array, value);
 	}
 
-	public java.lang.String[] removeByPrefix(java.lang.String[] array,
-		java.lang.String prefix) {
+	public java.lang.String[] removeByPrefix(java.lang.String[] array, java.lang.String prefix) {
 		return ArrayUtil.removeByPrefix(array, prefix);
 	}
 
-	public void replace(java.lang.String[] values, java.lang.String oldValue,
-		java.lang.String newValue) {
+	public void replace(java.lang.String[] values, java.lang.String oldValue, java.lang.String newValue) {
 		ArrayUtil.replace(values, oldValue, newValue);
 	}
 
@@ -483,7 +468,7 @@ public class ArrayUtil_IW {
 		ArrayUtil.reverse(array);
 	}
 
-	public <T> void reverse(T[] array) {
+	public  <T> void reverse(T[] array) {
 		ArrayUtil.reverse(array);
 	}
 
@@ -551,7 +536,7 @@ public class ArrayUtil_IW {
 		return ArrayUtil.subset(array, start, end);
 	}
 
-	public <T> T[] subset(T[] array, int start, int end) {
+	public  <T> T[] subset(T[] array, int start, int end) {
 		return ArrayUtil.subset(array, start, end);
 	}
 
@@ -619,18 +604,15 @@ public class ArrayUtil_IW {
 		return ArrayUtil.toArray(array);
 	}
 
-	public <T, A> A[] toArray(T[] list,
-		com.liferay.portal.kernel.util.Accessor<T, A> accessor) {
+	public  <T, A> A[] toArray(T[] list, com.liferay.portal.kernel.util.Accessor<T, A> accessor) {
 		return ArrayUtil.toArray(list, accessor);
 	}
 
-	public double[] toDoubleArray(
-		java.util.Collection<java.lang.Number> collection) {
+	public double[] toDoubleArray(java.util.Collection<java.lang.Number> collection) {
 		return ArrayUtil.toDoubleArray(collection);
 	}
 
-	public float[] toFloatArray(
-		java.util.Collection<java.lang.Number> collection) {
+	public float[] toFloatArray(java.util.Collection<java.lang.Number> collection) {
 		return ArrayUtil.toFloatArray(collection);
 	}
 
@@ -654,41 +636,31 @@ public class ArrayUtil_IW {
 		return ArrayUtil.toLongArray(array);
 	}
 
-	public short[] toShortArray(
-		java.util.Collection<java.lang.Short> collection) {
+	public short[] toShortArray(java.util.Collection<java.lang.Short> collection) {
 		return ArrayUtil.toShortArray(collection);
 	}
 
-	public java.lang.String toString(java.lang.Object[] array,
-		java.lang.String param) {
+	public java.lang.String toString(java.lang.Object[] array, java.lang.String param) {
 		return ArrayUtil.toString(array, param);
 	}
 
-	public java.lang.String toString(java.lang.Object[] array,
-		java.lang.String param, java.lang.String delimiter) {
+	public java.lang.String toString(java.lang.Object[] array, java.lang.String param, java.lang.String delimiter) {
 		return ArrayUtil.toString(array, param, delimiter);
 	}
 
-	public java.lang.String toString(java.lang.Object[] array,
-		java.lang.String param, java.lang.String delimiter,
-		java.util.Locale locale) {
+	public java.lang.String toString(java.lang.Object[] array, java.lang.String param, java.lang.String delimiter, java.util.Locale locale) {
 		return ArrayUtil.toString(array, param, delimiter, locale);
 	}
 
-	public <T, A> java.lang.String toString(T[] list,
-		com.liferay.portal.kernel.util.Accessor<T, A> accessor) {
+	public  <T, A> java.lang.String toString(T[] list, com.liferay.portal.kernel.util.Accessor<T, A> accessor) {
 		return ArrayUtil.toString(list, accessor);
 	}
 
-	public <T, A> java.lang.String toString(T[] list,
-		com.liferay.portal.kernel.util.Accessor<T, A> accessor,
-		java.lang.String delimiter) {
+	public  <T, A> java.lang.String toString(T[] list, com.liferay.portal.kernel.util.Accessor<T, A> accessor, java.lang.String delimiter) {
 		return ArrayUtil.toString(list, accessor, delimiter);
 	}
 
-	public <T, A> java.lang.String toString(T[] list,
-		com.liferay.portal.kernel.util.Accessor<T, A> accessor,
-		java.lang.String delimiter, java.util.Locale locale) {
+	public  <T, A> java.lang.String toString(T[] list, com.liferay.portal.kernel.util.Accessor<T, A> accessor, java.lang.String delimiter, java.util.Locale locale) {
 		return ArrayUtil.toString(list, accessor, delimiter, locale);
 	}
 
@@ -708,8 +680,7 @@ public class ArrayUtil_IW {
 		return ArrayUtil.toStringArray(collection);
 	}
 
-	public java.lang.String[] toStringArray(java.util.Date[] array,
-		java.text.DateFormat dateFormat) {
+	public java.lang.String[] toStringArray(java.util.Date[] array, java.text.DateFormat dateFormat) {
 		return ArrayUtil.toStringArray(array, dateFormat);
 	}
 
@@ -725,8 +696,7 @@ public class ArrayUtil_IW {
 		return ArrayUtil.toStringArray(array);
 	}
 
-	public java.lang.String[] toStringArray(
-		com.liferay.portal.kernel.json.JSONArray jsonArray) {
+	public java.lang.String[] toStringArray(com.liferay.portal.kernel.json.JSONArray jsonArray) {
 		return ArrayUtil.toStringArray(jsonArray);
 	}
 
@@ -774,4 +744,5 @@ public class ArrayUtil_IW {
 	}
 
 	private static ArrayUtil_IW _instance = new ArrayUtil_IW();
+
 }

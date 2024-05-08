@@ -7,22 +7,22 @@ package com.liferay.portal.kernel.service.permission;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class PortalPermissionUtil_IW {
+
 	public static PortalPermissionUtil_IW getInstance() {
 		return _instance;
 	}
 
-	public void check(
-		com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker,
-		java.lang.String actionId)
+	public void check(com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker, java.lang.String actionId)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
+
 		PortalPermissionUtil.check(permissionChecker, actionId);
 	}
 
-	public boolean contains(
-		com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker,
-		java.lang.String actionId) {
+	public boolean contains(com.liferay.portal.kernel.security.permission.PermissionChecker permissionChecker, java.lang.String actionId) {
 		return PortalPermissionUtil.contains(permissionChecker, actionId);
 	}
 
@@ -30,4 +30,5 @@ public class PortalPermissionUtil_IW {
 	}
 
 	private static PortalPermissionUtil_IW _instance = new PortalPermissionUtil_IW();
+
 }

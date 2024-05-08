@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class UnicodeFormatter_IW {
+
 	public static UnicodeFormatter_IW getInstance() {
 		return _instance;
 	}
@@ -53,4 +56,5 @@ public class UnicodeFormatter_IW {
 	}
 
 	private static UnicodeFormatter_IW _instance = new UnicodeFormatter_IW();
+
 }

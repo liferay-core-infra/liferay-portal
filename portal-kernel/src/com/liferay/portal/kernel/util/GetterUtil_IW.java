@@ -7,8 +7,11 @@ package com.liferay.portal.kernel.util;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
+ * @see com.liferay.portal.tools.InstanceWrapperBuilder
  */
 public class GetterUtil_IW {
+
 	public static GetterUtil_IW getInstance() {
 		return _instance;
 	}
@@ -17,8 +20,7 @@ public class GetterUtil_IW {
 		return GetterUtil.get(value, defaultValue);
 	}
 
-	public java.util.Date get(java.lang.Object value,
-		java.text.DateFormat dateFormat, java.util.Date defaultValue) {
+	public java.util.Date get(java.lang.Object value, java.text.DateFormat dateFormat, java.util.Date defaultValue) {
 		return GetterUtil.get(value, dateFormat, defaultValue);
 	}
 
@@ -38,8 +40,7 @@ public class GetterUtil_IW {
 		return GetterUtil.get(value, defaultValue);
 	}
 
-	public java.lang.Number get(java.lang.Object value,
-		java.lang.Number defaultValue) {
+	public java.lang.Number get(java.lang.Object value, java.lang.Number defaultValue) {
 		return GetterUtil.get(value, defaultValue);
 	}
 
@@ -47,8 +48,7 @@ public class GetterUtil_IW {
 		return GetterUtil.get(value, defaultValue);
 	}
 
-	public java.lang.String get(java.lang.Object value,
-		java.lang.String defaultValue) {
+	public java.lang.String get(java.lang.Object value, java.lang.String defaultValue) {
 		return GetterUtil.get(value, defaultValue);
 	}
 
@@ -56,8 +56,7 @@ public class GetterUtil_IW {
 		return GetterUtil.get(value, defaultValue);
 	}
 
-	public java.util.Date get(java.lang.String value,
-		java.text.DateFormat dateFormat, java.util.Date defaultValue) {
+	public java.util.Date get(java.lang.String value, java.text.DateFormat dateFormat, java.util.Date defaultValue) {
 		return GetterUtil.get(value, dateFormat, defaultValue);
 	}
 
@@ -65,8 +64,7 @@ public class GetterUtil_IW {
 		return GetterUtil.get(value, defaultValue);
 	}
 
-	public double get(java.lang.String value, double defaultValue,
-		java.util.Locale locale) {
+	public double get(java.lang.String value, double defaultValue, java.util.Locale locale) {
 		return GetterUtil.get(value, defaultValue, locale);
 	}
 
@@ -86,8 +84,7 @@ public class GetterUtil_IW {
 		return GetterUtil.get(value, defaultValue);
 	}
 
-	public java.lang.String get(java.lang.String value,
-		java.lang.String defaultValue) {
+	public java.lang.String get(java.lang.String value, java.lang.String defaultValue) {
 		return GetterUtil.get(value, defaultValue);
 	}
 
@@ -111,8 +108,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getBooleanValues(value);
 	}
 
-	public boolean[] getBooleanValues(java.lang.Object value,
-		boolean[] defaultValue) {
+	public boolean[] getBooleanValues(java.lang.Object value, boolean[] defaultValue) {
 		return GetterUtil.getBooleanValues(value, defaultValue);
 	}
 
@@ -120,48 +116,39 @@ public class GetterUtil_IW {
 		return GetterUtil.getBooleanValues(values);
 	}
 
-	public boolean[] getBooleanValues(java.lang.String[] values,
-		boolean[] defaultValue) {
+	public boolean[] getBooleanValues(java.lang.String[] values, boolean[] defaultValue) {
 		return GetterUtil.getBooleanValues(values, defaultValue);
 	}
 
-	public java.util.Date getDate(java.lang.Object value,
-		java.text.DateFormat dateFormat) {
+	public java.util.Date getDate(java.lang.Object value, java.text.DateFormat dateFormat) {
 		return GetterUtil.getDate(value, dateFormat);
 	}
 
-	public java.util.Date getDate(java.lang.Object value,
-		java.text.DateFormat dateFormat, java.util.Date defaultValue) {
+	public java.util.Date getDate(java.lang.Object value, java.text.DateFormat dateFormat, java.util.Date defaultValue) {
 		return GetterUtil.getDate(value, dateFormat, defaultValue);
 	}
 
-	public java.util.Date getDate(java.lang.String value,
-		java.text.DateFormat dateFormat) {
+	public java.util.Date getDate(java.lang.String value, java.text.DateFormat dateFormat) {
 		return GetterUtil.getDate(value, dateFormat);
 	}
 
-	public java.util.Date getDate(java.lang.String value,
-		java.text.DateFormat dateFormat, java.util.Date defaultValue) {
+	public java.util.Date getDate(java.lang.String value, java.text.DateFormat dateFormat, java.util.Date defaultValue) {
 		return GetterUtil.getDate(value, dateFormat, defaultValue);
 	}
 
-	public java.util.Date[] getDateValues(java.lang.Object value,
-		java.text.DateFormat dateFormat) {
+	public java.util.Date[] getDateValues(java.lang.Object value, java.text.DateFormat dateFormat) {
 		return GetterUtil.getDateValues(value, dateFormat);
 	}
 
-	public java.util.Date[] getDateValues(java.lang.Object value,
-		java.text.DateFormat dateFormat, java.util.Date[] defaultValue) {
+	public java.util.Date[] getDateValues(java.lang.Object value, java.text.DateFormat dateFormat, java.util.Date[] defaultValue) {
 		return GetterUtil.getDateValues(value, dateFormat, defaultValue);
 	}
 
-	public java.util.Date[] getDateValues(java.lang.String[] values,
-		java.text.DateFormat dateFormat) {
+	public java.util.Date[] getDateValues(java.lang.String[] values, java.text.DateFormat dateFormat) {
 		return GetterUtil.getDateValues(values, dateFormat);
 	}
 
-	public java.util.Date[] getDateValues(java.lang.String[] values,
-		java.text.DateFormat dateFormat, java.util.Date[] defaultValue) {
+	public java.util.Date[] getDateValues(java.lang.String[] values, java.text.DateFormat dateFormat, java.util.Date[] defaultValue) {
 		return GetterUtil.getDateValues(values, dateFormat, defaultValue);
 	}
 
@@ -189,8 +176,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getDoubleValues(value);
 	}
 
-	public double[] getDoubleValues(java.lang.Object value,
-		double[] defaultValue) {
+	public double[] getDoubleValues(java.lang.Object value, double[] defaultValue) {
 		return GetterUtil.getDoubleValues(value, defaultValue);
 	}
 
@@ -198,8 +184,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getDoubleValues(values);
 	}
 
-	public double[] getDoubleValues(java.lang.String[] values,
-		double[] defaultValue) {
+	public double[] getDoubleValues(java.lang.String[] values, double[] defaultValue) {
 		return GetterUtil.getDoubleValues(values, defaultValue);
 	}
 
@@ -231,8 +216,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getFloatValues(values);
 	}
 
-	public float[] getFloatValues(java.lang.String[] values,
-		float[] defaultValue) {
+	public float[] getFloatValues(java.lang.String[] values, float[] defaultValue) {
 		return GetterUtil.getFloatValues(values, defaultValue);
 	}
 
@@ -312,8 +296,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getNumber(value);
 	}
 
-	public java.lang.Number getNumber(java.lang.Object value,
-		java.lang.Number defaultValue) {
+	public java.lang.Number getNumber(java.lang.Object value, java.lang.Number defaultValue) {
 		return GetterUtil.getNumber(value, defaultValue);
 	}
 
@@ -321,8 +304,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getNumber(value);
 	}
 
-	public java.lang.Number getNumber(java.lang.String value,
-		java.lang.Number defaultValue) {
+	public java.lang.Number getNumber(java.lang.String value, java.lang.Number defaultValue) {
 		return GetterUtil.getNumber(value, defaultValue);
 	}
 
@@ -330,8 +312,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getNumberValues(value);
 	}
 
-	public java.lang.Number[] getNumberValues(java.lang.Object value,
-		java.lang.Number[] defaultValue) {
+	public java.lang.Number[] getNumberValues(java.lang.Object value, java.lang.Number[] defaultValue) {
 		return GetterUtil.getNumberValues(value, defaultValue);
 	}
 
@@ -339,8 +320,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getNumberValues(values);
 	}
 
-	public java.lang.Number[] getNumberValues(java.lang.String[] values,
-		java.lang.Number[] defaultValue) {
+	public java.lang.Number[] getNumberValues(java.lang.String[] values, java.lang.Number[] defaultValue) {
 		return GetterUtil.getNumberValues(values, defaultValue);
 	}
 
@@ -348,8 +328,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getObject(value);
 	}
 
-	public java.lang.Object getObject(java.lang.Object value,
-		java.lang.Object defaultValue) {
+	public java.lang.Object getObject(java.lang.Object value, java.lang.Object defaultValue) {
 		return GetterUtil.getObject(value, defaultValue);
 	}
 
@@ -385,8 +364,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getShortValues(values);
 	}
 
-	public short[] getShortValues(java.lang.String[] values,
-		short[] defaultValue) {
+	public short[] getShortValues(java.lang.String[] values, short[] defaultValue) {
 		return GetterUtil.getShortValues(values, defaultValue);
 	}
 
@@ -394,8 +372,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getString(value);
 	}
 
-	public java.lang.String getString(java.lang.Object value,
-		java.lang.String defaultValue) {
+	public java.lang.String getString(java.lang.Object value, java.lang.String defaultValue) {
 		return GetterUtil.getString(value, defaultValue);
 	}
 
@@ -403,8 +380,7 @@ public class GetterUtil_IW {
 		return GetterUtil.getString(value);
 	}
 
-	public java.lang.String getString(java.lang.String value,
-		java.lang.String defaultValue) {
+	public java.lang.String getString(java.lang.String value, java.lang.String defaultValue) {
 		return GetterUtil.getString(value, defaultValue);
 	}
 
@@ -412,23 +388,19 @@ public class GetterUtil_IW {
 		return GetterUtil.getStringValues(value);
 	}
 
-	public java.lang.String[] getStringValues(java.lang.Object value,
-		java.lang.String[] defaultValue) {
+	public java.lang.String[] getStringValues(java.lang.Object value, java.lang.String[] defaultValue) {
 		return GetterUtil.getStringValues(value, defaultValue);
 	}
 
-	public java.lang.String[] getStringValues(java.lang.Object value,
-		java.util.function.Supplier<java.lang.String[]> defaultValueSupplier) {
+	public java.lang.String[] getStringValues(java.lang.Object value, java.util.function.Supplier<java.lang.String[]> defaultValueSupplier) {
 		return GetterUtil.getStringValues(value, defaultValueSupplier);
 	}
 
-	public java.lang.String[] getStringValues(java.lang.Object[] values,
-		java.lang.String[] defaultValue) {
+	public java.lang.String[] getStringValues(java.lang.Object[] values, java.lang.String[] defaultValue) {
 		return GetterUtil.getStringValues(values, defaultValue);
 	}
 
-	public java.lang.String[] getStringValues(java.lang.Object[] values,
-		java.util.function.Supplier<java.lang.String[]> defaultValueSupplier) {
+	public java.lang.String[] getStringValues(java.lang.Object[] values, java.util.function.Supplier<java.lang.String[]> defaultValueSupplier) {
 		return GetterUtil.getStringValues(values, defaultValueSupplier);
 	}
 
@@ -440,4 +412,5 @@ public class GetterUtil_IW {
 	}
 
 	private static GetterUtil_IW _instance = new GetterUtil_IW();
+
 }

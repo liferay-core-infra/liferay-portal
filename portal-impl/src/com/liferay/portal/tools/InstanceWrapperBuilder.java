@@ -83,25 +83,29 @@ public class InstanceWrapperBuilder {
 
 		// Package
 
-		sb.append("package ");
-
 		JavaPackage javaPackage = javaClass.getPackage();
 
+		sb.append("package ");
 		sb.append(javaPackage.getName());
+		sb.append(";\n\n");
 
-		sb.append(";");
+		// Class javadoc
+
+		sb.append("/**\n * @author ");
+		sb.append(_AUTHOR);
+		sb.append("\n */\n");
 
 		// Class declaration
 
 		sb.append("public class ");
 		sb.append(javaClass.getName());
-		sb.append("_IW {");
+		sb.append("_IW {\n\n");
 
 		// Methods
 
-		sb.append("public static ");
+		sb.append("\tpublic static ");
 		sb.append(javaClass.getName());
-		sb.append("_IW getInstance() {return _instance;}\n");
+		sb.append("_IW getInstance() {\n\t\treturn _instance;\n\t}\n\n");
 
 		for (JavaMethod javaMethod : javaMethods) {
 			if (!javaMethod.isPublic() || !javaMethod.isStatic()) {
@@ -123,7 +127,7 @@ public class InstanceWrapperBuilder {
 				sb.append("\t@Deprecated\n");
 			}
 
-			sb.append("public ");
+			sb.append("\tpublic ");
 
 			TypeVariable[] typeParameters = javaMethod.getTypeParameters();
 
@@ -174,7 +178,7 @@ public class InstanceWrapperBuilder {
 			}
 
 			if (!newExceptions.isEmpty()) {
-				sb.append(" throws ");
+				sb.append("\n\t\tthrows ");
 
 				for (String newException : newExceptions) {
 					sb.append(newException);
@@ -184,14 +188,21 @@ public class InstanceWrapperBuilder {
 				sb.setIndex(sb.index() - 1);
 			}
 
-			sb.append("{\n");
+			sb.append(" {\n");
+
+			if (!newExceptions.isEmpty()) {
+				sb.append(StringPool.NEW_LINE);
+			}
 
 			Type returnType = javaMethod.getReturnType();
 
 			String returnTypeValue = returnType.getValue();
 
 			if (!returnTypeValue.equals("void")) {
-				sb.append("return ");
+				sb.append("\t\treturn ");
+			}
+			else {
+				sb.append("\t\t");
 			}
 
 			sb.append(javaClass.getName());
@@ -208,22 +219,22 @@ public class InstanceWrapperBuilder {
 				sb.setIndex(sb.index() - 1);
 			}
 
-			sb.append(");}\n");
+			sb.append(");\n\t}\n\n");
 		}
 
 		// Private constructor
 
-		sb.append("private ");
+		sb.append("\tprivate ");
 		sb.append(javaClass.getName());
-		sb.append("_IW() {}");
+		sb.append("_IW() {\n\t}\n\n");
 
 		// Fields
 
-		sb.append("private static ");
+		sb.append("\tprivate static ");
 		sb.append(javaClass.getName());
 		sb.append("_IW _instance = new ");
 		sb.append(javaClass.getName());
-		sb.append("_IW();");
+		sb.append("_IW();\n\n");
 
 		// Class close brace
 
@@ -292,6 +303,8 @@ public class InstanceWrapperBuilder {
 
 		return sb.toString();
 	}
+
+	private static final String _AUTHOR = "Brian Wing Shun Chan";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		InstanceWrapperBuilder.class);

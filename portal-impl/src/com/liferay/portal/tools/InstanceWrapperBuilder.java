@@ -95,6 +95,8 @@ public class InstanceWrapperBuilder {
 
 		sb.append("/**\n * @author ");
 		sb.append(_AUTHOR);
+		sb.append("\n * @generated\n * @see ");
+		sb.append(InstanceWrapperBuilder.class.getName());
 		sb.append("\n */\n");
 
 		// Class declaration

@@ -85,6 +85,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.MethodHandler;
@@ -183,7 +184,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
-		if (!cmd.equals("addLogLevel") &&
+		String portletId = GetterUtil.getString(
+			actionRequest.getAttribute(WebKeys.PORTLET_ID));
+
+		if (portletId.equals(PortletKeys.SERVER_ADMIN) &&
 			!cmd.equals("dlGenerateAudioPreviews") &&
 			!cmd.equals("dlGenerateOpenOfficePreviews") &&
 			!cmd.equals("dlGenerateVideoPreviews") &&

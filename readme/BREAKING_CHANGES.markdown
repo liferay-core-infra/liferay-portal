@@ -1884,3 +1884,29 @@ User.getRemotePreference(String) and User.getRemotePreferences() were just a con
 ### Why was this change made?
 
 RemotePreference API has never been used. But the api supporting logic has to collect and hold cookies in User object, causing unnecessary CPU and memory overhead.
+
+---------------------------------------
+
+## Enforce Captcha in Server Admin and GogoShell
+- **Date:** 2024-May-10
+- **JIRA Ticket:** [LPD-1558](https://liferay.atlassian.net/browse/LPD-1558)
+
+### What changed?
+
+Captcha is required to be enabled at all times in Server Admin and GogoShell.
+
+### Who is affected?
+
+This affects anyone using "Control Panel -> Server Administration" and "Control Panel -> GogoShell".
+
+### How should I update my code?
+
+No code updates are required.
+
+1. For Server Admin and Gogo shell portlet, Captcha is always required before any action is taken, and MaxChallenges is not applied in these portlets.
+
+1. In System Settings -> Security Tools -> Captcha, It is a expected behavior that if you select "Choose an Option" for the Captcha Engine, the Server Admin and GogoShell pages are marked as "temporarily unavailable".
+
+### Why was this change made?
+
+This change was made to address security vulnerabilities.

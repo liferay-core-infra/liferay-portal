@@ -53,16 +53,14 @@ public class AssetCategoryMainImageInfoItemFieldReader
 	@Override
 	public Object getValue(AssetCategory assetCategory) {
 		try {
-			CPAttachmentFileEntryPriorityComparator orderByComparator =
-				new CPAttachmentFileEntryPriorityComparator(true);
-
 			List<CPAttachmentFileEntry> cpAttachmentFileEntries =
 				_cpAttachmentFileEntryService.getCPAttachmentFileEntries(
 					_portal.getClassNameId(AssetCategory.class),
 					assetCategory.getCategoryId(),
 					CPAttachmentFileEntryConstants.TYPE_IMAGE,
 					WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, orderByComparator);
+					QueryUtil.ALL_POS,
+					CPAttachmentFileEntryPriorityComparator.get(true));
 
 			if (ListUtil.isEmpty(cpAttachmentFileEntries)) {
 				return null;

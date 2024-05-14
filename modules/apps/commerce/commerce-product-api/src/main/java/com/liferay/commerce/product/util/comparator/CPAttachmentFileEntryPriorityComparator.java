@@ -22,12 +22,18 @@ public class CPAttachmentFileEntryPriorityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public CPAttachmentFileEntryPriorityComparator() {
-		this(false);
+	public static CPAttachmentFileEntryPriorityComparator get(
+		boolean ascending) {
+
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
-	public CPAttachmentFileEntryPriorityComparator(boolean ascending) {
-		_ascending = ascending;
+	public CPAttachmentFileEntryPriorityComparator() {
+		this(false);
 	}
 
 	@Override
@@ -64,6 +70,16 @@ public class CPAttachmentFileEntryPriorityComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private CPAttachmentFileEntryPriorityComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final CPAttachmentFileEntryPriorityComparator _ASCENDING =
+		new CPAttachmentFileEntryPriorityComparator(true);
+
+	private static final CPAttachmentFileEntryPriorityComparator _DESCENDING =
+		new CPAttachmentFileEntryPriorityComparator(false);
 
 	private final boolean _ascending;
 

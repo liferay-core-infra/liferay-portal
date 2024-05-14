@@ -21,10 +21,6 @@ public class CommercePriceListCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public CommercePriceListCreateDateComparator() {
-		this(false);
-	}
-
 	public CommercePriceListCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

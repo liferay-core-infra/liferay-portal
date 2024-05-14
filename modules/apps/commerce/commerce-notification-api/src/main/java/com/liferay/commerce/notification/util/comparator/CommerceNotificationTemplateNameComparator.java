@@ -23,10 +23,6 @@ public class CommerceNotificationTemplateNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public CommerceNotificationTemplateNameComparator() {
-		this(false);
-	}
-
 	public CommerceNotificationTemplateNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

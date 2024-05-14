@@ -21,10 +21,6 @@ public class CommerceNotificationTemplateModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public CommerceNotificationTemplateModifiedDateComparator() {
-		this(false);
-	}
-
 	public CommerceNotificationTemplateModifiedDateComparator(
 		boolean ascending) {
 

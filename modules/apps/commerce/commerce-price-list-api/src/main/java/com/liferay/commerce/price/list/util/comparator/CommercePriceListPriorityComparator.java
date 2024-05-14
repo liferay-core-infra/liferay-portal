@@ -21,10 +21,6 @@ public class CommercePriceListPriorityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public CommercePriceListPriorityComparator() {
-		this(false);
-	}
-
 	public CommercePriceListPriorityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

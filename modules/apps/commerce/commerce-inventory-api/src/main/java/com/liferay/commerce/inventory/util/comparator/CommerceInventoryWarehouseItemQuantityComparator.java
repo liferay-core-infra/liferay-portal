@@ -22,10 +22,6 @@ public class CommerceInventoryWarehouseItemQuantityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"quantity"};
 
-	public CommerceInventoryWarehouseItemQuantityComparator() {
-		this(false);
-	}
-
 	public CommerceInventoryWarehouseItemQuantityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

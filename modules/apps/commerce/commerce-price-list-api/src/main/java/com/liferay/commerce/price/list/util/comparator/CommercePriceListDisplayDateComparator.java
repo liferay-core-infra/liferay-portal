@@ -21,10 +21,6 @@ public class CommercePriceListDisplayDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"displayDate"};
 
-	public CommercePriceListDisplayDateComparator() {
-		this(false);
-	}
-
 	public CommercePriceListDisplayDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

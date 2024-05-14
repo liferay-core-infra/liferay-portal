@@ -28,10 +28,6 @@ public class CommerceInventoryWarehouseItemWarehouseNameComparator
 		"CommerceInventoryWarehouse.name"
 	};
 
-	public CommerceInventoryWarehouseItemWarehouseNameComparator() {
-		this(false);
-	}
-
 	public CommerceInventoryWarehouseItemWarehouseNameComparator(
 		boolean ascending) {
 

@@ -22,10 +22,6 @@ public class CommerceNotificationQueueEntryPriorityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public CommerceNotificationQueueEntryPriorityComparator() {
-		this(false);
-	}
-
 	public CommerceNotificationQueueEntryPriorityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

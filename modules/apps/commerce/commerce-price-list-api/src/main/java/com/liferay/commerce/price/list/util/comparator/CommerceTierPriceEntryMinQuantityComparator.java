@@ -22,10 +22,6 @@ public class CommerceTierPriceEntryMinQuantityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"minQuantity"};
 
-	public CommerceTierPriceEntryMinQuantityComparator() {
-		this(false);
-	}
-
 	public CommerceTierPriceEntryMinQuantityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

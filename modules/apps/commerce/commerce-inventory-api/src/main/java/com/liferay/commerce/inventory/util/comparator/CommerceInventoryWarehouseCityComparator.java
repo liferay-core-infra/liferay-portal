@@ -21,10 +21,6 @@ public class CommerceInventoryWarehouseCityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"city"};
 
-	public CommerceInventoryWarehouseCityComparator() {
-		this(false);
-	}
-
 	public CommerceInventoryWarehouseCityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -10,26 +10,15 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.xml.SAXReaderFactory;
 
-import de.hunsicker.io.FileFormat;
-import de.hunsicker.jalopy.Jalopy;
-import de.hunsicker.jalopy.storage.Convention;
-import de.hunsicker.jalopy.storage.ConventionKeys;
-import de.hunsicker.jalopy.storage.Environment;
-
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-
-import java.net.URL;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -456,116 +445,10 @@ public class ToolsUtil {
 
 		ImportsFormatter importsFormatter = new JavaImportsFormatter();
 
-		content = importsFormatter.format(content, packagePath, className);
-
-		// Beautify
-
-		StringBuffer sb = new StringBuffer();
-
-		Jalopy jalopy = new Jalopy();
-
-		jalopy.setFileFormat(FileFormat.UNIX);
-		jalopy.setInput(
-			new ByteArrayInputStream(content.getBytes()), file.getPath());
-		jalopy.setOutput(sb);
-
-		File jalopyXmlFile = new File("tools/jalopy.xml");
-
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("../tools/jalopy.xml");
-		}
-
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("misc/jalopy.xml");
-		}
-
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("../misc/jalopy.xml");
-		}
-
-		if (!jalopyXmlFile.exists()) {
-			jalopyXmlFile = new File("../../misc/jalopy.xml");
-		}
-
-		if (jalopyXmlFile.exists()) {
-			Jalopy.setConvention(jalopyXmlFile);
-		}
-		else {
-			URL url = _readJalopyXmlFromClassLoader();
-
-			Jalopy.setConvention(url);
-		}
-
-		if (jalopySettings == null) {
-			jalopySettings = new HashMap<>();
-		}
-
-		Environment env = Environment.getInstance();
-
-		// Author
-
-		author = GetterUtil.getString(
-			(String)jalopySettings.get("author"), author);
-
-		env.set("author", author);
-
-		// Fail on format error
-
-		boolean failOnFormatError = MapUtil.getBoolean(
-			jalopySettings, "failOnFormatError");
-
-		// File name
-
-		env.set("fileName", file.getName());
-
-		Convention convention = Convention.getInstance();
-
-		if (Validator.isNotNull(header)) {
-			convention.put(ConventionKeys.HEADER_TEXT, header);
-		}
-
-		String classMask = "/**\n * @author $author$\n*/";
-
-		convention.put(
-			ConventionKeys.COMMENT_JAVADOC_TEMPLATE_CLASS,
-			env.interpolate(classMask));
-
-		convention.put(
-			ConventionKeys.COMMENT_JAVADOC_TEMPLATE_INTERFACE,
-			env.interpolate(classMask));
-
-		boolean formatSuccess = jalopy.format();
-
-		String newContent = sb.toString();
-
-		// Remove double blank lines after the package or last import
-
-		newContent = newContent.replaceFirst(
-			"(?m)^[ \t]*((?:package|import) .*;)\\s*^[ \t]*/\\*\\*",
-			"$1\n\n/**");
-
-		/*// Remove blank lines after try {
-
-		newContent = StringUtil.replace(newContent, "try {\n\n", "try {\n");
-
-		// Remove blank lines after ) {
-
-		newContent = StringUtil.replace(newContent, ") {\n\n", ") {\n");
-
-		// Remove blank lines empty braces { }
-
-		newContent = StringUtil.replace(newContent, "\n\n\t}", "\n\t}");
-
-		// Add space to last }
-
-		newContent =
-			newContent.substring(0, newContent.length() - 2) + "\n\n}";*/
+		String newContent = importsFormatter.format(
+			content, packagePath, className);
 
 		writeFileRaw(file, newContent, modifiedFileNames);
-
-		if (failOnFormatError && !formatSuccess) {
-			throw new IOException("Unable to beautify " + file);
-		}
 	}
 
 	public static void writeFileRaw(
@@ -694,19 +577,6 @@ public class ToolsUtil {
 
 		return StringUtil.replace(
 			s, StringPool.RETURN_NEW_LINE, StringPool.NEW_LINE);
-	}
-
-	private static URL _readJalopyXmlFromClassLoader() {
-		ClassLoader classLoader = ToolsUtil.class.getClassLoader();
-
-		URL url = classLoader.getResource("jalopy.xml");
-
-		if (url == null) {
-			throw new RuntimeException(
-				"Unable to load jalopy.xml from the class loader");
-		}
-
-		return url;
 	}
 
 	private static String _stripFullyQualifiedClassNames(

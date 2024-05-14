@@ -24,8 +24,20 @@ import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.Type;
 import com.thoughtworks.qdox.model.TypeVariable;
 
+import de.hunsicker.io.FileFormat;
+import de.hunsicker.jalopy.Jalopy;
+import de.hunsicker.jalopy.storage.Convention;
+import de.hunsicker.jalopy.storage.ConventionKeys;
+import de.hunsicker.jalopy.storage.Environment;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+
+import java.net.URL;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -237,7 +249,7 @@ public class InstanceWrapperBuilder {
 				StringUtil.replace(javaPackage.getName(), '.', '/'), "/",
 				javaClass.getName(), "_IW.java"));
 
-		ToolsUtil.writeFile(file, sb.toString(), null);
+		_writeFile(file, sb.toString());
 	}
 
 	private String _getDimensions(Type type) {
@@ -291,6 +303,130 @@ public class InstanceWrapperBuilder {
 		sb.append(_getDimensions(type));
 
 		return sb.toString();
+	}
+
+	private URL _readJalopyXmlFromClassLoader() {
+		ClassLoader classLoader = ToolsUtil.class.getClassLoader();
+
+		URL url = classLoader.getResource("jalopy.xml");
+
+		if (url == null) {
+			throw new RuntimeException(
+				"Unable to load jalopy.xml from the class loader");
+		}
+
+		return url;
+	}
+
+	private void _writeFile(File file, String content) throws IOException {
+		if (!file.exists()) {
+			Path path = file.toPath();
+
+			Files.createDirectories(path.getParent());
+			Files.createFile(path);
+		}
+
+		String className = file.getName();
+
+		className = className.substring(0, className.length() - 5);
+
+		ImportsFormatter importsFormatter = new JavaImportsFormatter();
+
+		content = importsFormatter.format(
+			content, ToolsUtil.getPackagePath(file), className);
+
+		// Beautify
+
+		StringBuffer sb = new StringBuffer();
+
+		Jalopy jalopy = new Jalopy();
+
+		jalopy.setFileFormat(FileFormat.UNIX);
+		jalopy.setInput(
+			new ByteArrayInputStream(content.getBytes()), file.getPath());
+		jalopy.setOutput(sb);
+
+		File jalopyXmlFile = new File("tools/jalopy.xml");
+
+		if (!jalopyXmlFile.exists()) {
+			jalopyXmlFile = new File("../tools/jalopy.xml");
+		}
+
+		if (!jalopyXmlFile.exists()) {
+			jalopyXmlFile = new File("misc/jalopy.xml");
+		}
+
+		if (!jalopyXmlFile.exists()) {
+			jalopyXmlFile = new File("../misc/jalopy.xml");
+		}
+
+		if (!jalopyXmlFile.exists()) {
+			jalopyXmlFile = new File("../../misc/jalopy.xml");
+		}
+
+		if (jalopyXmlFile.exists()) {
+			Jalopy.setConvention(jalopyXmlFile);
+		}
+		else {
+			URL url = _readJalopyXmlFromClassLoader();
+
+			Jalopy.setConvention(url);
+		}
+
+		Environment env = Environment.getInstance();
+
+		// Author
+
+		env.set("author", ToolsUtil.AUTHOR);
+
+		// File name
+
+		env.set("fileName", file.getName());
+
+		Convention convention = Convention.getInstance();
+
+		String classMask = "/**\n * @author $author$\n*/";
+
+		convention.put(
+			ConventionKeys.COMMENT_JAVADOC_TEMPLATE_CLASS,
+			env.interpolate(classMask));
+
+		convention.put(
+			ConventionKeys.COMMENT_JAVADOC_TEMPLATE_INTERFACE,
+			env.interpolate(classMask));
+
+		boolean formatSuccess = jalopy.format();
+
+		String newContent = sb.toString();
+
+		// Remove double blank lines after the package or last import
+
+		newContent = newContent.replaceFirst(
+			"(?m)^[ \t]*((?:package|import) .*;)\\s*^[ \t]*/\\*\\*",
+			"$1\n\n/**");
+
+		/*// Remove blank lines after try {
+
+		newContent = StringUtil.replace(newContent, "try {\n\n", "try {\n");
+
+		// Remove blank lines after ) {
+
+		newContent = StringUtil.replace(newContent, ") {\n\n", ") {\n");
+
+		// Remove blank lines empty braces { }
+
+		newContent = StringUtil.replace(newContent, "\n\n\t}", "\n\t}");
+
+		// Add space to last }
+
+		newContent =
+			newContent.substring(0, newContent.length() - 2) + "\n\n}";*/
+
+		ToolsUtil.writeFileRaw(file, newContent, null);
+
+		if (!formatSuccess) {
+			throw new IOException("Unable to beautify " + file);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

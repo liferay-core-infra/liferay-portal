@@ -16,8 +16,12 @@ import java.util.Date;
 public class WorkflowTaskDueDateComparator
 	extends OrderByComparator<WorkflowTask> {
 
-	public WorkflowTaskDueDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static WorkflowTaskDueDateComparator get(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -68,6 +72,16 @@ public class WorkflowTaskDueDateComparator
 
 		return super.isAscending(field);
 	}
+
+	private WorkflowTaskDueDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final WorkflowTaskDueDateComparator _ASCENDING =
+		new WorkflowTaskDueDateComparator(true);
+
+	private static final WorkflowTaskDueDateComparator _DESCENDING =
+		new WorkflowTaskDueDateComparator(false);
 
 	private static final String _ORDER_BY_ASC =
 		"completed ASC, dueDate ASC, modifiedDate ASC, kaleoTaskId ASC";

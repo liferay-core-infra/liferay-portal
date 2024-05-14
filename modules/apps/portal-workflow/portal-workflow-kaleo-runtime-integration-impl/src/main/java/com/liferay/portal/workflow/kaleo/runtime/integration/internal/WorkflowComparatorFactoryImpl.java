@@ -141,7 +141,7 @@ public class WorkflowComparatorFactoryImpl
 	public OrderByComparator<WorkflowTask> getTaskDueDateComparator(
 		boolean ascending) {
 
-		return new WorkflowTaskDueDateComparator(ascending);
+		return WorkflowTaskDueDateComparator.get(ascending);
 	}
 
 	@Override

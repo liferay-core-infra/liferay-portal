@@ -20,10 +20,6 @@ public class CPOptionCategoryPriorityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public CPOptionCategoryPriorityComparator() {
-		this(false);
-	}
-
 	public CPOptionCategoryPriorityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -21,10 +21,6 @@ public class CPDefinitionOptionValueRelNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public CPDefinitionOptionValueRelNameComparator() {
-		this(false);
-	}
-
 	public CPDefinitionOptionValueRelNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

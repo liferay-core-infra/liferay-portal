@@ -20,10 +20,6 @@ public class CPInstanceSkuComparator extends OrderByComparator<CPInstance> {
 
 	public static final String[] ORDER_BY_FIELDS = {"sku"};
 
-	public CPInstanceSkuComparator() {
-		this(false);
-	}
-
 	public CPInstanceSkuComparator(boolean ascending) {
 		_ascending = ascending;
 	}

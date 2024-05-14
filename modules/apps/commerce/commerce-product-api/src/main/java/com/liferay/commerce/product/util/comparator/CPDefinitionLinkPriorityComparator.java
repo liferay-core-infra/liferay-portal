@@ -20,10 +20,6 @@ public class CPDefinitionLinkPriorityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public CPDefinitionLinkPriorityComparator() {
-		this(false);
-	}
-
 	public CPDefinitionLinkPriorityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

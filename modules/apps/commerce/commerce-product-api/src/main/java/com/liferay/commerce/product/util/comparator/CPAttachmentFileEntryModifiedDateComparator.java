@@ -21,10 +21,6 @@ public class CPAttachmentFileEntryModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public CPAttachmentFileEntryModifiedDateComparator() {
-		this(false);
-	}
-
 	public CPAttachmentFileEntryModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -21,10 +21,6 @@ public class CPDefinitionDisplayDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"displayDate"};
 
-	public CPDefinitionDisplayDateComparator() {
-		this(false);
-	}
-
 	public CPDefinitionDisplayDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

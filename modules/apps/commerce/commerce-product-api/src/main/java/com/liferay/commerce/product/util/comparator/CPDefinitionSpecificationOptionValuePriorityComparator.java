@@ -20,10 +20,6 @@ public class CPDefinitionSpecificationOptionValuePriorityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public CPDefinitionSpecificationOptionValuePriorityComparator() {
-		this(false);
-	}
-
 	public CPDefinitionSpecificationOptionValuePriorityComparator(
 		boolean ascending) {
 

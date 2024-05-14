@@ -21,10 +21,6 @@ public class CPAttachmentFileEntryDisplayDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"displayDate"};
 
-	public CPAttachmentFileEntryDisplayDateComparator() {
-		this(false);
-	}
-
 	public CPAttachmentFileEntryDisplayDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

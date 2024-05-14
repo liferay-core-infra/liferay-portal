@@ -21,10 +21,6 @@ public class CPDefinitionModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public CPDefinitionModifiedDateComparator() {
-		this(false);
-	}
-
 	public CPDefinitionModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

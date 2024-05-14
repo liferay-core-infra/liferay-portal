@@ -22,10 +22,6 @@ public class CPSpecificationOptionTitleComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public CPSpecificationOptionTitleComparator() {
-		this(false);
-	}
-
 	public CPSpecificationOptionTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

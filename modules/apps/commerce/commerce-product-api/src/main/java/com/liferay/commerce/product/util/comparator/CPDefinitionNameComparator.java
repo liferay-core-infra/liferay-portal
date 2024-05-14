@@ -23,10 +23,6 @@ public class CPDefinitionNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public CPDefinitionNameComparator() {
-		this(false);
-	}
-
 	public CPDefinitionNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

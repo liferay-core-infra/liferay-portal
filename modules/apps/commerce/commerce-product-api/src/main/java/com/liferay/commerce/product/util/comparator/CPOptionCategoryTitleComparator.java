@@ -21,10 +21,6 @@ public class CPOptionCategoryTitleComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public CPOptionCategoryTitleComparator() {
-		this(false);
-	}
-
 	public CPOptionCategoryTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

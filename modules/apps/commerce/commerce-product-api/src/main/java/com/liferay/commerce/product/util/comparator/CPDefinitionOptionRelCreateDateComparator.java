@@ -21,10 +21,6 @@ public class CPDefinitionOptionRelCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public CPDefinitionOptionRelCreateDateComparator() {
-		this(false);
-	}
-
 	public CPDefinitionOptionRelCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

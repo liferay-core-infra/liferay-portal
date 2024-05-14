@@ -22,10 +22,6 @@ public class CPDefinitionGroupedEntryQuantityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"quantity"};
 
-	public CPDefinitionGroupedEntryQuantityComparator() {
-		this(false);
-	}
-
 	public CPDefinitionGroupedEntryQuantityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

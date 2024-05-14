@@ -21,10 +21,6 @@ public class CommerceWishListItemCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public CommerceWishListItemCreateDateComparator() {
-		this(false);
-	}
-
 	public CommerceWishListItemCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

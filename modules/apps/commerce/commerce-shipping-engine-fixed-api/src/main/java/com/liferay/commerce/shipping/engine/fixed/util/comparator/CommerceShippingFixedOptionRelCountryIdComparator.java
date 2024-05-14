@@ -20,10 +20,6 @@ public class CommerceShippingFixedOptionRelCountryIdComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"countryId"};
 
-	public CommerceShippingFixedOptionRelCountryIdComparator() {
-		this(false);
-	}
-
 	public CommerceShippingFixedOptionRelCountryIdComparator(
 		boolean ascending) {
 

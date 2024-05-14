@@ -21,10 +21,6 @@ public class CommerceTaxFixedRateAddressRelCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public CommerceTaxFixedRateAddressRelCreateDateComparator() {
-		this(false);
-	}
-
 	public CommerceTaxFixedRateAddressRelCreateDateComparator(
 		boolean ascending) {
 

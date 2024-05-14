@@ -21,10 +21,6 @@ public class CommerceWishListNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public CommerceWishListNameComparator() {
-		this(false);
-	}
-
 	public CommerceWishListNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -34,10 +34,6 @@ public class CommerceShippingFixedOptionNameComparator
 		_locale = locale;
 	}
 
-	public CommerceShippingFixedOptionNameComparator(Locale locale) {
-		this(false, locale);
-	}
-
 	@Override
 	public int compare(
 		CommerceShippingFixedOption commerceShippingFixedOption1,

@@ -141,13 +141,7 @@ public class WorkflowComparatorFactoryImpl
 	public OrderByComparator<WorkflowTask> getTaskDueDateComparator(
 		boolean ascending) {
 
-		return new WorkflowTaskDueDateComparator(
-			ascending,
-			"completed ASC, dueDate ASC, modifiedDate ASC, kaleoTaskId ASC",
-			"completed ASC, dueDate DESC, modifiedDate DESC, kaleoTaskId DESC",
-			new String[] {
-				"completed", "dueDate", "modifiedDate", "kaleoTaskId"
-			});
+		return new WorkflowTaskDueDateComparator(ascending);
 	}
 
 	@Override

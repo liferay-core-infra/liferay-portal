@@ -464,8 +464,10 @@ public class ObjectFieldLocalServiceTest {
 		_objectRelationshipLocalService.deleteObjectRelationship(
 			objectRelationship);
 
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition1);
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition2);
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition1.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition2.getObjectDefinitionId());
 
 		String[] reservedNames = {
 			"actions", "companyId", "createDate", "creator", "dateCreated",
@@ -987,9 +989,10 @@ public class ObjectFieldLocalServiceTest {
 		_objectRelationshipLocalService.deleteObjectRelationship(
 			objectRelationship);
 
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			relatedObjectDefinition);
+			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			relatedObjectDefinition.getObjectDefinitionId());
 
 		objectRelationship = ObjectRelationshipTestUtil.addObjectRelationship(
 			_objectRelationshipLocalService,
@@ -1298,7 +1301,7 @@ public class ObjectFieldLocalServiceTest {
 				"able", Collections.emptyList()));
 
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			modifiableSystemObjectDefinition);
+			modifiableSystemObjectDefinition.getObjectDefinitionId());
 	}
 
 	@Test
@@ -1518,9 +1521,9 @@ public class ObjectFieldLocalServiceTest {
 		_assertDeleteObjectField(true, systemObjectDefinition, "baker");
 
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			customObjectDefinition);
+			customObjectDefinition.getObjectDefinitionId());
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			systemObjectDefinition);
+			systemObjectDefinition.getObjectDefinitionId());
 
 		// Delete system object field from modifiable system object definition
 
@@ -1573,7 +1576,7 @@ public class ObjectFieldLocalServiceTest {
 			true, modifiableSystemObjectDefinition, "able");
 
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			modifiableSystemObjectDefinition);
+			modifiableSystemObjectDefinition.getObjectDefinitionId());
 	}
 
 	@Test
@@ -1780,7 +1783,8 @@ public class ObjectFieldLocalServiceTest {
 						"-private"
 					).build())));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition.getObjectDefinitionId());
 
 		// Business type integer
 
@@ -1981,7 +1985,8 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldSettingConstants.NAME_SHOW_COUNTER, "false"
 			).build());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition.getObjectDefinitionId());
 	}
 
 	@Test
@@ -2045,8 +2050,10 @@ public class ObjectFieldLocalServiceTest {
 		_objectRelationshipLocalService.deleteObjectRelationship(
 			objectRelationship);
 
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition1);
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition2);
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition1.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition2.getObjectDefinitionId());
 	}
 
 	private void _addCustomObjectDefinitionWithAutoIncrementObjectField(
@@ -2731,7 +2738,8 @@ public class ObjectFieldLocalServiceTest {
 					objectDefinition1.getObjectDefinitionId(),
 					ObjectFieldConstants.READ_ONLY_TRUE, null)));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition1);
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			objectDefinition1.getObjectDefinitionId());
 	}
 
 	private void _testAddOrUpdateCustomObjectField(

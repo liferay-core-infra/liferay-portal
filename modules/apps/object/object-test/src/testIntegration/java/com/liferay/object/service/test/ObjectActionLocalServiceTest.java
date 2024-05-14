@@ -238,7 +238,8 @@ public class ObjectActionLocalServiceTest {
 				0, ObjectActionExecutorConstants.KEY_GROOVY),
 			"_objectScriptingExecutor", _originalObjectScriptingExecutor);
 
-		_objectDefinitionLocalService.deleteObjectDefinition(_objectDefinition);
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			_objectDefinition.getObjectDefinitionId());
 	}
 
 	@Test
@@ -957,11 +958,11 @@ public class ObjectActionLocalServiceTest {
 				objectDefinitionA.getObjectDefinitionId());
 
 			_objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinitionA);
+				objectDefinitionA.getObjectDefinitionId());
 			_objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinitionAA);
+				objectDefinitionAA.getObjectDefinitionId());
 			_objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinitionAAA);
+				objectDefinitionAAA.getObjectDefinitionId());
 		}
 		finally {
 			PermissionThreadLocal.setPermissionChecker(

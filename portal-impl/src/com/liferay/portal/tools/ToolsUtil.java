@@ -389,68 +389,6 @@ public class ToolsUtil {
 		}
 	}
 
-	public static void writeFile(
-			File file, String content, Set<String> modifiedFileNames)
-		throws IOException {
-
-		writeFile(file, content, AUTHOR, modifiedFileNames);
-	}
-
-	public static void writeFile(
-			File file, String content, String author,
-			Map<String, Object> jalopySettings, Set<String> modifiedFileNames)
-		throws IOException {
-
-		writeFile(
-			file, content, null, author, jalopySettings, modifiedFileNames,
-			null);
-	}
-
-	public static void writeFile(
-			File file, String content, String author,
-			Map<String, Object> jalopySettings, Set<String> modifiedFileNames,
-			String packagePath)
-		throws IOException {
-
-		writeFile(
-			file, content, null, author, jalopySettings, modifiedFileNames,
-			packagePath);
-	}
-
-	public static void writeFile(
-			File file, String content, String author,
-			Set<String> modifiedFileNames)
-		throws IOException {
-
-		writeFile(file, content, author, null, modifiedFileNames);
-	}
-
-	public static void writeFile(
-			File file, String content, String header, String author,
-			Map<String, Object> jalopySettings, Set<String> modifiedFileNames,
-			String packagePath)
-		throws IOException {
-
-		if (!file.exists()) {
-			_write(file, StringPool.BLANK);
-		}
-
-		if (Validator.isNull(packagePath)) {
-			packagePath = getPackagePath(file);
-		}
-
-		String className = file.getName();
-
-		className = className.substring(0, className.length() - 5);
-
-		ImportsFormatter importsFormatter = new JavaImportsFormatter();
-
-		String newContent = importsFormatter.format(
-			content, packagePath, className);
-
-		writeFileRaw(file, newContent, modifiedFileNames);
-	}
-
 	public static void writeFileRaw(
 			File file, String content, Set<String> modifiedFileNames)
 		throws IOException {

@@ -21,10 +21,6 @@ public class CommerceAddressCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public CommerceAddressCreateDateComparator() {
-		this(false);
-	}
-
 	public CommerceAddressCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

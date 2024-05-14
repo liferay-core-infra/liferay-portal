@@ -21,10 +21,6 @@ public class CommerceShipmentExpectedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"expectedDate"};
 
-	public CommerceShipmentExpectedDateComparator() {
-		this(false);
-	}
-
 	public CommerceShipmentExpectedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

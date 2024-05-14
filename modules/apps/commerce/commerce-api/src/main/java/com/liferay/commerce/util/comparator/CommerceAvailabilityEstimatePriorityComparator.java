@@ -22,10 +22,6 @@ public class CommerceAvailabilityEstimatePriorityComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public CommerceAvailabilityEstimatePriorityComparator() {
-		this(false);
-	}
-
 	public CommerceAvailabilityEstimatePriorityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

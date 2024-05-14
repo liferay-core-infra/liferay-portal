@@ -21,10 +21,6 @@ public class CommerceShipmentShippingDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"shippingDate"};
 
-	public CommerceShipmentShippingDateComparator() {
-		this(false);
-	}
-
 	public CommerceShipmentShippingDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

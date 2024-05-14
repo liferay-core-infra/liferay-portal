@@ -22,10 +22,6 @@ public class CommerceShipmentIdComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"commerceShipmentId"};
 
-	public CommerceShipmentIdComparator() {
-		this(false);
-	}
-
 	public CommerceShipmentIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}

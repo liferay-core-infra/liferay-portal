@@ -33,10 +33,6 @@ public class CommerceShippingMethodNameComparator
 		_locale = locale;
 	}
 
-	public CommerceShippingMethodNameComparator(Locale locale) {
-		this(false, locale);
-	}
-
 	@Override
 	public int compare(
 		CommerceShippingMethod commerceShippingMethod1,

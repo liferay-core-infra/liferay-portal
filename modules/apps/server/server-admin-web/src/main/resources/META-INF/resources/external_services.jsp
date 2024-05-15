@@ -35,6 +35,8 @@
 
 		</aui:fieldset>
 
+		<aui:input name="captcha.enabled" type="hidden" value="true" />
+
 		<liferay-captcha:captcha />
 
 		<aui:button-row>

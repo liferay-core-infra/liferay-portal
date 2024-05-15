@@ -26,6 +26,8 @@
 
 				<aui:input cssClass="lfr-textarea-container" label="custom-message" name="message" type="textarea" />
 
+				<aui:input name="captcha.enabled" type="hidden" value="true" />
+
 				<liferay-captcha:captcha />
 
 				<aui:button cssClass="save-server-button" data-cmd="shutdown" primary="<%= true %>" value="shutdown" />

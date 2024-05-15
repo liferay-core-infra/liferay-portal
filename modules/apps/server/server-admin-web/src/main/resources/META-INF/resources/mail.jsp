@@ -21,6 +21,8 @@ Function<String, String> defaultValueFunction = key -> PropsUtil.get(key);
 	<div class="panel-group panel-group-flush">
 		<%@ include file="/mail_fields.jspf" %>
 
+		<aui:input name="captcha.enabled" type="hidden" value="true" />
+
 		<liferay-captcha:captcha />
 
 		<aui:button-row>

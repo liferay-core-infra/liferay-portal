@@ -107,6 +107,8 @@ long usedMemory = totalMemory - runtime.freeMemory();
 			</table>
 		</aui:fieldset>
 
+		<aui:input name="captcha.enabled" type="hidden" value="true" />
+
 		<liferay-captcha:captcha />
 
 		<aui:fieldset collapsed="<%= false %>" collapsible="<%= true %>" label="system-actions">

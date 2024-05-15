@@ -28,10 +28,6 @@ public class DDMTemplateNameComparator extends OrderByComparator<DDMTemplate> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public DDMTemplateNameComparator() {
-		this(false);
-	}
-
 	public DDMTemplateNameComparator(boolean ascending) {
 		this(ascending, LocaleUtil.getDefault());
 	}

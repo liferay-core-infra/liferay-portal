@@ -25,10 +25,6 @@ public class StructureLinkStructureModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public StructureLinkStructureModifiedDateComparator() {
-		this(false);
-	}
-
 	public StructureLinkStructureModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

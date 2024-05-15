@@ -26,10 +26,6 @@ public class StructureNameComparator extends OrderByComparator<DDMStructure> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public StructureNameComparator() {
-		this(false);
-	}
-
 	public StructureNameComparator(boolean ascending) {
 		this(ascending, LocaleUtil.getDefault());
 	}

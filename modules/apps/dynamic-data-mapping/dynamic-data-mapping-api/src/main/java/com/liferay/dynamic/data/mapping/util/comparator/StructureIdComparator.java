@@ -19,10 +19,6 @@ public class StructureIdComparator extends OrderByComparator<DDMStructure> {
 
 	public static final String[] ORDER_BY_FIELDS = {"structureId"};
 
-	public StructureIdComparator() {
-		this(false);
-	}
-
 	public StructureIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}

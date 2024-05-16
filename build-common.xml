@@ -1214,12 +1214,22 @@ information.
 			</if>
 
 			<local name="junit.jvm.bin" />
+			<local name="junit.java.home" />
 
-			<condition else="${junit.jvm}" property="junit.jvm.bin" value="${junit.jvm.override}/bin/java">
-				<isset property="junit.jvm.override" />
-			</condition>
+			<if>
+				<equals arg1="${junit.jvm.override}" arg2="" />
+				<then>
+					<property name="junit.jvm.bin" value="" />
+					<property name="junit.java.home" value="${env.JAVA_HOME}" />
+				</then>
+				<else>
+					<property name="junit.jvm.bin" value="${junit.jvm.override}/bin/java" />
+					<property name="junit.java.home" value="${junit.jvm.override}" />
+				</else>
+			</if>
 
 			<junit dir="${project.dir}" fork="on" forkmode="@{forkmode}" haltonfailure="${junit.halt.on.failure}" jvm="${junit.jvm.bin}" outputtoformatters="false" printsummary="on" showoutput="true">
+				<env key="JAVA_HOME" value="${junit.java.home}" />
 				<sysproperty if:true="${aspectj.weaver.enabled}" key="aspectj.agent" value="${aspectj.agent}" />
 				<sysproperty key="catalina.base" value="." />
 				<sysproperty file="woven-classes" key="junit.aspectj.dump" />

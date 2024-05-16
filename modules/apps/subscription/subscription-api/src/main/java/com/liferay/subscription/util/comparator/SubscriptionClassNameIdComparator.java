@@ -20,10 +20,6 @@ public class SubscriptionClassNameIdComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"classNameId"};
 
-	public SubscriptionClassNameIdComparator() {
-		this(false);
-	}
-
 	public SubscriptionClassNameIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}

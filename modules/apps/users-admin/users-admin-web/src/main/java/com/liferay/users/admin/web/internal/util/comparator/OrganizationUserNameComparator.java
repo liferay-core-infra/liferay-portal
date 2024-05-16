@@ -20,10 +20,6 @@ public class OrganizationUserNameComparator extends OrderByComparator<Object> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public OrganizationUserNameComparator() {
-		this(false);
-	}
-
 	public OrganizationUserNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

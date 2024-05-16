@@ -19,10 +19,6 @@ public class GroupIdComparator extends OrderByComparator<Group> {
 
 	public static final String[] ORDER_BY_FIELDS = {"groupId"};
 
-	public GroupIdComparator() {
-		this(false);
-	}
-
 	public GroupIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}

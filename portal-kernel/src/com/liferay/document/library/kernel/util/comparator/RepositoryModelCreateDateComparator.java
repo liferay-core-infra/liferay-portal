@@ -33,10 +33,6 @@ public class RepositoryModelCreateDateComparator<T>
 	public static final String ORDER_BY_MODEL_DESC =
 		"modelFolder DESC, createDate DESC";
 
-	public RepositoryModelCreateDateComparator() {
-		this(false);
-	}
-
 	public RepositoryModelCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 

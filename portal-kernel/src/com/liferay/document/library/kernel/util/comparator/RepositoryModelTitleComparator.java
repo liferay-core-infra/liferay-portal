@@ -31,10 +31,6 @@ public class RepositoryModelTitleComparator<T> extends OrderByComparator<T> {
 	public static final String ORDER_BY_MODEL_DESC =
 		"modelFolder DESC, title DESC";
 
-	public RepositoryModelTitleComparator() {
-		this(false);
-	}
-
 	public RepositoryModelTitleComparator(boolean ascending) {
 		_ascending = ascending;
 

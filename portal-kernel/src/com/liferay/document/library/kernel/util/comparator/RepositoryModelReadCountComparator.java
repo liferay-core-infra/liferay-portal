@@ -35,10 +35,6 @@ public class RepositoryModelReadCountComparator<T>
 	public static final String ORDER_BY_MODEL_DESC =
 		"modelFolder DESC, readCount DESC";
 
-	public RepositoryModelReadCountComparator() {
-		this(false);
-	}
-
 	public RepositoryModelReadCountComparator(boolean ascending) {
 		_ascending = ascending;
 

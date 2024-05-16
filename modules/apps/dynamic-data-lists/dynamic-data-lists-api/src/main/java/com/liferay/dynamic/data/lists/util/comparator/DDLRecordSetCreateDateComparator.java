@@ -27,10 +27,6 @@ public class DDLRecordSetCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public DDLRecordSetCreateDateComparator() {
-		this(false);
-	}
-
 	public DDLRecordSetCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -23,10 +23,6 @@ public class SiteNavigationMenuCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public SiteNavigationMenuCreateDateComparator() {
-		this(false);
-	}
-
 	public SiteNavigationMenuCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

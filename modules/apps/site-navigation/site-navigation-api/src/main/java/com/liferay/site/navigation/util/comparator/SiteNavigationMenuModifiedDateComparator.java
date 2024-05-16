@@ -23,10 +23,6 @@ public class SiteNavigationMenuModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public SiteNavigationMenuModifiedDateComparator() {
-		this(false);
-	}
-
 	public SiteNavigationMenuModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

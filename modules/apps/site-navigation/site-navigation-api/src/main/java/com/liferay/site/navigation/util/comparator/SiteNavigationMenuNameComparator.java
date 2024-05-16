@@ -20,10 +20,6 @@ public class SiteNavigationMenuNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public SiteNavigationMenuNameComparator() {
-		this(false);
-	}
-
 	public SiteNavigationMenuNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

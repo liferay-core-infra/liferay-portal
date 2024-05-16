@@ -21,10 +21,6 @@ public class PushNotificationsDevicePlatformComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"platform"};
 
-	public PushNotificationsDevicePlatformComparator() {
-		this(true);
-	}
-
 	public PushNotificationsDevicePlatformComparator(boolean ascending) {
 		_ascending = ascending;
 	}

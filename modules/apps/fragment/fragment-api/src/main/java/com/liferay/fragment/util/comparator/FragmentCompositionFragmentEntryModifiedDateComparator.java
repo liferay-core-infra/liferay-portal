@@ -24,10 +24,6 @@ public class FragmentCompositionFragmentEntryModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public FragmentCompositionFragmentEntryModifiedDateComparator() {
-		this(true);
-	}
-
 	public FragmentCompositionFragmentEntryModifiedDateComparator(
 		boolean ascending) {
 

@@ -23,10 +23,6 @@ public class FragmentEntryLinkLastPropagationDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"lastPropagationDate"};
 
-	public FragmentEntryLinkLastPropagationDateComparator() {
-		this(true);
-	}
-
 	public FragmentEntryLinkLastPropagationDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

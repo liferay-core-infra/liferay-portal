@@ -23,10 +23,6 @@ public class FragmentCollectionCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public FragmentCollectionCreateDateComparator() {
-		this(true);
-	}
-
 	public FragmentCollectionCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

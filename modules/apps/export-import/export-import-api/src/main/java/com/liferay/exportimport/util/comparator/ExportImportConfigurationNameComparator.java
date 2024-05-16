@@ -22,10 +22,6 @@ public class ExportImportConfigurationNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name", "createDate"};
 
-	public ExportImportConfigurationNameComparator() {
-		this(false);
-	}
-
 	public ExportImportConfigurationNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

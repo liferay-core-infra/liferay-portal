@@ -2005,6 +2005,7 @@ rerun your task.
 					<propertyref if:set="junit.java.add.opens" name="junit.java.add.opens" />
 					<propertyref if:set="junit.java.security.manager" name="junit.java.security.manager" />
 					<propertyref name="junit.java.unit.gc" />
+					<propertyref name="junit.jvm.override" />
 					<propertyref name="junit.jvm.override.version" />
 					<propertyref name="liferay.home" />
 					<propertyref name="liferay.releng.app.title.prefix" />

@@ -586,6 +586,8 @@ gradle.beforeProject {
 					javaLauncher = javaToolchains.launcherFor {
 						languageVersion = JavaLanguageVersion.of(project.properties["junit.jvm.override.version"])
 					}
+
+					environment "JAVA_HOME", project.properties["junit.jvm.override"]
 				}
 
 				if (project.properties["junit.java.add.opens"]) {

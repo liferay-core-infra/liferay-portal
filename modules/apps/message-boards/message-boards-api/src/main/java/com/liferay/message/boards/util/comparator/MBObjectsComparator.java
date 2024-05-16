@@ -29,10 +29,6 @@ public class MBObjectsComparator<T> extends OrderByComparator<T> {
 		"modelCategory", "priority", "modifiedDate", "name", "modelId"
 	};
 
-	public MBObjectsComparator() {
-		this(false);
-	}
-
 	public MBObjectsComparator(boolean ascending) {
 		_ascending = ascending;
 	}

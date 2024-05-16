@@ -20,10 +20,6 @@ public class CategoryTitleComparator<T> extends OrderByComparator<T> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name", "modifiedDate"};
 
-	public CategoryTitleComparator() {
-		this(false);
-	}
-
 	public CategoryTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

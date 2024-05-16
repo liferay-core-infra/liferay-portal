@@ -21,10 +21,6 @@ public class ObjectFieldCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public ObjectFieldCreateDateComparator() {
-		this(false);
-	}
-
 	public ObjectFieldCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

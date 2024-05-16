@@ -23,9 +23,6 @@ public class ThreadModifiedDateComparator<T> extends OrderByComparator<T> {
 
 	public static final String[] ORDER_BY_FIELDS = {"priority", "modifiedDate"};
 
-	public ThreadModifiedDateComparator() {
-		this(false);
-	}
 
 	public ThreadModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;

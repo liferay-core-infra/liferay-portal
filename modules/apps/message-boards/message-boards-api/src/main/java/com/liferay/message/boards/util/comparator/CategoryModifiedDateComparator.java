@@ -22,10 +22,6 @@ public class CategoryModifiedDateComparator<T> extends OrderByComparator<T> {
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public CategoryModifiedDateComparator() {
-		this(false);
-	}
-
 	public CategoryModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

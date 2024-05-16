@@ -23,11 +23,6 @@ public class ThreadTitleComparator<T> extends OrderByComparator<T> {
 	public static final String[] ORDER_BY_FIELDS = {
 		"priority", "title", "modifiedDate"
 	};
-
-	public ThreadTitleComparator() {
-		this(false);
-	}
-
 	public ThreadTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

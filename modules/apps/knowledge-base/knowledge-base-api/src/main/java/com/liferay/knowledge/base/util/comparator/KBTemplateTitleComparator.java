@@ -21,10 +21,6 @@ public class KBTemplateTitleComparator extends OrderByComparator<KBTemplate> {
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public KBTemplateTitleComparator() {
-		this(false);
-	}
-
 	public KBTemplateTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

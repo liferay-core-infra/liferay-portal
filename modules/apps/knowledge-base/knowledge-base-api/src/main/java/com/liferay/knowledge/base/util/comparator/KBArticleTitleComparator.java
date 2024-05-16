@@ -21,10 +21,6 @@ public class KBArticleTitleComparator extends OrderByComparator<KBArticle> {
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public KBArticleTitleComparator() {
-		this(false);
-	}
-
 	public KBArticleTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

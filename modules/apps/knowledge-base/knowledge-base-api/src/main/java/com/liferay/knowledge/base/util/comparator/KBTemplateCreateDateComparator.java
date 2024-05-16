@@ -22,10 +22,6 @@ public class KBTemplateCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public KBTemplateCreateDateComparator() {
-		this(false);
-	}
-
 	public KBTemplateCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -22,10 +22,6 @@ public class KBTemplateUserNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"userName", "title"};
 
-	public KBTemplateUserNameComparator() {
-		this(false);
-	}
-
 	public KBTemplateUserNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

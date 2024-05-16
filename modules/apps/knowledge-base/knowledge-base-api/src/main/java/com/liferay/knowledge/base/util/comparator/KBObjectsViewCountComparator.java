@@ -22,10 +22,6 @@ public class KBObjectsViewCountComparator<T> extends OrderByComparator<T> {
 
 	public static final String[] ORDER_BY_FIELDS = {"viewCount", "title"};
 
-	public KBObjectsViewCountComparator() {
-		this(false);
-	}
-
 	public KBObjectsViewCountComparator(boolean ascending) {
 		_ascending = ascending;
 	}

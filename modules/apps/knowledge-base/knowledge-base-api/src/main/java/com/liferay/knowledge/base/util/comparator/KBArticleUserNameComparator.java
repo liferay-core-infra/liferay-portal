@@ -21,10 +21,6 @@ public class KBArticleUserNameComparator extends OrderByComparator<KBArticle> {
 
 	public static final String[] ORDER_BY_FIELDS = {"userName", "title"};
 
-	public KBArticleUserNameComparator() {
-		this(false);
-	}
-
 	public KBArticleUserNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

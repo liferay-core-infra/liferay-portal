@@ -20,10 +20,6 @@ public class KBArticleViewCountComparator extends OrderByComparator<KBArticle> {
 
 	public static final String[] ORDER_BY_FIELDS = {"viewCount", "title"};
 
-	public KBArticleViewCountComparator() {
-		this(false);
-	}
-
 	public KBArticleViewCountComparator(boolean ascending) {
 		_ascending = ascending;
 	}

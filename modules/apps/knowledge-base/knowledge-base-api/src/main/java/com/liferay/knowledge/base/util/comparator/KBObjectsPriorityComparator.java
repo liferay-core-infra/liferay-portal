@@ -22,10 +22,6 @@ public class KBObjectsPriorityComparator<T> extends OrderByComparator<T> {
 
 	public static final String[] ORDER_BY_FIELDS = {"priority", "title"};
 
-	public KBObjectsPriorityComparator() {
-		this(false);
-	}
-
 	public KBObjectsPriorityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -29,10 +29,6 @@ public class KBObjectsModifiedDateComparator<T> extends OrderByComparator<T> {
 	public static final String ORDER_BY_MODEL_DESC =
 		"modelFolder DESC, modifiedDate DESC, title ASC";
 
-	public KBObjectsModifiedDateComparator() {
-		this(false, false);
-	}
-
 	public KBObjectsModifiedDateComparator(boolean ascending) {
 		this(ascending, false);
 	}

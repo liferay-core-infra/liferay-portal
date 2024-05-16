@@ -22,10 +22,6 @@ public class
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public LayoutPageTemplateCollectionLayoutPageTemplateEntryCreateDateComparator() {
-		this(false);
-	}
-
 	public LayoutPageTemplateCollectionLayoutPageTemplateEntryCreateDateComparator(
 		boolean ascending) {
 

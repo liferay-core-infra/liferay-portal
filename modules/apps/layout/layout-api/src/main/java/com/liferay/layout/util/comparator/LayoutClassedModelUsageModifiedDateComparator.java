@@ -23,10 +23,6 @@ public class LayoutClassedModelUsageModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public LayoutClassedModelUsageModifiedDateComparator() {
-		this(true);
-	}
-
 	public LayoutClassedModelUsageModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

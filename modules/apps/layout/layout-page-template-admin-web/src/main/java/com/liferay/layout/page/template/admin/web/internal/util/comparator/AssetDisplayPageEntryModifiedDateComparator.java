@@ -23,10 +23,6 @@ public class AssetDisplayPageEntryModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public AssetDisplayPageEntryModifiedDateComparator() {
-		this(true);
-	}
-
 	public AssetDisplayPageEntryModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

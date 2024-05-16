@@ -27,10 +27,6 @@ public class ListTypeEntryNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public ListTypeEntryNameComparator() {
-		this(false);
-	}
-
 	public ListTypeEntryNameComparator(boolean ascending) {
 		this(ascending, LocaleUtil.getDefault());
 	}

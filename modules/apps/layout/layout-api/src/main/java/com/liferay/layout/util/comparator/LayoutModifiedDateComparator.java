@@ -20,10 +20,6 @@ public class LayoutModifiedDateComparator extends OrderByComparator<Layout> {
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public LayoutModifiedDateComparator() {
-		this(false);
-	}
-
 	public LayoutModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

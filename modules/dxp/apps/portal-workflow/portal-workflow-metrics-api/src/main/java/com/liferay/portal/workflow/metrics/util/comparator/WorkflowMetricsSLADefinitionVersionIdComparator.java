@@ -14,10 +14,6 @@ import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinitionVer
 public class WorkflowMetricsSLADefinitionVersionIdComparator
 	extends OrderByComparator<WorkflowMetricsSLADefinitionVersion> {
 
-	public WorkflowMetricsSLADefinitionVersionIdComparator() {
-		this(false);
-	}
-
 	public WorkflowMetricsSLADefinitionVersionIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}

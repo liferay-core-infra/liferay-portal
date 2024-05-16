@@ -25,10 +25,6 @@ public class GroupNameComparator extends OrderByComparator<Group> {
 
 	public static final String[] ORDER_BY_FIELDS = {"groupName"};
 
-	public GroupNameComparator() {
-		this(false);
-	}
-
 	public GroupNameComparator(boolean ascending) {
 		this(ascending, LocaleUtil.getDefault());
 	}

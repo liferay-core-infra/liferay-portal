@@ -27,10 +27,6 @@ public class KaleoProcessCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public KaleoProcessCreateDateComparator() {
-		this(false);
-	}
-
 	public KaleoProcessCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

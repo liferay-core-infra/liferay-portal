@@ -33,10 +33,6 @@ public class RepositoryModelSizeComparator<T> extends OrderByComparator<T> {
 	public static final String ORDER_BY_MODEL_DESC =
 		"modelFolder DESC, size_ DESC";
 
-	public RepositoryModelSizeComparator() {
-		this(false);
-	}
-
 	public RepositoryModelSizeComparator(boolean ascending) {
 		_ascending = ascending;
 

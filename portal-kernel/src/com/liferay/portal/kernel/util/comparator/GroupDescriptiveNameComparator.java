@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.util.CollatorUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.text.Collator;
@@ -28,14 +27,6 @@ public class GroupDescriptiveNameComparator extends OrderByComparator<Group> {
 	public static final String ORDER_BY_DESC = "groupName DESC";
 
 	public static final String[] ORDER_BY_FIELDS = {"groupName"};
-
-	public GroupDescriptiveNameComparator() {
-		this(false);
-	}
-
-	public GroupDescriptiveNameComparator(boolean ascending) {
-		this(ascending, LocaleUtil.getDefault());
-	}
 
 	public GroupDescriptiveNameComparator(boolean ascending, Locale locale) {
 		_ascending = ascending;

@@ -23,10 +23,6 @@ public class DefinitionCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public DefinitionCreateDateComparator() {
-		this(false);
-	}
-
 	public DefinitionCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

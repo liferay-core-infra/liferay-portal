@@ -26,10 +26,6 @@ public class FolderArticleCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public FolderArticleCreateDateComparator() {
-		this(false);
-	}
-
 	public FolderArticleCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

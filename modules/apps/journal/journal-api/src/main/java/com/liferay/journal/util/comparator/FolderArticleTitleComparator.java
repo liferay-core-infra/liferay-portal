@@ -19,10 +19,6 @@ public class FolderArticleTitleComparator extends OrderByComparator<Object> {
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public FolderArticleTitleComparator() {
-		this(false);
-	}
-
 	public FolderArticleTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

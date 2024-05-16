@@ -20,10 +20,6 @@ public class FeedIDComparator extends OrderByComparator<JournalFeed> {
 
 	public static final String[] ORDER_BY_FIELDS = {"feedId"};
 
-	public FeedIDComparator() {
-		this(false);
-	}
-
 	public FeedIDComparator(boolean ascending) {
 		_ascending = ascending;
 	}

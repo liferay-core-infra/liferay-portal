@@ -19,10 +19,6 @@ public class SAPEntryNameComparator extends OrderByComparator<SAPEntry> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public SAPEntryNameComparator() {
-		this(false);
-	}
-
 	public SAPEntryNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

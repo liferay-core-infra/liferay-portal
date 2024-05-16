@@ -21,7 +21,6 @@ com/liferay/portal/kernel/dao/orm/QueryDefinition.getOrderByComparator(Ljava/lan
 com/liferay/portal/kernel/util/OrderByComparatorFactoryUtil.create(Ljava/lang/String;[Ljava/lang/Object;)Lcom/liferay/portal/kernel/util/OrderByComparator:0,1
 com/liferay/portal/kernel/util/TableNameOrderByComparator.<init>(Lcom/liferay/portal/kernel/util/OrderByComparator;Ljava/lang/String;)V:0
 com/liferay/portal/kernel/util/TableNameOrderByComparator.setTableName(Ljava/lang/String;)V:0
-com/liferay/portal/kernel/workflow/comparator/WorkflowDefinitionNameComparator.<init>(ZLjava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V:0,1,2
 com/liferay/portal/kernel/workflow/comparator/WorkflowInstanceCompletedComparator.<init>(ZLjava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V:0,1,2
 com/liferay/portal/kernel/workflow/comparator/WorkflowInstanceEndDateComparator.<init>(ZLjava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V:0,1,2
 com/liferay/portal/kernel/workflow/comparator/WorkflowInstanceStartDateComparator.<init>(ZLjava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V:0,1,2

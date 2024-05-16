@@ -23,10 +23,6 @@ public class WorkflowDefinitionModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public WorkflowDefinitionModifiedDateComparator() {
-		this(false);
-	}
-
 	public WorkflowDefinitionModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

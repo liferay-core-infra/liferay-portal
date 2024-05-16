@@ -209,6 +209,24 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	public static final String ORDER_BY_SQL = " ORDER BY ${orderBySQL}";
 
+	<#assign orderBySQLInlineDistinct = "" />
+
+	<#list orderList as order>
+		<#assign orderBySQLInlineDistinct = orderBySQLInlineDistinct + entity.alias + "." + order.DBName />
+
+		<#if order.isOrderByAscending()>
+			<#assign orderBySQLInlineDistinct = orderBySQLInlineDistinct + " ASC" />
+		<#else>
+			<#assign orderBySQLInlineDistinct = orderBySQLInlineDistinct + " DESC" />
+		</#if>
+
+		<#if order_has_next>
+			<#assign orderBySQLInlineDistinct = orderBySQLInlineDistinct + ", " />
+		</#if>
+	</#list>
+
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT = " ORDER BY ${orderBySQLInlineDistinct}";
+
 	public static final String DATA_SOURCE = "${entity.dataSource}";
 
 	public static final String SESSION_FACTORY = "${entity.sessionFactory}";

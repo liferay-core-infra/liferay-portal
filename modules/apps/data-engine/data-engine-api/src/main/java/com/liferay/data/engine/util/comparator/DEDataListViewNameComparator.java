@@ -21,10 +21,6 @@ public class DEDataListViewNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public DEDataListViewNameComparator() {
-		this(false);
-	}
-
 	public DEDataListViewNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

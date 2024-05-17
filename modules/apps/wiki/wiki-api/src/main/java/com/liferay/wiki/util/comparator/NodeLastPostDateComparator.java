@@ -20,10 +20,6 @@ public class NodeLastPostDateComparator extends OrderByComparator<WikiNode> {
 
 	public static final String[] ORDER_BY_FIELDS = {"lastPostDate"};
 
-	public NodeLastPostDateComparator() {
-		this(false);
-	}
-
 	public NodeLastPostDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

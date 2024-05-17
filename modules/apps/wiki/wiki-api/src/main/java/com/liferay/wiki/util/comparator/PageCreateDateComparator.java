@@ -20,10 +20,6 @@ public class PageCreateDateComparator extends OrderByComparator<WikiPage> {
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public PageCreateDateComparator() {
-		this(false);
-	}
-
 	public PageCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

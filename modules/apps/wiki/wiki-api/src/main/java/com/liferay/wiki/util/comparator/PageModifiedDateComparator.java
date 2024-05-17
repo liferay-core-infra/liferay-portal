@@ -20,10 +20,6 @@ public class PageModifiedDateComparator extends OrderByComparator<WikiPage> {
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public PageModifiedDateComparator() {
-		this(false);
-	}
-
 	public PageModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

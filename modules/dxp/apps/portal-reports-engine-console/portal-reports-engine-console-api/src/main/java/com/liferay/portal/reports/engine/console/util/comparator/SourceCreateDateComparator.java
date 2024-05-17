@@ -20,10 +20,6 @@ public class SourceCreateDateComparator extends OrderByComparator<Source> {
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public SourceCreateDateComparator() {
-		this(false);
-	}
-
 	public SourceCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

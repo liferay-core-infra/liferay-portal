@@ -30,7 +30,7 @@ public class WikiPortletUtil {
 		}
 
 		if (orderByCol.equals("lastPostDate")) {
-			return new NodeLastPostDateComparator(orderByAsc);
+			return NodeLastPostDateComparator.get(orderByAsc);
 		}
 
 		if (orderByCol.equals("name")) {

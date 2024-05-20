@@ -50,7 +50,7 @@ public class WikiPortletUtil {
 		}
 
 		if (orderByCol.equals("createDate")) {
-			return new PageCreateDateComparator(orderByAsc);
+			return PageCreateDateComparator.getInstance(orderByAsc);
 		}
 
 		if (orderByCol.equals("modifiedDate")) {

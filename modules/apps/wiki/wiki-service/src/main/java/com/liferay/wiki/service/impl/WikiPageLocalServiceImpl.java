@@ -1345,7 +1345,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		long nodeId, boolean head, int start, int end) {
 
 		return getPages(
-			nodeId, head, start, end, new PageCreateDateComparator(false));
+			nodeId, head, start, end,
+			PageCreateDateComparator.getInstance(false));
 	}
 
 	@Override
@@ -1354,7 +1355,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		return getPages(
 			nodeId, head, status, start, end,
-			new PageCreateDateComparator(false));
+			PageCreateDateComparator.getInstance(false));
 	}
 
 	@Override
@@ -1384,7 +1385,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	@Override
 	public List<WikiPage> getPages(long nodeId, int start, int end) {
 		return getPages(
-			nodeId, start, end, new PageCreateDateComparator(false));
+			nodeId, start, end, PageCreateDateComparator.getInstance(false));
 	}
 
 	@Override
@@ -1410,11 +1411,12 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		if (userId > 0) {
 			return wikiPagePersistence.findByU_N_S(
 				userId, nodeId, status, start, end,
-				new PageCreateDateComparator(false));
+				PageCreateDateComparator.getInstance(false));
 		}
 
 		return wikiPagePersistence.findByN_S(
-			nodeId, status, start, end, new PageCreateDateComparator(false));
+			nodeId, status, start, end,
+			PageCreateDateComparator.getInstance(false));
 	}
 
 	@Override
@@ -1445,7 +1447,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		return wikiPagePersistence.findByN_T_H(
 			nodeId, title, head, start, end,
-			new PageCreateDateComparator(false));
+			PageCreateDateComparator.getInstance(false));
 	}
 
 	@Override
@@ -1453,7 +1455,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		long nodeId, String title, int start, int end) {
 
 		return wikiPagePersistence.findByN_T(
-			nodeId, title, start, end, new PageCreateDateComparator(false));
+			nodeId, title, start, end,
+			PageCreateDateComparator.getInstance(false));
 	}
 
 	@Override

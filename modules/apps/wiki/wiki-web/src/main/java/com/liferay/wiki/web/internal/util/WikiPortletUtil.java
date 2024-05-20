@@ -34,7 +34,7 @@ public class WikiPortletUtil {
 		}
 
 		if (orderByCol.equals("name")) {
-			return new NodeNameComparator(orderByAsc);
+			return NodeNameComparator.get(orderByAsc);
 		}
 
 		return null;

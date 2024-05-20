@@ -19,8 +19,12 @@ public class NodeNameComparator extends OrderByComparator<WikiNode> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public NodeNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static NodeNameComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -55,6 +59,16 @@ public class NodeNameComparator extends OrderByComparator<WikiNode> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private NodeNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final NodeNameComparator _ASCENDING = new NodeNameComparator(
+		true);
+
+	private static final NodeNameComparator _DESCENDING =
+		new NodeNameComparator(false);
 
 	private final boolean _ascending;
 

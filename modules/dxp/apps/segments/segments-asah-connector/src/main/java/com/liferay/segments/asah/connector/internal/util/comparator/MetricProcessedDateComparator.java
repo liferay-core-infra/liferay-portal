@@ -14,18 +14,12 @@ import com.liferay.segments.asah.connector.internal.client.model.Metric;
  */
 public class MetricProcessedDateComparator extends OrderByComparator<Metric> {
 
-	public static final String ORDER_BY_ASC = "Metric.processedDate ASC";
+	public static MetricProcessedDateComparator get(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
 
-	public static final String ORDER_BY_DESC = "Metric.processedDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"processedDate"};
-
-	public MetricProcessedDateComparator() {
-		this(false);
-	}
-
-	public MetricProcessedDateComparator(boolean ascending) {
-		_ascending = ascending;
+		return _DESCENDING;
 	}
 
 	@Override
@@ -43,21 +37,37 @@ public class MetricProcessedDateComparator extends OrderByComparator<Metric> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private MetricProcessedDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final MetricProcessedDateComparator _ASCENDING =
+		new MetricProcessedDateComparator(true);
+
+	private static final MetricProcessedDateComparator _DESCENDING =
+		new MetricProcessedDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "Metric.processedDate ASC";
+
+	private static final String _ORDER_BY_DESC = "Metric.processedDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"processedDate"};
 
 	private final boolean _ascending;
 

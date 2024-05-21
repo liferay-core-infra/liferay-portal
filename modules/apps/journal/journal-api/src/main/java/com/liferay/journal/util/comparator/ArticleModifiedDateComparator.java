@@ -19,8 +19,12 @@ public class ArticleModifiedDateComparator
 	public static final String ORDER_BY_DESC =
 		"JournalArticle.modifiedDate DESC";
 
-	public ArticleModifiedDateComparator() {
-		this(false);
+	public static ArticleModifiedDateComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	public ArticleModifiedDateComparator(boolean ascending) {
@@ -35,5 +39,11 @@ public class ArticleModifiedDateComparator
 
 		return ORDER_BY_DESC;
 	}
+
+	private static final ArticleModifiedDateComparator _INSTANCE_ASCENDING =
+		new ArticleModifiedDateComparator(true);
+
+	private static final ArticleModifiedDateComparator _INSTANCE_DESCENDING =
+		new ArticleModifiedDateComparator(false);
 
 }

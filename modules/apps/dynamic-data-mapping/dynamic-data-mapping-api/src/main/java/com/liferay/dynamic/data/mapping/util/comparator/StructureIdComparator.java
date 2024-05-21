@@ -13,8 +13,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
  */
 public class StructureIdComparator extends OrderByComparator<DDMStructure> {
 
-	public StructureIdComparator(boolean ascending) {
-		_ascending = ascending;
+	public static StructureIdComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -56,6 +60,16 @@ public class StructureIdComparator extends OrderByComparator<DDMStructure> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private StructureIdComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final StructureIdComparator _ASCENDING =
+		new StructureIdComparator(true);
+
+	private static final StructureIdComparator _DESCENDING =
+		new StructureIdComparator(false);
 
 	private static final String _ORDER_BY_ASC = "DDMStructure.structureId ASC";
 

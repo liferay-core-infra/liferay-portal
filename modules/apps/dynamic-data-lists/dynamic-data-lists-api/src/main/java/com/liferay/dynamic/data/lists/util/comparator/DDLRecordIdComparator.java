@@ -19,12 +19,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
  */
 public class DDLRecordIdComparator extends OrderByComparator<DDLRecord> {
 
-	public static final String ORDER_BY_ASC = "DDLRecord.recordId ASC";
-
-	public static final String ORDER_BY_DESC = "DDLRecord.recordId DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"recordId"};
-
 	public static DDLRecordIdComparator get(boolean ascending) {
 		if (ascending) {
 			return _ASCENDING;
@@ -47,15 +41,15 @@ public class DDLRecordIdComparator extends OrderByComparator<DDLRecord> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -72,6 +66,12 @@ public class DDLRecordIdComparator extends OrderByComparator<DDLRecord> {
 
 	private static final DDLRecordIdComparator _DESCENDING =
 		new DDLRecordIdComparator(false);
+
+	private static final String _ORDER_BY_ASC = "DDLRecord.recordId ASC";
+
+	private static final String _ORDER_BY_DESC = "DDLRecord.recordId DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"recordId"};
 
 	private final boolean _ascending;
 

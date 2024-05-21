@@ -14,8 +14,12 @@ import com.liferay.portal.kernel.util.StringUtil;
  */
 public class ArticleIDComparator extends OrderByComparator<JournalArticle> {
 
-	public ArticleIDComparator(boolean ascending) {
-		_ascending = ascending;
+	public static ArticleIDComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -59,6 +63,16 @@ public class ArticleIDComparator extends OrderByComparator<JournalArticle> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private ArticleIDComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final ArticleIDComparator _ASCENDING =
+		new ArticleIDComparator(true);
+
+	private static final ArticleIDComparator _DESCENDING =
+		new ArticleIDComparator(false);
 
 	private static final String _ORDER_BY_ASC =
 		"JournalArticle.articleId ASC, JournalArticle.version ASC";

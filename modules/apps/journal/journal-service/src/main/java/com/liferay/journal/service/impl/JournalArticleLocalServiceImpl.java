@@ -3127,12 +3127,13 @@ public class JournalArticleLocalServiceImpl
 
 		if (status == WorkflowConstants.STATUS_ANY) {
 			return journalArticlePersistence.findByC_V(
-				companyId, version, start, end, new ArticleIDComparator(true));
+				companyId, version, start, end,
+				ArticleIDComparator.getInstance(true));
 		}
 
 		return journalArticlePersistence.findByC_V_ST(
 			companyId, version, status, start, end,
-			new ArticleIDComparator(true));
+			ArticleIDComparator.getInstance(true));
 	}
 
 	/**
@@ -3164,11 +3165,12 @@ public class JournalArticleLocalServiceImpl
 
 		if (status == WorkflowConstants.STATUS_ANY) {
 			return journalArticlePersistence.findByCompanyId(
-				companyId, start, end, new ArticleIDComparator(true));
+				companyId, start, end, ArticleIDComparator.getInstance(true));
 		}
 
 		return journalArticlePersistence.findByC_ST(
-			companyId, status, start, end, new ArticleIDComparator(true));
+			companyId, status, start, end,
+			ArticleIDComparator.getInstance(true));
 	}
 
 	/**

@@ -643,7 +643,7 @@ public class JournalArticleServiceTest {
 			_group.getGroupId(), JournalArticleConstants.CLASS_NAME_ID_DEFAULT,
 			ddmStructure.getStructureId(), WorkflowConstants.STATUS_ANY,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new ArticleIDComparator(true));
+			ArticleIDComparator.getInstance(true));
 
 		Assert.assertEquals(
 			Arrays.asList(approvedJournalArticle, expiredJournalArticle),
@@ -653,7 +653,7 @@ public class JournalArticleServiceTest {
 			_group.getGroupId(), JournalArticleConstants.CLASS_NAME_ID_DEFAULT,
 			ddmStructure.getStructureId(), WorkflowConstants.STATUS_ANY,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new ArticleIDComparator(false));
+			ArticleIDComparator.getInstance(false));
 
 		Assert.assertEquals(
 			Arrays.asList(expiredJournalArticle, approvedJournalArticle),

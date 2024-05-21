@@ -383,13 +383,11 @@ public class FragmentCollectionServiceTest {
 		FragmentTestUtil.addFragmentCollection(
 			_group.getGroupId(), "AC Fragment Collection");
 
-		FragmentCollectionNameComparator fragmentCollectionNameComparator =
-			new FragmentCollectionNameComparator(true);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionService.getFragmentCollections(
 				_group.getGroupId(), "Collection", QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, fragmentCollectionNameComparator);
+				QueryUtil.ALL_POS,
+				FragmentCollectionNameComparator.getInstance(true));
 
 		FragmentCollection firstFragmentCollection = fragmentCollections.get(0);
 
@@ -412,13 +410,11 @@ public class FragmentCollectionServiceTest {
 		FragmentTestUtil.addFragmentCollection(
 			_group.getGroupId(), "AC Fragment Collection");
 
-		FragmentCollectionNameComparator fragmentCollectionNameComparator =
-			new FragmentCollectionNameComparator(false);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionService.getFragmentCollections(
 				_group.getGroupId(), "Collection", QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, fragmentCollectionNameComparator);
+				QueryUtil.ALL_POS,
+				FragmentCollectionNameComparator.getInstance(false));
 
 		FragmentCollection lastFragmentCollection = fragmentCollections.get(
 			fragmentCollections.size() - 1);
@@ -439,13 +435,10 @@ public class FragmentCollectionServiceTest {
 		FragmentTestUtil.addFragmentCollection(
 			_group.getGroupId(), "AB Fragment Collection");
 
-		FragmentCollectionNameComparator fragmentCollectionNameComparator =
-			new FragmentCollectionNameComparator(true);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionService.getFragmentCollections(
 				_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				fragmentCollectionNameComparator);
+				FragmentCollectionNameComparator.getInstance(true));
 
 		FragmentCollection firstFragmentCollection = fragmentCollections.get(0);
 
@@ -465,13 +458,10 @@ public class FragmentCollectionServiceTest {
 		FragmentTestUtil.addFragmentCollection(
 			_group.getGroupId(), "AB Fragment Collection");
 
-		FragmentCollectionNameComparator fragmentCollectionNameComparator =
-			new FragmentCollectionNameComparator(false);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionService.getFragmentCollections(
 				_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				fragmentCollectionNameComparator);
+				FragmentCollectionNameComparator.getInstance(false));
 
 		FragmentCollection lastFragmentCollection = fragmentCollections.get(
 			fragmentCollections.size() - 1);

@@ -34,7 +34,7 @@ public class FragmentPortletUtil {
 				FragmentCollectionCreateDateComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
-			orderByComparator = new FragmentCollectionNameComparator(
+			orderByComparator = FragmentCollectionNameComparator.getInstance(
 				orderByAsc);
 		}
 

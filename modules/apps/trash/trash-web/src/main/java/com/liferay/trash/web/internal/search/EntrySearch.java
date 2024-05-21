@@ -107,7 +107,7 @@ public class EntrySearch extends SearchContainer<TrashEntry> {
 				orderByAsc);
 		}
 		else if (orderByCol.equals("type")) {
-			orderByComparator = new EntryTypeComparator(orderByAsc);
+			orderByComparator = EntryTypeComparator.getInstance(orderByAsc);
 		}
 
 		return orderByComparator;

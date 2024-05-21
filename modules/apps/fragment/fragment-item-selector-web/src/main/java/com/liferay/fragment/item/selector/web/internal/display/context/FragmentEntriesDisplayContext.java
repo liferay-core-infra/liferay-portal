@@ -259,7 +259,8 @@ public class FragmentEntriesDisplayContext {
 				orderByAsc);
 		}
 		else if (Objects.equals(_getOrderByCol(), "name")) {
-			orderByComparator = new FragmentEntryNameComparator(orderByAsc);
+			orderByComparator = FragmentEntryNameComparator.getInstance(
+				orderByAsc);
 		}
 
 		return orderByComparator;

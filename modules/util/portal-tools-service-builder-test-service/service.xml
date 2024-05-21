@@ -170,6 +170,34 @@
 
 		<column name="companyId" type="long" />
 	</entity>
+	<entity local-service="true" name="FilterFindEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="filterFindEntryId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="type" type="String" />
+		<column name="integer" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="integer" />
+			<order-column name="type" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+	</entity>
 	<entity local-service="true" name="FinderWhereClauseEntry" remote-service="false">
 
 		<!-- PK fields -->

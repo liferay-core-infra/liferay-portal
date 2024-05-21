@@ -194,7 +194,8 @@ public class StyleBookDisplayContext {
 				orderByAsc);
 		}
 		else if (Objects.equals(_getOrderByCol(), "name")) {
-			orderByComparator = new StyleBookEntryNameComparator(orderByAsc);
+			orderByComparator = StyleBookEntryNameComparator.getInstance(
+				orderByAsc);
 		}
 
 		return orderByComparator;

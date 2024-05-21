@@ -103,7 +103,8 @@ public class EntrySearch extends SearchContainer<TrashEntry> {
 			orderByComparator = new EntryUserNameComparator(orderByAsc);
 		}
 		else if (orderByCol.equals("removed-date")) {
-			orderByComparator = new EntryCreateDateComparator(orderByAsc);
+			orderByComparator = EntryCreateDateComparator.getInstance(
+				orderByAsc);
 		}
 		else if (orderByCol.equals("type")) {
 			orderByComparator = new EntryTypeComparator(orderByAsc);

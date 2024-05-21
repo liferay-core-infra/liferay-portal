@@ -19,8 +19,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class StructureLinkStructureModifiedDateComparator
 	extends OrderByComparator<DDMStructureLink> {
 
-	public StructureLinkStructureModifiedDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static StructureLinkStructureModifiedDateComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -69,6 +75,16 @@ public class StructureLinkStructureModifiedDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private StructureLinkStructureModifiedDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final StructureLinkStructureModifiedDateComparator
+		_ASCENDING = new StructureLinkStructureModifiedDateComparator(true);
+
+	private static final StructureLinkStructureModifiedDateComparator
+		_DESCENDING = new StructureLinkStructureModifiedDateComparator(false);
 
 	private static final String _ORDER_BY_ASC = "DDMStructure.modifiedDate ASC";
 

@@ -87,7 +87,8 @@ public class JournalPortletUtil {
 				orderByAsc);
 		}
 		else if (orderByCol.equals("display-date")) {
-			orderByComparator = new ArticleDisplayDateComparator(orderByAsc);
+			orderByComparator = ArticleDisplayDateComparator.getInstance(
+				orderByAsc);
 		}
 		else if (orderByCol.equals("id")) {
 			orderByComparator = new ArticleIDComparator(orderByAsc);

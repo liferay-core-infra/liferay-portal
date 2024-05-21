@@ -30,8 +30,8 @@ public class FragmentPortletUtil {
 		OrderByComparator<FragmentCollection> orderByComparator = null;
 
 		if (orderByCol.equals("create-date")) {
-			orderByComparator = new FragmentCollectionCreateDateComparator(
-				orderByAsc);
+			orderByComparator =
+				FragmentCollectionCreateDateComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
 			orderByComparator = new FragmentCollectionNameComparator(

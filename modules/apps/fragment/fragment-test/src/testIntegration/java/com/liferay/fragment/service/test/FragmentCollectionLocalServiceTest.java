@@ -341,13 +341,10 @@ public class FragmentCollectionLocalServiceTest {
 		FragmentTestUtil.addFragmentCollection(
 			_group.getGroupId(), "AB Fragment Collection");
 
-		FragmentCollectionNameComparator fragmentCollectionNameComparator =
-			new FragmentCollectionNameComparator(true);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionLocalService.getFragmentCollections(
 				_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				fragmentCollectionNameComparator);
+				FragmentCollectionNameComparator.getInstance(true));
 
 		FragmentCollection firstFragmentCollection = fragmentCollections.get(0);
 
@@ -367,13 +364,10 @@ public class FragmentCollectionLocalServiceTest {
 		FragmentTestUtil.addFragmentCollection(
 			_group.getGroupId(), "AB Fragment Collection");
 
-		FragmentCollectionNameComparator fragmentCollectionNameComparator =
-			new FragmentCollectionNameComparator(false);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionLocalService.getFragmentCollections(
 				_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				fragmentCollectionNameComparator);
+				FragmentCollectionNameComparator.getInstance(false));
 
 		FragmentCollection lastFragmentCollection = fragmentCollections.get(
 			fragmentCollections.size() - 1);

@@ -15,14 +15,14 @@ import com.liferay.style.book.model.StyleBookEntry;
 public class StyleBookEntryCreateDateComparator
 	extends OrderByComparator<StyleBookEntry> {
 
-	public static final String ORDER_BY_ASC = "StyleBookEntry.createDate ASC";
+	public static StyleBookEntryCreateDateComparator getInstance(
+		boolean ascending) {
 
-	public static final String ORDER_BY_DESC = "StyleBookEntry.createDate DESC";
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
-	public StyleBookEntryCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -42,21 +42,38 @@ public class StyleBookEntryCreateDateComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private StyleBookEntryCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final StyleBookEntryCreateDateComparator
+		_INSTANCE_ASCENDING = new StyleBookEntryCreateDateComparator(true);
+
+	private static final StyleBookEntryCreateDateComparator
+		_INSTANCE_DESCENDING = new StyleBookEntryCreateDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "StyleBookEntry.createDate ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"StyleBookEntry.createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

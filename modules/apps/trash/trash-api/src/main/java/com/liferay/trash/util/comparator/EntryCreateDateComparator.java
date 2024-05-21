@@ -14,14 +14,12 @@ import com.liferay.trash.model.TrashEntry;
  */
 public class EntryCreateDateComparator extends OrderByComparator<TrashEntry> {
 
-	public static final String ORDER_BY_ASC = "TrashEntry.createDate ASC";
+	public static EntryCreateDateComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-	public static final String ORDER_BY_DESC = "TrashEntry.createDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
-	public EntryCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -39,21 +37,37 @@ public class EntryCreateDateComparator extends OrderByComparator<TrashEntry> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private EntryCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final EntryCreateDateComparator _INSTANCE_ASCENDING =
+		new EntryCreateDateComparator(true);
+
+	private static final EntryCreateDateComparator _INSTANCE_DESCENDING =
+		new EntryCreateDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "TrashEntry.createDate ASC";
+
+	private static final String _ORDER_BY_DESC = "TrashEntry.createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

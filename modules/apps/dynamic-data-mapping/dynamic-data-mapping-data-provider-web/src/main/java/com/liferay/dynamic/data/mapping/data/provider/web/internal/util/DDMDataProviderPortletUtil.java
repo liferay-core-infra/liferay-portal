@@ -39,7 +39,7 @@ public class DDMDataProviderPortletUtil {
 				orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
-			orderByComparator = new DataProviderInstanceNameComparator(
+			orderByComparator = DataProviderInstanceNameComparator.get(
 				orderByAsc);
 		}
 

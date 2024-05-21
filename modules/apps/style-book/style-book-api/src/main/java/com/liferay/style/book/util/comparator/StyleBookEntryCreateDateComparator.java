@@ -21,8 +21,14 @@ public class StyleBookEntryCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public StyleBookEntryCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static StyleBookEntryCreateDateComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -57,6 +63,16 @@ public class StyleBookEntryCreateDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private StyleBookEntryCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final StyleBookEntryCreateDateComparator
+		_INSTANCE_ASCENDING = new StyleBookEntryCreateDateComparator(true);
+
+	private static final StyleBookEntryCreateDateComparator
+		_INSTANCE_DESCENDING = new StyleBookEntryCreateDateComparator(false);
 
 	private final boolean _ascending;
 

@@ -27,8 +27,12 @@ public class DDLRecordCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public DDLRecordCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static DDLRecordCreateDateComparator get(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -61,6 +65,16 @@ public class DDLRecordCreateDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private DDLRecordCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final DDLRecordCreateDateComparator _ASCENDING =
+		new DDLRecordCreateDateComparator(true);
+
+	private static final DDLRecordCreateDateComparator _DESCENDING =
+		new DDLRecordCreateDateComparator(false);
 
 	private final boolean _ascending;
 

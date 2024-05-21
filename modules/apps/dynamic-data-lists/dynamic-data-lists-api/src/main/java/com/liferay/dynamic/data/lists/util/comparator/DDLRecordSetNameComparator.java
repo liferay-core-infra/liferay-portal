@@ -27,12 +27,16 @@ public class DDLRecordSetNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public DDLRecordSetNameComparator() {
-		this(false);
+	public static DDLRecordSetNameComparator get(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
-	public DDLRecordSetNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public DDLRecordSetNameComparator() {
+		this(false);
 	}
 
 	@Override
@@ -67,6 +71,16 @@ public class DDLRecordSetNameComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private DDLRecordSetNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final DDLRecordSetNameComparator _ASCENDING =
+		new DDLRecordSetNameComparator(true);
+
+	private static final DDLRecordSetNameComparator _DESCENDING =
+		new DDLRecordSetNameComparator(false);
 
 	private final boolean _ascending;
 

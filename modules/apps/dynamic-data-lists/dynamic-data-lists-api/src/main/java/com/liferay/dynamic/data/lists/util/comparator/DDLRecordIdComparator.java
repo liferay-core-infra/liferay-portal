@@ -25,8 +25,12 @@ public class DDLRecordIdComparator extends OrderByComparator<DDLRecord> {
 
 	public static final String[] ORDER_BY_FIELDS = {"recordId"};
 
-	public DDLRecordIdComparator(boolean ascending) {
-		_ascending = ascending;
+	public static DDLRecordIdComparator get(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -58,6 +62,16 @@ public class DDLRecordIdComparator extends OrderByComparator<DDLRecord> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private DDLRecordIdComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final DDLRecordIdComparator _ASCENDING =
+		new DDLRecordIdComparator(true);
+
+	private static final DDLRecordIdComparator _DESCENDING =
+		new DDLRecordIdComparator(false);
 
 	private final boolean _ascending;
 

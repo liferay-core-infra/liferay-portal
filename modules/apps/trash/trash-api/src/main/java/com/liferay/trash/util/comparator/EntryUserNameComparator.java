@@ -20,8 +20,12 @@ public class EntryUserNameComparator extends OrderByComparator<TrashEntry> {
 
 	public static final String[] ORDER_BY_FIELDS = {"userName"};
 
-	public EntryUserNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static EntryUserNameComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -56,6 +60,16 @@ public class EntryUserNameComparator extends OrderByComparator<TrashEntry> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private EntryUserNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final EntryUserNameComparator _INSTANCE_ASCENDING =
+		new EntryUserNameComparator(true);
+
+	private static final EntryUserNameComparator _INSTANCE_DESCENDING =
+		new EntryUserNameComparator(false);
 
 	private final boolean _ascending;
 

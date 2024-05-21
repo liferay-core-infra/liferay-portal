@@ -325,14 +325,10 @@ public class FragmentCollectionServiceTest {
 			_group.getGroupId(), "B Fragment Collection",
 			Timestamp.valueOf(localDateTime));
 
-		FragmentCollectionCreateDateComparator
-			fragmentCollectionCreateDateComparator =
-				new FragmentCollectionCreateDateComparator(true);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionService.getFragmentCollections(
 				_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				fragmentCollectionCreateDateComparator);
+				FragmentCollectionCreateDateComparator.getInstance(true));
 
 		FragmentCollection firstFragmentCollection = fragmentCollections.get(0);
 
@@ -362,14 +358,10 @@ public class FragmentCollectionServiceTest {
 			_group.getGroupId(), "B Fragment Collection",
 			Timestamp.valueOf(localDateTime));
 
-		FragmentCollectionCreateDateComparator
-			fragmentCollectionCreateDateComparator =
-				new FragmentCollectionCreateDateComparator(false);
-
 		List<FragmentCollection> fragmentCollections =
 			_fragmentCollectionService.getFragmentCollections(
 				_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				fragmentCollectionCreateDateComparator);
+				FragmentCollectionCreateDateComparator.getInstance(false));
 
 		FragmentCollection lastFragmentCollection = fragmentCollections.get(
 			fragmentCollections.size() - 1);

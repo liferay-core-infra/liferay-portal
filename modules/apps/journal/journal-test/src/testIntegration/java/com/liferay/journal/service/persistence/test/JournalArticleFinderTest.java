@@ -318,8 +318,8 @@ public class JournalArticleFinderTest {
 		testQueryByG_F(ArticleCreateDateComparator.getInstance(false));
 		testQueryByG_F(ArticleDisplayDateComparator.getInstance(true));
 		testQueryByG_F(ArticleDisplayDateComparator.getInstance(false));
-		testQueryByG_F(new ArticleIDComparator(true));
-		testQueryByG_F(new ArticleIDComparator(false));
+		testQueryByG_F(ArticleIDComparator.getInstance(true));
+		testQueryByG_F(ArticleIDComparator.getInstance(false));
 		testQueryByG_F(new ArticleModifiedDateComparator(true));
 		testQueryByG_F(new ArticleModifiedDateComparator(false));
 		testQueryByG_F(new ArticleReviewDateComparator(true));

@@ -15,14 +15,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class FragmentCollectionCreateDateComparator
 	extends OrderByComparator<FragmentCollection> {
 
-	public static final String ORDER_BY_ASC =
-		"FragmentCollection.createDate ASC";
-
-	public static final String ORDER_BY_DESC =
-		"FragmentCollection.createDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
 	public FragmentCollectionCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
@@ -46,21 +38,29 @@ public class FragmentCollectionCreateDateComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private static final String _ORDER_BY_ASC =
+		"FragmentCollection.createDate ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"FragmentCollection.createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

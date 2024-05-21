@@ -22,10 +22,6 @@ public class ArticleIDComparator extends OrderByComparator<JournalArticle> {
 
 	public static final String[] ORDER_BY_FIELDS = {"articleId", "version"};
 
-	public ArticleIDComparator() {
-		this(false);
-	}
-
 	public ArticleIDComparator(boolean ascending) {
 		_ascending = ascending;
 	}

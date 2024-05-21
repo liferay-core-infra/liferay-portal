@@ -19,10 +19,6 @@ public class ArticleModifiedDateComparator
 	public static final String ORDER_BY_DESC =
 		"JournalArticle.modifiedDate DESC";
 
-	public ArticleModifiedDateComparator() {
-		this(false);
-	}
-
 	public ArticleModifiedDateComparator(boolean ascending) {
 		super(ascending);
 	}

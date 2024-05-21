@@ -20,10 +20,6 @@ public class ArticleVersionComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"version"};
 
-	public ArticleVersionComparator() {
-		this(false);
-	}
-
 	public ArticleVersionComparator(boolean ascending) {
 		_ascending = ascending;
 	}

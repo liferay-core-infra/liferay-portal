@@ -23,10 +23,6 @@ public class ArticleDisplayDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"displayDate", "version"};
 
-	public ArticleDisplayDateComparator() {
-		this(false);
-	}
-
 	public ArticleDisplayDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

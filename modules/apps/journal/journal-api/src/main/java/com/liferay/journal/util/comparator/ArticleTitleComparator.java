@@ -24,10 +24,6 @@ public class ArticleTitleComparator extends OrderByComparator<JournalArticle> {
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public ArticleTitleComparator() {
-		this(false);
-	}
-
 	public ArticleTitleComparator(boolean ascending) {
 		_ascending = ascending;
 	}

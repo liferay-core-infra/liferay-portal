@@ -13,8 +13,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
  */
 public class TemplateIdComparator extends OrderByComparator<DDMTemplate> {
 
-	public TemplateIdComparator(boolean ascending) {
-		_ascending = ascending;
+	public static TemplateIdComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -56,6 +60,16 @@ public class TemplateIdComparator extends OrderByComparator<DDMTemplate> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private TemplateIdComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final TemplateIdComparator _ASCENDING =
+		new TemplateIdComparator(true);
+
+	private static final TemplateIdComparator _DESCENDING =
+		new TemplateIdComparator(false);
 
 	private static final String _ORDER_BY_ASC = "DDMTemplate.templateId ASC";
 

@@ -484,7 +484,7 @@ public class JournalArticleServiceTest {
 		journalArticles = _journalArticleService.getArticles(
 			_group.getGroupId(), journalFolder.getFolderId(),
 			LocaleUtil.getDefault(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new ArticleTitleComparator(true));
+			ArticleTitleComparator.getInstance(true));
 
 		Assert.assertEquals(
 			Arrays.asList(expiredJournalArticle, approvedJournalArticle),
@@ -493,7 +493,7 @@ public class JournalArticleServiceTest {
 		journalArticles = _journalArticleService.getArticles(
 			_group.getGroupId(), journalFolder.getFolderId(),
 			LocaleUtil.getDefault(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new ArticleTitleComparator(false));
+			ArticleTitleComparator.getInstance(false));
 
 		Assert.assertEquals(
 			Arrays.asList(approvedJournalArticle, expiredJournalArticle),

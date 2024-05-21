@@ -16,8 +16,12 @@ import com.liferay.portal.kernel.util.StringUtil;
 @Deprecated
 public class ArticleTitleComparator extends OrderByComparator<JournalArticle> {
 
-	public ArticleTitleComparator(boolean ascending) {
-		_ascending = ascending;
+	public static ArticleTitleComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -52,6 +56,16 @@ public class ArticleTitleComparator extends OrderByComparator<JournalArticle> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private ArticleTitleComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final ArticleTitleComparator _ASCENDING =
+		new ArticleTitleComparator(true);
+
+	private static final ArticleTitleComparator _DESCENDING =
+		new ArticleTitleComparator(false);
 
 	private static final String _ORDER_BY_ASC =
 		"JournalArticleLocalization.title ASC";

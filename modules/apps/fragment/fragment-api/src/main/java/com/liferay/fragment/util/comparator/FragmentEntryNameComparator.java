@@ -21,10 +21,6 @@ public class FragmentEntryNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public FragmentEntryNameComparator() {
-		this(false);
-	}
-
 	public FragmentEntryNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

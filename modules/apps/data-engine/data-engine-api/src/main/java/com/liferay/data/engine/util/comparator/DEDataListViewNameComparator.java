@@ -21,8 +21,12 @@ public class DEDataListViewNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public DEDataListViewNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static DEDataListViewNameComparator get(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -59,6 +63,16 @@ public class DEDataListViewNameComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private DEDataListViewNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final DEDataListViewNameComparator _ASCENDING =
+		new DEDataListViewNameComparator(true);
+
+	private static final DEDataListViewNameComparator _DESCENDING =
+		new DEDataListViewNameComparator(false);
 
 	private final boolean _ascending;
 

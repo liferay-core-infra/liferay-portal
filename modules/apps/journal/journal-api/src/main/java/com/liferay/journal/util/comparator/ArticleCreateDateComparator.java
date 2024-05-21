@@ -15,8 +15,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class ArticleCreateDateComparator
 	extends OrderByComparator<JournalArticle> {
 
-	public ArticleCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static ArticleCreateDateComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -49,6 +53,16 @@ public class ArticleCreateDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private ArticleCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final ArticleCreateDateComparator _ASCENDING =
+		new ArticleCreateDateComparator(true);
+
+	private static final ArticleCreateDateComparator _DESCENDING =
+		new ArticleCreateDateComparator(false);
 
 	private static final String _ORDER_BY_ASC = "JournalArticle.createDate ASC";
 

@@ -83,7 +83,8 @@ public class JournalPortletUtil {
 		OrderByComparator<JournalArticle> orderByComparator = null;
 
 		if (orderByCol.equals("create-date")) {
-			orderByComparator = new ArticleCreateDateComparator(orderByAsc);
+			orderByComparator = ArticleCreateDateComparator.getInstance(
+				orderByAsc);
 		}
 		else if (orderByCol.equals("display-date")) {
 			orderByComparator = new ArticleDisplayDateComparator(orderByAsc);

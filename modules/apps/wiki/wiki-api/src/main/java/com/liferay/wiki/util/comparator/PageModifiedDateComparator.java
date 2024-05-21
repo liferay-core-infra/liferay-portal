@@ -14,12 +14,6 @@ import com.liferay.wiki.model.WikiPage;
  */
 public class PageModifiedDateComparator extends OrderByComparator<WikiPage> {
 
-	public static final String ORDER_BY_ASC = "WikiPage.modifiedDate ASC";
-
-	public static final String ORDER_BY_DESC = "WikiPage.modifiedDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
-
 	public static PageModifiedDateComparator getInstance(boolean ascending) {
 		if (ascending) {
 			return _ASCENDING;
@@ -43,15 +37,15 @@ public class PageModifiedDateComparator extends OrderByComparator<WikiPage> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -68,6 +62,12 @@ public class PageModifiedDateComparator extends OrderByComparator<WikiPage> {
 
 	private static final PageModifiedDateComparator _DESCENDING =
 		new PageModifiedDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "WikiPage.modifiedDate ASC";
+
+	private static final String _ORDER_BY_DESC = "WikiPage.modifiedDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"modifiedDate"};
 
 	private final boolean _ascending;
 

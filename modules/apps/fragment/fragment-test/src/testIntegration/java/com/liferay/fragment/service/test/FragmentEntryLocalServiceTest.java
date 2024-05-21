@@ -607,7 +607,7 @@ public class FragmentEntryLocalServiceTest {
 				_group.getGroupId(),
 				_fragmentCollection.getFragmentCollectionId(),
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				new FragmentEntryCreateDateComparator(true));
+				FragmentEntryCreateDateComparator.getInstance(true));
 
 		FragmentEntry firstFragmentEntry = fragmentEntries.get(0);
 
@@ -618,7 +618,7 @@ public class FragmentEntryLocalServiceTest {
 		fragmentEntries = _fragmentEntryLocalService.getFragmentEntries(
 			_group.getGroupId(), _fragmentCollection.getFragmentCollectionId(),
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new FragmentEntryCreateDateComparator(false));
+			FragmentEntryCreateDateComparator.getInstance(false));
 
 		FragmentEntry lastFragmentEntry = fragmentEntries.get(
 			fragmentEntries.size() - 1);
@@ -691,7 +691,7 @@ public class FragmentEntryLocalServiceTest {
 				_group.getGroupId(),
 				_fragmentCollection.getFragmentCollectionId(), "Entry",
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				new FragmentEntryCreateDateComparator(true));
+				FragmentEntryCreateDateComparator.getInstance(true));
 
 		FragmentEntry firstFragmentEntry = fragmentEntries.get(0);
 
@@ -702,7 +702,7 @@ public class FragmentEntryLocalServiceTest {
 		fragmentEntries = _fragmentEntryLocalService.getFragmentEntries(
 			_group.getGroupId(), _fragmentCollection.getFragmentCollectionId(),
 			"Entry", QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new FragmentEntryCreateDateComparator(false));
+			FragmentEntryCreateDateComparator.getInstance(false));
 
 		FragmentEntry lastFragmentEntry = fragmentEntries.get(
 			fragmentEntries.size() - 1);

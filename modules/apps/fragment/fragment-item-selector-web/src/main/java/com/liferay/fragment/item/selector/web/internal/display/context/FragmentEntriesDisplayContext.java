@@ -255,7 +255,7 @@ public class FragmentEntriesDisplayContext {
 		OrderByComparator<FragmentEntry> orderByComparator = null;
 
 		if (Objects.equals(_getOrderByCol(), "create-date")) {
-			orderByComparator = new FragmentEntryCreateDateComparator(
+			orderByComparator = FragmentEntryCreateDateComparator.getInstance(
 				orderByAsc);
 		}
 		else if (Objects.equals(_getOrderByCol(), "name")) {

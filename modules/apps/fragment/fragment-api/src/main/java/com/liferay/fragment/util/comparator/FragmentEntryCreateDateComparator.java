@@ -15,8 +15,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class FragmentEntryCreateDateComparator
 	extends OrderByComparator<FragmentEntry> {
 
-	public FragmentEntryCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static FragmentEntryCreateDateComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -51,6 +57,16 @@ public class FragmentEntryCreateDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private FragmentEntryCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final FragmentEntryCreateDateComparator _ASCENDING =
+		new FragmentEntryCreateDateComparator(true);
+
+	private static final FragmentEntryCreateDateComparator _DESCENDING =
+		new FragmentEntryCreateDateComparator(false);
 
 	private static final String _ORDER_BY_ASC = "FragmentEntry.createDate ASC";
 

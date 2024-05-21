@@ -18,10 +18,14 @@ import java.util.Date;
 public class FragmentCompositionFragmentEntryModifiedDateComparator
 	extends OrderByComparator<Object> {
 
-	public FragmentCompositionFragmentEntryModifiedDateComparator(
-		boolean ascending) {
+	public static FragmentCompositionFragmentEntryModifiedDateComparator
+		getInstance(boolean ascending) {
 
-		_ascending = ascending;
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -67,6 +71,20 @@ public class FragmentCompositionFragmentEntryModifiedDateComparator
 
 		return fragmentEntry.getModifiedDate();
 	}
+
+	private FragmentCompositionFragmentEntryModifiedDateComparator(
+		boolean ascending) {
+
+		_ascending = ascending;
+	}
+
+	private static final FragmentCompositionFragmentEntryModifiedDateComparator
+		_ASCENDING = new FragmentCompositionFragmentEntryModifiedDateComparator(
+			true);
+
+	private static final FragmentCompositionFragmentEntryModifiedDateComparator
+		_DESCENDING =
+			new FragmentCompositionFragmentEntryModifiedDateComparator(false);
 
 	private static final String _ORDER_BY_ASC = "modifiedDate ASC";
 

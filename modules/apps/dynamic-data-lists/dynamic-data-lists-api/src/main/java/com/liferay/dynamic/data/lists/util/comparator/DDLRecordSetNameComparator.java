@@ -29,10 +29,6 @@ public class DDLRecordSetNameComparator
 		return _DESCENDING;
 	}
 
-	public DDLRecordSetNameComparator() {
-		this(false);
-	}
-
 	@Override
 	public int compare(DDLRecordSet ddlRecordSet1, DDLRecordSet ddlRecordSet2) {
 		String name1 = StringUtil.toLowerCase(ddlRecordSet1.getName());

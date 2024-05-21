@@ -94,7 +94,8 @@ public class JournalPortletUtil {
 			orderByComparator = ArticleIDComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("modified-date")) {
-			orderByComparator = new ArticleModifiedDateComparator(orderByAsc);
+			orderByComparator = ArticleModifiedDateComparator.getInstance(
+				orderByAsc);
 		}
 		else if (orderByCol.equals("review-date")) {
 			orderByComparator = new ArticleReviewDateComparator(orderByAsc);

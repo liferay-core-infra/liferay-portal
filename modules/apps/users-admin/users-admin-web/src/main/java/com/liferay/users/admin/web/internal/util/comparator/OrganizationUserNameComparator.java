@@ -14,18 +14,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
  */
 public class OrganizationUserNameComparator extends OrderByComparator<Object> {
 
-	public static final String ORDER_BY_ASC = "name ASC";
+	public static OrganizationUserNameComparator get(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
 
-	public static final String ORDER_BY_DESC = "name DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"name"};
-
-	public OrganizationUserNameComparator() {
-		this(false);
-	}
-
-	public OrganizationUserNameComparator(boolean ascending) {
-		_ascending = ascending;
+		return _DESCENDING;
 	}
 
 	@Override
@@ -45,20 +39,24 @@ public class OrganizationUserNameComparator extends OrderByComparator<Object> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
+	}
+
+	private OrganizationUserNameComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
 	private String _getName(Object object) {
@@ -72,6 +70,18 @@ public class OrganizationUserNameComparator extends OrderByComparator<Object> {
 
 		return user.getLastName();
 	}
+
+	private static final OrganizationUserNameComparator _ASCENDING =
+		new OrganizationUserNameComparator(true);
+
+	private static final OrganizationUserNameComparator _DESCENDING =
+		new OrganizationUserNameComparator(false);
+
+	private static final String _ORDER_BY_ASC = "name ASC";
+
+	private static final String _ORDER_BY_DESC = "name DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"name"};
 
 	private final boolean _ascending;
 

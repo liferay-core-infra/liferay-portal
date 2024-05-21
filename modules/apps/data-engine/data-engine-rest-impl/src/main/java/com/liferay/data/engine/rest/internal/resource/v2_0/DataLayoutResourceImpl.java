@@ -611,7 +611,7 @@ public class DataLayoutResourceImpl extends BaseDataLayoutResourceImpl {
 			return StructureLayoutCreateDateComparator.get(ascending);
 		}
 		else if (StringUtil.startsWith(sortFieldName, "localized_name")) {
-			return new StructureLayoutNameComparator(ascending);
+			return StructureLayoutNameComparator.get(ascending);
 		}
 
 		return new StructureLayoutModifiedDateComparator(ascending);

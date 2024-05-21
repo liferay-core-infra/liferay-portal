@@ -24,12 +24,6 @@ import java.util.Locale;
 public class StructureLinkStructureNameComparator
 	extends OrderByComparator<DDMStructureLink> {
 
-	public static final String ORDER_BY_ASC = "DDMStructure.name ASC";
-
-	public static final String ORDER_BY_DESC = "DDMStructure.name DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"name"};
-
 	public StructureLinkStructureNameComparator(boolean ascending) {
 		this(ascending, LocaleUtil.getDefault());
 	}
@@ -77,21 +71,27 @@ public class StructureLinkStructureNameComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private static final String _ORDER_BY_ASC = "DDMStructure.name ASC";
+
+	private static final String _ORDER_BY_DESC = "DDMStructure.name DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"name"};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		StructureLinkStructureNameComparator.class);

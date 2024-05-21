@@ -19,12 +19,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class StructureLinkStructureModifiedDateComparator
 	extends OrderByComparator<DDMStructureLink> {
 
-	public static final String ORDER_BY_ASC = "DDMStructure.modifiedDate ASC";
-
-	public static final String ORDER_BY_DESC = "DDMStructure.modifiedDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
-
 	public StructureLinkStructureModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
@@ -60,21 +54,28 @@ public class StructureLinkStructureModifiedDateComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private static final String _ORDER_BY_ASC = "DDMStructure.modifiedDate ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"DDMStructure.modifiedDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"modifiedDate"};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		StructureLinkStructureModifiedDateComparator.class);

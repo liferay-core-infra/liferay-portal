@@ -804,8 +804,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryModifiedDateComparator(
-					true)));
+				FragmentCompositionFragmentEntryModifiedDateComparator.
+					getInstance(true)));
 		Assert.assertEquals(
 			Arrays.asList(
 				fragmentEntry2, fragmentEntry1, fragmentComposition2,
@@ -815,8 +815,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryModifiedDateComparator(
-					false)));
+				FragmentCompositionFragmentEntryModifiedDateComparator.
+					getInstance(false)));
 
 		fragmentEntry1 = _fragmentEntryService.updateFragmentEntry(
 			fragmentEntry1);
@@ -830,8 +830,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryModifiedDateComparator(
-					true)));
+				FragmentCompositionFragmentEntryModifiedDateComparator.
+					getInstance(true)));
 		Assert.assertEquals(
 			Arrays.asList(
 				fragmentEntry1, fragmentEntry2, fragmentComposition2,
@@ -841,8 +841,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryModifiedDateComparator(
-					false)));
+				FragmentCompositionFragmentEntryModifiedDateComparator.
+					getInstance(false)));
 	}
 
 	@Test

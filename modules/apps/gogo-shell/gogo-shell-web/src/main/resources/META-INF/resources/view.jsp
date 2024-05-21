@@ -72,4 +72,6 @@
 			submitForm(form);
 		}
 	}
+
+	document.getElementById('<portlet:namespace />captchaText').value = '';
 </aui:script>

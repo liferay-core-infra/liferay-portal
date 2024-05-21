@@ -314,8 +314,8 @@ public class JournalArticleFinderTest {
 
 		// Comparators
 
-		testQueryByG_F(new ArticleCreateDateComparator(true));
-		testQueryByG_F(new ArticleCreateDateComparator(false));
+		testQueryByG_F(ArticleCreateDateComparator.getInstance(true));
+		testQueryByG_F(ArticleCreateDateComparator.getInstance(false));
 		testQueryByG_F(new ArticleDisplayDateComparator(true));
 		testQueryByG_F(new ArticleDisplayDateComparator(false));
 		testQueryByG_F(new ArticleIDComparator(true));

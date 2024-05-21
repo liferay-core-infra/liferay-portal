@@ -64,6 +64,12 @@
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 	</model>
+	<model name="com.liferay.portal.tools.service.builder.test.model.FilterFindEntry">
+		<field name="filterFindEntryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="type" type="String" />
+		<field name="integer" type="int" />
+	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry">
 		<field name="finderWhereClauseEntryId" type="long" />
 		<field name="name" type="String" />

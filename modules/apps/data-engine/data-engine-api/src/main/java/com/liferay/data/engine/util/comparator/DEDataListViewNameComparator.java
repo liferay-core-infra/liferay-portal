@@ -15,12 +15,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 public class DEDataListViewNameComparator
 	extends OrderByComparator<DEDataListView> {
 
-	public static final String ORDER_BY_ASC = "DEDataListView.name ASC";
-
-	public static final String ORDER_BY_DESC = "DEDataListView.name DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"name"};
-
 	public static DEDataListViewNameComparator get(boolean ascending) {
 		if (ascending) {
 			return _ASCENDING;
@@ -48,15 +42,15 @@ public class DEDataListViewNameComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -73,6 +67,12 @@ public class DEDataListViewNameComparator
 
 	private static final DEDataListViewNameComparator _DESCENDING =
 		new DEDataListViewNameComparator(false);
+
+	private static final String _ORDER_BY_ASC = "DEDataListView.name ASC";
+
+	private static final String _ORDER_BY_DESC = "DEDataListView.name DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"name"};
 
 	private final boolean _ascending;
 

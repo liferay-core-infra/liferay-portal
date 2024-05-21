@@ -15,12 +15,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class DEDataListViewCreateDateComparator
 	extends OrderByComparator<DEDataListView> {
 
-	public static final String ORDER_BY_ASC = "DEDataListView.createDate ASC";
-
-	public static final String ORDER_BY_DESC = "DEDataListView.createDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
 	public static DEDataListViewCreateDateComparator get(boolean ascending) {
 		if (ascending) {
 			return _ASCENDING;
@@ -46,15 +40,15 @@ public class DEDataListViewCreateDateComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -71,6 +65,13 @@ public class DEDataListViewCreateDateComparator
 
 	private static final DEDataListViewCreateDateComparator _DESCENDING =
 		new DEDataListViewCreateDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "DEDataListView.createDate ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"DEDataListView.createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

@@ -15,8 +15,12 @@ import com.liferay.portal.kernel.util.StringUtil;
 public class StructureLayoutNameComparator
 	extends OrderByComparator<DDMStructureLayout> {
 
-	public StructureLayoutNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static StructureLayoutNameComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -54,6 +58,16 @@ public class StructureLayoutNameComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private StructureLayoutNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final StructureLayoutNameComparator _ASCENDING =
+		new StructureLayoutNameComparator(true);
+
+	private static final StructureLayoutNameComparator _DESCENDING =
+		new StructureLayoutNameComparator(false);
 
 	private static final String _ORDER_BY_ASC = "DDMStructureLayout.name ASC";
 

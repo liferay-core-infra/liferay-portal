@@ -870,7 +870,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryNameComparator(true)));
+				FragmentCompositionFragmentEntryNameComparator.getInstance(
+					true)));
 		Assert.assertEquals(
 			Arrays.asList(
 				fragmentComposition1, fragmentEntry2, fragmentComposition2,
@@ -880,7 +881,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryNameComparator(false)));
+				FragmentCompositionFragmentEntryNameComparator.getInstance(
+					false)));
 
 		fragmentEntry1 = _fragmentEntryService.updateFragmentEntry(
 			fragmentEntry1.getFragmentEntryId(), "Dropdown");
@@ -894,7 +896,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryNameComparator(true)));
+				FragmentCompositionFragmentEntryNameComparator.getInstance(
+					true)));
 		Assert.assertEquals(
 			Arrays.asList(
 				fragmentComposition1, fragmentEntry1, fragmentEntry2,
@@ -904,7 +907,8 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(), null,
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS,
-				new FragmentCompositionFragmentEntryNameComparator(false)));
+				FragmentCompositionFragmentEntryNameComparator.getInstance(
+					false)));
 	}
 
 	@Test

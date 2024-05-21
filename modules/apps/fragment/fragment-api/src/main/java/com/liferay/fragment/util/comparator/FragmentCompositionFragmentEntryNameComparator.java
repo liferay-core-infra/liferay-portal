@@ -15,8 +15,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class FragmentCompositionFragmentEntryNameComparator
 	extends OrderByComparator<Object> {
 
-	public FragmentCompositionFragmentEntryNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static FragmentCompositionFragmentEntryNameComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -64,6 +70,16 @@ public class FragmentCompositionFragmentEntryNameComparator
 
 		return fragmentEntry.getName();
 	}
+
+	private FragmentCompositionFragmentEntryNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final FragmentCompositionFragmentEntryNameComparator
+		_ASCENDING = new FragmentCompositionFragmentEntryNameComparator(true);
+
+	private static final FragmentCompositionFragmentEntryNameComparator
+		_DESCENDING = new FragmentCompositionFragmentEntryNameComparator(false);
 
 	private static final String _ORDER_BY_ASC = "name ASC";
 

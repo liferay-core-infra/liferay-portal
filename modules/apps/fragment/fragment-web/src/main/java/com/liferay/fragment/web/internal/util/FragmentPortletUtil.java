@@ -55,7 +55,8 @@ public class FragmentPortletUtil {
 
 		if (orderByCol.equals("name")) {
 			orderByComparator =
-				new FragmentCompositionFragmentEntryNameComparator(orderByAsc);
+				FragmentCompositionFragmentEntryNameComparator.getInstance(
+					orderByAsc);
 		}
 		else if (orderByCol.equals("modified-date")) {
 			orderByComparator =

@@ -102,7 +102,7 @@ public class JournalPortletUtil {
 				orderByAsc);
 		}
 		else if (orderByCol.equals("title")) {
-			orderByComparator = new ArticleTitleComparator(orderByAsc);
+			orderByComparator = ArticleTitleComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("version")) {
 			orderByComparator = new ArticleVersionComparator(orderByAsc);

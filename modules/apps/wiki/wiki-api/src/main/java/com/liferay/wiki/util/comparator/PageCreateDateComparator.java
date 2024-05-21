@@ -14,12 +14,6 @@ import com.liferay.wiki.model.WikiPage;
  */
 public class PageCreateDateComparator extends OrderByComparator<WikiPage> {
 
-	public static final String ORDER_BY_ASC = "WikiPage.createDate ASC";
-
-	public static final String ORDER_BY_DESC = "WikiPage.createDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
 	public static PageCreateDateComparator getInstance(boolean ascending) {
 		if (ascending) {
 			return _INSTANCE_ASCENDING;
@@ -43,15 +37,15 @@ public class PageCreateDateComparator extends OrderByComparator<WikiPage> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -68,6 +62,12 @@ public class PageCreateDateComparator extends OrderByComparator<WikiPage> {
 
 	private static final PageCreateDateComparator _INSTANCE_DESCENDING =
 		new PageCreateDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "WikiPage.createDate ASC";
+
+	private static final String _ORDER_BY_DESC = "WikiPage.createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

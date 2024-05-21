@@ -13,12 +13,6 @@ import com.liferay.wiki.model.WikiNode;
  */
 public class NodeNameComparator extends OrderByComparator<WikiNode> {
 
-	public static final String ORDER_BY_ASC = "WikiNode.name ASC";
-
-	public static final String ORDER_BY_DESC = "WikiNode.name DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"name"};
-
 	public static NodeNameComparator getInstance(boolean ascending) {
 		if (ascending) {
 			return _INSTANCE_ASCENDING;
@@ -44,15 +38,15 @@ public class NodeNameComparator extends OrderByComparator<WikiNode> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -69,6 +63,12 @@ public class NodeNameComparator extends OrderByComparator<WikiNode> {
 
 	private static final NodeNameComparator _INSTANCE_DESCENDING =
 		new NodeNameComparator(false);
+
+	private static final String _ORDER_BY_ASC = "WikiNode.name ASC";
+
+	private static final String _ORDER_BY_DESC = "WikiNode.name DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"name"};
 
 	private final boolean _ascending;
 

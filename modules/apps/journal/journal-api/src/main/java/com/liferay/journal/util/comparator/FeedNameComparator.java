@@ -19,10 +19,6 @@ public class FeedNameComparator extends OrderByComparator<JournalFeed> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public FeedNameComparator() {
-		this(false);
-	}
-
 	public FeedNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

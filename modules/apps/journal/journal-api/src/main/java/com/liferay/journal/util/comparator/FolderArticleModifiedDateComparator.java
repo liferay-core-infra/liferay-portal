@@ -26,10 +26,6 @@ public class FolderArticleModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
-	public FolderArticleModifiedDateComparator() {
-		this(false);
-	}
-
 	public FolderArticleModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -20,10 +20,6 @@ public class FolderArticleArticleIdComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"articleId"};
 
-	public FolderArticleArticleIdComparator() {
-		this(false);
-	}
-
 	public FolderArticleArticleIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}

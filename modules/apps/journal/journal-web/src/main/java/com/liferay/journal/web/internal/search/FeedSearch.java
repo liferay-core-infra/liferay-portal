@@ -80,7 +80,7 @@ public class FeedSearch extends SearchContainer<JournalFeed> {
 			orderByComparator = new FeedNameComparator(orderByAsc);
 		}
 		else {
-			orderByComparator = new FeedIDComparator(orderByAsc);
+			orderByComparator = FeedIDComparator.getInstance(orderByAsc);
 		}
 
 		return orderByComparator;

@@ -1775,7 +1775,7 @@ public class JournalDisplayContext {
 			return FolderArticleCreateDateComparator.getInstance(orderByAsc);
 		}
 		else if (Objects.equals(getOrderByCol(), "display-date")) {
-			return new FolderArticleDisplayDateComparator(orderByAsc);
+			return FolderArticleDisplayDateComparator.getInstance(orderByAsc);
 		}
 		else if (Objects.equals(getOrderByCol(), "id")) {
 			return FolderArticleArticleIdComparator.getInstance(orderByAsc);

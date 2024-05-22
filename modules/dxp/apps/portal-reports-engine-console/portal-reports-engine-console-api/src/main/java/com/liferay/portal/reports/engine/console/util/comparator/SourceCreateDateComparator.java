@@ -14,14 +14,12 @@ import com.liferay.portal.reports.engine.console.model.Source;
  */
 public class SourceCreateDateComparator extends OrderByComparator<Source> {
 
-	public static final String ORDER_BY_ASC = "Reports_Source.createDate ASC";
+	public static SourceCreateDateComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
 
-	public static final String ORDER_BY_DESC = "Reports_Source.createDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
-	public SourceCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+		return _DESCENDING;
 	}
 
 	@Override
@@ -39,21 +37,38 @@ public class SourceCreateDateComparator extends OrderByComparator<Source> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private SourceCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final SourceCreateDateComparator _ASCENDING =
+		new SourceCreateDateComparator(true);
+
+	private static final SourceCreateDateComparator _DESCENDING =
+		new SourceCreateDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "Reports_Source.createDate ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"Reports_Source.createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

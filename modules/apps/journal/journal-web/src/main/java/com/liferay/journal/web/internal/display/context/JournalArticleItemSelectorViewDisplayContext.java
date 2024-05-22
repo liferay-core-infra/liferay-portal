@@ -405,8 +405,8 @@ public class JournalArticleItemSelectorViewDisplayContext {
 							orderByAsc);
 				}
 				else if (Objects.equals(_getOrderByCol(), "title")) {
-					folderOrderByComparator = new FolderArticleTitleComparator(
-						orderByAsc);
+					folderOrderByComparator =
+						FolderArticleTitleComparator.getInstance(orderByAsc);
 				}
 
 				return JournalFolderServiceUtil.getFoldersAndArticles(

@@ -807,7 +807,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		long resourcePrimKey, int status, boolean preferApproved) {
 
 		OrderByComparator<WikiPage> orderByComparator =
-			new PageVersionComparator(false);
+			PageVersionComparator.getInstance(false);
 
 		if (status != WorkflowConstants.STATUS_ANY) {
 			return wikiPagePersistence.fetchByR_S_First(
@@ -835,7 +835,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		long resourcePrimKey, long nodeId, int status, boolean preferApproved) {
 
 		OrderByComparator<WikiPage> orderByComparator =
-			new PageVersionComparator(false);
+			PageVersionComparator.getInstance(false);
 
 		if (status != WorkflowConstants.STATUS_ANY) {
 			return wikiPagePersistence.fetchByR_N_S_First(
@@ -863,7 +863,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		long nodeId, String title, int status, boolean preferApproved) {
 
 		OrderByComparator<WikiPage> orderByComparator =
-			new PageVersionComparator(false);
+			PageVersionComparator.getInstance(false);
 
 		if (status != WorkflowConstants.STATUS_ANY) {
 			return wikiPagePersistence.fetchByN_T_S_First(
@@ -900,7 +900,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		long groupId, String externalReferenceCode) {
 
 		return wikiPagePersistence.fetchByG_ERC_First(
-			groupId, externalReferenceCode, new PageVersionComparator(false));
+			groupId, externalReferenceCode,
+			PageVersionComparator.getInstance(false));
 	}
 
 	@Override
@@ -1144,7 +1145,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		throws PortalException {
 
 		return wikiPagePersistence.findByG_ERC_First(
-			groupId, externalReferenceCode, new PageVersionComparator(false));
+			groupId, externalReferenceCode,
+			PageVersionComparator.getInstance(false));
 	}
 
 	@Override
@@ -1702,7 +1704,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			page.getResourcePrimKey(), page.getNodeId(), false);
 
 		pageVersions = ListUtil.sort(
-			pageVersions, new PageVersionComparator(false));
+			pageVersions, PageVersionComparator.getInstance(false));
 
 		List<ObjectValuePair<Long, Integer>> pageVersionStatusOVPs =
 			new ArrayList<>();
@@ -2111,7 +2113,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		WikiPage page = wikiPagePersistence.findByN_T_First(
 			pageResource.getNodeId(), pageResource.getTitle(),
-			new PageVersionComparator(false));
+			PageVersionComparator.getInstance(false));
 
 		return updateStatus(
 			userId, page, status, serviceContext, new HashMap<>());
@@ -3201,7 +3203,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		List<WikiPage> versionPages = wikiPagePersistence.findByN_T(
 			nodeId, title, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new PageVersionComparator(false));
+			PageVersionComparator.getInstance(false));
 
 		WikiPage page = fetchLatestPage(
 			nodeId, newTitle, WorkflowConstants.STATUS_ANY, false);

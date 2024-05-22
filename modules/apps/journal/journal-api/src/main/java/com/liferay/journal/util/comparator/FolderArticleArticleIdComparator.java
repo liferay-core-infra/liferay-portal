@@ -14,8 +14,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class FolderArticleArticleIdComparator
 	extends OrderByComparator<Object> {
 
-	public FolderArticleArticleIdComparator(boolean ascending) {
-		_ascending = ascending;
+	public static FolderArticleArticleIdComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -67,6 +73,16 @@ public class FolderArticleArticleIdComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private FolderArticleArticleIdComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final FolderArticleArticleIdComparator _ASCENDING =
+		new FolderArticleArticleIdComparator(true);
+
+	private static final FolderArticleArticleIdComparator _DESCENDING =
+		new FolderArticleArticleIdComparator(false);
 
 	private static final String _ORDER_BY_ASC = "articleId ASC";
 

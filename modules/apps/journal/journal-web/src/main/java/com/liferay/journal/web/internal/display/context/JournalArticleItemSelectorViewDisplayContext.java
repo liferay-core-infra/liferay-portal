@@ -396,7 +396,8 @@ public class JournalArticleItemSelectorViewDisplayContext {
 
 				if (Objects.equals(_getOrderByCol(), "id")) {
 					folderOrderByComparator =
-						new FolderArticleArticleIdComparator(orderByAsc);
+						FolderArticleArticleIdComparator.getInstance(
+							orderByAsc);
 				}
 				else if (Objects.equals(_getOrderByCol(), "modified-date")) {
 					folderOrderByComparator =

@@ -1789,7 +1789,7 @@ public class JournalDisplayContext {
 			return new FolderArticleDisplayDateComparator(orderByAsc);
 		}
 		else if (Objects.equals(getOrderByCol(), "id")) {
-			return new FolderArticleArticleIdComparator(orderByAsc);
+			return FolderArticleArticleIdComparator.getInstance(orderByAsc);
 		}
 		else if (Objects.equals(getOrderByCol(), "modified-date")) {
 			return new FolderArticleModifiedDateComparator(orderByAsc);

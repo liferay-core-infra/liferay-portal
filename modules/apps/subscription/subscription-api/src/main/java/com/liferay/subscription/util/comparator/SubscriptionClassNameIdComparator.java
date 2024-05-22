@@ -20,8 +20,14 @@ public class SubscriptionClassNameIdComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"classNameId"};
 
-	public SubscriptionClassNameIdComparator(boolean ascending) {
-		_ascending = ascending;
+	public static SubscriptionClassNameIdComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -61,6 +67,16 @@ public class SubscriptionClassNameIdComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private SubscriptionClassNameIdComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final SubscriptionClassNameIdComparator _INSTANCE_ASCENDING =
+		new SubscriptionClassNameIdComparator(true);
+
+	private static final SubscriptionClassNameIdComparator
+		_INSTANCE_DESCENDING = new SubscriptionClassNameIdComparator(false);
 
 	private final boolean _ascending;
 

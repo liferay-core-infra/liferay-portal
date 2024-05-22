@@ -572,7 +572,7 @@ public class WikiListPagesDisplayContext {
 				searchContainer.setResultsAndTotal(
 					() -> WikiPageLocalServiceUtil.getPages(
 						page.getNodeId(), page.getTitle(), QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, new PageVersionComparator()),
+						QueryUtil.ALL_POS, new PageVersionComparator(false)),
 					WikiPageLocalServiceUtil.getPagesCount(
 						page.getNodeId(), page.getTitle()));
 			}

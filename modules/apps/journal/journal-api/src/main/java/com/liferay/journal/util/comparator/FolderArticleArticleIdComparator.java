@@ -14,12 +14,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class FolderArticleArticleIdComparator
 	extends OrderByComparator<Object> {
 
-	public static final String ORDER_BY_ASC = "articleId ASC";
-
-	public static final String ORDER_BY_DESC = "articleId DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"articleId"};
-
 	public FolderArticleArticleIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}
@@ -58,21 +52,27 @@ public class FolderArticleArticleIdComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private static final String _ORDER_BY_ASC = "articleId ASC";
+
+	private static final String _ORDER_BY_DESC = "articleId DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"articleId"};
 
 	private final boolean _ascending;
 

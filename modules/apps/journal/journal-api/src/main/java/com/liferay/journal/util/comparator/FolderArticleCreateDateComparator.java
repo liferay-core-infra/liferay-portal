@@ -18,14 +18,6 @@ import java.util.Date;
 public class FolderArticleCreateDateComparator
 	extends OrderByComparator<Object> {
 
-	public static final String ORDER_BY_ASC =
-		"modelFolder DESC, createDate ASC";
-
-	public static final String ORDER_BY_DESC =
-		"modelFolder DESC, createDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
 	public FolderArticleCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
@@ -61,15 +53,15 @@ public class FolderArticleCreateDateComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -88,6 +80,14 @@ public class FolderArticleCreateDateComparator
 
 		return folder.getCreateDate();
 	}
+
+	private static final String _ORDER_BY_ASC =
+		"modelFolder DESC, createDate ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"modelFolder DESC, createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

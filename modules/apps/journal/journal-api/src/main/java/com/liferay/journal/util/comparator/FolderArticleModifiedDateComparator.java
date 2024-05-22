@@ -18,14 +18,6 @@ import java.util.Date;
 public class FolderArticleModifiedDateComparator
 	extends OrderByComparator<Object> {
 
-	public static final String ORDER_BY_ASC =
-		"modelFolder DESC, modifiedDate ASC";
-
-	public static final String ORDER_BY_DESC =
-		"modelFolder DESC, modifiedDate DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
-
 	public FolderArticleModifiedDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}
@@ -61,15 +53,15 @@ public class FolderArticleModifiedDateComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -88,6 +80,14 @@ public class FolderArticleModifiedDateComparator
 
 		return folder.getModifiedDate();
 	}
+
+	private static final String _ORDER_BY_ASC =
+		"modelFolder DESC, modifiedDate ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"modelFolder DESC, modifiedDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"modifiedDate"};
 
 	private final boolean _ascending;
 

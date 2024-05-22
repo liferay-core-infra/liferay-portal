@@ -404,7 +404,8 @@ public class JournalArticleItemSelectorViewDisplayContext {
 				}
 				else if (Objects.equals(_getOrderByCol(), "modified-date")) {
 					folderOrderByComparator =
-						new FolderArticleModifiedDateComparator(orderByAsc);
+						FolderArticleModifiedDateComparator.getInstance(
+							orderByAsc);
 				}
 				else if (Objects.equals(_getOrderByCol(), "title")) {
 					folderOrderByComparator = new FolderArticleTitleComparator(

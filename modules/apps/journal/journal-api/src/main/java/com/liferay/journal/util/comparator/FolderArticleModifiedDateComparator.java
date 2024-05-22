@@ -18,8 +18,14 @@ import java.util.Date;
 public class FolderArticleModifiedDateComparator
 	extends OrderByComparator<Object> {
 
-	public FolderArticleModifiedDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static FolderArticleModifiedDateComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -80,6 +86,16 @@ public class FolderArticleModifiedDateComparator
 
 		return folder.getModifiedDate();
 	}
+
+	private FolderArticleModifiedDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final FolderArticleModifiedDateComparator _ASCENDING =
+		new FolderArticleModifiedDateComparator(true);
+
+	private static final FolderArticleModifiedDateComparator _DESCENDING =
+		new FolderArticleModifiedDateComparator(false);
 
 	private static final String _ORDER_BY_ASC =
 		"modelFolder DESC, modifiedDate ASC";

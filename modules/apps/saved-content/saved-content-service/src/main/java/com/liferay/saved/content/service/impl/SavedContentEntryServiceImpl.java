@@ -85,7 +85,7 @@ public class SavedContentEntryServiceImpl
 
 		return savedContentEntryPersistence.findByG_U(
 			groupId, getUserId(), start, end,
-			new SavedContentEntryClassNameIdComparator(false));
+			SavedContentEntryClassNameIdComparator.getInstance(false));
 	}
 
 	@Override

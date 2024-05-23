@@ -72,7 +72,8 @@ public class PortletSearch extends SearchContainer<Portlet> {
 		OrderByComparator<Portlet> orderByComparator = null;
 
 		if (orderByCol.equals("name")) {
-			orderByComparator = new PortletDisplayNameComparator(orderByAsc);
+			orderByComparator = PortletDisplayNameComparator.getInstance(
+				orderByAsc);
 		}
 
 		return orderByComparator;

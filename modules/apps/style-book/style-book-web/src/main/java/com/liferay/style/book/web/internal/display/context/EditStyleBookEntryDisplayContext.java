@@ -400,7 +400,7 @@ public class EditStyleBookEntryDisplayContext {
 				List<Layout> layouts =
 					LayoutLocalServiceUtil.getPublishedLayouts(
 						_getPreviewItemsGroupId(), 0, Math.min(total, 4),
-						new LayoutModifiedDateComparator(false));
+						LayoutModifiedDateComparator.getInstance(false));
 
 				return JSONUtil.putAll(
 					(JSONObject[])TransformUtil.transformToArray(

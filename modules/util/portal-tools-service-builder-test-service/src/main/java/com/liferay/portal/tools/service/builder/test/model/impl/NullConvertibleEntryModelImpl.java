@@ -81,6 +81,9 @@ public class NullConvertibleEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY NullConvertibleEntry.nullConvertibleEntryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY nullConvertibleEntry.nullConvertibleEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

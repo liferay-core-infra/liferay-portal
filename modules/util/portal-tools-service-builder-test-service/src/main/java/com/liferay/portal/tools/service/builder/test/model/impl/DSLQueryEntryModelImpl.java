@@ -79,6 +79,9 @@ public class DSLQueryEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY DSLQueryEntry.dslQueryEntryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY dslQueryEntry.dslQueryEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

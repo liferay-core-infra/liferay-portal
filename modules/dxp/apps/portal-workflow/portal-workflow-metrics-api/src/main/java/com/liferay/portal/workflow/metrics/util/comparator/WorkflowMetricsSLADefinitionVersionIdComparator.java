@@ -14,8 +14,26 @@ import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinitionVer
 public class WorkflowMetricsSLADefinitionVersionIdComparator
 	extends OrderByComparator<WorkflowMetricsSLADefinitionVersion> {
 
-	public WorkflowMetricsSLADefinitionVersionIdComparator(boolean ascending) {
-		_ascending = ascending;
+	public static final String ORDER_BY_ASC =
+		"WorkflowMetricsSLADefinitionVersion." +
+			"workflowMetricsSLADefinitionVersionId ASC";
+
+	public static final String ORDER_BY_DESC =
+		"WorkflowMetricsSLADefinitionVersion." +
+			"workflowMetricsSLADefinitionVersionId DESC";
+
+	public static final String[] ORDER_BY_FIELDS = {
+		"workflowMetricsSLADefinitionVersionId"
+	};
+
+	public static WorkflowMetricsSLADefinitionVersionIdComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -41,15 +59,15 @@ public class WorkflowMetricsSLADefinitionVersionIdComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return _ORDER_BY_ASC;
+			return ORDER_BY_ASC;
 		}
 
-		return _ORDER_BY_DESC;
+		return ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return _ORDER_BY_FIELDS;
+		return ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -57,17 +75,17 @@ public class WorkflowMetricsSLADefinitionVersionIdComparator
 		return _ascending;
 	}
 
-	private static final String _ORDER_BY_ASC =
-		"WorkflowMetricsSLADefinitionVersion." +
-			"workflowMetricsSLADefinitionVersionId ASC";
+	private WorkflowMetricsSLADefinitionVersionIdComparator(boolean ascending) {
+		_ascending = ascending;
+	}
 
-	private static final String _ORDER_BY_DESC =
-		"WorkflowMetricsSLADefinitionVersion." +
-			"workflowMetricsSLADefinitionVersionId DESC";
+	private static final WorkflowMetricsSLADefinitionVersionIdComparator
+		_INSTANCE_ASCENDING =
+			new WorkflowMetricsSLADefinitionVersionIdComparator(true);
 
-	private static final String[] _ORDER_BY_FIELDS = {
-		"workflowMetricsSLADefinitionVersionId"
-	};
+	private static final WorkflowMetricsSLADefinitionVersionIdComparator
+		_INSTANCE_DESCENDING =
+			new WorkflowMetricsSLADefinitionVersionIdComparator(false);
 
 	private final boolean _ascending;
 

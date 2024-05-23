@@ -23,6 +23,16 @@ public class WorkflowDefinitionModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
+	public static WorkflowDefinitionModifiedDateComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
+	}
+
 	public WorkflowDefinitionModifiedDateComparator() {
 		this(false);
 	}
@@ -71,6 +81,14 @@ public class WorkflowDefinitionModifiedDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private static final WorkflowDefinitionModifiedDateComparator
+		_INSTANCE_ASCENDING = new WorkflowDefinitionModifiedDateComparator(
+			true);
+
+	private static final WorkflowDefinitionModifiedDateComparator
+		_INSTANCE_DESCENDING = new WorkflowDefinitionModifiedDateComparator(
+			false);
 
 	private final boolean _ascending;
 

@@ -21,14 +21,14 @@ import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess;
 public class KaleoProcessCreateDateComparator
 	extends OrderByComparator<KaleoProcess> {
 
-	public static final String ORDER_BY_ASC = "KaleoProcess.createDate ASC";
+	public static KaleoProcessCreateDateComparator getInstance(
+		boolean ascending) {
 
-	public static final String ORDER_BY_DESC = "KaleoProcess.createDate DESC";
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-	public static final String[] ORDER_BY_FIELDS = {"createDate"};
-
-	public KaleoProcessCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -46,21 +46,37 @@ public class KaleoProcessCreateDateComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private KaleoProcessCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final KaleoProcessCreateDateComparator _INSTANCE_ASCENDING =
+		new KaleoProcessCreateDateComparator(true);
+
+	private static final KaleoProcessCreateDateComparator _INSTANCE_DESCENDING =
+		new KaleoProcessCreateDateComparator(false);
+
+	private static final String _ORDER_BY_ASC = "KaleoProcess.createDate ASC";
+
+	private static final String _ORDER_BY_DESC = "KaleoProcess.createDate DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"createDate"};
 
 	private final boolean _ascending;
 

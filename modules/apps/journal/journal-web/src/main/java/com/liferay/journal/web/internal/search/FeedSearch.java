@@ -77,7 +77,7 @@ public class FeedSearch extends SearchContainer<JournalFeed> {
 		OrderByComparator<JournalFeed> orderByComparator = null;
 
 		if (orderByCol.equals("name")) {
-			orderByComparator = new FeedNameComparator(orderByAsc);
+			orderByComparator = FeedNameComparator.getInstance(orderByAsc);
 		}
 		else {
 			orderByComparator = FeedIDComparator.getInstance(orderByAsc);

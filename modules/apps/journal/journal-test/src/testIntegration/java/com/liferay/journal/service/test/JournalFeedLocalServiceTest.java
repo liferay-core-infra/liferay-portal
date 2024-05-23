@@ -154,7 +154,7 @@ public class JournalFeedLocalServiceTest {
 		List<JournalFeed> journalFeeds = _journalFeedLocalService.search(
 			TestPropsValues.getCompanyId(), _group.getGroupId(), keywords,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new FeedNameComparator(false));
+			FeedNameComparator.getInstance(false));
 
 		Assert.assertEquals(journalFeeds.toString(), 3, journalFeeds.size());
 
@@ -177,7 +177,7 @@ public class JournalFeedLocalServiceTest {
 		List<JournalFeed> journalFeeds = _journalFeedLocalService.search(
 			TestPropsValues.getCompanyId(), _group.getGroupId(), null,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new FeedNameComparator(false));
+			FeedNameComparator.getInstance(false));
 
 		Assert.assertEquals(journalFeeds.toString(), 2, journalFeeds.size());
 

@@ -23,10 +23,6 @@ public class StructureLayoutCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public StructureLayoutCreateDateComparator() {
-		this(false);
-	}
-
 	public StructureLayoutCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

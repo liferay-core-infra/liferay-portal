@@ -21,10 +21,6 @@ public class StructureLayoutNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public StructureLayoutNameComparator() {
-		this(true);
-	}
-
 	public StructureLayoutNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -30,10 +30,6 @@ public class StructureLinkStructureNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public StructureLinkStructureNameComparator() {
-		this(false);
-	}
-
 	public StructureLinkStructureNameComparator(boolean ascending) {
 		this(ascending, LocaleUtil.getDefault());
 	}

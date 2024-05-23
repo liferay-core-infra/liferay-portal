@@ -14,14 +14,6 @@ import com.liferay.site.admin.web.internal.util.SiteInitializerItem;
 public class SiteInitializerNameComparator
 	extends OrderByComparator<SiteInitializerItem> {
 
-	public SiteInitializerNameComparator() {
-		this(false);
-	}
-
-	public SiteInitializerNameComparator(boolean ascending) {
-		_ascending = ascending;
-	}
-
 	@Override
 	public int compare(
 		SiteInitializerItem siteInitializerItem1,
@@ -30,20 +22,7 @@ public class SiteInitializerNameComparator
 		String name1 = siteInitializerItem1.getName();
 		String name2 = siteInitializerItem2.getName();
 
-		int value = name1.compareToIgnoreCase(name2);
-
-		if (_ascending) {
-			return value;
-		}
-
-		return -value;
+		return name1.compareToIgnoreCase(name2);
 	}
-
-	@Override
-	public boolean isAscending() {
-		return _ascending;
-	}
-
-	private final boolean _ascending;
 
 }

@@ -150,7 +150,7 @@ public class SelectSiteInitializerDisplayContext {
 						themeDisplay.getCompanyId(), Boolean.TRUE, null),
 					layoutSetPrototype -> new SiteInitializerItem(
 						layoutSetPrototype, themeDisplay.getLocale())),
-				new SiteInitializerNameComparator(true));
+				new SiteInitializerNameComparator());
 		}
 
 		return ListUtil.sort(
@@ -165,7 +165,7 @@ public class SelectSiteInitializerDisplayContext {
 
 					return null;
 				}),
-			new SiteInitializerNameComparator(true));
+			new SiteInitializerNameComparator());
 	}
 
 	private String _getTabs1() {

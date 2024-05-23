@@ -13,8 +13,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
  */
 public class FeedNameComparator extends OrderByComparator<JournalFeed> {
 
-	public FeedNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static FeedNameComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -49,6 +53,16 @@ public class FeedNameComparator extends OrderByComparator<JournalFeed> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private FeedNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final FeedNameComparator _ASCENDING = new FeedNameComparator(
+		true);
+
+	private static final FeedNameComparator _DESCENDING =
+		new FeedNameComparator(false);
 
 	private static final String _ORDER_BY_ASC = "JournalFeed.name ASC";
 

@@ -253,7 +253,7 @@ public class BookmarksUtil {
 			orderByComparator = EntryPriorityComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("url")) {
-			orderByComparator = new EntryURLComparator(orderByAsc);
+			orderByComparator = EntryURLComparator.getInstance(orderByAsc);
 		}
 
 		return orderByComparator;

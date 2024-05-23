@@ -20,8 +20,12 @@ public class EntryURLComparator extends OrderByComparator<BookmarksEntry> {
 
 	public static final String[] ORDER_BY_FIELDS = {"url"};
 
-	public EntryURLComparator(boolean ascending) {
-		_ascending = ascending;
+	public static EntryURLComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -56,6 +60,16 @@ public class EntryURLComparator extends OrderByComparator<BookmarksEntry> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private EntryURLComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final EntryURLComparator _INSTANCE_ASCENDING =
+		new EntryURLComparator(true);
+
+	private static final EntryURLComparator _INSTANCE_DESCENDING =
+		new EntryURLComparator(false);
 
 	private final boolean _ascending;
 

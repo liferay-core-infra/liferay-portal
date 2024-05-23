@@ -574,7 +574,7 @@ public class JournalFolderServiceImpl extends JournalFolderServiceBaseImpl {
 		}
 
 		if (ArrayUtil.contains(orderByComparator.getOrderByFields(), "name")) {
-			return new StructureLinkStructureNameComparator(
+			return StructureLinkStructureNameComparator.getInstance(
 				orderByComparator.isAscending());
 		}
 

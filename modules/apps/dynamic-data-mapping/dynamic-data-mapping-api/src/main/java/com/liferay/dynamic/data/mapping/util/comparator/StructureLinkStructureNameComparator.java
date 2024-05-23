@@ -24,17 +24,14 @@ import java.util.Locale;
 public class StructureLinkStructureNameComparator
 	extends OrderByComparator<DDMStructureLink> {
 
-	public StructureLinkStructureNameComparator(boolean ascending) {
-		this(ascending, LocaleUtil.getDefault());
-	}
+	public static StructureLinkStructureNameComparator getInstance(
+		boolean ascending) {
 
-	public StructureLinkStructureNameComparator(
-		boolean ascending, Locale locale) {
+		if (ascending) {
+			return _ASCENDING;
+		}
 
-		_ascending = ascending;
-		_locale = locale;
-
-		_collator = CollatorUtil.getInstance(locale);
+		return _DESCENDING;
 	}
 
 	@Override
@@ -86,6 +83,25 @@ public class StructureLinkStructureNameComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private StructureLinkStructureNameComparator(boolean ascending) {
+		this(ascending, LocaleUtil.getDefault());
+	}
+
+	private StructureLinkStructureNameComparator(
+		boolean ascending, Locale locale) {
+
+		_ascending = ascending;
+		_locale = locale;
+
+		_collator = CollatorUtil.getInstance(locale);
+	}
+
+	private static final StructureLinkStructureNameComparator _ASCENDING =
+		new StructureLinkStructureNameComparator(true);
+
+	private static final StructureLinkStructureNameComparator _DESCENDING =
+		new StructureLinkStructureNameComparator(false);
 
 	private static final String _ORDER_BY_ASC = "DDMStructure.name ASC";
 

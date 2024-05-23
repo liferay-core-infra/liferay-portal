@@ -811,7 +811,8 @@ public class LayoutsAdminDisplayContext {
 		else if (Objects.equals(_getOrderByCol(), "relevance") &&
 				 Validator.isNotNull(keywords)) {
 
-			orderByComparator = new LayoutRelevanceComparator(orderByAsc);
+			orderByComparator = LayoutRelevanceComparator.getInstance(
+				orderByAsc);
 		}
 
 		layoutsSearchContainer.setOrderByComparator(orderByComparator);

@@ -189,7 +189,7 @@ public class DDLDisplayContext {
 		OrderByComparator<DDLRecordSet> orderByComparator = null;
 
 		if (orderByCol.equals("create-date")) {
-			orderByComparator = new DDLRecordSetCreateDateComparator(
+			orderByComparator = DDLRecordSetCreateDateComparator.getInstance(
 				orderByAsc);
 		}
 		else if (orderByCol.equals("modified-date")) {

@@ -805,7 +805,8 @@ public class LayoutsAdminDisplayContext {
 		String keywords = getKeywords();
 
 		if (Objects.equals(_getOrderByCol(), "create-date")) {
-			orderByComparator = new LayoutCreateDateComparator(orderByAsc);
+			orderByComparator = LayoutCreateDateComparator.getInstance(
+				orderByAsc);
 		}
 		else if (Objects.equals(_getOrderByCol(), "relevance") &&
 				 Validator.isNotNull(keywords)) {

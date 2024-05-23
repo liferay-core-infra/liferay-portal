@@ -21,8 +21,12 @@ public class EntryCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public EntryCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static EntryCreateDateComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -55,6 +59,16 @@ public class EntryCreateDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private EntryCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final EntryCreateDateComparator _INSTANCE_ASCENDING =
+		new EntryCreateDateComparator(true);
+
+	private static final EntryCreateDateComparator _INSTANCE_DESCENDING =
+		new EntryCreateDateComparator(false);
 
 	private final boolean _ascending;
 

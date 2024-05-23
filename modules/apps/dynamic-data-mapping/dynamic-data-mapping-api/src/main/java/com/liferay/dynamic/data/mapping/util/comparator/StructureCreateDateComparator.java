@@ -15,8 +15,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class StructureCreateDateComparator
 	extends OrderByComparator<DDMStructure> {
 
-	public StructureCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static StructureCreateDateComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -49,6 +53,16 @@ public class StructureCreateDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private StructureCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final StructureCreateDateComparator _ASCENDING =
+		new StructureCreateDateComparator(true);
+
+	private static final StructureCreateDateComparator _DESCENDING =
+		new StructureCreateDateComparator(false);
 
 	private static final String _ORDER_BY_ASC = "DDMStructure.createDate ASC";
 

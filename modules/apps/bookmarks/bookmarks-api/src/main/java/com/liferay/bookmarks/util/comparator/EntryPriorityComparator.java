@@ -19,8 +19,12 @@ public class EntryPriorityComparator extends OrderByComparator<BookmarksEntry> {
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public EntryPriorityComparator(boolean ascending) {
-		_ascending = ascending;
+	public static EntryPriorityComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -59,6 +63,16 @@ public class EntryPriorityComparator extends OrderByComparator<BookmarksEntry> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private EntryPriorityComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final EntryPriorityComparator _INSTANCE_ASCENDING =
+		new EntryPriorityComparator(true);
+
+	private static final EntryPriorityComparator _INSTANCE_DESCENDING =
+		new EntryPriorityComparator(false);
 
 	private final boolean _ascending;
 

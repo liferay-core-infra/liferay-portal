@@ -165,7 +165,8 @@ public class DDMStructureLinkLocalServiceTest extends BaseDDMServiceTestCase {
 		List<DDMStructure> ddmStructures =
 			DDMStructureLinkLocalServiceUtil.getStructureLinkStructures(
 				_classNameId, _classPK, "Test", QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, new StructureLinkStructureNameComparator());
+				QueryUtil.ALL_POS,
+				new StructureLinkStructureNameComparator(false));
 
 		Assert.assertEquals(ddmStructures.toString(), 2, ddmStructures.size());
 		Assert.assertEquals(ddmStructure1, ddmStructures.get(1));

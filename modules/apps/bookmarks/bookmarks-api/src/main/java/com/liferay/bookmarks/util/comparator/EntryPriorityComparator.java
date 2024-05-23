@@ -19,10 +19,6 @@ public class EntryPriorityComparator extends OrderByComparator<BookmarksEntry> {
 
 	public static final String[] ORDER_BY_FIELDS = {"priority"};
 
-	public EntryPriorityComparator() {
-		this(false);
-	}
-
 	public EntryPriorityComparator(boolean ascending) {
 		_ascending = ascending;
 	}

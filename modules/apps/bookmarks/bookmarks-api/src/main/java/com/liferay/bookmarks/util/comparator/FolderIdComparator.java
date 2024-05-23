@@ -19,10 +19,6 @@ public class FolderIdComparator extends OrderByComparator<BookmarksFolder> {
 
 	public static final String[] ORDER_BY_FIELDS = {"folderId"};
 
-	public FolderIdComparator() {
-		this(false);
-	}
-
 	public FolderIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}

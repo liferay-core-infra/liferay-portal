@@ -20,10 +20,6 @@ public class EntryNameComparator extends OrderByComparator<BookmarksEntry> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public EntryNameComparator() {
-		this(false);
-	}
-
 	public EntryNameComparator(boolean ascending) {
 		_ascending = ascending;
 	}

@@ -21,10 +21,6 @@ public class EntryCreateDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"createDate"};
 
-	public EntryCreateDateComparator() {
-		this(false);
-	}
-
 	public EntryCreateDateComparator(boolean ascending) {
 		_ascending = ascending;
 	}

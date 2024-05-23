@@ -84,7 +84,7 @@ public abstract class BaseJournalArticleVersionConstraintResolver
 			journalArticleLocalService.getArticles(
 				ctArticle.getGroupId(), ctArticle.getArticleId(),
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				new ArticleVersionComparator()),
+				new ArticleVersionComparator(false)),
 			article ->
 				article.getCtCollectionId() == ctArticle.getCtCollectionId());
 

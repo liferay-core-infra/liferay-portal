@@ -97,6 +97,9 @@ public class ResourcePermissionModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ResourcePermission.resourcePermissionId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY resourcePermission.resourcePermissionId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

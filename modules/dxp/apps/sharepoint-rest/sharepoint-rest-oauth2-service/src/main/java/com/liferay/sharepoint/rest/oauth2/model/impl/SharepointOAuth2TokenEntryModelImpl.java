@@ -95,6 +95,9 @@ public class SharepointOAuth2TokenEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY SharepointOAuth2TokenEntry.sharepointOAuth2TokenEntryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY sharepointOAuth2TokenEntry.sharepointOAuth2TokenEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

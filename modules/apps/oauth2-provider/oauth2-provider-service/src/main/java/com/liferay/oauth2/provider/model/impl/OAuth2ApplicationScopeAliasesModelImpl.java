@@ -90,6 +90,9 @@ public class OAuth2ApplicationScopeAliasesModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY OAuth2ApplicationScopeAliases.oA2AScopeAliasesId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY oAuth2ApplicationScopeAliases.oA2AScopeAliasesId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

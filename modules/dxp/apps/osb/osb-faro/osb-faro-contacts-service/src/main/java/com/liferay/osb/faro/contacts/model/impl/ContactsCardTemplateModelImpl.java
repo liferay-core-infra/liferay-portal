@@ -98,6 +98,9 @@ public class ContactsCardTemplateModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY OSBFaro_ContactsCardTemplate.contactsCardTemplateId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY contactsCardTemplate.contactsCardTemplateId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

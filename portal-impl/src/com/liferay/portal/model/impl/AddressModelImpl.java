@@ -127,6 +127,9 @@ public class AddressModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY Address.createDate ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY address.createDate ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

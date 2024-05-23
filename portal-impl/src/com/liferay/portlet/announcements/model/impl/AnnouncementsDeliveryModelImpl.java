@@ -97,6 +97,9 @@ public class AnnouncementsDeliveryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY AnnouncementsDelivery.deliveryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY announcementsDelivery.deliveryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

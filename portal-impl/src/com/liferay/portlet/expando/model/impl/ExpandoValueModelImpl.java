@@ -92,6 +92,9 @@ public class ExpandoValueModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ExpandoValue.tableId ASC, ExpandoValue.rowId_ ASC, ExpandoValue.columnId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY expandoValue.tableId ASC, expandoValue.rowId_ ASC, expandoValue.columnId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

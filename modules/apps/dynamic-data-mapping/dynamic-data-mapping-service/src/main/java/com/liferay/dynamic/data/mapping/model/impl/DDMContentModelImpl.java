@@ -109,6 +109,9 @@ public class DDMContentModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY DDMContent.contentId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY ddmContent.contentId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

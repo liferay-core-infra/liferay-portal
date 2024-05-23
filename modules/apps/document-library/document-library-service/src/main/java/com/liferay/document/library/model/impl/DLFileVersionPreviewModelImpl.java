@@ -90,6 +90,9 @@ public class DLFileVersionPreviewModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY DLFileVersionPreview.dlFileVersionPreviewId DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY dlFileVersionPreview.dlFileVersionPreviewId DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

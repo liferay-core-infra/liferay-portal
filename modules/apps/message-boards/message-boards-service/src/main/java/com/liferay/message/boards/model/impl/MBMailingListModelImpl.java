@@ -123,6 +123,9 @@ public class MBMailingListModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY MBMailingList.mailingListId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY mbMailingList.mailingListId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

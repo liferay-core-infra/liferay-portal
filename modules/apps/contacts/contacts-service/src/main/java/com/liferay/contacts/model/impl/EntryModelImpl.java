@@ -94,6 +94,9 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 	public static final String ORDER_BY_SQL =
 		" ORDER BY Contacts_Entry.fullName ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY entry.fullName ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

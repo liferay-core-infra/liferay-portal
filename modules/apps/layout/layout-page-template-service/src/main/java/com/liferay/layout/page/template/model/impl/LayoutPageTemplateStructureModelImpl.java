@@ -103,6 +103,9 @@ public class LayoutPageTemplateStructureModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY LayoutPageTemplateStructure.layoutPageTemplateStructureId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY layoutPageTemplateStructure.layoutPageTemplateStructureId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -94,6 +94,9 @@ public class AkismetEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY OSBCommunity_AkismetEntry.akismetEntryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY akismetEntry.akismetEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

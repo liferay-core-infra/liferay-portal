@@ -107,6 +107,9 @@ public class BackgroundTaskModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY BackgroundTask.createDate ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY backgroundTask.createDate ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

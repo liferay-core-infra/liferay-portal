@@ -101,6 +101,9 @@ public class CommerceTermEntryRelModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CommerceTermEntryRel.createDate DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commerceTermEntryRel.createDate DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

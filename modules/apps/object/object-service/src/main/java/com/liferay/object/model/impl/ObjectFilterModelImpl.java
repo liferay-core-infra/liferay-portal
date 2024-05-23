@@ -99,6 +99,9 @@ public class ObjectFilterModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ObjectFilter.objectFilterId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY objectFilter.objectFilterId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

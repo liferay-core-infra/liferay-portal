@@ -128,6 +128,9 @@ public class CommercePriceModifierModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CommercePriceModifier.displayDate DESC, CommercePriceModifier.createDate DESC, CommercePriceModifier.priority DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commercePriceModifier.displayDate DESC, commercePriceModifier.createDate DESC, commercePriceModifier.priority DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

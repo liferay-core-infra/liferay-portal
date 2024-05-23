@@ -139,6 +139,9 @@ public class CalendarBookingModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CalendarBooking.startTime ASC, CalendarBooking.title ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY calendarBooking.startTime ASC, calendarBooking.title ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

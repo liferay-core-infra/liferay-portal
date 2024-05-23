@@ -120,6 +120,9 @@ public class KaleoTransitionModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY KaleoTransition.kaleoTransitionId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY kaleoTransition.kaleoTransitionId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

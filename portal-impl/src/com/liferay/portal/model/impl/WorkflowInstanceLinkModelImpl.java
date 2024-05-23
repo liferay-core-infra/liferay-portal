@@ -102,6 +102,9 @@ public class WorkflowInstanceLinkModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY WorkflowInstanceLink.createDate DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY workflowInstanceLink.createDate DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

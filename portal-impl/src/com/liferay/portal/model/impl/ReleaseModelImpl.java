@@ -93,6 +93,9 @@ public class ReleaseModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY Release_.releaseId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY release_.releaseId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -81,6 +81,9 @@ public class ViewCountEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ViewCountEntry.companyId ASC, ViewCountEntry.classNameId ASC, ViewCountEntry.classPK ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY viewCountEntry.companyId ASC, viewCountEntry.classNameId ASC, viewCountEntry.classPK ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

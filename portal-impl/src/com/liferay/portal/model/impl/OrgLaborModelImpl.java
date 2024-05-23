@@ -107,6 +107,9 @@ public class OrgLaborModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY OrgLabor.organizationId ASC, OrgLabor.listTypeId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY orgLabor.organizationId ASC, orgLabor.listTypeId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -119,6 +119,9 @@ public class FragmentCompositionModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY FragmentComposition.name ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY fragmentComposition.name ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

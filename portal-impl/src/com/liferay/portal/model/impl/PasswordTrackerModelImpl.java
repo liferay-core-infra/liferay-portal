@@ -89,6 +89,9 @@ public class PasswordTrackerModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY PasswordTracker.userId DESC, PasswordTracker.createDate DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY passwordTracker.userId DESC, passwordTracker.createDate DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

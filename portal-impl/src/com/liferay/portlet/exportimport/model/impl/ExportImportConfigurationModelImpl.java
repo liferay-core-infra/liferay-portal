@@ -110,6 +110,9 @@ public class ExportImportConfigurationModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ExportImportConfiguration.createDate ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY exportImportConfiguration.createDate ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -131,6 +131,9 @@ public class ObjectFieldModelImpl
 
 	public static final String ORDER_BY_SQL = " ORDER BY ObjectField.name ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY objectField.name ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -99,6 +99,9 @@ public class ObjectFieldSettingModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ObjectFieldSetting.objectFieldSettingId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY objectFieldSetting.objectFieldSettingId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

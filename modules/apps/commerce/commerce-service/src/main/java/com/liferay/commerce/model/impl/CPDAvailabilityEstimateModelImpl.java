@@ -103,6 +103,9 @@ public class CPDAvailabilityEstimateModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CPDAvailabilityEstimate.CPDAvailabilityEstimateId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY cpdAvailabilityEstimate.CPDAvailabilityEstimateId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

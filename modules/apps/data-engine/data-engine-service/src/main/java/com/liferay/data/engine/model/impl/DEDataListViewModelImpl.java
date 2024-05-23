@@ -112,6 +112,9 @@ public class DEDataListViewModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY DEDataListView.deDataListViewId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY deDataListView.deDataListViewId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

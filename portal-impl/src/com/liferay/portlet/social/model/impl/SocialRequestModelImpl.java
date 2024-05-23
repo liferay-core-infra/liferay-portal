@@ -106,6 +106,9 @@ public class SocialRequestModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY SocialRequest.requestId DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY socialRequest.requestId DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

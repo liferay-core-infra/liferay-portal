@@ -92,6 +92,9 @@ public class RecentLayoutBranchModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY RecentLayoutBranch.recentLayoutBranchId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY recentLayoutBranch.recentLayoutBranchId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

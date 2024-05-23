@@ -105,7 +105,8 @@ public class JournalPortletUtil {
 			orderByComparator = ArticleTitleComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("version")) {
-			orderByComparator = new ArticleVersionComparator(orderByAsc);
+			orderByComparator = ArticleVersionComparator.getInstance(
+				orderByAsc);
 		}
 
 		return orderByComparator;

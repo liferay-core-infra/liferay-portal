@@ -20,8 +20,12 @@ public class EntryNameComparator extends OrderByComparator<BookmarksEntry> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public EntryNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static EntryNameComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -56,6 +60,16 @@ public class EntryNameComparator extends OrderByComparator<BookmarksEntry> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private EntryNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final EntryNameComparator _INSTANCE_ASCENDING =
+		new EntryNameComparator(true);
+
+	private static final EntryNameComparator _INSTANCE_DESCENDING =
+		new EntryNameComparator(false);
 
 	private final boolean _ascending;
 

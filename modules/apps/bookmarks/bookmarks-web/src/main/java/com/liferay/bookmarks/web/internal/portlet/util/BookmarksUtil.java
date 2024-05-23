@@ -247,7 +247,7 @@ public class BookmarksUtil {
 			orderByComparator = new EntryModifiedDateComparator(orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
-			orderByComparator = new EntryNameComparator(orderByAsc);
+			orderByComparator = EntryNameComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("priority")) {
 			orderByComparator = new EntryPriorityComparator(orderByAsc);

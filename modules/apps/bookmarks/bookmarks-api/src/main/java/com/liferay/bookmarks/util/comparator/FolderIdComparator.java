@@ -13,14 +13,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
  */
 public class FolderIdComparator extends OrderByComparator<BookmarksFolder> {
 
-	public static final String ORDER_BY_ASC = "BookmarksFolder.folderId ASC";
+	public static FolderIdComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-	public static final String ORDER_BY_DESC = "BookmarksFolder.folderId DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"folderId"};
-
-	public FolderIdComparator(boolean ascending) {
-		_ascending = ascending;
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -47,21 +45,38 @@ public class FolderIdComparator extends OrderByComparator<BookmarksFolder> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private FolderIdComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final FolderIdComparator _INSTANCE_ASCENDING =
+		new FolderIdComparator(true);
+
+	private static final FolderIdComparator _INSTANCE_DESCENDING =
+		new FolderIdComparator(false);
+
+	private static final String _ORDER_BY_ASC = "BookmarksFolder.folderId ASC";
+
+	private static final String _ORDER_BY_DESC =
+		"BookmarksFolder.folderId DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"folderId"};
 
 	private final boolean _ascending;
 

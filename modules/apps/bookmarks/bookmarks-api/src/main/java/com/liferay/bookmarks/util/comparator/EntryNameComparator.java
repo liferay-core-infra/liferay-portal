@@ -14,14 +14,12 @@ import com.liferay.portal.kernel.util.StringUtil;
  */
 public class EntryNameComparator extends OrderByComparator<BookmarksEntry> {
 
-	public static final String ORDER_BY_ASC = "BookmarksEntry.name ASC";
+	public static EntryNameComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-	public static final String ORDER_BY_DESC = "BookmarksEntry.name DESC";
-
-	public static final String[] ORDER_BY_FIELDS = {"name"};
-
-	public EntryNameComparator(boolean ascending) {
-		_ascending = ascending;
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -41,21 +39,37 @@ public class EntryNameComparator extends OrderByComparator<BookmarksEntry> {
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return ORDER_BY_ASC;
+			return _ORDER_BY_ASC;
 		}
 
-		return ORDER_BY_DESC;
+		return _ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
+		return _ORDER_BY_FIELDS;
 	}
 
 	@Override
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private EntryNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final EntryNameComparator _INSTANCE_ASCENDING =
+		new EntryNameComparator(true);
+
+	private static final EntryNameComparator _INSTANCE_DESCENDING =
+		new EntryNameComparator(false);
+
+	private static final String _ORDER_BY_ASC = "BookmarksEntry.name ASC";
+
+	private static final String _ORDER_BY_DESC = "BookmarksEntry.name DESC";
+
+	private static final String[] _ORDER_BY_FIELDS = {"name"};
 
 	private final boolean _ascending;
 

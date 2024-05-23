@@ -312,7 +312,7 @@ private OrderByComparator<DDLRecordSet> getDDLRecordSetOrderByComparator(String 
 		orderByComparator = new DDLRecordSetModifiedDateComparator(orderByAsc);
 	}
 	else if (orderByCol.equals("name")) {
-		orderByComparator = new DDLRecordSetNameComparator(orderByAsc);
+		orderByComparator = DDLRecordSetNameComparator.getInstance(orderByAsc);
 	}
 
 	return orderByComparator;

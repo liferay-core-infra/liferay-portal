@@ -197,7 +197,8 @@ public class DDLDisplayContext {
 				orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
-			orderByComparator = new DDLRecordSetNameComparator(orderByAsc);
+			orderByComparator = DDLRecordSetNameComparator.getInstance(
+				orderByAsc);
 		}
 
 		return orderByComparator;

@@ -528,7 +528,7 @@ public class JournalArticleServiceTest {
 		List<JournalArticle> articles =
 			_journalArticleService.getArticlesByArticleId(
 				_group.getGroupId(), article.getArticleId(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, new ArticleVersionComparator(true));
+				QueryUtil.ALL_POS, ArticleVersionComparator.getInstance(true));
 
 		Assert.assertEquals(
 			articles.toString(), expectedArticles.size(), articles.size());
@@ -564,7 +564,7 @@ public class JournalArticleServiceTest {
 			_journalArticleService.getArticlesByArticleId(
 				_group.getGroupId(), article.getArticleId(),
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, new ArticleVersionComparator(true));
+				QueryUtil.ALL_POS, ArticleVersionComparator.getInstance(true));
 
 		Assert.assertEquals(
 			articles.toString(), expectedArticles.size(), articles.size());

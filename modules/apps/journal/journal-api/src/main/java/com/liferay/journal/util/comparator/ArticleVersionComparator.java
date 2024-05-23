@@ -14,8 +14,12 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 public class ArticleVersionComparator
 	extends OrderByComparator<JournalArticle> {
 
-	public ArticleVersionComparator(boolean ascending) {
-		_ascending = ascending;
+	public static ArticleVersionComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -54,6 +58,16 @@ public class ArticleVersionComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private ArticleVersionComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final ArticleVersionComparator _ASCENDING =
+		new ArticleVersionComparator(true);
+
+	private static final ArticleVersionComparator _DESCENDING =
+		new ArticleVersionComparator(false);
 
 	private static final String _ORDER_BY_ASC = "JournalArticle.version ASC";
 

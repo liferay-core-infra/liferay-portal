@@ -100,7 +100,8 @@ public class PortletConfigurationTemplatesDisplayContext {
 				orderByAsc);
 		}
 		else {
-			orderByComparator = new ArchivedSettingsNameComparator(orderByAsc);
+			orderByComparator = ArchivedSettingsNameComparator.getInstance(
+				orderByAsc);
 		}
 
 		archivedSettingsSearchContainer.setOrderByComparator(orderByComparator);

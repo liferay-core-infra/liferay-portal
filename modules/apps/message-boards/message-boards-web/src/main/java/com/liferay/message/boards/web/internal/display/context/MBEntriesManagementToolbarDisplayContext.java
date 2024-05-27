@@ -409,7 +409,8 @@ public class MBEntriesManagementToolbarDisplayContext {
 					orderByAsc);
 			}
 			else if (orderByCol.equals("title")) {
-				orderByComparator = new ThreadTitleComparator<>(orderByAsc);
+				orderByComparator = ThreadTitleComparator.getInstance(
+					orderByAsc);
 			}
 		}
 		else if (entriesNavigation.equals("categories")) {

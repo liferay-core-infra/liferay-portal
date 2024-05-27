@@ -414,7 +414,7 @@ public class MBEntriesManagementToolbarDisplayContext {
 		}
 		else if (entriesNavigation.equals("categories")) {
 			if (orderByCol.equals("modified-date")) {
-				orderByComparator = new CategoryModifiedDateComparator(
+				orderByComparator = CategoryModifiedDateComparator.getInstance(
 					orderByAsc);
 			}
 			else if (orderByCol.equals("title")) {

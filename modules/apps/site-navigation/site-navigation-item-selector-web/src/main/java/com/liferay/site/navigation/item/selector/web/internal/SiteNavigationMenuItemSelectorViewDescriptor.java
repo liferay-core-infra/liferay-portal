@@ -142,7 +142,7 @@ public class SiteNavigationMenuItemSelectorViewDescriptor
 					orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
-			orderByComparator = new SiteNavigationMenuNameComparator(
+			orderByComparator = SiteNavigationMenuNameComparator.getInstance(
 				orderByAsc);
 		}
 

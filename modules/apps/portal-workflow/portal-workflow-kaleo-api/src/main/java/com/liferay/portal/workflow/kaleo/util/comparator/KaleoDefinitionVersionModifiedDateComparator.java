@@ -17,8 +17,14 @@ import java.util.Date;
 public class KaleoDefinitionVersionModifiedDateComparator
 	extends OrderByComparator<KaleoDefinitionVersion> {
 
-	public KaleoDefinitionVersionModifiedDateComparator(boolean ascending) {
-		_ascending = ascending;
+	public static KaleoDefinitionVersionModifiedDateComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -56,6 +62,18 @@ public class KaleoDefinitionVersionModifiedDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private KaleoDefinitionVersionModifiedDateComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final KaleoDefinitionVersionModifiedDateComparator
+		_INSTANCE_ASCENDING = new KaleoDefinitionVersionModifiedDateComparator(
+			false);
+
+	private static final KaleoDefinitionVersionModifiedDateComparator
+		_INSTANCE_DESCENDING = new KaleoDefinitionVersionModifiedDateComparator(
+			true);
 
 	private static final String _ORDER_BY_ASC = "modifiedDate ASC";
 

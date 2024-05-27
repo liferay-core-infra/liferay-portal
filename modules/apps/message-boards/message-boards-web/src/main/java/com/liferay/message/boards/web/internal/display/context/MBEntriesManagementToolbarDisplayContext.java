@@ -401,7 +401,7 @@ public class MBEntriesManagementToolbarDisplayContext {
 		String entriesNavigation = _getEntriesNavigation();
 
 		if (entriesNavigation.equals("all")) {
-			orderByComparator = new MBObjectsComparator(orderByAsc);
+			orderByComparator = MBObjectsComparator.getInstance(orderByAsc);
 		}
 		else if (entriesNavigation.equals("threads")) {
 			if (orderByCol.equals("modified-date")) {

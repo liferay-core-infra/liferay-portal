@@ -479,7 +479,8 @@ public class NavigationMenuResourceImpl extends BaseNavigationMenuResourceImpl {
 										getSiteNavigationMenuItems(
 											siteNavigationMenu.
 												getSiteNavigationMenuId(),
-											new SiteNavigationMenuItemOrderComparator()));
+											new SiteNavigationMenuItemOrderComparator(
+												true)));
 
 						return transformToArray(
 							siteNavigationMenuItemsMap.getOrDefault(

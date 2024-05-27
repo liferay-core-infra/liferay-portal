@@ -18,8 +18,14 @@ import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 public class KaleoDefinitionVersionActiveComparator
 	extends OrderByComparator<KaleoDefinitionVersion> {
 
-	public KaleoDefinitionVersionActiveComparator(boolean ascending) {
-		_ascending = ascending;
+	public static KaleoDefinitionVersionActiveComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -43,6 +49,10 @@ public class KaleoDefinitionVersionActiveComparator
 		return _ascending;
 	}
 
+	private KaleoDefinitionVersionActiveComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
 	private boolean _isActive(KaleoDefinitionVersion kaleoDefinitionVersion) {
 		try {
 			KaleoDefinition kaleoDefinition =
@@ -58,6 +68,13 @@ public class KaleoDefinitionVersionActiveComparator
 			return false;
 		}
 	}
+
+	private static final KaleoDefinitionVersionActiveComparator
+		_INSTANCE_ASCENDING = new KaleoDefinitionVersionActiveComparator(true);
+
+	private static final KaleoDefinitionVersionActiveComparator
+		_INSTANCE_DESCENDING = new KaleoDefinitionVersionActiveComparator(
+			false);
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		KaleoDefinitionVersionActiveComparator.class);

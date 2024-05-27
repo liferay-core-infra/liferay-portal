@@ -40,8 +40,8 @@ public class SiteNavigationMenuPortletUtil {
 		OrderByComparator<SiteNavigationMenu> orderByComparator = null;
 
 		if (orderByCol.equals("create-date")) {
-			orderByComparator = new SiteNavigationMenuCreateDateComparator(
-				orderByAsc);
+			orderByComparator =
+				SiteNavigationMenuCreateDateComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
 			orderByComparator = new SiteNavigationMenuNameComparator(

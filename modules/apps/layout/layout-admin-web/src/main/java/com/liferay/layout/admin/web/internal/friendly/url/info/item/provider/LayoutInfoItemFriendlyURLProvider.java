@@ -48,7 +48,7 @@ public class LayoutInfoItemFriendlyURLProvider
 
 	private final FriendlyURLEntryLocalizationComparator
 		_friendlyURLEntryLocalizationComparator =
-			new FriendlyURLEntryLocalizationComparator(false);
+			FriendlyURLEntryLocalizationComparator.getInstance(false);
 
 	@Reference
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;

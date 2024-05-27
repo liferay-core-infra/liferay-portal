@@ -114,7 +114,7 @@ public class BlogsEntryInfoItemFriendlyURLProvider
 
 	private final FriendlyURLEntryLocalizationComparator
 		_friendlyURLEntryLocalizationComparator =
-			new FriendlyURLEntryLocalizationComparator(false);
+			FriendlyURLEntryLocalizationComparator.getInstance(false);
 
 	@Reference
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;

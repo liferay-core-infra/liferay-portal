@@ -405,7 +405,7 @@ public class MBEntriesManagementToolbarDisplayContext {
 		}
 		else if (entriesNavigation.equals("threads")) {
 			if (orderByCol.equals("modified-date")) {
-				orderByComparator = new ThreadModifiedDateComparator(
+				orderByComparator = ThreadModifiedDateComparator.getInstance(
 					orderByAsc);
 			}
 			else if (orderByCol.equals("title")) {

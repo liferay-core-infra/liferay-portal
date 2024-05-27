@@ -75,7 +75,7 @@ if (orderByType.equals("asc")) {
 OrderByComparator threadOrderByComparator = null;
 
 if (orderByCol.equals("modified-date")) {
-	threadOrderByComparator = new ThreadModifiedDateComparator(orderByAsc);
+	threadOrderByComparator = ThreadModifiedDateComparator.getInstance(orderByAsc);
 }
 
 MBListDisplayContext mbListDisplayContext = MBDisplayContextUtil.getMBListDisplayContext(request, response, categoryId, mvcRenderCommandName);

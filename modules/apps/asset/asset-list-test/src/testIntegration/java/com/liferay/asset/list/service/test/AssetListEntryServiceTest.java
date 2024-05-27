@@ -343,7 +343,7 @@ public class AssetListEntryServiceTest {
 			"AC Asset List Entry", 0, serviceContext);
 
 		OrderByComparator<AssetListEntry> orderByComparator =
-			new AssetListEntryTitleComparator(true);
+			AssetListEntryTitleComparator.getInstance(true);
 
 		List<AssetListEntry> assetListEntries =
 			_assetListEntryService.getAssetListEntries(
@@ -354,7 +354,7 @@ public class AssetListEntryServiceTest {
 
 		Assert.assertEquals(assetListEntry, firstAssetListEntry);
 
-		orderByComparator = new AssetListEntryTitleComparator(false);
+		orderByComparator = AssetListEntryTitleComparator.getInstance(false);
 
 		assetListEntries = _assetListEntryService.getAssetListEntries(
 			_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,

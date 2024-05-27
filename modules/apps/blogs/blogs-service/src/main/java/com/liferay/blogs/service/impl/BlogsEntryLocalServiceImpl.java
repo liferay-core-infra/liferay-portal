@@ -793,14 +793,14 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			entries[0] = blogsEntryPersistence.fetchByG_LtD_S_Last(
 				entry.getGroupId(), entry.getDisplayDate(),
 				WorkflowConstants.STATUS_APPROVED,
-				new EntryDisplayDateComparator(true));
+				EntryDisplayDateComparator.getInstance(true));
 		}
 
 		if (entries[2] == null) {
 			entries[2] = blogsEntryPersistence.fetchByG_GtD_S_First(
 				entry.getGroupId(), entry.getDisplayDate(),
 				WorkflowConstants.STATUS_APPROVED,
-				new EntryDisplayDateComparator(true));
+				EntryDisplayDateComparator.getInstance(true));
 		}
 
 		return entries;

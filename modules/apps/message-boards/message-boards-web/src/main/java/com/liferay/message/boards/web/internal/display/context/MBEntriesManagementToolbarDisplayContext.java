@@ -418,7 +418,8 @@ public class MBEntriesManagementToolbarDisplayContext {
 					orderByAsc);
 			}
 			else if (orderByCol.equals("title")) {
-				orderByComparator = new CategoryTitleComparator<>(orderByAsc);
+				orderByComparator = CategoryTitleComparator.getInstance(
+					orderByAsc);
 			}
 		}
 

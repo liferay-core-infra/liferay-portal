@@ -390,7 +390,7 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 					mbListDisplayContext.setCategoryEntriesDelta(categoryEntriesSearchContainer);
 
 					categoryEntriesSearchContainer.setOrderByCol(orderByCol);
-					categoryEntriesSearchContainer.setOrderByComparator(new CategoryTitleComparator(true));
+					categoryEntriesSearchContainer.setOrderByComparator(CategoryTitleComparator.getInstance(true));
 					categoryEntriesSearchContainer.setOrderByType(orderByType);
 
 					mbListDisplayContext.populateCategoriesResultsAndTotal(categoryEntriesSearchContainer);

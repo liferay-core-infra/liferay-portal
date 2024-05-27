@@ -18,10 +18,6 @@ import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 public class KaleoDefinitionVersionActiveComparator
 	extends OrderByComparator<KaleoDefinitionVersion> {
 
-	public KaleoDefinitionVersionActiveComparator() {
-		this(false);
-	}
-
 	public KaleoDefinitionVersionActiveComparator(boolean ascending) {
 		_ascending = ascending;
 	}

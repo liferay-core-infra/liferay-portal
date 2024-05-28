@@ -787,7 +787,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 		BlogsEntry[] entries = blogsEntryPersistence.findByG_D_S_PrevAndNext(
 			entryId, entry.getGroupId(), entry.getDisplayDate(),
-			WorkflowConstants.STATUS_APPROVED, new EntryIdComparator(true));
+			WorkflowConstants.STATUS_APPROVED,
+			EntryIdComparator.getInstance(true));
 
 		if (entries[0] == null) {
 			entries[0] = blogsEntryPersistence.fetchByG_LtD_S_Last(

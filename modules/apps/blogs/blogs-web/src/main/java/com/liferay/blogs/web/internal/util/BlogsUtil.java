@@ -224,7 +224,7 @@ public class BlogsUtil {
 				orderByAsc);
 		}
 		else {
-			orderByComparator = new EntryTitleComparator(orderByAsc);
+			orderByComparator = EntryTitleComparator.getInstance(orderByAsc);
 		}
 
 		return orderByComparator;

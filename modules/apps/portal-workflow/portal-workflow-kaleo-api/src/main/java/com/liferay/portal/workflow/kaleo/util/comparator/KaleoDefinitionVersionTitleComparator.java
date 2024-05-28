@@ -21,25 +21,12 @@ import java.util.Locale;
 public class KaleoDefinitionVersionTitleComparator
 	extends OrderByComparator<KaleoDefinitionVersion> {
 
-	public KaleoDefinitionVersionTitleComparator() {
-		this(false);
-	}
-
 	public KaleoDefinitionVersionTitleComparator(boolean ascending) {
 		_ascending = ascending;
 
 		_locale = LocaleUtil.getSiteDefault();
 
 		_collator = CollatorUtil.getInstance(_locale);
-	}
-
-	public KaleoDefinitionVersionTitleComparator(
-		boolean ascending, Locale locale) {
-
-		_ascending = ascending;
-		_locale = locale;
-
-		_collator = CollatorUtil.getInstance(locale);
 	}
 
 	@Override

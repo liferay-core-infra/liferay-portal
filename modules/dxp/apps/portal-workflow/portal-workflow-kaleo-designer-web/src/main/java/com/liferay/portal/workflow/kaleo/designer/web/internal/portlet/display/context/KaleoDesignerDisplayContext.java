@@ -156,7 +156,7 @@ public class KaleoDesignerDisplayContext {
 		OrderByComparator<KaleoDefinitionVersion> orderByComparator = null;
 
 		if (orderByCol.equals("title")) {
-			orderByComparator = new KaleoDefinitionVersionTitleComparator(
+			orderByComparator = KaleoDefinitionVersionTitleComparator.getInstance(
 				orderByAsc);
 		}
 		else if (orderByCol.equals("last-modified")) {

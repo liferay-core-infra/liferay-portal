@@ -21,12 +21,14 @@ import java.util.Locale;
 public class KaleoDefinitionVersionTitleComparator
 	extends OrderByComparator<KaleoDefinitionVersion> {
 
-	public KaleoDefinitionVersionTitleComparator(boolean ascending) {
-		_ascending = ascending;
+	public static KaleoDefinitionVersionTitleComparator getInstance(
+		boolean ascending) {
 
-		_locale = LocaleUtil.getSiteDefault();
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-		_collator = CollatorUtil.getInstance(_locale);
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -66,6 +68,20 @@ public class KaleoDefinitionVersionTitleComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private KaleoDefinitionVersionTitleComparator(boolean ascending) {
+		_ascending = ascending;
+
+		_locale = LocaleUtil.getSiteDefault();
+
+		_collator = CollatorUtil.getInstance(_locale);
+	}
+
+	private static final KaleoDefinitionVersionTitleComparator
+		_INSTANCE_ASCENDING = new KaleoDefinitionVersionTitleComparator(true);
+
+	private static final KaleoDefinitionVersionTitleComparator
+		_INSTANCE_DESCENDING = new KaleoDefinitionVersionTitleComparator(false);
 
 	private static final String _ORDER_BY_ASC =
 		"KaleoDefinitionVersion.title ASC";

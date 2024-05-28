@@ -63,7 +63,7 @@ public class KaleoDefinitionVersionLocalServiceTest
 	public void testGetLatestKaleoDefinitionVersions() throws Exception {
 		KaleoDefinitionVersionTitleComparator
 			kaleoDefinitionVersionTitleComparator =
-				new KaleoDefinitionVersionTitleComparator(true);
+				KaleoDefinitionVersionTitleComparator.getInstance(true);
 		KaleoDefinitionVersion kaleoDefinitionVersion1 =
 			getLatestKaleoDefinitionVersion(
 				addKaleoDefinition(

@@ -193,7 +193,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
 		}
 
 		installedApps = ListUtil.sort(
-			installedApps, new AppTitleComparator(true));
+			installedApps, AppTitleComparator.getInstance(true));
 
 		_installedApps = installedApps;
 

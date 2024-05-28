@@ -20,12 +20,12 @@ public class AppTitleComparator extends OrderByComparator<App> {
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public AppTitleComparator() {
-		this(true);
-	}
+	public static AppTitleComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-	public AppTitleComparator(boolean ascending) {
-		_ascending = ascending;
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -33,33 +33,18 @@ public class AppTitleComparator extends OrderByComparator<App> {
 		String lowerCaseTitle1 = StringUtil.toLowerCase(app1.getTitle());
 		String lowerCaseTitle2 = StringUtil.toLowerCase(app2.getTitle());
 
-		int value = lowerCaseTitle1.compareTo(lowerCaseTitle2);
-
-		if (_ascending) {
-			return value;
-		}
-
-		return -value;
+		return lowerCaseTitle1.compareTo(lowerCaseTitle2);
 	}
 
-	@Override
-	public String getOrderBy() {
-		if (_ascending) {
-			return ORDER_BY_ASC;
-		}
-
-		return ORDER_BY_DESC;
+	private AppTitleComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
-	@Override
-	public String[] getOrderByFields() {
-		return ORDER_BY_FIELDS;
-	}
+	private static final AppTitleComparator _INSTANCE_ASCENDING =
+		new AppTitleComparator(true);
 
-	@Override
-	public boolean isAscending() {
-		return _ascending;
-	}
+	private static final AppTitleComparator _INSTANCE_DESCENDING =
+		new AppTitleComparator(false);
 
 	private final boolean _ascending;
 

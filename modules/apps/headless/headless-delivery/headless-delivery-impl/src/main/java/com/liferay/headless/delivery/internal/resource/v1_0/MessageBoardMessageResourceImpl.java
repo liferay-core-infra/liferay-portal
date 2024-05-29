@@ -588,7 +588,7 @@ public class MessageBoardMessageResourceImpl
 					!sort.isReverse());
 			}
 			else if (fieldName.contains("title")) {
-				orderByComparator = new MessageSubjectComparator(
+				orderByComparator = MessageSubjectComparator.getInstance(
 					!sort.isReverse());
 			}
 			else if (fieldName.contains("urlSubject")) {

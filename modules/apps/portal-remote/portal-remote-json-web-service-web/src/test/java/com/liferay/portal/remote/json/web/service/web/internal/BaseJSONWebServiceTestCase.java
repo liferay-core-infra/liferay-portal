@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.json.JSONSerializable;
 import com.liferay.portal.kernel.json.JSONSerializer;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.servlet.HttpMethods;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.remote.json.web.service.JSONWebServiceAction;
 import com.liferay.portal.remote.json.web.service.JSONWebServiceActionsManager;
@@ -87,6 +88,9 @@ public abstract class BaseJSONWebServiceTestCase {
 
 		Method[] methods = actionClass.getMethods();
 
+		ReflectionTestUtil.invoke(
+			jsonWebServiceActionsManager, "_ensureOpen", null);
+
 		for (Method actionMethod : methods) {
 			if (actionMethod.getDeclaringClass() != actionClass) {
 				continue;
@@ -97,7 +101,12 @@ public abstract class BaseJSONWebServiceTestCase {
 			String method = JSONWebServiceMappingResolverUtil.resolveHttpMethod(
 				actionMethod);
 
-			jsonWebServiceActionsManager.registerJSONWebServiceAction(
+			ReflectionTestUtil.invoke(
+				jsonWebServiceActionsManager, "_registerJSONWebServiceAction",
+				new Class<?>[] {
+					String.class, String.class, Object.class, Class.class,
+					Method.class, String.class, String.class
+				},
 				servletContextName, StringPool.BLANK, action, actionClass,
 				actionMethod, path, method);
 		}

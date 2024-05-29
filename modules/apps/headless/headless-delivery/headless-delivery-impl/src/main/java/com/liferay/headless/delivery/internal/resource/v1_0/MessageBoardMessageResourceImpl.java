@@ -580,7 +580,7 @@ public class MessageBoardMessageResourceImpl
 			String fieldName = sort.getFieldName();
 
 			if (Objects.equals(fieldName, "createDate_sortable")) {
-				orderByComparator = new MessageCreateDateComparator(
+				orderByComparator = MessageCreateDateComparator.getInstance(
 					!sort.isReverse());
 			}
 			else if (Objects.equals(fieldName, "modified_sortable")) {

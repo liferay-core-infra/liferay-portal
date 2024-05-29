@@ -187,27 +187,6 @@ public class JSONWebServiceActionsManagerImpl
 		return new ArrayList<>(jsonWebServiceActionConfigs);
 	}
 
-	@Override
-	public synchronized void registerJSONWebServiceAction(
-		String contextName, String contextPath, Object actionObject,
-		Class<?> actionClass, Method actionMethod, String path, String method) {
-
-		_ensureOpen();
-
-		_registerJSONWebServiceAction(
-			contextName, contextPath, actionObject, actionClass, actionMethod,
-			path, method);
-	}
-
-	@Override
-	public synchronized int unregisterJSONWebServiceActions(
-		Object actionObject) {
-
-		_ensureOpen();
-
-		return _unregisterJSONWebServiceActions(actionObject);
-	}
-
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTracker = ServiceTrackerFactory.create(

@@ -592,7 +592,7 @@ public class MessageBoardMessageResourceImpl
 					!sort.isReverse());
 			}
 			else if (fieldName.contains("urlSubject")) {
-				orderByComparator = new MessageURLSubjectComparator(
+				orderByComparator = MessageURLSubjectComparator.getInstance(
 					!sort.isReverse());
 			}
 		}

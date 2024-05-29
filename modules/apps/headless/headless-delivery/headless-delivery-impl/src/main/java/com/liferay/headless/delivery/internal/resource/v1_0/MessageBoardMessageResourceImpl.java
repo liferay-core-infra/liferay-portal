@@ -584,7 +584,7 @@ public class MessageBoardMessageResourceImpl
 					!sort.isReverse());
 			}
 			else if (Objects.equals(fieldName, "modified_sortable")) {
-				orderByComparator = new MessageModifiedDateComparator(
+				orderByComparator = MessageModifiedDateComparator.getInstance(
 					!sort.isReverse());
 			}
 			else if (fieldName.contains("title")) {

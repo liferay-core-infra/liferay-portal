@@ -200,15 +200,6 @@ public class JSONWebServiceActionsManagerImpl
 	}
 
 	@Override
-	public int registerService(
-		String contextName, String contextPath, Object service) {
-
-		_ensureOpen();
-
-		return _registerService(contextName, contextPath, service);
-	}
-
-	@Override
 	public synchronized int unregisterJSONWebServiceActions(
 		Object actionObject) {
 

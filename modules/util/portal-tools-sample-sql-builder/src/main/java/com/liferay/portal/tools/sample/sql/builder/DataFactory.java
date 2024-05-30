@@ -4027,10 +4027,7 @@ public class DataFactory {
 						segmentsExperienceId));
 				originalFragmentEntryLinkModels.add(
 					newFragmentEntryLinkModel(
-						layoutModel,
-						_readFile(
-							"fragment_component" +
-								"/fragment_component_paragraph_configuration.json"),
+						layoutModel, "",
 						_readFile(
 							_getFragmentComponentInputStream(
 								"paragraph", "css")),

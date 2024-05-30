@@ -5642,6 +5642,27 @@ public class DataFactory {
 	}
 
 	public SegmentsExperienceModel newSegmentsExperienceModel(
+		List<LayoutModel> layoutModels) {
+
+		long groupId = 0;
+		long plid = 0;
+
+		for (LayoutModel layoutModel : layoutModels) {
+			long classNameId = layoutModel.getClassNameId();
+
+			if (classNameId != 0) {
+				groupId = layoutModel.getGroupId();
+				plid = layoutModel.getClassPK();
+
+				break;
+			}
+		}
+
+		return newSegmentsExperienceModel(
+			groupId, "Default", plid, 0, 0, "DEFAULT");
+	}
+
+	public SegmentsExperienceModel newSegmentsExperienceModel(
 		long groupId, long plid, long segmentsEntryId) {
 
 		Long index = _segmentsExperienceCounter.get();

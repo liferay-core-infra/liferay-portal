@@ -3991,7 +3991,7 @@ public class DataFactory {
 	}
 
 	public List<FragmentEntryLinkModel> newFragmentEntryLinkModels(
-			List<LayoutModel> layoutModels)
+			List<LayoutModel> layoutModels, long segmentsExperienceId)
 		throws Exception {
 
 		List<FragmentEntryLinkModel> fragmentEntryLinkModels =
@@ -4016,7 +4016,8 @@ public class DataFactory {
 					_readFile(
 						_getFragmentComponentInputStream("heading", "html")),
 					headingRenderNamespace, 0,
-					_FRAGMENT_COMPONENT_RENDER_KEY_HEADING));
+					_FRAGMENT_COMPONENT_RENDER_KEY_HEADING,
+					segmentsExperienceId));
 			fragmentEntryLinkModels.add(
 				newFragmentEntryLinkModel(
 					layoutModel,
@@ -4033,7 +4034,8 @@ public class DataFactory {
 					_readFile(
 						_getFragmentComponentInputStream("paragraph", "html")),
 					paragraphRenderNamespace, 0,
-					_FRAGMENT_COMPONENT_RENDER_KEY_PARAGRAPH));
+					_FRAGMENT_COMPONENT_RENDER_KEY_PARAGRAPH,
+					segmentsExperienceId));
 			fragmentEntryLinkModels.add(
 				newFragmentEntryLinkModel(
 					layoutModel,
@@ -4047,7 +4049,8 @@ public class DataFactory {
 					_readFile(
 						_getFragmentComponentInputStream("image", "html")),
 					imageRenderNamespace, 0,
-					_FRAGMENT_COMPONENT_RENDER_KEY_IMAGE));
+					_FRAGMENT_COMPONENT_RENDER_KEY_IMAGE,
+					segmentsExperienceId));
 		}
 
 		return fragmentEntryLinkModels;
@@ -6578,7 +6581,7 @@ public class DataFactory {
 	protected FragmentEntryLinkModel newFragmentEntryLinkModel(
 		LayoutModel layoutModel, String configuration, String css,
 		String editValue, String html, String nameSpace, int position,
-		String renderKey) {
+		String renderKey, long segmentsExperienceId) {
 
 		FragmentEntryLinkModel fragmentEntryLinkModel =
 			new FragmentEntryLinkModelImpl();
@@ -6602,6 +6605,7 @@ public class DataFactory {
 		// Other fields
 
 		fragmentEntryLinkModel.setFragmentEntryId(0);
+		fragmentEntryLinkModel.setSegmentsExperienceId(segmentsExperienceId);
 		fragmentEntryLinkModel.setClassNameId(getClassNameId(Layout.class));
 		fragmentEntryLinkModel.setClassPK(layoutModel.getPlid());
 		fragmentEntryLinkModel.setPlid(layoutModel.getPlid());

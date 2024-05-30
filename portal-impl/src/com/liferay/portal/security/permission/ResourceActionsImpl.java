@@ -9,6 +9,7 @@ import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -40,6 +41,9 @@ import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -820,23 +824,31 @@ public class ResourceActionsImpl implements ResourceActions {
 		Set<String> modelResourceNames) {
 
 		try {
-			DBPartitionUtil.forEachCompanyId(
-				companyId -> {
-					for (String modelResourceName : modelResourceNames) {
-						resourceActionLocalService.checkResourceActions(
-							modelResourceName,
-							getModelResourceActions(modelResourceName));
-					}
-				});
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					DBPartitionUtil.forEachCompanyId(
+						companyId -> {
+							for (String modelResourceName :
+									modelResourceNames) {
 
-			companyLocalService.forEachCompanyId(
-				companyId ->
-					resourcePermissionLocalService.
-						populateDefaultModelResourcePermissions(
-							companyId, modelResourceNames));
+								resourceActionLocalService.checkResourceActions(
+									modelResourceName,
+									getModelResourceActions(modelResourceName));
+							}
+						});
+
+					companyLocalService.forEachCompanyId(
+						companyId ->
+							resourcePermissionLocalService.
+								populateDefaultModelResourcePermissions(
+									companyId, modelResourceNames));
+
+					return null;
+				});
 		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
+		catch (Throwable throwable) {
+			ReflectionUtil.throwException(throwable);
 		}
 	}
 
@@ -1459,6 +1471,9 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	private static final ResourceActionsBag _dummyResourceActionsBag =
 		new ResourceActionsBag();
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	private final Map<String, Set<Long>> _companyModelResources =
 		new ConcurrentHashMap<>();

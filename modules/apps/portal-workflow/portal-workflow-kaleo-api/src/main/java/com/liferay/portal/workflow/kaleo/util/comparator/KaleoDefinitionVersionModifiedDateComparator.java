@@ -23,6 +23,16 @@ public class KaleoDefinitionVersionModifiedDateComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"modifiedDate"};
 
+	public static KaleoDefinitionVersionModifiedDateComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
+	}
+
 	public KaleoDefinitionVersionModifiedDateComparator() {
 		this(false);
 	}
@@ -66,6 +76,14 @@ public class KaleoDefinitionVersionModifiedDateComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private static final KaleoDefinitionVersionModifiedDateComparator
+		_INSTANCE_ASCENDING = new KaleoDefinitionVersionModifiedDateComparator(
+			true);
+
+	private static final KaleoDefinitionVersionModifiedDateComparator
+		_INSTANCE_DESCENDING = new KaleoDefinitionVersionModifiedDateComparator(
+			false);
 
 	private final boolean _ascending;
 

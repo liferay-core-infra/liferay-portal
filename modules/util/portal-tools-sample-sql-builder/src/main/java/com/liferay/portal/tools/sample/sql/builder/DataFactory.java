@@ -4015,7 +4015,8 @@ public class DataFactory {
 								"paragraph", "css")),
 						_readFile(
 							"fragment_component" +
-								"/fragment_component_paragraph_editValue.json"),
+								"/fragment_component_paragraph_content_edit" +
+									"Value.json"),
 						_readFile(
 							_getFragmentComponentInputStream(
 								"paragraph", "html")),
@@ -7572,7 +7573,7 @@ public class DataFactory {
 
 			if (rendererKey.equals(_FRAGMENT_COMPONENT_RENDER_KEY_PARAGRAPH)) {
 				data = StringUtil.replace(
-					data, "${paragraphFragmentEntryLinkId}",
+					data, "${paragraphContentFragmentEntryLinkId}",
 					String.valueOf(
 						fragmentEntryLinkModel.getFragmentEntryLinkId()));
 			}

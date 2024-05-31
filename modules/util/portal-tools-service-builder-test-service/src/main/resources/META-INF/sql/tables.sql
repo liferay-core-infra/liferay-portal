@@ -78,6 +78,13 @@ create table EagerBlobEntry (
 	blob_ BLOB
 );
 
+create table FilterFindEntry (
+	filterFindEntryId LONG not null primary key,
+	groupId LONG,
+	type_ VARCHAR(75) null,
+	integer_ INTEGER
+);
+
 create table FinderWhereClauseEntry (
 	finderWhereClauseEntryId LONG not null primary key,
 	name VARCHAR(75) null,

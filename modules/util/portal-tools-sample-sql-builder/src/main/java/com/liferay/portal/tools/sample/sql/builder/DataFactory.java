@@ -7614,6 +7614,8 @@ public class DataFactory {
 			"<?xml version=\"1.0\"?><root><name>" + name + "</name></root>");
 		layoutModel.setType(LayoutConstants.TYPE_CONTENT);
 
+		int priority = 0;
+
 		if (classNameId != 0) {
 			layoutModel.setTypeSettings(
 				StringUtil.replace(
@@ -7626,9 +7628,12 @@ public class DataFactory {
 
 			layoutModel.setHidden(true);
 			layoutModel.setSystem(true);
+
+			priority = Integer.MAX_VALUE;
 		}
 
 		layoutModel.setFriendlyURL(StringPool.FORWARD_SLASH + name);
+		layoutModel.setPriority(priority);
 		layoutModel.setPublishDate(new Date());
 		layoutModel.setStatusByUserId(_sampleUserId);
 		layoutModel.setStatusByUserName(_SAMPLE_USER_NAME);

@@ -582,7 +582,22 @@ public class ${entity.name}PersistenceTest {
 					try (AutoCloseable autoCloseable = _useNonAdminPermissionChecker()) {
 						Assert.assertTrue(InlineSQLHelperUtil.isEnabled(0));
 
+						_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
 						_persistence.filterFindByGroupId(0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+					}
+				}
+
+				@Test
+				public void testFilterFindByGroupId_PrevAndNext() throws Exception {
+					${entity.name} new${entity.name} = add${entity.name}();
+
+					try (AutoCloseable autoCloseable = _useNonAdminPermissionChecker()) {
+						Assert.assertTrue(InlineSQLHelperUtil.isEnabled(new${entity.name}.getGroupId()));
+
+						_persistence.filterFindByGroupId_PrevAndNext(new${entity.name}.get${entityColumn.methodName}(), new${entity.name}.getGroupId(), null);
+
+						_persistence.filterFindByGroupId_PrevAndNext(new${entity.name}.get${entityColumn.methodName}(), new${entity.name}.getGroupId(), getOrderByComparator());
 					}
 				}
 

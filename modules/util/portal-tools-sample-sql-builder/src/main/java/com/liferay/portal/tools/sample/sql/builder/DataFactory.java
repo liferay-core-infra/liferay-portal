@@ -7603,7 +7603,7 @@ public class DataFactory {
 							fragmentEntryLinkModel.getFragmentEntryLinkId()));
 				}
 			}
-			else if (rendererKey.equals(_FRAGMENT_COMPONENT_RENDER_KEY_IMAGE)) {
+			else {
 				data = StringUtil.replace(
 					data, "${imageFragmentEntryLinkId}",
 					String.valueOf(

@@ -7613,16 +7613,17 @@ public class DataFactory {
 		layoutModel.setName(
 			"<?xml version=\"1.0\"?><root><name>" + name + "</name></root>");
 		layoutModel.setType(LayoutConstants.TYPE_CONTENT);
-		layoutModel.setTypeSettings(
-			StringUtil.replace(
-				UnicodePropertiesBuilder.create(
-					true
-				).put(
-					"published", "true"
-				).buildString(),
-				'\n', "\\n"));
 
 		if (classNameId != 0) {
+			layoutModel.setTypeSettings(
+				StringUtil.replace(
+					UnicodePropertiesBuilder.create(
+						true
+					).put(
+						"published", "true"
+					).buildString(),
+					'\n', "\\n"));
+
 			layoutModel.setHidden(true);
 			layoutModel.setSystem(true);
 		}

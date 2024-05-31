@@ -82,6 +82,9 @@ public class FilterFindEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY FilterFindEntry.integer_ ASC, FilterFindEntry.type_ ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY filterFindEntry.integer_ ASC, filterFindEntry.type_ ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

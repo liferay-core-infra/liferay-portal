@@ -83,6 +83,9 @@ public class BigDecimalEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY BigDecimalEntry.bigDecimalValue ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY bigDecimalEntry.bigDecimalValue ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

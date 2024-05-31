@@ -705,7 +705,7 @@ public class KaleoDesignerDisplayContext {
 
 		KaleoDefinitionVersionActiveComparator
 			kaleoDefinitionVersionActiveComparator =
-				 new KaleoDefinitionVersionActiveComparator(false);
+				KaleoDefinitionVersionActiveComparator.getInstance(false);
 
 		Collections.sort(
 			kaleoDefinitionVersions,

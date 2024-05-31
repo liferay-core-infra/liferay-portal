@@ -6,7 +6,10 @@
 package com.liferay.notification.internal.upgrade.v3_7_0;
 
 import com.liferay.notification.constants.NotificationConstants;
+import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.upgrade.BasePortletIdUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
+import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 
 /**
  * @author Murilo Stodolni
@@ -16,13 +19,33 @@ public class ResourcePermissionUpgradeProcess
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		updateResourcePermission(
-			"com.liferay.notification",
-			NotificationConstants.RESOURCE_NAME_NOTIFICATION_TEMPLATE, true);
+		UpgradeKernelPackage upgradeKernelPackage = new UpgradeKernelPackage() {
 
-		updateResourceAction(
-			"com.liferay.notification",
-			NotificationConstants.RESOURCE_NAME_NOTIFICATION_TEMPLATE);
+			@Override
+			protected void doUpgrade() throws UpgradeException {
+				try {
+					upgradeTable(
+						"ResourcePermission", "name", getClassNames(),
+						WildcardMode.LEADING, true);
+					upgradeTable(
+						"ResourcePermission", "primKey", getResourceNames(),
+						WildcardMode.LEADING, true);
+				}
+				catch (Exception exception) {
+					throw new UpgradeException(exception);
+				}
+			}
+
+		};
+
+		upgradeKernelPackage.upgrade();
+
+		updateResourceAction(_RESOURCE_NAMES[0], _RESOURCE_NAMES[1]);
 	}
+
+	private static final String[] _RESOURCE_NAMES = {
+		"com.liferay.notification",
+		NotificationConstants.RESOURCE_NAME_NOTIFICATION_TEMPLATE
+	};
 
 }

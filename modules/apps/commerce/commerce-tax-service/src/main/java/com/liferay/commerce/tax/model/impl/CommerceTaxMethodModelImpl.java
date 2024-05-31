@@ -109,6 +109,9 @@ public class CommerceTaxMethodModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CommerceTaxMethod.createDate DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commerceTaxMethod.createDate DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -113,6 +113,9 @@ public class DDLRecordModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY DDLRecord.recordId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY ddlRecord.recordId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -97,6 +97,9 @@ public class MFAEmailOTPEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY MFAEmailOTPEntry.mfaEmailOTPEntryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY mfaEmailOTPEntry.mfaEmailOTPEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

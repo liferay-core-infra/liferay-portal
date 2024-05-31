@@ -101,6 +101,9 @@ public class CommerceDiscountRuleModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CommerceDiscountRule.createDate DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commerceDiscountRule.createDate DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

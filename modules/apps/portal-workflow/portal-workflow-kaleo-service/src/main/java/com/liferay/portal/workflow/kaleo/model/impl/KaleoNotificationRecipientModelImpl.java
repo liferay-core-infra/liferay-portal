@@ -115,6 +115,9 @@ public class KaleoNotificationRecipientModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY KaleoNotificationRecipient.kaleoNotificationRecipientId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY kaleoNotificationRecipient.kaleoNotificationRecipientId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

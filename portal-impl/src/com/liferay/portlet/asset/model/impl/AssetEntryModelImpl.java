@@ -131,6 +131,9 @@ public class AssetEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY AssetEntry.entryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY assetEntry.entryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

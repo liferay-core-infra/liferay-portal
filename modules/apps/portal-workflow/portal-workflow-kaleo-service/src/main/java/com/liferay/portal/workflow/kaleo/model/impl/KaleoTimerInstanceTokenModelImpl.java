@@ -118,6 +118,9 @@ public class KaleoTimerInstanceTokenModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY KaleoTimerInstanceToken.kaleoTimerInstanceTokenId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY kaleoTimerInstanceToken.kaleoTimerInstanceTokenId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -87,6 +87,9 @@ public class NotificationQueueEntryAttachmentModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY NQueueEntryAttachment.NQueueEntryAttachmentId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY notificationQueueEntryAttachment.NQueueEntryAttachmentId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

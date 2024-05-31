@@ -94,6 +94,9 @@ public class AnnouncementsFlagModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY AnnouncementsFlag.userId ASC, AnnouncementsFlag.createDate ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY announcementsFlag.userId ASC, announcementsFlag.createDate ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

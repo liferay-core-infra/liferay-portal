@@ -13,9 +13,13 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -26,6 +30,7 @@ import com.liferay.portal.reports.engine.console.model.Source;
 import com.liferay.portal.reports.engine.console.service.SourceLocalServiceUtil;
 import com.liferay.portal.reports.engine.console.service.persistence.SourcePersistence;
 import com.liferay.portal.reports.engine.console.service.persistence.SourceUtil;
+import com.liferay.portal.security.permission.SimplePermissionChecker;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
@@ -244,8 +249,71 @@ public class SourcePersistenceTest {
 
 	@Test
 	public void testFilterFindByGroupId() throws Exception {
-		_persistence.filterFindByGroupId(
-			0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, getOrderByComparator());
+		try (AutoCloseable autoCloseable = _useNonAdminPermissionChecker()) {
+			Assert.assertTrue(InlineSQLHelperUtil.isEnabled(0));
+
+			_persistence.filterFindByGroupId(
+				0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+			_persistence.filterFindByGroupId(
+				0, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				getOrderByComparator());
+		}
+	}
+
+	@Test
+	public void testFilterFindByGroupId_PrevAndNext() throws Exception {
+		Source newSource = addSource();
+
+		try (AutoCloseable autoCloseable = _useNonAdminPermissionChecker()) {
+			Assert.assertTrue(
+				InlineSQLHelperUtil.isEnabled(newSource.getGroupId()));
+
+			_persistence.filterFindByGroupId_PrevAndNext(
+				newSource.getSourceId(), newSource.getGroupId(), null);
+
+			_persistence.filterFindByGroupId_PrevAndNext(
+				newSource.getSourceId(), newSource.getGroupId(),
+				getOrderByComparator());
+		}
+	}
+
+	private AutoCloseable _useNonAdminPermissionChecker() throws Exception {
+		PermissionChecker originalPermissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		PermissionThreadLocal.setPermissionChecker(
+			new SimplePermissionChecker() {
+				{
+					init(TestPropsValues.getUser());
+				}
+
+				@Override
+				public boolean isCompanyAdmin(long companyId) {
+					return false;
+				}
+
+				@Override
+				public boolean isGroupAdmin(long groupId) {
+					return false;
+				}
+
+				@Override
+				public boolean isGroupOwner(long groupId) {
+					return false;
+				}
+
+				@Override
+				public boolean isOmniadmin() {
+					return false;
+				}
+
+			});
+
+		return () -> {
+			PermissionThreadLocal.setPermissionChecker(
+				originalPermissionChecker);
+		};
 	}
 
 	protected OrderByComparator<Source> getOrderByComparator() {

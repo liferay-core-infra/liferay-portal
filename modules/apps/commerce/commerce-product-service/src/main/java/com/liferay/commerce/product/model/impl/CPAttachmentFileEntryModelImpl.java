@@ -135,6 +135,9 @@ public class CPAttachmentFileEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CPAttachmentFileEntry.priority ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY cpAttachmentFileEntry.priority ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

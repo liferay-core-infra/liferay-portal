@@ -97,6 +97,9 @@ public class RedirectNotFoundEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY RedirectNotFoundEntry.redirectNotFoundEntryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY redirectNotFoundEntry.redirectNotFoundEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

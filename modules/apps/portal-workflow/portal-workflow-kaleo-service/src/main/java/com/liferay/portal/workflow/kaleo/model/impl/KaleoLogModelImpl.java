@@ -134,6 +134,9 @@ public class KaleoLogModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY KaleoLog.kaleoLogId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY kaleoLog.kaleoLogId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

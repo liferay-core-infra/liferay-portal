@@ -95,6 +95,9 @@ public class ObjectStateFlowModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ObjectStateFlow.objectStateFlowId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY objectStateFlow.objectStateFlowId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

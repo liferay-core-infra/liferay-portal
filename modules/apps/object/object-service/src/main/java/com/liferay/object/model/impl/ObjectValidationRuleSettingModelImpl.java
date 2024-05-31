@@ -101,6 +101,9 @@ public class ObjectValidationRuleSettingModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ObjectValidationRuleSetting.objectValidationRuleSettingId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY objectValidationRuleSetting.objectValidationRuleSettingId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

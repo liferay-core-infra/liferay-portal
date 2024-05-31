@@ -105,6 +105,9 @@ public class CSDiagramSettingModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CSDiagramSetting.CSDiagramSettingId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY csDiagramSetting.CSDiagramSettingId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

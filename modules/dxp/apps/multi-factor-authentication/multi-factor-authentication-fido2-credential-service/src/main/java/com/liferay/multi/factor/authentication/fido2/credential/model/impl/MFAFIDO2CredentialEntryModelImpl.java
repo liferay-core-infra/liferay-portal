@@ -102,6 +102,9 @@ public class MFAFIDO2CredentialEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY MFAFIDO2CredentialEntry.mfaFIDO2CredentialEntryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY mfafido2CredentialEntry.mfaFIDO2CredentialEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

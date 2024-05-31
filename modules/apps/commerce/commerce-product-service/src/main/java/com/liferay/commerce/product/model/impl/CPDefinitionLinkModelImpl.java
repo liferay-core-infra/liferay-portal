@@ -116,6 +116,9 @@ public class CPDefinitionLinkModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CPDefinitionLink.priority ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY cpDefinitionLink.priority ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

@@ -108,6 +108,9 @@ public class ObjectViewColumnModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ObjectViewColumn.objectViewColumnId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY objectViewColumn.objectViewColumnId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

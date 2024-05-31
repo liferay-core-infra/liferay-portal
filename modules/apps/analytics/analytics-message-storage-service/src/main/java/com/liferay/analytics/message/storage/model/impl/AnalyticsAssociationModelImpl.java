@@ -98,6 +98,9 @@ public class AnalyticsAssociationModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY AnalyticsAssociation.analyticsAssociationId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY analyticsAssociation.analyticsAssociationId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

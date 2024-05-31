@@ -108,6 +108,9 @@ public class CommerceVirtualOrderItemFileEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CVirtualOrderItemFileEntry.createDate DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commerceVirtualOrderItemFileEntry.createDate DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

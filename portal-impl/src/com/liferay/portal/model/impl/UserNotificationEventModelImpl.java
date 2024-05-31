@@ -103,6 +103,9 @@ public class UserNotificationEventModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY UserNotificationEvent.timestamp DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY userNotificationEvent.timestamp DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

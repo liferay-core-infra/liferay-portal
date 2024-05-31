@@ -129,6 +129,9 @@ public class CPDefinitionOptionRelModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CPDefinitionOptionRel.priority ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY cpDefinitionOptionRel.priority ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

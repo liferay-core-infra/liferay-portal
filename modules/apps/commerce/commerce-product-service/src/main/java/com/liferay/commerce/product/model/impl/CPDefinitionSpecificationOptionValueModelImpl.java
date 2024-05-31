@@ -120,6 +120,9 @@ public class CPDefinitionSpecificationOptionValueModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CPDSpecificationOptionValue.priority ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY cpDefinitionSpecificationOptionValue.priority ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

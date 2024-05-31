@@ -105,6 +105,9 @@ public class WorkflowDefinitionLinkModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY WorkflowDefinitionLink.workflowDefinitionName ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY workflowDefinitionLink.workflowDefinitionName ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

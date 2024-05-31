@@ -128,6 +128,9 @@ public class CommerceTierPriceEntryModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CommerceTierPriceEntry.minQuantity ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commerceTierPriceEntry.minQuantity ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

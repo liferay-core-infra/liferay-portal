@@ -106,6 +106,9 @@ public class CommercePriceListAccountRelModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CommercePriceListAccountRel.order_ ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commercePriceListAccountRel.order_ ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

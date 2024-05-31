@@ -123,6 +123,9 @@ public class BatchEngineImportTaskModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY BatchEngineImportTask.batchEngineImportTaskId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY batchEngineImportTask.batchEngineImportTaskId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

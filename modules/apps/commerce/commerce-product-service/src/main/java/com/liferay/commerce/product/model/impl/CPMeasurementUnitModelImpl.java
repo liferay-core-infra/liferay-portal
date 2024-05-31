@@ -117,6 +117,9 @@ public class CPMeasurementUnitModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CPMeasurementUnit.priority ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY cpMeasurementUnit.priority ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

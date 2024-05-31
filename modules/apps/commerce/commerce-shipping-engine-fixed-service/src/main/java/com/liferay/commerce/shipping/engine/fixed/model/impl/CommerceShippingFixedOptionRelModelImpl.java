@@ -116,6 +116,9 @@ public class CommerceShippingFixedOptionRelModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CShippingFixedOptionRel.countryId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY commerceShippingFixedOptionRel.countryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

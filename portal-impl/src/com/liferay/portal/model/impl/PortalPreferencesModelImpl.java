@@ -84,6 +84,9 @@ public class PortalPreferencesModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY PortalPreferences.portalPreferencesId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY portalPreferences.portalPreferencesId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

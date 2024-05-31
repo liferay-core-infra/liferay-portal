@@ -98,6 +98,9 @@ public class MemberRequestModelImpl
 	public static final String ORDER_BY_SQL =
 		" ORDER BY IM_MemberRequest.createDate DESC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY memberRequest.createDate DESC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

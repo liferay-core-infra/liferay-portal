@@ -91,6 +91,9 @@ public class TicketModelImpl
 
 	public static final String ORDER_BY_SQL = " ORDER BY Ticket.ticketId ASC";
 
+	public static final String ORDER_BY_SQL_INLINE_DISTINCT =
+		" ORDER BY ticket.ticketId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
 
 	public static final String SESSION_FACTORY = "liferaySessionFactory";

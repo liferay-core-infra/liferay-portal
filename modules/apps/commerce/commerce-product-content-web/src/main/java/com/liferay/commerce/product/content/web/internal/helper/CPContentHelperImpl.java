@@ -459,8 +459,8 @@ public class CPContentHelperImpl implements CPContentHelper {
 			_commerceInventoryReplenishmentItemLocalService.
 				fetchCommerceInventoryReplenishmentItem(
 					companyId, sku, unitOfMeasureKey,
-					new CommerceInventoryReplenishmentItemAvailabilityDateComparator(
-						true));
+					CommerceInventoryReplenishmentItemAvailabilityDateComparator.
+						getInstance(true));
 
 		if (commerceInventoryReplenishmentItem == null) {
 			return StringPool.BLANK;

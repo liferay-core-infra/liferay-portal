@@ -14,6 +14,16 @@ import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 public class KaleoDefinitionVersionIdComparator
 	extends OrderByComparator<KaleoDefinitionVersion> {
 
+	public static KaleoDefinitionVersionIdComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
+	}
+
 	public KaleoDefinitionVersionIdComparator() {
 		this(false);
 	}
@@ -41,15 +51,15 @@ public class KaleoDefinitionVersionIdComparator
 	@Override
 	public String getOrderBy() {
 		if (_ascending) {
-			return _ORDER_BY_ASC;
+			return ORDER_BY_ASC;
 		}
 
-		return _ORDER_BY_DESC;
+		return ORDER_BY_DESC;
 	}
 
 	@Override
 	public String[] getOrderByFields() {
-		return _ORDER_BY_FIELDS;
+		return ORDER_BY_FIELDS;
 	}
 
 	@Override
@@ -57,13 +67,19 @@ public class KaleoDefinitionVersionIdComparator
 		return _ascending;
 	}
 
-	private static final String _ORDER_BY_ASC =
+	private static final KaleoDefinitionVersionIdComparator
+		_INSTANCE_ASCENDING = new KaleoDefinitionVersionIdComparator(true);
+
+	private static final KaleoDefinitionVersionIdComparator
+		_INSTANCE_DESCENDING = new KaleoDefinitionVersionIdComparator(false);
+
+	private static final String ORDER_BY_ASC =
 		"KaleoDefinitionVersion.kaleoDefinitionVersionId ASC";
 
-	private static final String _ORDER_BY_DESC =
+	private static final String ORDER_BY_DESC =
 		"KaleoDefinitionVersion.kaleoDefinitionVersionId DESC";
 
-	private static final String[] _ORDER_BY_FIELDS = {
+	private static final String[] ORDER_BY_FIELDS = {
 		"kaleoDefinitionVersionId"
 	};
 

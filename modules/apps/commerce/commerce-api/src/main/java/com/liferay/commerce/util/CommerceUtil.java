@@ -165,8 +165,9 @@ public class CommerceUtil {
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator = null;
 
 		if (orderByCol.equals("city")) {
-			orderByComparator = new CommerceInventoryWarehouseCityComparator(
-				orderByAsc);
+			orderByComparator =
+				CommerceInventoryWarehouseCityComparator.getInstance(
+					orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
 			orderByComparator = new CommerceInventoryWarehouseNameComparator(

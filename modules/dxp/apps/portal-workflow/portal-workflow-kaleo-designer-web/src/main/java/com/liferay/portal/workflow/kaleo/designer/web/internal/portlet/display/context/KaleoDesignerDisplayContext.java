@@ -156,12 +156,13 @@ public class KaleoDesignerDisplayContext {
 		OrderByComparator<KaleoDefinitionVersion> orderByComparator = null;
 
 		if (orderByCol.equals("title")) {
-			orderByComparator = new KaleoDefinitionVersionTitleComparator(
-				orderByAsc);
+			orderByComparator =
+				KaleoDefinitionVersionTitleComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("last-modified")) {
 			orderByComparator =
-				 KaleoDefinitionVersionModifiedDateComparator.getInstance(orderByAsc);
+				KaleoDefinitionVersionModifiedDateComparator.getInstance(
+					orderByAsc);
 		}
 
 		return orderByComparator;
@@ -174,7 +175,7 @@ public class KaleoDesignerDisplayContext {
 			kaleoDefinitionVersion.getCompanyId(),
 			kaleoDefinitionVersion.getName(), QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS,
-			 KaleoDefinitionVersionModifiedDateComparator.getInstance(false));
+			KaleoDefinitionVersionModifiedDateComparator.getInstance(false));
 	}
 
 	public KaleoDefinitionVersionSearch getKaleoDefinitionVersionSearch(

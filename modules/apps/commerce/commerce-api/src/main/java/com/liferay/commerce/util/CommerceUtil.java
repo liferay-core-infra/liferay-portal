@@ -140,8 +140,8 @@ public class CommerceUtil {
 
 		if (orderByCol.equals("name")) {
 			orderByComparator =
-				new CommerceInventoryWarehouseItemWarehouseNameComparator(
-					orderByAsc);
+				CommerceInventoryWarehouseItemWarehouseNameComparator.
+					getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("quantity")) {
 			orderByComparator =

@@ -145,7 +145,7 @@ public class CommerceUtil {
 		}
 		else if (orderByCol.equals("quantity")) {
 			orderByComparator =
-				new CommerceInventoryWarehouseItemQuantityComparator(
+				CommerceInventoryWarehouseItemQuantityComparator.getInstance(
 					orderByAsc);
 		}
 

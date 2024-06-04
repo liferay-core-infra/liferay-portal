@@ -33,8 +33,9 @@ public class GroupedCPTypeUtil {
 					orderByAsc);
 		}
 		else if (orderByCol.equals("quantity")) {
-			orderByComparator = new CPDefinitionGroupedEntryQuantityComparator(
-				orderByAsc);
+			orderByComparator =
+				CPDefinitionGroupedEntryQuantityComparator.getInstance(
+					orderByAsc);
 		}
 
 		return orderByComparator;

@@ -187,7 +187,7 @@ public class CommerceCurrencyLocalServiceImpl
 	public CommerceCurrency fetchPrimaryCommerceCurrency(long companyId) {
 		return commerceCurrencyPersistence.fetchByC_P_A_First(
 			companyId, true, true,
-			new CommerceCurrencyPriorityComparator(false));
+			CommerceCurrencyPriorityComparator.getInstance(false));
 	}
 
 	@Override

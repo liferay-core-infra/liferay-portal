@@ -39,7 +39,7 @@ public class GroupedCPTypeHelperImpl implements GroupedCPTypeHelper {
 			return _cpDefinitionGroupedEntryLocalService.
 				getCPDefinitionGroupedEntries(
 					cpDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					new CPDefinitionGroupedEntryPriorityComparator());
+					new CPDefinitionGroupedEntryPriorityComparator(false));
 		}
 
 		return Collections.emptyList();

@@ -55,7 +55,8 @@ public class CommerceWishListPortletUtil {
 				CommerceWishListCreateDateComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
-			orderByComparator = new CommerceWishListNameComparator(orderByAsc);
+			orderByComparator = CommerceWishListNameComparator.getInstance(
+				orderByAsc);
 		}
 
 		return orderByComparator;

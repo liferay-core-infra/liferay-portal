@@ -50,8 +50,8 @@ public class CommerceWishListPortletUtil {
 		OrderByComparator<CommerceWishList> orderByComparator = null;
 
 		if (orderByCol.equals("create-date")) {
-			orderByComparator = new CommerceWishListCreateDateComparator(
-				orderByAsc);
+			orderByComparator =
+				CommerceWishListCreateDateComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
 			orderByComparator = new CommerceWishListNameComparator(orderByAsc);

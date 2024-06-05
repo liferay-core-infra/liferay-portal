@@ -30,8 +30,9 @@ public class CommerceWishListPortletUtil {
 		OrderByComparator<CommerceWishListItem> orderByComparator = null;
 
 		if (orderByCol.equals("create-date")) {
-			orderByComparator = new CommerceWishListItemCreateDateComparator(
-				orderByAsc);
+			orderByComparator =
+				CommerceWishListItemCreateDateComparator.getInstance(
+					orderByAsc);
 		}
 
 		return orderByComparator;

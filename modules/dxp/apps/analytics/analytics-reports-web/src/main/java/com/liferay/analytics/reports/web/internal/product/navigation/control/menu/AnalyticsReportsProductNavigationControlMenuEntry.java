@@ -5,6 +5,9 @@
 
 package com.liferay.analytics.reports.web.internal.product.navigation.control.menu;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import com.liferay.analytics.reports.constants.AnalyticsReportsWebKeys;
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItem;
 import com.liferay.analytics.reports.info.item.AnalyticsReportsInfoItemRegistry;
@@ -61,6 +64,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 import javax.portlet.PortletRequest;
 
@@ -245,6 +250,14 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 	protected void activate() {
 		_portletNamespace = _portal.getPortletNamespace(
 			AnalyticsReportsPortletKeys.ANALYTICS_REPORTS);
+
+		CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder();
+
+		cacheBuilder.expireAfterAccess(10, TimeUnit.MINUTES);
+
+		Cache<String, Boolean> cache = cacheBuilder.build();
+
+		_resourcePermissions = cache.asMap();
 	}
 
 	private String _getAnalyticsReportsURL(
@@ -335,6 +348,10 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		return null;
 	}
 
+	private String _getResourcePermissionKey(String plid, long userId) {
+		return plid + StringPool.POUND + userId;
+	}
+
 	private boolean _hasResourcePermission(
 		String actionId, String plid, Map<String, List<String>> resourceNames,
 		ThemeDisplay themeDisplay) {
@@ -344,6 +361,13 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		}
 
 		if (Validator.isNotNull(plid)) {
+			Boolean resourcePermission = _resourcePermissions.get(
+				_getResourcePermissionKey(plid, themeDisplay.getUserId()));
+
+			if (resourcePermission != null) {
+				return resourcePermission;
+			}
+
 			PermissionChecker permissionChecker =
 				PermissionThreadLocal.getPermissionChecker();
 
@@ -368,10 +392,19 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 				if (permissionChecker.hasPermission(
 						themeDisplay.getScopeGroupId(), resourceName, "0",
 						actionId)) {
+
+					_resourcePermissions.put(
+						_getResourcePermissionKey(
+							plid, themeDisplay.getUserId()),
+						true);
+
 					return true;
 				}
 			}
 		}
+
+		_resourcePermissions.put(
+			_getResourcePermissionKey(plid, themeDisplay.getUserId()), false);
 
 		return false;
 	}
@@ -514,5 +547,6 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 				"com.liferay.journal",
 				"com.liferay.journal.model.JournalArticle")
 		).build();
+	private ConcurrentMap<String, Boolean> _resourcePermissions;
 
 }

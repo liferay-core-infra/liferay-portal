@@ -9,6 +9,10 @@ definition {
 	property testray.testcase.product.edition = "EE";
 
 	setUp {
+		OSGiConfig.copyOSGiConfigFile(
+			osgiConfigFileBaseDir = "test/functional/com/liferay/portalweb/tests/coreinfrastructureee/administration/auditing/dependencies",
+			osgiConfigFileName = "com.liferay.portal.security.audit.router.configuration.PersistentAuditMessageProcessorConfiguration.config");
+
 		TestCase.setUpPortalInstance();
 
 		User.firstLoginPG();

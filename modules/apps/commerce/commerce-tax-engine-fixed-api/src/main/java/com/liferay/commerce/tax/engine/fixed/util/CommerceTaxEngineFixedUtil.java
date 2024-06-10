@@ -31,7 +31,7 @@ public class CommerceTaxEngineFixedUtil {
 
 		if (orderByCol.equals("create-date")) {
 			orderByComparator =
-				new CommerceTaxFixedRateAddressRelCreateDateComparator(
+				CommerceTaxFixedRateAddressRelCreateDateComparator.getInstance(
 					orderByAsc);
 		}
 

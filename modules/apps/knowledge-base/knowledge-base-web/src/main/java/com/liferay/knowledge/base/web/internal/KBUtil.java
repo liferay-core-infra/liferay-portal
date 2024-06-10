@@ -231,7 +231,7 @@ public class KBUtil {
 			return new KBObjectsModifiedDateComparator<>(ascending, true);
 		}
 		else if (orderByCol.equals("priority")) {
-			return new KBObjectsPriorityComparator<>(ascending);
+			return KBObjectsPriorityComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("title")) {
 			return new KBObjectsTitleComparator<>(ascending, true);

@@ -346,7 +346,7 @@ public class KBArticleItemSelectorViewDisplayContext {
 
 					if (Objects.equals(_getOrderByCol(), "priority")) {
 						kbObjectOrderByComparator =
-							new KBObjectsPriorityComparator<>(orderByAsc);
+							KBObjectsPriorityComparator.getInstance(orderByAsc);
 					}
 					else if (Objects.equals(
 								_getOrderByCol(), "modified-date")) {

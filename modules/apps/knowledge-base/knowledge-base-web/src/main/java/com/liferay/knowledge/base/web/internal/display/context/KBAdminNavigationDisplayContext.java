@@ -342,7 +342,7 @@ public class KBAdminNavigationDisplayContext {
 		List<Object> kbObjects = KBFolderServiceUtil.getKBFoldersAndKBArticles(
 			_themeDisplay.getScopeGroupId(), parentFolderId,
 			WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new KBObjectsPriorityComparator<>(true));
+			KBObjectsPriorityComparator.getInstance(true));
 
 		for (Object kbObject : kbObjects) {
 			if (kbObject instanceof KBFolder) {

@@ -51,7 +51,8 @@ public class CommerceTaxEngineFixedUtil {
 		OrderByComparator<CPTaxCategory> orderByComparator = null;
 
 		if (orderByCol.equals("name")) {
-			orderByComparator = new CPTaxCategoryNameComparator(orderByAsc);
+			orderByComparator = CPTaxCategoryNameComparator.getInstance(
+				orderByAsc);
 		}
 
 		return orderByComparator;

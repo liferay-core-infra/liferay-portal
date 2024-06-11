@@ -425,7 +425,7 @@ public class KBAdminNavigationDisplayContext {
 			KBTemplateServiceUtil.getGroupKBTemplates(
 				_themeDisplay.getScopeGroupId(), QueryUtil.ALL_POS,
 				WorkflowConstants.STATUS_ANY,
-				new KBTemplateTitleComparator(true));
+				KBTemplateTitleComparator.getInstance(true));
 
 		for (KBTemplate kbTemplate : kbTemplates) {
 			navigationItemsJSONArray.put(

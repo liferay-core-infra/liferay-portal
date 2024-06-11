@@ -237,7 +237,7 @@ public class KBUtil {
 			return new KBObjectsTitleComparator<>(ascending, true);
 		}
 		else if (orderByCol.equals("view-count")) {
-			return new KBObjectsViewCountComparator<>(ascending);
+			return KBObjectsViewCountComparator.getInstance(ascending);
 		}
 
 		return null;

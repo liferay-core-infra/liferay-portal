@@ -360,7 +360,8 @@ public class KBArticleItemSelectorViewDisplayContext {
 					}
 					else if (Objects.equals(_getOrderByCol(), "view-count")) {
 						kbObjectOrderByComparator =
-							new KBObjectsViewCountComparator<>(orderByAsc);
+							KBObjectsViewCountComparator.getInstance(
+								orderByAsc);
 					}
 
 					return KBFolderServiceUtil.getKBFoldersAndKBArticles(

@@ -260,7 +260,7 @@ public class KBUtil {
 			return KBTemplateCreateDateComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("modified-date")) {
-			return new KBTemplateModifiedDateComparator(ascending);
+			return KBTemplateModifiedDateComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("title")) {
 			return new KBTemplateTitleComparator(ascending);

@@ -263,7 +263,7 @@ public class KBUtil {
 			return KBTemplateModifiedDateComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("title")) {
-			return new KBTemplateTitleComparator(ascending);
+			return KBTemplateTitleComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("user-name")) {
 			return new KBTemplateUserNameComparator(ascending);

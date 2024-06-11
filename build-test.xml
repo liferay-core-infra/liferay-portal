@@ -16136,12 +16136,7 @@ mail.send.blacklist=</echo>
 
 		<get-testcase-property property.name="cluster.session.replicated" />
 
-		<if>
-			<equals arg1="${cluster.session.replicated}" arg2="true" />
-			<then>
-				<antcall target="cluster-session-replication" />
-			</then>
-		</if>
+		<antcall target="cluster-session-replication" />
 
 		<set-up-search-engine />
 

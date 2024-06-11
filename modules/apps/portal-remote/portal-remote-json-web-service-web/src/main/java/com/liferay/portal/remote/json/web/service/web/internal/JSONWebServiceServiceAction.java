@@ -120,7 +120,7 @@ public class JSONWebServiceServiceAction extends JSONServiceAction {
 				_log.debug(getThrowableMessage(throwable), throwable);
 			}
 			else {
-				_log.error(getThrowableMessage(throwable));
+				_log.error(getThrowableMessage(throwable), throwable);
 			}
 
 			httpServletResponse.setStatus(status);

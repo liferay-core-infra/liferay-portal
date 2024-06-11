@@ -5005,12 +5005,16 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			lastLoginIP = loginIP;
 		}
 
-		user.setLoginDate(new Date());
-		user.setLoginIP(loginIP);
-		user.setLastLoginDate(lastLoginDate);
-		user.setLastLoginIP(lastLoginIP);
+		user = _updateLastLogin(
+			user, new Date(), loginIP, lastLoginDate, lastLoginIP, 0);
 
-		return resetFailedLoginAttempts(user, true);
+		if (user == null) {
+			return userPersistence.findByPrimaryKey(userId);
+		}
+
+		userPersistence.cacheResult(user);
+
+		return user;
 	}
 
 	/**

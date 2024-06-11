@@ -266,7 +266,7 @@ public class KBUtil {
 			return KBTemplateTitleComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("user-name")) {
-			return new KBTemplateUserNameComparator(ascending);
+			return KBTemplateUserNameComparator.getInstance(ascending);
 		}
 
 		return null;

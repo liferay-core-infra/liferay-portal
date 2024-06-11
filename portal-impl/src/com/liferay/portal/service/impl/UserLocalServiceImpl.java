@@ -4515,6 +4515,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
+		if (user.getAgreedToTermsOfUse() == agreedToTermsOfUse) {
+			return user;
+		}
+
 		user.setAgreedToTermsOfUse(agreedToTermsOfUse);
 
 		return userPersistence.update(user);
@@ -5396,6 +5400,12 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
+
+		if (Objects.equals(question, user.getReminderQueryQuestion()) &&
+			Objects.equals(answer, user.getReminderQueryAnswer())) {
+
+			return user;
+		}
 
 		validateReminderQuery(user.getCompanyId(), question, answer);
 

@@ -100,7 +100,7 @@ public interface ResourceActions {
 			boolean checkResourceActions)
 		throws ResourceActionsException;
 
-	public void populateModelResources(Document document)
+	public void populateModelResources(Document... document)
 		throws ResourceActionsException;
 
 	public void populatePortletResource(

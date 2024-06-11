@@ -9,8 +9,12 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -32,14 +36,19 @@ public class TranslationResourceActionsActivator {
 
 		String[] languageIds = ArrayUtil.sortedUnique(PropsValues.LOCALES);
 
+		List<Document> documents = new ArrayList<>(languageIds.length);
+
 		for (int i = 0; i < languageIds.length; i++) {
-			_resourceActions.populateModelResources(
+			documents.add(
 				SAXReaderUtil.read(
 					StringUtil.replace(
 						StringUtil.replace(
 							xml, "[$LANGUAGE_ID$]", languageIds[i]),
 						"[$WEIGHT$]", String.valueOf(i))));
 		}
+
+		_resourceActions.populateModelResources(
+			documents.toArray(new Document[0]));
 	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")

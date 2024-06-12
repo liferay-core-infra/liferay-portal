@@ -331,8 +331,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		updateEmailAddressVerified(defaultAdminUser.getUserId(), true);
 
-		updateLastLogin(
-			defaultAdminUser.getUserId(), defaultAdminUser.getLoginIP());
+		defaultAdminUser.setLoginDate(new Date());
+		defaultAdminUser.setLastLoginDate(new Date());
+
+		userPersistence.update(defaultAdminUser);
 
 		updatePasswordReset(defaultAdminUser.getUserId(), passwordReset);
 

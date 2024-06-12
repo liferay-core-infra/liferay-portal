@@ -7523,6 +7523,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			int count = sqlQuery.executeUpdate();
 
 			if (count != 1) {
+				userPersistence.clearCache(user);
+
 				return null;
 			}
 
@@ -7533,11 +7535,11 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			user.setLastLoginIP(lastLoginIP);
 			user.setFailedLoginAttempts(failedLoginAttempts);
 
-			session.evict(UserImpl.class, user.getUserId());
-
 			return user;
 		}
 		finally {
+			session.evict(UserImpl.class, user.getUserId());
+
 			userPersistence.closeSession(session);
 		}
 	}

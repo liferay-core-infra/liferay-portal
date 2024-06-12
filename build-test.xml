@@ -9664,7 +9664,9 @@ org.apache.catalina.tribes.level = FINE]]>
 			<replacetoken><![CDATA[<Engine name="Catalina" defaultHost="localhost">]]></replacetoken>
 			<replacevalue><![CDATA[<Engine defaultHost="localhost" name="Catalina">
 
-    	<Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>]]></replacevalue>
+		<Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster">
+			<Manager className="com.liferay.support.tomcat.session.LiferayDeltaManager" />
+		</Cluster>]]></replacevalue>
 		</replace>
 	</target>
 

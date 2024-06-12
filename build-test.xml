@@ -11938,7 +11938,6 @@ ${update.properties}</echo>
 		<get-database-property property.name="database.version" />
 
 		<echo append="true" file="portal-impl/src/portal-ext.properties">
-
 liferay.home=${liferay.home}
 
 jdbc.default.jndi.name=
@@ -11948,7 +11947,6 @@ jdbc.default.username=${database.username}
 jdbc.default.password=${database.password}
 
 // HikariCP
-
 jdbc.default.connectionTimeout=600000
 jdbc.default.maximumPoolSize=${database.max.pool.size}
 jdbc.default.minimumIdle=0
@@ -11970,7 +11968,9 @@ com.liferay.portal.servlet.filters.strip.StripFilter=true
 web.server.http.port=8080
 admin.email.from.address=test@liferay.com
 announcements.email.to.address=noreply@liferay.com
-login.secure.forgot.password=false</echo>
+login.secure.forgot.password=false
+
+portlet.session.replicate.enabled=true</echo>
 
 		<if>
 			<equals arg1="${database.type}" arg2="oracle" />

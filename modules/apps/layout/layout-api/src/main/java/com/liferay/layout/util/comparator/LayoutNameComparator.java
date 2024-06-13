@@ -25,19 +25,12 @@ public class LayoutNameComparator extends OrderByComparator<Layout> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public LayoutNameComparator() {
-		this(false);
-	}
+	public static LayoutNameComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
 
-	public LayoutNameComparator(boolean ascending) {
-		this(ascending, LocaleUtil.getDefault());
-	}
-
-	public LayoutNameComparator(boolean ascending, Locale locale) {
-		_ascending = ascending;
-		_locale = locale;
-
-		_collator = CollatorUtil.getInstance(locale);
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -72,6 +65,23 @@ public class LayoutNameComparator extends OrderByComparator<Layout> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private LayoutNameComparator(boolean ascending) {
+		this(ascending, LocaleUtil.getDefault());
+	}
+
+	private LayoutNameComparator(boolean ascending, Locale locale) {
+		_ascending = ascending;
+		_locale = locale;
+
+		_collator = CollatorUtil.getInstance(locale);
+	}
+
+	private static final LayoutNameComparator _INSTANCE_ASCENDING =
+		new LayoutNameComparator(true);
+
+	private static final LayoutNameComparator _INSTANCE_DESCENDING =
+		new LayoutNameComparator(false);
 
 	private final boolean _ascending;
 	private final Collator _collator;

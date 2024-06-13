@@ -22,12 +22,14 @@ public class ContactsCardTemplateNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public ContactsCardTemplateNameComparator() {
-		this(true);
-	}
+	public static ContactsCardTemplateNameComparator getInstance(
+		boolean ascending) {
 
-	public ContactsCardTemplateNameComparator(boolean ascending) {
-		_ascending = ascending;
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -63,6 +65,16 @@ public class ContactsCardTemplateNameComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private ContactsCardTemplateNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final ContactsCardTemplateNameComparator
+		_INSTANCE_ASCENDING = new ContactsCardTemplateNameComparator(true);
+
+	private static final ContactsCardTemplateNameComparator
+		_INSTANCE_DESCENDING = new ContactsCardTemplateNameComparator(false);
 
 	private final boolean _ascending;
 

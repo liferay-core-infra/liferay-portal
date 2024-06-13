@@ -16,7 +16,9 @@ import java.util.Locale;
 
 /**
  * @author Mikel Lorza
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class LayoutNameComparator extends OrderByComparator<Layout> {
 
 	public static final String ORDER_BY_ASC = "Layout.name ASC";

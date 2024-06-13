@@ -12,7 +12,9 @@ import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 
 /**
  * @author Inácio Nery
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class KaleoDefinitionVersionVersionComparator
 	extends OrderByComparator<KaleoDefinitionVersion> {
 

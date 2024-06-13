@@ -43,7 +43,8 @@ public class DLFileVersionLocalServiceImpl
 
 		dlFileVersions = ListUtil.copy(dlFileVersions);
 
-		Collections.sort(dlFileVersions, new DLFileVersionVersionComparator());
+		Collections.sort(
+			dlFileVersions, DLFileVersionVersionComparator.getInstance(false));
 
 		DLFileVersion dlFileVersion = dlFileVersions.get(0);
 
@@ -67,7 +68,8 @@ public class DLFileVersionLocalServiceImpl
 		}
 
 		return dlFileVersionPersistence.fetchByF_S_Last(
-			fileEntryId, status, new DLFileVersionVersionComparator());
+			fileEntryId, status,
+			DLFileVersionVersionComparator.getInstance(false));
 	}
 
 	@Override
@@ -106,7 +108,8 @@ public class DLFileVersionLocalServiceImpl
 
 		dlFileVersions = ListUtil.copy(dlFileVersions);
 
-		Collections.sort(dlFileVersions, new DLFileVersionVersionComparator());
+		Collections.sort(
+			dlFileVersions, DLFileVersionVersionComparator.getInstance(false));
 
 		return dlFileVersions;
 	}
@@ -117,12 +120,13 @@ public class DLFileVersionLocalServiceImpl
 
 		if (status == WorkflowConstants.STATUS_ANY) {
 			return dlFileVersionPersistence.findByFileEntryId(
-				fileEntryId, start, end, new DLFileVersionVersionComparator());
+				fileEntryId, start, end,
+				DLFileVersionVersionComparator.getInstance(false));
 		}
 
 		return dlFileVersionPersistence.findByF_S(
 			fileEntryId, status, start, end,
-			new DLFileVersionVersionComparator());
+			DLFileVersionVersionComparator.getInstance(false));
 	}
 
 	@Override

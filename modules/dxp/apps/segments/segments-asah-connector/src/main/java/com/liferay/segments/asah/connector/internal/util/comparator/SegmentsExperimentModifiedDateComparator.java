@@ -11,7 +11,9 @@ import com.liferay.segments.model.SegmentsExperiment;
 
 /**
  * @author Sarai Díaz
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class SegmentsExperimentModifiedDateComparator
 	extends OrderByComparator<SegmentsExperiment> {
 

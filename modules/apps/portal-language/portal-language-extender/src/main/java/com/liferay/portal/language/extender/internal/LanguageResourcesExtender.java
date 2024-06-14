@@ -134,7 +134,12 @@ public class LanguageResourcesExtender
 			path, name.concat("*.properties"), false);
 
 		if (enumeration == null) {
-			return;
+			enumeration = bundle.findEntries(
+				"/WEB-INF/classes/" + path, name.concat("*.properties"), false);
+
+			if (enumeration == null) {
+				return;
+			}
 		}
 
 		while (enumeration.hasMoreElements()) {

@@ -182,6 +182,15 @@ public class ClassNameLocalServiceImpl
 		ClassNamePool.invalidate();
 	}
 
+	@Override
+	public void invalidate(long companyId) {
+		if (!DBPartition.isPartitionEnabled()) {
+			return;
+		}
+
+		ClassNamePool.invalidate(companyId);
+	}
+
 	private static long _getCompanyId() {
 		if (DBPartition.isPartitionEnabled()) {
 			return DBPartitionUtil.getCurrentCompanyId();
@@ -239,6 +248,11 @@ public class ClassNameLocalServiceImpl
 			for (Map<Long, ClassName> map : _classNamesMap.values()) {
 				map.clear();
 			}
+		}
+
+		public static void invalidate(long companyId) {
+			_classNamesMap.remove(companyId);
+			_classNameIdsMap.remove(companyId);
 		}
 
 		public static void remove(ClassName className) {

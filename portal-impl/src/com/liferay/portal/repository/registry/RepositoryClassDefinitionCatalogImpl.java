@@ -123,6 +123,11 @@ public class RepositoryClassDefinitionCatalogImpl
 		}
 	}
 
+	@Override
+	public void invalidate(long companyId) {
+		_repositoryClassDefinitions.remove(companyId);
+	}
+
 	private <T> Collection<T> _getSystemExternalRepositoryData(
 		Function<Map<String, RepositoryClassDefinition>, Collection<T>>
 			function) {

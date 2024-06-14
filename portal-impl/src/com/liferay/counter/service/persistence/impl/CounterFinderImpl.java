@@ -122,6 +122,19 @@ public class CounterFinderImpl implements CacheRegistryItem, CounterFinder {
 	}
 
 	@Override
+	public void invalidate(long companyId) {
+		if (!DBPartition.isPartitionEnabled()) {
+			return;
+		}
+
+		for (String key : _counterRegisterMap.keySet()) {
+			if (key.endsWith(StringPool.AT + companyId)) {
+				_counterRegisterMap.remove(key);
+			}
+		}
+	}
+
+	@Override
 	public void rename(String oldName, String newName) {
 		CounterRegister counterRegister = getCounterRegister(oldName);
 

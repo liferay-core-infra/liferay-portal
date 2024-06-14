@@ -9,6 +9,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
@@ -43,7 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Shuyang Zhou
  */
 public class ResourceActionLocalServiceImpl
-	extends ResourceActionLocalServiceBaseImpl {
+	extends ResourceActionLocalServiceBaseImpl implements CacheRegistryItem {
 
 	@Override
 	public ResourceAction addResourceAction(
@@ -313,6 +314,11 @@ public class ResourceActionLocalServiceImpl
 	}
 
 	@Override
+	public String getRegistryName() {
+		return ResourceActionLocalServiceImpl.class.getName();
+	}
+
+	@Override
 	@Transactional(enabled = false)
 	public ResourceAction getResourceAction(String name, String actionId)
 		throws PortalException {
@@ -336,6 +342,24 @@ public class ResourceActionLocalServiceImpl
 	@Override
 	public int getResourceActionsCount(String name) {
 		return resourceActionPersistence.countByName(name);
+	}
+
+	@Override
+	public void invalidate() {
+		_resourceActions.clear();
+	}
+
+	@Override
+	public void invalidate(long companyId) {
+		if (!DBPartition.isPartitionEnabled()) {
+			return;
+		}
+
+		for (String key : _resourceActions.keySet()) {
+			if (key.endsWith(StringPool.AT + companyId)) {
+				_resourceActions.remove(key);
+			}
+		}
 	}
 
 	protected String encodeKey(String name, String actionId) {

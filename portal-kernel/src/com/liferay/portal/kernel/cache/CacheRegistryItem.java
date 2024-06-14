@@ -17,4 +17,7 @@ public interface CacheRegistryItem {
 
 	public void invalidate();
 
+	public default void invalidate(long companyId) {
+	}
+
 }

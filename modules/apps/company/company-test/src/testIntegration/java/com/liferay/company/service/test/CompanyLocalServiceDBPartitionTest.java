@@ -7,6 +7,7 @@ package com.liferay.company.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.db.partition.db.DBPartitionDB;
 import com.liferay.portal.db.partition.test.util.BaseDBPartitionTestCase;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
@@ -16,6 +17,7 @@ import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -325,6 +327,41 @@ public class CompanyLocalServiceDBPartitionTest
 			else {
 				companyLocalService.deleteCompany(company);
 			}
+		}
+	}
+
+	@Test
+	public void testCacheCleanup() throws Exception {
+		_company1 = CompanyTestUtil.addCompany();
+		_company2 = CompanyTestUtil.addCompany();
+
+		long counter = 0;
+
+		String counterName = RandomTestUtil.randomString();
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setWithSafeCloseable(
+					_company2.getCompanyId())) {
+
+			counter = _counterLocalService.increment(counterName);
+
+			_counterLocalService.reset(counterName, 100000);
+		}
+
+		String virtualHostname = _company2.getVirtualHostname();
+
+		companyLocalService.deleteCompany(_company2);
+
+		_company2 = companyLocalService.copyDBPartitionCompany(
+			_company1.getCompanyId(), _company2.getCompanyId(),
+			_company2.getName(), virtualHostname, _company2.getWebId());
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setWithSafeCloseable(
+					_company2.getCompanyId())) {
+
+			Assert.assertEquals(
+				counter, _counterLocalService.increment(counterName));
 		}
 	}
 

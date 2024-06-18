@@ -17,6 +17,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -1523,6 +1524,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					PortalInstances.removeCompany(company.getCompanyId());
 
 					unregisterCompany(company);
+
+					CacheRegistryUtil.clear(companyId);
 
 					return null;
 				});

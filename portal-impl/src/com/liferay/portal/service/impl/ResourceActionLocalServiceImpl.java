@@ -310,7 +310,19 @@ public class ResourceActionLocalServiceImpl
 	@Override
 	@Transactional(enabled = false)
 	public ResourceAction fetchResourceAction(String name, String actionId) {
-		return _resourceActions.get(encodeKey(name, actionId));
+		ResourceAction resourceAction = _resourceActions.get(
+			encodeKey(name, actionId));
+
+		if (resourceAction == null) {
+			resourceAction = resourceActionPersistence.fetchByN_A(
+				name, actionId);
+		}
+
+		if (resourceAction != null) {
+			_resourceActions.put(encodeKey(name, actionId), resourceAction);
+		}
+
+		return resourceAction;
 	}
 
 	@Override
@@ -327,9 +339,17 @@ public class ResourceActionLocalServiceImpl
 
 		ResourceAction resourceAction = _resourceActions.get(key);
 
+		if (resourceAction != null) {
+			return resourceAction;
+		}
+
+		resourceAction = resourceActionPersistence.fetchByN_A(name, actionId);
+
 		if (resourceAction == null) {
 			throw new NoSuchResourceActionException(key);
 		}
+
+		_resourceActions.put(encodeKey(name, actionId), resourceAction);
 
 		return resourceAction;
 	}

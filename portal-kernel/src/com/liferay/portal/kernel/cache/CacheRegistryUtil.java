@@ -47,25 +47,6 @@ public class CacheRegistryUtil {
 		}
 	}
 
-	public static void clear(long companyId, String name) {
-		CacheRegistryItem cacheRegistryItem = _cacheRegistryItems.getService(
-			name);
-
-		if (cacheRegistryItem == null) {
-			_log.error("No cache registry found with name " + name);
-		}
-		else {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					StringBundler.concat(
-						"Invalidating ", name, " for company ID ",
-						String.valueOf(companyId)));
-			}
-
-			cacheRegistryItem.invalidate(companyId);
-		}
-	}
-
 	public static void clear(String name) {
 		CacheRegistryItem cacheRegistryItem = _cacheRegistryItems.getService(
 			name);

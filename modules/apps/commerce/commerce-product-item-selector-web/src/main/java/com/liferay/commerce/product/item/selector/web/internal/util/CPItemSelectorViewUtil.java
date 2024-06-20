@@ -39,14 +39,15 @@ public class CPItemSelectorViewUtil {
 		OrderByComparator<CPDefinition> orderByComparator = null;
 
 		if (orderByCol.equals("title")) {
-			orderByComparator = new CPDefinitionNameComparator(orderByAsc);
+			orderByComparator = CPDefinitionNameComparator.getInstance(
+				orderByAsc);
 		}
 		else if (orderByCol.equals("modified-date")) {
-			orderByComparator = new CPDefinitionModifiedDateComparator(
+			orderByComparator = CPDefinitionModifiedDateComparator.getInstance(
 				orderByAsc);
 		}
 		else if (orderByCol.equals("display-date")) {
-			orderByComparator = new CPDefinitionDisplayDateComparator(
+			orderByComparator = CPDefinitionDisplayDateComparator.getInstance(
 				orderByAsc);
 		}
 

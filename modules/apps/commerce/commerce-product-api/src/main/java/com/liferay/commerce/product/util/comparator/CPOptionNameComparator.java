@@ -11,7 +11,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Andrea Sbarra
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class CPOptionNameComparator extends OrderByComparator<CPOption> {
 
 	public static final String ORDER_BY_ASC = "name ASC";

@@ -10,7 +10,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 /**
  * @author Alessio Antonio Rendina
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class CPOptionValuePriorityComparator
 	extends OrderByComparator<CPOptionValue> {
 

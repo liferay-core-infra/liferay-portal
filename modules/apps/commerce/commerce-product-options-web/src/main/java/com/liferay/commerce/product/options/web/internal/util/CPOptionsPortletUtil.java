@@ -38,14 +38,14 @@ public class CPOptionsPortletUtil {
 		OrderByComparator<CPOptionCategory> orderByComparator = null;
 
 		if (orderByCol.equals("modified-date")) {
-			orderByComparator = new CPOptionCategoryModifiedDateComparator(
-				orderByAsc);
+			orderByComparator =
+				CPOptionCategoryModifiedDateComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("group")) {
 			orderByComparator = new CPOptionCategoryTitleComparator(orderByAsc);
 		}
 		else if (orderByCol.equals("priority")) {
-			orderByComparator = new CPOptionCategoryPriorityComparator(
+			orderByComparator = CPOptionCategoryPriorityComparator.getInstance(
 				orderByAsc);
 		}
 

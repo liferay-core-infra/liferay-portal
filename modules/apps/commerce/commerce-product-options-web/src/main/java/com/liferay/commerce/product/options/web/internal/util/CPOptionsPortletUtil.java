@@ -42,7 +42,8 @@ public class CPOptionsPortletUtil {
 				CPOptionCategoryModifiedDateComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("group")) {
-			orderByComparator = new CPOptionCategoryTitleComparator(orderByAsc);
+			orderByComparator = CPOptionCategoryTitleComparator.getInstance(
+				orderByAsc);
 		}
 		else if (orderByCol.equals("priority")) {
 			orderByComparator = CPOptionCategoryPriorityComparator.getInstance(
@@ -92,12 +93,13 @@ public class CPOptionsPortletUtil {
 		OrderByComparator<CPSpecificationOption> orderByComparator = null;
 
 		if (orderByCol.equals("label")) {
-			orderByComparator = new CPSpecificationOptionTitleComparator(
-				orderByAsc);
+			orderByComparator =
+				CPSpecificationOptionTitleComparator.getInstance(orderByAsc);
 		}
 		else if (orderByCol.equals("modified-date")) {
-			orderByComparator = new CPSpecificationOptionModifiedDateComparator(
-				orderByAsc);
+			orderByComparator =
+				CPSpecificationOptionModifiedDateComparator.getInstance(
+					orderByAsc);
 		}
 
 		return orderByComparator;

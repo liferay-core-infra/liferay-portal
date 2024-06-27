@@ -58,8 +58,9 @@ public class CommerceNotificationsUtil {
 					orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {
-			orderByComparator = new CommerceNotificationTemplateNameComparator(
-				orderByAsc);
+			orderByComparator =
+				CommerceNotificationTemplateNameComparator.getInstance(
+					orderByAsc);
 		}
 
 		return orderByComparator;

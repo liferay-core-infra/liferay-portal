@@ -54,7 +54,7 @@ public class CommerceNotificationsUtil {
 
 		if (orderByCol.equals("modified-date")) {
 			orderByComparator =
-				new CommerceNotificationTemplateModifiedDateComparator(
+				CommerceNotificationTemplateModifiedDateComparator.getInstance(
 					orderByAsc);
 		}
 		else if (orderByCol.equals("name")) {

@@ -32,7 +32,7 @@ public class CommerceNotificationsUtil {
 
 		if (orderByCol.equals("priority")) {
 			orderByComparator =
-				new CommerceNotificationQueueEntryPriorityComparator(
+				CommerceNotificationQueueEntryPriorityComparator.getInstance(
 					orderByAsc);
 		}
 

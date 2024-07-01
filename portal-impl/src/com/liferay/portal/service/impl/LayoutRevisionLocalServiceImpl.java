@@ -647,7 +647,7 @@ public class LayoutRevisionLocalServiceImpl
 					layoutRevision.getLayoutSetBranchId(),
 					layoutRevision.getPlid(), WorkflowConstants.STATUS_APPROVED,
 					QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					new LayoutRevisionModifiedDateComparator(false));
+					LayoutRevisionModifiedDateComparator.getInstance(false));
 
 			for (LayoutRevision curLayoutRevision : layoutRevisions) {
 				if (curLayoutRevision.getLayoutRevisionId() !=

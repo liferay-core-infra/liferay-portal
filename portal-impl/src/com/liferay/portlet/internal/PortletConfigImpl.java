@@ -243,14 +243,14 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 				LanguageResources.getResourceBundle(locale), _portletInfos);
 		}
 
-		ResourceBundle resourceBundle = null;
-
 		if (!_portletApp.isWARFile() &&
 			resourceBundleClassName.equals(
 				StrutsResourceBundle.class.getName())) {
 
 			return new StrutsResourceBundle(_portletName, locale);
 		}
+
+		ResourceBundle resourceBundle = null;
 
 		PortletBag portletBag = PortletBagPool.get(_portlet.getRootPortletId());
 

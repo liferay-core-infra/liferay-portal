@@ -8,6 +8,7 @@ package com.liferay.portlet.internal;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletConstants;
+import com.liferay.portal.kernel.model.PortletInfo;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.PortletBag;
@@ -15,6 +16,7 @@ import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.portlet.PortletModeFactory;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -50,8 +52,7 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 		_portlet = portlet;
 		_portletContext = portletContext;
 
-		_portletInfos = PortletResourceBundle.getPortletInfos(
-			portlet.getPortletInfo());
+		_portletInfos = _getPortletInfos(portlet.getPortletInfo());
 
 		_copyRequestParameters = GetterUtil.getBoolean(
 			getInitParameter("copy-request-parameters"));
@@ -317,6 +318,42 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 		}
 
 		return javaxQNames;
+	}
+
+	private Map<String, String> _getPortletInfos(PortletInfo portletInfo) {
+		if (portletInfo == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> portletInfos = new HashMap<>();
+
+		String description = portletInfo.getDescription();
+
+		if (description != null) {
+			portletInfos.put(
+				JavaConstants.JAVAX_PORTLET_DESCRIPTION, description);
+		}
+
+		String keywords = portletInfo.getKeywords();
+
+		if (keywords != null) {
+			portletInfos.put(JavaConstants.JAVAX_PORTLET_KEYWORDS, keywords);
+		}
+
+		String shortTitle = portletInfo.getShortTitle();
+
+		if (shortTitle != null) {
+			portletInfos.put(
+				JavaConstants.JAVAX_PORTLET_SHORT_TITLE, shortTitle);
+		}
+
+		String title = portletInfo.getTitle();
+
+		if (title != null) {
+			portletInfos.put(JavaConstants.JAVAX_PORTLET_TITLE, title);
+		}
+
+		return portletInfos;
 	}
 
 	private final String _containerRuntimeOptionPrefix;

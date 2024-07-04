@@ -81,6 +81,28 @@
 		"to": "HttpComponentsUtil.${methodName}"
 	},
 	{
+		"from": "AssetCategoryTreePathComparator.INSTANCE_ASCENDING",
+		"issueKey": "LPD-26157",
+		"to": "AssetCategoryTreePathComparator.getInstance(true)"
+	},
+	{
+		"from": "AssetCategoryTreePathComparator.INSTANCE_DESCENDING",
+		"issueKey": "LPD-26157",
+		"to": "AssetCategoryTreePathComparator.getInstance(false)"
+	},
+	{
+		"from": "new AssetEntryAssetCategoryRelAssetCategoryIdComparator()",
+		"issueKey": "LPD-26157",
+		"skipParametersValidation": true,
+		"to": "AssetEntryAssetCategoryRelAssetCategoryIdComparator.getInstance(false)"
+	},
+	{
+		"from": "new AssetEntryAssetCategoryRelAssetCategoryIdComparator(boolean paramName)",
+		"issueKey": "LPD-26157",
+		"skipParametersValidation": true,
+		"to": "AssetEntryAssetCategoryRelAssetCategoryIdComparator.getInstance(param#0#)"
+	},
+	{
 		"from": "new AssetListEntryCreateDateComparator()",
 		"issueKey": "LPD-26157",
 		"skipParametersValidation": true,

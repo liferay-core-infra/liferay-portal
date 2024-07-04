@@ -18,6 +18,9 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 		AccountPortletKeys.COMMERCE_ACCOUNT_ADMIN;
 		AccountPortletKeys.COMMERCE_ACCOUNT_GROUP_ADMIN;
 
+		AssetCategoryTreePathComparator.INSTANCE_ASCENDING;
+		AssetCategoryTreePathComparator.INSTANCE_DESCENDING;
+
 		CommerceOrderConstants.PAYMENT_STATUS_AUTHORIZED;
 		CommerceOrderConstants.PAYMENT_STATUS_PAID;
 		CommerceOrderConstants.PAYMENT_STATUS_PENDING;
@@ -119,6 +122,7 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 		new ArticleReviewDateComparator();
 		new ArticleTitleComparator();
 		new ArticleVersionComparator();
+		new AssetEntryAssetCategoryRelAssetCategoryIdComparator();
 		new AssetListEntryCreateDateComparator();
 		new AssetTagCountComparator();
 		new CommercePriceEntryUOMCreateDateComparator();
@@ -180,6 +184,7 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 		new ArticleReviewDateComparator(showHiddenPages);
 		new ArticleTitleComparator(showHiddenPages);
 		new ArticleVersionComparator(showHiddenPages);
+		new AssetEntryAssetCategoryRelAssetCategoryIdComparator(showHiddenPages);
 		new AssetListEntryCreateDateComparator(showHiddenPages);
 		new AssetTagCountComparator(showHiddenPages);
 		new CommercePricingClassCreateDateComparator(showHiddenPages);

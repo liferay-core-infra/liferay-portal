@@ -2228,6 +2228,10 @@ definition {
 
 	@summary = "Default summary"
 	macro loginPG(idpName = null, password = null, virtualHostsURL = null, userScreenName = null, userEmailAddress = null, newPassword = null, rememberMeChecked = null, nodePort = null) {
+		if (isSet(nodePort) && !(isSet(virtualHostsURL))) {
+			var virtualHostsURL = "http://localhost:${nodePort}";
+		}
+
 		JSONUser.agreeToTermsAndAnswerReminderQuery(
 			portalURL = ${virtualHostsURL},
 			userEmailAddress = ${userEmailAddress});

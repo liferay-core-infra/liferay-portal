@@ -191,7 +191,7 @@ definition {
 	}
 
 	@summary = "Default summary"
-	macro agreeToTermsAndAnswerReminderQuery(creatorPassword = null, portalURL = null, userEmailAddress = null, creatorEmailAddress = null) {
+	macro agreeToTermsAndAnswerReminderQuery(creatorPassword = null, portalURL = null, userEmailAddress = null, creatorEmailAddress = null, nodePort = null) {
 		Variables.assertDefined(parameterList = ${userEmailAddress});
 
 		var portalInstanceName = JSONUserSetter.setPortalInstanceName(portalURL = ${portalURL});
@@ -199,6 +199,7 @@ definition {
 		var userId = JSONUserSetter.setUserId(
 			creatorEmailAddress = ${creatorEmailAddress},
 			creatorPassword = ${creatorPassword},
+			nodePort = ${nodePort},
 			portalInstanceName = ${portalInstanceName},
 			specificURL = ${portalURL},
 			userEmailAddress = ${userEmailAddress});

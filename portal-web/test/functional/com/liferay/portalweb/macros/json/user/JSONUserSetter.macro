@@ -98,12 +98,13 @@ definition {
 	}
 
 	@summary = "Default summary"
-	macro setUserId(creatorPassword = null, portalInstanceName = null, userEmailAddress = null, specificURL = null, creatorEmailAddress = null) {
+	macro setUserId(creatorPassword = null, portalInstanceName = null, userEmailAddress = null, specificURL = null, creatorEmailAddress = null, nodePort = null) {
 		Variables.assertDefined(parameterList = ${userEmailAddress});
 
 		var userId = JSONUserAPI._getUserIdByEmailAddress(
 			creatorEmailAddress = ${creatorEmailAddress},
 			creatorPassword = ${creatorPassword},
+			nodePort = ${nodePort},
 			portalInstanceName = ${portalInstanceName},
 			specificURL = ${specificURL},
 			userEmailAddress = ${userEmailAddress});

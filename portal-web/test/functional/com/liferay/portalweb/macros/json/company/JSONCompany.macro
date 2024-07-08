@@ -119,13 +119,17 @@ definition {
 	}
 
 	@summary = "Default summary"
-	macro getCompanyIdNoSelenium(token = null) {
+	macro getCompanyIdNoSelenium(token = null, nodePort = null) {
 		if (!(isSet(portalInstanceName))) {
 			var portalInstanceName = JSONCompany.getPortalInstanceNameNoSelenium();
 		}
 
 		if (!(isSet(portalURL))) {
 			var portalURL = JSONCompany.getDefaultPortalURL();
+		}
+
+		if (isSet(nodePort)) {
+			var portalURL = "http://localhost:${nodePort}";
 		}
 
 		if (isSet(specificURL)) {

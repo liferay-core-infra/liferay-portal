@@ -235,12 +235,13 @@ definition {
 	}
 
 	@summary = "Default summary"
-	macro _getUserIdByEmailAddress(portalInstanceName = null, userEmailAddress = null, specificURL = null) {
+	macro _getUserIdByEmailAddress(portalInstanceName = null, userEmailAddress = null, specificURL = null, nodePort = null) {
 		Variables.assertDefined(parameterList = ${userEmailAddress});
 
 		var companyId = JSONCompany.getCompanyIdNoSelenium(
 			creatorEmailAddress = ${creatorEmailAddress},
 			creatorPassword = ${creatorPassword},
+			nodePort = ${nodePort},
 			portalInstanceName = ${portalInstanceName});
 
 		if (isSet(specificURL)) {

@@ -2233,6 +2233,7 @@ definition {
 		}
 
 		JSONUser.agreeToTermsAndAnswerReminderQuery(
+			nodePort = ${nodePort},
 			portalURL = ${virtualHostsURL},
 			userEmailAddress = ${userEmailAddress});
 

@@ -29,10 +29,6 @@ public class ArticleCreateDateComparator
 		return _INSTANCE_DESCENDING;
 	}
 
-	public ArticleCreateDateComparator(boolean ascending) {
-		_ascending = ascending;
-	}
-
 	@Override
 	public int compare(JournalArticle article1, JournalArticle article2) {
 		int value = DateUtil.compareTo(
@@ -62,6 +58,10 @@ public class ArticleCreateDateComparator
 	@Override
 	public boolean isAscending() {
 		return _ascending;
+	}
+
+	private ArticleCreateDateComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
 	private static final ArticleCreateDateComparator _INSTANCE_ASCENDING =

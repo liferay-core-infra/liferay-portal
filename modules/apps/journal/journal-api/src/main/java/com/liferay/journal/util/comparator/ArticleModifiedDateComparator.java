@@ -27,10 +27,6 @@ public class ArticleModifiedDateComparator
 		return _INSTANCE_DESCENDING;
 	}
 
-	public ArticleModifiedDateComparator(boolean ascending) {
-		super(ascending);
-	}
-
 	@Override
 	public String getOrderBy() {
 		if (isAscending()) {
@@ -38,6 +34,10 @@ public class ArticleModifiedDateComparator
 		}
 
 		return ORDER_BY_DESC;
+	}
+
+	private ArticleModifiedDateComparator(boolean ascending) {
+		super(ascending);
 	}
 
 	private static final ArticleModifiedDateComparator _INSTANCE_ASCENDING =

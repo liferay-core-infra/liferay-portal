@@ -32,10 +32,6 @@ public class ArticleTitleComparator extends OrderByComparator<JournalArticle> {
 		return _INSTANCE_DESCENDING;
 	}
 
-	public ArticleTitleComparator(boolean ascending) {
-		_ascending = ascending;
-	}
-
 	@Override
 	public int compare(JournalArticle article1, JournalArticle article2) {
 		String title1 = StringUtil.toLowerCase(article1.getTitle());
@@ -67,6 +63,10 @@ public class ArticleTitleComparator extends OrderByComparator<JournalArticle> {
 	@Override
 	public boolean isAscending() {
 		return _ascending;
+	}
+
+	private ArticleTitleComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
 	private static final ArticleTitleComparator _INSTANCE_ASCENDING =

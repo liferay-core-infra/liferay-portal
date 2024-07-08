@@ -28,10 +28,6 @@ public class ArticleVersionComparator
 		return _INSTANCE_DESCENDING;
 	}
 
-	public ArticleVersionComparator(boolean ascending) {
-		_ascending = ascending;
-	}
-
 	@Override
 	public int compare(JournalArticle article1, JournalArticle article2) {
 		int value = 0;
@@ -67,6 +63,10 @@ public class ArticleVersionComparator
 	@Override
 	public boolean isAscending() {
 		return _ascending;
+	}
+
+	private ArticleVersionComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
 	private static final ArticleVersionComparator _INSTANCE_ASCENDING =

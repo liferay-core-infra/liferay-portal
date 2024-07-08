@@ -30,10 +30,6 @@ public class ArticleIDComparator extends OrderByComparator<JournalArticle> {
 		return _INSTANCE_DESCENDING;
 	}
 
-	public ArticleIDComparator(boolean ascending) {
-		_ascending = ascending;
-	}
-
 	@Override
 	public int compare(JournalArticle article1, JournalArticle article2) {
 		String articleId1 = StringUtil.toLowerCase(article1.getArticleId());
@@ -74,6 +70,10 @@ public class ArticleIDComparator extends OrderByComparator<JournalArticle> {
 	@Override
 	public boolean isAscending() {
 		return _ascending;
+	}
+
+	private ArticleIDComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
 	private static final ArticleIDComparator _INSTANCE_ASCENDING =

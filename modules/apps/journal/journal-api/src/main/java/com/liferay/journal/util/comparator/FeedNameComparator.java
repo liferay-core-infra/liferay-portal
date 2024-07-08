@@ -27,10 +27,6 @@ public class FeedNameComparator extends OrderByComparator<JournalFeed> {
 		return _INSTANCE_DESCENDING;
 	}
 
-	public FeedNameComparator(boolean ascending) {
-		_ascending = ascending;
-	}
-
 	@Override
 	public int compare(JournalFeed feed1, JournalFeed feed2) {
 		String name1 = feed1.getName();
@@ -62,6 +58,10 @@ public class FeedNameComparator extends OrderByComparator<JournalFeed> {
 	@Override
 	public boolean isAscending() {
 		return _ascending;
+	}
+
+	private FeedNameComparator(boolean ascending) {
+		_ascending = ascending;
 	}
 
 	private static final FeedNameComparator _INSTANCE_ASCENDING =

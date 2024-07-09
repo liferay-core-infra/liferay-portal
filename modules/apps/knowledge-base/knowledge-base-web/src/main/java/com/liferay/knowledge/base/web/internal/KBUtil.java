@@ -101,25 +101,25 @@ public class KBUtil {
 		}
 
 		if (orderByCol.equals("create-date")) {
-			return new KBArticleCreateDateComparator(ascending);
+			return KBArticleCreateDateComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("modified-date")) {
-			return new KBArticleModifiedDateComparator(ascending);
+			return KBArticleModifiedDateComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("priority")) {
-			return new KBArticlePriorityComparator(ascending);
+			return KBArticlePriorityComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("status")) {
-			return new KBArticleStatusComparator(ascending);
+			return KBArticleStatusComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("title")) {
-			return new KBArticleTitleComparator(ascending);
+			return KBArticleTitleComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("user-name")) {
-			return new KBArticleUserNameComparator(ascending);
+			return KBArticleUserNameComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("version")) {
-			return new KBArticleVersionComparator(ascending);
+			return KBArticleVersionComparator.getInstance(ascending);
 		}
 		else if (orderByCol.equals("view-count")) {
 			return KBArticleViewCountComparator.getInstance(ascending);

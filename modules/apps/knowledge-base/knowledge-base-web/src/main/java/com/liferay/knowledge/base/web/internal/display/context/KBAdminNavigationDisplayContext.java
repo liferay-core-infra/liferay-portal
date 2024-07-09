@@ -290,7 +290,7 @@ public class KBAdminNavigationDisplayContext {
 		List<KBArticle> kbArticles = KBArticleServiceUtil.getKBArticles(
 			parentKBArticle.getGroupId(), parentKBArticle.getResourcePrimKey(),
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, WorkflowConstants.STATUS_ANY,
-			new KBArticleTitleComparator(true));
+			KBArticleTitleComparator.getInstance(true));
 
 		for (KBArticle kbArticle : kbArticles) {
 			if (moveKBObjectId == kbArticle.getResourcePrimKey()) {

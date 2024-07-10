@@ -134,6 +134,25 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 		CommercePriceListPriorityComparator.getInstance(false);
 		CommercePricingClassCreateDateComparator.getInstance(false);
 		CommerceTierPriceEntryMinQuantityComparator.getInstance(false);
+		KBArticleCreateDateComparator.getInstance(false);
+		KBArticleModifiedDateComparator.getInstance(false);
+		KBArticlePriorityComparator.getInstance(false);
+		KBArticleStatusComparator.getInstance(false);
+		KBArticleTitleComparator.getInstance(false);
+		KBArticleUserNameComparator.getInstance(false);
+		KBArticleVersionComparator.getInstance(false);
+		KBArticleViewCountComparator.getInstance(false);
+		KBCommentCreateDateComparator.getInstance(false);
+		KBCommentModifiedDateComparator.getInstance(false);
+		KBCommentStatusComparator.getInstance(false);
+		KBCommentUserNameComparator.getInstance(false);
+		KBFolderNameComparator.getInstance(false);
+		KBObjectsPriorityComparator.getInstance(false);
+		KBObjectsViewCountComparator.getInstance(false);
+		KBTemplateCreateDateComparator.getInstance(false);
+		KBTemplateModifiedDateComparator.getInstance(false);
+		KBTemplateTitleComparator.getInstance(false);
+		KBTemplateUserNameComparator.getInstance(false);
 
 		PortletDisplayTemplateConstants.DISPLAY_STYLE_PREFIX;
 		PortletDisplayTemplateConstants.ENTRIES;
@@ -178,6 +197,25 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 		CommercePriceListDisplayDateComparator.getInstance(showHiddenPages);
 		CommercePriceListCreateDateComparator.getInstance(showHiddenPages);
 		CommercePriceEntryUOMCreateDateComparator.getInstance(showHiddenPages);
+		KBArticleCreateDateComparator.getInstance(showHiddenPages);
+		KBArticleModifiedDateComparator.getInstance(showHiddenPages);
+		KBArticlePriorityComparator.getInstance(showHiddenPages);
+		KBArticleStatusComparator.getInstance(showHiddenPages);
+		KBArticleTitleComparator.getInstance(showHiddenPages);
+		KBArticleUserNameComparator.getInstance(showHiddenPages);
+		KBArticleVersionComparator.getInstance(showHiddenPages);
+		KBArticleViewCountComparator.getInstance(showHiddenPages);
+		KBCommentCreateDateComparator.getInstance(showHiddenPages);
+		KBCommentModifiedDateComparator.getInstance(showHiddenPages);
+		KBCommentStatusComparator.getInstance(showHiddenPages);
+		KBCommentUserNameComparator.getInstance(showHiddenPages);
+		KBFolderNameComparator.getInstance(showHiddenPages);
+		KBObjectsPriorityComparator.getInstance(showHiddenPages);
+		KBObjectsViewCountComparator.getInstance(showHiddenPages);
+		KBTemplateCreateDateComparator.getInstance(showHiddenPages);
+		KBTemplateModifiedDateComparator.getInstance(showHiddenPages);
+		KBTemplateTitleComparator.getInstance(showHiddenPages);
+		KBTemplateUserNameComparator.getInstance(showHiddenPages);
 	}
 
 	public void method(CommerceAddress commerceAddress) {

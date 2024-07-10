@@ -119,6 +119,25 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 		new CommercePriceListPriorityComparator();
 		new CommercePricingClassCreateDateComparator();
 		new CommerceTierPriceEntryMinQuantityComparator();
+		new KBArticleCreateDateComparator();
+		new KBArticleModifiedDateComparator();
+		new KBArticlePriorityComparator();
+		new KBArticleStatusComparator();
+		new KBArticleTitleComparator();
+		new KBArticleUserNameComparator();
+		new KBArticleVersionComparator();
+		new KBArticleViewCountComparator();
+		new KBCommentCreateDateComparator();
+		new KBCommentModifiedDateComparator();
+		new KBCommentStatusComparator();
+		new KBCommentUserNameComparator();
+		new KBFolderNameComparator();
+		new KBObjectsPriorityComparator();
+		new KBObjectsViewCountComparator();
+		new KBTemplateCreateDateComparator();
+		new KBTemplateModifiedDateComparator();
+		new KBTemplateTitleComparator();
+		new KBTemplateUserNameComparator();
 
 		PortletDisplayTemplateManager.DISPLAY_STYLE_PREFIX;
 		PortletDisplayTemplateManager.ENTRIES;
@@ -164,6 +183,25 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 		new CommercePriceListDisplayDateComparator(showHiddenPages);
 		new CommercePriceListCreateDateComparator(showHiddenPages);
 		new CommercePriceEntryUOMCreateDateComparator(showHiddenPages);
+		new KBArticleCreateDateComparator(showHiddenPages);
+		new KBArticleModifiedDateComparator(showHiddenPages);
+		new KBArticlePriorityComparator(showHiddenPages);
+		new KBArticleStatusComparator(showHiddenPages);
+		new KBArticleTitleComparator(showHiddenPages);
+		new KBArticleUserNameComparator(showHiddenPages);
+		new KBArticleVersionComparator(showHiddenPages);
+		new KBArticleViewCountComparator(showHiddenPages);
+		new KBCommentCreateDateComparator(showHiddenPages);
+		new KBCommentModifiedDateComparator(showHiddenPages);
+		new KBCommentStatusComparator(showHiddenPages);
+		new KBCommentUserNameComparator(showHiddenPages);
+		new KBFolderNameComparator(showHiddenPages);
+		new KBObjectsPriorityComparator(showHiddenPages);
+		new KBObjectsViewCountComparator(showHiddenPages);
+		new KBTemplateCreateDateComparator(showHiddenPages);
+		new KBTemplateModifiedDateComparator(showHiddenPages);
+		new KBTemplateTitleComparator(showHiddenPages);
+		new KBTemplateUserNameComparator(showHiddenPages);
 	}
 
 	public void method(CommerceAddress commerceAddress) {

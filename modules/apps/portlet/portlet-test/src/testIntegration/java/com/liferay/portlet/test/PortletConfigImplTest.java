@@ -117,6 +117,8 @@ public class PortletConfigImplTest {
 			_bundleContext.registerService(
 				javax.portlet.Portlet.class, new TestPortlet(),
 				HashMapDictionaryBuilder.put(
+					"com.liferay.portlet.deploy.parallel", "false"
+				).put(
 					"javax.portlet.name", portletId
 				).put(
 					"javax.portlet.resource-bundle",

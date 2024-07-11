@@ -31,7 +31,6 @@ import javax.portlet.PortletConfig;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,8 +53,8 @@ public class PortletConfigImplTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUpClass() {
 		Bundle bundle = FrameworkUtil.getBundle(PortletConfigImplTest.class);
 
 		_bundleContext = bundle.getBundleContext();
@@ -158,7 +157,7 @@ public class PortletConfigImplTest {
 				resourceBundle, TestResourceBundle.class.getName()));
 	}
 
-	private BundleContext _bundleContext;
+	private static BundleContext _bundleContext;
 
 	@Inject
 	private Language _language;

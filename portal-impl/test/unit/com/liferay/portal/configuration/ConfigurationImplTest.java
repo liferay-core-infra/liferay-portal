@@ -168,7 +168,7 @@ public class ConfigurationImplTest {
 			properties.remove(key);
 		}
 
-		Assert.assertTrue(properties.isEmpty());
+		Assert.assertTrue(properties.toString(), properties.isEmpty());
 	}
 
 	@Test

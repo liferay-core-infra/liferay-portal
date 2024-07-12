@@ -158,7 +158,7 @@ public class ConfigurationImplTest {
 
 		Properties properties = configurationImpl.getProperties();
 
-		Assert.assertTrue(properties.isEmpty());
+		Assert.assertTrue(properties.toString(), properties.isEmpty());
 	}
 
 	@Test

@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.util.EnvPropertiesUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PropsFiles;
 
@@ -157,6 +158,15 @@ public class ConfigurationImplTest {
 			CompanyConstants.SYSTEM, null);
 
 		Properties properties = configurationImpl.getProperties();
+
+		Properties envProperties = new Properties();
+
+		EnvPropertiesUtil.loadEnvOverrides(
+			"LIFERAY_", CompanyConstants.SYSTEM, envProperties::setProperty);
+
+		for (Object key : envProperties.keySet()) {
+			properties.remove(key);
+		}
 
 		Assert.assertTrue(properties.isEmpty());
 	}

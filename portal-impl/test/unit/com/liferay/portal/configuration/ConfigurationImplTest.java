@@ -5,6 +5,7 @@
 
 package com.liferay.portal.configuration;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
@@ -158,7 +159,41 @@ public class ConfigurationImplTest {
 
 		Properties properties = configurationImpl.getProperties();
 
-		Assert.assertTrue(properties.toString(), properties.isEmpty());
+		if (properties.isEmpty()) {
+			return;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		sb.append("\n===== Properties ====\n");
+
+		for (String propertyName : properties.stringPropertyNames()) {
+			sb.append(StringPool.TAB);
+			sb.append(propertyName);
+			sb.append(": ");
+			sb.append(properties.getProperty(propertyName));
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		sb.append("\n==== System env ====\n");
+
+		Map<String, String> env = System.getenv();
+
+		for (Map.Entry<String, String> entry : env.entrySet()) {
+			String key = entry.getKey();
+
+			if (!key.startsWith("LIFERAY_")) {
+				continue;
+			}
+
+			sb.append(StringPool.TAB);
+			sb.append(entry.getKey());
+			sb.append(": ");
+			sb.append(entry.getValue());
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		Assert.fail(sb.toString());
 	}
 
 	@Test

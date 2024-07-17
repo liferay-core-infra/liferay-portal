@@ -10,7 +10,9 @@ import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 
 /**
  * @author Leonardo Barros
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class WorkflowDefinitionNameComparator
 	extends OrderByComparator<WorkflowDefinition> {
 
@@ -20,12 +22,14 @@ public class WorkflowDefinitionNameComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public WorkflowDefinitionNameComparator() {
-		this(false);
-	}
+	public static WorkflowDefinitionNameComparator getInstance(
+		boolean ascending) {
 
-	public WorkflowDefinitionNameComparator(boolean ascending) {
-		_ascending = ascending;
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -68,6 +72,16 @@ public class WorkflowDefinitionNameComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private WorkflowDefinitionNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final WorkflowDefinitionNameComparator _INSTANCE_ASCENDING =
+		new WorkflowDefinitionNameComparator(true);
+
+	private static final WorkflowDefinitionNameComparator _INSTANCE_DESCENDING =
+		new WorkflowDefinitionNameComparator(false);
 
 	private final boolean _ascending;
 

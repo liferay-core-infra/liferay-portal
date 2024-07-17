@@ -10,7 +10,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class ResourceActionBitwiseValueComparator
 	extends OrderByComparator<ResourceAction> {
 
@@ -20,12 +22,14 @@ public class ResourceActionBitwiseValueComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"bitwiseValue"};
 
-	public ResourceActionBitwiseValueComparator() {
-		this(false);
-	}
+	public static ResourceActionBitwiseValueComparator getInstance(
+		boolean ascending) {
 
-	public ResourceActionBitwiseValueComparator(boolean ascending) {
-		_ascending = ascending;
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -61,6 +65,16 @@ public class ResourceActionBitwiseValueComparator
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private ResourceActionBitwiseValueComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final ResourceActionBitwiseValueComparator
+		_INSTANCE_ASCENDING = new ResourceActionBitwiseValueComparator(true);
+
+	private static final ResourceActionBitwiseValueComparator
+		_INSTANCE_DESCENDING = new ResourceActionBitwiseValueComparator(false);
 
 	private final boolean _ascending;
 

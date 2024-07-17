@@ -251,7 +251,7 @@ public class RoleLocalServiceTest {
 			}
 		}
 
-		Comparator roleIdComparator = new RoleRoleIdComparator();
+		Comparator roleIdComparator = RoleRoleIdComparator.getInstance(false);
 
 		Collections.sort(actualRoles, roleIdComparator);
 		Collections.sort(expectedRoles, roleIdComparator);
@@ -315,7 +315,8 @@ public class RoleLocalServiceTest {
 		actualRoles = new ArrayList(actualRoles);
 		expectedRoles = new ArrayList(expectedRoles);
 
-		Comparator<Role> roleIdComparator = new RoleRoleIdComparator();
+		Comparator<Role> roleIdComparator = RoleRoleIdComparator.getInstance(
+			false);
 
 		Collections.sort(actualRoles, roleIdComparator);
 		Collections.sort(expectedRoles, roleIdComparator);

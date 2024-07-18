@@ -126,14 +126,27 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 
 		new ArrayList<>(LanguageUtil.getAvailableLocales());
 
+		AssetCategoryCreateDateComparator.getInstance(true);
 		AssetListEntryCreateDateComparator.getInstance(false);
+		AssetTagAssetCountComparator.getInstance(true);
 		AssetTagCountComparator.getInstance(false);
+		AssetVocabularyCreateDateComparator.getInstance(true);
 		CommercePriceEntryUOMCreateDateComparator.getInstance(false);
 		CommercePriceListCreateDateComparator.getInstance(false);
 		CommercePriceListDisplayDateComparator.getInstance(false);
 		CommercePriceListPriorityComparator.getInstance(false);
 		CommercePricingClassCreateDateComparator.getInstance(false);
 		CommerceTierPriceEntryMinQuantityComparator.getInstance(false);
+		ExportImportConfigurationNameComparator.getInstance(false);
+		FragmentCollectionCreateDateComparator.getInstance(false);
+		FragmentCollectionNameComparator.getInstance(false);
+		FragmentCompositionFragmentEntryCreateDateComparator.getInstance(true);
+		FragmentCompositionFragmentEntryModifiedDateComparator.getInstance(true);
+		FragmentCompositionFragmentEntryNameComparator.getInstance(false);
+		FragmentEntryCreateDateComparator.getInstance(true);
+		FragmentEntryLinkLastPropagationDateComparator.getInstance(true);
+		FragmentEntryNameComparator.getInstance(false);
+		SXPBlueprintModifiedDateComparator.getInstance(false);
 
 		PortletDisplayTemplateConstants.DISPLAY_STYLE_PREFIX;
 		PortletDisplayTemplateConstants.ENTRIES;
@@ -170,14 +183,27 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 
 		layoutItemSelectorCriterion.setShowHiddenPages(null);
 
+		AssetCategoryCreateDateComparator.getInstance(showHiddenPages);
 		AssetListEntryCreateDateComparator.getInstance(showHiddenPages);
+		AssetTagAssetCountComparator.getInstance(showHiddenPages);
 		AssetTagCountComparator.getInstance(showHiddenPages);
+		AssetVocabularyCreateDateComparator.getInstance(showHiddenPages);
+		CommercePriceEntryUOMCreateDateComparator.getInstance(showHiddenPages);
+		CommercePriceListCreateDateComparator.getInstance(showHiddenPages);
+		CommercePriceListDisplayDateComparator.getInstance(showHiddenPages);
+		CommercePriceListPriorityComparator.getInstance(showHiddenPages);
 		CommercePricingClassCreateDateComparator.getInstance(showHiddenPages);
 		CommerceTierPriceEntryMinQuantityComparator.getInstance(showHiddenPages);
-		CommercePriceListPriorityComparator.getInstance(showHiddenPages);
-		CommercePriceListDisplayDateComparator.getInstance(showHiddenPages);
-		CommercePriceListCreateDateComparator.getInstance(showHiddenPages);
-		CommercePriceEntryUOMCreateDateComparator.getInstance(showHiddenPages);
+		ExportImportConfigurationNameComparator.getInstance(showHiddenPages);
+		FragmentCollectionCreateDateComparator.getInstance(showHiddenPages);
+		FragmentCollectionNameComparator.getInstance(showHiddenPages);
+		FragmentCompositionFragmentEntryCreateDateComparator.getInstance(showHiddenPages);
+		FragmentCompositionFragmentEntryModifiedDateComparator.getInstance(showHiddenPages);
+		FragmentCompositionFragmentEntryNameComparator.getInstance(showHiddenPages);
+		FragmentEntryCreateDateComparator.getInstance(showHiddenPages);
+		FragmentEntryLinkLastPropagationDateComparator.getInstance(showHiddenPages);
+		FragmentEntryNameComparator.getInstance(showHiddenPages);
+		SXPBlueprintModifiedDateComparator.getInstance(showHiddenPages);
 	}
 
 	public void method(CommerceAddress commerceAddress) {

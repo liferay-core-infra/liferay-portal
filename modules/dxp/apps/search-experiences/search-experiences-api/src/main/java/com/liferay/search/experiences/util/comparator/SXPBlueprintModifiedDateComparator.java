@@ -11,7 +11,9 @@ import com.liferay.search.experiences.model.SXPBlueprint;
 
 /**
  * @author Petteri Karttunen
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class SXPBlueprintModifiedDateComparator
 	extends OrderByComparator<SXPBlueprint> {
 

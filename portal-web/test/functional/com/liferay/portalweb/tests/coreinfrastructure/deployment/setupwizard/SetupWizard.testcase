@@ -14,6 +14,7 @@ definition {
 		property database.types = "mysql";
 		property test.prepare.bundle.properties = "true";
 		property testray.main.component.name = "Users and Organizations";
+		property test.liferay.virtual.instance = "false";
 
 		task ("When an admin logs in with Setup Wizard disabled") {
 			Navigator.openURL();

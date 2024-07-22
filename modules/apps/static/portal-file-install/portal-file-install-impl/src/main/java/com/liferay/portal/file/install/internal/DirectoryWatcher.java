@@ -144,16 +144,29 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		_systemBundle = bundleContext.getBundle(
 			Constants.SYSTEM_BUNDLE_LOCATION);
 
+		boolean listenForVirtualInstanceClientExtensions = false;
+
 		for (String dir : PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS) {
+			if (dir.equals(
+					PropsValues.MODULE_FRAMEWORK_CLIENT_EXTENSIONS_DIR)) {
+
+				listenForVirtualInstanceClientExtensions = true;
+			}
+
 			String filePath = Util.getFilePath(dir);
 
 			_watchedDirPaths.add(filePath);
 			_watchedDirs.add(new File(filePath));
 		}
 
-		_modelListenerServiceRegistration = _bundleContext.registerService(
-			ModelListener.class.getName(), new CompanyModelListener(),
-			new HashMapDictionary<>());
+		if (listenForVirtualInstanceClientExtensions) {
+			_modelListenerServiceRegistration = _bundleContext.registerService(
+				ModelListener.class.getName(), new CompanyModelListener(),
+				new HashMapDictionary<>());
+		}
+		else {
+			_modelListenerServiceRegistration = null;
+		}
 
 		_fileInstallers = ServiceTrackerListFactory.open(
 			_bundleContext, FileInstaller.class, null,
@@ -270,7 +283,9 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 		_fileInstallers.close();
 
-		_modelListenerServiceRegistration.unregister();
+		if (_modelListenerServiceRegistration != null) {
+			_modelListenerServiceRegistration.unregister();
+		}
 
 		_checksumRandomAccessFile.close();
 	}

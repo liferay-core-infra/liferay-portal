@@ -55,6 +55,16 @@ public class PortalInstancesConfigurationFactoryTest {
 				"mx", webId.concat(".foo.bar")
 			).put(
 				"virtualHostname", webId.concat(".foo.bar")
+			).put(
+				"adminScreenName", "testAdminScreenName"
+			).put(
+				"adminEmailAddress", "testAdminEmailAddress@"+webId.concat(".foo.bar")
+			).put(
+				"adminFirstName", "testAdminFirstName"
+			).put(
+				"adminMiddleName", "testAdminMiddleName"
+			).put(
+				"adminLastName", "testAdminLastName"
 			).build());
 
 		_company = _companyLocalService.getCompanyByWebId(webId);

@@ -375,6 +375,26 @@ public class DSLQueryEntryPersistenceImplTest {
 	}
 
 	@Test
+	public void testDSLQueryWithDivisionDSLFunction() {
+		Assert.assertEquals(
+			Arrays.asList(0.5, 1.0, 1.5),
+			_dslQueryEntryPersistence.dslQuery(
+				DSLQueryFactoryUtil.select(
+					DSLFunctionFactoryUtil.divide(
+						DSLQueryStatusEntryTable.INSTANCE.dslQueryStatusEntryId,
+						new Scalar<>(2L)
+					).as(
+						"alias"
+					)
+				).from(
+					DSLQueryStatusEntryTable.INSTANCE
+				).orderBy(
+					DSLQueryStatusEntryTable.INSTANCE.dslQueryStatusEntryId.
+						ascending()
+				)));
+	}
+
+	@Test
 	public void testDSLQueryWithUpdate() {
 		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
 			DSLQueryEntryTable.INSTANCE.name

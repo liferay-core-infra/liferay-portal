@@ -6,6 +6,7 @@
 package com.liferay.portal.file.install.internal;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -64,6 +65,16 @@ public class Scanner {
 		return new TreeSet<>(files);
 	}
 
+	public void setExtraWatchedDirs(List<File> extraWatchedDirs) {
+		_allWatchedDirs.clear();
+
+		_allWatchedDirs.addAll(_watchedDirs);
+
+		if (ListUtil.isNotEmpty(extraWatchedDirs)) {
+			_allWatchedDirs.addAll(extraWatchedDirs);
+		}
+	}
+
 	public void updateChecksum(File file) {
 		if ((file != null) && _storedChecksums.containsKey(file)) {
 			long newChecksum = _checksum(file);
@@ -112,7 +123,11 @@ public class Scanner {
 	private File[] _list() {
 		List<File> files = new ArrayList<>();
 
-		for (File dir : _watchedDirs) {
+		for (File dir : _allWatchedDirs) {
+			if (!dir.isDirectory() || !dir.exists()) {
+				continue;
+			}
+
 			if (_recurseSubdir) {
 				try {
 					Files.walkFileTree(
@@ -212,6 +227,7 @@ public class Scanner {
 		return files;
 	}
 
+	private final List<File> _allWatchedDirs = new ArrayList<>();
 	private final FilenameFilter _filenameFilter;
 	private final Map<File, Long> _lastChecksums = new HashMap<>();
 	private final boolean _recurseSubdir;

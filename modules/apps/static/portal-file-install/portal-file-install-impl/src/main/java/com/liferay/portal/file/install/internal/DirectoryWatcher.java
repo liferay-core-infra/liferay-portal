@@ -14,14 +14,9 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.file.install.FileInstaller;
-import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModelListener;
-import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
@@ -64,7 +59,6 @@ import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
@@ -150,10 +144,6 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 			_watchedDirPaths.add(filePath);
 			_watchedDirs.add(new File(filePath));
 		}
-
-		_modelListenerServiceRegistration = _bundleContext.registerService(
-			ModelListener.class.getName(), new CompanyModelListener(),
-			new HashMapDictionary<>());
 
 		_fileInstallers = ServiceTrackerListFactory.open(
 			_bundleContext, FileInstaller.class, null,
@@ -270,8 +260,6 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 
 		_fileInstallers.close();
 
-		_modelListenerServiceRegistration.unregister();
-
 		_checksumRandomAccessFile.close();
 	}
 
@@ -305,6 +293,8 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 						PropsValues.
 							MODULE_FRAMEWORK_FILE_INSTALL_ACTIVE_LEVEL) &&
 					(_systemBundle.getState() == Bundle.ACTIVE)) {
+
+					_addOrRemoveScannerClientExtensionWatchedDirs();
 
 					Set<File> files = _scanner.scan(false);
 
@@ -1218,26 +1208,11 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 	private final FilenameFilter _filenameFilter;
 	private int _frameworkStartLevel;
 	private final Map<File, Artifact> _installationFailures = new HashMap<>();
-	private final ServiceRegistration<?> _modelListenerServiceRegistration;
 	private final Set<File> _processingFailures = new HashSet<>();
 	private final Scanner _scanner;
 	private final AtomicBoolean _stateChanged = new AtomicBoolean();
 	private final Bundle _systemBundle;
 	private final List<String> _watchedDirPaths = new ArrayList<>();
 	private final List<File> _watchedDirs = new ArrayList<>();
-
-	private class CompanyModelListener extends BaseModelListener<Company> {
-
-		@Override
-		public void onAfterCreate(Company model) throws ModelListenerException {
-			_addOrRemoveScannerClientExtensionWatchedDirs();
-		}
-
-		@Override
-		public void onAfterRemove(Company model) throws ModelListenerException {
-			_addOrRemoveScannerClientExtensionWatchedDirs();
-		}
-
-	}
 
 }

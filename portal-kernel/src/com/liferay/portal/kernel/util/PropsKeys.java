@@ -1685,6 +1685,9 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_BASE_DIR =
 		"module.framework.base.dir";
 
+	public static final String MODULE_FRAMEWORK_CLIENT_EXTENSIONS_DIR =
+		"module.framework.client.extensions.dir";
+
 	public static final String MODULE_FRAMEWORK_CONFIGS_DIR =
 		"module.framework.configs.dir";
 

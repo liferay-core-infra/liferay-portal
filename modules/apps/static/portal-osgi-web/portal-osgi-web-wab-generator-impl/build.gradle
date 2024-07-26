@@ -15,6 +15,7 @@ dependencies {
 	compileOnly group: "org.springframework", name: "spring-web", version: "5.3.34"
 	compileOnly project(":apps:static:portal-file-install:portal-file-install-api")
 	compileOnly project(":apps:static:portal-osgi-web:portal-osgi-web-wab-generator-api")
+	compileOnly project(":core:petra:petra-function")
 	compileOnly project(":core:petra:petra-string")
 
 	testImplementation group: "commons-io", name: "commons-io", version: "2.15.1"

@@ -6,9 +6,12 @@
 package com.liferay.portal.osgi.web.wab.generator.internal.artifact;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +20,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import java.util.Enumeration;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,8 +58,35 @@ public class ArtifactURLUtil {
 		return symbolicName;
 	}
 
+	public static String getVirtualInstanceId(String path) {
+		File file = new File(path);
+
+		File parentDirectory = file.getParentFile();
+
+		if (Objects.equals(
+				parentDirectory,
+				new File(PropsValues.MODULE_FRAMEWORK_CLIENT_EXTENSIONS_DIR))) {
+
+			return null;
+		}
+
+		String virtualInstanceId = parentDirectory.getName();
+
+		if (Objects.equals(
+				virtualInstanceId,
+				PortalInstancePool.getWebId(
+					PortalInstancePool.getDefaultCompanyId())) ||
+			Objects.equals(virtualInstanceId, "default")) {
+
+			return null;
+		}
+
+		return virtualInstanceId;
+	}
+
 	public static URL transform(URL artifact) throws Exception {
 		String contextName = null;
+		boolean clientExtension = false;
 
 		String path = artifact.getPath();
 
@@ -68,22 +99,44 @@ public class ArtifactURLUtil {
 			}
 		}
 
+		String virtualInstanceId = null;
+
 		String symbolicName = getSymbolicName(path);
 
 		if (fileExtension.equals("zip") && _isClientExtensionZip(path)) {
 			symbolicName = getClientExtensionSymbolicName(path);
+			clientExtension = true;
+
+			virtualInstanceId = getVirtualInstanceId(path);
+
+			if (Validator.isNotNull(virtualInstanceId)) {
+				symbolicName = symbolicName + "_" + virtualInstanceId;
+			}
 		}
 
 		if (contextName == null) {
 			contextName = symbolicName;
 		}
 
-		return new URL(
-			"webbundle", null,
-			StringBundler.concat(
-				artifact.getPath(), "?", Constants.BUNDLE_SYMBOLICNAME, "=",
-				symbolicName, "&Web-ContextPath=/", contextName,
-				"&fileExtension=", fileExtension, "&protocol=file"));
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(artifact.getPath());
+		sb.append(StringPool.QUESTION);
+		sb.append(Constants.BUNDLE_SYMBOLICNAME);
+		sb.append(StringPool.EQUAL);
+		sb.append(symbolicName);
+		sb.append("&Web-ContextPath=/");
+		sb.append(contextName);
+		sb.append("&fileExtension=");
+		sb.append(fileExtension);
+		sb.append("&protocol=file");
+
+		if (clientExtension && Validator.isNotNull(virtualInstanceId)) {
+			sb.append("&virtualInstanceId=");
+			sb.append(virtualInstanceId);
+		}
+
+		return new URL("webbundle", null, sb.toString());
 	}
 
 	private static boolean _isClientExtensionZip(String path) {

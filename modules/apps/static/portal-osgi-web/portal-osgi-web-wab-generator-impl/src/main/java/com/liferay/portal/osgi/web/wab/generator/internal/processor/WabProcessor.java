@@ -31,6 +31,8 @@ import com.liferay.portal.kernel.deploy.auto.AutoDeployException;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployListener;
 import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
 import com.liferay.portal.kernel.deploy.hot.DependencyManagementThreadLocal;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletConstants;
@@ -64,6 +66,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.util.JS;
 import com.liferay.whip.util.ReflectionUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -114,13 +117,17 @@ public class WabProcessor {
 	}
 
 	public File getProcessedFile() throws IOException {
-		Properties pluginPackageProperties = _getPluginPackageProperties();
+		String virtualInstanceId = MapUtil.getString(
+			_parameters, "virtualInstanceId");
+
+		Properties pluginPackageProperties = _getPluginPackageProperties(
+			virtualInstanceId);
 
 		if (Objects.equals(
 				MapUtil.getString(_parameters, "fileExtension"), "zip")) {
 
 			_pluginDir = _convertToClientExtensionBundleDir(
-				pluginPackageProperties);
+				pluginPackageProperties, virtualInstanceId);
 		}
 		else {
 			_pluginDir = _autoDeploy();
@@ -264,7 +271,7 @@ public class WabProcessor {
 	}
 
 	private File _convertToClientExtensionBundleDir(
-		Properties pluginPackageProperties) {
+		Properties pluginPackageProperties, String virtualInstanceId) {
 
 		Path clientExtensionBundlePath = null;
 
@@ -346,9 +353,51 @@ public class WabProcessor {
 				if (!name.contains("/") &&
 					name.endsWith(".client-extension-config.json")) {
 
-					Files.copy(
-						zipFile.getInputStream(zipEntry),
-						osgiInfConfiguratorPath.resolve(name));
+					try (InputStream targetInputStream = zipFile.getInputStream(
+							zipEntry)) {
+
+						JSONObject processedJSONObject =
+							JSONFactoryUtil.createJSONObject();
+
+						JSONObject originalJSONObject =
+							JSONFactoryUtil.createJSONObject(
+								StringUtil.read(targetInputStream));
+
+						for (String pid : originalJSONObject.keySet()) {
+							JSONObject propertiesJSONObject =
+								originalJSONObject.getJSONObject(pid);
+
+							if (Validator.isNotNull(virtualInstanceId)) {
+								pid =
+									pid + StringPool.SLASH + virtualInstanceId;
+
+								propertiesJSONObject.put(
+									"baseURL",
+									_suffix(
+										propertiesJSONObject.getString(
+											"baseURL"),
+										virtualInstanceId)
+								).put(
+									"dxp.lxc.liferay.com.virtualInstanceId",
+									virtualInstanceId
+								).put(
+									"webContextPath",
+									_suffix(
+										propertiesJSONObject.getString(
+											"webContextPath"),
+										virtualInstanceId)
+								);
+							}
+
+							processedJSONObject.put(pid, propertiesJSONObject);
+						}
+
+						String jsonString = processedJSONObject.toString();
+
+						Files.copy(
+							new ByteArrayInputStream(jsonString.getBytes()),
+							osgiInfConfiguratorPath.resolve(name));
+					}
 				}
 				else if (name.startsWith(batchPathString)) {
 					Files.copy(
@@ -526,7 +575,9 @@ public class WabProcessor {
 		return displayName.concat("-client-extension");
 	}
 
-	private Properties _getPluginPackageProperties() throws IOException {
+	private Properties _getPluginPackageProperties(String virtualInstanceId)
+		throws IOException {
+
 		if (_pluginPackageProperties != null) {
 			return _pluginPackageProperties;
 		}
@@ -540,9 +591,26 @@ public class WabProcessor {
 			}
 
 			try {
-				return _pluginPackageProperties = PropertiesUtil.load(
+				_pluginPackageProperties = PropertiesUtil.load(
 					zipFile.getInputStream(zipEntry),
 					StandardCharsets.UTF_8.name());
+
+				for (Map.Entry<Object, Object> entry :
+						_pluginPackageProperties.entrySet()) {
+
+					Object key = entry.getKey();
+
+					if (Objects.equals(key, "Bundle-SymbolicName") ||
+						Objects.equals(key, "name")) {
+
+						entry.setValue(
+							_suffix(
+								String.valueOf(entry.getValue()),
+								virtualInstanceId));
+					}
+				}
+
+				return _pluginPackageProperties;
 			}
 			catch (IOException ioException) {
 				if (_log.isDebugEnabled()) {
@@ -1492,6 +1560,14 @@ public class WabProcessor {
 		}
 	}
 
+	private String _suffix(String baseString, String virtualInstanceId) {
+		if (Validator.isNotNull(virtualInstanceId)) {
+			return baseString + StringPool.UNDERLINE + virtualInstanceId;
+		}
+
+		return baseString;
+	}
+
 	private File _transformToOSGiBundle(
 			Jar jar, Properties pluginPackageProperties)
 		throws IOException {
@@ -1627,13 +1703,21 @@ public class WabProcessor {
 
 		dir.mkdirs();
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(7);
 
 		String name = _file.getName();
 
 		sb.append(name.substring(0, name.lastIndexOf(StringPool.PERIOD)));
 
 		sb.append(StringPool.DASH);
+
+		String virtualInstanceId = MapUtil.getString(
+			_parameters, "virtualInstanceId");
+
+		if (Validator.isNotNull(virtualInstanceId)) {
+			sb.append(virtualInstanceId);
+			sb.append(StringPool.DASH);
+		}
 
 		Format format = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			PropsValues.INDEX_DATE_FORMAT_PATTERN);

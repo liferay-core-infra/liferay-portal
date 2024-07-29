@@ -17,7 +17,6 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.util.PropsValues;
 
 import java.util.Map;
 
@@ -48,13 +47,7 @@ public class PortalInstancesConfigurationFactory {
 		String virtualHostname = portalInstancesConfiguration.virtualHostname();
 		String mx = portalInstancesConfiguration.mx();
 		int maxUsers = portalInstancesConfiguration.maxUsers();
-		boolean active = portalInstancesConfiguration.active();		
-		String adminPassword = portalInstancesConfiguration.adminPassword();
-		String adminScreenName = portalInstancesConfiguration.adminScreenName();
-		String adminEmailAddress = portalInstancesConfiguration.adminEmailAddress();
-		String adminFirstName = portalInstancesConfiguration.adminFirstName();
-		String adminMiddleName = portalInstancesConfiguration.adminMiddleName();
-		String adminLastName = portalInstancesConfiguration.adminLastName();		
+		boolean active = portalInstancesConfiguration.active();
 
 		Company company = null;
 
@@ -68,9 +61,21 @@ public class PortalInstancesConfigurationFactory {
 		}
 
 		if (company == null) {
+			String adminPassword = portalInstancesConfiguration.adminPassword();
+			String adminScreenName =
+				portalInstancesConfiguration.adminScreenName();
+			String adminEmailAddress =
+				portalInstancesConfiguration.adminEmailAddress();
+			String adminFirstName =
+				portalInstancesConfiguration.adminFirstName();
+			String adminMiddleName =
+				portalInstancesConfiguration.adminMiddleName();
+			String adminLastName = portalInstancesConfiguration.adminLastName();
+
 			company = _companyLocalService.addCompany(
-				null, webId, virtualHostname, mx, maxUsers, active, adminPassword, adminScreenName,
-				adminEmailAddress, adminFirstName, adminMiddleName, adminLastName);
+				null, webId, virtualHostname, mx, maxUsers, active,
+				adminPassword, adminScreenName, adminEmailAddress,
+				adminFirstName, adminMiddleName, adminLastName);
 
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setWithSafeCloseable(

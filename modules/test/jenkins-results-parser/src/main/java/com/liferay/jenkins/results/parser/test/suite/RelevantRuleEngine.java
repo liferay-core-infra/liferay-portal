@@ -104,7 +104,8 @@ public class RelevantRuleEngine {
 	}
 
 	private RelevantRule _getRelevantRule(
-		String filePath, String relevantRuleName, Properties properties) {
+		String filePath, Job job, String relevantRuleName,
+		Properties properties) {
 
 		String relevantRuleKey = filePath + "_" + relevantRuleName;
 
@@ -115,7 +116,7 @@ public class RelevantRuleEngine {
 		}
 
 		RelevantRule relevantRule = new RelevantRule(
-			filePath, relevantRuleName, properties);
+			filePath, job, relevantRuleName, properties);
 
 		_relevantRuleMap.put(relevantRule, new HashSet<>());
 
@@ -218,7 +219,7 @@ public class RelevantRuleEngine {
 			for (String relevantRuleName : relevantRuleNames.split(",")) {
 				_relevantRuleMap.put(
 					_getRelevantRule(
-						testPropertiesFilePath, relevantRuleName,
+						testPropertiesFilePath, _job, relevantRuleName,
 						_getRelevantRuleProperties(
 							relevantRuleName, properties)),
 					entry.getValue());

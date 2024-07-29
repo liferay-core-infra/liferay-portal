@@ -4,6 +4,8 @@
  */
 
 import {useRef} from 'react';
+import usePermission from '~/hooks/usePermission';
+import {TestrayRole} from '~/util/constants';
 
 import useFormActions from '../../../../hooks/useFormActions';
 import useModalContext from '../../../../hooks/useModalContext';
@@ -19,8 +21,13 @@ import {UserListView} from '../../../Manage/User';
 
 const useBuildTestActions = () => {
 	const {form} = useFormActions();
-	const {removeItemFromList, updateItemFromList} = useMutate();
 	const {onOpenModal, state} = useModalContext();
+	const {removeItemFromList, updateItemFromList} = useMutate();
+	const hasPermission = usePermission([
+		TestrayRole.TESTRAY_ADMINISTRATOR,
+		TestrayRole.TESTRAY_ANALYST,
+		TestrayRole.TESTRAY_LEAD,
+	]);
 
 	const actionsRef = useRef([
 		{
@@ -58,7 +65,7 @@ const useBuildTestActions = () => {
 				}),
 			icon: 'user',
 			name: i18n.translate('assign'),
-			permission: 'UPDATE',
+			permission: hasPermission,
 		},
 		{
 			action: (caseResult, mutate) => {
@@ -85,7 +92,7 @@ const useBuildTestActions = () => {
 						? 'unassign-myself'
 						: 'assign-to-me'
 				),
-			permission: 'UPDATE',
+			permission: hasPermission,
 		},
 		{
 			action: ({testrayCaseResultId}, mutate) =>
@@ -101,7 +108,7 @@ const useBuildTestActions = () => {
 					.catch(form.onError),
 			icon: 'trash',
 			name: i18n.translate('delete'),
-			permission: 'DELETE',
+			permission: hasPermission,
 		},
 	] as Action<TestrayCaseResult>[]);
 

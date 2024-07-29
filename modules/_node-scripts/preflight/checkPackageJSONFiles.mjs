@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 
 import {getRootDir} from '../util/constants.mjs';
-import getGitModifiedFiles from '../util/getGitModifiedFiles.mjs';
+import {getGitModifiedFiles} from '../util/gitCommands.mjs';
 import projectScopeRequire from '../util/projectScopeRequire.mjs';
 
 /**

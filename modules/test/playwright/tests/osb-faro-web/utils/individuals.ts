@@ -4,8 +4,8 @@
  */
 
 import {ApiHelpers} from '../../../helpers/ApiHelpers';
+import getRandomString from '../../../utils/getRandomString';
 
-const DEFAULT_BIRTHDATE = '1970-01-01T01:01:01.001Z';
 const modifiedDate = new Date().toISOString();
 
 export async function createIndividuals({
@@ -23,12 +23,13 @@ export async function createIndividuals({
 }) {
 	const formattedIndividuals = individuals.map(
 		({
-			birthDate = DEFAULT_BIRTHDATE,
+			birthDate = '1970-01-01T00:00:00.000Z',
 			dataSourceId = 0,
 			familyName = 'Smith',
 			id,
 			name,
 		}) => ({
+			birthday: birthDate,
 			emailAddress: `${name}@liferay.com`,
 			fields: [
 				{dataSourceId, name: 'birthday', value: birthDate},
@@ -60,4 +61,13 @@ export async function createIndividuals({
 	await apiHelpers.jsonWebServicesOSBAsah.createIdentities(
 		individualIdentities
 	);
+}
+
+export function generateIndividual({name}: {name: any}) {
+	const id = getRandomString();
+
+	return {
+		id,
+		name,
+	};
 }

@@ -38,6 +38,7 @@ export class ApplicationsMenuPage {
 	private readonly productsMenuItem: Locator;
 	private readonly queueMenuItem: Locator;
 	private readonly rolesItem: Locator;
+	private readonly samlAdminItem: Locator;
 	private readonly searchItem: Locator;
 	private readonly serviceAccountsItem: Locator;
 	private readonly sitesItem: Locator;
@@ -45,6 +46,7 @@ export class ApplicationsMenuPage {
 	private readonly serverAdministrationItem: Locator;
 	private readonly siteTemplatesButton: Locator;
 	private readonly usersAndOrganizationsItem: Locator;
+	private readonly virtualInstancesItem: Locator;
 
 	constructor(page: Page) {
 		this.accountsItem = page.getByRole('menuitem', {
@@ -157,6 +159,10 @@ export class ApplicationsMenuPage {
 			exact: true,
 			name: 'Roles',
 		});
+		this.samlAdminItem = page.getByRole('menuitem', {
+			exact: true,
+			name: 'SAML Admin',
+		});
 		this.searchItem = page.getByRole('menuitem', {
 			exact: true,
 			name: 'Search',
@@ -184,6 +190,10 @@ export class ApplicationsMenuPage {
 		this.usersAndOrganizationsItem = page.getByRole('menuitem', {
 			exact: true,
 			name: 'Users and Organizations',
+		});
+		this.virtualInstancesItem = page.getByRole('menuitem', {
+			exact: true,
+			name: 'Virtual Instances',
 		});
 	}
 
@@ -368,6 +378,12 @@ export class ApplicationsMenuPage {
 		await this.rolesItem.click();
 	}
 
+	async goToSamlAdmin() {
+		await this.goto();
+		await this.controlPanelButton.click();
+		await this.samlAdminItem.click();
+	}
+
 	async goToServiceAccounts() {
 		await this.goto();
 		await this.controlPanelButton.click();
@@ -386,5 +402,11 @@ export class ApplicationsMenuPage {
 
 		await this.controlPanelButton.click();
 		await this.usersAndOrganizationsItem.click();
+	}
+
+	async goToVirtualInstances() {
+		await this.goto();
+		await this.controlPanelButton.click();
+		await this.virtualInstancesItem.click();
 	}
 }

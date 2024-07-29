@@ -9,20 +9,17 @@ import {apiHelpersTest} from '../../fixtures/apiHelpersTest';
 import {dataApiHelpersTest} from '../../fixtures/dataApiHelpersTest';
 import {loginAnalyticsCloudTest} from '../../fixtures/loginAnalyticsCloudTest';
 import {loginTest} from '../../fixtures/loginTest';
-import {liferayConfig} from '../../liferay.config';
 import getRandomString from '../../utils/getRandomString';
-import {syncAnalyticsCloud} from '../analytics-settings-web/utils/analyticsSettings';
-import {createChannel, switchChannel} from './utils/channel';
-import {goToDistributionTabAndSelectAttribute} from './utils/distribution';
+import {createChannel} from './utils/channel';
+import {
+	goToDistributionTabAndSelectAttribute,
+	viewBreakdownRechartsData,
+} from './utils/distribution';
 import {changeEventDisplayName} from './utils/event-definitions';
-import {createIndividuals} from './utils/individuals';
+import {createIndividuals, generateIndividual} from './utils/individuals';
 import {waitForLoading} from './utils/loading';
 import {Nanites, runNanites} from './utils/nanites';
-import {
-	navigateTo,
-	navigateToACSitesPageViaURL,
-	navigateToACWorkspace,
-} from './utils/navigation';
+import {navigateTo, navigateToACSitesPageViaURL} from './utils/navigation';
 import {
 	addSegmentField,
 	addStaticMember,
@@ -58,50 +55,58 @@ test(
 	},
 	async ({apiHelpers, page}) => {
 		const channelName = 'My Property - ' + getRandomString();
-		const customEventName = 'CustomEvent' + new Date().getTime();
-		const newCustomEventName = `${customEventName}EV`;
-
-		await test.step('Connect the DXP to AC', async () => {
-			await syncAnalyticsCloud({
-				apiHelpers,
-				channelName,
-				page,
-			});
+		const {channel, project} = await createChannel({
+			apiHelpers,
+			channelName,
 		});
 
-		await test.step('Go to DXP Home Page > Create a custom event', async () => {
-			await page.goto(liferayConfig.environment.baseUrl);
-			await page.waitForTimeout(3000);
+		const customEventName = 'CustomEvent' + new Date().getTime();
 
-			await page.evaluate(
-				({customEventName}) => {
+		await test.step('Send a custom event', async () => {
+			const eventAttributeName = 'propString';
+			const date = new Date();
 
-					// @ts-ignore
-
-					if (window.Analytics) {
-
-						// @ts-ignore
-
-						window.Analytics.track(customEventName, {
-							propBool: true,
-							propDate: '2024-05-20T01:00:00.000',
-							propDuration: 66840000,
-							propNum: 18,
-							propString: 'test',
-						});
-					}
+			await apiHelpers.jsonWebServicesOSBAsah.createEvents([
+				{
+					applicationId: 'CustomEvent',
+					canonicalUrl: 'https://www.liferay.com',
+					channelId: channel.id,
+					eventDate: date.toISOString(),
+					eventId: customEventName,
+					properties: [
+						{
+							name: eventAttributeName,
+							value: 'testAttribute',
+						},
+					],
+					title: 'Liferay',
+					userId: '1',
 				},
-				{customEventName}
-			);
+			]);
 
-			await page.waitForTimeout(3000);
+			await apiHelpers.jsonWebServicesOSBAsah.createEventDefinition([
+				{
+					applicationId: 'CustomEvent',
+					displayName: customEventName,
+					eventAttributeDefinitions: [
+						{
+							dataType: 'STRING',
+							displayName: eventAttributeName,
+							name: eventAttributeName,
+							type: 'LOCAL',
+						},
+					],
+					name: customEventName,
+					type: 'CUSTOM',
+				},
+			]);
 		});
 
 		await test.step('Go to Analytics Cloud and Switch the property', async () => {
-			await navigateToACWorkspace({page});
-			await switchChannel({
-				channelName,
+			await navigateToACSitesPageViaURL({
+				channelID: channel.id,
 				page,
+				projectID: project.groupId,
 			});
 		});
 
@@ -123,6 +128,8 @@ test(
 				pageName: 'Custom Events',
 			});
 		});
+
+		const newCustomEventName = `${customEventName}EV`;
 
 		await test.step('Change the display name of the event', async () => {
 			await changeEventDisplayName({
@@ -225,45 +232,34 @@ test(
 
 	async ({apiHelpers, page}) => {
 		const channelName = 'My Property - ' + getRandomString();
-
-		const firstIndividualsName = 'ac';
-		const secondIndividualsName = 'dxp';
-
 		const {channel, project} = await createChannel({
 			apiHelpers,
 			channelName,
 		});
 
-		const date = new Date();
+		const firstIndividualsName = 'ac';
+		const secondIndividualsName = 'dxp';
+		const knownIndividuals = [
+			generateIndividual({
+				name: firstIndividualsName,
+			}),
+			generateIndividual({
+				name: secondIndividualsName,
+			}),
+		];
 
-		const generateIndividual = (name) => {
-			const id = getRandomString();
-
-			return {
-				id,
-				name,
-			};
-		};
-
-		const firstIndividuals = [generateIndividual(firstIndividualsName)];
-
-		const secondIndividuals = [generateIndividual(secondIndividualsName)];
-
-		await test.step('Create the first and second Individuals', async () => {
+		await test.step('Create 2 individuals directly in the AC database', async () => {
 			await createIndividuals({
 				apiHelpers,
-				individuals: firstIndividuals,
-			});
-
-			await createIndividuals({
-				apiHelpers,
-				individuals: secondIndividuals,
+				individuals: knownIndividuals,
 			});
 		});
 
+		const date = new Date();
+
 		await test.step('Create the first and second Individuals Events', async () => {
-			const firstIndividualsEvents = firstIndividuals.map(
-				(individual) => ({
+			await apiHelpers.jsonWebServicesOSBAsah.createEvents(
+				knownIndividuals.map((individual) => ({
 					applicationId: 'Page',
 					canonicalUrl: 'https://www.liferay.com',
 					channelId: channel.id,
@@ -271,49 +267,19 @@ test(
 					eventId: 'pageViewed',
 					title: 'Liferay',
 					userId: individual.id,
-				})
+				}))
 			);
-
-			await apiHelpers.jsonWebServicesOSBAsah.createEvents(
-				firstIndividualsEvents
-			);
-
-			const secondEvents = secondIndividuals.map((individual) => ({
-				applicationId: 'Page',
-				canonicalUrl: 'https://www.liferay.com',
-				channelId: channel.id,
-				eventDate: date.toISOString(),
-				eventId: 'pageViewed',
-				title: 'Liferay',
-				userId: individual.id,
-			}));
-
-			await apiHelpers.jsonWebServicesOSBAsah.createEvents(secondEvents);
 		});
 
 		await test.step('Create the first and second Individual Session', async () => {
-			const firstSessions = firstIndividuals.map((individual) => ({
-				channelId: channel.id,
-				id: individual.id,
-				sessionEnd: date.toISOString(),
-				sessionStart: date.toISOString(),
-				userId: individual.id,
-			}));
-
 			await apiHelpers.jsonWebServicesOSBAsah.createSessions(
-				firstSessions
-			);
-
-			const secondSessions = secondIndividuals.map((individual) => ({
-				channelId: channel.id,
-				id: individual.id,
-				sessionEnd: date.toISOString(),
-				sessionStart: date.toISOString(),
-				userId: individual.id,
-			}));
-
-			await apiHelpers.jsonWebServicesOSBAsah.createSessions(
-				secondSessions
+				knownIndividuals.map((individual) => ({
+					channelId: channel.id,
+					id: individual.id,
+					sessionEnd: date.toISOString(),
+					sessionStart: date.toISOString(),
+					userId: individual.id,
+				}))
 			);
 		});
 
@@ -345,7 +311,7 @@ test(
 			await saveSegment(page);
 		});
 
-		await test.step('Click on distribution tab and select birthDate attribute', async () => {
+		await test.step('Click on distribution tab and select familyName attribute', async () => {
 			await goToDistributionTabAndSelectAttribute({
 				attributeName: 'familyName',
 				page,
@@ -409,17 +375,12 @@ test(
 			channelName,
 		});
 
-		const generateIndividual = (name) => {
-			const id = getRandomString();
-
-			return {
-				id,
-				name,
-			};
-		};
-
 		const knownIndividualName = 'ac';
-		const knownIndividual = [generateIndividual(knownIndividualName)];
+		const knownIndividual = [
+			generateIndividual({
+				name: knownIndividualName,
+			}),
+		];
 
 		await test.step('Create the known individuals directly in the AC database', async () => {
 			await createIndividuals({
@@ -667,17 +628,12 @@ test(
 			channelName,
 		});
 
-		const generateIndividual = (name) => {
-			const id = getRandomString();
-
-			return {
-				id,
-				name,
-			};
-		};
-
 		const knownIndividualName = 'ac';
-		const knownIndividual = [generateIndividual(knownIndividualName)];
+		const knownIndividual = [
+			generateIndividual({
+				name: knownIndividualName,
+			}),
+		];
 
 		await test.step('Create the known individuals directly in the AC database', async () => {
 			await createIndividuals({
@@ -864,6 +820,107 @@ test(
 		await test.step('Check that the correct known member appears in the membership tab', async () => {
 			await viewNameOnTableList({
 				itemNames: `${knownIndividualName} Smith`,
+				page,
+			});
+		});
+
+		await test.step('delete channel', async () => {
+			await apiHelpers.jsonWebServicesOSBFaro.deleteChannel(
+				`[${channel.id}]`,
+				project.groupId
+			);
+		});
+	}
+);
+
+test(
+	'Segment distribution chart can be filtered by date property',
+	{
+		tag: '@Legacy',
+	},
+	async ({apiHelpers, page}) => {
+		const channelName = 'My Property - ' + getRandomString();
+		const {channel, project} = await createChannel({
+			apiHelpers,
+			channelName,
+		});
+
+		const knownIndividualName = 'ac';
+		const knownIndividual = [
+			generateIndividual({
+				name: knownIndividualName,
+			}),
+		];
+
+		await test.step('Create the known individuals directly in the AC database', async () => {
+			await createIndividuals({
+				apiHelpers,
+				individuals: knownIndividual,
+			});
+		});
+
+		const date = new Date();
+
+		await test.step('Create an event for the individual to appear in AC', async () => {
+			await apiHelpers.jsonWebServicesOSBAsah.createEvents(
+				knownIndividual.map((individual) => ({
+					applicationId: 'Page',
+					canonicalUrl: 'https://www.liferay.com',
+					channelId: channel.id,
+					eventDate: date.toISOString(),
+					eventId: 'pageViewed',
+					title: 'Liferay',
+					userId: individual.id,
+				}))
+			);
+		});
+
+		await test.step('Create a session for the known individual', async () => {
+			await apiHelpers.jsonWebServicesOSBAsah.createSessions(
+				knownIndividual.map((individual) => ({
+					channelId: channel.id,
+					id: individual.id,
+					sessionEnd: date.toISOString(),
+					sessionStart: date.toISOString(),
+					userId: individual.id,
+				}))
+			);
+		});
+
+		await test.step('Go to Analytics Cloud and Switch the property', async () => {
+			await navigateToACSitesPageViaURL({
+				channelID: channel.id,
+				page,
+				projectID: project.groupId,
+			});
+		});
+
+		await test.step('Go to Segments > Create a Static Segment', async () => {
+			await navigateTo({page, pageName: 'Segments'});
+
+			await createStaticSegment(page);
+
+			await setSegmentName({page, segmentName: 'Test Static Segment'});
+
+			await addStaticMember({
+				memberNames: `${knownIndividualName}@liferay.com`,
+				page,
+			});
+
+			await saveSegment(page);
+		});
+
+		await test.step('Click on distribution tab and select birthDate attribute', async () => {
+			await goToDistributionTabAndSelectAttribute({
+				attributeName: 'birthDate',
+				page,
+			});
+		});
+
+		await test.step('Check if the correct results appear (birthdate and maximum count)', async () => {
+			await viewBreakdownRechartsData({
+				attributeValue: '1970-01-01',
+				maxCount: '1',
 				page,
 			});
 		});

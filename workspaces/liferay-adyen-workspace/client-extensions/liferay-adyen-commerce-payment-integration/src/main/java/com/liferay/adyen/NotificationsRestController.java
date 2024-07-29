@@ -10,7 +10,6 @@ import com.adyen.model.notification.NotificationRequestItem;
 import com.adyen.util.HMACValidator;
 
 import com.liferay.client.extension.util.spring.boot.LiferayOAuth2AccessTokenManager;
-import com.liferay.petra.string.StringBundler;
 
 import java.nio.charset.StandardCharsets;
 
@@ -173,9 +172,9 @@ public class NotificationsRestController extends BaseRestController {
 			_liferayOAuth2AccessTokenManager.getAuthorization(
 				"liferay-adyen-payment-integration-oauth-application-" +
 					"headless-server"),
-			StringBundler.concat(
-				"/o/headless-commerce-admin-payment/v1.0/payments/?filter=",
-				"classPK eq ", notificationRequestItem.getMerchantReference()));
+			"/o/headless-commerce-admin-payment/v1.0/payments/?filter=" +
+				"relatedItemId eq " +
+					notificationRequestItem.getMerchantReference());
 
 		JSONArray itemsJSONArray = paymentsJSONObject.getJSONArray("items");
 
@@ -185,9 +184,7 @@ public class NotificationsRestController extends BaseRestController {
 			String payload = itemJSONObject.getString("payload");
 
 			if (StringUtils.contains(
-					payload, notificationRequestItem.getOriginalReference()) &&
-				StringUtils.contains(
-					payload, notificationRequestItem.getPspReference())) {
+					payload, notificationRequestItem.getOriginalReference())) {
 
 				return String.valueOf(itemJSONObject.getInt("id"));
 			}

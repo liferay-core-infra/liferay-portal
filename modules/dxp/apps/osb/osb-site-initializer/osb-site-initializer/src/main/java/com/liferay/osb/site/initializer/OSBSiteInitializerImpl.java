@@ -30,6 +30,8 @@ public class OSBSiteInitializerImpl implements OSBSiteInitializer {
 
 	@Override
 	public void addOrUpdateSXPBlueprint(
+			Map<String, String> classNameIdStringUtilReplaceValues,
+			Map<String, String> releaseInfoStringUtilReplaceValues,
 			ServiceContext serviceContext, ServletContext servletContext,
 			Map<String, String> stringUtilReplaceValues)
 		throws Exception {
@@ -50,7 +52,11 @@ public class OSBSiteInitializerImpl implements OSBSiteInitializer {
 			serviceContext.fetchUser()
 		).build();
 
-		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
+		JSONArray jsonArray = _jsonFactory.createJSONArray(
+			SiteInitializerUtil.replace(
+				classNameIdStringUtilReplaceValues,
+				releaseInfoStringUtilReplaceValues, json,
+				stringUtilReplaceValues));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			SXPBlueprint sxpBlueprint = SXPBlueprint.toDTO(

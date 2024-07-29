@@ -42,6 +42,7 @@ export const BUILD_SASS_CACHE_PATH = path.join(
 );
 
 export const LIFERAY_WORKING_BRANCH = 'master';
+export const GIT_ORIGIN_NAME = 'upstream';
 
 export const NODE_SCRIPTS_PATH = path.resolve(__dirname, '..');
 

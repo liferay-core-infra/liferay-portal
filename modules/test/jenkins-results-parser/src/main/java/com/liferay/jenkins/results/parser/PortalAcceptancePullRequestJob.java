@@ -115,7 +115,11 @@ public class PortalAcceptancePullRequestJob
 
 		RelevantTestSuite relevantTestSuite = new RelevantTestSuite(this);
 
-		return relevantTestSuite.getTestBatches();
+		List<TestBatch> testBatches = relevantTestSuite.getTestBatches();
+
+		recordJobProperties(relevantTestSuite.getTestBatchNamesJobProperties());
+
+		return testBatches;
 	}
 
 	private boolean _hasMatchingFiles(List<PathMatcher> pathMatchers) {

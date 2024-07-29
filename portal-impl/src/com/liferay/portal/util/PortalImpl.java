@@ -923,7 +923,14 @@ public class PortalImpl implements Portal {
 				else if (allowedDomain.equals(domain)) {
 					return url;
 				}
-				else if (allowedDomain.equals("PORTAL_DOMAIN")) {
+				else if (allowedDomain.equals("PORTAL_DOMAINS")) {
+					if (Validator.isNotNull(
+							VirtualHostLocalServiceUtil.fetchVirtualHost(
+								domain))) {
+
+						return url;
+					}
+
 					ServiceContext serviceContext =
 						ServiceContextThreadLocal.getServiceContext();
 

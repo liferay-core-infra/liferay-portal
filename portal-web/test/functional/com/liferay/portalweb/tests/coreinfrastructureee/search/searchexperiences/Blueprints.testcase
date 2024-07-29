@@ -84,6 +84,7 @@ definition {
 	@priority = 3
 	test AddElementToQueryBuilder {
 		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
 		property portal.acceptance = "true";
 
 		Blueprints.openBlueprintsAdmin();
@@ -5085,6 +5086,8 @@ definition {
 			PageEditor.clickConfigurableField(
 				fragmentName = "Collection Display",
 				index = 1);
+
+			PageEditor.gotoTab(tabName = "Browser");
 
 			AssertVisible(
 				key_sidebarButton = "Browser",

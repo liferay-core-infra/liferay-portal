@@ -38,22 +38,32 @@ export const userData = {
 
 async function performLogin(
 	page: Page,
-	screenName: LoginScreenName | string
+	screenName: LoginScreenName | string,
+	baseUrl = '/',
+	domain = '@liferay.com'
 ): Promise<Cookie[]> {
 	const {name, password, surname} = userData[screenName];
 
-	await page.goto('/');
+	await page.goto(baseUrl);
 
-	await page.getByRole('button', {name: 'Sign In'}).click();
+	const signInButton = await page.getByRole('button', {name: 'Sign In'});
 
-	await page.getByLabel('Email Address').fill(`${screenName}@liferay.com`);
+	await signInButton.click();
+
+	await page.waitForTimeout(500);
+	await page.getByLabel('Email Address').fill(`${screenName}${domain}`);
 	await page.getByLabel('Password').fill(password);
 	await page.getByLabel('Remember Me').check();
 
-	await page
-		.getByLabel('Sign In- Loading')
-		.getByRole('button', {name: 'Sign In'})
-		.click();
+	if ((await signInButton.count()) === 1) {
+		await signInButton.click();
+	}
+	else {
+		await page
+			.getByLabel('Sign In- Loading')
+			.getByRole('button', {name: 'Sign In'})
+			.click();
+	}
 
 	await expect(
 		page.getByLabel(`${name} ${surname} User Profile`)

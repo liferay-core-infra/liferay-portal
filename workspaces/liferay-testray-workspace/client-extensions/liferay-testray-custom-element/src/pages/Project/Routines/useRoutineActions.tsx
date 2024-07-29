@@ -5,6 +5,8 @@
 
 import {useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
+import usePermission from '~/hooks/usePermission';
+import {TestrayRole} from '~/util/constants';
 
 import useFormActions from '../../../hooks/useFormActions';
 import useModalContext from '../../../hooks/useModalContext';
@@ -16,9 +18,10 @@ import EnvironmentFactorsModal from '../../Standalone/EnvironmentFactors/Envirom
 
 const useRoutineActions = ({isHeaderActions}: ActionsHookParameter = {}) => {
 	const {form} = useFormActions();
-	const navigate = useNavigate();
-	const {removeItemFromList} = useMutate();
 	const {onOpenModal, state} = useModalContext();
+	const {removeItemFromList} = useMutate();
+	const hasPermission = usePermission([TestrayRole.TESTRAY_ADMINISTRATOR]);
+	const navigate = useNavigate();
 
 	const actionsRef = useRef([
 		{
@@ -33,7 +36,7 @@ const useRoutineActions = ({isHeaderActions}: ActionsHookParameter = {}) => {
 			},
 			icon: 'pencil',
 			name: i18n.translate(isHeaderActions ? 'edit-routine' : 'edit'),
-			permission: 'UPDATE',
+			permission: hasPermission,
 		},
 		{
 			action: (routine) => {
@@ -47,7 +50,7 @@ const useRoutineActions = ({isHeaderActions}: ActionsHookParameter = {}) => {
 			},
 			icon: 'cog',
 			name: i18n.translate('manage-templates'),
-			permission: 'UPDATE',
+			permission: hasPermission,
 		},
 		{
 			action: (routine) => {
@@ -71,7 +74,7 @@ const useRoutineActions = ({isHeaderActions}: ActionsHookParameter = {}) => {
 
 			icon: 'display',
 			name: i18n.translate('select-default-environment-factors'),
-			permission: 'UPDATE',
+			permission: hasPermission,
 		},
 		{
 			action: (routine, mutate) => {
@@ -92,7 +95,7 @@ const useRoutineActions = ({isHeaderActions}: ActionsHookParameter = {}) => {
 			},
 			icon: 'trash',
 			name: i18n.translate(isHeaderActions ? 'delete-routine' : 'delete'),
-			permission: 'DELETE',
+			permission: hasPermission,
 		},
 	] as Action<TestrayRoutine>[]);
 

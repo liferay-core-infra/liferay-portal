@@ -6,13 +6,14 @@
 import {ESLint} from 'eslint';
 import fg from 'fast-glob';
 import * as fs from 'fs/promises';
+import micromatch from 'micromatch';
 import path from 'path';
 import prettier from 'prettier';
 import stylelint from 'stylelint';
 
 import {getRootDir} from '../util/constants.mjs';
 import fileExists from '../util/fileExists.mjs';
-import getGitModifiedFiles from '../util/getGitModifiedFiles.mjs';
+import {getGitModifiedFiles} from '../util/gitCommands.mjs';
 import {readIgnoreFile} from '../util/readIgnoreFile.mjs';
 import {ID_END, ID_START} from './jsp/getPaddedReplacement.mjs';
 import processJSP from './jsp/processJSP.mjs';
@@ -27,7 +28,7 @@ const GIT_IGNORE_FILE = '.gitignore';
 
 const EXTENSIONS = ['graphql', 'js', 'jsp', 'jspf', 'mjs', 'scss', 'ts', 'tsx'];
 
-async function getFilesToCheck(rootDir) {
+async function getIgnoredFiles(rootDir) {
 	const eslintIgnoreFilePath = path.join(rootDir, ESLINT_IGNORE_FILE);
 	const prettierIgnoreFilePath = path.join(rootDir, PRETTIER_IGNORE_FILE);
 	const gitIgnoreFilePath = path.join(rootDir, GIT_IGNORE_FILE);
@@ -38,6 +39,30 @@ async function getFilesToCheck(rootDir) {
 		readIgnoreFile(gitIgnoreFilePath),
 	]);
 
+	return [
+		'**/src/test/**',
+		'**/build_gradle/**',
+		...gitIgnores,
+		...eslintIgnores,
+		...prettierIgnores,
+	].map((ignore) => {
+		if (ignore.startsWith('*') && !ignore.startsWith('**')) {
+			ignore = `**/${ignore}`;
+		}
+
+		if (!ignore.startsWith('*')) {
+			ignore = `**${ignore.startsWith('/') ? '' : '/'}${ignore}`;
+		}
+
+		if (!ignore.endsWith('**') && !ignore.includes('.')) {
+			ignore = `${ignore}${ignore.endsWith('/') ? '' : '/'}**`;
+		}
+
+		return ignore;
+	});
+}
+
+async function getFilesToCheck(rootDir, ignore = []) {
 	const files = await fg(
 		[
 			'**/*.',
@@ -48,27 +73,7 @@ async function getFilesToCheck(rootDir) {
 		{
 			cwd: rootDir,
 			dot: true,
-			ignore: [
-				'**/src/test/**',
-				'**/build_gradle/**',
-				...gitIgnores,
-				...eslintIgnores,
-				...prettierIgnores,
-			].map((ignore) => {
-				if (ignore.startsWith('*') && !ignore.startsWith('**')) {
-					ignore = `**/${ignore}`;
-				}
-
-				if (!ignore.startsWith('*')) {
-					ignore = `**${ignore.startsWith('/') ? '' : '/'}${ignore}`;
-				}
-
-				if (!ignore.endsWith('**') && !ignore.includes('.')) {
-					ignore = `${ignore}${ignore.endsWith('/') ? '' : '/'}**`;
-				}
-
-				return ignore;
-			}),
+			ignore,
 		}
 	);
 
@@ -85,18 +90,24 @@ export default async function format(
 	}
 ) {
 	const rootDir = await getRootDir();
+	const workspacesDir = path.join(rootDir, '..', 'workspaces');
+	const playwrightDir = path.join(rootDir, 'test', 'playwright');
+
+	const [rootIgnored, workspacesIgnored, playwrightIgnored] =
+		await Promise.all([
+			getIgnoredFiles(rootDir),
+			getIgnoredFiles(workspacesDir),
+			getIgnoredFiles(playwrightDir),
+		]);
 
 	let filepaths = [];
 
 	if (all) {
-		const workspacesDir = path.join(rootDir, '..', 'workspaces');
-		const playwrightDir = path.join(rootDir, 'test', 'playwright');
-
 		filepaths = (
 			await Promise.all([
-				getFilesToCheck(rootDir),
-				getFilesToCheck(workspacesDir),
-				getFilesToCheck(playwrightDir),
+				getFilesToCheck(rootDir, rootIgnored),
+				getFilesToCheck(workspacesDir, workspacesIgnored),
+				getFilesToCheck(playwrightDir, playwrightIgnored),
 			])
 		).flat();
 	}
@@ -104,21 +115,48 @@ export default async function format(
 		filepaths = [filePath];
 	}
 	else {
-		filepaths = (await getGitModifiedFiles())
-			.filter((filepath) =>
-				EXTENSIONS.includes(
+		const modifiedFiles = await getGitModifiedFiles();
 
-					// path.extname includes the '.'
+		const filteredModifiedFiles = [];
 
-					path.extname(filepath).replace('.', '')
-				)
-			)
-			.map(
+		for (const file of modifiedFiles) {
+			if (file.startsWith('modules/test/playwright/')) {
+				filteredModifiedFiles.push(
+					...micromatch(
+						[file],
+						EXTENSIONS.map((ext) => `**/*.${ext}`),
+						{ignore: playwrightIgnored}
+					)
+				);
+			}
 
-				// make sure the path is absolute
+			if (file.startsWith('modules/')) {
+				filteredModifiedFiles.push(
+					...micromatch(
+						[file],
+						EXTENSIONS.map((ext) => `**/*.${ext}`),
+						{ignore: rootIgnored}
+					)
+				);
+			}
 
-				(filepath) => path.join(rootDir, '..', filepath)
-			);
+			if (file.startsWith('workspaces/')) {
+				filteredModifiedFiles.push(
+					...micromatch(
+						[file],
+						EXTENSIONS.map((ext) => `**/*.${ext}`),
+						{ignore: workspacesIgnored}
+					)
+				);
+			}
+		}
+
+		filepaths = filteredModifiedFiles.map(
+
+			// make sure the path is absolute
+
+			(filepath) => path.join(rootDir, '..', filepath)
+		);
 	}
 
 	if (!filepaths.length) {
@@ -328,6 +366,12 @@ export default async function format(
 
 		summary.push(
 			`${totalBad} ${files(totalBad)} ${have(totalBad)} problems`
+		);
+
+		summary.push(
+			badFiles
+				.map((filepath) => `- ${path.relative(rootDir, filepath)}`)
+				.join('\n')
 		);
 
 		throw new Error(summary.join('\n') + '\n');

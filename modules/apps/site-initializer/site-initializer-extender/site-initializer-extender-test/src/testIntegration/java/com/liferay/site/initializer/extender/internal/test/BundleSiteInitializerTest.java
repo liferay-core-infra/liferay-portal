@@ -3838,6 +3838,13 @@ public class BundleSiteInitializerTest {
 				"TESTSXPBLUEPRINT2");
 
 		Assert.assertNotNull(sxpBlueprint);
+		Assert.assertFalse(
+			sxpBlueprint.toString(
+			).contains(
+				"[$TAXONOMY_CATEGORY_ID:/site-initializer/taxonomy-" +
+					"vocabularies/company/test-asset-vocabulary-1/test-asset-" +
+						"category-1.json$]"
+			));
 		_assertSearchableAssetTypes(
 			new String[] {
 				"com.liferay.document.library.kernel.model.DLFileEntry"

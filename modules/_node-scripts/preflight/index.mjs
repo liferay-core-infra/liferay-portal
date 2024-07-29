@@ -4,37 +4,12 @@
  */
 
 import getNamedArguments from '../util/getNamedArguments.mjs';
-import {checkConfigFileNames} from './checkConfigFileNames.mjs';
-import {checkNodeScriptsHash} from './checkNodeScriptsHash.mjs';
-import {checkPackageJSONFiles} from './checkPackageJSONFiles.mjs';
-import {checkTsc} from './checkTsc.mjs';
-import {checkYarnLock} from './checkYarnLock.mjs';
+import runPreflight from './runPreflight.mjs';
 
-/**
- * Runs the "preflight" checks (basically everything that is not already covered
- * by Prettier or ESLint).
- */
 export default async function preflight() {
 	const {all} = getNamedArguments({
 		all: '--all',
 	});
 
-	const results = await Promise.all([
-		checkConfigFileNames(),
-		checkPackageJSONFiles(all),
-		checkYarnLock(),
-		checkTsc(all),
-		checkNodeScriptsHash(),
-	]);
-
-	const errors = results.flat();
-
-	if (errors.length) {
-		console.error(`
-❌ Preflight check failed:
-${errors.map((error) => `   · ${error}`).join('\n')}
-`);
-
-		throw new Error();
-	}
+	await runPreflight({all});
 }

@@ -3,13 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-
-import {NODE_SCRIPTS_PATH} from '../util/constants.mjs';
-import digestNodeScripts from '../util/digestNodeScripts.mjs';
 import getNamedArguments from '../util/getNamedArguments.mjs';
-import objectSF from '../util/objectSF.mjs';
+import maybeUpdateNodeScriptsHash from '../util/maybeUpdateNodeScriptsHash.mjs';
 import mainBase from './index.mjs';
 
 /**
@@ -23,13 +18,9 @@ export default async function main() {
 
 	await mainBase();
 
-	const packageJSONPath = path.join(NODE_SCRIPTS_PATH, 'package.json');
+	const newHash = await maybeUpdateNodeScriptsHash();
 
-	const packageJSON = JSON.parse(await fs.readFile(packageJSONPath, 'utf-8'));
-
-	const expectedHash = await digestNodeScripts();
-
-	if (packageJSON['com.liferay']['sha256'] === expectedHash) {
+	if (!newHash) {
 		return;
 	}
 
@@ -37,19 +28,12 @@ export default async function main() {
 		console.log(
 			`❌ Expected hash for node-scripts and 'com.liferay/sha256' field in package.json file differ
 
-Expected SHA-256 hash is: ${expectedHash}
+Expected SHA-256 hash is: ${newHash}
 
 Please update the hash field of the package.json file.
 `
 		);
 
 		process.exit(1);
-	}
-	else {
-		packageJSON['com.liferay']['sha256'] = expectedHash;
-
-		await fs.writeFile(packageJSONPath, objectSF(packageJSON), 'utf-8');
-
-		console.log('🔐 Updated sha256 field of package.json');
 	}
 }

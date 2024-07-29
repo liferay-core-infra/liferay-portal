@@ -27,6 +27,8 @@ import org.opensearch.client.opensearch._types.query_dsl.TermsQuery;
  */
 public class QueryUtil {
 
+	public static Integer maxTermsCount = 65536;
+
 	public static List<String> fieldsBoostsToFieldsWithBoosts(
 		Map<String, Float> fieldsBoosts) {
 
@@ -75,7 +77,7 @@ public class QueryUtil {
 	public static QueryVariant translateTerms(
 		Float boost, String field, String[] terms) {
 
-		if (terms.length <= _MAX_TERMS_COUNT) {
+		if (terms.length <= maxTermsCount) {
 			return _getTermsQuery(boost, field, terms);
 		}
 
@@ -86,7 +88,7 @@ public class QueryUtil {
 		for (String term : terms) {
 			termsList.add(term);
 
-			if (termsList.size() == _MAX_TERMS_COUNT) {
+			if (termsList.size() == maxTermsCount) {
 				builder.should(
 					_getTermsQuery(
 						boost, field, termsList.toArray(new String[0])
@@ -130,7 +132,5 @@ public class QueryUtil {
 
 		return builder.build();
 	}
-
-	private static final Integer _MAX_TERMS_COUNT = 65536;
 
 }

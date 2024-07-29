@@ -200,6 +200,7 @@ export type TestrayCaseResult = {
 	dateCreated: string;
 	dateModified: string;
 	dueStatus: PickList;
+	error?: string;
 	errors: string;
 	id: number;
 	issues: string;
@@ -345,11 +346,15 @@ export type TestraySubtask = {
 	r_userToSubtasks_userId: number;
 	score: number;
 	splitFromSubtask: TestraySubtask;
+	status: string;
 	statusUpdateDate: string;
+	subtaskId: string;
 	subtaskToCaseResults?: TestrayCaseResult[];
 	subtaskToSubtasksCasesResults: TestraySubtaskCaseResult[];
 	task: TestrayTask;
+	testrayTaskId: number;
 	user: UserAccount;
+	userId: number;
 };
 
 export type TestraySubtaskCaseResult = {

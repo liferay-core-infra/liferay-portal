@@ -31,8 +31,11 @@ definition {
 	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
 	@priority = 5
 	test Smoke {
+		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.bare.enabled = "true";
+		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
 
@@ -68,6 +71,7 @@ definition {
 	@priority = 5
 	test SmokeWithDeveloperProperties {
 		property custom.properties = "include-and-override=portal-developer.properties";
+		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property osgi.module.configuration.file.names = "com.liferay.document.library.document.conversion.configuration.OpenOfficeConfiguration";
 		property osgi.module.configurations = "cacheEnabled=\"false\"";
 		property portal.smoke = "false";
@@ -91,6 +95,7 @@ definition {
 
 	@priority = 4
 	test SmokeWithEmbeddedHypersonic {
+		property app.server.types = "jboss,tomcat,weblogic,websphere,wildfly";
 		property custom.properties = "passwords.default.policy.change.required=true";
 		property database.hypersonic.embedded = "true";
 		property database.types = "hypersonic";
@@ -111,7 +116,9 @@ definition {
 
 	@priority = 4
 	test SmokeWithJNDI {
+		property app.server.types = "tomcat,wildfly,weblogic,websphere";
 		property database.jndi.enabled = "true";
+		property database.types = "db2,mariadb,mysql,oracle,postgresql,sqlserver";
 		property portal.smoke = "false";
 
 		SignIn.signInTestSetup();

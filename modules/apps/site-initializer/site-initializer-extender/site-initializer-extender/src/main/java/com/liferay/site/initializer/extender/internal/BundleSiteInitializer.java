@@ -444,6 +444,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		_classLoader = bundleWiring.getClassLoader();
 
+		_classNameIdStringUtilReplaceValues =
+			_getClassNameIdStringUtilReplaceValues();
 		_releaseInfoStringUtilReplaceValues =
 			_getReleaseInfoStringUtilReplaceValues();
 	}
@@ -4026,7 +4028,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 
 		osbSiteInitializer.addOrUpdateSXPBlueprint(
-			serviceContext, _servletContext, stringUtilReplaceValues);
+			_getClassNameIdStringUtilReplaceValues(),
+			_releaseInfoStringUtilReplaceValues, serviceContext,
+			_servletContext, stringUtilReplaceValues);
 	}
 
 	private TaxonomyCategory _addOrUpdateTaxonomyCategoryTaxonomyCategory(
@@ -5250,7 +5254,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 			addOrUpdateSegmentsEntriesR,
 			_dependsOn(addOrUpdateRolesR, addUserAccountsR)
 		).put(
-			addOrUpdateSXPBlueprintR, _dependsOn()
+			addOrUpdateSXPBlueprintR,
+			_dependsOn(addOrUpdateTaxonomyVocabulariesR)
 		).put(
 			addOrUpdateTaxonomyVocabulariesR,
 			_dependsOn(addOrUpdateDDMStructuresR)
@@ -5591,20 +5596,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private String _replace(
 		String s, Map<String, String> stringUtilReplaceValues) {
 
-		HashMap<String, String> aggregatedStringUtilReplaceValues =
-			HashMapBuilder.putAll(
-				_getClassNameIdStringUtilReplaceValues()
-			).putAll(
-				_releaseInfoStringUtilReplaceValues
-			).putAll(
-				stringUtilReplaceValues
-			).build();
-
-		s = StringUtil.replace(
-			s, "\"[#", "#]\"", aggregatedStringUtilReplaceValues);
-
-		return StringUtil.replace(
-			s, "[$", "$]", aggregatedStringUtilReplaceValues);
+		return SiteInitializerUtil.replace(
+			_classNameIdStringUtilReplaceValues,
+			_releaseInfoStringUtilReplaceValues, s, stringUtilReplaceValues);
 	}
 
 	private String _replace(String s, ServiceContext serviceContext)
@@ -5904,6 +5898,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final Bundle _bundle;
 	private final CETManager _cetManager;
 	private final ClassLoader _classLoader;
+	private final Map<String, String> _classNameIdStringUtilReplaceValues;
 	private final ClientExtensionEntryLocalService
 		_clientExtensionEntryLocalService;
 	private final ConfigurationProvider _configurationProvider;

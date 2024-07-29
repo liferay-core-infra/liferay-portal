@@ -238,6 +238,11 @@ definition {
 	macro _getUserIdByEmailAddress(portalInstanceName = null, userEmailAddress = null, specificURL = null) {
 		Variables.assertDefined(parameterList = ${userEmailAddress});
 
+		var companyId = JSONCompany.getCompanyIdNoSelenium(
+			creatorEmailAddress = ${creatorEmailAddress},
+			creatorPassword = ${creatorPassword},
+			portalInstanceName = ${portalInstanceName});
+
 		if (isSet(specificURL)) {
 			var portalURL = ${specificURL};
 		}
@@ -257,12 +262,6 @@ definition {
 		if (!(isSet(creatorPassword))) {
 			var creatorPassword = JSONUtil2.getSuperAdminUserPassword();
 		}
-
-		var companyId = JSONCompany.getCompanyIdNoSelenium(
-			creatorEmailAddress = ${creatorEmailAddress},
-			creatorPassword = ${creatorPassword},
-			portalInstanceName = ${portalInstanceName},
-			portalURL = ${specificURL});
 
 		var curl = '''
 			${portalURL}/api/jsonws/user/get-user-by-email-address/company-id/${companyId}/email-address/${userEmailAddress} \

@@ -35,6 +35,12 @@ export enum StatusesProgressScore {
 	INCOMPLETE = 'INCOMPLETE',
 }
 
+export enum TestrayRole {
+	TESTRAY_ADMINISTRATOR = 'Testray Administrator',
+	TESTRAY_ANALYST = 'Testray Analyst',
+	TESTRAY_LEAD = 'Testray Lead',
+}
+
 export const chartClassNames = {
 	[Statuses.BLOCKED]: 'blocked',
 	[Statuses.FAILED]: 'failed',

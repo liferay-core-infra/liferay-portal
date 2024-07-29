@@ -15,7 +15,7 @@ import {
 } from '../util/constants.mjs';
 import fileExists from '../util/fileExists.mjs';
 import getFileProjectDir from '../util/getFileProjectDir.mjs';
-import getGitModifiedFiles from '../util/getGitModifiedFiles.mjs';
+import {getGitModifiedFiles} from '../util/gitCommands.mjs';
 import runConcurrentTasks from '../util/runConcurrentTasks.mjs';
 
 export default async function runTscChecks(
@@ -36,6 +36,7 @@ export default async function runTscChecks(
 		let projectDirs;
 
 		if (commitHash) {
+			console.log(`⚠️ Checking diff between ${commitHash} and HEAD`);
 			projectDirs = await getGitModifiedProjectDirs(commitHash);
 
 			console.log(

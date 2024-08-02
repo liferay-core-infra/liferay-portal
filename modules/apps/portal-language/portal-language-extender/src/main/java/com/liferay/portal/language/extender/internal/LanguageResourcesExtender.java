@@ -8,15 +8,20 @@ package com.liferay.portal.language.extender.internal;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.UTF8Control;
+import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.language.override.service.PLOEntryLocalService;
 
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +39,7 @@ import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.util.tracker.BundleTracker;
 import org.osgi.util.tracker.BundleTrackerCustomizer;
 
@@ -48,6 +54,19 @@ public class LanguageResourcesExtender
 	public List<ServiceRegistration<?>> addingBundle(
 		Bundle bundle, BundleEvent bundleEvent) {
 
+		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>();
+
+		Dictionary<String, String> headers = bundle.getHeaders(
+			StringPool.BLANK);
+
+		if (Validator.isNotNull(
+				headers.get("Liferay-Client-Extension-Language"))) {
+
+			_languageClientExtension.addingBundle(bundle);
+
+			return serviceRegistrations;
+		}
+
 		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
 		List<BundleCapability> bundleCapabilities =
@@ -56,8 +75,6 @@ public class LanguageResourcesExtender
 		if (ListUtil.isEmpty(bundleCapabilities)) {
 			return null;
 		}
-
-		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>();
 
 		for (BundleCapability bundleCapability : bundleCapabilities) {
 			Map<String, Object> attributes = bundleCapability.getAttributes();
@@ -102,6 +119,9 @@ public class LanguageResourcesExtender
 			bundleContext, Bundle.ACTIVE, this);
 
 		_bundleTracker.open();
+
+		_languageClientExtension = new LanguageClientExtension(
+			_companyLocalService, _ploEntryLocalService, _userLocalService);
 	}
 
 	@Deactivate
@@ -190,5 +210,16 @@ public class LanguageResourcesExtender
 
 	private BundleContext _bundleContext;
 	private BundleTracker<?> _bundleTracker;
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
+
+	private LanguageClientExtension _languageClientExtension;
+
+	@Reference
+	private PLOEntryLocalService _ploEntryLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

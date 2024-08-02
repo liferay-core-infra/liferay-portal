@@ -14,13 +14,6 @@ definition {
 		property testcase.url = "file:///opt/dev/projects/github/liferay-portal/";
 
 		task ("Given a file is deployed before startup") {
-			var dependencyFilePath = TestCase.getDependenciesDirPath(fileName = "title.zip");
-
-			File.regexReplace(
-				content = "liferay.com",
-				fileName = "${dependencyFilePath}/title/liferay-deploy-fragments.json",
-				regex = "www.able.com");
-
 			FragmentsDeploy.deployZipOnLiferayPortal(fragmentsZip = "title.zip");
 		}
 

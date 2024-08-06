@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="LanguageKeysCheck" files="src/testIntegration/java/com/liferay/portal/language/extender/internal/test/LanguageResourcesExtenderTest\.java" />
+	</source-check>
+</suppressions>

@@ -3699,6 +3699,12 @@ public class DataFactory {
 		return ddmTemplateVersionModelImpl;
 	}
 
+	public UserModel newDefaultServiceAccountUserModel() {
+		return newUserModel(
+			_sampleUserId, _SAMPLE_USER_NAME, _SAMPLE_USER_NAME,
+			_SAMPLE_USER_NAME, UserConstants.TYPE_REGULAR);
+	}
+
 	public DLFileEntryMetadataModel newDLFileEntryMetadataModel(
 		long ddmStorageLinkId, long ddmStructureId,
 		DLFileVersionModel dlFileVersionModel) {
@@ -5569,8 +5575,9 @@ public class DataFactory {
 		_sampleUserId = _counter.get();
 
 		return newUserModel(
-			_sampleUserId, _SAMPLE_USER_NAME, _SAMPLE_USER_NAME,
-			_SAMPLE_USER_NAME, UserConstants.TYPE_REGULAR);
+			_counter.get(), "default-service-account",
+			"default-service-account", "default-service-account",
+			UserConstants.TYPE_DEFAULT_SERVICE_ACCOUNT);
 	}
 
 	public LayoutModel newSearchGroupLayoutModel(

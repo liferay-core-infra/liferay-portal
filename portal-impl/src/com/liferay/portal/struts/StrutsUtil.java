@@ -72,10 +72,10 @@ public class StrutsUtil {
 					if (throwable == null) {
 						throwable = servletException1;
 					}
-				}
 
-				_setErrorPageAttributes(
-					httpServletRequest, servletName, throwable);
+					_setErrorPageAttributes(
+						httpServletRequest, servletName, throwable);
+				}
 
 				String errorPath = TEXT_HTML_DIR + "/common/error.jsp";
 

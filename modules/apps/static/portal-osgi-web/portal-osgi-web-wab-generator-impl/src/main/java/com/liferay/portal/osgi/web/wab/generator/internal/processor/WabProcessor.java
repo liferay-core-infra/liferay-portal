@@ -287,6 +287,15 @@ public class WabProcessor {
 			frontendPathString += "/";
 		}
 
+		boolean languageDetected = false;
+
+		String languagePathString = pluginPackageProperties.getProperty(
+			_LIFERAY_CLIENT_EXTENSION_LANGUAGE, "content/");
+
+		if (!languagePathString.endsWith("/")) {
+			languagePathString += "/";
+		}
+
 		boolean siteInitializerDetected = false;
 
 		String siteInitializerPathString = pluginPackageProperties.getProperty(
@@ -300,6 +309,8 @@ public class WabProcessor {
 			clientExtensionBundlePath = Files.createTempDirectory(
 				"clientextension");
 
+			Path contentPath = _createPath(
+				clientExtensionBundlePath, "content");
 			Path metatInfBatchPath = _createPath(
 				clientExtensionBundlePath, "META-INF/batch");
 			Path metatInfResourcesPath = _createPath(
@@ -331,6 +342,14 @@ public class WabProcessor {
 									"^" + frontendPathString, "")));
 
 						frontendDetected = true;
+					}
+					else if (name.startsWith(languagePathString)) {
+						Files.createDirectories(
+							contentPath.resolve(
+								name.replaceFirst(
+									"^" + languagePathString, "")));
+
+						languageDetected = true;
 					}
 					else if (name.startsWith(siteInitializerPathString)) {
 						Files.createDirectories(
@@ -367,6 +386,14 @@ public class WabProcessor {
 
 					frontendDetected = true;
 				}
+				else if (name.startsWith(languagePathString)) {
+					Files.copy(
+						zipFile.getInputStream(zipEntry),
+						contentPath.resolve(
+							name.replaceFirst("^" + languagePathString, "")));
+
+					languageDetected = true;
+				}
 				else if (name.startsWith(siteInitializerPathString)) {
 					Files.copy(
 						zipFile.getInputStream(zipEntry),
@@ -393,6 +420,15 @@ public class WabProcessor {
 			else {
 				pluginPackageProperties.remove(
 					_LIFERAY_CLIENT_EXTENSION_FRONTEND);
+			}
+
+			if (languageDetected) {
+				pluginPackageProperties.setProperty(
+					_LIFERAY_CLIENT_EXTENSION_LANGUAGE, "content");
+			}
+			else {
+				pluginPackageProperties.remove(
+					_LIFERAY_CLIENT_EXTENSION_LANGUAGE);
 			}
 
 			if (siteInitializerDetected) {
@@ -1667,6 +1703,9 @@ public class WabProcessor {
 
 	private static final String _LIFERAY_CLIENT_EXTENSION_FRONTEND =
 		"Liferay-Client-Extension-Frontend";
+
+	private static final String _LIFERAY_CLIENT_EXTENSION_LANGUAGE =
+		"Liferay-Client-Extension-Language";
 
 	private static final String _LIFERAY_CLIENT_EXTENSION_SITE_INITIALIZER =
 		"Liferay-Client-Extension-Site-Initializer";

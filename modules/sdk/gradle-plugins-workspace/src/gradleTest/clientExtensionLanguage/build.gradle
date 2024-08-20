@@ -1,0 +1,15 @@
+task runGradleTest
+
+runGradleTest {
+	dependsOn ":client-extension-language:createClientExtensionConfig"
+
+	doLast {
+		Project clientExtensionLanguage = project(":client-extension-language")
+
+		File file = clientExtensionLanguage.file("${clientExtensionLanguage.getProjectDir()}/build/liferay-client-extension-build/content/Language_en.properties")
+
+		assert file.exists()
+
+		assert file.text.contains('foo-bar=Foo Bar')
+	}
+}

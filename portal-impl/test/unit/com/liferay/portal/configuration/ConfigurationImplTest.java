@@ -9,7 +9,9 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.util.EnvPropertiesUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PropsFiles;
 
@@ -146,6 +148,14 @@ public class ConfigurationImplTest {
 
 	@Test
 	public void testLoadEmptyProperties() throws Exception {
+		Properties envProperties = new Properties();
+
+		EnvPropertiesUtil.loadEnvOverrides(
+			ReflectionTestUtil.getFieldValue(
+				ClassLoaderAggregatePropertiesUtil.class,
+				"_ENV_OVERRIDE_PREFIX"),
+			CompanyConstants.SYSTEM, envProperties::setProperty);
+
 		TestResourceClassLoader testResourceClassLoader =
 			new TestResourceClassLoader();
 
@@ -158,7 +168,13 @@ public class ConfigurationImplTest {
 
 		Properties properties = configurationImpl.getProperties();
 
-		Assert.assertTrue(properties.isEmpty());
+		Assert.assertEquals(envProperties.size(), properties.size());
+
+		for (String propertyName : envProperties.stringPropertyNames()) {
+			Assert.assertEquals(
+				envProperties.getProperty(propertyName),
+				properties.getProperty(propertyName));
+		}
 	}
 
 	@Test

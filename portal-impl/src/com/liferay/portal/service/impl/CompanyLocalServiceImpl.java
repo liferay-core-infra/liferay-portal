@@ -75,6 +75,7 @@ import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherMa
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
@@ -84,6 +85,7 @@ import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
@@ -282,6 +284,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					}
 
 					updatedCompany = _checkCompany(updatedCompany);
+
+					// Default Permissions
+
+					_resourcePermissionLocalService.
+						populateDefaultModelResourcePermissions(
+							updatedCompany.getCompanyId(),
+							ResourceActionsUtil.getModelNames());
 
 					if (addDefaultAdminUser) {
 						_userLocalService.addDefaultAdminUser(
@@ -2147,6 +2156,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		_resourceActionLocalService.checkResourceActions();
 
+		// Default Permissions
+
+		_resourcePermissionLocalService.
+			populateDefaultModelResourcePermissions(
+				company.getCompanyId(),
+				ResourceActionsUtil.getModelNames());
+
 		_portletLocalService.checkPortlets(company.getCompanyId());
 
 		TransactionCommitCallbackUtil.registerCallback(
@@ -2576,6 +2592,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	@BeanReference(type = ResourceActionLocalService.class)
 	private ResourceActionLocalService _resourceActionLocalService;
+
+	@BeanReference(type = ResourcePermissionLocalService.class)
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
 	@BeanReference(type = RoleLocalService.class)
 	private RoleLocalService _roleLocalService;

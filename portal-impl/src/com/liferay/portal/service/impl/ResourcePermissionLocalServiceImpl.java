@@ -1250,6 +1250,15 @@ public class ResourcePermissionLocalServiceImpl
 
 			validate(modelResource, false);
 
+			List<String> portletResources =
+				ResourceActionsUtil.getModelPortletResources(modelResource);
+
+			if (!Objects.equals(
+					portletResources.get(0), portlet.getRootPortletId())) {
+
+				return;
+			}
+
 			List<String> groupModelActionIds = null;
 
 			if (Objects.equals(rootModelResource, modelResource)) {

@@ -3789,13 +3789,13 @@ public class PortalImpl implements Portal {
 		}
 
 		return getPortalURL(
-			themeDisplay.getServerName(), themeDisplay.getServerPort(),
+			_getServerName(themeDisplay), themeDisplay.getServerPort(),
 			themeDisplay.isSecure());
 	}
 
 	@Override
 	public String getPortalURL(LayoutSet layoutSet, ThemeDisplay themeDisplay) {
-		String serverName = themeDisplay.getServerName();
+		String serverName = _getServerName(themeDisplay);
 
 		TreeMap<String, String> virtualHostnames =
 			layoutSet.getVirtualHostnames();
@@ -7494,7 +7494,7 @@ public class PortalImpl implements Portal {
 
 		if (canonicalURL ||
 			!StringUtil.equalsIgnoreCase(
-				themeDisplay.getServerName(), defaultVirtualHostname)) {
+				_getServerName(themeDisplay), defaultVirtualHostname)) {
 
 			useGroupVirtualHostname = true;
 		}
@@ -7571,7 +7571,7 @@ public class PortalImpl implements Portal {
 					if (group.isControlPanel() || controlPanel) {
 						virtualHostnames = new TreeMap<>();
 
-						String serverName = themeDisplay.getServerName();
+						String serverName = _getServerName(themeDisplay);
 
 						if (Validator.isNotNull(serverName) &&
 							!serverName.equals(defaultVirtualHostname)) {
@@ -7938,6 +7938,35 @@ public class PortalImpl implements Portal {
 
 		return GetterUtil.getString(
 			portletPreferences.getValue("lfrScopeType", null));
+	}
+
+	private String _getServerName(ThemeDisplay themeDisplay) {
+		String serverName = themeDisplay.getServerName();
+
+		if (serverName != null) {
+			return serverName;
+		}
+
+		InetSocketAddress inetSocketAddress = null;
+
+		if (themeDisplay.isSecure()) {
+			inetSocketAddress = _securePortalServerInetSocketAddress.get();
+		}
+		else {
+			inetSocketAddress = _portalServerInetSocketAddress.get();
+		}
+
+		if (inetSocketAddress == null) {
+			return null;
+		}
+
+		InetAddress inetAddress = inetSocketAddress.getAddress();
+
+		serverName = inetAddress.getHostName();
+
+		themeDisplay.setServerName(serverName);
+
+		return serverName;
 	}
 
 	private Group _getSiteGroup(long groupId) {

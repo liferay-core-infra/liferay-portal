@@ -255,8 +255,15 @@ public class ObjectActionLocalServiceImpl
 				objectAction.getObjectActionTriggerKey(),
 				ObjectActionTriggerConstants.KEY_STANDALONE)) {
 
-			_resourceActions.removeModelResource(
-				objectDefinition.getClassName(), objectAction.getName());
+			try {
+				ObjectDefinitionResourcePermissionUtil.removeResourceActions(
+					objectActionLocalService, objectDefinition,
+					_objectDefinitionPersistence, _resourceActions,
+					_treeFactory);
+			}
+			catch (Exception exception) {
+				throw new PortalException(exception);
+			}
 		}
 
 		return objectAction;

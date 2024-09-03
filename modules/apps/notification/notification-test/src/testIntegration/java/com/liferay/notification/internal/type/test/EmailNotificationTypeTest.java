@@ -1602,8 +1602,7 @@ public class EmailNotificationTypeTest extends BaseNotificationTypeTest {
 		notificationQueueEntryLocalService.deleteNotificationQueueEntry(
 			notificationQueueEntries.get(0));
 
-		objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
 	private void _testSendNotificationWithRolesToCurrentUser()

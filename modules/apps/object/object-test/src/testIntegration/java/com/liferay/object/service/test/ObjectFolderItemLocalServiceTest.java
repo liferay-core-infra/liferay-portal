@@ -153,8 +153,7 @@ public class ObjectFolderItemLocalServiceTest {
 			new Long[] {objectDefinition.getObjectDefinitionId()},
 			objectFolder.getObjectFolderId());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 
@@ -194,8 +193,7 @@ public class ObjectFolderItemLocalServiceTest {
 			},
 			objectFolder.getObjectFolderId());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 	}

@@ -186,8 +186,7 @@ public class ObjectDefinitionLocalServiceTest {
 			ObjectDefinitionNameException.MustNotBeDuplicate.class,
 			"Duplicate name C_Test", () -> _addCustomObjectDefinition("Test"));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		AssertUtils.assertFailure(
 			ObjectDefinitionNameException.MustNotBeNull.class, "Name is null",
@@ -538,8 +537,7 @@ public class ObjectDefinitionLocalServiceTest {
 				WorkflowConstants.STATUS_APPROVED,
 				nodeObjectDefinition.getStatus()));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		TreeTestUtil.deleteObjectDefinitionHierarchy(
 			_objectDefinitionLocalService,
@@ -588,8 +586,7 @@ public class ObjectDefinitionLocalServiceTest {
 			_defaultObjectFolder.getObjectFolderId(),
 			objectDefinition.getObjectFolderId());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		// Add object definition to an existing object folder
 
@@ -602,8 +599,7 @@ public class ObjectDefinitionLocalServiceTest {
 			objectFolder.getObjectFolderId(),
 			objectDefinition.getObjectFolderId());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 	}
@@ -958,8 +954,7 @@ public class ObjectDefinitionLocalServiceTest {
 				objectDefinition.getObjectDefinitionId(), "updateDeliveryType2",
 				ObjectActionTriggerConstants.KEY_ON_AFTER_ADD));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
 	@Test
@@ -1034,8 +1029,7 @@ public class ObjectDefinitionLocalServiceTest {
 			"Duplicate name Test",
 			() -> _addUnmodifiableSystemObjectDefinition("Test"));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		AssertUtils.assertFailure(
 			ObjectDefinitionNameException.MustNotBeNull.class, "Name is null",
@@ -1207,8 +1201,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 		Assert.assertTrue(objectDefinition.isApproved());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		// Publish modifiable system object definition
 
@@ -1247,8 +1240,7 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertTrue(
 			_hasTable(objectDefinition.getExtensionDBTableName()));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		objectDefinition =
 			ObjectDefinitionTestUtil.addUnmodifiableSystemObjectDefinition(
@@ -1274,8 +1266,7 @@ public class ObjectDefinitionLocalServiceTest {
 			Assert.assertNotNull(objectDefinitionStatusException);
 		}
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
 	@Test
@@ -1510,7 +1501,7 @@ public class ObjectDefinitionLocalServiceTest {
 			"Object definitions that belong to a hierarchical structure " +
 				"cannot be deleted",
 			() -> _objectDefinitionLocalService.deleteObjectDefinition(
-				finalObjectDefinition.getObjectDefinitionId()));
+				finalObjectDefinition));
 
 		_objectDefinitionLocalService.publishCustomObjectDefinition(
 			TestPropsValues.getUserId(),
@@ -1641,8 +1632,7 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertTrue(objectDefinition.isAccountEntryRestricted());
 		Assert.assertFalse(objectDefinition.isSystem());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		AssertUtils.assertFailure(
 			ObjectDefinitionAccountEntryRestrictedException.class,
@@ -1748,8 +1738,7 @@ public class ObjectDefinitionLocalServiceTest {
 			objectField.getObjectFieldId());
 		Assert.assertTrue(objectDefinition.isAccountEntryRestricted());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
 	@Test
@@ -1778,8 +1767,7 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertTrue(objectDefinition.isAccountEntryRestricted());
 		Assert.assertFalse(objectDefinition.isSystem());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		AssertUtils.assertFailure(
 			ObjectDefinitionAccountEntryRestrictedException.class,
@@ -1842,9 +1830,9 @@ public class ObjectDefinitionLocalServiceTest {
 		}
 		finally {
 			_objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinition2.getObjectDefinitionId());
+				objectDefinition2);
 			_objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinition3.getObjectDefinitionId());
+				objectDefinition3);
 		}
 	}
 
@@ -1862,8 +1850,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 		_testSystemObjectFields(objectDefinition);
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		objectDefinition =
 			ObjectDefinitionTestUtil.addUnmodifiableSystemObjectDefinition(
@@ -1876,8 +1863,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 		_testSystemObjectFields(objectDefinition);
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
 	@Test
@@ -2103,8 +2089,7 @@ public class ObjectDefinitionLocalServiceTest {
 		_testUpdateCustomObjectDefinitionThrowsObjectFieldRelationshipTypeException(
 			objectDefinition);
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 	}
@@ -2139,9 +2124,9 @@ public class ObjectDefinitionLocalServiceTest {
 			"L_TEST_ERC");
 
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			customObjectDefinition.getObjectDefinitionId());
+			customObjectDefinition);
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			unmodifiableSystemObjectDefinition.getObjectDefinitionId());
+			unmodifiableSystemObjectDefinition);
 	}
 
 	@Test
@@ -2163,8 +2148,7 @@ public class ObjectDefinitionLocalServiceTest {
 			objectFolder.getObjectFolderId(),
 			objectDefinition.getObjectFolderId());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 	}
@@ -2185,10 +2169,8 @@ public class ObjectDefinitionLocalServiceTest {
 				objectDefinition1.getObjectDefinitionId(),
 				objectDefinition2.getObjectDefinitionId()));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition1.getObjectDefinitionId());
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition2.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition1);
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition2);
 	}
 
 	@Test
@@ -2263,8 +2245,7 @@ public class ObjectDefinitionLocalServiceTest {
 				null, false, null, ObjectDefinitionConstants.SCOPE_SITE,
 				objectDefinition1.getStatus()));
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition1.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition1);
 
 		// After update, a modifiable system object definition check its
 		// properties
@@ -2307,8 +2288,7 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertTrue(objectDefinition2.isEnableComments());
 		Assert.assertEquals("Test", objectDefinition2.getName());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition2.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition2);
 
 		// After update, an unmodifiable system object definition check its
 		// properties
@@ -2355,8 +2335,7 @@ public class ObjectDefinitionLocalServiceTest {
 			objectField.getObjectFieldId(),
 			objectDefinition2.getTitleObjectFieldId());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition2.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition2);
 
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 	}
@@ -2401,8 +2380,7 @@ public class ObjectDefinitionLocalServiceTest {
 			objectField.getObjectFieldId(),
 			objectDefinition.getTitleObjectFieldId());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 	}
 
 	private ObjectDefinition _addCustomObjectDefinition(String name)
@@ -2656,8 +2634,7 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertEquals(
 			WorkflowConstants.STATUS_DRAFT, objectDefinition.getStatus());
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinition.getObjectDefinitionId());
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
 
 		_objectFolderLocalService.deleteObjectFolder(objectFolder);
 	}
@@ -2901,7 +2878,7 @@ public class ObjectDefinitionLocalServiceTest {
 			//	objectRelationship);
 
 			_objectDefinitionLocalService.deleteObjectDefinition(
-				objectDefinition2.getObjectDefinitionId());
+				objectDefinition2);
 		}
 	}
 

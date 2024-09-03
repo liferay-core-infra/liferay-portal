@@ -536,7 +536,7 @@ public class ObjectRelatedModelsProviderTest {
 			_objectRelationship);
 
 		_objectDefinitionLocalService.deleteObjectDefinition(
-			scopeSiteObjectDefinition.getObjectDefinitionId());
+			scopeSiteObjectDefinition);
 	}
 
 	@Test

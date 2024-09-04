@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Document;
+import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 
 import java.util.Iterator;
@@ -205,7 +206,7 @@ public class ObjectDefinitionResourcePermissionUtil {
 					"xml.tpl";
 		}
 
-		return SAXReaderUtil.read(
+		Document document = SAXReaderUtil.read(
 			StringUtil.replace(
 				StringUtil.read(
 					ObjectDefinitionResourcePermissionUtil.class.
@@ -230,6 +231,13 @@ public class ObjectDefinitionResourcePermissionUtil {
 						objectActionLocalService, objectDefinitionPersistence,
 						objectDefinition, treeFactory)
 				}));
+
+		Element element = document.getRootElement();
+
+		element.addAttribute(
+			"companyId", String.valueOf(objectDefinition.getCompanyId()));
+
+		return document;
 	}
 
 	private static final int _INITIAL_WEIGHT = 3;

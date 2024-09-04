@@ -121,8 +121,6 @@ public interface ResourceActions {
 			boolean checkResourceActions)
 		throws ResourceActionsException;
 
-	public void removeModelResource(String name, String action);
-
 	public void removeModelResources(Document document);
 
 	public void removePortletResources(Document document);

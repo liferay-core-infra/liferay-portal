@@ -58,6 +58,7 @@ import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.model.User;
@@ -2407,6 +2408,21 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 
 		_portletLocalService.removeCompanyPortletsPool(company.getCompanyId());
+
+		Map<String, List<ResourcePermission>>
+			individualPortletResourcePermissions =
+				_resourcePermissionLocalService.
+					getIndividualPortletResourcePermissions(
+						company.getCompanyId());
+
+		for (List<ResourcePermission> resourcePermissions :
+				individualPortletResourcePermissions.values()) {
+
+			for (ResourcePermission resourcePermission : resourcePermissions) {
+				_resourcePermissionLocalService.deleteResourcePermission(
+					resourcePermission);
+			}
+		}
 
 		// Virtual host
 

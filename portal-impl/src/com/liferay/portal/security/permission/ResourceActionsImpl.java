@@ -630,27 +630,6 @@ public class ResourceActionsImpl implements ResourceActions {
 	}
 
 	@Override
-	public void removeModelResource(String name, String action) {
-		if (Validator.isNull(name) || Validator.isNull(action)) {
-			return;
-		}
-
-		ResourceActionsBag resourceActionsBag = _getResourceActionsBag(
-			name, false);
-
-		Set<String> resourceActions = resourceActionsBag.getSupportsActions();
-
-		resourceActions.remove(action);
-
-		ResourceAction resourceAction =
-			resourceActionLocalService.fetchResourceAction(name, action);
-
-		if (resourceAction != null) {
-			resourceActionLocalService.deleteResourceAction(resourceAction);
-		}
-	}
-
-	@Override
 	public void removeModelResources(Document document) {
 		Element rootElement = document.getRootElement();
 

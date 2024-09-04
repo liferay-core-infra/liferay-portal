@@ -44,6 +44,10 @@ public class ResourceActionsUtil {
 		return _resourceActions.getCompositeModelNameSeparator();
 	}
 
+	public static List<String> getGlobalModelNames() {
+		return _resourceActions.getGlobalModelNames();
+	}
+
 	public static List<String> getModelNames() {
 		return _resourceActions.getModelNames();
 	}

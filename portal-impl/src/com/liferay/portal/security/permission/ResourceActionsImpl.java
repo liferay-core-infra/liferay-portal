@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.ResourceAction;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -617,6 +618,8 @@ public class ResourceActionsImpl implements ResourceActions {
 	public void removeModelResources(Document document) {
 		Element rootElement = document.getRootElement();
 
+		String companyId = rootElement.attributeValue("companyId");
+
 		for (Element modelResourceElement :
 				rootElement.elements("model-resource")) {
 
@@ -675,6 +678,39 @@ public class ResourceActionsImpl implements ResourceActions {
 			_modelResourceWeights.remove(modelName);
 
 			_portalModelResources.remove(modelName);
+
+			try {
+				if (companyId == null) {
+					String permissionName = modelName;
+
+					companyLocalService.forEachCompanyId(
+						curCompanyId ->
+							resourcePermissionLocalService.
+								deleteResourcePermissions(
+									curCompanyId, permissionName,
+									ResourceConstants.SCOPE_INDIVIDUAL,
+									permissionName));
+				}
+				else {
+					Set<Long> companyIds = _companyModelResources.get(
+						modelName);
+
+					if (companyIds != null) {
+						companyIds.remove(GetterUtil.getLong(companyId));
+
+						if (companyIds.isEmpty()) {
+							_companyModelResources.remove(modelName);
+						}
+					}
+
+					resourcePermissionLocalService.deleteResourcePermissions(
+						GetterUtil.getLong(companyId), modelName,
+						ResourceConstants.SCOPE_INDIVIDUAL, modelName);
+				}
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
 		}
 	}
 

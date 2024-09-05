@@ -500,11 +500,11 @@ public class ResourceActionsImpl implements ResourceActions {
 			_read(
 				classLoader, source,
 				rootElement -> _readModelResources(
-					rootElement, modelResourceNames));
+					rootElement, modelResourceNames, null));
 		}
 
 		if (checkResourceActions) {
-			_checkModelResourcesResourceActions(modelResourceNames);
+			_checkModelResourcesResourceActions(modelResourceNames, null);
 		}
 	}
 
@@ -517,6 +517,8 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 
 		Set<String> modelResourceNames = new HashSet<>();
+
+		String companyId = null;
 
 		for (Document document : documents) {
 			DocumentType documentType = document.getDocumentType();
@@ -531,10 +533,23 @@ public class ResourceActionsImpl implements ResourceActions {
 				}
 			}
 
-			_readModelResources(document.getRootElement(), modelResourceNames);
+			Element rootElement = document.getRootElement();
+
+			String curCompanyId = rootElement.attributeValue("companyId");
+
+			if (companyId == null) {
+				companyId = curCompanyId;
+			}
+			else if (!companyId.equals(curCompanyId)) {
+				throw new IllegalArgumentException(
+					"The companyIds in a batch document population must be " +
+						"same");
+			}
+
+			_readModelResources(rootElement, modelResourceNames, companyId);
 		}
 
-		_checkModelResourcesResourceActions(modelResourceNames);
+		_checkModelResourcesResourceActions(modelResourceNames, companyId);
 	}
 
 	@Override
@@ -626,7 +641,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		_read(
 			classLoader, source,
-			rootElement -> _readModelResources(rootElement, null));
+			rootElement -> _readModelResources(rootElement, null, null));
 	}
 
 	@Override
@@ -806,14 +821,14 @@ public class ResourceActionsImpl implements ResourceActions {
 	}
 
 	private void _checkModelResourcesResourceActions(
-		Set<String> modelResourceNames) {
+		Set<String> modelResourceNames, String companyId) {
 
 		try {
 			TransactionInvokerUtil.invoke(
 				_transactionConfig,
 				() -> {
 					DBPartitionUtil.forEachCompanyId(
-						companyId -> {
+						curCompanyId -> {
 							for (String modelResourceName :
 									modelResourceNames) {
 
@@ -823,11 +838,19 @@ public class ResourceActionsImpl implements ResourceActions {
 							}
 						});
 
-					companyLocalService.forEachCompanyId(
-						companyId ->
-							resourcePermissionLocalService.
-								populateDefaultModelResourcePermissions(
-									companyId, modelResourceNames));
+					if (companyId == null) {
+						companyLocalService.forEachCompanyId(
+							curCompanyId ->
+								resourcePermissionLocalService.
+									populateDefaultModelResourcePermissions(
+										curCompanyId, modelResourceNames));
+					}
+					else {
+						resourcePermissionLocalService.
+							populateDefaultModelResourcePermissions(
+								GetterUtil.getLong(companyId),
+								modelResourceNames);
+					}
 
 					return null;
 				});
@@ -1185,10 +1208,8 @@ public class ResourceActionsImpl implements ResourceActions {
 	}
 
 	private void _readModelResources(
-			Element rootElement, Set<String> resourceNames)
+			Element rootElement, Set<String> resourceNames, String companyId)
 		throws ResourceActionsException {
-
-		String companyId = rootElement.attributeValue("companyId");
 
 		for (Element modelResourceElement :
 				rootElement.elements("model-resource")) {

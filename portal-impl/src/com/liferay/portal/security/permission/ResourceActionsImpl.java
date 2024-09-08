@@ -14,6 +14,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
+import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.ResourceActionsException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -503,7 +504,7 @@ public class ResourceActionsImpl implements ResourceActions {
 					rootElement, modelResourceNames, null));
 		}
 
-		if (checkResourceActions) {
+		if (checkResourceActions && !StartupHelperUtil.isUpgrading()) {
 			_checkModelResourcesResourceActions(modelResourceNames, null);
 		}
 	}

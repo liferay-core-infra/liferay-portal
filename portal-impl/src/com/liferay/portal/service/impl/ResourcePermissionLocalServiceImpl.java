@@ -2384,7 +2384,7 @@ public class ResourcePermissionLocalServiceImpl
 	private static final Snapshot<IndividualPortletResourcePermissionProvider>
 		_individualPortletResourcePermissionProviderSnapshot = new Snapshot<>(
 			ResourcePermissionLocalServiceImpl.class,
-			IndividualPortletResourcePermissionProvider.class);
+			IndividualPortletResourcePermissionProvider.class, null, true);
 
 	private FinderPath _finderPathWithoutPaginationFindByC_N_S_P;
 

@@ -15,6 +15,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.ResourceActionsException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -78,6 +79,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.FutureTask;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -95,20 +97,29 @@ public class ResourceActionsImpl implements ResourceActions {
 	public void afterPropertiesSet() {
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
-		ServiceRegistration<IndividualPortletResourcePermissionProvider>
-			serviceRegistration = bundleContext.registerService(
-				IndividualPortletResourcePermissionProvider.class,
-				new ResourceActionsImpl.
-					StartupIndividualPortletResourcePermissionProvider(
-						resourcePermissionLocalService),
-				null);
+		DependencyManagerSyncUtil.registerSyncFutureTask(
+			new FutureTask<>(
+				() -> {
+					ServiceRegistration
+						<IndividualPortletResourcePermissionProvider>
+							serviceRegistration = bundleContext.registerService(
+								IndividualPortletResourcePermissionProvider.
+									class,
+								new StartupIndividualPortletResourcePermissionProvider(
+									resourcePermissionLocalService),
+								null);
 
-		InitialRequestSyncUtil.registerSyncCallable(
-			() -> {
-				serviceRegistration.unregister();
+					InitialRequestSyncUtil.registerSyncCallable(
+						() -> {
+							serviceRegistration.unregister();
 
-				return null;
-			});
+							return null;
+						});
+
+					return null;
+				}),
+			ResourceActionsImpl.class.getName() +
+				"-IndividualPortletResourcePermissionProvider");
 	}
 
 	@Override

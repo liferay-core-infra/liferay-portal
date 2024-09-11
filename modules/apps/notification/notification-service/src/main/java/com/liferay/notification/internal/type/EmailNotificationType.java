@@ -536,6 +536,8 @@ public class EmailNotificationType extends BaseNotificationType {
 				body),
 			!PropsValues.NOTIFICATION_EMAIL_TEMPLATE_ENABLED);
 
+		template.prepare(null);
+
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		themeDisplay.setLocale(siteDefaultLocale);

@@ -55,6 +55,12 @@ public class FreeMarkerTemplateContextHelper extends TemplateContextHelper {
 		Map<String, Object> contextObjects,
 		HttpServletRequest httpServletRequest) {
 
+		if (httpServletRequest == null) {
+			_prepare(contextObjects, null);
+
+			return;
+		}
+
 		super.prepare(contextObjects, httpServletRequest);
 
 		// Theme display
@@ -117,14 +123,7 @@ public class FreeMarkerTemplateContextHelper extends TemplateContextHelper {
 			}
 		}
 
-		// Custom template context contributors
-
-		for (TemplateContextContributor templateContextContributor :
-				getTemplateContextContributors()) {
-
-			templateContextContributor.prepare(
-				contextObjects, httpServletRequest);
-		}
+		_prepare(contextObjects, httpServletRequest);
 	}
 
 	public void setDefaultBeansWrapper(BeansWrapper defaultBeansWrapper) {
@@ -181,6 +180,20 @@ public class FreeMarkerTemplateContextHelper extends TemplateContextHelper {
 		// Static class util
 
 		helperUtilities.put("staticUtil", beansWrapper.getStaticModels());
+	}
+
+	private void _prepare(
+		Map<String, Object> contextObjects,
+		HttpServletRequest httpServletRequest) {
+
+		// Custom template context contributors
+
+		for (TemplateContextContributor templateContextContributor :
+				getTemplateContextContributors()) {
+
+			templateContextContributor.prepare(
+				contextObjects, httpServletRequest);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

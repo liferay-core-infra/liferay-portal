@@ -2762,7 +2762,9 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		_updatePortletCategory(portletCategory, companyPortlet);
 
-		if (StartupHelperUtil.isDBWarmed()) {
+		if (StartupHelperUtil.isDBWarmed() &&
+			!CompanyThreadLocal.isInitializingPortalInstance()) {
+
 			checkPortlet(companyPortlet);
 		}
 		else {

@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.JSPTaglibHelper;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
@@ -68,7 +69,7 @@ public class WabFactory
 				return wabExtension;
 			});
 
-		if (_parallel) {
+		if (_parallel && !CompanyThreadLocal.isInitializingPortalInstance()) {
 			ExecutorService executorService =
 				SystemExecutorServiceUtil.getExecutorService();
 

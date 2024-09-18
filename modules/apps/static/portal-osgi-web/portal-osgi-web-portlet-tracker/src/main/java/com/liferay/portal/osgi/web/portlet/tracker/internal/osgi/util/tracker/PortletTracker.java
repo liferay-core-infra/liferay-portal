@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactory;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
@@ -194,7 +195,8 @@ public class PortletTracker
 			GetterUtil.getBoolean(
 				serviceReference.getProperty(
 					"com.liferay.portlet.deploy.parallel"),
-				true)) {
+				true) &&
+			!CompanyThreadLocal.isInitializingPortalInstance()) {
 
 			ExecutorService executorService =
 				SystemExecutorServiceUtil.getExecutorService();

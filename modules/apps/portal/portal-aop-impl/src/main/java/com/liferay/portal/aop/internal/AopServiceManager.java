@@ -14,6 +14,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -283,7 +284,9 @@ public class AopServiceManager {
 					return aopServiceRegistrar;
 				});
 
-			if (_parallel) {
+			if (_parallel &&
+				!CompanyThreadLocal.isInitializingPortalInstance()) {
+
 				ExecutorService executorService =
 					SystemExecutorServiceUtil.getExecutorService();
 

@@ -10,7 +10,9 @@ import com.liferay.portal.kernel.concurrent.FutureListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
 /**
@@ -18,9 +20,11 @@ import java.util.concurrent.Future;
  */
 public class InitialRequestSyncUtil {
 
-	public static void registerSyncCallable(Callable<?> syncCallable) {
+	public static void registerSyncCallable(
+		long companyId, Callable<?> syncCallable) {
+
 		_addFutureListener(
-			_syncCallableDefaultNoticeableFuture,
+			companyId,
 			future -> {
 				try {
 					syncCallable.call();
@@ -31,17 +35,23 @@ public class InitialRequestSyncUtil {
 			});
 	}
 
-	public static void sync() {
-		if (_syncCallableDefaultNoticeableFuture.isDone()) {
+	public static void sync(long companyId) {
+		DefaultNoticeableFuture<Void> defaultNoticeableFuture =
+			_syncCallableDefaultNoticeableFutures.remove(companyId);
+
+		if (defaultNoticeableFuture == null) {
 			return;
 		}
 
-		_syncCallableDefaultNoticeableFuture.run();
+		defaultNoticeableFuture.run();
 	}
 
 	private static void _addFutureListener(
-		DefaultNoticeableFuture<Void> defaultNoticeableFuture,
-		FutureListener<Void> futureListener) {
+		long companyId, FutureListener<Void> futureListener) {
+
+		DefaultNoticeableFuture<Void> defaultNoticeableFuture =
+			_syncCallableDefaultNoticeableFutures.computeIfAbsent(
+				companyId, key -> new DefaultNoticeableFuture<>());
 
 		defaultNoticeableFuture.addFutureListener(
 			new FutureListener<Void>() {
@@ -59,7 +69,7 @@ public class InitialRequestSyncUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		InitialRequestSyncUtil.class);
 
-	private static final DefaultNoticeableFuture<Void>
-		_syncCallableDefaultNoticeableFuture = new DefaultNoticeableFuture<>();
+	private static final Map<Long, DefaultNoticeableFuture<Void>>
+		_syncCallableDefaultNoticeableFutures = new ConcurrentHashMap<>();
 
 }

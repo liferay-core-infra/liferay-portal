@@ -345,6 +345,7 @@ public class PortletTracker
 								null);
 
 					InitialRequestSyncUtil.registerSyncCallable(
+						CompanyConstants.SYSTEM,
 						() -> {
 							serviceRegistration.unregister();
 

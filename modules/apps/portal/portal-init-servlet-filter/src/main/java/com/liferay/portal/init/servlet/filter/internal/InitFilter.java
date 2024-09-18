@@ -5,7 +5,9 @@
 
 package com.liferay.portal.init.servlet.filter.internal;
 
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 
 import java.util.concurrent.CountDownLatch;
@@ -39,7 +41,10 @@ public class InitFilter extends BasePortalFilter {
 		_countDownLatch.await();
 
 		synchronized (this) {
-			InitialRequestSyncUtil.sync();
+			InitialRequestSyncUtil.sync(CompanyConstants.SYSTEM);
+
+			InitialRequestSyncUtil.sync(
+				PortalUtil.getCompanyId(httpServletRequest));
 
 			try {
 				processFilter(

@@ -88,6 +88,7 @@ public abstract class InitialRequestPortalInstanceLifecycleListener
 		}
 
 		InitialRequestSyncUtil.registerSyncCallable(
+			companyId,
 			() -> {
 				try (SafeCloseable safeCloseable =
 						CompanyThreadLocal.setWithSafeCloseable(companyId)) {

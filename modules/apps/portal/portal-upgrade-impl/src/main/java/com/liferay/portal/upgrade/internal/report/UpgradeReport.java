@@ -302,7 +302,7 @@ public class UpgradeReport {
 		).put(
 			"document.library",
 			LinkedHashMapBuilder.put(
-				"root.dir",
+				"root.directory",
 				() -> {
 					if (StringUtil.equals(
 							PropsValues.DL_STORE_IMPL,
@@ -334,7 +334,7 @@ public class UpgradeReport {
 					return "Undefined";
 				}
 			).put(
-				"storage.impl", PropsValues.DL_STORE_IMPL
+				"storage.implementation", PropsValues.DL_STORE_IMPL
 			).put(
 				"storage.size",
 				() -> {

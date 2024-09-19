@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.security.auth;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -34,6 +35,10 @@ public class PrincipalThreadLocal {
 
 	public static long getUserId() {
 		return GetterUtil.getLong(getName());
+	}
+
+	public static void removeName() {
+		_name.remove();
 	}
 
 	public static void setName(long name) {
@@ -68,6 +73,10 @@ public class PrincipalThreadLocal {
 		}
 	}
 
+	public static SafeCloseable setNameWithSafeCloseable(String name) {
+		return _name.setWithSafeCloseable(name);
+	}
+
 	public static void setPassword(String password) {
 		_password.set(password);
 	}
@@ -75,7 +84,7 @@ public class PrincipalThreadLocal {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PrincipalThreadLocal.class);
 
-	private static final ThreadLocal<String> _name =
+	private static final CentralizedThreadLocal<String> _name =
 		new CentralizedThreadLocal<>(PrincipalThreadLocal.class + "._name");
 	private static final ThreadLocal<String> _password =
 		new CentralizedThreadLocal<>(PrincipalThreadLocal.class + "._password");

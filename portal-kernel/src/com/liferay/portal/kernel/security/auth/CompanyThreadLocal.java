@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.spring.orm.LastSessionRecorderHelperUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
@@ -229,6 +230,11 @@ public class CompanyThreadLocal {
 				LocaleThreadLocal.setDefaultLocaleWithSafeCloseable(null));
 			safeCloseables.add(
 				TimeZoneThreadLocal.setDefaultTimeZoneWithSafeCloseable(null));
+			safeCloseables.add(
+				PermissionThreadLocal.setPermissionCheckerWithSafeCloseable(
+					null));
+			safeCloseables.add(
+				PrincipalThreadLocal.setNameWithSafeCloseable(null));
 
 			_clearUserThreadLocals();
 		}
@@ -251,6 +257,8 @@ public class CompanyThreadLocal {
 	private static void _clearUserThreadLocals() {
 		LocaleThreadLocal.removeDefaultLocale();
 		TimeZoneThreadLocal.removeDefaultTimeZone();
+		PermissionThreadLocal.removePermissionChecker();
+		PrincipalThreadLocal.removeName();
 	}
 
 	private static void _syncLastDBPartitionSessionState() {

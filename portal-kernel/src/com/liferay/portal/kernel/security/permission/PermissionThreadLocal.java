@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.security.permission;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 
@@ -53,6 +54,10 @@ public class PermissionThreadLocal {
 		return !set.contains(resourceName + StringPool.UNDERLINE + primKey);
 	}
 
+	public static void removePermissionChecker() {
+		_permissionChecker.remove();
+	}
+
 	public static void setAddResource(boolean addResource) {
 		_addResource.set(addResource);
 	}
@@ -76,6 +81,12 @@ public class PermissionThreadLocal {
 		_permissionChecker.set(permissionChecker);
 	}
 
+	public static SafeCloseable setPermissionCheckerWithSafeCloseable(
+		PermissionChecker permissionChecker) {
+
+		return _permissionChecker.setWithSafeCloseable(permissionChecker);
+	}
+
 	private static final ThreadLocal<Boolean> _addResource =
 		new CentralizedThreadLocal<>(
 			PermissionThreadLocal.class + "._addResource", () -> Boolean.TRUE);
@@ -83,8 +94,8 @@ public class PermissionThreadLocal {
 		_flushResourcePermissionEnabled = new CentralizedThreadLocal<>(
 			PermissionThreadLocal.class + "._flushResourcePermissionEnabled",
 			HashSet::new);
-	private static final ThreadLocal<PermissionChecker> _permissionChecker =
-		new CentralizedThreadLocal<>(
+	private static final CentralizedThreadLocal<PermissionChecker>
+		_permissionChecker = new CentralizedThreadLocal<>(
 			PermissionThreadLocal.class + "._permissionChecker", null,
 			Function.identity(), true);
 

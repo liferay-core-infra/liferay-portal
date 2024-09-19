@@ -74,16 +74,16 @@ export const userAccountsTypePolicy = {
 					const roleBriefs = readField(
 						'roleBriefs',
 						accountBriefRef
-					).map((roleBrief) => ({
+					)?.map((roleBrief) => ({
 						id: readField('id', roleBrief),
 						name: readField('name', roleBrief),
 					}));
 
-					const hasAdministratorRole = roleBriefs.some(({name}) =>
+					const hasAdministratorRole = roleBriefs?.some(({name}) =>
 						isAccountAdministrator(name)
 					);
 
-					const hasSupportSeatRole = roleBriefs.some(({name}) =>
+					const hasSupportSeatRole = roleBriefs?.some(({name}) =>
 						isSupportSeatRole(name)
 					);
 

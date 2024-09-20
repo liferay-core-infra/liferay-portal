@@ -86,8 +86,6 @@ public class SaveScimConfigurationMVCActionCommandTest {
 				_oAuth2ApplicationLocalService.getOAuth2Application(
 					TestPropsValues.getCompanyId(), scimClientId);
 
-			Assert.assertNotNull(oAuth2Application);
-
 			Assert.assertEquals(
 				_user.getUserId(),
 				oAuth2Application.getClientCredentialUserId());

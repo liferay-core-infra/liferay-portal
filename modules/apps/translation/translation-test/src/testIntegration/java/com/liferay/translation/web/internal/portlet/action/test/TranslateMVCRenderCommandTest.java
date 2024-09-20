@@ -223,9 +223,9 @@ public class TranslateMVCRenderCommandTest {
 
 		Layout layout = LayoutTestUtil.addTypeContentLayout(_group);
 
-		LayoutSet layoutSet = layout.getLayoutSet();
-
 		themeDisplay.setLayout(layout);
+
+		LayoutSet layoutSet = layout.getLayoutSet();
 
 		themeDisplay.setLayoutSet(layoutSet);
 
@@ -236,9 +236,7 @@ public class TranslateMVCRenderCommandTest {
 		themeDisplay.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(TestPropsValues.getUser()));
 		themeDisplay.setPpid(TranslationPortletKeys.TRANSLATION);
-
 		themeDisplay.setRequest(mockHttpServletRequest);
-
 		themeDisplay.setScopeGroupId(_group.getGroupId());
 		themeDisplay.setSiteGroupId(_group.getGroupId());
 		themeDisplay.setUser(TestPropsValues.getUser());

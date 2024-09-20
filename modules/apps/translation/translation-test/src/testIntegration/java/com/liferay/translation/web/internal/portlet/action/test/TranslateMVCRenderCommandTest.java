@@ -106,8 +106,6 @@ public class TranslateMVCRenderCommandTest {
 					"TranslateDisplayContext"),
 			"getInfoFieldSetEntriesData", new Class<?>[0]);
 
-		Assert.assertNotNull(infoFieldSetEntriesData);
-
 		List<Object> infoFieldSetEntries =
 			(List<Object>)infoFieldSetEntriesData.get("infoFieldSetEntries");
 

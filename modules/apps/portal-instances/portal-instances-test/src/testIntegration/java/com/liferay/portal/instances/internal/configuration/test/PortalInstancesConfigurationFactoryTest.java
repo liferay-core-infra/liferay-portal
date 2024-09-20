@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.kernel.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -93,10 +94,36 @@ public class PortalInstancesConfigurationFactoryTest {
 	public void testAddCompanyWithDefaultProperties() throws Exception {
 		_testAddCompany(
 			HashMapDictionaryBuilder.<String, Object>put(
+				"adminEmailAddress", "testAdminEmailAddress@" + _domain
+			).put(
 				"mx", _domain
 			).put(
 				"virtualHostname", _domain
 			).build());
+	}
+
+	@Test
+	public void testAddCompanyWithInvalidEmail() throws Exception {
+		boolean companyCreated = true;
+
+		ConfigurationTestUtil.saveConfiguration(
+			_configuration,
+			HashMapDictionaryBuilder.<String, Object>put(
+				"adminEmailAddress", "testAdminEmailAddressAT" + _domain
+			).put(
+				"mx", _domain
+			).put(
+				"virtualHostname", _domain
+			).build());
+
+		try {
+			_company = _companyLocalService.getCompanyByWebId(_webId);
+		}
+		catch (NoSuchCompanyException noSuchCompanyException) {
+			companyCreated = false;
+		}
+
+		Assert.assertFalse(companyCreated);
 	}
 
 	@Test
@@ -121,6 +148,8 @@ public class PortalInstancesConfigurationFactoryTest {
 	public void testAddCompanyWithSomeAdminProperties() throws Exception {
 		_testAddCompany(
 			HashMapDictionaryBuilder.<String, Object>put(
+				"adminEmailAddress", "testAdminEmailAddress@" + _domain
+			).put(
 				"adminFirstName", "testAdminFirstName"
 			).put(
 				"adminLastName", "testAdminLastName"

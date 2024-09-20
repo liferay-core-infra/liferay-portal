@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -58,7 +59,7 @@ import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -262,27 +263,28 @@ public class InfoBoxFragmentRenderer implements FragmentRenderer {
 			CommerceOrder commerceOrder, String field)
 		throws PortalException {
 
-		Map<String, Object> additionalProps = new HashMap<>();
-
-		if (field.equals("shippingMethod")) {
-			CommerceShippingMethod commerceShippingMethod =
-				commerceOrder.getCommerceShippingMethod();
-
-			if (commerceShippingMethod != null) {
-				if (Validator.isNull(commerceOrder.getShippingOptionName())) {
-					additionalProps.put(
-						"value", commerceShippingMethod.getEngineKey());
-				}
-				else {
-					additionalProps.put(
-						"value",
-						commerceShippingMethod.getEngineKey() + "#" +
-							commerceOrder.getShippingOptionName());
-				}
-			}
+		if (!field.equals("shippingMethod")) {
+			return Collections.emptyMap();
 		}
 
-		return additionalProps;
+		CommerceShippingMethod commerceShippingMethod =
+			commerceOrder.getCommerceShippingMethod();
+
+		if (commerceShippingMethod == null) {
+			return Collections.emptyMap();
+		}
+
+		return HashMapBuilder.<String, Object>put(
+			"value",
+			() -> {
+				if (Validator.isNull(commerceOrder.getShippingOptionName())) {
+					return commerceShippingMethod.getEngineKey();
+				}
+
+				return commerceShippingMethod.getEngineKey() + "#" +
+					commerceOrder.getShippingOptionName();
+			}
+		).build();
 	}
 
 	private String _getConfigurationValue(

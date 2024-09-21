@@ -33,7 +33,6 @@ public class RelevantTestSuite {
 			portalAcceptancePullRequestJob.getPortalGitWorkingDirectory();
 
 		_modifiedFiles = portalGitWorkingDirectory.getModifiedFilesList();
-
 		_portalGitWorkingDirectory = portalGitWorkingDirectory;
 
 		_relevantRuleEngine = RelevantRuleEngine.getInstance(

@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.concurrent;
 
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -98,7 +99,18 @@ public class SystemExecutorServiceUtil {
 			new NamedThreadFactory(
 				SystemExecutorServiceUtil.class.getSimpleName(),
 				Thread.NORM_PRIORITY, null),
-			new ThreadPoolExecutor.CallerRunsPolicy());
+			new ThreadPoolExecutor.CallerRunsPolicy()) {
+
+			@Override
+			protected void afterExecute(
+				Runnable runnable, Throwable throwable) {
+
+				super.afterExecute(runnable, throwable);
+
+				CentralizedThreadLocal.clearShortLivedThreadLocals();
+			}
+
+		};
 
 		threadPoolExecutor.allowCoreThreadTimeOut(true);
 

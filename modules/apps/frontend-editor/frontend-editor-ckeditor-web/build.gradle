@@ -70,6 +70,7 @@ dependencies {
 	compileOnly project(":apps:frontend-editor:frontend-editor-api")
 	compileOnly project(":apps:frontend-editor:frontend-editor-taglib")
 	compileOnly project(":apps:frontend-taglib:frontend-taglib")
+	compileOnly project(":apps:frontend-taglib:frontend-taglib-clay")
 	compileOnly project(":apps:frontend-taglib:frontend-taglib-react")
 	compileOnly project(":apps:message-boards:message-boards-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")

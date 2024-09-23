@@ -139,7 +139,7 @@ public class ReplenishmentItemResourceTest
 			testDeleteReplenishmentItem_addReplenishmentItem()
 		throws Exception {
 
-		return _toReplenishmentItem(_addReplenishmentItem());
+		return _toReplenishmentItem(_addCommerceInventoryReplenishmentItem());
 	}
 
 	@Override
@@ -147,14 +147,14 @@ public class ReplenishmentItemResourceTest
 			testDeleteReplenishmentItemByExternalReferenceCode_addReplenishmentItem()
 		throws Exception {
 
-		return _toReplenishmentItem(_addReplenishmentItem());
+		return _toReplenishmentItem(_addCommerceInventoryReplenishmentItem());
 	}
 
 	@Override
 	protected ReplenishmentItem testGetReplenishmentItem_addReplenishmentItem()
 		throws Exception {
 
-		return _toReplenishmentItem(_addReplenishmentItem());
+		return _toReplenishmentItem(_addCommerceInventoryReplenishmentItem());
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class ReplenishmentItemResourceTest
 			testGetReplenishmentItemByExternalReferenceCode_addReplenishmentItem()
 		throws Exception {
 
-		return _toReplenishmentItem(_addReplenishmentItem());
+		return _toReplenishmentItem(_addCommerceInventoryReplenishmentItem());
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class ReplenishmentItemResourceTest
 			testPutReplenishmentItemByExternalReferenceCode_addReplenishmentItem()
 		throws Exception {
 
-		return _toReplenishmentItem(_addReplenishmentItem());
+		return _toReplenishmentItem(_addCommerceInventoryReplenishmentItem());
 	}
 
 	@Override
@@ -268,6 +268,29 @@ public class ReplenishmentItemResourceTest
 		throws Exception {
 
 		return randomReplenishmentItem();
+	}
+
+	private CommerceInventoryReplenishmentItem
+			_addCommerceInventoryReplenishmentItem()
+		throws Exception {
+
+		_addCommerceInventoryWarehouseItem();
+
+		if (_commerceInventoryReplenishmentItem != null) {
+			return _commerceInventoryReplenishmentItem;
+		}
+
+		_commerceInventoryReplenishmentItem =
+			_commerceInventoryReplenishmentItemLocalService.
+				addCommerceInventoryReplenishmentItem(
+					RandomTestUtil.randomString(), _user.getUserId(),
+					_getCommerceInventoryWarehouseId(),
+					_dateFormat.parse(
+						_dateFormat.format(RandomTestUtil.nextDate())),
+					BigDecimal.valueOf(RandomTestUtil.nextInt()),
+					testGetReplenishmentItemsPage_getSku(), StringPool.BLANK);
+
+		return _commerceInventoryReplenishmentItem;
 	}
 
 	private CommerceInventoryWarehouse _addCommerceInventoryWarehouse()
@@ -293,28 +316,6 @@ public class ReplenishmentItemResourceTest
 					RandomTestUtil.nextDouble(), _serviceContext);
 
 		return _commerceInventoryWarehouse;
-	}
-
-	private CommerceInventoryReplenishmentItem _addReplenishmentItem()
-		throws Exception {
-
-		_addCommerceInventoryWarehouseItem();
-
-		if (_commerceInventoryReplenishmentItem != null) {
-			return _commerceInventoryReplenishmentItem;
-		}
-
-		_commerceInventoryReplenishmentItem =
-			_commerceInventoryReplenishmentItemLocalService.
-				addCommerceInventoryReplenishmentItem(
-					RandomTestUtil.randomString(), _user.getUserId(),
-					_getCommerceInventoryWarehouseId(),
-					_dateFormat.parse(
-						_dateFormat.format(RandomTestUtil.nextDate())),
-					BigDecimal.valueOf(RandomTestUtil.nextInt()),
-					testGetReplenishmentItemsPage_getSku(), StringPool.BLANK);
-
-		return _commerceInventoryReplenishmentItem;
 	}
 
 	private CommerceInventoryWarehouseItem _addCommerceInventoryWarehouseItem()

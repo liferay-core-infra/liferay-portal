@@ -44,8 +44,7 @@ public class DDMWebTopHeadDynamicInclude extends BaseDynamicInclude {
 
 		PrintWriter printWriter = httpServletResponse.getWriter();
 
-		printWriter.print("<link");
-		printWriter.print(" href=\"");
+		printWriter.print("<link href=\"");
 		printWriter.print(
 			_portal.getStaticResourceURL(
 				httpServletRequest,

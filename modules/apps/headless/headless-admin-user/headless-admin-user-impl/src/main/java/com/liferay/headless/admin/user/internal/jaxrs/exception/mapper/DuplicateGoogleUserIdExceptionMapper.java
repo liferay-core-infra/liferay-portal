@@ -34,7 +34,7 @@ public class DuplicateGoogleUserIdExceptionMapper
 
 		return new Problem(
 			Response.Status.CONFLICT,
-			"A user account already exists with the same Google User ID");
+			"A user account already exists with the same Google user ID");
 	}
 
 }

@@ -268,13 +268,16 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 					"AdvancedFileSystemStore")) {
 
 			rootDir = _getRootDir(
-				_CONFIGURATION_PID_ADVANCED_FILE_SYSTEM_STORE);
+				"com.liferay.portal.store.file.system.configuration." +
+					"AdvancedFileSystemStoreConfiguration");
 		}
 		else if (StringUtil.equals(
 					PropsValues.DL_STORE_IMPL,
 					"com.liferay.portal.store.file.system.FileSystemStore")) {
 
-			rootDir = _getRootDir(_CONFIGURATION_PID_FILE_SYSTEM_STORE);
+			rootDir = _getRootDir(
+				"com.liferay.portal.store.file.system.configuration." +
+					"FileSystemStoreConfiguration");
 
 			if (rootDir == null) {
 				rootDir = PropsValues.LIFERAY_HOME + "/data/document_library";
@@ -1046,14 +1049,6 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 			PropsValues.class, "UPGRADE_REPORT_DL_STORAGE_SIZE_TIMEOUT",
 			originalUpgradeReportDLStorageSizeTimeout);
 	}
-
-	private static final String _CONFIGURATION_PID_ADVANCED_FILE_SYSTEM_STORE =
-		"com.liferay.portal.store.file.system.configuration." +
-			"AdvancedFileSystemStoreConfiguration";
-
-	private static final String _CONFIGURATION_PID_FILE_SYSTEM_STORE =
-		"com.liferay.portal.store.file.system.configuration." +
-			"FileSystemStoreConfiguration";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseUpgradeLogAppenderTestCase.class);

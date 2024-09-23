@@ -7,6 +7,7 @@ package com.liferay.portal.instances.internal.configuration;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
+import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -17,7 +18,12 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.util.PortalInstances;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
@@ -35,56 +41,76 @@ import org.osgi.service.component.annotations.Reference;
 public class PortalInstancesConfigurationFactory {
 
 	@Activate
-	protected void activate(Map<String, Object> properties)
-		throws PortalException {
+	protected void activate(Map<String, Object> properties) throws Exception {
+		Callable<Void> callable = () -> {
+			try {
+				PortalInstancesConfiguration portalInstancesConfiguration =
+					ConfigurableUtil.createConfigurable(
+						PortalInstancesConfiguration.class, properties);
 
-		PortalInstancesConfiguration portalInstancesConfiguration =
-			ConfigurableUtil.createConfigurable(
-				PortalInstancesConfiguration.class, properties);
+				String webId = _getWebId(properties);
+				String virtualHostname =
+					portalInstancesConfiguration.virtualHostname();
+				String mx = portalInstancesConfiguration.mx();
+				int maxUsers = portalInstancesConfiguration.maxUsers();
+				boolean active = portalInstancesConfiguration.active();
 
-		String webId = _getWebId(properties);
-		String virtualHostname = portalInstancesConfiguration.virtualHostname();
-		String mx = portalInstancesConfiguration.mx();
-		int maxUsers = portalInstancesConfiguration.maxUsers();
-		boolean active = portalInstancesConfiguration.active();
+				Company company = null;
 
-		Company company = null;
+				try {
+					company = _companyLocalService.getCompanyByWebId(webId);
+				}
+				catch (NoSuchCompanyException noSuchCompanyException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(noSuchCompanyException);
+					}
+				}
 
-		try {
-			company = _companyLocalService.getCompanyByWebId(webId);
-		}
-		catch (NoSuchCompanyException noSuchCompanyException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(noSuchCompanyException);
+				if (company == null) {
+					PortalInstances.addCompany(
+						portalInstancesConfiguration.siteInitializerKey(),
+						() -> _companyLocalService.addCompany(
+							null, webId, virtualHostname, mx, maxUsers,
+							portalInstancesConfiguration.active(),
+							portalInstancesConfiguration.addDefaultAdminUser(),
+							portalInstancesConfiguration.adminPassword(),
+							portalInstancesConfiguration.adminScreenName(),
+							portalInstancesConfiguration.adminEmailAddress(),
+							portalInstancesConfiguration.adminFirstName(),
+							portalInstancesConfiguration.adminMiddleName(),
+							portalInstancesConfiguration.adminLastName()));
+				}
+				else {
+					if (company.getCompanyId() ==
+							_portalInstancesLocalService.
+								getDefaultCompanyId()) {
+
+						active = true;
+					}
+
+					_companyLocalService.updateCompany(
+						company.getCompanyId(), virtualHostname, mx, maxUsers,
+						active);
+				}
+
+				_portalInstancesLocalService.synchronizePortalInstances();
+
+				return null;
 			}
-		}
-
-		if (company == null) {
-			PortalInstances.addCompany(
-				portalInstancesConfiguration.siteInitializerKey(),
-				() -> _companyLocalService.addCompany(
-					null, webId, virtualHostname, mx, maxUsers,
-					portalInstancesConfiguration.active(),
-					portalInstancesConfiguration.addDefaultAdminUser(),
-					portalInstancesConfiguration.adminPassword(),
-					portalInstancesConfiguration.adminScreenName(),
-					portalInstancesConfiguration.adminEmailAddress(),
-					portalInstancesConfiguration.adminFirstName(),
-					portalInstancesConfiguration.adminMiddleName(),
-					portalInstancesConfiguration.adminLastName()));
-		}
-		else {
-			if (company.getCompanyId() ==
-					_portalInstancesLocalService.getDefaultCompanyId()) {
-
-				active = true;
+			catch (PortalException portalException) {
+				throw portalException;
 			}
+		};
 
-			_companyLocalService.updateCompany(
-				company.getCompanyId(), virtualHostname, mx, maxUsers, active);
-		}
+		ExecutorService executorService =
+			SystemExecutorServiceUtil.getExecutorService();
 
-		_portalInstancesLocalService.synchronizePortalInstances();
+		List<Future<Void>> futures = executorService.invokeAll(
+			Collections.singleton(callable));
+
+		Future<Void> future = futures.get(0);
+
+		future.get();
 	}
 
 	private String _getWebId(Map<String, Object> properties) {

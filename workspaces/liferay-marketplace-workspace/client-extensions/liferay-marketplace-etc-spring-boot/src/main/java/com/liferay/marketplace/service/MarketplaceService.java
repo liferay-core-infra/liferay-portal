@@ -21,7 +21,7 @@ import com.liferay.headless.commerce.admin.order.client.dto.v1_0.Order;
 import com.liferay.headless.commerce.admin.order.client.resource.v1_0.OrderItemResource;
 import com.liferay.headless.commerce.admin.order.client.resource.v1_0.OrderResource;
 import com.liferay.marketplace.BaseRestController;
-import com.liferay.marketplace.util.MarketplaceConstants;
+import com.liferay.marketplace.constants.MarketplaceConstants;
 import com.liferay.petra.string.StringBundler;
 
 import java.net.URL;

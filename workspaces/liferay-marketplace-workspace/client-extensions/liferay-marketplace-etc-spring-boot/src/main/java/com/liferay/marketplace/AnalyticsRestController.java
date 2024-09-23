@@ -7,8 +7,8 @@ package com.liferay.marketplace;
 
 import com.liferay.client.extension.util.spring.boot.BaseRestController;
 import com.liferay.headless.commerce.admin.order.client.dto.v1_0.Order;
+import com.liferay.marketplace.constants.MarketplaceConstants;
 import com.liferay.marketplace.service.MarketplaceService;
-import com.liferay.marketplace.util.MarketplaceConstants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.Objects;
@@ -107,7 +107,7 @@ public class AnalyticsRestController extends BaseRestController {
 
 		JSONObject jsonObject = new JSONObject(json);
 
-		String project = WebClient.builder(
+		String projectJSON = WebClient.builder(
 		).baseUrl(
 			_analyticsAuthUrl
 		).defaultHeader(
@@ -175,14 +175,14 @@ public class AnalyticsRestController extends BaseRestController {
 				"analytics-group-id",
 				String.valueOf(
 					new JSONObject(
-						project
+						projectJSON
 					).getLong(
 						"groupId"
 					))
 			).build(),
 			orderId, MarketplaceConstants.ORDER_STATUS_COMPLETED);
 
-		return project;
+		return projectJSON;
 	}
 
 	@Override

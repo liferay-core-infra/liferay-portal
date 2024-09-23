@@ -34,7 +34,7 @@ public abstract class BaseFriendlyURLFormatUpgradeProcessTestCase {
 		_persistence = FriendlyURLEntryLocalizationUtil.getPersistence();
 	}
 
-	protected void createFriendlyURLEntry(long classPK, long classNameId) {
+	protected void addFriendlyURLEntry(long classPK, long classNameId) {
 		long friendlyURLEntryId = RandomTestUtil.randomLong();
 
 		_friendlyURLEntry = friendlyURLEntryLocalService.createFriendlyURLEntry(
@@ -48,7 +48,7 @@ public abstract class BaseFriendlyURLFormatUpgradeProcessTestCase {
 		friendlyURLEntryLocalService.addFriendlyURLEntry(_friendlyURLEntry);
 	}
 
-	protected void createFriendlyURLEntryLocalization(
+	protected void updateFriendlyURLLocalization(
 		long classNameId, long classPK, String languageId, String urlTitle) {
 
 		FriendlyURLEntryLocalization friendlyURLEntryLocalization =

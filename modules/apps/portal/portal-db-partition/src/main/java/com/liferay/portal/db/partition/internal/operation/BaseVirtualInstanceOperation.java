@@ -5,9 +5,11 @@
 
 package com.liferay.portal.db.partition.internal.operation;
 
+import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.IOException;
@@ -15,8 +17,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Mariano Álvaro Sáiz
@@ -29,7 +37,15 @@ public abstract class BaseVirtualInstanceOperation {
 		Callable<Company> callable, Map<String, Object> properties) {
 
 		try {
-			Company company = callable.call();
+			ExecutorService executorService =
+				SystemExecutorServiceUtil.getExecutorService();
+
+			List<Future<Company>> futures = executorService.invokeAll(
+				Collections.singleton(callable));
+
+			Future<Company> future = futures.get(0);
+
+			Company company = future.get();
 
 			if (company != null) {
 				_deleteConfiguration(
@@ -50,6 +66,9 @@ public abstract class BaseVirtualInstanceOperation {
 			_deleteConfiguration((String)properties.get("service.pid"));
 		}
 	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
+	protected ModuleServiceLifecycle moduleServiceLifecycle;
 
 	private void _deleteConfiguration(String pid) {
 		try {

@@ -39,17 +39,15 @@ function download_hotfix {
 		"https://releases-cdn.liferay.com/dxp/hotfix/2024.q2.7/liferay-dxp-2024.q2.7-hotfix-4.zip" \
 		"https://releases-cdn.liferay.com/tools/patching-tool/patching-tool-4.0.3.zip"
 	do
-		local file_name=$(basename "${file_url}")
+		local file_name="./liferay/patching/$(basename "${file_url}")"
 
-		local file_path="./liferay/patching/${file_name}"
-
-		if [ ! -f "${file_path}" ]
+		if [ ! -f "${file_name}" ]
 		then
-			echo "Downloading ${file_url} to ${file_path}"
+			echo "Downloading ${file_url} to ${file_name}."
 
-			mkdir --parents $(dirname "${file_path}")
+			mkdir --parents $(dirname "${file_name}")
 
-			curl --location "${file_url}" --output "${file_path}"
+			curl --location "${file_url}" --output "${file_name}"
 		fi
 	done
 }

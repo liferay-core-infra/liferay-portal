@@ -60,13 +60,13 @@ public class JSUnitModulesTestClass extends ModulesTestClass {
 
 		super(batchTestClassGroup, jsonObject);
 
-		if (jsonObject.has("test_properties_file")) {
-			_testPropertiesFile = new File(
-				jsonObject.getString("test_properties_file"));
-		}
-		else if (jsonObject.has("file")) {
+		if (jsonObject.has("file")) {
 			_testPropertiesFile = new File(
 				jsonObject.getString("file") + "/test.properties");
+		}
+		else if (jsonObject.has("test_properties_file")) {
+			_testPropertiesFile = new File(
+				jsonObject.getString("test_properties_file"));
 		}
 		else {
 			_testPropertiesFile = null;

@@ -9,7 +9,6 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.admin.kernel.model.LayoutTypePortletConstants;
 import com.liferay.layout.seo.model.LayoutSEOEntry;
 import com.liferay.layout.seo.service.LayoutSEOEntryLocalService;
-import com.liferay.layout.test.util.LayoutFriendlyURLRandomizerBumper;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Company;
@@ -74,8 +73,7 @@ public class EditSEOMVCActionCommandTest {
 		mockLiferayPortletActionRequest.addParameter(
 			"canonicalURLEnabled", Boolean.TRUE.toString());
 
-		String url = RandomTestUtil.randomString(
-			76, LayoutFriendlyURLRandomizerBumper.INSTANCE);
+		String url = RandomTestUtil.randomString(76);
 
 		mockLiferayPortletActionRequest.addParameter(
 			"canonicalURL_" +

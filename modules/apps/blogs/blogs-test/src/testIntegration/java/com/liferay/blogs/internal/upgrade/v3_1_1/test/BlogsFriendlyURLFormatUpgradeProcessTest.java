@@ -98,9 +98,9 @@ public class BlogsFriendlyURLFormatUpgradeProcessTest
 
 		_blogsEntryLocalService.addBlogsEntry(_blogsEntry);
 
-		createFriendlyURLEntry(_blogsEntry.getEntryId(), _classNameId);
+		addFriendlyURLEntry(_blogsEntry.getEntryId(), _classNameId);
 
-		createFriendlyURLEntryLocalization(
+		updateFriendlyURLLocalization(
 			_classNameId, _blogsEntry.getEntryId(), defaultLanguageId,
 			urlTitle);
 	}

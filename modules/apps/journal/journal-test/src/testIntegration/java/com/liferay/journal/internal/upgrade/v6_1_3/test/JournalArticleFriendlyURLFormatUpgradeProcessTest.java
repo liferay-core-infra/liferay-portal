@@ -82,7 +82,7 @@ public class JournalArticleFriendlyURLFormatUpgradeProcessTest
 
 		_addJournalArticle("english/");
 
-		createFriendlyURLEntryLocalization(
+		updateFriendlyURLLocalization(
 			_classNameId, _journalArticle.getResourcePrimKey(), languageId,
 			"spanish/");
 
@@ -126,10 +126,9 @@ public class JournalArticleFriendlyURLFormatUpgradeProcessTest
 			_journalArticleResourceLocalService.createJournalArticleResource(
 				_journalArticle.getResourcePrimKey()));
 
-		createFriendlyURLEntry(
-			_journalArticle.getResourcePrimKey(), _classNameId);
+		addFriendlyURLEntry(_journalArticle.getResourcePrimKey(), _classNameId);
 
-		createFriendlyURLEntryLocalization(
+		updateFriendlyURLLocalization(
 			_classNameId, _journalArticle.getResourcePrimKey(),
 			defaultLanguageId, urlTitle);
 	}

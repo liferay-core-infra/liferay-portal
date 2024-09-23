@@ -35,12 +35,9 @@ function check_logs {
 }
 
 function download_hotfix {
-	local files=(
-		"https://releases-cdn.liferay.com/dxp/hotfix/2024.q2.7/liferay-dxp-2024.q2.7-hotfix-4.zip"
+	for file_url in \
+		"https://releases-cdn.liferay.com/dxp/hotfix/2024.q2.7/liferay-dxp-2024.q2.7-hotfix-4.zip" \
 		"https://releases-cdn.liferay.com/tools/patching-tool/patching-tool-4.0.3.zip"
-	)
-
-	for file_url in "${files[@]}"
 	do
 		local file_name=$(basename "${file_url}")
 

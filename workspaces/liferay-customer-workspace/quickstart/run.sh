@@ -1,20 +1,20 @@
 #!/bin/bash
 
 function check_health {
-	docker inspect --format="{{.State.Health.Status}}" "${container_id}" | grep --quiet "${1}"
+	docker inspect --format="{{.State.Health.Status}}" "${container_id}" | grep --quiet "healthy"
 
 	if [[ $? -eq 0 ]]
 	then
-		echo "Container ${container_id} is ${1}."
+		echo "Container ${container_id} is healthy."
 
 		return 0
 	fi
 
-	echo "Container ${container_id} is not ${1}."
+	echo "Container ${container_id} is not healthy."
 
 	sleep 10
 
-	check_health "${1}"
+	check_health
 }
 
 function check_logs {
@@ -79,7 +79,7 @@ function main {
 
 	local container_id=$(get_container_id "liferay")
 
-	check_health "healthy"
+	check_health
 
 	check_logs "Server startup in \[[0-9]+\] milliseconds"
 

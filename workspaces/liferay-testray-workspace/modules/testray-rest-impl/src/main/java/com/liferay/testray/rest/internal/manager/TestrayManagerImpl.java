@@ -804,13 +804,12 @@ public class TestrayManagerImpl implements TestrayManager {
 			ObjectEntry objectEntry = _objectEntryLocalService.getObjectEntry(
 				testrayBuildId);
 
-			objectEntry.getValues(
-			).put(
-				"importStatus", "INPROGRESS"
-			);
+			Map<String, Serializable> values = objectEntry.getValues();
+
+			values.put("importStatus", "INPROGRESS");
 
 			_objectEntryLocalService.updateObjectEntry(
-				userId, objectEntry.getObjectEntryId(), objectEntry.getValues(),
+				userId, objectEntry.getObjectEntryId(), values,
 				new ServiceContext());
 
 			return testrayBuildId;

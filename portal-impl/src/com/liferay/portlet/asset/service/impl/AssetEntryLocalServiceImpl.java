@@ -165,10 +165,14 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		Session session = assetEntryPersistence.openSession();
 
 		try {
+			String sql =
+				"delete from " + AssetEntryModelImpl.TABLE_NAME +
+					" where companyId = ? and classNameId = ?";
+
 			session.apply(
 				connection -> {
 					try (PreparedStatement preparedStatement =
-							connection.prepareStatement(_DELETE_BY_C_CN)) {
+							connection.prepareStatement(sql)) {
 
 						preparedStatement.setLong(1, companyId);
 						preparedStatement.setLong(2, classNameId);
@@ -1465,10 +1469,6 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			}
 		}
 	}
-
-	private static final String _DELETE_BY_C_CN =
-		"delete from " + AssetEntryModelImpl.TABLE_NAME +
-			" where companyId = ? and classNameId = ?";
 
 	private static final CentralizedThreadLocal
 		<Function<AssetEntry, AssetEntry>> _removeFunctionThreadLocal =

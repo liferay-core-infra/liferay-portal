@@ -295,7 +295,6 @@ public class OpenAPIResourceTest {
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			"relation1ToM", false, ObjectRelationshipConstants.TYPE_ONE_TO_MANY,
 			null);
-
 		ObjectRelationshipLocalServiceUtil.addObjectRelationship(
 			null, _user.getUserId(), _objectDefinition.getObjectDefinitionId(),
 			_userSystemObjectDefinition.getObjectDefinitionId(), 0,
@@ -303,7 +302,6 @@ public class OpenAPIResourceTest {
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			"relationMTo1", false, ObjectRelationshipConstants.TYPE_ONE_TO_MANY,
 			null);
-
 		ObjectRelationshipLocalServiceUtil.addObjectRelationship(
 			null, _user.getUserId(),
 			_userSystemObjectDefinition.getObjectDefinitionId(),

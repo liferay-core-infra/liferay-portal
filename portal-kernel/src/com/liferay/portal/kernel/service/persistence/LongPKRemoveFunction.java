@@ -27,8 +27,8 @@ public class LongPKRemoveFunction<T extends BaseModel<T>>
 		_basePersistence = basePersistence;
 
 		_deleteSQL = StringBundler.concat(
-			"delete from ", tableName, " where ", pkFieldName,
-			" = ? and ctCollectionId = ?");
+			"delete from ", tableName, " where ctCollectionId = ? and ",
+			pkFieldName, " = ?");
 	}
 
 	@Override
@@ -42,9 +42,9 @@ public class LongPKRemoveFunction<T extends BaseModel<T>>
 							connection.prepareStatement(_deleteSQL)) {
 
 						preparedStatement.setLong(
-							1, (long)baseModel.getPrimaryKeyObj());
+							1, CTCollectionThreadLocal.getCTCollectionId());
 						preparedStatement.setLong(
-							2, CTCollectionThreadLocal.getCTCollectionId());
+							2, (long)baseModel.getPrimaryKeyObj());
 
 						preparedStatement.executeUpdate();
 					}

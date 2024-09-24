@@ -276,16 +276,16 @@ public class OpenAPIResourceTest {
 	public void testGetOpenAPIWithSystemObjectRelationship() throws Exception {
 		_user = TestPropsValues.getUser();
 
-		_userSystemObjectDefinitionManager =
+		SystemObjectDefinitionManager userSystemObjectDefinitionManager;
 			_systemObjectDefinitionManagerRegistry.
 				getSystemObjectDefinitionManager("User");
 
 		_userSystemObjectDefinition =
 			_objectDefinitionLocalService.fetchSystemObjectDefinition(
-				_userSystemObjectDefinitionManager.getName());
+				userSystemObjectDefinitionManager.getName());
 
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
+			userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		ObjectRelationshipLocalServiceUtil.addObjectRelationship(
 			null, _user.getUserId(),
@@ -365,7 +365,6 @@ public class OpenAPIResourceTest {
 
 	private User _user;
 	private ObjectDefinition _userSystemObjectDefinition;
-	private SystemObjectDefinitionManager _userSystemObjectDefinitionManager;
 
 	@DeleteAfterTestRun
 	private ObjectField _userSystemObjectField;

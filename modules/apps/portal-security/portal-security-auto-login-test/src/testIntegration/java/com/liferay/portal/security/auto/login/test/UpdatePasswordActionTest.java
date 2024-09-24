@@ -59,7 +59,9 @@ public class UpdatePasswordActionTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testUpdatePasswordSetLastLogin() throws Exception {
+	public void testExecute() throws Exception {
+		Action action = new UpdatePasswordAction();
+
 		User user = UserTestUtil.addUser();
 
 		user.setLastLoginDate(null);
@@ -69,20 +71,20 @@ public class UpdatePasswordActionTest {
 		Company company = CompanyLocalServiceUtil.getCompany(
 			user.getCompanyId());
 
-		MockHttpServletRequest mockHttpServletRequest =
-			_prepareHttpServletRequestWithTicket(user, company);
+		MockHttpServletRequest mockHttpServletRequest = _mockHttpServletRequest(
+			company, user);
 
-		_updatePasswordAction.execute(
+		action.execute(
 			null, mockHttpServletRequest, new MockHttpServletResponse());
 
-		User setPasswordUser = UserLocalServiceUtil.getUserByEmailAddress(
+		user = UserLocalServiceUtil.getUserByEmailAddress(
 			company.getCompanyId(), user.getEmailAddress());
 
-		Assert.assertNotNull(setPasswordUser.getLastLoginDate());
+		Assert.assertNotNull(user.getLastLoginDate());
 	}
 
-	private MockHttpServletRequest _prepareHttpServletRequestWithTicket(
-			User user, Company company)
+	private MockHttpServletRequest _mockHttpServletRequest(
+			Company company, User user)
 		throws Exception {
 
 		MockHttpServletRequest mockHttpServletRequest =
@@ -99,11 +101,12 @@ public class UpdatePasswordActionTest {
 
 		mockHttpServletRequest.addParameter("p_auth", "test");
 
-		Layout layout = LayoutLocalServiceUtil.getLayout(1);
-
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		themeDisplay.setCompany(company);
+
+		Layout layout = LayoutLocalServiceUtil.getLayout(1);
+
 		themeDisplay.setLayout(layout);
 		themeDisplay.setLayoutSet(layout.getLayoutSet());
 
@@ -148,7 +151,5 @@ public class UpdatePasswordActionTest {
 
 	@Inject
 	private TicketLocalService _ticketLocalService;
-
-	private final Action _updatePasswordAction = new UpdatePasswordAction();
 
 }

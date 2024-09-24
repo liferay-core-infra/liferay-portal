@@ -598,10 +598,14 @@ public class ResourcePermissionLocalServiceImpl
 		Session session = resourcePermissionPersistence.openSession();
 
 		try {
+			String sql =
+				"delete from " + ResourcePermissionModelImpl.TABLE_NAME +
+					" where companyId = ? and name = ? and scope = ?";
+
 			session.apply(
 				connection -> {
 					try (PreparedStatement preparedStatement =
-							connection.prepareStatement(_DELETE_BY_C_N_S)) {
+							connection.prepareStatement(sql)) {
 
 						preparedStatement.setLong(1, companyId);
 						preparedStatement.setString(2, name);
@@ -611,6 +615,7 @@ public class ResourcePermissionLocalServiceImpl
 
 						if (results > 0) {
 							resourcePermissionPersistence.clearCache();
+
 							PermissionCacheUtil.clearCache();
 						}
 					}
@@ -2415,10 +2420,6 @@ public class ResourcePermissionLocalServiceImpl
 
 		return null;
 	}
-
-	private static final String _DELETE_BY_C_N_S =
-		"delete from " + ResourcePermissionModelImpl.TABLE_NAME +
-			" where companyId = ? and name = ? and scope = ?";
 
 	private static final String _FIND_MISSING_RESOURCE_PERMISSIONS =
 		ResourcePermissionLocalServiceImpl.class.getName() +

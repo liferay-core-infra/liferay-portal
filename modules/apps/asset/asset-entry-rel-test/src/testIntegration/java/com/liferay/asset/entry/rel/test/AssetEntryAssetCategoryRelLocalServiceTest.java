@@ -161,12 +161,13 @@ public class AssetEntryAssetCategoryRelLocalServiceTest {
 		_group = GroupTestUtil.addGroup();
 
 		_assetEntry1 = AssetTestUtil.addAssetEntry(_group.getGroupId());
-		_assetEntry2 = AssetTestUtil.addAssetEntry(_group.getGroupId());
 
 		long assetCategoryId = RandomTestUtil.randomLong();
 
 		_addAssetEntryAssetCategoryRel(
 			_assetEntry1.getEntryId(), assetCategoryId);
+
+		_assetEntry2 = AssetTestUtil.addAssetEntry(_group.getGroupId());
 
 		_addAssetEntryAssetCategoryRel(
 			_assetEntry2.getEntryId(), assetCategoryId);

@@ -93,11 +93,10 @@ public abstract class BaseExternalReferenceCodeUpgradeProcessTestCase {
 
 			List<IndexMetadata> indexMetadatas = _dropIndexes(tableName);
 
-			boolean hasGroupIdColumn = _hasColumn(tableName, "groupId");
-
 			try {
 				_prepareDatabaseForUpgradeProcess(
-					externalReferenceCodeModels, hasGroupIdColumn, tableName);
+					externalReferenceCodeModels,
+					_hasColumn(tableName, "groupId"), tableName);
 
 				_runUpgrade();
 

@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.BulkDeleteCacheThreadLocal;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.view.count.ViewCountManager;
@@ -91,11 +92,9 @@ public class ViewCountEntryLocalServiceImpl
 		List<ViewCountEntry> viewCountEntries =
 			partitionViewCountEntries.remove(classPK);
 
-		if (viewCountEntries != null) {
-			for (ViewCountEntry viewCountEntry : viewCountEntries) {
-				viewCountEntryPersistence.remove(viewCountEntry);
-			}
-		}
+		ListUtil.isNotEmptyForEach(
+			viewCountEntries,
+			viewCountEntry -> viewCountEntryPersistence.remove(viewCountEntry));
 	}
 
 	@Override

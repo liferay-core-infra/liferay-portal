@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.BulkDeleteCacheThreadLocal;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
@@ -146,14 +147,11 @@ public class AssetDisplayPageEntryLocalServiceImpl
 			List<AssetDisplayPageEntry> assetDisplayPageEntries =
 				partitionAssetDisplayPageEntries.remove(classPK);
 
-			if (assetDisplayPageEntries != null) {
-				for (AssetDisplayPageEntry assetDisplayPageEntry :
-						assetDisplayPageEntries) {
-
+			ListUtil.isNotEmptyForEach(
+				assetDisplayPageEntries,
+				assetDisplayPageEntry ->
 					assetDisplayPageEntryPersistence.remove(
-						assetDisplayPageEntry);
-				}
-			}
+						assetDisplayPageEntry));
 		}
 	}
 

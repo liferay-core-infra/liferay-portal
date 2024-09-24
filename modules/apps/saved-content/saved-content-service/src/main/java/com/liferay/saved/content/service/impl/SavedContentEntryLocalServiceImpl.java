@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.BulkDeleteCacheThreadLocal;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.saved.content.exception.DuplicateSavedContentEntryException;
 import com.liferay.saved.content.exception.NoSuchSavedContentEntryException;
@@ -118,11 +119,10 @@ public class SavedContentEntryLocalServiceImpl
 		List<SavedContentEntry> savedContentEntries =
 			partitionSavedContentEntries.remove(classPK);
 
-		if (savedContentEntries != null) {
-			for (SavedContentEntry savedContentEntry : savedContentEntries) {
-				savedContentEntryPersistence.remove(savedContentEntry);
-			}
-		}
+		ListUtil.isNotEmptyForEach(
+			savedContentEntries,
+			savedContentEntry -> savedContentEntryPersistence.remove(
+				savedContentEntry));
 	}
 
 	@Override

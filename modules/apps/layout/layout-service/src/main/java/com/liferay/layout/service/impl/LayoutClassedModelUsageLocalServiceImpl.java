@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.BulkDeleteCacheThreadLocal;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -99,14 +100,11 @@ public class LayoutClassedModelUsageLocalServiceImpl
 		List<LayoutClassedModelUsage> layoutClassedModelUsages =
 			partitionLayoutClassedModelUsages.remove(classPK);
 
-		if (layoutClassedModelUsages != null) {
-			for (LayoutClassedModelUsage layoutClassedModelUsage :
-					layoutClassedModelUsages) {
-
+		ListUtil.isNotEmptyForEach(
+			layoutClassedModelUsages,
+			layoutClassedModelUsage ->
 				layoutClassedModelUsagePersistence.remove(
-					layoutClassedModelUsage);
-			}
-		}
+					layoutClassedModelUsage));
 	}
 
 	@Override

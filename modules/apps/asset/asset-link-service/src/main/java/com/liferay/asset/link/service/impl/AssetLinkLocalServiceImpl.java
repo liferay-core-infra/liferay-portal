@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.SystemEventLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.BulkDeleteCacheThreadLocal;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.model.adapter.util.ModelAdapterUtil;
 
@@ -215,13 +216,13 @@ public class AssetLinkLocalServiceImpl extends AssetLinkLocalServiceBaseImpl {
 		List<AssetLink> leftAssetLinks = leftPartitionAssetLinks.remove(
 			entryId);
 
-		if (leftAssetLinks != null) {
-			for (AssetLink leftAssetLink : leftAssetLinks) {
+		ListUtil.isNotEmptyForEach(
+			leftAssetLinks,
+			leftAssetLink -> {
 				assetLinkPersistence.remove(leftAssetLink);
 
 				deletedAssetLinks.add(leftAssetLink);
-			}
-		}
+			});
 
 		Map<Long, List<AssetLink>> rightPartitionAssetLinks =
 			BulkDeleteCacheThreadLocal.getBulkDeleteCache(

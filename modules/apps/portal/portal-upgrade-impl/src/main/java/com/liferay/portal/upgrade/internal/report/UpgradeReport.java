@@ -68,7 +68,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -157,7 +156,7 @@ public class UpgradeReport {
 	}
 
 	private Set<String> _getPropertiesFilePathStrings() {
-		SortedSet<String> propertiesFilePathStrings = new TreeSet<>();
+		Set<String> propertiesFilePathStrings = new TreeSet<>();
 
 		for (String loadedSource : PropsUtil.getLoadedSources()) {
 			try {

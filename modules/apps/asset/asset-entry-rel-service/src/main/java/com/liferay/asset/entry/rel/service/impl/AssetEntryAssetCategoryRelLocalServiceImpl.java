@@ -124,14 +124,11 @@ public class AssetEntryAssetCategoryRelLocalServiceImpl
 				partitionAssetEntryAssetCategoryRels.remove(
 					assetEntry.getEntryId());
 
-			if (assetEntryAssetCategoryRels != null) {
-				for (AssetEntryAssetCategoryRel assetEntryAssetCategoryRel :
-						assetEntryAssetCategoryRels) {
-
+			ListUtil.isNotEmptyForEach(
+				assetEntryAssetCategoryRels,
+				assetEntryAssetCategoryRel ->
 					assetEntryAssetCategoryRelPersistence.remove(
-						assetEntryAssetCategoryRel);
-				}
-			}
+						assetEntryAssetCategoryRel));
 		}
 
 		_reindex(assetEntry);

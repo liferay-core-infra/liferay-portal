@@ -82,7 +82,7 @@ public class ConsoleRestController extends BaseRestController {
 		JSONArray cloudProvisioningJSONArray = new JSONArray(
 			customFields.get("cloud-provisioning"));
 
-		_verifyEnoughResourcesToDeploy(
+		_verifyAvailability(
 			cloudProvisioningJSONArray, jsonObject.getLong("orderItemId"));
 
 		JSONObject appJSONObject = _consoleService.deployApp(
@@ -138,8 +138,7 @@ public class ConsoleRestController extends BaseRestController {
 		}
 	}
 
-	private void _verifyEnoughResourcesToDeploy(
-			JSONArray jsonArray, long orderItemId)
+	private void _verifyAvailability(JSONArray jsonArray, long orderItemId)
 		throws Exception {
 
 		for (int i = 0; i < jsonArray.length(); i++) {
@@ -150,7 +149,8 @@ public class ConsoleRestController extends BaseRestController {
 					"quantity"))) {
 
 				throw new Exception(
-					"Unable to install app, not enough resources");
+					"Unable to install app for order item " + orderItemId +
+						" because there are no available resources");
 			}
 		}
 	}

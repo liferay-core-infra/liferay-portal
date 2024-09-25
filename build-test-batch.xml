@@ -3722,15 +3722,6 @@ information. Make sure to commit in all build-lib-versions results.
 		</run-batch-test>
 	</target>
 
-	<target name="dist-jdk7">
-		<parallel threadCount="1" timeout="7200000">
-			<prepare-test-build-dist
-				app.server.type="${axis.variable}"
-				dist.type="${dist.type}"
-			/>
-		</parallel>
-	</target>
-
 	<target name="empty-osgi-core-dir-mysql57-jdk8">
 		<run-empty-osgi-core-dir-test />
 	</target>

@@ -477,7 +477,7 @@ function computeDrop({
 		}
 
 		if (sourceItems.length > 1) {
-			message = `${Liferay.Language.get('no-element-has-moved')} ${message}`;
+			message = `${Liferay.Language.get('no-element-was-moved')} ${message}`;
 		}
 
 		if (message) {

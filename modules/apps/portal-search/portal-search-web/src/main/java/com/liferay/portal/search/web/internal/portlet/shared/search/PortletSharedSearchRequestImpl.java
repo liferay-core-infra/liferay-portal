@@ -313,23 +313,27 @@ public class PortletSharedSearchRequestImpl
 					layout.getPlid());
 
 		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
+			if (!fragmentEntryLink.isTypePortlet()) {
+				continue;
+			}
+
 			try {
-				if (fragmentEntryLink.isTypePortlet()) {
-					JSONObject editableValuesJSONObject =
-						_jsonFactory.createJSONObject(
-							fragmentEntryLink.getEditableValues());
+				JSONObject editableValuesJSONObject =
+					_jsonFactory.createJSONObject(
+						fragmentEntryLink.getEditableValues());
 
-					String portletId = editableValuesJSONObject.getString(
-						"portletId");
+				String portletId = editableValuesJSONObject.getString(
+					"portletId");
 
-					if (Validator.isNotNull(portletId)) {
-						String instanceId = editableValuesJSONObject.getString(
-							"instanceId");
-
-						segmentExperiencePortletIds.add(
-							PortletIdCodec.encode(portletId, instanceId));
-					}
+				if (Validator.isNull(portletId)) {
+					continue;
 				}
+
+				String instanceId = editableValuesJSONObject.getString(
+					"instanceId");
+
+				segmentExperiencePortletIds.add(
+					PortletIdCodec.encode(portletId, instanceId));
 			}
 			catch (Exception exception) {
 				throw new RuntimeException(exception);

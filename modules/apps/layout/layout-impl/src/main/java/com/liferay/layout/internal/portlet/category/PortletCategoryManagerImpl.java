@@ -247,7 +247,6 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 
 		Set<String> fragmentEntryLinksPortletNames =
 			_getFragmentEntryLinksPortletNames(themeDisplay);
-
 		Set<String> layoutDecodedPortletNames = _getLayoutDecodedPortletNames(
 			themeDisplay);
 

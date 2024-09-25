@@ -178,7 +178,7 @@ public class PortletSharedSearchRequestImpl
 	}
 
 	private List<Portlet> _getInstantiatedPortlets(
-		Layout layout, long companyId, long segmentsExperienceId) {
+		Layout layout, long segmentsExperienceId) {
 
 		List<Portlet> instantiatedPortlets = new ArrayList<>();
 
@@ -187,7 +187,7 @@ public class PortletSharedSearchRequestImpl
 
 		for (String segmentExperiencePortletId : segmentExperiencePortletIds) {
 			Portlet portlet = portletLocalService.getPortletById(
-				companyId, segmentExperiencePortletId);
+				layout.getCompanyId(), segmentExperiencePortletId);
 
 			if (portlet.isInstanceable() &&
 				Validator.isNotNull(portlet.getInstanceId())) {
@@ -200,7 +200,7 @@ public class PortletSharedSearchRequestImpl
 	}
 
 	private List<Portlet> _getPortlets(
-		Layout layout, long companyId, long segmentsExperienceId) {
+		Layout layout, long segmentsExperienceId) {
 
 		LayoutTypePortlet layoutTypePortlet =
 			(LayoutTypePortlet)layout.getLayoutType();
@@ -212,7 +212,7 @@ public class PortletSharedSearchRequestImpl
 		}
 
 		List<Portlet> instantiatedPortlets = _getInstantiatedPortlets(
-			layout, companyId, segmentsExperienceId);
+			layout, segmentsExperienceId);
 
 		for (Portlet instantiatedPortlet : instantiatedPortlets) {
 			if (!portlets.contains(instantiatedPortlet)) {
@@ -234,7 +234,7 @@ public class PortletSharedSearchRequestImpl
 		}
 
 		instantiatedPortlets = _getInstantiatedPortlets(
-			masterLayout, companyId, segmentsExperienceId);
+			masterLayout, segmentsExperienceId);
 
 		for (Portlet instantiatedPortlet : instantiatedPortlets) {
 			if (!portlets.contains(instantiatedPortlet)) {
@@ -284,7 +284,7 @@ public class PortletSharedSearchRequestImpl
 			new SegmentsExperienceManager(_segmentsExperienceLocalService);
 
 		List<Portlet> portlets = _getPortlets(
-			themeDisplay.getLayout(), themeDisplay.getCompanyId(),
+			themeDisplay.getLayout(),
 			segmentsExperienceManager.getSegmentsExperienceId(
 				_portal.getHttpServletRequest(renderRequest)));
 

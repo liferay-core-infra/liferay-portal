@@ -3481,7 +3481,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 		<run-archived-module-smoke />
 	</target>
 
-	<target name="archived-modules-test-mysql57-jdk8">
+	<target name="archived-modules-test-mysql57">
 		<run-archived-modules-test />
 	</target>
 
@@ -6348,7 +6348,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-lpkg-startup-test />
 	</target>
 
-	<target name="modules-compile-jdk8">
+	<target name="modules-compile">
 		<run-batch-test>
 			<test-action>
 				<if>
@@ -6508,7 +6508,7 @@ information. Make sure to commit in all format-javadoc results.
 		</run-batch-test>
 	</target>
 
-	<target name="modules-integration-aws-s3-mysql57-jdk8">
+	<target name="modules-integration-aws-s3-mysql57">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<tstamp>
@@ -6576,7 +6576,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-db2115-jdk8">
+	<target name="modules-integration-bundle-db2115">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6686,7 +6686,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-mariadb104-jdk8">
+	<target name="modules-integration-bundle-mariadb104">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6722,7 +6722,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-mariadb106-jdk8">
+	<target name="modules-integration-bundle-mariadb106">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6758,7 +6758,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-mysql57-jdk8">
+	<target name="modules-integration-bundle-mysql57">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6815,7 +6815,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-mysql80-jdk8">
+	<target name="modules-integration-bundle-mysql80">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6891,7 +6891,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-postgresql134-jdk8">
+	<target name="modules-integration-bundle-postgresql134">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6910,7 +6910,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-postgresql144-jdk8">
+	<target name="modules-integration-bundle-postgresql144">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6929,7 +6929,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-postgresql153-jdk8">
+	<target name="modules-integration-bundle-postgresql153">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6948,7 +6948,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-postgresql163-jdk8">
+	<target name="modules-integration-bundle-postgresql163">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -6986,7 +6986,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-sqlserver2019-jdk8">
+	<target name="modules-integration-bundle-sqlserver2019">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -7005,7 +7005,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-sqlserver2022-jdk8">
+	<target name="modules-integration-bundle-sqlserver2022">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -7024,7 +7024,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-bundle-sybase160-jdk8">
+	<target name="modules-integration-bundle-sybase160">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-modules-integration-test
@@ -7060,7 +7060,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-db-partition-mysql57-jdk8">
+	<target name="modules-integration-db-partition-mysql57">
 		<run-modules-integration-test
 			database.partition.enabled="true"
 			database.type="mysql"
@@ -7068,7 +7068,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-db-partition-postgresql153-jdk8">
+	<target name="modules-integration-db-partition-postgresql153">
 		<run-modules-integration-test
 			database.partition.enabled="true"
 			database.type="postgresql"
@@ -7076,7 +7076,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-db-partition-postgresql163-jdk8">
+	<target name="modules-integration-db-partition-postgresql163">
 		<run-modules-integration-test
 			database.partition.enabled="true"
 			database.type="postgresql"
@@ -7084,7 +7084,7 @@ information. Make sure to commit in all format-javadoc results.
 		/>
 	</target>
 
-	<target name="modules-integration-db2111-jdk8">
+	<target name="modules-integration-db2111">
 		<run-modules-integration-test database.type="db2" />
 	</target>
 
@@ -7092,7 +7092,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="db2" />
 	</target>
 
-	<target name="modules-integration-db2115-jdk8">
+	<target name="modules-integration-db2115">
 		<run-modules-integration-test database.type="db2" database.version="11.5.7" />
 	</target>
 
@@ -7100,7 +7100,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="db2" database.version="11.5.7" />
 	</target>
 
-	<target name="modules-integration-hypersonic20-jdk8">
+	<target name="modules-integration-hypersonic20">
 		<run-modules-integration-test database.type="hypersonic" />
 	</target>
 
@@ -7108,7 +7108,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="hypersonic" />
 	</target>
 
-	<target name="modules-integration-mariadb102-jdk8">
+	<target name="modules-integration-mariadb102">
 		<run-modules-integration-test database.type="mariadb" />
 	</target>
 
@@ -7116,7 +7116,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mariadb" />
 	</target>
 
-	<target name="modules-integration-mariadb104-jdk8">
+	<target name="modules-integration-mariadb104">
 		<run-modules-integration-test database.type="mariadb" />
 	</target>
 
@@ -7124,7 +7124,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mariadb" />
 	</target>
 
-	<target name="modules-integration-mariadb106-jdk8">
+	<target name="modules-integration-mariadb106">
 		<run-modules-integration-test database.type="mariadb" />
 	</target>
 
@@ -7132,7 +7132,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mariadb" />
 	</target>
 
-	<target name="modules-integration-mysql57-jdk8">
+	<target name="modules-integration-mysql57">
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
 	</target>
 
@@ -7148,7 +7148,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
 	</target>
 
-	<target name="modules-integration-mysql80-jdk8">
+	<target name="modules-integration-mysql80">
 		<run-modules-integration-test database.type="mysql" database.version="8.0" />
 	</target>
 
@@ -7160,7 +7160,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mysql" database.version="8.0" />
 	</target>
 
-	<target name="modules-integration-oracle193-jdk8">
+	<target name="modules-integration-oracle193">
 		<run-modules-integration-test database.type="oracle" database.version="19.3.0.0.0" />
 	</target>
 
@@ -7168,7 +7168,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="oracle" database.version="19.3.0.0.0" />
 	</target>
 
-	<target name="modules-integration-postgresql121-jdk8">
+	<target name="modules-integration-postgresql121">
 		<run-modules-integration-test database.type="postgresql" database.version="12.1" />
 	</target>
 
@@ -7176,7 +7176,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="postgresql" database.version="12.1" />
 	</target>
 
-	<target name="modules-integration-postgresql134-jdk8">
+	<target name="modules-integration-postgresql134">
 		<run-modules-integration-test database.type="postgresql" database.version="13.4" />
 	</target>
 
@@ -7184,7 +7184,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="postgresql" database.version="13.4" />
 	</target>
 
-	<target name="modules-integration-postgresql144-jdk8">
+	<target name="modules-integration-postgresql144">
 		<run-modules-integration-test database.type="postgresql" database.version="14.4" />
 	</target>
 
@@ -7192,7 +7192,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="postgresql" database.version="14.4" />
 	</target>
 
-	<target name="modules-integration-postgresql153-jdk8">
+	<target name="modules-integration-postgresql153">
 		<run-modules-integration-test database.type="postgresql" database.version="15.3" />
 	</target>
 
@@ -7200,7 +7200,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="postgresql" database.version="15.3" />
 	</target>
 
-	<target name="modules-integration-postgresql163-jdk8">
+	<target name="modules-integration-postgresql163">
 		<run-modules-integration-test database.type="postgresql" database.version="16.3" />
 	</target>
 
@@ -7208,8 +7208,8 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="postgresql" database.version="16.3" />
 	</target>
 
-	<target name="modules-integration-project-templates-jdk8">
-		<antcall target="modules-unit-jdk8">
+	<target name="modules-integration-project-templates">
+		<antcall target="modules-unit">
 			<param name="project.templates.test" value="true" />
 			<param name="project.templates.test.builds" value="true" />
 		</antcall>
@@ -7222,7 +7222,7 @@ information. Make sure to commit in all format-javadoc results.
 			junit.jvm.override=${java.jdk.home}/bin/java
 			junit.jvm.override.version=17</echo>
 
-		<antcall target="modules-unit-jdk8">
+		<antcall target="modules-unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="17" />
 			<param name="project.templates.test" value="true" />
@@ -7237,7 +7237,7 @@ information. Make sure to commit in all format-javadoc results.
 			junit.jvm.override=${java.jdk.home}/bin/java
 			junit.jvm.override.version=21</echo>
 
-		<antcall target="modules-unit-jdk8">
+		<antcall target="modules-unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="21" />
 			<param name="project.templates.test" value="true" />
@@ -7245,7 +7245,7 @@ information. Make sure to commit in all format-javadoc results.
 		</antcall>
 	</target>
 
-	<target name="modules-integration-sqlserver2017-jdk8">
+	<target name="modules-integration-sqlserver2017">
 		<run-modules-integration-test database.type="sqlserver" database.version="2017" />
 	</target>
 
@@ -7253,7 +7253,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="sqlserver" database.version="2017" />
 	</target>
 
-	<target name="modules-integration-sqlserver2019-jdk8">
+	<target name="modules-integration-sqlserver2019">
 		<run-modules-integration-test database.type="sqlserver" database.version="2019" />
 	</target>
 
@@ -7261,7 +7261,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="sqlserver" database.version="2019" />
 	</target>
 
-	<target name="modules-integration-sqlserver2022-jdk8">
+	<target name="modules-integration-sqlserver2022">
 		<run-modules-integration-test database.type="sqlserver" database.version="2022" />
 	</target>
 
@@ -7269,7 +7269,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="sqlserver" database.version="2022" />
 	</target>
 
-	<target name="modules-integration-sybase160-jdk8">
+	<target name="modules-integration-sybase160">
 		<run-modules-integration-test database.type="sybase" />
 	</target>
 
@@ -7277,7 +7277,7 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="sybase" />
 	</target>
 
-	<target name="modules-semantic-versioning-jdk8">
+	<target name="modules-semantic-versioning">
 		<propertycopy from="app.server.${app.server.type}.version" name="app.server.version" />
 
 		<run-batch-test>
@@ -7387,7 +7387,7 @@ information. Make sure to commit in all format-javadoc results.
 		</run-batch-test>
 	</target>
 
-	<target name="modules-unit-jdk8">
+	<target name="modules-unit">
 		<run-batch-test>
 			<test-action>
 				<print-test-class-group test.class.group.index="${axis.variable}" />
@@ -7449,7 +7449,7 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="modules-unit-stable">
-		<antcall target="modules-unit-jdk8" />
+		<antcall target="modules-unit" />
 	</target>
 
 	<target name="modules-unit-jdk21_zulu">
@@ -7459,14 +7459,14 @@ information. Make sure to commit in all format-javadoc results.
 junit.jvm.override=${java.jdk.home}/bin/java
 junit.jvm.override.version=21</echo>
 
-		<antcall target="modules-unit-jdk8">
+		<antcall target="modules-unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="21" />
 		</antcall>
 	</target>
 
-	<target name="modules-unit-project-templates-jdk8">
-		<antcall target="modules-unit-jdk8">
+	<target name="modules-unit-project-templates">
+		<antcall target="modules-unit">
 			<param name="project.templates.test" value="true" />
 			<param name="project.templates.test.builds" value="false" />
 		</antcall>
@@ -7479,7 +7479,7 @@ junit.jvm.override.version=21</echo>
 			junit.jvm.override=${java.jdk.home}/bin/java
 			junit.jvm.override.version=17</echo>
 
-		<antcall target="modules-unit-jdk8">
+		<antcall target="modules-unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="17" />
 			<param name="project.templates.test" value="true" />
@@ -7494,7 +7494,7 @@ junit.jvm.override.version=21</echo>
 			junit.jvm.override=${java.jdk.home}/bin/java
 			junit.jvm.override.version=21</echo>
 
-		<antcall target="modules-unit-jdk8">
+		<antcall target="modules-unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="21" />
 			<param name="project.templates.test" value="true" />

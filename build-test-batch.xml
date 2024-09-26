@@ -6202,7 +6202,7 @@ information. Make sure to commit in all format-javadoc results.
 		</run-batch-test>
 	</target>
 
-	<target name="js-unit-jdk8">
+	<target name="js-unit">
 		<run-batch-test>
 			<test-action>
 				<for delimiter=" " list="${modules.test.class.group}" param="modules.test.class" trim="true">
@@ -8993,7 +8993,7 @@ information. Make sure to commit in all build services results.
 		</gradle-execute>
 	</target>
 
-	<target name="subrepository-unit-jdk8">
+	<target name="subrepository-unit">
 		<fail message="Please set the property ${subrepository.name}." unless="subrepository.name" />
 
 		<if>
@@ -9192,7 +9192,7 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
-	<target name="unit-jdk8">
+	<target name="unit">
 		<run-batch-test>
 			<test-action>
 				<print-test-class-group test.class.group.index="${axis.variable}" />
@@ -9243,8 +9243,8 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
-	<target name="unit-jdk8_stable">
-		<antcall target="unit-jdk8" />
+	<target name="unit-stable">
+		<antcall target="unit" />
 	</target>
 
 	<target name="unit-jdk21_zulu">
@@ -9254,7 +9254,7 @@ ${output.content}</echo>
 junit.jvm.override=${java.jdk.home}/bin/java
 junit.jvm.override.version=21</echo>
 
-		<antcall target="unit-jdk8">
+		<antcall target="unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="21" />
 		</antcall>

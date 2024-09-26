@@ -8567,7 +8567,7 @@ information. Make sure to commit in all build REST results.
 		</fail>
 	</target>
 
-	<target name="semantic-versioning-jdk8">
+	<target name="semantic-versioning">
 		<run-batch-test>
 			<test-action>
 				<echo>Checking for baseline log files.</echo>
@@ -8929,7 +8929,7 @@ information. Make sure to commit in all build services results.
 		</gradle-execute>
 	</target>
 
-	<target name="subrepository-semantic-versioning-jdk8">
+	<target name="subrepository-semantic-versioning">
 		<fail message="Please set the property ${subrepository.name}." unless="subrepository.name" />
 
 		<get-module-base-dir-from-subrepository-name subrepository.name="${subrepository.name}" />

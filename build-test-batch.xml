@@ -9260,7 +9260,7 @@ junit.jvm.override.version=21</echo>
 		</antcall>
 	</target>
 
-	<target name="workspaces-compile-jdk8">
+	<target name="workspaces-compile">
 		<run-batch-test>
 			<test-action>
 				<local name="workspace.names" />
@@ -9365,7 +9365,7 @@ junit.jvm.override.version=21</echo>
 	</target>
 
 	<target name="workspaces-compile-jdk11">
-		<antcall target="workspaces-compile-jdk8">
+		<antcall target="workspaces-compile">
 			<param name="batch.jdk.version" value="11" />
 		</antcall>
 	</target>

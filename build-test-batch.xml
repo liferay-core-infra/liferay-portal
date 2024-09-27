@@ -7782,7 +7782,7 @@ ${output.content}</echo>
 		</if>
 	</target>
 
-	<target name="portal-frontend-js-lint-jdk8">
+	<target name="portal-frontend-js-lint">
 		<run-batch-test>
 			<test-action>
 				<gradle-execute dir="modules" task="packageRunLint" />

@@ -8409,15 +8409,15 @@ ${output.content}</echo>
 		<antcall target="functional-bundle-tomcat-mysql57-jdk11_open" />
 	</target>
 
-	<target name="release-osgi-state-exploded-test-mysql57-jdk8">
+	<target name="release-osgi-state-exploded-test-mysql57">
 		<run-release-osgi-state-exploded-test />
 	</target>
 
-	<target name="release-osgi-state-lpkg-change-directory-test-mysql57-jdk8">
+	<target name="release-osgi-state-lpkg-change-directory-test-mysql57">
 		<run-release-osgi-state-lpkg-change-directory-test />
 	</target>
 
-	<target name="release-osgi-state-lpkg-test-mysql57-jdk8">
+	<target name="release-osgi-state-lpkg-test-mysql57">
 		<run-release-osgi-state-lpkg-test />
 	</target>
 

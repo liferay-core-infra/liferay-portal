@@ -3477,7 +3477,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 		</sequential>
 	</macrodef>
 
-	<target name="archived-module-smoke-mysql57-jdk8">
+	<target name="archived-module-smoke-mysql57">
 		<run-archived-module-smoke />
 	</target>
 

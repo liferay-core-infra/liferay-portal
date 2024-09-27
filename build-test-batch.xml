@@ -7844,7 +7844,7 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
-	<target name="portal-renamed-tomcat-in-path-mysql57-jdk8">
+	<target name="portal-renamed-tomcat-in-path-mysql57">
 		<run-batch-test>
 			<test-action>
 				<database-test-run-test database.type="mysql" stop.app.server="true">

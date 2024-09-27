@@ -7136,10 +7136,6 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
 	</target>
 
-	<target name="modules-integration-mysql57-stable">
-		<run-modules-integration-test database.type="mysql" database.version="5.7" />
-	</target>
-
 	<target name="modules-integration-mysql57-jdk11_open">
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
 	</target>
@@ -7148,15 +7144,19 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mysql" database.version="5.7" />
 	</target>
 
+	<target name="modules-integration-mysql57-stable">
+		<run-modules-integration-test database.type="mysql" database.version="5.7" />
+	</target>
+
 	<target name="modules-integration-mysql80">
 		<run-modules-integration-test database.type="mysql" database.version="8.0" />
 	</target>
 
-	<target name="modules-integration-mysql80-stable">
+	<target name="modules-integration-mysql80-jdk11_open">
 		<run-modules-integration-test database.type="mysql" database.version="8.0" />
 	</target>
 
-	<target name="modules-integration-mysql80-jdk11_open">
+	<target name="modules-integration-mysql80-stable">
 		<run-modules-integration-test database.type="mysql" database.version="8.0" />
 	</target>
 
@@ -7448,10 +7448,6 @@ information. Make sure to commit in all format-javadoc results.
 		</run-batch-test>
 	</target>
 
-	<target name="modules-unit-stable">
-		<antcall target="modules-unit" />
-	</target>
-
 	<target name="modules-unit-jdk21_zulu">
 		<get-java-jdk-home type="zulu" version="21" />
 
@@ -7500,6 +7496,10 @@ junit.jvm.override.version=21</echo>
 			<param name="project.templates.test" value="true" />
 			<param name="project.templates.test.builds" value="false" />
 		</antcall>
+	</target>
+
+	<target name="modules-unit-stable">
+		<antcall target="modules-unit" />
 	</target>
 
 	<target name="oracle-service-start">
@@ -8702,6 +8702,40 @@ information. Make sure to commit in all build services results.
 		<setup-testable-tomcat-gc test.portal.bundle.version="${test.portal.bundle.version}" />
 	</target>
 
+	<target name="source-format">
+		<run-batch-test>
+			<test-action>
+				<if>
+					<available file="modules/util/source-formatter" />
+					<then>
+						<gradle-execute dir="modules/util/source-formatter" task="deploy">
+							<arg value="clean" />
+						</gradle-execute>
+					</then>
+				</if>
+
+				<loadproperties>
+					<zipentry name="META-INF/MANIFEST.MF" zipfile="tools/sdk/dependencies/com.liferay.source.formatter/lib/com.liferay.source.formatter.jar" />
+				</loadproperties>
+
+				<echo>Running com.liferay.source.formatter.jar ${Bundle-Version}.</echo>
+
+				<ant dir="portal-impl" target="format-source-all">
+					<property name="source.auto.fix" value="false" />
+					<property name="source.fail.on.auto.fix" value="true" />
+					<property name="source.fail.on.has.warning" value="true" />
+					<property if:true="${liferay.releng.public}" name="source.formatter.excludes" value="modules/private/**" />
+					<property name="source.print.errors" value="false" />
+					<property name="source.use.properties" value="false" />
+				</ant>
+			</test-action>
+
+			<test-set-up>
+				<setup-test-environment />
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
 	<target name="source-format-current-branch">
 		<run-batch-test>
 			<test-action>
@@ -8765,40 +8799,6 @@ information. Make sure to commit in all build services results.
 					</else>
 				</if>
 			</test-action>
-		</run-batch-test>
-	</target>
-
-	<target name="source-format">
-		<run-batch-test>
-			<test-action>
-				<if>
-					<available file="modules/util/source-formatter" />
-					<then>
-						<gradle-execute dir="modules/util/source-formatter" task="deploy">
-							<arg value="clean" />
-						</gradle-execute>
-					</then>
-				</if>
-
-				<loadproperties>
-					<zipentry name="META-INF/MANIFEST.MF" zipfile="tools/sdk/dependencies/com.liferay.source.formatter/lib/com.liferay.source.formatter.jar" />
-				</loadproperties>
-
-				<echo>Running com.liferay.source.formatter.jar ${Bundle-Version}.</echo>
-
-				<ant dir="portal-impl" target="format-source-all">
-					<property name="source.auto.fix" value="false" />
-					<property name="source.fail.on.auto.fix" value="true" />
-					<property name="source.fail.on.has.warning" value="true" />
-					<property if:true="${liferay.releng.public}" name="source.formatter.excludes" value="modules/private/**" />
-					<property name="source.print.errors" value="false" />
-					<property name="source.use.properties" value="false" />
-				</ant>
-			</test-action>
-
-			<test-set-up>
-				<setup-test-environment />
-			</test-set-up>
 		</run-batch-test>
 	</target>
 
@@ -9124,10 +9124,6 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
-	<target name="unit-stable">
-		<antcall target="unit" />
-	</target>
-
 	<target name="unit-jdk21_zulu">
 		<get-java-jdk-home type="zulu" version="21" />
 
@@ -9139,6 +9135,10 @@ junit.jvm.override.version=21</echo>
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="21" />
 		</antcall>
+	</target>
+
+	<target name="unit-stable">
+		<antcall target="unit" />
 	</target>
 
 	<target name="workspaces-compile">

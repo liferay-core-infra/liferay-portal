@@ -7990,7 +7990,7 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
-	<target name="portal-second-startup-space-in-path-mysql57-jdk8">
+	<target name="portal-second-startup-space-in-path-mysql57">
 		<sequential>
 			<run-batch-test>
 				<test-action>

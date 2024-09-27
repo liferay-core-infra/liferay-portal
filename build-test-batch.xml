@@ -6328,23 +6328,23 @@ information. Make sure to commit in all format-javadoc results.
 		<run-legacy-database-dump database.type="sybase" />
 	</target>
 
-	<target name="lpkg-container-mysql57-jdk8">
+	<target name="lpkg-container-mysql57">
 		<run-lpkg-container-test />
 	</target>
 
-	<target name="lpkg-controller-mysql57-jdk8">
+	<target name="lpkg-controller-mysql57">
 		<run-lpkg-controller-test />
 	</target>
 
-	<target name="lpkg-override-mysql57-jdk8">
+	<target name="lpkg-override-mysql57">
 		<run-lpkg-override-test />
 	</target>
 
-	<target name="lpkg-persistence-mysql57-jdk8">
+	<target name="lpkg-persistence-mysql57">
 		<run-lpkg-persistence-test />
 	</target>
 
-	<target name="lpkg-startup-mysql57-jdk8">
+	<target name="lpkg-startup-mysql57">
 		<run-lpkg-startup-test />
 	</target>
 

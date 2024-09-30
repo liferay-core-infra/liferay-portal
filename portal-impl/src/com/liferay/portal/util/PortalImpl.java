@@ -1487,21 +1487,26 @@ public class PortalImpl implements Portal {
 
 			int pos = -1;
 
-			for (String urlSeparator :
+			try (SafeCloseable safeCloseable =
+					 CompanyThreadLocal.setWithSafeCloseable(
+						 themeDisplay.getCompanyId())) {
+
+				for (String urlSeparator :
 					FriendlyURLResolverRegistryUtil.getURLSeparators()) {
 
-				pos = completeURL.indexOf(urlSeparator);
+					pos = completeURL.indexOf(urlSeparator);
 
-				if (pos != -1) {
-					String friendlyURL = layout.getFriendlyURL();
+					if (pos != -1) {
+						String friendlyURL = layout.getFriendlyURL();
 
-					if (friendlyURL.contains(urlSeparator)) {
-						pos = -1;
-					}
-					else {
-						includeParametersURL = true;
+						if (friendlyURL.contains(urlSeparator)) {
+							pos = -1;
+						}
+						else {
+							includeParametersURL = true;
 
-						break;
+							break;
+						}
 					}
 				}
 			}

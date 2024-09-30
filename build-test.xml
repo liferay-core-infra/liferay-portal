@@ -707,9 +707,6 @@ jdbc.default.driverClassName=${database.driver}
 jdbc.default.url=${database.url}
 jdbc.default.username=${database.username}
 jdbc.default.password=${database.password}
-
-// HikariCP
-
 jdbc.default.connectionTimeout=600000
 jdbc.default.maximumPoolSize=30
 jdbc.default.minimumIdle=0]]></echo>
@@ -12032,9 +12029,6 @@ jdbc.default.driverClassName=${database.driver}
 jdbc.default.url=${database.url}
 jdbc.default.username=${database.username}
 jdbc.default.password=${database.password}
-
-// HikariCP
-
 jdbc.default.connectionTimeout=600000
 jdbc.default.maximumPoolSize=${database.max.pool.size}
 jdbc.default.minimumIdle=0

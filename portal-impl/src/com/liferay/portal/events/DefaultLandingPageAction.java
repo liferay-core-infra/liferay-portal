@@ -5,6 +5,7 @@
 
 package com.liferay.portal.events;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
@@ -19,6 +20,9 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,6 +85,8 @@ public class DefaultLandingPageAction extends Action {
 				});
 		}
 
+		path = _pathToASCIIString(path);
+
 		LastPath lastPath = new LastPath(StringPool.BLANK, path);
 
 		httpSession.setAttribute(WebKeys.LAST_PATH, lastPath);
@@ -97,6 +103,22 @@ public class DefaultLandingPageAction extends Action {
 		LastPath lastPath = new LastPath("/c", "/portal/layout", params);
 
 		httpSession.setAttribute(WebKeys.LAST_PATH, lastPath);*/
+	}
+
+	private String _pathToASCIIString(String path) {
+		String pathWithoutSpaces = path.replace(CharPool.SPACE, CharPool.PLUS);
+
+		try {
+			URI uri = new URI(pathWithoutSpaces);
+
+			return uri.toASCIIString();
+		}
+		catch (URISyntaxException e) {
+			_log.warn(
+				"Invalid landing page: " + PropsKeys.DEFAULT_LANDING_PAGE_PATH);
+
+			return path;
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

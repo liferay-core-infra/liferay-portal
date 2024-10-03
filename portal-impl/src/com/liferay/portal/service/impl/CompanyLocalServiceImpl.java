@@ -287,8 +287,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 						_userLocalService.addDefaultAdminUser(
 							updatedCompany.getCompanyId(),
 							GetterUtil.getString(
-								defaultAdminPassword,
-								PropsValues.DEFAULT_ADMIN_PASSWORD),
+								defaultAdminPassword),
 							GetterUtil.getString(
 								defaultAdminScreenName,
 								PropsValues.DEFAULT_ADMIN_SCREEN_NAME),

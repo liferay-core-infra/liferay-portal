@@ -305,10 +305,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		long[] roleIds = {adminRole.getRoleId(), powerUserRole.getRoleId()};
 
 		long[] userGroupIds = null;
+
 		boolean sendEmail = false;
+
 		if (Validator.isNull(password)) {
 			sendEmail = true;
 		}
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		Company company = _companyLocalService.getCompany(companyId);

@@ -68,7 +68,8 @@ public class DBInitUtil {
 
 			DBPartitionUtil.checkDatabasePartitionSchemaNamePrefix();
 
-			_dataSource = DBPartitionUtil.wrapDataSource(_dataSource);
+			_dataSource = DBPartitionUtil.wrapDataSource(
+				connection, _dataSource);
 
 			DBPartitionUtil.setDefaultCompanyId(connection);
 		}

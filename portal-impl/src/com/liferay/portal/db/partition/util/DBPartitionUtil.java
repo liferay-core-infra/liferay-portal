@@ -307,7 +307,8 @@ public class DBPartitionUtil {
 		}
 	}
 
-	public static DataSource wrapDataSource(DataSource dataSource)
+	public static DataSource wrapDataSource(
+			Connection connection, DataSource dataSource)
 		throws SQLException {
 
 		if (!DBPartition.isPartitionEnabled()) {
@@ -330,10 +331,8 @@ public class DBPartitionUtil {
 			_dbPartitionDB = new DBPartitionPostgreSQLDB();
 		}
 
-		try (Connection connection = dataSource.getConnection()) {
-			_defaultPartitionName = _dbPartitionDB.getDefaultPartitionName(
-				connection);
-		}
+		_defaultPartitionName = _dbPartitionDB.getDefaultPartitionName(
+			connection);
 
 		return new DataSourceWrapper(dataSource) {
 

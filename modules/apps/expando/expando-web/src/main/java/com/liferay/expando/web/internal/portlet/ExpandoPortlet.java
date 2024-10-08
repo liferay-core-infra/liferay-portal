@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -409,7 +410,8 @@ public class ExpandoPortlet extends MVCPortlet {
 			value = GetterUtil.getShortValues(values);
 		}
 		else if (type == ExpandoColumnConstants.STRING_ARRAY) {
-			String paramValue = ParamUtil.getString(portletRequest, name);
+			String paramValue = HtmlUtil.escape(
+				ParamUtil.getString(portletRequest, name));
 
 			if (paramValue.contains(StringPool.NEW_LINE)) {
 				delimiter = StringPool.NEW_LINE;

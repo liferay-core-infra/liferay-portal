@@ -8,6 +8,7 @@ package com.liferay.counter.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.counter.test.rule.HypersonicServerClassTestRule;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessChannel;
 import com.liferay.petra.process.ProcessConfig;
@@ -17,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.ClassTestRule;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
@@ -139,7 +141,8 @@ public class CounterLocalServiceProcessTest {
 			ProcessCallable<Long[]> processCallable =
 				new IncrementProcessCallable(
 					"Increment Process-" + i,
-					SystemProperties.get("catalina.base"), _COUNTER_NAME,
+					SystemProperties.get("catalina.base"),
+					CompanyThreadLocal.getNonsystemCompanyId(), _COUNTER_NAME,
 					_INCREMENT_COUNT);
 
 			ProcessChannel<Long[]> processChannel = _processExecutor.execute(
@@ -206,11 +209,12 @@ public class CounterLocalServiceProcessTest {
 		implements ProcessCallable<Long[]> {
 
 		public IncrementProcessCallable(
-			String processName, String catalinaBase, String counterName,
-			int incrementCount) {
+			String processName, String catalinaBase, long companyId,
+			String counterName, int incrementCount) {
 
 			_processName = processName;
 			_catalinaBase = catalinaBase;
+			_companyId = companyId;
 			_counterName = counterName;
 			_incrementCount = incrementCount;
 		}
@@ -242,7 +246,9 @@ public class CounterLocalServiceProcessTest {
 
 			List<Long> ids = new ArrayList<>();
 
-			try {
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(_companyId)) {
+
 				for (int i = 0; i < _incrementCount; i++) {
 					ids.add(CounterLocalServiceUtil.increment(_counterName));
 				}
@@ -262,6 +268,7 @@ public class CounterLocalServiceProcessTest {
 		private static final long serialVersionUID = 1L;
 
 		private final String _catalinaBase;
+		private final long _companyId;
 		private final String _counterName;
 		private final int _incrementCount;
 		private final String _processName;

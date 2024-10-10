@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
@@ -647,20 +646,15 @@ public class PrefsPropsImpl implements PrefsProps {
 		private void _clearPortletPreferencce(
 			PortalPreferenceValue portalPreferenceValue) {
 
-			try {
-				PortalPreferences portalPreferences =
-					_portalPreferencesLocalService.getPortalPreferences(
-						portalPreferenceValue.getPortalPreferencesId());
+			PortalPreferences portalPreferences =
+				_portalPreferencesLocalService.fetchPortalPreferences(
+					portalPreferenceValue.getPortalPreferencesId());
 
-				if (portalPreferences.getOwnerType() ==
-						PortletKeys.PREFS_OWNER_TYPE_COMPANY) {
+			if ((portalPreferences != null) &&
+				(portalPreferences.getOwnerType() ==
+					PortletKeys.PREFS_OWNER_TYPE_COMPANY)) {
 
-					_removePortletPreference(
-						portalPreferenceValue.getCompanyId());
-				}
-			}
-			catch (PortalException portalException) {
-				throw new ModelListenerException(portalException);
+				_removePortletPreference(portalPreferenceValue.getCompanyId());
 			}
 		}
 

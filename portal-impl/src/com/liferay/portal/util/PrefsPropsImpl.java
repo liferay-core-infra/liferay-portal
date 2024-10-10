@@ -625,14 +625,14 @@ public class PrefsPropsImpl implements PrefsProps {
 		public void onBeforeCreate(PortalPreferenceValue portalPreferenceValue)
 			throws ModelListenerException {
 
-			_clearPortletPreferencce(portalPreferenceValue);
+			_clearPortletPreferences(portalPreferenceValue);
 		}
 
 		@Override
 		public void onBeforeRemove(PortalPreferenceValue portalPreferenceValue)
 			throws ModelListenerException {
 
-			_clearPortletPreferencce(portalPreferenceValue);
+			_clearPortletPreferences(portalPreferenceValue);
 		}
 
 		@Override
@@ -640,10 +640,10 @@ public class PrefsPropsImpl implements PrefsProps {
 			PortalPreferenceValue originalPortalPreferenceValue,
 			PortalPreferenceValue portalPreferenceValue) {
 
-			_clearPortletPreferencce(portalPreferenceValue);
+			_clearPortletPreferences(portalPreferenceValue);
 		}
 
-		private void _clearPortletPreferencce(
+		private void _clearPortletPreferences(
 			PortalPreferenceValue portalPreferenceValue) {
 
 			PortalPreferences portalPreferences =

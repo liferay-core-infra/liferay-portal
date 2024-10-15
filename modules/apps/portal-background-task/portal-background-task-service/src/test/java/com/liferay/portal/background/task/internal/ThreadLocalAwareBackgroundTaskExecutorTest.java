@@ -8,7 +8,9 @@ package com.liferay.portal.background.task.internal;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.Serializable;
@@ -36,6 +38,14 @@ public class ThreadLocalAwareBackgroundTaskExecutorTest
 
 	@Test
 	public void testStaleBackgroundTaskIsSkipped() throws Exception {
+		HashMap<String, Serializable> backgroundValues =
+			HashMapBuilder.<String, Serializable>put(
+				"clusterInvoke", true
+			).build();
+
+		backgroundTaskThreadLocalManagerImpl.setThreadLocalValues(
+			COMPANY_ID, backgroundValues);
+
 		CompanyLocalService companyLocalService = Mockito.mock(
 			CompanyLocalService.class);
 
@@ -43,6 +53,8 @@ public class ThreadLocalAwareBackgroundTaskExecutorTest
 			companyLocalService.fetchCompany(Mockito.anyLong())
 		).thenReturn(
 			null
+		).thenReturn(
+			Mockito.mock(Company.class)
 		);
 
 		backgroundTaskThreadLocalManagerImpl.companyLocalService =
@@ -59,19 +71,42 @@ public class ThreadLocalAwareBackgroundTaskExecutorTest
 
 		BackgroundTask backgroundTask = Mockito.mock(BackgroundTask.class);
 
+		HashMap<String, Serializable> threadLocalValues =
+			HashMapBuilder.<String, Serializable>put(
+				"clusterInvoke", !(boolean)backgroundValues.get("clusterInvoke")
+			).build();
+
+		Assert.assertNotEquals(
+			backgroundValues.get("clusterInvoke"),
+			threadLocalValues.get("clusterInvoke"));
+
+		backgroundTask.setTaskContextMap(threadLocalValues);
+
+		Mockito.when(
+			backgroundTask.getCompanyId()
+		).thenReturn(
+			1L
+		);
+
 		Mockito.when(
 			backgroundTask.getTaskContextMap()
 		).thenReturn(
 			Collections.singletonMap(
 				BackgroundTaskThreadLocalManagerImpl.KEY_THREAD_LOCAL_VALUES,
-				(Serializable)new HashMap<>(
-					Collections.singletonMap("companyId", 1)))
+				threadLocalValues)
 		);
 
 		BackgroundTaskResult backgroundTaskResult =
 			threadLocalAwareBackgroundTaskExecutor.execute(backgroundTask);
 
 		Assert.assertTrue(backgroundTaskResult.isSuccessful());
+
+		Assert.assertEquals(
+			backgroundTaskThreadLocalManagerImpl.getThreadLocalValues(
+			).get(
+				"clusterInvoke"
+			),
+			backgroundValues.get("clusterInvoke"));
 
 		Mockito.verifyNoInteractions(backgroundTaskExecutor);
 	}

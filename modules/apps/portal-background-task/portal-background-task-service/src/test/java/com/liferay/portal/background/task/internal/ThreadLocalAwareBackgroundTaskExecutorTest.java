@@ -8,13 +8,11 @@ package com.liferay.portal.background.task.internal;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
-import java.io.Serializable;
-
 import java.util.Collections;
-import java.util.HashMap;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -36,6 +34,9 @@ public class ThreadLocalAwareBackgroundTaskExecutorTest
 
 	@Test
 	public void testStaleBackgroundTaskIsSkipped() throws Exception {
+		backgroundTaskThreadLocalManagerImpl.setThreadLocalValues(
+			COMPANY_ID, initializeThreadLocalValues());
+
 		CompanyLocalService companyLocalService = Mockito.mock(
 			CompanyLocalService.class);
 
@@ -43,6 +44,8 @@ public class ThreadLocalAwareBackgroundTaskExecutorTest
 			companyLocalService.fetchCompany(Mockito.anyLong())
 		).thenReturn(
 			null
+		).thenReturn(
+			Mockito.mock(Company.class)
 		);
 
 		backgroundTaskThreadLocalManagerImpl.companyLocalService =
@@ -59,19 +62,28 @@ public class ThreadLocalAwareBackgroundTaskExecutorTest
 
 		BackgroundTask backgroundTask = Mockito.mock(BackgroundTask.class);
 
+		backgroundTask.setTaskContextMap(initializeThreadLocalValuesMixed());
+
+		Mockito.when(
+			backgroundTask.getCompanyId()
+		).thenReturn(
+			1L
+		);
+
 		Mockito.when(
 			backgroundTask.getTaskContextMap()
 		).thenReturn(
 			Collections.singletonMap(
 				BackgroundTaskThreadLocalManagerImpl.KEY_THREAD_LOCAL_VALUES,
-				(Serializable)new HashMap<>(
-					Collections.singletonMap("companyId", 1)))
+				initializeThreadLocalValuesMixed())
 		);
 
 		BackgroundTaskResult backgroundTaskResult =
 			threadLocalAwareBackgroundTaskExecutor.execute(backgroundTask);
 
 		Assert.assertTrue(backgroundTaskResult.isSuccessful());
+
+		assertThreadLocalValues();
 
 		Mockito.verifyNoInteractions(backgroundTaskExecutor);
 	}

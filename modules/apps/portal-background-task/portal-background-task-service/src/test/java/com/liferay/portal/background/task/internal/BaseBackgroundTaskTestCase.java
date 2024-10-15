@@ -190,6 +190,22 @@ public abstract class BaseBackgroundTaskTestCase {
 		).build();
 	}
 
+	protected HashMap<String, Serializable> initializeThreadLocalValuesMixed() {
+		return HashMapBuilder.<String, Serializable>put(
+			"clusterInvoke", !_CLUSTER_INVOKE_ENABLED
+		).put(
+			"defaultLocale", _siteDefaultLocale
+		).put(
+			"groupId", _GROUP_ID * 2
+		).put(
+			"principalName", _PRINCIPAL_NAME + "_NEW"
+		).put(
+			"siteDefaultLocale", _themeDisplayLocale
+		).put(
+			"themeDisplayLocale", _defaultLocale
+		).build();
+	}
+
 	protected BackgroundTaskThreadLocalManagerImpl
 		backgroundTaskThreadLocalManagerImpl;
 

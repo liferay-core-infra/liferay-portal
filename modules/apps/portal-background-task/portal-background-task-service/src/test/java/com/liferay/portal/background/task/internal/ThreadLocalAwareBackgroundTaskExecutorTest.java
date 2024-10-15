@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.Serializable;
@@ -66,6 +67,12 @@ public class ThreadLocalAwareBackgroundTaskExecutorTest
 				BackgroundTaskThreadLocalManagerImpl.KEY_THREAD_LOCAL_VALUES,
 				(Serializable)new HashMap<>(
 					Collections.singletonMap("companyId", 1)))
+		);
+
+		Mockito.when(
+			backgroundTask.getCompanyId()
+		).thenReturn(
+			RandomTestUtil.randomLong(1, 1000)
 		);
 
 		BackgroundTaskResult backgroundTaskResult =

@@ -284,6 +284,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					updatedCompany = _checkCompany(updatedCompany);
 
 					if (addDefaultAdminUser) {
+						boolean sendEmail = false;
+
+						if (Validator.isNull(defaultAdminPassword)) {
+							sendEmail = true;
+						}
+
 						_userLocalService.addDefaultAdminUser(
 							updatedCompany.getCompanyId(),
 							GetterUtil.getString(
@@ -305,7 +311,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 								PropsValues.DEFAULT_ADMIN_MIDDLE_NAME),
 							GetterUtil.getString(
 								defaultAdminLastName,
-								PropsValues.DEFAULT_ADMIN_LAST_NAME));
+								PropsValues.DEFAULT_ADMIN_LAST_NAME),
+							sendEmail);
 					}
 
 					// Guest user must have the Guest role

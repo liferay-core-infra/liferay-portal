@@ -81,12 +81,14 @@ public interface UserLocalService
 	 * @param firstName the user's first name
 	 * @param middleName the user's middle name
 	 * @param lastName the user's last name
+	 * @param sendEmail whether to send the admin user an email notification about
+	 their new account
 	 * @return the new default admin user
 	 */
 	public User addDefaultAdminUser(
 			long companyId, String password, String screenName,
 			String emailAddress, Locale locale, String firstName,
-			String middleName, String lastName)
+			String middleName, String lastName, boolean sendEmail)
 		throws PortalException;
 
 	/**

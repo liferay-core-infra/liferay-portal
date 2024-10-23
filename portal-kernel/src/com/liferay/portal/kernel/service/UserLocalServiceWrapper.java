@@ -39,18 +39,20 @@ public class UserLocalServiceWrapper
 	 * @param firstName the user's first name
 	 * @param middleName the user's middle name
 	 * @param lastName the user's last name
+	 * @param sendEmail whether to send the admin user an email notification about
+	 their new account
 	 * @return the new default admin user
 	 */
 	@Override
 	public User addDefaultAdminUser(
 			long companyId, String password, String screenName,
 			String emailAddress, java.util.Locale locale, String firstName,
-			String middleName, String lastName)
+			String middleName, String lastName, boolean sendEmail)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _userLocalService.addDefaultAdminUser(
 			companyId, password, screenName, emailAddress, locale, firstName,
-			middleName, lastName);
+			middleName, lastName, sendEmail);
 	}
 
 	/**

@@ -254,13 +254,15 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  firstName the user's first name
 	 * @param  middleName the user's middle name
 	 * @param  lastName the user's last name
+	 * @param sendEmail whether to send the admin user an email notification about
+	 *  	 their new account
 	 * @return the new default admin user
 	 */
 	@Override
 	public User addDefaultAdminUser(
 			long companyId, String password, String screenName,
 			String emailAddress, Locale locale, String firstName,
-			String middleName, String lastName)
+			String middleName, String lastName, boolean sendEmail)
 		throws PortalException {
 
 		long creatorUserId = 0;
@@ -268,7 +270,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		boolean passwordReset = _isPasswordReset(companyId);
 
-		if (Validator.isNull(password)) {
+		// send password reset email to admin users
+
+		if (sendEmail || Validator.isNull(password)) {
 			autoPassword = true;
 			passwordReset = true;
 		}
@@ -312,7 +316,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		long[] roleIds = {adminRole.getRoleId(), powerUserRole.getRoleId()};
 
 		long[] userGroupIds = null;
-		boolean sendEmail = false;
 		ServiceContext serviceContext = new ServiceContext();
 
 		Company company = _companyLocalService.getCompany(companyId);

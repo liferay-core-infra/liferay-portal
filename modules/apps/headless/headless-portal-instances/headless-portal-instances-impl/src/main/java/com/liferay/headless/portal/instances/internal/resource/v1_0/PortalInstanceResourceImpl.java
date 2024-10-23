@@ -133,6 +133,16 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 				PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX + "@" +
 					company.getMx());
 
+			if (!StringUtil.equalsIgnoreCase(
+					defaultAdminUser.getEmailAddress(),
+					admin.getEmailAddress())) {
+
+				defaultAdminUser.setEmailAddress(admin.getEmailAddress());
+
+				defaultAdminUser = _userLocalService.updateUser(
+					defaultAdminUser);
+			}
+
 			Contact contact = defaultAdminUser.getContact();
 
 			Calendar calendar = CalendarFactoryUtil.getCalendar();
@@ -143,8 +153,9 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 				defaultAdminUser.getUserId(), null, null, null, false,
 				defaultAdminUser.getReminderQueryQuestion(),
 				defaultAdminUser.getReminderQueryAnswer(),
-				defaultAdminUser.getScreenName(), admin.getEmailAddress(), true,
-				null, defaultAdminUser.getLanguageId(),
+				defaultAdminUser.getScreenName(),
+				defaultAdminUser.getEmailAddress(), true, null,
+				defaultAdminUser.getLanguageId(),
 				defaultAdminUser.getTimeZoneId(),
 				defaultAdminUser.getGreeting(), defaultAdminUser.getComments(),
 				admin.getGivenName(), defaultAdminUser.getMiddleName(),

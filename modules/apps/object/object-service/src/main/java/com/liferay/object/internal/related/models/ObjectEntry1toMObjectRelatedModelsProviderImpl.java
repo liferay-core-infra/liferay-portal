@@ -15,15 +15,27 @@ import com.liferay.object.related.models.ObjectRelatedModelsProvider;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author Marco Leo
@@ -52,10 +64,6 @@ public class ObjectEntry1toMObjectRelatedModelsProviderImpl
 			long primaryKey, String deletionType)
 		throws PortalException {
 
-		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.getObjectRelationship(
-				objectRelationshipId);
-
 		List<ObjectEntry> relatedModels = getRelatedModels(
 			groupId, objectRelationshipId, primaryKey, null, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS);
@@ -68,14 +76,63 @@ public class ObjectEntry1toMObjectRelatedModelsProviderImpl
 				deletionType,
 				ObjectRelationshipConstants.DELETION_TYPE_CASCADE)) {
 
+			List<Future<?>> futures = new ArrayList<>();
+
+			String name = PrincipalThreadLocal.getName();
+			PermissionChecker permissionChecker =
+				PermissionThreadLocal.getPermissionChecker();
+
 			for (ObjectEntry objectEntry : relatedModels) {
-				_objectEntryService.deleteObjectEntry(
-					objectEntry.getObjectEntryId());
+				futures.add(
+					_executorService.submit(
+						() -> {
+							try (SafeCloseable safeCloseable =
+									CompanyThreadLocal.
+										setCompanyIdWithSafeCloseable(
+											objectEntry.getCompanyId())) {
+
+								PermissionThreadLocal.setPermissionChecker(
+									permissionChecker);
+								PrincipalThreadLocal.setName(name);
+
+								_objectEntryService.deleteObjectEntry(
+									objectEntry.getObjectEntryId());
+							}
+							catch (Exception exception) {
+								if (_log.isDebugEnabled()) {
+									_log.debug(exception);
+								}
+
+								throw new RuntimeException(exception);
+							}
+						}));
 			}
+
+			try {
+				UnsafeConsumer.accept(futures, Future::get, Exception.class);
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
+				}
+
+				Throwable throwable = exception.getCause();
+
+				if (throwable.getCause() instanceof PortalException) {
+					throw (PortalException)throwable.getCause();
+				}
+			}
+
+			return;
 		}
-		else if (Objects.equals(
-					deletionType,
-					ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE)) {
+
+		ObjectRelationship objectRelationship =
+			_objectRelationshipLocalService.getObjectRelationship(
+				objectRelationshipId);
+
+		if (Objects.equals(
+				deletionType,
+				ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE)) {
 
 			ObjectField objectField = _objectFieldLocalService.getObjectField(
 				objectRelationship.getObjectFieldId2());
@@ -193,8 +250,13 @@ public class ObjectEntry1toMObjectRelatedModelsProviderImpl
 			groupId, objectRelationshipId, objectEntryId, false, null);
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		ObjectEntry1toMObjectRelatedModelsProviderImpl.class);
+
 	private final String _className;
 	private final long _companyId;
+	private final ExecutorService _executorService =
+		Executors.newFixedThreadPool(10);
 	private final ObjectEntryService _objectEntryService;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectRelationshipLocalService

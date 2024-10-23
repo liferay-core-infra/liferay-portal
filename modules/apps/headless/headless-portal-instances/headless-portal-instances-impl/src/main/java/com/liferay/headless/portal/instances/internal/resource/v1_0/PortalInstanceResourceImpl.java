@@ -8,6 +8,8 @@ package com.liferay.headless.portal.instances.internal.resource.v1_0;
 import com.liferay.headless.portal.instances.dto.v1_0.Admin;
 import com.liferay.headless.portal.instances.dto.v1_0.PortalInstance;
 import com.liferay.headless.portal.instances.resource.v1_0.PortalInstanceResource;
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserScreenNameException;
@@ -19,6 +21,8 @@ import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PrefsPropsUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 import com.liferay.portal.util.PortalInstances;
@@ -207,6 +211,28 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 		if (!emailAddressValidator.validate(0, admin.getEmailAddress())) {
 			throw new UserEmailAddressException.MustValidate(
 				admin.getEmailAddress(), emailAddressValidator);
+		}
+
+		String pop3User = PrefsPropsUtil.getString(
+			PropsKeys.MAIL_SESSION_MAIL_POP3_USER,
+			PropsValues.MAIL_SESSION_MAIL_POP3_USER);
+
+		if (StringUtil.equalsIgnoreCase(admin.getEmailAddress(), pop3User)) {
+			throw new UserEmailAddressException.MustNotBePOP3User(
+				admin.getEmailAddress());
+		}
+
+		String[] reservedEmailAddresses = PrefsPropsUtil.getStringArray(
+			0, PropsKeys.ADMIN_RESERVED_EMAIL_ADDRESSES, StringPool.NEW_LINE,
+			PropsValues.ADMIN_RESERVED_EMAIL_ADDRESSES);
+
+		for (String reservedEmailAddress : reservedEmailAddresses) {
+			if (StringUtil.equalsIgnoreCase(
+					admin.getEmailAddress(), reservedEmailAddress)) {
+
+				throw new UserEmailAddressException.MustNotBeReserved(
+					admin.getEmailAddress(), reservedEmailAddresses);
+			}
 		}
 	}
 

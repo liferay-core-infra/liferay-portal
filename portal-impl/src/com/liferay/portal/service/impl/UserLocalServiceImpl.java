@@ -271,8 +271,11 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		boolean passwordReset = _isPasswordReset(companyId);
 
 		// send password reset email to admin users
+		if (sendEmail) {
+			passwordReset = true;
+		}
 
-		if (sendEmail || Validator.isNull(password)) {
+		if (Validator.isNull(password)) {
 			autoPassword = true;
 			passwordReset = true;
 		}

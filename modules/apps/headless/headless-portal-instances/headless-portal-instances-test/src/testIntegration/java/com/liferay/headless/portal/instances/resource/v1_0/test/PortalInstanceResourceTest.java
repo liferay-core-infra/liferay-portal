@@ -16,12 +16,14 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.List;
 
@@ -90,8 +92,16 @@ public class PortalInstanceResourceTest
 	@Override
 	@Test
 	public void testPostPortalInstance() throws Exception {
+		boolean originalCompanySecurityStrangersVerify =
+			ReflectionTestUtil.getAndSetFieldValue(
+				PropsValues.class, "COMPANY_SECURITY_STRANGERS_VERIFY", true);
+
 		_testPostPortalInstanceWithoutAdmin();
 		_testPostPortalInstanceWithAdmin();
+
+		ReflectionTestUtil.setFieldValue(
+			PropsValues.class, "COMPANY_SECURITY_STRANGERS_VERIFY",
+			originalCompanySecurityStrangersVerify);
 	}
 
 	@Override

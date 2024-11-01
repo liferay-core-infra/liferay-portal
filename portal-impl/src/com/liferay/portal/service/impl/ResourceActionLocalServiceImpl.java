@@ -114,7 +114,7 @@ public class ResourceActionLocalServiceImpl
 			for (String actionId : actionIds) {
 				String key = encodeKey(name, actionId);
 
-				if (_resourceActions.get(key) != null) {
+				if (fetchResourceAction(name, actionId) != null) {
 					continue;
 				}
 

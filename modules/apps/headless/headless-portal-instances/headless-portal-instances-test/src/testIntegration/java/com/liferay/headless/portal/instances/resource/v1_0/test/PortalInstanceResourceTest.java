@@ -10,7 +10,6 @@ import com.liferay.headless.portal.instances.client.dto.v1_0.Admin;
 import com.liferay.headless.portal.instances.client.dto.v1_0.PortalInstance;
 import com.liferay.headless.portal.instances.client.pagination.Page;
 import com.liferay.headless.portal.instances.client.problem.Problem;
-import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -18,12 +17,13 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
-import com.liferay.portal.kernel.test.util.PropsValuesTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.Inject;
+import com.liferay.poshi.core.util.PropsUtil;
 
 import java.util.List;
 
@@ -93,12 +93,22 @@ public class PortalInstanceResourceTest
 	@Test
 	public void testPostPortalInstance() throws Exception {
 		_testPostPortalInstanceWithoutAdmin();
+		_testPostPortalInstanceWithAdmin();
+	}
 
-		try (SafeCloseable safeCloseable =
-				PropsValuesTestUtil.swapWithSafeCloseable(
-					"COMPANY_SECURITY_STRANGERS_VERIFY", true)) {
+	@Test
+	public void testPostPortalInstanceWithAdminWhenCompanyStrangersTrue()
+		throws Exception {
 
+		PropsUtil.set(
+			PropsKeys.COMPANY_SECURITY_STRANGERS, Boolean.TRUE.toString());
+
+		try {
 			_testPostPortalInstanceWithAdmin();
+		}
+		finally {
+			PropsUtil.set(
+				PropsKeys.COMPANY_SECURITY_STRANGERS, Boolean.FALSE.toString());
 		}
 	}
 

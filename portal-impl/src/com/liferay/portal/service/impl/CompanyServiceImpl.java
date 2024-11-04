@@ -87,8 +87,8 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	@Override
 	public Company addCompany(
-			Long companyId, String webId, String virtualHost, String mx, int maxUsers,
-			boolean active, String defaultAdminPassword,
+			Long companyId, String webId, String virtualHost, String mx,
+			int maxUsers, boolean active, String defaultAdminPassword,
 			String defaultAdminScreenName, String defaultAdminEmailAddress,
 			String defaultAdminFirstName, String defaultAdminMiddleName,
 			String defaultAdminLastName)

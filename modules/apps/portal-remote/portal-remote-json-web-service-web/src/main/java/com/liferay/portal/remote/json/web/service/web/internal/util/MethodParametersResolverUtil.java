@@ -11,10 +11,9 @@ import com.liferay.portal.kernel.util.MethodParameter;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 import java.util.concurrent.ConcurrentMap;
-
-import jodd.paramo.Paramo;
 
 /**
  * @author Igor Spasic
@@ -34,15 +33,15 @@ public class MethodParametersResolverUtil {
 
 		Class<?>[] methodParameterTypes = method.getParameterTypes();
 
-		jodd.paramo.MethodParameter[] joddMethodParameters =
-			Paramo.resolveParameters(method);
+		Parameter[] parameters = method.getParameters();
 
-		methodParameters = new MethodParameter[joddMethodParameters.length];
+		methodParameters = new MethodParameter[parameters.length];
 
-		for (int i = 0; i < joddMethodParameters.length; i++) {
+		for (int i = 0; i < parameters.length; i++) {
 			methodParameters[i] = new MethodParameter(
-				classLoader, joddMethodParameters[i].getName(),
-				joddMethodParameters[i].getSignature(),
+				classLoader, parameters[i].getName(),
+				parameters[i].getParameterizedType(
+				).getTypeName(),
 				methodParameterTypes[i]);
 		}
 

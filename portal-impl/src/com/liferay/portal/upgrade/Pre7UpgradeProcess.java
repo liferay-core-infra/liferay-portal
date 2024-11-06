@@ -161,6 +161,11 @@ public abstract class Pre7UpgradeProcess extends UpgradeProcess {
 		}
 
 		@Override
+		public void invalidate(long companyId) {
+			_counterFinder.invalidate(companyId);
+		}
+
+		@Override
 		public void rename(String oldName, String newName) {
 			_counterFinder.rename(oldName, newName);
 		}

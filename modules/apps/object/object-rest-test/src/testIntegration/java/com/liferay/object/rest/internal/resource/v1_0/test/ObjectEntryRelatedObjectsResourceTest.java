@@ -627,6 +627,87 @@ public class ObjectEntryRelatedObjectsResourceTest {
 	}
 
 	@Test
+	public void testDeleteCustomObjectEntryWithRelatedObjectEntriesCascade()
+		throws Exception {
+
+		ObjectRelationship objectRelationship1 =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				_objectDefinition1, _objectDefinition2,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		ObjectRelationshipTestUtil.relateObjectEntries(
+			_objectEntry1.getPrimaryKey(), _objectEntry2.getPrimaryKey(),
+			objectRelationship1, TestPropsValues.getUserId());
+
+		_relateObjectEntries(
+			20, _objectDefinition2, _OBJECT_FIELD_NAME_2,
+			_objectEntry1.getPrimaryKey(), objectRelationship1);
+
+		ObjectRelationship objectRelationship2 =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				_objectDefinition2, _objectDefinition3,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		ObjectRelationshipTestUtil.relateObjectEntries(
+			_objectEntry2.getPrimaryKey(), _objectEntry4.getPrimaryKey(),
+			objectRelationship2, TestPropsValues.getUserId());
+
+		_relateObjectEntries(
+			20, _objectDefinition3, _OBJECT_FIELD_NAME_2,
+			_objectEntry2.getPrimaryKey(), objectRelationship2);
+
+		String objectFieldName = "x" + RandomTestUtil.randomString();
+
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(
+					ObjectFieldUtil.createObjectField(
+						"Text", "String", true, true, null,
+						RandomTestUtil.randomString(), objectFieldName,
+						false)));
+
+		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			objectDefinition, _OBJECT_FIELD_NAME_2,
+			RandomTestUtil.randomString());
+
+		ObjectRelationship objectRelationship3 =
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
+				_objectDefinition3, objectDefinition,
+				TestPropsValues.getUserId(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
+
+		ObjectRelationshipTestUtil.relateObjectEntries(
+			_objectEntry4.getPrimaryKey(), objectEntry.getPrimaryKey(),
+			objectRelationship2, TestPropsValues.getUserId());
+
+		_relateObjectEntries(
+			20, objectDefinition, objectFieldName,
+			_objectEntry4.getPrimaryKey(), objectRelationship3);
+
+		HTTPTestUtil.invokeToHttpCode(
+			null,
+			StringBundler.concat(
+				_objectDefinition1.getRESTContextPath(),
+				"/by-external-reference-code/",
+				_objectEntry1.getExternalReferenceCode()),
+			Http.Method.DELETE);
+
+		_objectRelationshipLocalService.deleteObjectRelationship(
+			objectRelationship1);
+		_objectRelationshipLocalService.deleteObjectRelationship(
+			objectRelationship2);
+		_objectRelationshipLocalService.deleteObjectRelationship(
+			objectRelationship3);
+
+		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
+	}
+
+	@Test
 	public void testGetRelatedCustomObjectEntriesWhenRelationExists()
 		throws Exception {
 
@@ -1539,6 +1620,23 @@ public class ObjectEntryRelatedObjectsResourceTest {
 		}
 
 		return systemObjectEntryJSONObject.getString("id");
+	}
+
+	private void _relateObjectEntries(
+			int count, ObjectDefinition objectDefinition,
+			String objectFieldName, long objectEntryId,
+			ObjectRelationship objectRelationship)
+		throws Exception {
+
+		for (int i = 0; i < count; i++) {
+			ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+				objectDefinition, objectFieldName,
+				RandomTestUtil.randomString());
+
+			ObjectRelationshipTestUtil.relateObjectEntries(
+				objectEntryId, objectEntry.getPrimaryKey(), objectRelationship,
+				TestPropsValues.getUserId());
+		}
 	}
 
 	private void _testDeleteCustomObjectDefinition1WithCustomObjectDefinition2(

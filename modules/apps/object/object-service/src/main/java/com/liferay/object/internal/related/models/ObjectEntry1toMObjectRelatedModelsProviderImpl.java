@@ -17,11 +17,13 @@ import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -95,7 +97,11 @@ public class ObjectEntry1toMObjectRelatedModelsProviderImpl
 				futures.add(
 					executorService.submit(
 						() -> {
-							try {
+							try (SafeCloseable safeCloseable =
+									CompanyThreadLocal.
+										setCompanyIdWithSafeCloseable(
+											objectEntry.getCompanyId())) {
+
 								ObjectEntryThreadLocal.
 									setSkipObjectEntryResourcePermission(
 										skipObjectEntryResourcePermission);

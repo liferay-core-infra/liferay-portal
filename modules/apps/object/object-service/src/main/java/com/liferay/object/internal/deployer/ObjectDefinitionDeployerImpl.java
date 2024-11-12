@@ -76,6 +76,7 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import com.liferay.portal.search.batch.DynamicQueryBatchIndexingActionableFactory;
@@ -173,6 +174,41 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Override
 	public List<ServiceRegistration<?>> deploy(
+		ObjectDefinition objectDefinition) {
+
+		return _deploy(null, objectDefinition);
+	}
+
+	@Override
+	public Map<Long, List<ServiceRegistration<?>>>
+		deployActiveObjectDefinitions(long companyId) {
+
+		Map<Long, List<ServiceRegistration<?>>> activeServiceRegistrationsMap =
+			new ConcurrentHashMap<>();
+
+		List<ObjectLayout> defaultObjectLayouts =
+			_objectLayoutLocalService.getDefaultObjectLayouts(companyId);
+
+		for (ObjectDefinition objectDefinition :
+				_objectDefinitionLocalService.getObjectDefinitions(
+					companyId, true, WorkflowConstants.STATUS_APPROVED)) {
+
+			activeServiceRegistrationsMap.put(
+				objectDefinition.getObjectDefinitionId(),
+				_deploy(
+					ListUtil.filter(
+						defaultObjectLayouts,
+						objectLayout ->
+							objectLayout.getObjectDefinitionId() ==
+								objectDefinition.getObjectDefinitionId()),
+					objectDefinition));
+		}
+
+		return activeServiceRegistrationsMap;
+	}
+
+	private List<ServiceRegistration<?>> _deploy(
+		List<ObjectLayout> defaultObjectLayouts,
 		ObjectDefinition objectDefinition) {
 
 		if (objectDefinition.isUnmodifiableSystemObject()) {
@@ -387,9 +423,15 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					).build()));
 		}
 
-		ObjectLayout objectLayout =
-			_objectLayoutLocalService.fetchDefaultObjectLayout(
+		ObjectLayout objectLayout = null;
+
+		if (defaultObjectLayouts == null) {
+			objectLayout = _objectLayoutLocalService.fetchDefaultObjectLayout(
 				objectDefinition.getObjectDefinitionId());
+		}
+		else if (!defaultObjectLayouts.isEmpty()) {
+			objectLayout = defaultObjectLayouts.get(0);
+		}
 
 		if (objectLayout != null) {
 			_objectLayoutTabLocalService.

@@ -41,6 +41,10 @@ public class CounterFinderUtil {
 		getFinder().invalidate();
 	}
 
+	public static void invalidate(long companyId) {
+		getFinder().invalidate(companyId);
+	}
+
 	public static void rename(String oldName, String newName) {
 		getFinder().rename(oldName, newName);
 	}

@@ -28,6 +28,8 @@ public interface CounterFinder {
 
 	public void invalidate();
 
+	public void invalidate(long companyId);
+
 	public void rename(String oldName, String newName);
 
 	public void reset(String name);

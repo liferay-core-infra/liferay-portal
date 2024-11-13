@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.sharing.model.SharingEntry;
 import com.liferay.sharing.security.permission.SharingEntryAction;
 import com.liferay.sharing.service.SharingEntryLocalService;
+import com.liferay.sharing.service.SharingEntryService;
 import com.liferay.sharing.service.SharingEntryServiceWrapper;
 
 import java.util.Collection;
@@ -38,7 +39,7 @@ public class DLFileEntrySharingEntryServiceWrapper
 			Date expirationDate, ServiceContext serviceContext)
 		throws PortalException {
 
-		return super.addOrUpdateSharingEntry(
+		return _sharingEntryService.addOrUpdateSharingEntry(
 			toUserId, classNameId, classPK, groupId, shareable,
 			_processSharingEntryActions(classNameId, sharingEntryActions),
 			expirationDate, serviceContext);
@@ -52,7 +53,7 @@ public class DLFileEntrySharingEntryServiceWrapper
 			Date expirationDate, ServiceContext serviceContext)
 		throws PortalException {
 
-		return super.addSharingEntry(
+		return _sharingEntryService.addSharingEntry(
 			toUserId, classNameId, classPK, groupId, shareable,
 			_processSharingEntryActions(classNameId, sharingEntryActions),
 			expirationDate, serviceContext);
@@ -70,12 +71,12 @@ public class DLFileEntrySharingEntryServiceWrapper
 			sharingEntryId);
 
 		if (sharingEntry == null) {
-			return super.updateSharingEntry(
+			return _sharingEntryService.updateSharingEntry(
 				sharingEntryId, sharingEntryActions, shareable, expirationDate,
 				serviceContext);
 		}
 
-		return super.updateSharingEntry(
+		return _sharingEntryService.updateSharingEntry(
 			sharingEntryId,
 			_processSharingEntryActions(
 				sharingEntry.getClassNameId(), sharingEntryActions),
@@ -110,5 +111,8 @@ public class DLFileEntrySharingEntryServiceWrapper
 
 	@Reference
 	private SharingEntryLocalService _sharingEntryLocalService;
+
+	@Reference
+	private SharingEntryService _sharingEntryService;
 
 }

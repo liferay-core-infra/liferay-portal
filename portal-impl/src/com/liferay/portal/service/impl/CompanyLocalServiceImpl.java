@@ -18,8 +18,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
-import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -681,7 +679,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			preunregisterCompany(company);
 
-			_clearCompanyCache(companyId, true);
 			_clearVirtualHostCache(companyId);
 
 			TransactionCommitCallbackUtil.registerCallback(
@@ -1432,8 +1429,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		catch (Exception exception) {
 			throw new SystemException(exception);
 		}
-
-		_clearCompanyCache(companyId, false);
 	}
 
 	/**
@@ -1486,8 +1481,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		catch (IOException | PortletException exception) {
 			throw new SystemException(exception);
 		}
-
-		_clearCompanyCache(companyId, false);
 	}
 
 	protected void addAssetEntriesFacet(SearchContext searchContext) {
@@ -1545,7 +1538,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		preunregisterCompany(company);
 
 		if (DBPartition.isPartitionEnabled()) {
-			_clearCompanyCache(companyId, true);
 			_clearVirtualHostCache(companyId);
 
 			TransactionCommitCallbackUtil.registerCallback(
@@ -2388,27 +2380,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 
 		return company;
-	}
-
-	private void _clearCompanyCache(long companyId, boolean removePortalCache) {
-		Company company = companyPersistence.fetchByPrimaryKey(companyId);
-
-		if (company != null) {
-			TransactionCommitCallbackUtil.registerCallback(
-				() -> {
-					EntityCacheUtil.removeResult(
-						company.getClass(), company.getPrimaryKeyObj());
-
-					if (removePortalCache) {
-						PortalCacheHelperUtil.removePortalCaches(
-							PortalCacheManagerNames.MULTI_VM, companyId);
-					}
-
-					return null;
-				});
-
-			companyPersistence.clearCache(company);
-		}
 	}
 
 	private void _clearVirtualHostCache(long companyId) {

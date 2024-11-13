@@ -183,7 +183,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Override
 	public Map<Long, List<ServiceRegistration<?>>>
-		deployActiveObjectDefinitions(long companyId) {
+		deployActiveObjectDefinitions(
+			long companyId,
+			ObjectDefinitionLocalService objectDefinitionLocalService) {
 
 		Map<Long, List<ServiceRegistration<?>>> activeServiceRegistrationsMap =
 			new ConcurrentHashMap<>();
@@ -195,7 +197,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				companyId, true, ObjectActionTriggerConstants.KEY_STANDALONE);
 
 		for (ObjectDefinition objectDefinition :
-				_objectDefinitionLocalService.getObjectDefinitions(
+				objectDefinitionLocalService.getObjectDefinitions(
 					companyId, true, WorkflowConstants.STATUS_APPROVED)) {
 
 			activeServiceRegistrationsMap.put(

@@ -6,19 +6,16 @@
 package com.liferay.portal.util;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.internal.service.util.PortalPreferencesCacheUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.cache.PortalCacheMapSynchronizeUtil;
-import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortalPreferences;
-import com.liferay.portal.kernel.module.util.ServiceLatch;
-import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.PortalPreferenceValueLocalService;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -27,7 +24,6 @@ import com.liferay.portal.kernel.util.PrefsProps;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.impl.PortalPreferenceValueCacheModel;
-import com.liferay.portal.model.impl.PortalPreferenceValueImpl;
 import com.liferay.portlet.PortalPreferencesImpl;
 import com.liferay.portlet.PortalPreferencesWrapper;
 import com.liferay.portlet.PortletPreferencesImpl;
@@ -51,25 +47,11 @@ import javax.portlet.ValidatorException;
 public class PrefsPropsImpl implements PrefsProps {
 
 	public void afterPropertiesSet() {
-		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
-
-		serviceLatch.waitFor(
-			EntityCache.class,
-			entityCache -> {
-				PortalCache<?, ?> portalCache = entityCache.getPortalCache(
-					PortalPreferenceValueImpl.class);
-
-				PortalCacheMapSynchronizeUtil.synchronize(
-					PortalCacheHelperUtil.getPortalCache(
-						PortalCacheManagerNames.MULTI_VM,
-						portalCache.getPortalCacheName(), portalCache.isMVCC(),
-						portalCache.isSharded()),
-					null, _synchronizer);
-			});
-
-		serviceLatch.openOn(
-			() -> {
-			});
+		PortalCacheMapSynchronizeUtil.synchronize(
+			PortalCacheHelperUtil.getPortalCache(
+				PortalCacheManagerNames.MULTI_VM,
+				PortalPreferencesCacheUtil.class.getName()),
+			null, _synchronizer);
 	}
 
 	@Override

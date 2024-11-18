@@ -27,10 +27,6 @@ public class MethodParametersResolverUtil {
 			return methodParameters;
 		}
 
-		Class<?> clazz = method.getDeclaringClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
-
 		Class<?>[] methodParameterTypes = method.getParameterTypes();
 
 		Parameter[] parameters = method.getParameters();
@@ -39,7 +35,7 @@ public class MethodParametersResolverUtil {
 
 		for (int i = 0; i < parameters.length; i++) {
 			methodParameters[i] = new MethodParameter(
-				classLoader, parameters[i].getName(),
+				parameters[i].getName(),
 				parameters[i].getParameterizedType(
 				).getTypeName(),
 				methodParameterTypes[i]);

@@ -1,4 +1,4 @@
-compileTestIntegrationJava  {
+compileTestIntegrationJava {
 	options.compilerArgs.add("-parameters")
 }
 

@@ -18,6 +18,7 @@ definition {
 			PortalInstances.tearDownCP();
 		}
 	}
+	
 
 	@description = "Ensure Liferay's log manager is working for libraries using JBoss Logging, such as Hibernate"
 	@priority = 3

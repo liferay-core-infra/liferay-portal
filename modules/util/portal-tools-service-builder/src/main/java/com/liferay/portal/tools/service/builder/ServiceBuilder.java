@@ -636,6 +636,16 @@ public class ServiceBuilder {
 				StringUtil.split(
 					_compatProperties.getProperty("bad.table.names.extra")));
 
+			_allowedNonuniqueFinders = new HashSet<>();
+
+			if (isVersionGTE_7_4_0()) {
+				Collections.addAll(
+					_allowedNonuniqueFinders,
+					StringUtil.split(
+						_compatProperties.getProperty(
+							"allowed.nonunique.finders")));
+			}
+
 			Element rootElement = document.getRootElement();
 
 			String packagePath = rootElement.attributeValue("package-path");
@@ -5986,6 +5996,18 @@ public class ServiceBuilder {
 		return false;
 	}
 
+	private boolean _isAllowedNonuniqueFinder(
+		String entityName, String finderName) {
+
+		if (_allowedNonuniqueFinders.contains(
+				entityName + StringPool.PERIOD + finderName)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isStringLocaleMap(JavaParameter javaParameter) {
 		JavaType type = javaParameter.getType();
 
@@ -6818,7 +6840,9 @@ public class ServiceBuilder {
 
 			boolean finderUnique;
 
-			if (isVersionGTE_7_4_0()) {
+			if (isVersionGTE_7_4_0() &&
+				!_isAllowedNonuniqueFinder(entityName, finderName)) {
+
 				boolean finderReturnSingleObject = !Objects.equals(
 					finderReturn, "Collection");
 
@@ -8238,6 +8262,7 @@ public class ServiceBuilder {
 	private static final Pattern _setterPattern = Pattern.compile(
 		"public void set.*" + Pattern.quote("("));
 
+	private Set<String> _allowedNonuniqueFinders;
 	private String _apiDirName;
 	private String _apiPackagePath;
 	private String _author;

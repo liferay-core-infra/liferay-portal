@@ -5461,8 +5461,8 @@ public class DataFactory {
 	}
 
 	public List<ObjectFieldModel> newObjectFieldModels(
-		long listTypeDefinitionId, long objectDefinitionId,
-		String dbTableName) {
+		long objectDefinitionId, String dbTableName,
+		long listTypeDefinitionId) {
 
 		return ListUtil.fromArray(
 			newObjectFieldModel(

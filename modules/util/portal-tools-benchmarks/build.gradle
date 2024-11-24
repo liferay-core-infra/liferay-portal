@@ -5,6 +5,7 @@ dependencies {
 	compileInclude project(":core:petra:petra-function")
 	compileInclude project(":core:petra:petra-lang")
 	compileInclude project(":core:petra:petra-string")
+	compileInclude project(":util:portal-test-http-util")
 }
 
 test {

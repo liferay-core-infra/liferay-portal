@@ -1,3 +1,4 @@
 Bundle-Name: Liferay Portal Tools Benchmarks
 Bundle-SymbolicName: com.liferay.portal.tools.benchmarks
 Bundle-Version: 1.0.0
+-includeresource: com.liferay.portal.test.http.util.jar=com.liferay.portal.test.http.util-*.jar;lib:=true

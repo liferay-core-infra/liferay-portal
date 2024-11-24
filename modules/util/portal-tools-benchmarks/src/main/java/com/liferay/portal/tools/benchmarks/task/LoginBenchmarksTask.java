@@ -10,9 +10,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.tools.benchmarks.http.HttpResponse;
-import com.liferay.portal.tools.benchmarks.http.HttpUtil;
-import com.liferay.portal.tools.benchmarks.http.ThreadLocalCookieStore;
+import com.liferay.portal.test.http.util.HttpResponse;
+import com.liferay.portal.test.http.util.HttpUtil;
+import com.liferay.portal.test.http.util.ThreadLocalCookieStore;
 
 import java.net.URL;
 

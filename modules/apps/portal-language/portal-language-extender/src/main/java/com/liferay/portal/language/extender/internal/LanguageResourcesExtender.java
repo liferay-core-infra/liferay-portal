@@ -65,6 +65,10 @@ public class LanguageResourcesExtender
 			Object baseName = attributes.get("resource.bundle.base.name");
 
 			if (baseName instanceof String) {
+				if (GetterUtil.getBoolean(attributes.get("module.only"))) {
+					continue;
+				}
+
 				_registerResourceBundles(
 					bundle, (String)baseName,
 					GetterUtil.getInteger(

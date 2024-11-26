@@ -12,17 +12,18 @@ import com.liferay.object.admin.rest.resource.v1_0.ObjectFolderResource;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.test.performance.PerformanceTimer;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -76,8 +77,10 @@ public class ImportAndDeleteObjectEntryPerformanceTest {
 	}
 
 	private void _deleteObjectEntry() throws Exception {
-		try (LoggingTimer loggingTimer = new LoggingTimer(
-				"Delete " + _OBJECT_ENTRY_COUNT + " Object Entries")) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				5000,
+				StringBundler.concat(
+					" Delete ", _OBJECT_ENTRY_COUNT, " Object Entries"))) {
 
 			JSONArray jsonArray = _getObjectEntryIdJSONArray();
 
@@ -118,8 +121,10 @@ public class ImportAndDeleteObjectEntryPerformanceTest {
 	}
 
 	private void _importObjectEntry() throws Exception {
-		try (LoggingTimer loggingTimer = new LoggingTimer(
-				"Import " + _OBJECT_ENTRY_COUNT + " Object Entries")) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				9000,
+				StringBundler.concat(
+					" Import ", _OBJECT_ENTRY_COUNT, " Object Entries"))) {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 

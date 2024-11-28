@@ -64,12 +64,12 @@
 
 		// Left list
 
-		List<KeyValuePair> leftList = new ArrayList<>();
+		Set<KeyValuePair> leftSet = new LinkedHashSet<>();
 
 		String[] currentLanguageIds = PrefsPropsUtil.getStringArray(company.getCompanyId(), PropsKeys.LOCALES, StringPool.COMMA, PropsValues.LOCALES_ENABLED);
 
 		for (Locale currentLocale : LocaleUtil.fromLanguageIds(currentLanguageIds)) {
-			leftList.add(new KeyValuePair(LanguageUtil.getLanguageId(currentLocale), currentLocale.getDisplayName(locale)));
+			leftSet.add(new KeyValuePair(LanguageUtil.getLanguageId(currentLocale), currentLocale.getDisplayName(locale)));
 		}
 
 		// Right list
@@ -91,7 +91,7 @@
 
 		<liferay-ui:input-move-boxes
 			leftBoxName="currentLanguageIds"
-			leftList="<%= leftList %>"
+			leftList="<%= new ArrayList<>(leftSet) %>"
 			leftReorder="<%= Boolean.TRUE.toString() %>"
 			leftTitle="current"
 			rightBoxName="availableLanguageIds"

@@ -74,19 +74,17 @@
 
 		// Right list
 
-		List<KeyValuePair> rightList = new ArrayList<>();
+		Set<KeyValuePair> rightSet = new TreeSet<>(new KeyValuePairComparator(false, true));
 
-		for (String propsValuesLanguageId : SetUtil.fromArray(PropsValues.LOCALES)) {
+		for (String propsValuesLanguageId : PropsValues.LOCALES) {
 			if (!ArrayUtil.contains(availableLanguageIds, propsValuesLanguageId)) {
 				Locale propsValuesLocale = LocaleUtil.fromLanguageId(propsValuesLanguageId, false);
 
 				if (propsValuesLocale != null) {
-					rightList.add(new KeyValuePair(propsValuesLanguageId, propsValuesLocale.getDisplayName(locale)));
+					rightSet.add(new KeyValuePair(propsValuesLanguageId, propsValuesLocale.getDisplayName(locale)));
 				}
 			}
 		}
-
-		rightList = ListUtil.sort(rightList, new KeyValuePairComparator(false, true));
 		%>
 
 		<liferay-ui:input-move-boxes
@@ -95,7 +93,7 @@
 			leftReorder="<%= Boolean.TRUE.toString() %>"
 			leftTitle="current"
 			rightBoxName="availableLanguageIds"
-			rightList="<%= rightList %>"
+			rightList="<%= new ArrayList<>(rightSet) %>"
 			rightTitle="available"
 		/>
 	</aui:fieldset>

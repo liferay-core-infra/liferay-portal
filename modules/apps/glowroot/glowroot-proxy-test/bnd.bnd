@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Glowroot Proxy Test
+Bundle-SymbolicName: com.liferay.glowroot.proxy.test
+Bundle-Version: 1.0.0
+-includeresource: com.liferay.portal.test.http.util.jar=com.liferay.portal.test.http.util-*.jar;lib:=true

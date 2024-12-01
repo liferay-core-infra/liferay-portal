@@ -1401,11 +1401,18 @@ public class ObjectDefinitionLocalServiceImpl
 			new ConcurrentHashMap<>();
 
 		_companyLocalService.forEachCompanyId(
-			companyId -> serviceRegistrationsMap.putAll(
-				objectDefinitionDeployer.deployObjectDefinitions(
-					companyId,
-					objectDefinitionLocalService.getObjectDefinitions(
-						companyId, true, WorkflowConstants.STATUS_APPROVED))));
+			companyId -> {
+				for (ObjectDefinition objectDefinition :
+						objectDefinitionLocalService.getObjectDefinitions(
+							companyId, WorkflowConstants.STATUS_APPROVED)) {
+
+					if (objectDefinition.isActive()) {
+						serviceRegistrationsMap.put(
+							objectDefinition.getObjectDefinitionId(),
+							objectDefinitionDeployer.deploy(objectDefinition));
+					}
+				}
+			});
 
 		_serviceRegistrationsMaps.put(
 			objectDefinitionDeployer, serviceRegistrationsMap);

@@ -155,8 +155,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					objectDefinition, _objectDefinitionLocalService,
 					_objectEntryManagerRegistry.getObjectEntryManager(
 						objectDefinition.getStorageType()),
-					_objectFieldLocalService, null,
-					_objectRelationshipLocalService, null, objectScopeProvider,
+					_objectFieldLocalService, _objectRelationshipLocalService,
+					objectScopeProvider,
 					_systemObjectDefinitionManagerRegistry),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"dto.name", objectDefinition.getDBTableName()

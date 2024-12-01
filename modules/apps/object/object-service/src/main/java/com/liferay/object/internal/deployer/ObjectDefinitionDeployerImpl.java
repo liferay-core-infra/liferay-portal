@@ -12,7 +12,6 @@ import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.notification.handler.NotificationHandler;
 import com.liferay.notification.term.evaluator.NotificationTermEvaluator;
-import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.internal.layout.tab.screen.navigation.category.ObjectLayoutTabScreenNavigationCategory;
 import com.liferay.object.internal.notification.handler.ObjectDefinitionNotificationHandler;
@@ -79,7 +78,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
-import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import com.liferay.portal.search.batch.DynamicQueryBatchIndexingActionableFactory;
 import com.liferay.portal.search.localization.SearchLocalizationHelper;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
@@ -128,8 +126,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		ObjectRelationshipLocalService objectRelationshipLocalService,
 		ObjectScopeProviderRegistry objectScopeProviderRegistry,
 		ObjectViewLocalService objectViewLocalService,
-		OrganizationLocalService organizationLocalService,
-		PLOEntryLocalService ploEntryLocalService, Portal portal,
+		OrganizationLocalService organizationLocalService, Portal portal,
 		PortletLocalService portletLocalService,
 		ResourceActions resourceActions, UserLocalService userLocalService,
 		ResourcePermissionLocalService resourcePermissionLocalService,
@@ -157,7 +154,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		_objectScopeProviderRegistry = objectScopeProviderRegistry;
 		_objectViewLocalService = objectViewLocalService;
 		_organizationLocalService = organizationLocalService;
-		_ploEntryLocalService = ploEntryLocalService;
 		_portal = portal;
 		_portletLocalService = portletLocalService;
 		_resourceActions = resourceActions;
@@ -172,48 +168,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_objectDefinitionLocalService, _objectRelationshipLocalService);
 	}
 
-	@Override
 	public List<ServiceRegistration<?>> deploy(
-		ObjectDefinition objectDefinition) {
-
-		return _deploy(null, objectDefinition, null, null);
-	}
-
-	@Override
-	public Map<Long, List<ServiceRegistration<?>>> deployObjectDefinitions(
-		long companyId, List<ObjectDefinition> objectDefinitions) {
-
-		Map<Long, List<ServiceRegistration<?>>> activeServiceRegistrationsMap =
-			new ConcurrentHashMap<>();
-
-		Map<Long, List<ObjectLayout>> partitionedDefaultObjectLayouts =
-			_objectLayoutLocalService.getDefaultObjectLayouts(companyId);
-		Map<Long, List<ObjectRelationship>> partitionedObjectRelationships =
-			_objectRelationshipLocalService.getObjectRelationshipsByCompanyId(
-				companyId);
-		Map<Long, List<ObjectAction>> partitionedStandaloneObjectActions =
-			_objectActionLocalService.getObjectActions(
-				companyId, true, ObjectActionTriggerConstants.KEY_STANDALONE);
-
-		for (ObjectDefinition objectDefinition : objectDefinitions) {
-			long objectDefinitionId = objectDefinition.getObjectDefinitionId();
-
-			activeServiceRegistrationsMap.put(
-				objectDefinitionId,
-				_deploy(
-					partitionedDefaultObjectLayouts.getOrDefault(
-						objectDefinitionId, Collections.emptyList()),
-					objectDefinition,
-					partitionedObjectRelationships.getOrDefault(
-						objectDefinitionId, Collections.emptyList()),
-					partitionedStandaloneObjectActions.getOrDefault(
-						objectDefinitionId, Collections.emptyList())));
-		}
-
-		return activeServiceRegistrationsMap;
-	}
-
-	private List<ServiceRegistration<?>> _deploy(
 		List<ObjectLayout> defaultObjectLayouts,
 		ObjectDefinition objectDefinition,
 		List<ObjectRelationship> objectRelationships,
@@ -465,6 +420,13 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		return serviceRegistrations;
 	}
 
+	@Override
+	public List<ServiceRegistration<?>> deploy(
+		ObjectDefinition objectDefinition) {
+
+		return deploy(null, objectDefinition, null, null);
+	}
+
 	private String _getServiceRegistrationKey(
 		ObjectDefinition objectDefinition,
 		ObjectRelationship objectRelationship) {
@@ -564,7 +526,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private final ObjectScopeProviderRegistry _objectScopeProviderRegistry;
 	private final ObjectViewLocalService _objectViewLocalService;
 	private final OrganizationLocalService _organizationLocalService;
-	private final PLOEntryLocalService _ploEntryLocalService;
 	private final Portal _portal;
 	private final PortletLocalService _portletLocalService;
 	private final ResourceActions _resourceActions;

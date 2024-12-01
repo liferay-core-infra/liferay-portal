@@ -12,6 +12,7 @@ import com.liferay.fragment.cache.FragmentEntryLinkCache;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.layout.model.LayoutClassedModelUsage;
 import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
+import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
@@ -54,6 +55,7 @@ import com.liferay.object.model.ObjectEntryTable;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectFieldModel;
 import com.liferay.object.model.ObjectFolder;
+import com.liferay.object.model.ObjectLayout;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.model.impl.ObjectDefinitionImpl;
 import com.liferay.object.petra.sql.dsl.DynamicObjectDefinitionLocalizationTable;
@@ -955,7 +957,7 @@ public class ObjectDefinitionLocalServiceImpl
 
 		Map<Long, List<ServiceRegistration<?>>> activeServiceRegistrationsMap =
 			new ConcurrentHashMap<>();
-		ObjectDefinitionDeployer objectDefinitionDeployer =
+		ObjectDefinitionDeployerImpl objectDefinitionDeployerImpl =
 			new ObjectDefinitionDeployerImpl(
 				_accountEntryLocalService,
 				_accountEntryOrganizationRelLocalService,
@@ -966,9 +968,8 @@ public class ObjectDefinitionLocalServiceImpl
 				_objectEntryService, _objectFieldLocalService,
 				_objectLayoutLocalService, _objectLayoutTabLocalService,
 				_objectRelationshipLocalService, _objectScopeProviderRegistry,
-				_objectViewLocalService, _organizationLocalService,
-				_ploEntryLocalService, _portal, _portletLocalService,
-				_resourceActions, _userLocalService,
+				_objectViewLocalService, _organizationLocalService, _portal,
+				_portletLocalService, _resourceActions, _userLocalService,
 				_resourcePermissionLocalService, _searchLocalizationHelper,
 				_workflowStatusModelPreFilterContributor,
 				_userGroupRoleLocalService);
@@ -979,17 +980,41 @@ public class ObjectDefinitionLocalServiceImpl
 					objectDefinitionLocalService.getObjectDefinitions(
 						companyId, WorkflowConstants.STATUS_APPROVED);
 
-				activeServiceRegistrationsMap.putAll(
-					objectDefinitionDeployer.deployObjectDefinitions(
-						companyId,
-						ListUtil.filter(
-							objectDefinitions,
-							objectDefinition -> objectDefinition.isActive())));
+				Map<Long, List<ObjectLayout>> partitionedDefaultObjectLayouts =
+					_objectLayoutLocalService.getDefaultObjectLayouts(
+						companyId);
+				Map<Long, List<ObjectRelationship>>
+					partitionedObjectRelationships =
+						_objectRelationshipLocalService.
+							getObjectRelationshipsByCompanyId(companyId);
+				Map<Long, List<ObjectAction>>
+					partitionedStandaloneObjectActions =
+						_objectActionLocalService.getObjectActions(
+							companyId, true,
+							ObjectActionTriggerConstants.KEY_STANDALONE);
 
 				for (ObjectDefinition objectDefinition : objectDefinitions) {
-					if (!objectDefinition.isActive()) {
+					long objectDefinitionId =
+						objectDefinition.getObjectDefinitionId();
+
+					if (objectDefinition.isActive()) {
+						activeServiceRegistrationsMap.put(
+							objectDefinitionId,
+							objectDefinitionDeployerImpl.deploy(
+								partitionedDefaultObjectLayouts.getOrDefault(
+									objectDefinitionId,
+									Collections.emptyList()),
+								objectDefinition,
+								partitionedObjectRelationships.getOrDefault(
+									objectDefinitionId,
+									Collections.emptyList()),
+								partitionedStandaloneObjectActions.getOrDefault(
+									objectDefinitionId,
+									Collections.emptyList())));
+					}
+					else {
 						_inactiveObjectDefinitionsServiceRegistrations.put(
-							objectDefinition.getObjectDefinitionId(),
+							objectDefinitionId,
 							InactiveObjectDefinitionDeployerUtil.deploy(
 								_bundleContext, _objectEntryService,
 								_objectFieldLocalService,
@@ -1000,7 +1025,7 @@ public class ObjectDefinitionLocalServiceImpl
 			});
 
 		_serviceRegistrationsMaps.put(
-			objectDefinitionDeployer, activeServiceRegistrationsMap);
+			objectDefinitionDeployerImpl, activeServiceRegistrationsMap);
 
 		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(
 			_bundleContext, ObjectDefinitionDeployer.class,

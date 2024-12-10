@@ -20,9 +20,10 @@ import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheException;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheListener;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
-import com.liferay.portal.kernel.cache.PortalCacheMapSynchronizeUtil;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -152,7 +153,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -467,15 +467,11 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		serviceLatch.waitFor(
 			EntityCache.class,
 			entityCache -> {
-				PortalCache<?, ?> portalCache = entityCache.getPortalCache(
-					CompanyImpl.class);
+				PortalCache<Serializable, Serializable> portalCache =
+					entityCache.getPortalCache(CompanyImpl.class);
 
-				PortalCacheMapSynchronizeUtil.synchronize(
-					PortalCacheHelperUtil.getPortalCache(
-						PortalCacheManagerNames.MULTI_VM,
-						portalCache.getPortalCacheName(), portalCache.isMVCC(),
-						portalCache.isSharded()),
-					new HashMap<>(), _synchronizer);
+				portalCache.registerPortalCacheListener(
+					new DBPartitionCompanyPortalCacheListener());
 			});
 
 		serviceLatch.openOn(
@@ -2714,27 +2710,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		<PortalInstanceLifecycleManager, PortalInstanceLifecycleManager>
 			_serviceTracker;
 
-	private final PortalCacheMapSynchronizeUtil.Synchronizer<Long, Serializable>
-		_synchronizer =
-			new PortalCacheMapSynchronizeUtil.Synchronizer
-				<Long, Serializable>() {
-
-				@Override
-				public void onSynchronize(
-					Map<? extends Long, ? extends Serializable> map, Long key,
-					Serializable value, int timeToLive) {
-
-					if (!DBPartition.isPartitionEnabled() ||
-						!(value instanceof CompanyCacheModel)) {
-
-						return;
-					}
-
-					CacheRegistryUtil.clear();
-				}
-
-			};
-
 	@BeanReference(type = SystemEventLocalService.class)
 	private SystemEventLocalService _systemEventLocalService;
 
@@ -2752,6 +2727,67 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	@BeanReference(type = VirtualHostPersistence.class)
 	private VirtualHostPersistence _virtualHostPersistence;
+
+	private class DBPartitionCompanyPortalCacheListener
+		implements PortalCacheListener<Serializable, Serializable> {
+
+		@Override
+		public void dispose() {
+		}
+
+		@Override
+		public void notifyEntryEvicted(
+				PortalCache<Serializable, Serializable> portalCache,
+				Serializable key, Serializable value, int timeToLive)
+			throws PortalCacheException {
+		}
+
+		@Override
+		public void notifyEntryExpired(
+				PortalCache<Serializable, Serializable> portalCache,
+				Serializable key, Serializable value, int timeToLive)
+			throws PortalCacheException {
+		}
+
+		@Override
+		public void notifyEntryPut(
+				PortalCache<Serializable, Serializable> portalCache,
+				Serializable key, Serializable value, int timeToLive)
+			throws PortalCacheException {
+		}
+
+		@Override
+		public void notifyEntryRemoved(
+				PortalCache<Serializable, Serializable> portalCache,
+				Serializable key, Serializable value, int timeToLive)
+			throws PortalCacheException {
+
+			if (!(value instanceof CompanyCacheModel)) {
+				return;
+			}
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						GetterUtil.getLong(key))) {
+
+				CacheRegistryUtil.clear();
+			}
+		}
+
+		@Override
+		public void notifyEntryUpdated(
+				PortalCache<Serializable, Serializable> portalCache,
+				Serializable key, Serializable value, int timeToLive)
+			throws PortalCacheException {
+		}
+
+		@Override
+		public void notifyRemoveAll(
+				PortalCache<Serializable, Serializable> portalCache)
+			throws PortalCacheException {
+		}
+
+	}
 
 	private class PortalInstanceLifecycleManagerServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer

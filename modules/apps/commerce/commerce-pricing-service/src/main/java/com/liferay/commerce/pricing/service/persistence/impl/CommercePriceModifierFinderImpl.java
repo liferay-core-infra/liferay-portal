@@ -14,6 +14,7 @@ import com.liferay.commerce.pricing.service.persistence.CommercePriceModifierFin
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
+import com.liferay.portal.dao.orm.hibernate.SQLQueryTableNamesUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -50,6 +51,8 @@ public class CommercePriceModifierFinderImpl
 
 			String sql = _customSQL.get(getClass(), FIND_BY_C_C_C_P);
 
+			String[] tableNames = SQLQueryTableNamesUtil.getTableNames(sql);
+
 			if ((assetCategoriesIds != null) &&
 				(assetCategoriesIds.length > 0)) {
 
@@ -73,7 +76,8 @@ public class CommercePriceModifierFinderImpl
 					sql, "[$CLASS_PK_PRICING_CLASSES$]", new long[] {0});
 			}
 
-			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
+				sql, true, tableNames);
 
 			sqlQuery.addEntity(
 				CommercePriceModifierImpl.TABLE_NAME,

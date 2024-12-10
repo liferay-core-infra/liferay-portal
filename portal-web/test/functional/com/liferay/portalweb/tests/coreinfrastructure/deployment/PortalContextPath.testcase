@@ -123,7 +123,7 @@ definition {
 	}
 
 	@description = "LPD-33643 Verify Glowroot works with non root context."
-	@priority = 5
+	@priority = 6
 	test VisitGlowrootWithNonRootContext {
 		property portal.acceptance = "true";
 		property portal.context = "liferay";

@@ -225,6 +225,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>GLOWROOT-ROOT-CONTEXT-PATH</td>
+	<td>//script[contains(text(), '/o/glowroot')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PAGE_HREF_BLANK</td>
 	<td>//div[contains(@id,'navbar')]/ul/li/a[contains(.,'${key_pageName}')][@href='${key_href}'][@target='_blank']</td>
 	<td>Page</td>

@@ -50,7 +50,7 @@ public class BndBundleUtil {
 
 		File buildDir = new File(System.getProperty("user.dir"));
 
-		try (Workspace workspace = new Workspace(buildDir);
+		try (Workspace workspace = Workspace.createDefaultWorkspace();
 			Project project = new Project(workspace, buildDir);
 			ProjectBuilder projectBuilder = _createProjectBuilder(
 				project, filteredMethodNamesMap, hostAddress, port, passCode);
@@ -147,6 +147,8 @@ public class BndBundleUtil {
 
 		project.setProperty(
 			"Import-Package", StringUtil.merge(importPackages, ","));
+
+		project.setProperty("-contract", "JavaPortlet,JavaServlet");
 
 		Set<String> includeResources = new LinkedHashSet<>();
 

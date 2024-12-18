@@ -107,7 +107,6 @@ public class SearchResultSummaryDisplayContextBuilderTest {
 			portletURL, searchResultSummaryDisplayContext.getPortletURL());
 	}
 
-	@NewEnv(type = NewEnv.Type.JVM)
 	@Test
 	public void testCreationDate() throws Exception {
 		String entryClassName = RandomTestUtil.randomString();

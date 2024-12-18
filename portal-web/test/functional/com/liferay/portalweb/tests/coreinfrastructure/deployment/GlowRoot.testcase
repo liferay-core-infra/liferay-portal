@@ -6,6 +6,10 @@ definition {
 	property portal.upstream = "true";
 	property testray.main.component.name = "Deployment";
 
+	setUp {
+		SignIn.signInTestSetup();
+	}
+
 	@description = "LPD-33643 Verify Glowroot works with root context."
 	@priority = 5
 	test VisitGlowrootWithRootContext {

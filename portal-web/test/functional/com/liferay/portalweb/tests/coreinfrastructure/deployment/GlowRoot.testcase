@@ -28,7 +28,7 @@ definition {
 
 			Navigator.openSpecificURL(url = "http://localhost:8080/o/glowroot");
 
-			AssertElementPresent(locator1 = "Home#GLOWROOT-ROOT-CONTEXT-PATH");
+			AssertElementPresent(locator1 = "//script[contains(text(), '/liferay/o/glowroot')]");
 		}
 	}
 

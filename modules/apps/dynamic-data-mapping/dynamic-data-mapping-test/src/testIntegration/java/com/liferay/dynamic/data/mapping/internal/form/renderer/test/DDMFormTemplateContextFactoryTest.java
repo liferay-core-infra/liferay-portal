@@ -164,8 +164,7 @@ public class DDMFormTemplateContextFactoryTest {
 			"ddm.simple_form", ddmFormTemplateContext.get("templateNamespace"));
 
 		Map<String, Object[]> validations =
-			(Map<String, Object[]>)ddmFormTemplateContext.get(
-				"validations");
+			(Map<String, Object[]>)ddmFormTemplateContext.get("validations");
 
 		Assert.assertEquals(validations.toString(), 3, validations.size());
 
@@ -294,9 +293,8 @@ public class DDMFormTemplateContextFactoryTest {
 			LocaleUtil.BRAZIL
 		).build();
 
-		validations =
-			(Map<String, Object[]>)ddmFormTemplateContext.get(
-				"validations");
+		validations = (Map<String, Object[]>)ddmFormTemplateContext.get(
+			"validations");
 
 		Assert.assertEquals(validations.toString(), 3, validations.size());
 

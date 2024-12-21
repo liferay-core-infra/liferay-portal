@@ -5,13 +5,18 @@
 
 package com.liferay.portal.configuration.settings.internal.test;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.settings.internal.constants.SettingsLocatorTestConstants;
+import com.liferay.portal.configuration.settings.internal.samples.TestRequiredConfiguration;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.rule.Inject;
+
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -243,6 +248,58 @@ public class SettingsLocatorHelperTest extends BaseSettingsLocatorTestCase {
 			settings.getValue(
 				SettingsLocatorTestConstants.TEST_KEY,
 				SettingsLocatorTestConstants.TEST_DEFAULT_VALUE));
+	}
+
+	@Test
+	public void testRegisterConfigurationBeanClassWithRequiredKey()
+		throws Exception {
+
+		Map<String, Settings> configurationBeanSettings =
+			ReflectionTestUtil.getFieldValue(
+				_settingsLocatorHelper, "_configurationBeanSettings");
+
+		Settings settings = configurationBeanSettings.get(
+			SettingsLocatorTestConstants.TEST_REQUIRED_CONFIGURATION_PID);
+
+		Assert.assertNull(settings);
+
+		try (SafeCloseable safeCloseable = ReflectionTestUtil.invoke(
+				_settingsLocatorHelper, "_registerConfigurationBeanClass",
+				new Class<?>[] {Class.class},
+				TestRequiredConfiguration.class)) {
+
+			settings = configurationBeanSettings.get(
+				SettingsLocatorTestConstants.TEST_REQUIRED_CONFIGURATION_PID);
+
+			Assert.assertNull(settings);
+
+			saveConfiguration(
+				SettingsLocatorTestConstants.TEST_REQUIRED_CONFIGURATION_PID,
+				"non-required-key", RandomTestUtil.randomString());
+
+			settings = configurationBeanSettings.get(
+				SettingsLocatorTestConstants.TEST_REQUIRED_CONFIGURATION_PID);
+
+			Assert.assertNull(settings);
+
+			String systemValue = saveConfiguration(
+				SettingsLocatorTestConstants.TEST_REQUIRED_CONFIGURATION_PID,
+				SettingsLocatorTestConstants.TEST_REQUIRED_KEY,
+				RandomTestUtil.randomString());
+
+			settings = configurationBeanSettings.get(
+				SettingsLocatorTestConstants.TEST_REQUIRED_CONFIGURATION_PID);
+
+			Assert.assertEquals(
+				systemValue,
+				settings.getValue(
+					SettingsLocatorTestConstants.TEST_REQUIRED_KEY, null));
+		}
+
+		settings = configurationBeanSettings.get(
+			SettingsLocatorTestConstants.TEST_REQUIRED_CONFIGURATION_PID);
+
+		Assert.assertNull(settings);
 	}
 
 	@Inject

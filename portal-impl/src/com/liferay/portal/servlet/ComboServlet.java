@@ -307,6 +307,12 @@ public class ComboServlet extends HttpServlet {
 					httpServletResponse.setHeader(
 						HttpHeaders.CACHE_CONTROL, "max-age=1, no-cache");
 				}
+				else if ((PropsValues.COMBO_ALLOWED_FILE_MAX_SIZE > 0) &&
+						 (bytes.length >
+							 PropsValues.COMBO_ALLOWED_FILE_MAX_SIZE)) {
+
+					cacheEnabled = false;
+				}
 
 				bytesArray[i] = bytes;
 			}
@@ -502,6 +508,14 @@ public class ComboServlet extends HttpServlet {
 
 				stringFileContent = stringFileContent.concat(
 					StringPool.NEW_LINE);
+			}
+
+			byte[] bytes = stringFileContent.getBytes(StringPool.UTF8);
+
+			if ((PropsValues.COMBO_ALLOWED_FILE_MAX_SIZE > 0) &&
+				(bytes.length > PropsValues.COMBO_ALLOWED_FILE_MAX_SIZE)) {
+
+				return bytes;
 			}
 
 			fileContentBag = new FileContentBag(

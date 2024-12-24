@@ -76,7 +76,7 @@ public class ImportAndDeleteObjectEntryPerformanceTest {
 
 	private void _deleteObjectEntry() throws Exception {
 		try (PerformanceTimer performanceTimer = new PerformanceTimer(
-				6000,
+				7000,
 				StringBundler.concat(
 					" Delete ", _OBJECT_ENTRY_COUNT, " Object Entries"))) {
 

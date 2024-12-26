@@ -79,7 +79,13 @@
 				perm="+x"
 			/>
 
-			<exec executable="./temp.expect" failonerror="true" logError="true" />
+			<get-java-jdk-home type="zulu" version="17" />
+			<get-java-jdk-opts type="zulu" version="17" />
+
+			<exec executable="./temp.expect" failonerror="true" logError="true">
+				<env key="JAVA_HOME" value="${java.jdk.home}" />
+				<env key="JAVA_OPTS" value="${java.jdk.opts}" />
+			</exec>
 		</sequential>
 	</macrodef>
 </project>

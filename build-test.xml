@@ -10396,6 +10396,9 @@ org.apache.catalina.tribes.level = FINE]]>
 									</sequential>
 								</for>
 
+								<get-java-jdk-home type="zulu" version="17" />
+								<get-java-jdk-opts type="zulu" version="17" />
+
 								<gradle-execute dir="@{app.dir}" task="deploy">
 									<arg value="clean" />
 									<arg value="-Dbuild.profile=${build.profile}" />

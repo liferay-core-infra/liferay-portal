@@ -28,6 +28,9 @@ function main {
 
 	ant update-gradle-properties
 
+  sed -i '/java.version.source.compatibility/d' ./.gradle/gradle.properties
+  sed -i '/java.version.target.compatibility/d' ./.gradle/gradle.properties
+
 	popd
 }
 

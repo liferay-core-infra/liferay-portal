@@ -10245,6 +10245,7 @@ org.apache.catalina.tribes.level = FINE]]>
 		</if>
 
 		<execute dir="${module.base.dir}">
+			<env key="MAVEN_OPTS" value="-XX:+IgnoreUnrecognizedVMOptions --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED"/>
 			mvn clean package ${build.profiles}
 		</execute>
 

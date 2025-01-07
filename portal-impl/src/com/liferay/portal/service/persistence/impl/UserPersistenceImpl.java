@@ -53,7 +53,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.impl.UserImpl;
@@ -2548,21 +2547,6 @@ public class UserPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {portraitId};
-								}
-
-								_log.warn(
-									"UserPersistenceImpl.fetchByPortraitId(long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						User user = list.get(0);
 
 						result = user;
@@ -4887,23 +4871,6 @@ public class UserPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										companyId, facebookId
-									};
-								}
-
-								_log.warn(
-									"UserPersistenceImpl.fetchByC_FID(long, long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						User user = list.get(0);
 
 						result = user;
@@ -5104,23 +5071,6 @@ public class UserPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										companyId, googleUserId
-									};
-								}
-
-								_log.warn(
-									"UserPersistenceImpl.fetchByC_GUID(long, String, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						User user = list.get(0);
 
 						result = user;
@@ -5324,23 +5274,6 @@ public class UserPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										companyId, openId
-									};
-								}
-
-								_log.warn(
-									"UserPersistenceImpl.fetchByC_O(long, String, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						User user = list.get(0);
 
 						result = user;
@@ -10581,11 +10514,19 @@ public class UserPersistenceImpl
 
 		_uniqueIndexColumnNames.add(new String[] {"contactId"});
 
+		_uniqueIndexColumnNames.add(new String[] {"portraitId"});
+
 		_uniqueIndexColumnNames.add(new String[] {"companyId", "userId"});
 
 		_uniqueIndexColumnNames.add(new String[] {"companyId", "screenName"});
 
 		_uniqueIndexColumnNames.add(new String[] {"companyId", "emailAddress"});
+
+		_uniqueIndexColumnNames.add(new String[] {"companyId", "facebookId"});
+
+		_uniqueIndexColumnNames.add(new String[] {"companyId", "googleUserId"});
+
+		_uniqueIndexColumnNames.add(new String[] {"companyId", "openId"});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"externalReferenceCode", "companyId"});

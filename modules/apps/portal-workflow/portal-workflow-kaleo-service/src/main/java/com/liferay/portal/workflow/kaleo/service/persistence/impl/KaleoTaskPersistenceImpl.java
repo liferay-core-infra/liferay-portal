@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTaskException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTask;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskTable;
@@ -1240,21 +1239,6 @@ public class KaleoTaskPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {kaleoNodeId};
-								}
-
-								_log.warn(
-									"KaleoTaskPersistenceImpl.fetchByKaleoNodeId(long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						KaleoTask kaleoTask = list.get(0);
 
 						result = kaleoTask;
@@ -2103,6 +2087,8 @@ public class KaleoTaskPersistenceImpl
 			CTColumnResolutionType.PK, Collections.singleton("kaleoTaskId"));
 		_ctColumnNamesMap.put(
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
+
+		_uniqueIndexColumnNames.add(new String[] {"kaleoNodeId"});
 	}
 
 	/**

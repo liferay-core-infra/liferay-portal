@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -49,7 +48,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2861,21 +2859,6 @@ public class ObjectRelationshipPersistenceImpl
 					}
 				}
 				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {objectFieldId2};
-							}
-
-							_log.warn(
-								"ObjectRelationshipPersistenceImpl.fetchByObjectFieldId2(long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
 					ObjectRelationship objectRelationship = list.get(0);
 
 					result = objectRelationship;
@@ -5261,23 +5244,6 @@ public class ObjectRelationshipPersistenceImpl
 					}
 				}
 				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {
-									objectDefinitionId2, edge
-								};
-							}
-
-							_log.warn(
-								"ObjectRelationshipPersistenceImpl.fetchByODI2_E(long, boolean, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
 					ObjectRelationship objectRelationship = list.get(0);
 
 					result = objectRelationship;
@@ -6027,23 +5993,6 @@ public class ObjectRelationshipPersistenceImpl
 					}
 				}
 				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {
-									dbTableName, reverse
-								};
-							}
-
-							_log.warn(
-								"ObjectRelationshipPersistenceImpl.fetchByDTN_R(String, boolean, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
 					ObjectRelationship objectRelationship = list.get(0);
 
 					result = objectRelationship;
@@ -6268,24 +6217,6 @@ public class ObjectRelationshipPersistenceImpl
 					}
 				}
 				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {
-									externalReferenceCode, companyId,
-									objectDefinitionId1
-								};
-							}
-
-							_log.warn(
-								"ObjectRelationshipPersistenceImpl.fetchByERC_C_ODI1(String, long, long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
 					ObjectRelationship objectRelationship = list.get(0);
 
 					result = objectRelationship;
@@ -9824,24 +9755,6 @@ public class ObjectRelationshipPersistenceImpl
 					}
 				}
 				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {
-									objectDefinitionId1, objectDefinitionId2,
-									name, reverse, type
-								};
-							}
-
-							_log.warn(
-								"ObjectRelationshipPersistenceImpl.fetchByODI1_ODI2_N_R_T(long, long, String, boolean, String, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
 					ObjectRelationship objectRelationship = list.get(0);
 
 					result = objectRelationship;

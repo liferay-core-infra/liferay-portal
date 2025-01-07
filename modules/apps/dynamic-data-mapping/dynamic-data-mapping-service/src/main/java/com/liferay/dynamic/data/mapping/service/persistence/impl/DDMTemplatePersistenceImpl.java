@@ -4579,21 +4579,6 @@ public class DDMTemplatePersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {smallImageId};
-								}
-
-								_log.warn(
-									"DDMTemplatePersistenceImpl.fetchBySmallImageId(long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						DDMTemplate ddmTemplate = list.get(0);
 
 						result = ddmTemplate;
@@ -13089,6 +13074,8 @@ public class DDMTemplatePersistenceImpl
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
 
 		_uniqueIndexColumnNames.add(new String[] {"uuid_", "groupId"});
+
+		_uniqueIndexColumnNames.add(new String[] {"smallImageId"});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"groupId", "classNameId", "templateKey"});

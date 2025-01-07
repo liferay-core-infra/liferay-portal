@@ -2324,21 +2324,6 @@ public class TemplateEntryPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {ddmTemplateId};
-								}
-
-								_log.warn(
-									"TemplateEntryPersistenceImpl.fetchByDDMTemplateId(long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						TemplateEntry templateEntry = list.get(0);
 
 						result = templateEntry;
@@ -5214,6 +5199,8 @@ public class TemplateEntryPersistenceImpl
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
 
 		_uniqueIndexColumnNames.add(new String[] {"uuid_", "groupId"});
+
+		_uniqueIndexColumnNames.add(new String[] {"ddmTemplateId"});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"externalReferenceCode", "groupId"});

@@ -3434,21 +3434,6 @@ public class LayoutPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {iconImageId};
-								}
-
-								_log.warn(
-									"LayoutPersistenceImpl.fetchByIconImageId(long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						Layout layout = list.get(0);
 
 						result = layout;
@@ -8280,23 +8265,6 @@ public class LayoutPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										privateLayout, iconImageId
-									};
-								}
-
-								_log.warn(
-									"LayoutPersistenceImpl.fetchByP_I(boolean, long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						Layout layout = list.get(0);
 
 						result = layout;
@@ -8484,23 +8452,6 @@ public class LayoutPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										classNameId, classPK
-									};
-								}
-
-								_log.warn(
-									"LayoutPersistenceImpl.fetchByC_C(long, long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						Layout layout = list.get(0);
 
 						result = layout;
@@ -12558,24 +12509,6 @@ public class LayoutPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										groupId, privateLayout,
-										sourcePrototypeLayoutUuid
-									};
-								}
-
-								_log.warn(
-									"LayoutPersistenceImpl.fetchByG_P_SPLU(long, boolean, String, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						Layout layout = list.get(0);
 
 						result = layout;
@@ -20037,11 +19970,23 @@ public class LayoutPersistenceImpl
 		_uniqueIndexColumnNames.add(
 			new String[] {"uuid_", "groupId", "privateLayout"});
 
+		_uniqueIndexColumnNames.add(new String[] {"iconImageId"});
+
+		_uniqueIndexColumnNames.add(
+			new String[] {"privateLayout", "iconImageId"});
+
+		_uniqueIndexColumnNames.add(new String[] {"classNameId", "classPK"});
+
 		_uniqueIndexColumnNames.add(
 			new String[] {"groupId", "privateLayout", "layoutId"});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"groupId", "privateLayout", "friendlyURL"});
+
+		_uniqueIndexColumnNames.add(
+			new String[] {
+				"groupId", "privateLayout", "sourcePrototypeLayoutUuid"
+			});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"externalReferenceCode", "groupId"});

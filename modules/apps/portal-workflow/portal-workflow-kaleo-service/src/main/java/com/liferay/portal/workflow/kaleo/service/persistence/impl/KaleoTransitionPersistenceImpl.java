@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTransitionException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTransition;
 import com.liferay.portal.workflow.kaleo.model.KaleoTransitionTable;
@@ -1790,23 +1789,6 @@ public class KaleoTransitionPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										kaleoNodeId, name
-									};
-								}
-
-								_log.warn(
-									"KaleoTransitionPersistenceImpl.fetchByKNI_N(long, String, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						KaleoTransition kaleoTransition = list.get(0);
 
 						result = kaleoTransition;
@@ -2002,23 +1984,6 @@ public class KaleoTransitionPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										kaleoNodeId, defaultTransition
-									};
-								}
-
-								_log.warn(
-									"KaleoTransitionPersistenceImpl.fetchByKNI_DT(long, boolean, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						KaleoTransition kaleoTransition = list.get(0);
 
 						result = kaleoTransition;
@@ -2926,6 +2891,11 @@ public class KaleoTransitionPersistenceImpl
 			Collections.singleton("kaleoTransitionId"));
 		_ctColumnNamesMap.put(
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
+
+		_uniqueIndexColumnNames.add(new String[] {"kaleoNodeId", "name"});
+
+		_uniqueIndexColumnNames.add(
+			new String[] {"kaleoNodeId", "defaultTransition"});
 	}
 
 	/**

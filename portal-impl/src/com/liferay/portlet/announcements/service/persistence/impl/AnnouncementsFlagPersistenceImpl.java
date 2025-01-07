@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsFlagImpl;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsFlagModelImpl;
 
@@ -1247,23 +1246,6 @@ public class AnnouncementsFlagPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										userId, entryId, value
-									};
-								}
-
-								_log.warn(
-									"AnnouncementsFlagPersistenceImpl.fetchByU_E_V(long, long, int, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						AnnouncementsFlag announcementsFlag = list.get(0);
 
 						result = announcementsFlag;
@@ -2140,6 +2122,9 @@ public class AnnouncementsFlagPersistenceImpl
 			CTColumnResolutionType.PK, Collections.singleton("flagId"));
 		_ctColumnNamesMap.put(
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
+
+		_uniqueIndexColumnNames.add(
+			new String[] {"userId", "entryId", "value"});
 	}
 
 	/**

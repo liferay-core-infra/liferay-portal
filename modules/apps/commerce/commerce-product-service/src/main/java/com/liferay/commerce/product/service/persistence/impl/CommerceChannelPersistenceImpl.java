@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -4031,21 +4030,6 @@ public class CommerceChannelPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {siteGroupId};
-								}
-
-								_log.warn(
-									"CommerceChannelPersistenceImpl.fetchBySiteGroupId(long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						CommerceChannel commerceChannel = list.get(0);
 
 						result = commerceChannel;
@@ -5239,6 +5223,8 @@ public class CommerceChannelPersistenceImpl
 			Collections.singleton("commerceChannelId"));
 		_ctColumnNamesMap.put(
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
+
+		_uniqueIndexColumnNames.add(new String[] {"siteGroupId"});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"externalReferenceCode", "companyId"});

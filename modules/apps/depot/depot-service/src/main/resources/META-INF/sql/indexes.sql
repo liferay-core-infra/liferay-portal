@@ -1,5 +1,5 @@
-create index IX_5B76D798 on DepotAppCustomization (depotEntryId, enabled);
-create unique index IX_2CE1592A on DepotAppCustomization (depotEntryId, portletId[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_6A3A9CFA on DepotAppCustomization (depotEntryId, ctCollectionId, enabled);
+create unique index IX_47758FAE on DepotAppCustomization (depotEntryId, ctCollectionId, portletId[$COLUMN_LENGTH:75$]);
 
 create unique index IX_E3EB2C84 on DepotEntry (groupId, ctCollectionId);
 

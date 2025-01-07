@@ -41,10 +41,10 @@ create index IX_8E470726 on KBComment (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_F32A081D on KBFolder (companyId);
 create unique index IX_538A8E60 on KBFolder (groupId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
-create index IX_3FA4415C on KBFolder (groupId, parentKBFolderId, name[$COLUMN_LENGTH:75$]);
+create unique index IX_8F8770D7 on KBFolder (groupId, ctCollectionId, uuid_[$COLUMN_LENGTH:75$]);
+create unique index IX_AFCB7F3A on KBFolder (groupId, parentKBFolderId, ctCollectionId, name[$COLUMN_LENGTH:75$]);
+create unique index IX_DF13A8D8 on KBFolder (groupId, parentKBFolderId, ctCollectionId, urlTitle[$COLUMN_LENGTH:75$]);
 create index IX_C8923D43 on KBFolder (groupId, parentKBFolderId, status);
-create index IX_729A89FA on KBFolder (groupId, parentKBFolderId, urlTitle[$COLUMN_LENGTH:75$]);
-create unique index IX_9697B53 on KBFolder (groupId, uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_30B67029 on KBFolder (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_83D9CC13 on KBTemplate (groupId);

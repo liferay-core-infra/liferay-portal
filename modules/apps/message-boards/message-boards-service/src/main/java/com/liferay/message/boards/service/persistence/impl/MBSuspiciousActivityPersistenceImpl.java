@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -2613,23 +2612,6 @@ public class MBSuspiciousActivityPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										userId, messageId
-									};
-								}
-
-								_log.warn(
-									"MBSuspiciousActivityPersistenceImpl.fetchByU_M(long, long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						MBSuspiciousActivity mbSuspiciousActivity = list.get(0);
 
 						result = mbSuspiciousActivity;
@@ -2821,23 +2803,6 @@ public class MBSuspiciousActivityPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										userId, threadId
-									};
-								}
-
-								_log.warn(
-									"MBSuspiciousActivityPersistenceImpl.fetchByU_T(long, long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						MBSuspiciousActivity mbSuspiciousActivity = list.get(0);
 
 						result = mbSuspiciousActivity;
@@ -3795,6 +3760,10 @@ public class MBSuspiciousActivityPersistenceImpl
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
 
 		_uniqueIndexColumnNames.add(new String[] {"uuid_", "groupId"});
+
+		_uniqueIndexColumnNames.add(new String[] {"userId", "messageId"});
+
+		_uniqueIndexColumnNames.add(new String[] {"userId", "threadId"});
 	}
 
 	/**

@@ -43,19 +43,19 @@ create index IX_A7038CD7 on MBMessage (threadId, parentMessageId);
 create index IX_ABEB6D07 on MBMessage (userId, classNameId, classPK);
 create index IX_C57B16BC on MBMessage (uuid_[$COLUMN_LENGTH:75$]);
 
+create unique index IX_9B8C7633 on MBSuspiciousActivity (ctCollectionId, userId, messageId);
+create unique index IX_54B142D8 on MBSuspiciousActivity (ctCollectionId, userId, threadId);
 create index IX_977DB0CB on MBSuspiciousActivity (messageId);
 create index IX_9EE25540 on MBSuspiciousActivity (threadId);
-create index IX_39C9A751 on MBSuspiciousActivity (userId, messageId);
-create index IX_939A75FA on MBSuspiciousActivity (userId, threadId);
-create unique index IX_A3E15B5B on MBSuspiciousActivity (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);
+create unique index IX_286E8C5F on MBSuspiciousActivity (uuid_[$COLUMN_LENGTH:75$], ctCollectionId, groupId);
 
 create index IX_41F6DC8A on MBThread (categoryId, priority);
+create unique index IX_398F0AAD on MBThread (ctCollectionId, rootMessageId);
 create index IX_50F1904A on MBThread (groupId, categoryId, lastPostDate);
 create index IX_485F7E98 on MBThread (groupId, categoryId, status);
 create index IX_E1E7142B on MBThread (groupId, status);
 create unique index IX_4790702D on MBThread (groupId, uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_15AE30B5 on MBThread (priority, lastPostDate);
-create index IX_CC993ECB on MBThread (rootMessageId);
 create index IX_7E264A0F on MBThread (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_8CB0A24A on MBThreadFlag (threadId);

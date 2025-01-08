@@ -52,11 +52,11 @@ create index IX_657899A8 on DDMStructure (parentStructureId);
 create index IX_20FDE04C on DDMStructure (structureKey[$COLUMN_LENGTH:75$]);
 create index IX_E61809C8 on DDMStructure (uuid_[$COLUMN_LENGTH:75$]);
 
-create unique index IX_E5C95B68 on DDMStructureLayout (ctCollectionId, structureVersionId);
-create unique index IX_6130C00E on DDMStructureLayout (groupId, classNameId, ctCollectionId, structureLayoutKey[$COLUMN_LENGTH:75$]);
+create unique index IX_BBA9AF0E on DDMStructureLayout (groupId, classNameId, structureLayoutKey[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_C72DCE6E on DDMStructureLayout (groupId, classNameId, structureVersionId);
 create unique index IX_1D9B22DE on DDMStructureLayout (groupId, uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_4CDF64C on DDMStructureLayout (structureLayoutKey[$COLUMN_LENGTH:75$]);
+create index IX_B7158C0A on DDMStructureLayout (structureVersionId);
 create index IX_CC63DA3E on DDMStructureLayout (uuid_[$COLUMN_LENGTH:75$]);
 
 create unique index IX_C8DE7401 on DDMStructureLink (classNameId, classPK, structureId, ctCollectionId);

@@ -32,13 +32,13 @@ create unique index IX_8C99329D on AssetCategory (vocabularyId, parentCategoryId
 create index IX_112337B8 on AssetEntries_AssetTags (companyId);
 create index IX_B2A61B55 on AssetEntries_AssetTags (tagId);
 
+create unique index IX_7BF8337B on AssetEntry (classNameId, classPK, ctCollectionId);
 create index IX_23280E2 on AssetEntry (classNameId, companyId);
-create unique index IX_750F67F on AssetEntry (classNameId, ctCollectionId, classPK);
 create index IX_7306C60 on AssetEntry (companyId);
 create index IX_75D42FF9 on AssetEntry (expirationDate);
 create index IX_6418BB52 on AssetEntry (groupId, classNameId, publishDate, expirationDate);
 create index IX_82C4BEF6 on AssetEntry (groupId, classNameId, visible);
-create unique index IX_3F110F03 on AssetEntry (groupId, ctCollectionId, classUuid[$COLUMN_LENGTH:75$]);
+create index IX_1EBA6821 on AssetEntry (groupId, classUuid[$COLUMN_LENGTH:75$]);
 create index IX_FEC4A201 on AssetEntry (layoutUuid[$COLUMN_LENGTH:75$]);
 create index IX_2E4E3885 on AssetEntry (publishDate);
 create index IX_9029E15A on AssetEntry (visible);
@@ -61,8 +61,8 @@ create unique index IX_E7B95510 on BrowserTracker (userId);
 
 create unique index IX_B27A301F on ClassName_ (value[$COLUMN_LENGTH:200$]);
 
-create unique index IX_38EFE3FD on Company (logoId);
-create unique index IX_12566EC2 on Company (mx[$COLUMN_LENGTH:200$]);
+create index IX_38EFE3FD on Company (logoId);
+create index IX_12566EC2 on Company (mx[$COLUMN_LENGTH:200$]);
 create unique index IX_EC00543C on Company (webId[$COLUMN_LENGTH:75$]);
 
 create unique index IX_85C63FD7 on CompanyInfo (companyId);
@@ -136,11 +136,11 @@ create unique index IX_350F5CAE on DLFileVersion (uuid_[$COLUMN_LENGTH:75$], gro
 
 create index IX_A74DB14C on DLFolder (companyId);
 create unique index IX_F0D74691 on DLFolder (groupId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
-create unique index IX_DA04AB08 on DLFolder (groupId, ctCollectionId, uuid_[$COLUMN_LENGTH:75$]);
 create unique index IX_4C35E652 on DLFolder (groupId, parentFolderId, ctCollectionId, name[$COLUMN_LENGTH:255$]);
 create index IX_CE360BF6 on DLFolder (groupId, parentFolderId, hidden_, status);
 create index IX_2D8D2D2B on DLFolder (groupId, parentFolderId, mountPoint, hidden_, status);
-create unique index IX_1B0635E on DLFolder (mountPoint, ctCollectionId, repositoryId);
+create unique index IX_53E6B584 on DLFolder (groupId, uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
+create index IX_D6D77780 on DLFolder (mountPoint, repositoryId);
 create index IX_51556082 on DLFolder (parentFolderId, name[$COLUMN_LENGTH:255$]);
 create index IX_56F3D47C on DLFolder (parentFolderId, repositoryId);
 create index IX_EE29C715 on DLFolder (repositoryId);
@@ -173,16 +173,16 @@ create index IX_47CC6234 on ExportImportConfiguration (groupId, type_, status);
 create index IX_75017452 on Group_ (active_, type_);
 create index IX_8257E37B on Group_ (classNameId, classPK);
 create index IX_DDC91A87 on Group_ (companyId, active_);
+create unique index IX_DBA56EF9 on Group_ (companyId, classNameId, ctCollectionId, classPK);
 create index IX_ABE2D54 on Group_ (companyId, classNameId, parentGroupId);
 create index IX_DF76A247 on Group_ (companyId, classNameId, site);
-create unique index IX_5BDBBB75 on Group_ (companyId, ctCollectionId, classNameId, classPK);
 create unique index IX_23B1C81D on Group_ (companyId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
 create unique index IX_3551EED4 on Group_ (companyId, ctCollectionId, friendlyURL[$COLUMN_LENGTH:255$]);
 create unique index IX_42E6E774 on Group_ (companyId, ctCollectionId, groupKey[$COLUMN_LENGTH:150$]);
 create index IX_5D75499E on Group_ (companyId, parentGroupId);
 create index IX_B91488EC on Group_ (companyId, site, active_);
 create index IX_7B216735 on Group_ (companyId, site, parentGroupId, inheritContent);
-create unique index IX_639B089A on Group_ (ctCollectionId, liveGroupId);
+create index IX_16218A38 on Group_ (liveGroupId);
 create index IX_F981514E on Group_ (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_8BFD4548 on Groups_Orgs (companyId);
@@ -196,23 +196,24 @@ create index IX_3B69160F on Groups_UserGroups (userGroupId);
 
 create index IX_6A925A4D on Image (size_);
 
+create index IX_B8E1E6E5 on Layout (classNameId, classPK);
 create index IX_881EABCB on Layout (companyId, layoutPrototypeUuid[$COLUMN_LENGTH:75$]);
-create unique index IX_3D4362C3 on Layout (ctCollectionId, classNameId, classPK);
-create unique index IX_F34241DF on Layout (ctCollectionId, iconImageId);
 create unique index IX_E81EADC5 on Layout (groupId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
 create index IX_993CBA31 on Layout (groupId, masterLayoutPlid);
 create unique index IX_502B1A93 on Layout (groupId, privateLayout, ctCollectionId, friendlyURL[$COLUMN_LENGTH:255$]);
 create unique index IX_4FBF955A on Layout (groupId, privateLayout, ctCollectionId, layoutId);
-create unique index IX_D40C45BB on Layout (groupId, privateLayout, ctCollectionId, sourcePrototypeLayoutUuid[$COLUMN_LENGTH:75$]);
 create unique index IX_18646B93 on Layout (groupId, privateLayout, ctCollectionId, uuid_[$COLUMN_LENGTH:75$]);
 create index IX_7DAA999F on Layout (groupId, privateLayout, parentLayoutId, hidden_);
 create index IX_7399B71E on Layout (groupId, privateLayout, parentLayoutId, priority);
 create index IX_8F78BAFA on Layout (groupId, privateLayout, parentLayoutId, system_);
+create index IX_8CE8C0D9 on Layout (groupId, privateLayout, sourcePrototypeLayoutUuid[$COLUMN_LENGTH:75$]);
 create index IX_A0364689 on Layout (groupId, privateLayout, status);
 create index IX_1A1B61D2 on Layout (groupId, privateLayout, type_[$COLUMN_LENGTH:75$]);
 create index IX_6EDC627B on Layout (groupId, type_[$COLUMN_LENGTH:75$]);
+create index IX_23922F7D on Layout (iconImageId);
 create index IX_B529BFD3 on Layout (layoutPrototypeUuid[$COLUMN_LENGTH:75$]);
 create index IX_1D4DCAA5 on Layout (parentPlid);
+create index IX_3BC009C0 on Layout (privateLayout, iconImageId);
 create index IX_39A18ECC on Layout (sourcePrototypeLayoutUuid[$COLUMN_LENGTH:75$]);
 create index IX_D0822724 on Layout (uuid_[$COLUMN_LENGTH:75$]);
 
@@ -233,7 +234,7 @@ create index IX_557A639F on LayoutPrototype (companyId, active_);
 create index IX_CEF72136 on LayoutPrototype (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_9EC9F954 on LayoutRevision (layoutSetBranchId, head, status);
-create unique index IX_F21D36F9 on LayoutRevision (layoutSetBranchId, plid, head);
+create unique index IX_538BFC54 on LayoutRevision (layoutSetBranchId, plid, head, layoutBranchId);
 create index IX_84668240 on LayoutRevision (layoutSetBranchId, plid, layoutBranchId);
 create index IX_F93E5CC3 on LayoutRevision (layoutSetBranchId, plid, parentLayoutRevisionId);
 create index IX_70DA9ECB on LayoutRevision (layoutSetBranchId, plid, status);
@@ -244,7 +245,7 @@ create index IX_421223B1 on LayoutRevision (status);
 
 create unique index IX_3F2A9AEF on LayoutSet (groupId, privateLayout, ctCollectionId);
 create index IX_C629311 on LayoutSet (layoutSetPrototypeUuid[$COLUMN_LENGTH:75$], companyId);
-create unique index IX_585CD337 on LayoutSet (privateLayout, ctCollectionId, logoId);
+create index IX_1B698D9 on LayoutSet (privateLayout, logoId);
 
 create index IX_CCF0DA29 on LayoutSetBranch (groupId, privateLayout, master);
 create unique index IX_5FF18552 on LayoutSetBranch (groupId, privateLayout, name[$COLUMN_LENGTH:75$]);
@@ -267,7 +268,7 @@ create index IX_4BCBAB21 on Organization_ (companyId, name[$COLUMN_LENGTH:100$],
 create index IX_418E4522 on Organization_ (companyId, parentOrganizationId);
 create index IX_396D6B42 on Organization_ (uuid_[$COLUMN_LENGTH:75$]);
 
-create unique index IX_2C1142E on PasswordPolicy (companyId, defaultPolicy);
+create index IX_2C1142E on PasswordPolicy (companyId, defaultPolicy);
 create unique index IX_3FBFA9F4 on PasswordPolicy (companyId, name[$COLUMN_LENGTH:75$]);
 create index IX_51437A01 on PasswordPolicy (uuid_[$COLUMN_LENGTH:75$]);
 
@@ -286,7 +287,7 @@ create unique index IX_7171B2E8 on PluginSetting (companyId, pluginId[$COLUMN_LE
 create unique index IX_D5E35599 on PortalPreferenceValue (portalPreferencesId, namespace[$COLUMN_LENGTH:255$], key_[$COLUMN_LENGTH:1024$], index_);
 create index IX_737DBC36 on PortalPreferenceValue (portalPreferencesId, namespace[$COLUMN_LENGTH:255$], key_[$COLUMN_LENGTH:1024$], smallValue[$COLUMN_LENGTH:255$]);
 
-create unique index IX_D1846D13 on PortalPreferences (ownerType, ownerId);
+create index IX_D1846D13 on PortalPreferences (ownerType, ownerId);
 
 create unique index IX_12B5E51D on Portlet (companyId, portletId[$COLUMN_LENGTH:200$]);
 
@@ -370,7 +371,7 @@ create index IX_D0E9029E on SocialActivity (classNameId, classPK, type_);
 create index IX_F885EA9C on SocialActivity (classNameId, companyId);
 create index IX_64B1BC66 on SocialActivity (companyId);
 create index IX_2A2468 on SocialActivity (groupId);
-create unique index IX_28C22ABD on SocialActivity (mirrorActivityId, ctCollectionId);
+create index IX_1271F25F on SocialActivity (mirrorActivityId);
 create index IX_121CA3CB on SocialActivity (receiverUserId);
 create index IX_3504B8BC on SocialActivity (userId);
 
@@ -466,16 +467,16 @@ create index IX_14D8BCC0 on UserTrackerPath (userTrackerId);
 create index IX_BCFDA257 on User_ (companyId, createDate, modifiedDate);
 create unique index IX_77D89D58 on User_ (companyId, ctCollectionId, emailAddress[$COLUMN_LENGTH:254$]);
 create unique index IX_6FF64E11 on User_ (companyId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
-create unique index IX_C36EFC61 on User_ (companyId, ctCollectionId, facebookId);
 create unique index IX_21E838BF on User_ (companyId, ctCollectionId, googleUserId[$COLUMN_LENGTH:75$]);
-create unique index IX_8B1DCCE5 on User_ (companyId, ctCollectionId, openId[$COLUMN_LENGTH:1024$]);
 create unique index IX_6B7C3D77 on User_ (companyId, ctCollectionId, screenName[$COLUMN_LENGTH:75$]);
+create index IX_1D731F03 on User_ (companyId, facebookId);
 create index IX_EE8ABD19 on User_ (companyId, modifiedDate);
+create index IX_89509087 on User_ (companyId, openId[$COLUMN_LENGTH:1024$]);
 create index IX_F6039434 on User_ (companyId, status);
 create index IX_FD06BAAD on User_ (companyId, type_, status);
 create unique index IX_E902F853 on User_ (ctCollectionId, contactId);
-create unique index IX_D83BFA02 on User_ (ctCollectionId, portraitId);
 create index IX_762F63C6 on User_ (emailAddress[$COLUMN_LENGTH:254$]);
+create index IX_A18034A4 on User_ (portraitId);
 create index IX_E0422BDA on User_ (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_3499B657 on Users_Groups (companyId);
@@ -493,7 +494,7 @@ create index IX_A098EFBF on Users_Teams (userId);
 create index IX_BB65040C on Users_UserGroups (companyId);
 create index IX_66FF2503 on Users_UserGroups (userGroupId);
 
-create unique index IX_182AB338 on VirtualHost (companyId, layoutSetId, ctCollectionId, defaultVirtualHost);
+create index IX_EECA5FDA on VirtualHost (companyId, layoutSetId, defaultVirtualHost);
 create unique index IX_76A64FBE on VirtualHost (hostname[$COLUMN_LENGTH:200$], ctCollectionId);
 create index IX_774643D1 on VirtualHost (layoutSetId, hostname[$COLUMN_LENGTH:200$]);
 
@@ -505,7 +506,7 @@ create index IX_F75690BB on Website (userId);
 create index IX_76F15D13 on Website (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_A4DB1F0F on WorkflowDefinitionLink (companyId, workflowDefinitionName[$COLUMN_LENGTH:75$], workflowDefinitionVersion);
-create unique index IX_32FA2F4C on WorkflowDefinitionLink (groupId, companyId, classNameId, classPK, ctCollectionId, typePK);
+create index IX_705B40EE on WorkflowDefinitionLink (groupId, companyId, classNameId, classPK, typePK);
 create index IX_407C8F33 on WorkflowDefinitionLink (groupId, companyId, classPK);
 create unique index IX_BF1277A7 on WorkflowDefinitionLink (groupId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
 create unique index IX_6D62D29A on WorkflowDefinitionLink (groupId, uuid_[$COLUMN_LENGTH:75$], ctCollectionId);

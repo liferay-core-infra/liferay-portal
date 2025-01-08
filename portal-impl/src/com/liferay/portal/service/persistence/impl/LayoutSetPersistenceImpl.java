@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.LayoutSetImpl;
 import com.liferay.portal.model.impl.LayoutSetModelImpl;
 
@@ -2076,6 +2077,23 @@ public class LayoutSetPersistenceImpl
 						}
 					}
 					else {
+						if (list.size() > 1) {
+							Collections.sort(list, Collections.reverseOrder());
+
+							if (_log.isWarnEnabled()) {
+								if (!useFinderCache) {
+									finderArgs = new Object[] {
+										privateLayout, logoId
+									};
+								}
+
+								_log.warn(
+									"LayoutSetPersistenceImpl.fetchByP_L(boolean, long, boolean) with parameters (" +
+										StringUtil.merge(finderArgs) +
+											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+							}
+						}
+
 						LayoutSet layoutSet = list.get(0);
 
 						result = layoutSet;
@@ -2981,8 +2999,6 @@ public class LayoutSetPersistenceImpl
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
 
 		_uniqueIndexColumnNames.add(new String[] {"groupId", "privateLayout"});
-
-		_uniqueIndexColumnNames.add(new String[] {"privateLayout", "logoId"});
 	}
 
 	/**

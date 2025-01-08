@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.impl.WorkflowDefinitionLinkImpl;
@@ -4639,6 +4640,24 @@ public class WorkflowDefinitionLinkPersistenceImpl
 						}
 					}
 					else {
+						if (list.size() > 1) {
+							Collections.sort(list, Collections.reverseOrder());
+
+							if (_log.isWarnEnabled()) {
+								if (!useFinderCache) {
+									finderArgs = new Object[] {
+										groupId, companyId, classNameId,
+										classPK, typePK
+									};
+								}
+
+								_log.warn(
+									"WorkflowDefinitionLinkPersistenceImpl.fetchByG_C_C_C_T(long, long, long, long, long, boolean) with parameters (" +
+										StringUtil.merge(finderArgs) +
+											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+							}
+						}
+
 						WorkflowDefinitionLink workflowDefinitionLink =
 							list.get(0);
 
@@ -5923,11 +5942,6 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
 
 		_uniqueIndexColumnNames.add(new String[] {"uuid_", "groupId"});
-
-		_uniqueIndexColumnNames.add(
-			new String[] {
-				"groupId", "companyId", "classNameId", "classPK", "typePK"
-			});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"externalReferenceCode", "groupId"});

@@ -4916,6 +4916,23 @@ public class DLFolderPersistenceImpl
 						}
 					}
 					else {
+						if (list.size() > 1) {
+							Collections.sort(list, Collections.reverseOrder());
+
+							if (_log.isWarnEnabled()) {
+								if (!useFinderCache) {
+									finderArgs = new Object[] {
+										repositoryId, mountPoint
+									};
+								}
+
+								_log.warn(
+									"DLFolderPersistenceImpl.fetchByR_M(long, boolean, boolean) with parameters (" +
+										StringUtil.merge(finderArgs) +
+											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+							}
+						}
+
 						DLFolder dlFolder = list.get(0);
 
 						result = dlFolder;
@@ -15364,9 +15381,6 @@ public class DLFolderPersistenceImpl
 		_mappingTableNames.add("DLFileEntryTypes_DLFolders");
 
 		_uniqueIndexColumnNames.add(new String[] {"uuid_", "groupId"});
-
-		_uniqueIndexColumnNames.add(
-			new String[] {"repositoryId", "mountPoint"});
 
 		_uniqueIndexColumnNames.add(
 			new String[] {"groupId", "parentFolderId", "name"});

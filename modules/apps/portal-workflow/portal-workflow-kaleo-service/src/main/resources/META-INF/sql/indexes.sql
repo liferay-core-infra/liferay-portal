@@ -8,12 +8,12 @@ create index IX_353B7FB5 on KaleoCondition (kaleoDefinitionVersionId);
 create unique index IX_A12B7BAA on KaleoCondition (kaleoNodeId, ctCollectionId);
 
 create index IX_EEFC11D0 on KaleoDefinition (active_);
+create index IX_37ED1EF9 on KaleoDefinition (companyId, active_, name[$COLUMN_LENGTH:200$]);
 create index IX_D1C1A80A on KaleoDefinition (companyId, active_, scope[$COLUMN_LENGTH:75$]);
 create unique index IX_9F17D510 on KaleoDefinition (companyId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
-create unique index IX_8ED7DB8C on KaleoDefinition (companyId, ctCollectionId, name[$COLUMN_LENGTH:200$]);
+create unique index IX_4C20077C on KaleoDefinition (companyId, name[$COLUMN_LENGTH:200$], ctCollectionId, version);
 create index IX_6E339BF5 on KaleoDefinition (companyId, scope[$COLUMN_LENGTH:75$]);
-create unique index IX_68847D2D on KaleoDefinition (ctCollectionId, uuid_[$COLUMN_LENGTH:75$], groupId);
-create index IX_B148D23B on KaleoDefinition (uuid_[$COLUMN_LENGTH:75$]);
+create unique index IX_1EE07E31 on KaleoDefinition (uuid_[$COLUMN_LENGTH:75$], ctCollectionId, groupId);
 
 create unique index IX_3ADEC2A on KaleoDefinitionVersion (companyId, name[$COLUMN_LENGTH:200$], version[$COLUMN_LENGTH:75$], ctCollectionId);
 
@@ -75,7 +75,7 @@ create index IX_2C81C992 on KaleoTaskFormInstance (kaleoTaskInstanceTokenId);
 create index IX_A3271995 on KaleoTaskInstanceToken (className[$COLUMN_LENGTH:200$], classPK);
 create index IX_4B55EBE on KaleoTaskInstanceToken (companyId, userId, completed);
 create index IX_B2822979 on KaleoTaskInstanceToken (kaleoDefinitionVersionId);
-create unique index IX_324FAD73 on KaleoTaskInstanceToken (kaleoInstanceId, kaleoTaskId, ctCollectionId);
+create index IX_B857A115 on KaleoTaskInstanceToken (kaleoInstanceId, kaleoTaskId);
 
 create index IX_1A479F32 on KaleoTimer (kaleoClassName[$COLUMN_LENGTH:200$], kaleoClassPK, blocking);
 
@@ -85,5 +85,5 @@ create unique index IX_78EB88A on KaleoTimerInstanceToken (kaleoInstanceTokenId,
 
 create index IX_41D6C6D on KaleoTransition (companyId);
 create index IX_16B426EF on KaleoTransition (kaleoDefinitionVersionId);
-create unique index IX_5DFCA676 on KaleoTransition (kaleoNodeId, ctCollectionId, defaultTransition);
-create unique index IX_7FD7BDEF on KaleoTransition (kaleoNodeId, ctCollectionId, name[$COLUMN_LENGTH:200$]);
+create index IX_A38E2194 on KaleoTransition (kaleoNodeId, defaultTransition);
+create unique index IX_FB851E6F on KaleoTransition (kaleoNodeId, name[$COLUMN_LENGTH:200$], ctCollectionId);

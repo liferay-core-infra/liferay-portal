@@ -11,10 +11,11 @@ create index IX_C15BC5AA on CommercePriceEntry (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_5C1781DF on CommercePriceList (commerceCurrencyCode[$COLUMN_LENGTH:75$]);
 create unique index IX_A0692909 on CommercePriceList (companyId, ctCollectionId, externalReferenceCode[$COLUMN_LENGTH:75$]);
-create unique index IX_9AF8489D on CommercePriceList (ctCollectionId, parentCommercePriceListId);
+create index IX_3AE5B429 on CommercePriceList (groupId, catalogBasePriceList);
 create index IX_3BE0F85F on CommercePriceList (groupId, companyId, status, type_[$COLUMN_LENGTH:75$]);
-create unique index IX_4064A007 on CommercePriceList (groupId, ctCollectionId, catalogBasePriceList);
-create unique index IX_A8F4B73E on CommercePriceList (groupId, ctCollectionId, uuid_[$COLUMN_LENGTH:75$]);
+create index IX_31F12A8E on CommercePriceList (groupId, type_[$COLUMN_LENGTH:75$], catalogBasePriceList);
+create unique index IX_22D6C1BA on CommercePriceList (groupId, uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
+create index IX_863045BB on CommercePriceList (parentCommercePriceListId);
 create index IX_72305848 on CommercePriceList (status, displayDate);
 create index IX_1B0C9BE2 on CommercePriceList (uuid_[$COLUMN_LENGTH:75$]);
 

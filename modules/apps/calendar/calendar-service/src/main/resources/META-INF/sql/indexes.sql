@@ -9,8 +9,8 @@ create index IX_F7B8A941 on CalendarBooking (parentCalendarBookingId, status);
 create index IX_14ADC52E on CalendarBooking (recurringCalendarBookingId);
 create unique index IX_99E210F9 on CalendarBooking (uuid_[$COLUMN_LENGTH:75$], ctCollectionId, groupId);
 
-create unique index IX_E71CB9E0 on CalendarNotificationTemplate (calendarId, ctCollectionId, notificationType[$COLUMN_LENGTH:75$], notificationTemplateType[$COLUMN_LENGTH:75$]);
-create unique index IX_955E12E1 on CalendarNotificationTemplate (uuid_[$COLUMN_LENGTH:75$], ctCollectionId, groupId);
+create index IX_7727A482 on CalendarNotificationTemplate (calendarId, notificationType[$COLUMN_LENGTH:75$], notificationTemplateType[$COLUMN_LENGTH:75$]);
+create unique index IX_10D0E1DD on CalendarNotificationTemplate (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);
 
 create index IX_74AD9DDD on CalendarResource (active_, code_[$COLUMN_LENGTH:75$], companyId);
 create unique index IX_D8D5DB05 on CalendarResource (ctCollectionId, classNameId, classPK);

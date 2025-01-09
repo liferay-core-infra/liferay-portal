@@ -4,7 +4,7 @@ import org.gradle.util.VersionNumber
 
 buildscript {
 	dependencies {
-		classpath group: "biz.aQute.bnd", name: "biz.aQute.bnd.gradle", version: "6.4.0"
+		classpath group: "biz.aQute.bnd", name: "biz.aQute.bnd.gradle", version: "7.0.0"
 	}
 
 	repositories {

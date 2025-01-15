@@ -63,9 +63,11 @@
 			<arg value="${project.dir}/tools/tck/pluto-patch.diff" />
 		</exec>
 
-		<execute dir="${tck.home}/..">
-			mvn -P all,liferay clean install
-		</execute>
+		<exec dir="${tck.home}/.." executable="/bin/bash" failonerror="true" logError="true">
+			<env key="MAVEN_OPTS" value="-XX:+IgnoreUnrecognizedVMOptions ${junit.java.add.opens}"/>
+			<arg value="-c"/>
+			<arg value="mvn -P all,liferay clean install"/>
+		</exec>
 
 		<copy
 			flatten="true"

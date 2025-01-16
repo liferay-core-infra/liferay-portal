@@ -628,6 +628,16 @@ public class ServiceBuilder {
 				StringUtil.split(
 					_compatProperties.getProperty("bad.table.names.extra")));
 
+			_strictUniqueFinders = new HashSet<>();
+
+			if (isVersionGTE_7_4_0()) {
+				Collections.addAll(
+					_strictUniqueFinders,
+					StringUtil.split(
+						_compatProperties.getProperty(
+							"strict.unique.finders")));
+			}
+
 			Element rootElement = document.getRootElement();
 
 			String packagePath = rootElement.attributeValue("package-path");
@@ -5978,6 +5988,18 @@ public class ServiceBuilder {
 		return false;
 	}
 
+	private boolean _isStrictUniqueFinder(
+		String entityName, String finderName) {
+
+		if (_strictUniqueFinders.contains(
+				entityName + StringPool.PERIOD + finderName)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isStringLocaleMap(JavaParameter javaParameter) {
 		JavaType type = javaParameter.getType();
 
@@ -6810,7 +6832,9 @@ public class ServiceBuilder {
 
 			boolean finderUnique;
 
-			if (isVersionGTE_7_4_0()) {
+			if (isVersionGTE_7_4_0() &&
+				_isStrictUniqueFinder(entityName, finderName)) {
+
 				boolean finderReturnSingleObject = !Objects.equals(
 					finderReturn, "Collection");
 
@@ -8277,6 +8301,7 @@ public class ServiceBuilder {
 	private String _sqlFileName;
 	private String _sqlIndexesFileName;
 	private String _sqlSequencesFileName;
+	private Set<String> _strictUniqueFinders;
 	private String _targetEntityName;
 	private String _testDirName;
 	private String _testOutputPath;

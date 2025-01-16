@@ -6805,9 +6805,31 @@ public class ServiceBuilder {
 			String finderName = finderElement.attributeValue("name");
 			String finderPluralName = finderElement.attributeValue(
 				"plural-name");
+
 			String finderReturn = finderElement.attributeValue("return-type");
-			boolean finderUnique = GetterUtil.getBoolean(
-				finderElement.attributeValue("unique"));
+
+			boolean finderUnique;
+
+			if (isVersionGTE_7_4_0()) {
+				boolean finderReturnSingleObject = !Objects.equals(
+					finderReturn, "Collection");
+
+				finderUnique = GetterUtil.getBoolean(
+					finderElement.attributeValue("unique"),
+					finderReturnSingleObject);
+
+				if (finderReturnSingleObject && !finderUnique) {
+					throw new IllegalArgumentException(
+						StringBundler.concat(
+							"Finder ", finderName, " must not set \"unique\" ",
+							"to false as it returns a single object of ",
+							finderReturn, ", not a Collection."));
+				}
+			}
+			else {
+				finderUnique = GetterUtil.getBoolean(
+					finderElement.attributeValue("unique"));
+			}
 
 			String finderWhere = finderElement.attributeValue("where");
 

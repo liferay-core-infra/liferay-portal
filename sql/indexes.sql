@@ -61,7 +61,6 @@ create unique index IX_E7B95510 on BrowserTracker (userId);
 
 create unique index IX_B27A301F on ClassName_ (value[$COLUMN_LENGTH:200$]);
 
-create index IX_38EFE3FD on Company (logoId);
 create index IX_12566EC2 on Company (mx[$COLUMN_LENGTH:200$]);
 create unique index IX_EC00543C on Company (webId[$COLUMN_LENGTH:75$]);
 
@@ -206,7 +205,6 @@ create unique index IX_18646B93 on Layout (groupId, privateLayout, ctCollectionI
 create index IX_7DAA999F on Layout (groupId, privateLayout, parentLayoutId, hidden_);
 create index IX_7399B71E on Layout (groupId, privateLayout, parentLayoutId, priority);
 create index IX_8F78BAFA on Layout (groupId, privateLayout, parentLayoutId, system_);
-create index IX_8CE8C0D9 on Layout (groupId, privateLayout, sourcePrototypeLayoutUuid[$COLUMN_LENGTH:75$]);
 create index IX_A0364689 on Layout (groupId, privateLayout, status);
 create index IX_1A1B61D2 on Layout (groupId, privateLayout, type_[$COLUMN_LENGTH:75$]);
 create index IX_6EDC627B on Layout (groupId, type_[$COLUMN_LENGTH:75$]);

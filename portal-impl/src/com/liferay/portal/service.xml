@@ -164,9 +164,6 @@
 		<finder name="Mx" return-type="Company">
 			<finder-column name="mx" />
 		</finder>
-		<finder name="LogoId" return-type="Company">
-			<finder-column name="logoId" />
-		</finder>
 	</entity>
 	<entity local-service="true" name="CompanyInfo" remote-service="false">
 
@@ -698,11 +695,6 @@
 			<finder-column name="privateLayout" />
 			<finder-column name="friendlyURL" />
 		</finder>
-		<finder name="G_P_SPLU" return-type="Layout">
-			<finder-column name="groupId" />
-			<finder-column name="privateLayout" />
-			<finder-column name="sourcePrototypeLayoutUuid" />
-		</finder>
 		<finder name="G_P_ST" return-type="Collection" where="system = [$FALSE$]">
 			<finder-column name="groupId" />
 			<finder-column name="privateLayout" />
@@ -953,11 +945,6 @@
 		<finder name="L_P_P" return-type="Collection">
 			<finder-column name="layoutSetBranchId" />
 			<finder-column name="parentLayoutRevisionId" />
-			<finder-column name="plid" />
-		</finder>
-		<finder name="L_H_P" return-type="LayoutRevision">
-			<finder-column name="layoutSetBranchId" />
-			<finder-column name="head" />
 			<finder-column name="plid" />
 		</finder>
 		<finder name="L_H_P_Collection" return-type="Collection">

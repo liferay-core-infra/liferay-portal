@@ -6,10 +6,6 @@ Import-Package:\
 	\
 	!com.github.luben.zstd.*,\
 	\
-	!com.google.appengine.api.*,\
-	!com.google.errorprone.annotations.*,\
-	!com.google.protobuf.*,\
-	\
 	!com.jcraft.*,\
 	\
 	!com.ning.compress.*,\

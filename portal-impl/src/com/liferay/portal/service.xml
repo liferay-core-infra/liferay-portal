@@ -164,7 +164,7 @@
 		<finder name="Mx" return-type="Company">
 			<finder-column name="mx" />
 		</finder>
-		<finder name="LogoId" return-type="Company">
+		<finder name="LogoId" return-type="Collection">
 			<finder-column name="logoId" />
 		</finder>
 	</entity>
@@ -645,7 +645,7 @@
 		<finder name="ParentPlid" return-type="Collection" where="system = [$FALSE$]">
 			<finder-column name="parentPlid" />
 		</finder>
-		<finder name="IconImageId" return-type="Layout">
+		<finder name="IconImageId" return-type="Collection">
 			<finder-column name="iconImageId" />
 		</finder>
 		<finder name="LayoutPrototypeUuid" return-type="Collection" where="system = [$FALSE$]">
@@ -698,7 +698,7 @@
 			<finder-column name="privateLayout" />
 			<finder-column name="friendlyURL" />
 		</finder>
-		<finder name="G_P_SPLU" return-type="Layout">
+		<finder name="G_P_SPLU" return-type="Collection">
 			<finder-column name="groupId" />
 			<finder-column name="privateLayout" />
 			<finder-column name="sourcePrototypeLayoutUuid" />
@@ -955,7 +955,7 @@
 			<finder-column name="parentLayoutRevisionId" />
 			<finder-column name="plid" />
 		</finder>
-		<finder name="L_H_P" return-type="LayoutRevision">
+		<finder name="L_H_P" return-type="Collection">
 			<finder-column name="layoutSetBranchId" />
 			<finder-column name="head" />
 			<finder-column name="plid" />

@@ -2,6 +2,9 @@ Bundle-Name: Liferay Portal Store GCS
 Bundle-SymbolicName: com.liferay.portal.store.gcs
 Bundle-Version: 3.0.35
 Import-Package:\
+	!com.google.cloud.monitoring.*,\
+	!com.google.monitoring.*,\
+	\
 	!org.apache.avalon.framework.logger,\
 	!org.apache.log,\
 	\

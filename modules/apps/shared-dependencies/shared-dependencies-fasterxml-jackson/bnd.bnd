@@ -1,5 +1,7 @@
 Bundle-Name: Liferay Shared Dependencies FasterXML Jackson
 Bundle-SymbolicName: com.liferay.shared.dependencies.fasterxml.jackson
 Bundle-Version: 1.0.0
--exportcontents: com.fasterxml.jackson.dataformat.cbor.*
+-exportcontents:\
+	com.fasterxml.jackson.dataformat.cbor.*,\
+	com.fasterxml.jackson.dataformat.xml.*
 -fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/9/";is:=warning

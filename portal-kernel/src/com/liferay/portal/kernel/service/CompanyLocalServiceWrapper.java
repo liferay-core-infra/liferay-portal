@@ -422,6 +422,19 @@ public class CompanyLocalServiceWrapper
 	}
 
 	/**
+	 * Returns all the companies matching the mail domain.
+	 *
+	 * @param mx the mail domain
+	 * @return the matching companies
+	 */
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Company>
+		getCompaniesByMx(String mx) {
+
+		return _companyLocalService.getCompaniesByMx(mx);
+	}
+
+	/**
 	 * Returns the number of companies.
 	 *
 	 * @return the number of companies
@@ -457,19 +470,6 @@ public class CompanyLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _companyLocalService.getCompanyById(companyId);
-	}
-
-	/**
-	 * Returns the company with the mail domain.
-	 *
-	 * @param mx the company's mail domain
-	 * @return the company with the mail domain
-	 */
-	@Override
-	public com.liferay.portal.kernel.model.Company getCompanyByMx(String mx)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _companyLocalService.getCompanyByMx(mx);
 	}
 
 	/**

@@ -325,6 +325,15 @@ public interface CompanyLocalService
 	public List<Company> getCompanies(int start, int end);
 
 	/**
+	 * Returns all the companies matching the mail domain.
+	 *
+	 * @param mx the mail domain
+	 * @return the matching companies
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Company> getCompaniesByMx(String mx);
+
+	/**
 	 * Returns the number of companies.
 	 *
 	 * @return the number of companies
@@ -350,15 +359,6 @@ public interface CompanyLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Company getCompanyById(long companyId) throws PortalException;
-
-	/**
-	 * Returns the company with the mail domain.
-	 *
-	 * @param mx the company's mail domain
-	 * @return the company with the mail domain
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Company getCompanyByMx(String mx) throws PortalException;
 
 	/**
 	 * Returns the company with the virtual host name.

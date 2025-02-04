@@ -371,6 +371,16 @@ public class CompanyLocalServiceUtil {
 	}
 
 	/**
+	 * Returns all the companies matching the mail domain.
+	 *
+	 * @param mx the mail domain
+	 * @return the matching companies
+	 */
+	public static List<Company> getCompaniesByMx(String mx) {
+		return getService().getCompaniesByMx(mx);
+	}
+
+	/**
 	 * Returns the number of companies.
 	 *
 	 * @return the number of companies
@@ -400,16 +410,6 @@ public class CompanyLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getCompanyById(companyId);
-	}
-
-	/**
-	 * Returns the company with the mail domain.
-	 *
-	 * @param mx the company's mail domain
-	 * @return the company with the mail domain
-	 */
-	public static Company getCompanyByMx(String mx) throws PortalException {
-		return getService().getCompanyByMx(mx);
 	}
 
 	/**

@@ -860,17 +860,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Returns the company with the primary key.
-	 *
-	 * @param  companyId the primary key of the company
-	 * @return the company with the primary key
-	 */
-	@Override
-	public Company getCompanyById(long companyId) throws PortalException {
-		return companyPersistence.findByPrimaryKey(companyId);
-	}
-
-	/**
 	 * Returns all the companies matching the mail domain.
 	 *
 	 * @param  mx the mail domain
@@ -879,6 +868,17 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	@Override
 	public List<Company> getCompaniesByMx(String mx) {
 		return companyPersistence.findByMx(mx);
+	}
+
+	/**
+	 * Returns the company with the primary key.
+	 *
+	 * @param  companyId the primary key of the company
+	 * @return the company with the primary key
+	 */
+	@Override
+	public Company getCompanyById(long companyId) throws PortalException {
+		return companyPersistence.findByPrimaryKey(companyId);
 	}
 
 	/**

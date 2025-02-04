@@ -43,6 +43,7 @@ import com.liferay.portal.util.PropsValues;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.mail.Message;
@@ -284,7 +285,17 @@ public class MessageListenerImpl implements MessageListener {
 
 		String mx = messageIdString.substring(pos, endPos);
 
-		return _companyLocalService.getCompanyByMx(mx);
+		List<Company> companies = _companyLocalService.getCompaniesByMx(mx);
+
+		if (companies.size() > 1) {
+			Collections.sort(companies, Collections.reverseOrder());
+
+			if (_log.isWarnEnabled()) {
+				_log.warn("The mx " + mx + " is used by more than 1 company");
+			}
+		}
+
+		return companies.get(0);
 	}
 
 	private String _getMessageIdString(List<String> recipients, Message message)

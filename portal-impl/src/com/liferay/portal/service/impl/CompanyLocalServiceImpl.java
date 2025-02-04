@@ -871,13 +871,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Returns the company with the mail domain.
+	 * Returns all the companies matching the mail domain.
 	 *
-	 * @param  mx the company's mail domain
-	 * @return the company with the mail domain
+	 * @param  mx the mail domain
+	 * @return the matching companies
 	 */
 	@Override
-	public Company getCompanyByMx(String mx) throws PortalException {
+	public List<Company> getCompaniesByMx(String mx) {
 		return companyPersistence.findByMx(mx);
 	}
 

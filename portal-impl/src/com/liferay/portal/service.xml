@@ -970,7 +970,7 @@
 			<finder-column name="plid" />
 			<finder-column name="status" />
 		</finder>
-		<finder name="L_L_H_P" return-type="LayoutRevision">
+		<finder name="L_L_H_P" return-type="Collection">
 			<finder-column name="layoutSetBranchId" />
 			<finder-column name="layoutBranchId" />
 			<finder-column name="head" />

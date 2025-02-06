@@ -232,7 +232,8 @@ public class PasswordPolicyLocalServiceImpl
 			long companyId, boolean defaultPolicy)
 		throws PortalException {
 
-		return passwordPolicyPersistence.findByC_DP(companyId, defaultPolicy);
+		return passwordPolicyPersistence.findByC_DP_Last(
+			companyId, defaultPolicy, null);
 	}
 
 	@Override

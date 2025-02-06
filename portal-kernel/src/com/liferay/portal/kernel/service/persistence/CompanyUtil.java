@@ -167,49 +167,154 @@ public class CompanyUtil {
 	}
 
 	/**
-	 * Returns the company where mx = &#63; or throws a <code>NoSuchCompanyException</code> if it could not be found.
+	 * Returns all the companies where mx = &#63;.
 	 *
 	 * @param mx the mx
-	 * @return the matching company
-	 * @throws NoSuchCompanyException if a matching company could not be found
+	 * @return the matching companies
 	 */
-	public static Company findByMx(String mx)
-		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
-
+	public static List<Company> findByMx(String mx) {
 		return getPersistence().findByMx(mx);
 	}
 
 	/**
-	 * Returns the company where mx = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the companies where mx = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CompanyModelImpl</code>.
+	 * </p>
 	 *
 	 * @param mx the mx
-	 * @return the matching company, or <code>null</code> if a matching company could not be found
+	 * @param start the lower bound of the range of companies
+	 * @param end the upper bound of the range of companies (not inclusive)
+	 * @return the range of matching companies
 	 */
-	public static Company fetchByMx(String mx) {
-		return getPersistence().fetchByMx(mx);
+	public static List<Company> findByMx(String mx, int start, int end) {
+		return getPersistence().findByMx(mx, start, end);
 	}
 
 	/**
-	 * Returns the company where mx = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the companies where mx = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CompanyModelImpl</code>.
+	 * </p>
 	 *
 	 * @param mx the mx
+	 * @param start the lower bound of the range of companies
+	 * @param end the upper bound of the range of companies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching companies
+	 */
+	public static List<Company> findByMx(
+		String mx, int start, int end,
+		OrderByComparator<Company> orderByComparator) {
+
+		return getPersistence().findByMx(mx, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the companies where mx = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CompanyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param mx the mx
+	 * @param start the lower bound of the range of companies
+	 * @param end the upper bound of the range of companies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching company, or <code>null</code> if a matching company could not be found
+	 * @return the ordered range of matching companies
 	 */
-	public static Company fetchByMx(String mx, boolean useFinderCache) {
-		return getPersistence().fetchByMx(mx, useFinderCache);
+	public static List<Company> findByMx(
+		String mx, int start, int end,
+		OrderByComparator<Company> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findByMx(
+			mx, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Removes the company where mx = &#63; from the database.
+	 * Returns the first company in the ordered set where mx = &#63;.
 	 *
 	 * @param mx the mx
-	 * @return the company that was removed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching company
+	 * @throws NoSuchCompanyException if a matching company could not be found
 	 */
-	public static Company removeByMx(String mx)
+	public static Company findByMx_First(
+			String mx, OrderByComparator<Company> orderByComparator)
 		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
 
-		return getPersistence().removeByMx(mx);
+		return getPersistence().findByMx_First(mx, orderByComparator);
+	}
+
+	/**
+	 * Returns the first company in the ordered set where mx = &#63;.
+	 *
+	 * @param mx the mx
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching company, or <code>null</code> if a matching company could not be found
+	 */
+	public static Company fetchByMx_First(
+		String mx, OrderByComparator<Company> orderByComparator) {
+
+		return getPersistence().fetchByMx_First(mx, orderByComparator);
+	}
+
+	/**
+	 * Returns the last company in the ordered set where mx = &#63;.
+	 *
+	 * @param mx the mx
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching company
+	 * @throws NoSuchCompanyException if a matching company could not be found
+	 */
+	public static Company findByMx_Last(
+			String mx, OrderByComparator<Company> orderByComparator)
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
+
+		return getPersistence().findByMx_Last(mx, orderByComparator);
+	}
+
+	/**
+	 * Returns the last company in the ordered set where mx = &#63;.
+	 *
+	 * @param mx the mx
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching company, or <code>null</code> if a matching company could not be found
+	 */
+	public static Company fetchByMx_Last(
+		String mx, OrderByComparator<Company> orderByComparator) {
+
+		return getPersistence().fetchByMx_Last(mx, orderByComparator);
+	}
+
+	/**
+	 * Returns the companies before and after the current company in the ordered set where mx = &#63;.
+	 *
+	 * @param companyId the primary key of the current company
+	 * @param mx the mx
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next company
+	 * @throws NoSuchCompanyException if a company with the primary key could not be found
+	 */
+	public static Company[] findByMx_PrevAndNext(
+			long companyId, String mx,
+			OrderByComparator<Company> orderByComparator)
+		throws com.liferay.portal.kernel.exception.NoSuchCompanyException {
+
+		return getPersistence().findByMx_PrevAndNext(
+			companyId, mx, orderByComparator);
+	}
+
+	/**
+	 * Removes all the companies where mx = &#63; from the database.
+	 *
+	 * @param mx the mx
+	 */
+	public static void removeByMx(String mx) {
+		getPersistence().removeByMx(mx);
 	}
 
 	/**

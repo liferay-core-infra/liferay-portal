@@ -878,7 +878,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	 */
 	@Override
 	public Company getCompanyByMx(String mx) throws PortalException {
-		return companyPersistence.findByMx(mx);
+		return companyPersistence.findByMx_Last(mx, null);
 	}
 
 	/**

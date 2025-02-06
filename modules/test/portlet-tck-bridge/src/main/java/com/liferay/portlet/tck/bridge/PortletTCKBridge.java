@@ -6,6 +6,7 @@
 package com.liferay.portlet.tck.bridge;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -54,24 +55,29 @@ import org.osgi.service.component.annotations.Reference;
 public class PortletTCKBridge {
 
 	@Activate
-	protected void activate(Map<String, String> properties) throws Exception {
-		Company company = _companyLocalService.getCompanyByWebId(
-			PropsValues.COMPANY_DEFAULT_WEB_ID);
+	protected void activate(Map<String, String> properties) {
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				Company company = _companyLocalService.getCompanyByWebId(
+					PropsValues.COMPANY_DEFAULT_WEB_ID);
 
-		Group group = _groupLocalService.fetchGroup(
-			company.getCompanyId(), _TCK_SITE_GROUP_NAME);
+				Group group = _groupLocalService.fetchGroup(
+					company.getCompanyId(), _TCK_SITE_GROUP_NAME);
 
-		if (group != null) {
-			return;
-		}
+				if (group == null) {
+					PortletTCKBridgeConfiguration portletTCKBridgeConfiguration =
+						ConfigurableUtil.createConfigurable(
+							PortletTCKBridgeConfiguration.class, properties);
 
-		PortletTCKBridgeConfiguration portletTCKBridgeConfiguration =
-			ConfigurableUtil.createConfigurable(
-				PortletTCKBridgeConfiguration.class, properties);
+					String configFile = portletTCKBridgeConfiguration.configFile();
 
-		String configFile = portletTCKBridgeConfiguration.configFile();
+					_setUpPortletTCKSite(company, configFile);
+				}
 
-		_setUpPortletTCKSite(company, configFile);
+				return null;
+			}
+		);
+
 	}
 
 	private void _setUpPortletTCKSite(Company company, String configFile)

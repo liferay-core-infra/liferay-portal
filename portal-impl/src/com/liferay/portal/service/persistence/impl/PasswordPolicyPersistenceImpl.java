@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.impl.PasswordPolicyImpl;
@@ -44,7 +43,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2946,96 +2944,859 @@ public class PasswordPolicyPersistenceImpl
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 =
 		"passwordPolicy.companyId = ?";
 
-	private FinderPath _finderPathFetchByC_DP;
+	private FinderPath _finderPathWithPaginationFindByC_DP;
+	private FinderPath _finderPathWithoutPaginationFindByC_DP;
+	private FinderPath _finderPathCountByC_DP;
 
 	/**
-	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or throws a <code>NoSuchPasswordPolicyException</code> if it could not be found.
+	 * Returns all the password policies where companyId = &#63; and defaultPolicy = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
-	 * @return the matching password policy
+	 * @return the matching password policies
+	 */
+	@Override
+	public List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy) {
+
+		return findByC_DP(
+			companyId, defaultPolicy, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
+	}
+
+	/**
+	 * Returns a range of all the password policies where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @return the range of matching password policies
+	 */
+	@Override
+	public List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end) {
+
+		return findByC_DP(companyId, defaultPolicy, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the password policies where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching password policies
+	 */
+	@Override
+	public List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		return findByC_DP(
+			companyId, defaultPolicy, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the password policies where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching password policies
+	 */
+	@Override
+	public List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end,
+		OrderByComparator<PasswordPolicy> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByC_DP;
+				finderArgs = new Object[] {companyId, defaultPolicy};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByC_DP;
+			finderArgs = new Object[] {
+				companyId, defaultPolicy, start, end, orderByComparator
+			};
+		}
+
+		List<PasswordPolicy> list = null;
+
+		if (useFinderCache) {
+			list = (List<PasswordPolicy>)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (PasswordPolicy passwordPolicy : list) {
+					if ((companyId != passwordPolicy.getCompanyId()) ||
+						(defaultPolicy != passwordPolicy.isDefaultPolicy())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(4);
+			}
+
+			sb.append(_SQL_SELECT_PASSWORDPOLICY_WHERE);
+
+			sb.append(_FINDER_COLUMN_C_DP_COMPANYID_2);
+
+			sb.append(_FINDER_COLUMN_C_DP_DEFAULTPOLICY_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(companyId);
+
+				queryPos.add(defaultPolicy);
+
+				list = (List<PasswordPolicy>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching password policy
 	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
-	public PasswordPolicy findByC_DP(long companyId, boolean defaultPolicy)
+	public PasswordPolicy findByC_DP_First(
+			long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
 		throws NoSuchPasswordPolicyException {
 
-		PasswordPolicy passwordPolicy = fetchByC_DP(companyId, defaultPolicy);
+		PasswordPolicy passwordPolicy = fetchByC_DP_First(
+			companyId, defaultPolicy, orderByComparator);
 
-		if (passwordPolicy == null) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			sb.append("companyId=");
-			sb.append(companyId);
-
-			sb.append(", defaultPolicy=");
-			sb.append(defaultPolicy);
-
-			sb.append("}");
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
-			}
-
-			throw new NoSuchPasswordPolicyException(sb.toString());
+		if (passwordPolicy != null) {
+			return passwordPolicy;
 		}
 
-		return passwordPolicy;
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("companyId=");
+		sb.append(companyId);
+
+		sb.append(", defaultPolicy=");
+		sb.append(defaultPolicy);
+
+		sb.append("}");
+
+		throw new NoSuchPasswordPolicyException(sb.toString());
 	}
 
 	/**
-	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the first password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
-	 * @return the matching password policy, or <code>null</code> if a matching password policy could not be found
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching password policy, or <code>null</code> if a matching password policy could not be found
 	 */
 	@Override
-	public PasswordPolicy fetchByC_DP(long companyId, boolean defaultPolicy) {
-		return fetchByC_DP(companyId, defaultPolicy, true);
+	public PasswordPolicy fetchByC_DP_First(
+		long companyId, boolean defaultPolicy,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		List<PasswordPolicy> list = findByC_DP(
+			companyId, defaultPolicy, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
 	}
 
 	/**
-	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the last password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching password policy, or <code>null</code> if a matching password policy could not be found
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching password policy
+	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
 	@Override
-	public PasswordPolicy fetchByC_DP(
-		long companyId, boolean defaultPolicy, boolean useFinderCache) {
+	public PasswordPolicy findByC_DP_Last(
+			long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
+		throws NoSuchPasswordPolicyException {
 
-		Object[] finderArgs = null;
+		PasswordPolicy passwordPolicy = fetchByC_DP_Last(
+			companyId, defaultPolicy, orderByComparator);
 
-		if (useFinderCache) {
-			finderArgs = new Object[] {companyId, defaultPolicy};
+		if (passwordPolicy != null) {
+			return passwordPolicy;
 		}
 
-		Object result = null;
+		StringBundler sb = new StringBundler(6);
 
-		if (useFinderCache) {
-			result = FinderCacheUtil.getResult(
-				_finderPathFetchByC_DP, finderArgs, this);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("companyId=");
+		sb.append(companyId);
+
+		sb.append(", defaultPolicy=");
+		sb.append(defaultPolicy);
+
+		sb.append("}");
+
+		throw new NoSuchPasswordPolicyException(sb.toString());
+	}
+
+	/**
+	 * Returns the last password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching password policy, or <code>null</code> if a matching password policy could not be found
+	 */
+	@Override
+	public PasswordPolicy fetchByC_DP_Last(
+		long companyId, boolean defaultPolicy,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		int count = countByC_DP(companyId, defaultPolicy);
+
+		if (count == 0) {
+			return null;
 		}
 
-		if (result instanceof PasswordPolicy) {
-			PasswordPolicy passwordPolicy = (PasswordPolicy)result;
+		List<PasswordPolicy> list = findByC_DP(
+			companyId, defaultPolicy, count - 1, count, orderByComparator);
 
-			if ((companyId != passwordPolicy.getCompanyId()) ||
-				(defaultPolicy != passwordPolicy.isDefaultPolicy())) {
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
 
-				result = null;
+		return null;
+	}
+
+	/**
+	 * Returns the password policies before and after the current password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param passwordPolicyId the primary key of the current password policy
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next password policy
+	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 */
+	@Override
+	public PasswordPolicy[] findByC_DP_PrevAndNext(
+			long passwordPolicyId, long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
+		throws NoSuchPasswordPolicyException {
+
+		PasswordPolicy passwordPolicy = findByPrimaryKey(passwordPolicyId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			PasswordPolicy[] array = new PasswordPolicyImpl[3];
+
+			array[0] = getByC_DP_PrevAndNext(
+				session, passwordPolicy, companyId, defaultPolicy,
+				orderByComparator, true);
+
+			array[1] = passwordPolicy;
+
+			array[2] = getByC_DP_PrevAndNext(
+				session, passwordPolicy, companyId, defaultPolicy,
+				orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected PasswordPolicy getByC_DP_PrevAndNext(
+		Session session, PasswordPolicy passwordPolicy, long companyId,
+		boolean defaultPolicy,
+		OrderByComparator<PasswordPolicy> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(4);
+		}
+
+		sb.append(_SQL_SELECT_PASSWORDPOLICY_WHERE);
+
+		sb.append(_FINDER_COLUMN_C_DP_COMPANYID_2);
+
+		sb.append(_FINDER_COLUMN_C_DP_DEFAULTPOLICY_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(PasswordPolicyModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(companyId);
+
+		queryPos.add(defaultPolicy);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						passwordPolicy)) {
+
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		if (result == null) {
-			StringBundler sb = new StringBundler(4);
+		List<PasswordPolicy> list = query.list();
 
-			sb.append(_SQL_SELECT_PASSWORDPOLICY_WHERE);
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns all the password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @return the matching password policies that the user has permission to view
+	 */
+	@Override
+	public List<PasswordPolicy> filterFindByC_DP(
+		long companyId, boolean defaultPolicy) {
+
+		return filterFindByC_DP(
+			companyId, defaultPolicy, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
+	}
+
+	/**
+	 * Returns a range of all the password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @return the range of matching password policies that the user has permission to view
+	 */
+	@Override
+	public List<PasswordPolicy> filterFindByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end) {
+
+		return filterFindByC_DP(companyId, defaultPolicy, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the password policies that the user has permissions to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching password policies that the user has permission to view
+	 */
+	@Override
+	public List<PasswordPolicy> filterFindByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+			return findByC_DP(
+				companyId, defaultPolicy, start, end, orderByComparator);
+		}
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByFields().length * 2));
+		}
+		else {
+			sb = new StringBundler(5);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			sb.append(_FILTER_SQL_SELECT_PASSWORDPOLICY_WHERE);
+		}
+		else {
+			sb.append(
+				_FILTER_SQL_SELECT_PASSWORDPOLICY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		sb.append(_FINDER_COLUMN_C_DP_COMPANYID_2);
+
+		sb.append(_FINDER_COLUMN_C_DP_DEFAULTPOLICY_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			sb.append(
+				_FILTER_SQL_SELECT_PASSWORDPOLICY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			if (getDB().isSupportsInlineDistinct()) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator, true);
+			}
+			else {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_TABLE, orderByComparator, true);
+			}
+		}
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL_INLINE_DISTINCT);
+			}
+			else {
+				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(
+			sb.toString(), PasswordPolicy.class.getName(),
+			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+
+			if (getDB().isSupportsInlineDistinct()) {
+				sqlQuery.addEntity(
+					_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
+			}
+			else {
+				sqlQuery.addEntity(
+					_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
+			}
+
+			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+
+			queryPos.add(companyId);
+
+			queryPos.add(defaultPolicy);
+
+			return (List<PasswordPolicy>)QueryUtil.list(
+				sqlQuery, getDialect(), start, end);
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	/**
+	 * Returns the password policies before and after the current password policy in the ordered set of password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param passwordPolicyId the primary key of the current password policy
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next password policy
+	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 */
+	@Override
+	public PasswordPolicy[] filterFindByC_DP_PrevAndNext(
+			long passwordPolicyId, long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
+		throws NoSuchPasswordPolicyException {
+
+		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+			return findByC_DP_PrevAndNext(
+				passwordPolicyId, companyId, defaultPolicy, orderByComparator);
+		}
+
+		PasswordPolicy passwordPolicy = findByPrimaryKey(passwordPolicyId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			PasswordPolicy[] array = new PasswordPolicyImpl[3];
+
+			array[0] = filterGetByC_DP_PrevAndNext(
+				session, passwordPolicy, companyId, defaultPolicy,
+				orderByComparator, true);
+
+			array[1] = passwordPolicy;
+
+			array[2] = filterGetByC_DP_PrevAndNext(
+				session, passwordPolicy, companyId, defaultPolicy,
+				orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected PasswordPolicy filterGetByC_DP_PrevAndNext(
+		Session session, PasswordPolicy passwordPolicy, long companyId,
+		boolean defaultPolicy,
+		OrderByComparator<PasswordPolicy> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(5);
+		}
+
+		if (getDB().isSupportsInlineDistinct()) {
+			sb.append(_FILTER_SQL_SELECT_PASSWORDPOLICY_WHERE);
+		}
+		else {
+			sb.append(
+				_FILTER_SQL_SELECT_PASSWORDPOLICY_NO_INLINE_DISTINCT_WHERE_1);
+		}
+
+		sb.append(_FINDER_COLUMN_C_DP_COMPANYID_2);
+
+		sb.append(_FINDER_COLUMN_C_DP_DEFAULTPOLICY_2);
+
+		if (!getDB().isSupportsInlineDistinct()) {
+			sb.append(
+				_FILTER_SQL_SELECT_PASSWORDPOLICY_NO_INLINE_DISTINCT_WHERE_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_ALIAS, orderByConditionFields[i],
+							true));
+				}
+				else {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_TABLE, orderByConditionFields[i],
+							true));
+				}
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				if (getDB().isSupportsInlineDistinct()) {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_ALIAS, orderByFields[i], true));
+				}
+				else {
+					sb.append(
+						getColumnName(
+							_ORDER_BY_ENTITY_TABLE, orderByFields[i], true));
+				}
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			if (getDB().isSupportsInlineDistinct()) {
+				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL_INLINE_DISTINCT);
+			}
+			else {
+				sb.append(PasswordPolicyModelImpl.ORDER_BY_SQL);
+			}
+		}
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(
+			sb.toString(), PasswordPolicy.class.getName(),
+			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
+
+		SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+
+		sqlQuery.setFirstResult(0);
+		sqlQuery.setMaxResults(2);
+
+		if (getDB().isSupportsInlineDistinct()) {
+			sqlQuery.addEntity(_FILTER_ENTITY_ALIAS, PasswordPolicyImpl.class);
+		}
+		else {
+			sqlQuery.addEntity(_FILTER_ENTITY_TABLE, PasswordPolicyImpl.class);
+		}
+
+		QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+
+		queryPos.add(companyId);
+
+		queryPos.add(defaultPolicy);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						passwordPolicy)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<PasswordPolicy> list = sqlQuery.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the password policies where companyId = &#63; and defaultPolicy = &#63; from the database.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 */
+	@Override
+	public void removeByC_DP(long companyId, boolean defaultPolicy) {
+		for (PasswordPolicy passwordPolicy :
+				findByC_DP(
+					companyId, defaultPolicy, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
+			remove(passwordPolicy);
+		}
+	}
+
+	/**
+	 * Returns the number of password policies where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @return the number of matching password policies
+	 */
+	@Override
+	public int countByC_DP(long companyId, boolean defaultPolicy) {
+		FinderPath finderPath = _finderPathCountByC_DP;
+
+		Object[] finderArgs = new Object[] {companyId, defaultPolicy};
+
+		Long count = (Long)FinderCacheUtil.getResult(
+			finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_PASSWORDPOLICY_WHERE);
 
 			sb.append(_FINDER_COLUMN_C_DP_COMPANYID_2);
 
@@ -3056,38 +3817,9 @@ public class PasswordPolicyPersistenceImpl
 
 				queryPos.add(defaultPolicy);
 
-				List<PasswordPolicy> list = query.list();
+				count = (Long)query.uniqueResult();
 
-				if (list.isEmpty()) {
-					if (useFinderCache) {
-						FinderCacheUtil.putResult(
-							_finderPathFetchByC_DP, finderArgs, list);
-					}
-				}
-				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {
-									companyId, defaultPolicy
-								};
-							}
-
-							_log.warn(
-								"PasswordPolicyPersistenceImpl.fetchByC_DP(long, boolean, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
-					PasswordPolicy passwordPolicy = list.get(0);
-
-					result = passwordPolicy;
-
-					cacheResult(passwordPolicy);
-				}
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -3097,46 +3829,60 @@ public class PasswordPolicyPersistenceImpl
 			}
 		}
 
-		if (result instanceof List<?>) {
-			return null;
-		}
-		else {
-			return (PasswordPolicy)result;
-		}
+		return count.intValue();
 	}
 
 	/**
-	 * Removes the password policy where companyId = &#63; and defaultPolicy = &#63; from the database.
+	 * Returns the number of password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
-	 * @return the password policy that was removed
+	 * @return the number of matching password policies that the user has permission to view
 	 */
 	@Override
-	public PasswordPolicy removeByC_DP(long companyId, boolean defaultPolicy)
-		throws NoSuchPasswordPolicyException {
-
-		PasswordPolicy passwordPolicy = findByC_DP(companyId, defaultPolicy);
-
-		return remove(passwordPolicy);
-	}
-
-	/**
-	 * Returns the number of password policies where companyId = &#63; and defaultPolicy = &#63;.
-	 *
-	 * @param companyId the company ID
-	 * @param defaultPolicy the default policy
-	 * @return the number of matching password policies
-	 */
-	@Override
-	public int countByC_DP(long companyId, boolean defaultPolicy) {
-		PasswordPolicy passwordPolicy = fetchByC_DP(companyId, defaultPolicy);
-
-		if (passwordPolicy == null) {
-			return 0;
+	public int filterCountByC_DP(long companyId, boolean defaultPolicy) {
+		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+			return countByC_DP(companyId, defaultPolicy);
 		}
 
-		return 1;
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(_FILTER_SQL_COUNT_PASSWORDPOLICY_WHERE);
+
+		sb.append(_FINDER_COLUMN_C_DP_COMPANYID_2);
+
+		sb.append(_FINDER_COLUMN_C_DP_DEFAULTPOLICY_2);
+
+		String sql = InlineSQLHelperUtil.replacePermissionCheck(
+			sb.toString(), PasswordPolicy.class.getName(),
+			_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
+
+			sqlQuery.addScalar(
+				COUNT_COLUMN_NAME, com.liferay.portal.kernel.dao.orm.Type.LONG);
+
+			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+
+			queryPos.add(companyId);
+
+			queryPos.add(defaultPolicy);
+
+			Long count = (Long)sqlQuery.uniqueResult();
+
+			return count.intValue();
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
 	}
 
 	private static final String _FINDER_COLUMN_C_DP_COMPANYID_2 =
@@ -3370,13 +4116,6 @@ public class PasswordPolicyPersistenceImpl
 			passwordPolicy);
 
 		FinderCacheUtil.putResult(
-			_finderPathFetchByC_DP,
-			new Object[] {
-				passwordPolicy.getCompanyId(), passwordPolicy.isDefaultPolicy()
-			},
-			passwordPolicy);
-
-		FinderCacheUtil.putResult(
 			_finderPathFetchByC_N,
 			new Object[] {
 				passwordPolicy.getCompanyId(), passwordPolicy.getName()
@@ -3458,14 +4197,6 @@ public class PasswordPolicyPersistenceImpl
 		PasswordPolicyModelImpl passwordPolicyModelImpl) {
 
 		Object[] args = new Object[] {
-			passwordPolicyModelImpl.getCompanyId(),
-			passwordPolicyModelImpl.isDefaultPolicy()
-		};
-
-		FinderCacheUtil.putResult(
-			_finderPathFetchByC_DP, args, passwordPolicyModelImpl);
-
-		args = new Object[] {
 			passwordPolicyModelImpl.getCompanyId(),
 			passwordPolicyModelImpl.getName()
 		};
@@ -3999,10 +4730,24 @@ public class PasswordPolicyPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
 			false);
 
-		_finderPathFetchByC_DP = new FinderPath(
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_DP",
+		_finderPathWithPaginationFindByC_DP = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_DP",
+			new String[] {
+				Long.class.getName(), Boolean.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			},
+			new String[] {"companyId", "defaultPolicy"}, true);
+
+		_finderPathWithoutPaginationFindByC_DP = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_DP",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
 			new String[] {"companyId", "defaultPolicy"}, true);
+
+		_finderPathCountByC_DP = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_DP",
+			new String[] {Long.class.getName(), Boolean.class.getName()},
+			new String[] {"companyId", "defaultPolicy"}, false);
 
 		_finderPathFetchByC_N = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_N",

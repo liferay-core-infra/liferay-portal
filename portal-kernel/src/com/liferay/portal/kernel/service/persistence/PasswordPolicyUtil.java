@@ -880,62 +880,258 @@ public class PasswordPolicyUtil {
 	}
 
 	/**
-	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or throws a <code>NoSuchPasswordPolicyException</code> if it could not be found.
+	 * Returns all the password policies where companyId = &#63; and defaultPolicy = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
-	 * @return the matching password policy
-	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 * @return the matching password policies
 	 */
-	public static PasswordPolicy findByC_DP(
-			long companyId, boolean defaultPolicy)
-		throws com.liferay.portal.kernel.exception.
-			NoSuchPasswordPolicyException {
+	public static List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy) {
 
 		return getPersistence().findByC_DP(companyId, defaultPolicy);
 	}
 
 	/**
-	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the password policies where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
-	 * @return the matching password policy, or <code>null</code> if a matching password policy could not be found
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @return the range of matching password policies
 	 */
-	public static PasswordPolicy fetchByC_DP(
-		long companyId, boolean defaultPolicy) {
+	public static List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end) {
 
-		return getPersistence().fetchByC_DP(companyId, defaultPolicy);
+		return getPersistence().findByC_DP(
+			companyId, defaultPolicy, start, end);
 	}
 
 	/**
-	 * Returns the password policy where companyId = &#63; and defaultPolicy = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the password policies where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching password policies
+	 */
+	public static List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		return getPersistence().findByC_DP(
+			companyId, defaultPolicy, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the password policies where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching password policy, or <code>null</code> if a matching password policy could not be found
+	 * @return the ordered range of matching password policies
 	 */
-	public static PasswordPolicy fetchByC_DP(
-		long companyId, boolean defaultPolicy, boolean useFinderCache) {
+	public static List<PasswordPolicy> findByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end,
+		OrderByComparator<PasswordPolicy> orderByComparator,
+		boolean useFinderCache) {
 
-		return getPersistence().fetchByC_DP(
-			companyId, defaultPolicy, useFinderCache);
+		return getPersistence().findByC_DP(
+			companyId, defaultPolicy, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
-	 * Removes the password policy where companyId = &#63; and defaultPolicy = &#63; from the database.
+	 * Returns the first password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param defaultPolicy the default policy
-	 * @return the password policy that was removed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching password policy
+	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
 	 */
-	public static PasswordPolicy removeByC_DP(
-			long companyId, boolean defaultPolicy)
+	public static PasswordPolicy findByC_DP_First(
+			long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
 		throws com.liferay.portal.kernel.exception.
 			NoSuchPasswordPolicyException {
 
-		return getPersistence().removeByC_DP(companyId, defaultPolicy);
+		return getPersistence().findByC_DP_First(
+			companyId, defaultPolicy, orderByComparator);
+	}
+
+	/**
+	 * Returns the first password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching password policy, or <code>null</code> if a matching password policy could not be found
+	 */
+	public static PasswordPolicy fetchByC_DP_First(
+		long companyId, boolean defaultPolicy,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		return getPersistence().fetchByC_DP_First(
+			companyId, defaultPolicy, orderByComparator);
+	}
+
+	/**
+	 * Returns the last password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching password policy
+	 * @throws NoSuchPasswordPolicyException if a matching password policy could not be found
+	 */
+	public static PasswordPolicy findByC_DP_Last(
+			long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
+		throws com.liferay.portal.kernel.exception.
+			NoSuchPasswordPolicyException {
+
+		return getPersistence().findByC_DP_Last(
+			companyId, defaultPolicy, orderByComparator);
+	}
+
+	/**
+	 * Returns the last password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching password policy, or <code>null</code> if a matching password policy could not be found
+	 */
+	public static PasswordPolicy fetchByC_DP_Last(
+		long companyId, boolean defaultPolicy,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		return getPersistence().fetchByC_DP_Last(
+			companyId, defaultPolicy, orderByComparator);
+	}
+
+	/**
+	 * Returns the password policies before and after the current password policy in the ordered set where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param passwordPolicyId the primary key of the current password policy
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next password policy
+	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 */
+	public static PasswordPolicy[] findByC_DP_PrevAndNext(
+			long passwordPolicyId, long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
+		throws com.liferay.portal.kernel.exception.
+			NoSuchPasswordPolicyException {
+
+		return getPersistence().findByC_DP_PrevAndNext(
+			passwordPolicyId, companyId, defaultPolicy, orderByComparator);
+	}
+
+	/**
+	 * Returns all the password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @return the matching password policies that the user has permission to view
+	 */
+	public static List<PasswordPolicy> filterFindByC_DP(
+		long companyId, boolean defaultPolicy) {
+
+		return getPersistence().filterFindByC_DP(companyId, defaultPolicy);
+	}
+
+	/**
+	 * Returns a range of all the password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @return the range of matching password policies that the user has permission to view
+	 */
+	public static List<PasswordPolicy> filterFindByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end) {
+
+		return getPersistence().filterFindByC_DP(
+			companyId, defaultPolicy, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the password policies that the user has permissions to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PasswordPolicyModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param start the lower bound of the range of password policies
+	 * @param end the upper bound of the range of password policies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching password policies that the user has permission to view
+	 */
+	public static List<PasswordPolicy> filterFindByC_DP(
+		long companyId, boolean defaultPolicy, int start, int end,
+		OrderByComparator<PasswordPolicy> orderByComparator) {
+
+		return getPersistence().filterFindByC_DP(
+			companyId, defaultPolicy, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the password policies before and after the current password policy in the ordered set of password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param passwordPolicyId the primary key of the current password policy
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next password policy
+	 * @throws NoSuchPasswordPolicyException if a password policy with the primary key could not be found
+	 */
+	public static PasswordPolicy[] filterFindByC_DP_PrevAndNext(
+			long passwordPolicyId, long companyId, boolean defaultPolicy,
+			OrderByComparator<PasswordPolicy> orderByComparator)
+		throws com.liferay.portal.kernel.exception.
+			NoSuchPasswordPolicyException {
+
+		return getPersistence().filterFindByC_DP_PrevAndNext(
+			passwordPolicyId, companyId, defaultPolicy, orderByComparator);
+	}
+
+	/**
+	 * Removes all the password policies where companyId = &#63; and defaultPolicy = &#63; from the database.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 */
+	public static void removeByC_DP(long companyId, boolean defaultPolicy) {
+		getPersistence().removeByC_DP(companyId, defaultPolicy);
 	}
 
 	/**
@@ -947,6 +1143,17 @@ public class PasswordPolicyUtil {
 	 */
 	public static int countByC_DP(long companyId, boolean defaultPolicy) {
 		return getPersistence().countByC_DP(companyId, defaultPolicy);
+	}
+
+	/**
+	 * Returns the number of password policies that the user has permission to view where companyId = &#63; and defaultPolicy = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @param defaultPolicy the default policy
+	 * @return the number of matching password policies that the user has permission to view
+	 */
+	public static int filterCountByC_DP(long companyId, boolean defaultPolicy) {
+		return getPersistence().filterCountByC_DP(companyId, defaultPolicy);
 	}
 
 	/**

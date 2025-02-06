@@ -640,17 +640,6 @@ public class PasswordPolicyPersistenceTest {
 				passwordPolicy, "getColumnOriginalValue",
 				new Class<?>[] {String.class}, "companyId"));
 		Assert.assertEquals(
-			Boolean.valueOf(passwordPolicy.getDefaultPolicy()),
-			ReflectionTestUtil.<Boolean>invoke(
-				passwordPolicy, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "defaultPolicy"));
-
-		Assert.assertEquals(
-			Long.valueOf(passwordPolicy.getCompanyId()),
-			ReflectionTestUtil.<Long>invoke(
-				passwordPolicy, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "companyId"));
-		Assert.assertEquals(
 			passwordPolicy.getName(),
 			ReflectionTestUtil.invoke(
 				passwordPolicy, "getColumnOriginalValue",

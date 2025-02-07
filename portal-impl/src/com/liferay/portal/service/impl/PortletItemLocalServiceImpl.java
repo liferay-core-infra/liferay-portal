@@ -58,9 +58,9 @@ public class PortletItemLocalServiceImpl
 			long groupId, String name, String portletId, String className)
 		throws PortalException {
 
-		return portletItemPersistence.findByG_N_P_C(
+		return portletItemPersistence.findByG_N_P_C_Last(
 			groupId, name, portletId,
-			_classNameLocalService.getClassNameId(className));
+			_classNameLocalService.getClassNameId(className), null);
 	}
 
 	@Override

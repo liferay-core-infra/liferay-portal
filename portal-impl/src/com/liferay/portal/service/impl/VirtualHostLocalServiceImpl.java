@@ -93,18 +93,6 @@ public class VirtualHostLocalServiceImpl
 		return virtualHost;
 	}
 
-	/**
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link
-	 *             #getVirtualHosts(long, long)}
-	 */
-	@Deprecated
-	@Override
-	public VirtualHost getVirtualHost(long companyId, long layoutSetId)
-		throws PortalException {
-
-		return virtualHostPersistence.findByC_L_D(companyId, layoutSetId, true);
-	}
-
 	@Override
 	public VirtualHost getVirtualHost(String hostname) throws PortalException {
 		try {

@@ -1538,7 +1538,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	@Override
 	public Group fetchStagingGroup(long liveGroupId) {
 		if (_cacheableQueryLimitLPD28122 <= 0) {
-			return GroupUtil.fetchByLiveGroupId(liveGroupId);
+			return GroupUtil.fetchByLiveGroupId_Last(liveGroupId, null);
 		}
 
 		Map<Long, Long> stagingGroupIds =
@@ -2251,7 +2251,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public Group getStagingGroup(long liveGroupId) throws PortalException {
-		return groupPersistence.findByLiveGroupId(liveGroupId);
+		return groupPersistence.findByLiveGroupId_Last(liveGroupId, null);
 	}
 
 	/**
@@ -2548,7 +2548,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public boolean hasStagingGroup(long liveGroupId) {
-		if (groupPersistence.fetchByLiveGroupId(liveGroupId) != null) {
+		if (groupPersistence.fetchByLiveGroupId_Last(liveGroupId, null) !=
+				null) {
+
 			return true;
 		}
 

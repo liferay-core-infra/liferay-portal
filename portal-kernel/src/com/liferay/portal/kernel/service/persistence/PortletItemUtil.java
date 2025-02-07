@@ -499,72 +499,206 @@ public class PortletItemUtil {
 	}
 
 	/**
-	 * Returns the portlet item where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; or throws a <code>NoSuchPortletItemException</code> if it could not be found.
+	 * Returns all the portlet items where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @param portletId the portlet ID
 	 * @param classNameId the class name ID
-	 * @return the matching portlet item
-	 * @throws NoSuchPortletItemException if a matching portlet item could not be found
+	 * @return the matching portlet items
 	 */
-	public static PortletItem findByG_N_P_C(
-			long groupId, String name, String portletId, long classNameId)
-		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
+	public static List<PortletItem> findByG_N_P_C(
+		long groupId, String name, String portletId, long classNameId) {
 
 		return getPersistence().findByG_N_P_C(
 			groupId, name, portletId, classNameId);
 	}
 
 	/**
-	 * Returns the portlet item where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the portlet items where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PortletItemModelImpl</code>.
+	 * </p>
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @param portletId the portlet ID
 	 * @param classNameId the class name ID
-	 * @return the matching portlet item, or <code>null</code> if a matching portlet item could not be found
+	 * @param start the lower bound of the range of portlet items
+	 * @param end the upper bound of the range of portlet items (not inclusive)
+	 * @return the range of matching portlet items
 	 */
-	public static PortletItem fetchByG_N_P_C(
-		long groupId, String name, String portletId, long classNameId) {
+	public static List<PortletItem> findByG_N_P_C(
+		long groupId, String name, String portletId, long classNameId,
+		int start, int end) {
 
-		return getPersistence().fetchByG_N_P_C(
-			groupId, name, portletId, classNameId);
+		return getPersistence().findByG_N_P_C(
+			groupId, name, portletId, classNameId, start, end);
 	}
 
 	/**
-	 * Returns the portlet item where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the portlet items where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PortletItemModelImpl</code>.
+	 * </p>
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @param portletId the portlet ID
 	 * @param classNameId the class name ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching portlet item, or <code>null</code> if a matching portlet item could not be found
+	 * @param start the lower bound of the range of portlet items
+	 * @param end the upper bound of the range of portlet items (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching portlet items
 	 */
-	public static PortletItem fetchByG_N_P_C(
+	public static List<PortletItem> findByG_N_P_C(
 		long groupId, String name, String portletId, long classNameId,
+		int start, int end, OrderByComparator<PortletItem> orderByComparator) {
+
+		return getPersistence().findByG_N_P_C(
+			groupId, name, portletId, classNameId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the portlet items where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>PortletItemModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param portletId the portlet ID
+	 * @param classNameId the class name ID
+	 * @param start the lower bound of the range of portlet items
+	 * @param end the upper bound of the range of portlet items (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching portlet items
+	 */
+	public static List<PortletItem> findByG_N_P_C(
+		long groupId, String name, String portletId, long classNameId,
+		int start, int end, OrderByComparator<PortletItem> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().fetchByG_N_P_C(
-			groupId, name, portletId, classNameId, useFinderCache);
+		return getPersistence().findByG_N_P_C(
+			groupId, name, portletId, classNameId, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Removes the portlet item where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; from the database.
+	 * Returns the first portlet item in the ordered set where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param name the name
 	 * @param portletId the portlet ID
 	 * @param classNameId the class name ID
-	 * @return the portlet item that was removed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching portlet item
+	 * @throws NoSuchPortletItemException if a matching portlet item could not be found
 	 */
-	public static PortletItem removeByG_N_P_C(
-			long groupId, String name, String portletId, long classNameId)
+	public static PortletItem findByG_N_P_C_First(
+			long groupId, String name, String portletId, long classNameId,
+			OrderByComparator<PortletItem> orderByComparator)
 		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
 
-		return getPersistence().removeByG_N_P_C(
-			groupId, name, portletId, classNameId);
+		return getPersistence().findByG_N_P_C_First(
+			groupId, name, portletId, classNameId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first portlet item in the ordered set where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param portletId the portlet ID
+	 * @param classNameId the class name ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching portlet item, or <code>null</code> if a matching portlet item could not be found
+	 */
+	public static PortletItem fetchByG_N_P_C_First(
+		long groupId, String name, String portletId, long classNameId,
+		OrderByComparator<PortletItem> orderByComparator) {
+
+		return getPersistence().fetchByG_N_P_C_First(
+			groupId, name, portletId, classNameId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last portlet item in the ordered set where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param portletId the portlet ID
+	 * @param classNameId the class name ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching portlet item
+	 * @throws NoSuchPortletItemException if a matching portlet item could not be found
+	 */
+	public static PortletItem findByG_N_P_C_Last(
+			long groupId, String name, String portletId, long classNameId,
+			OrderByComparator<PortletItem> orderByComparator)
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
+
+		return getPersistence().findByG_N_P_C_Last(
+			groupId, name, portletId, classNameId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last portlet item in the ordered set where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param portletId the portlet ID
+	 * @param classNameId the class name ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching portlet item, or <code>null</code> if a matching portlet item could not be found
+	 */
+	public static PortletItem fetchByG_N_P_C_Last(
+		long groupId, String name, String portletId, long classNameId,
+		OrderByComparator<PortletItem> orderByComparator) {
+
+		return getPersistence().fetchByG_N_P_C_Last(
+			groupId, name, portletId, classNameId, orderByComparator);
+	}
+
+	/**
+	 * Returns the portlet items before and after the current portlet item in the ordered set where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63;.
+	 *
+	 * @param portletItemId the primary key of the current portlet item
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param portletId the portlet ID
+	 * @param classNameId the class name ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next portlet item
+	 * @throws NoSuchPortletItemException if a portlet item with the primary key could not be found
+	 */
+	public static PortletItem[] findByG_N_P_C_PrevAndNext(
+			long portletItemId, long groupId, String name, String portletId,
+			long classNameId, OrderByComparator<PortletItem> orderByComparator)
+		throws com.liferay.portal.kernel.exception.NoSuchPortletItemException {
+
+		return getPersistence().findByG_N_P_C_PrevAndNext(
+			portletItemId, groupId, name, portletId, classNameId,
+			orderByComparator);
+	}
+
+	/**
+	 * Removes all the portlet items where groupId = &#63; and name = &#63; and portletId = &#63; and classNameId = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param name the name
+	 * @param portletId the portlet ID
+	 * @param classNameId the class name ID
+	 */
+	public static void removeByG_N_P_C(
+		long groupId, String name, String portletId, long classNameId) {
+
+		getPersistence().removeByG_N_P_C(groupId, name, portletId, classNameId);
 	}
 
 	/**

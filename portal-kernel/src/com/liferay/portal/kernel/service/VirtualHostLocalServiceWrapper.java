@@ -284,18 +284,6 @@ public class VirtualHostLocalServiceWrapper
 		return _virtualHostLocalService.getVirtualHost(virtualHostId);
 	}
 
-	/**
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link
-	 #getVirtualHosts(long, long)}
-	 */
-	@Deprecated
-	@Override
-	public VirtualHost getVirtualHost(long companyId, long layoutSetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _virtualHostLocalService.getVirtualHost(companyId, layoutSetId);
-	}
-
 	@Override
 	public VirtualHost getVirtualHost(String hostname)
 		throws com.liferay.portal.kernel.exception.PortalException {

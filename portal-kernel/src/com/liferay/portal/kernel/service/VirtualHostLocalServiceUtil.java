@@ -259,17 +259,6 @@ public class VirtualHostLocalServiceUtil {
 		return getService().getVirtualHost(virtualHostId);
 	}
 
-	/**
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link
-	 #getVirtualHosts(long, long)}
-	 */
-	@Deprecated
-	public static VirtualHost getVirtualHost(long companyId, long layoutSetId)
-		throws PortalException {
-
-		return getService().getVirtualHost(companyId, layoutSetId);
-	}
-
 	public static VirtualHost getVirtualHost(String hostname)
 		throws PortalException {
 

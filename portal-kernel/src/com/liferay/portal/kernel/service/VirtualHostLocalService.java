@@ -243,15 +243,6 @@ public interface VirtualHostLocalService
 	public VirtualHost getVirtualHost(long virtualHostId)
 		throws PortalException;
 
-	/**
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link
-	 #getVirtualHosts(long, long)}
-	 */
-	@Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public VirtualHost getVirtualHost(long companyId, long layoutSetId)
-		throws PortalException;
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public VirtualHost getVirtualHost(String hostname) throws PortalException;
 

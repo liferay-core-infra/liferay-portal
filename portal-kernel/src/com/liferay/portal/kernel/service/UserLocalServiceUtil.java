@@ -1044,20 +1044,6 @@ public class UserLocalServiceUtil {
 	}
 
 	/**
-	 * Returns the user with the OpenID.
-	 *
-	 * @param companyId the primary key of the user's company
-	 * @param openId the user's OpenID
-	 * @return the user with the OpenID, or <code>null</code> if a user with
-	 the OpenID could not be found
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static User fetchUserByOpenId(long companyId, String openId) {
-		return getService().fetchUserByOpenId(companyId, openId);
-	}
-
-	/**
 	 * Returns the user with the portrait ID.
 	 *
 	 * @param portraitId the user's portrait ID
@@ -1740,21 +1726,6 @@ public class UserLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getUserById(companyId, userId);
-	}
-
-	/**
-	 * Returns the user with the OpenID.
-	 *
-	 * @param companyId the primary key of the user's company
-	 * @param openId the user's OpenID
-	 * @return the user with the OpenID
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static User getUserByOpenId(long companyId, String openId)
-		throws PortalException {
-
-		return getService().getUserByOpenId(companyId, openId);
 	}
 
 	/**

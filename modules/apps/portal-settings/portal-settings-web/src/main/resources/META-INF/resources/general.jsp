@@ -8,13 +8,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-VirtualHost virtualHost = null;
-
-try {
-	virtualHost = VirtualHostLocalServiceUtil.getVirtualHost(company.getCompanyId(), 0);
-}
-catch (Exception e) {
-}
+VirtualHost virtualHost = VirtualHostLocalServiceUtil.fetchVirtualHost(company.getCompanyId(), 0);
 %>
 
 <aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />

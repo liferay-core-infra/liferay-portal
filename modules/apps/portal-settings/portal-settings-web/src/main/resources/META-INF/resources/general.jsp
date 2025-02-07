@@ -7,10 +7,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-VirtualHost virtualHost = VirtualHostLocalServiceUtil.fetchVirtualHost(company.getCompanyId(), 0);
-%>
-
 <aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 
 <div class="h4"><liferay-ui:message key="main-configuration" /></div>
@@ -31,7 +27,7 @@ VirtualHost virtualHost = VirtualHostLocalServiceUtil.fetchVirtualHost(company.g
 
 		<liferay-ui:error exception="<%= CompanyVirtualHostException.class %>" message="please-enter-a-valid-virtual-host" />
 
-		<aui:input bean="<%= virtualHost %>" fieldParam="virtualHostname" label="virtual-host" model="<%= VirtualHost.class %>" name="hostname" />
+		<aui:input bean="<%= VirtualHostLocalServiceUtil.fetchVirtualHost(company.getCompanyId(), 0) %>" fieldParam="virtualHostname" label="virtual-host" model="<%= VirtualHost.class %>" name="hostname" />
 	</clay:col>
 
 	<clay:col

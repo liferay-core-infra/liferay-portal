@@ -291,8 +291,8 @@ public class LayoutRevisionLocalServiceImpl
 	public LayoutRevision fetchLayoutRevision(
 		long layoutSetBranchId, long layoutBranchId, boolean head, long plid) {
 
-		return layoutRevisionPersistence.fetchByL_L_H_P(
-			layoutSetBranchId, layoutBranchId, head, plid);
+		return layoutRevisionPersistence.fetchByL_L_H_P_Last(
+			layoutSetBranchId, layoutBranchId, head, plid, null);
 	}
 
 	@Override

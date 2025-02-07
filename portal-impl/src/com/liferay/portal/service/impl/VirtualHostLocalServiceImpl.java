@@ -62,8 +62,8 @@ public class VirtualHostLocalServiceImpl
 	@Deprecated
 	@Override
 	public VirtualHost fetchVirtualHost(long companyId, long layoutSetId) {
-		return virtualHostPersistence.fetchByC_L_D(
-			companyId, layoutSetId, true);
+		return virtualHostPersistence.fetchByC_L_D_Last(
+			companyId, layoutSetId, true, null);
 	}
 
 	@Override

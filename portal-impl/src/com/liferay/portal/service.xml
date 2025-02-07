@@ -2553,7 +2553,7 @@
 		<finder name="EmailAddress" return-type="Collection">
 			<finder-column name="emailAddress" />
 		</finder>
-		<finder name="PortraitId" return-type="User">
+		<finder name="PortraitId" return-type="Collection">
 			<finder-column name="portraitId" />
 		</finder>
 		<finder db-index="false" name="GtU_C" return-type="Collection" where="type_ = 1">
@@ -2580,15 +2580,15 @@
 			<finder-column name="companyId" />
 			<finder-column name="emailAddress" />
 		</finder>
-		<finder name="C_FID" return-type="User">
+		<finder name="C_FID" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="facebookId" />
 		</finder>
-		<finder name="C_GUID" return-type="User">
+		<finder name="C_GUID" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="googleUserId" />
 		</finder>
-		<finder name="C_O" return-type="User">
+		<finder name="C_O" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="openId" />
 		</finder>

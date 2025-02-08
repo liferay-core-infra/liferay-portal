@@ -2267,7 +2267,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	@Deprecated
 	@Override
 	public User fetchUserByFacebookId(long companyId, long facebookId) {
-		return userPersistence.fetchByC_FID(companyId, facebookId);
+		return userPersistence.fetchByC_FID_Last(companyId, facebookId, null);
 	}
 
 	/**
@@ -2280,7 +2280,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public User fetchUserByGoogleUserId(long companyId, String googleUserId) {
-		return userPersistence.fetchByC_GUID(companyId, googleUserId);
+		return userPersistence.fetchByC_GUID_Last(
+			companyId, googleUserId, null);
 	}
 
 	/**
@@ -2304,7 +2305,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public User fetchUserByPortraitId(long portraitId) {
-		return userPersistence.fetchByPortraitId(portraitId);
+		return userPersistence.fetchByPortraitId_Last(portraitId, null);
 	}
 
 	/**
@@ -2915,7 +2916,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	public User getUserByFacebookId(long companyId, long facebookId)
 		throws PortalException {
 
-		return userPersistence.findByC_FID(companyId, facebookId);
+		return userPersistence.findByC_FID_Last(companyId, facebookId, null);
 	}
 
 	/**
@@ -2929,7 +2930,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	public User getUserByGoogleUserId(long companyId, String googleUserId)
 		throws PortalException {
 
-		return userPersistence.findByC_GUID(companyId, googleUserId);
+		return userPersistence.findByC_GUID_Last(companyId, googleUserId, null);
 	}
 
 	/**
@@ -2965,7 +2966,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 */
 	@Override
 	public User getUserByPortraitId(long portraitId) throws PortalException {
-		return userPersistence.findByPortraitId(portraitId);
+		return userPersistence.findByPortraitId_Last(portraitId, null);
 	}
 
 	/**
@@ -7200,7 +7201,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			return;
 		}
 
-		User user = userPersistence.fetchByC_GUID(companyId, googleUserId);
+		User user = userPersistence.fetchByC_GUID_Last(
+			companyId, googleUserId, null);
 
 		if ((user != null) && (user.getUserId() != userId)) {
 			throw new DuplicateGoogleUserIdException(

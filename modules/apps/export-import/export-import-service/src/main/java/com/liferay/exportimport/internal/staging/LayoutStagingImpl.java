@@ -255,10 +255,13 @@ public class LayoutStagingImpl implements LayoutStaging {
 					layoutBranchId = layoutRevision.getLayoutBranchId();
 				}
 
-				layoutRevision =
-					_layoutRevisionLocalService.fetchLayoutRevision(
-						layoutSetBranchId, layoutBranchId, true,
-						layout.getPlid());
+				for (LayoutRevision curLayoutRevision : layoutRevisions) {
+					if (curLayoutRevision.getLayoutBranchId() ==
+							layoutBranchId) {
+
+						layoutRevision = curLayoutRevision;
+					}
+				}
 			}
 
 			if ((layoutRevision == null) && !layoutRevisions.isEmpty()) {

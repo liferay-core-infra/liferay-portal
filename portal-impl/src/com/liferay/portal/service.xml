@@ -2584,10 +2584,6 @@
 			<finder-column name="companyId" />
 			<finder-column name="facebookId" />
 		</finder>
-		<finder name="C_GUID" return-type="User">
-			<finder-column name="companyId" />
-			<finder-column name="googleUserId" />
-		</finder>
 		<finder name="C_O" return-type="User">
 			<finder-column name="companyId" />
 			<finder-column name="openId" />
@@ -3242,7 +3238,6 @@
 		<exception>CountryNumber</exception>
 		<exception>CountryTitle</exception>
 		<exception>DuplicateCountry</exception>
-		<exception>DuplicateGoogleUserId</exception>
 		<exception>DuplicateGroup</exception>
 		<exception>DuplicateOpenId</exception>
 		<exception>DuplicateOrganization</exception>

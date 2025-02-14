@@ -16,7 +16,7 @@ public class SortedFinderEntryLocalServiceImpl
 
 	@Override
 	public SortedFinderEntry fetchSortedFinderEntryByGroupId(long groupId) {
-		return sortedFinderEntryPersistence.fetchByGroupId(groupId);
+		return sortedFinderEntryPersistence.fetchByGroupId_Last(groupId, null);
 	}
 
 }

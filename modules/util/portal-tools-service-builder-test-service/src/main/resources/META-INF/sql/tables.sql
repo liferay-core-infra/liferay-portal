@@ -297,6 +297,12 @@ create table RenameFinderColumnEntry (
 	columnToRename VARCHAR(75) null
 );
 
+create table SortedFinderEntry (
+	sortedFinderEntryId LONG not null primary key,
+	name VARCHAR(75) null,
+	groupId LONG
+);
+
 create table UADPartialEntry (
 	uadPartialEntryId LONG not null primary key,
 	userId LONG,

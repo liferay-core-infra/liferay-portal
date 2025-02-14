@@ -64,6 +64,8 @@ create unique index IX_32712A54 on RedundantIndexEntry (companyId, name[$COLUMN_
 
 create index IX_DA817981 on RenameFinderColumnEntry (columnToRename[$COLUMN_LENGTH:75$]);
 
+create index IX_633A1375 on SortedFinderEntry (groupId);
+
 create index IX_6770C47D on VersionedEntry (groupId, head);
 create unique index IX_AAA6F330 on VersionedEntry (headId);
 

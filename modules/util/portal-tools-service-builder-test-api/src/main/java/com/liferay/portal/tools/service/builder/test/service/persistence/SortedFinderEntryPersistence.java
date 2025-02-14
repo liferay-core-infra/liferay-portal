@@ -33,41 +33,139 @@ public interface SortedFinderEntryPersistence
 	 */
 
 	/**
-	 * Returns the sorted finder entry where groupId = &#63; or throws a <code>NoSuchSortedFinderEntryException</code> if it could not be found.
+	 * Returns all the sorted finder entries where groupId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @return the matching sorted finder entry
+	 * @return the matching sorted finder entries
+	 */
+	public java.util.List<SortedFinderEntry> findByGroupId(long groupId);
+
+	/**
+	 * Returns a range of all the sorted finder entries where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SortedFinderEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of sorted finder entries
+	 * @param end the upper bound of the range of sorted finder entries (not inclusive)
+	 * @return the range of matching sorted finder entries
+	 */
+	public java.util.List<SortedFinderEntry> findByGroupId(
+		long groupId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the sorted finder entries where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SortedFinderEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of sorted finder entries
+	 * @param end the upper bound of the range of sorted finder entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching sorted finder entries
+	 */
+	public java.util.List<SortedFinderEntry> findByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<SortedFinderEntry>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the sorted finder entries where groupId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SortedFinderEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param start the lower bound of the range of sorted finder entries
+	 * @param end the upper bound of the range of sorted finder entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching sorted finder entries
+	 */
+	public java.util.List<SortedFinderEntry> findByGroupId(
+		long groupId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<SortedFinderEntry>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first sorted finder entry in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching sorted finder entry
 	 * @throws NoSuchSortedFinderEntryException if a matching sorted finder entry could not be found
 	 */
-	public SortedFinderEntry findByGroupId(long groupId)
+	public SortedFinderEntry findByGroupId_First(
+			long groupId,
+			com.liferay.portal.kernel.util.OrderByComparator<SortedFinderEntry>
+				orderByComparator)
 		throws NoSuchSortedFinderEntryException;
 
 	/**
-	 * Returns the sorted finder entry where groupId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the first sorted finder entry in the ordered set where groupId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @return the matching sorted finder entry, or <code>null</code> if a matching sorted finder entry could not be found
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching sorted finder entry, or <code>null</code> if a matching sorted finder entry could not be found
 	 */
-	public SortedFinderEntry fetchByGroupId(long groupId);
+	public SortedFinderEntry fetchByGroupId_First(
+		long groupId,
+		com.liferay.portal.kernel.util.OrderByComparator<SortedFinderEntry>
+			orderByComparator);
 
 	/**
-	 * Returns the sorted finder entry where groupId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the last sorted finder entry in the ordered set where groupId = &#63;.
 	 *
 	 * @param groupId the group ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching sorted finder entry, or <code>null</code> if a matching sorted finder entry could not be found
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching sorted finder entry
+	 * @throws NoSuchSortedFinderEntryException if a matching sorted finder entry could not be found
 	 */
-	public SortedFinderEntry fetchByGroupId(
-		long groupId, boolean useFinderCache);
-
-	/**
-	 * Removes the sorted finder entry where groupId = &#63; from the database.
-	 *
-	 * @param groupId the group ID
-	 * @return the sorted finder entry that was removed
-	 */
-	public SortedFinderEntry removeByGroupId(long groupId)
+	public SortedFinderEntry findByGroupId_Last(
+			long groupId,
+			com.liferay.portal.kernel.util.OrderByComparator<SortedFinderEntry>
+				orderByComparator)
 		throws NoSuchSortedFinderEntryException;
+
+	/**
+	 * Returns the last sorted finder entry in the ordered set where groupId = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching sorted finder entry, or <code>null</code> if a matching sorted finder entry could not be found
+	 */
+	public SortedFinderEntry fetchByGroupId_Last(
+		long groupId,
+		com.liferay.portal.kernel.util.OrderByComparator<SortedFinderEntry>
+			orderByComparator);
+
+	/**
+	 * Returns the sorted finder entries before and after the current sorted finder entry in the ordered set where groupId = &#63;.
+	 *
+	 * @param sortedFinderEntryId the primary key of the current sorted finder entry
+	 * @param groupId the group ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next sorted finder entry
+	 * @throws NoSuchSortedFinderEntryException if a sorted finder entry with the primary key could not be found
+	 */
+	public SortedFinderEntry[] findByGroupId_PrevAndNext(
+			long sortedFinderEntryId, long groupId,
+			com.liferay.portal.kernel.util.OrderByComparator<SortedFinderEntry>
+				orderByComparator)
+		throws NoSuchSortedFinderEntryException;
+
+	/**
+	 * Removes all the sorted finder entries where groupId = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 */
+	public void removeByGroupId(long groupId);
 
 	/**
 	 * Returns the number of sorted finder entries where groupId = &#63;.

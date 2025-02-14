@@ -5,6 +5,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.impl;
 
+import com.liferay.portal.tools.service.builder.test.model.SortedFinderEntry;
 import com.liferay.portal.tools.service.builder.test.service.base.SortedFinderEntryLocalServiceBaseImpl;
 
 /**
@@ -12,4 +13,10 @@ import com.liferay.portal.tools.service.builder.test.service.base.SortedFinderEn
  */
 public class SortedFinderEntryLocalServiceImpl
 	extends SortedFinderEntryLocalServiceBaseImpl {
+
+	@Override
+	public SortedFinderEntry fetchSortedFinderEntryByGroupId(long groupId) {
+		return sortedFinderEntryPersistence.fetchByGroupId(groupId);
+	}
+
 }

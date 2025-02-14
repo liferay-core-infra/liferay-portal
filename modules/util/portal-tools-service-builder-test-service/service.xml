@@ -518,6 +518,32 @@
 			<finder-column name="columnToRename" />
 		</finder>
 	</entity>
+	<entity local-service="true" name="SortedFinderEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="sortedFinderEntryId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finders -->
+
+		<finder name="GroupId" return-type="SortedFinderEntry">
+			<finder-column name="groupId" />
+		</finder>
+	</entity>
 	<entity local-service="true" name="UADPartialEntry" remote-service="false">
 
 		<!-- PK fields -->

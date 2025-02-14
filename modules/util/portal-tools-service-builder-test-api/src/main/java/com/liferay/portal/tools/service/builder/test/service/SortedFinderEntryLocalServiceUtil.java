@@ -209,6 +209,12 @@ public class SortedFinderEntryLocalServiceUtil {
 		return getService().fetchSortedFinderEntry(sortedFinderEntryId);
 	}
 
+	public static SortedFinderEntry fetchSortedFinderEntryByGroupId(
+		long groupId) {
+
+		return getService().fetchSortedFinderEntryByGroupId(groupId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

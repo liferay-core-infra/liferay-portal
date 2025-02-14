@@ -239,6 +239,14 @@ public class SortedFinderEntryLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.tools.service.builder.test.model.SortedFinderEntry
+		fetchSortedFinderEntryByGroupId(long groupId) {
+
+		return _sortedFinderEntryLocalService.fetchSortedFinderEntryByGroupId(
+			groupId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

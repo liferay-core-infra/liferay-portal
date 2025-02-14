@@ -200,6 +200,9 @@ public interface SortedFinderEntryLocalService
 	public SortedFinderEntry fetchSortedFinderEntry(long sortedFinderEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SortedFinderEntry fetchSortedFinderEntryByGroupId(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

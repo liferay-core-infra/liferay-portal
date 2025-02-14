@@ -540,7 +540,7 @@
 
 		<!-- Finders -->
 
-		<finder name="GroupId" return-type="SortedFinderEntry">
+		<finder name="GroupId" return-type="Collection">
 			<finder-column name="groupId" />
 		</finder>
 	</entity>

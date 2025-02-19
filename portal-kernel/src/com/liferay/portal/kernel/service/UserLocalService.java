@@ -2128,18 +2128,6 @@ public interface UserLocalService
 		throws PortalException;
 
 	/**
-	 * Updates the user's Facebook ID.
-	 *
-	 * @param userId the primary key of the user
-	 * @param facebookId the user's new Facebook ID
-	 * @return the user
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public User updateFacebookId(long userId, long facebookId)
-		throws PortalException;
-
-	/**
 	 * Sets the groups the user is in, removing and adding groups as necessary.
 	 *
 	 * @param userId the primary key of the user

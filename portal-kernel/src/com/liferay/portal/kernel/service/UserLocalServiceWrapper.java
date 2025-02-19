@@ -2939,22 +2939,6 @@ public class UserLocalServiceWrapper
 	}
 
 	/**
-	 * Updates the user's Facebook ID.
-	 *
-	 * @param userId the primary key of the user
-	 * @param facebookId the user's new Facebook ID
-	 * @return the user
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public User updateFacebookId(long userId, long facebookId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _userLocalService.updateFacebookId(userId, facebookId);
-	}
-
-	/**
 	 * Sets the groups the user is in, removing and adding groups as necessary.
 	 *
 	 * @param userId the primary key of the user

@@ -2581,7 +2581,7 @@
 			<finder-column name="companyId" />
 			<finder-column name="emailAddress" />
 		</finder>
-		<finder name="C_FID" return-type="User">
+		<finder name="C_FID" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="facebookId" />
 		</finder>

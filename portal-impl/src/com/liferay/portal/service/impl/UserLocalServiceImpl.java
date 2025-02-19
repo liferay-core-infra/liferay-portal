@@ -4653,26 +4653,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Updates the user's Facebook ID.
-	 *
-	 * @param      userId the primary key of the user
-	 * @param      facebookId the user's new Facebook ID
-	 * @return     the user
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public User updateFacebookId(long userId, long facebookId)
-		throws PortalException {
-
-		User user = userPersistence.findByPrimaryKey(userId);
-
-		user.setFacebookId(facebookId);
-
-		return userPersistence.update(user);
-	}
-
-	/**
 	 * Sets the groups the user is in, removing and adding groups as necessary.
 	 *
 	 * @param userId the primary key of the user

@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchImageException;
 import com.liferay.portal.kernel.exception.NoSuchOrganizationException;
 import com.liferay.portal.kernel.exception.NoSuchTicketException;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PasswordExpiredException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.PwdEncryptorException;
@@ -2266,7 +2267,20 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	@Deprecated
 	@Override
 	public User fetchUserByFacebookId(long companyId, long facebookId) {
-		return userPersistence.fetchByC_FID(companyId, facebookId);
+		List<User> users = userPersistence.findByC_FID(companyId, facebookId);
+
+		if (users.isEmpty()) {
+			return null;
+		}
+
+		if ((users.size() > 1) && _log.isWarnEnabled()) {
+			_log.warn(
+				StringBundler.concat(
+					"Multiple users exist with companyId ", companyId,
+					" and facebookId ", facebookId));
+		}
+
+		return users.get(users.size() - 1);
 	}
 
 	/**
@@ -2901,7 +2915,23 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	public User getUserByFacebookId(long companyId, long facebookId)
 		throws PortalException {
 
-		return userPersistence.findByC_FID(companyId, facebookId);
+		List<User> users = userPersistence.findByC_FID(companyId, facebookId);
+
+		if (users.isEmpty()) {
+			throw new NoSuchUserException(
+				StringBundler.concat(
+					"No user exists with companyId ", companyId,
+					" and facebookId ", facebookId));
+		}
+
+		if ((users.size() > 1) && _log.isWarnEnabled()) {
+			_log.warn(
+				StringBundler.concat(
+					"Multiple users exist with companyId ", companyId,
+					" and facebookId ", facebookId));
+		}
+
+		return users.get(users.size() - 1);
 	}
 
 	/**

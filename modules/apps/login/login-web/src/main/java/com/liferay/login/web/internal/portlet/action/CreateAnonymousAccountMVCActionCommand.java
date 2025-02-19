@@ -8,7 +8,6 @@ package com.liferay.login.web.internal.portlet.action;
 import com.liferay.captcha.configuration.CaptchaConfiguration;
 import com.liferay.captcha.util.CaptchaUtil;
 import com.liferay.login.web.constants.LoginPortletKeys;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.captcha.CaptchaConfigurationException;
 import com.liferay.portal.kernel.captcha.CaptchaException;
@@ -221,8 +220,6 @@ public class CreateAnonymousAccountMVCActionCommand
 		String screenName = null;
 		String emailAddress = ParamUtil.getString(
 			actionRequest, "emailAddress");
-		long facebookId = 0;
-		String openId = null;
 		String firstName = null;
 		String middleName = null;
 		String lastName = null;
@@ -238,11 +235,10 @@ public class CreateAnonymousAccountMVCActionCommand
 
 		User user = _userService.updateIncompleteUser(
 			themeDisplay.getCompanyId(), autoPassword, password1, password2,
-			autoScreenName, screenName, emailAddress, facebookId, openId,
-			themeDisplay.getLocale(), firstName, middleName, lastName,
-			prefixListTypeId, suffixListTypeId, male, birthdayMonth,
-			birthdayDay, birthdayYear, jobTitle, updateUserInformation,
-			sendEmail, serviceContext);
+			autoScreenName, screenName, emailAddress, themeDisplay.getLocale(),
+			firstName, middleName, lastName, prefixListTypeId, suffixListTypeId,
+			male, birthdayMonth, birthdayDay, birthdayYear, jobTitle,
+			updateUserInformation, sendEmail, serviceContext);
 
 		return JSONUtil.put(
 			"userStatus",
@@ -271,8 +267,6 @@ public class CreateAnonymousAccountMVCActionCommand
 		String screenName = null;
 		String emailAddress = ParamUtil.getString(
 			actionRequest, "emailAddress");
-		long facebookId = 0;
-		String openId = StringPool.BLANK;
 		String firstName = ParamUtil.getString(actionRequest, "firstName");
 		String lastName = ParamUtil.getString(actionRequest, "lastName");
 		long prefixListTypeId = 0;
@@ -304,11 +298,10 @@ public class CreateAnonymousAccountMVCActionCommand
 
 		User user = _userService.addUser(
 			themeDisplay.getCompanyId(), autoPassword, password1, password2,
-			autoScreenName, screenName, emailAddress, facebookId, openId,
-			themeDisplay.getLocale(), firstName, null, lastName,
-			prefixListTypeId, suffixListTypeId, male, birthdayMonth,
-			birthdayDay, birthdayYear, jobTitle, groupIds, organizationIds,
-			roleIds, userGroupIds, sendEmail, serviceContext);
+			autoScreenName, screenName, emailAddress, themeDisplay.getLocale(),
+			firstName, null, lastName, prefixListTypeId, suffixListTypeId, male,
+			birthdayMonth, birthdayDay, birthdayYear, jobTitle, groupIds,
+			organizationIds, roleIds, userGroupIds, sendEmail, serviceContext);
 
 		_userLocalService.updateStatus(
 			user, WorkflowConstants.STATUS_INCOMPLETE, new ServiceContext());

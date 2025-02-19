@@ -74,9 +74,9 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 		if (invitedUser == null) {
 			invitedUser = _userService.addUser(
 				contextCompany.getCompanyId(), true, null, null, true, null,
-				user.getEmail(), 0L, null, LocaleUtil.getDefault(),
-				user.getFirstName(), user.getMiddleName(), user.getLastName(),
-				0L, 0L, GetterUtil.getBoolean(user.getMale(), true), 1, 1, 1970,
+				user.getEmail(), LocaleUtil.getDefault(), user.getFirstName(),
+				user.getMiddleName(), user.getLastName(), 0L, 0L,
+				GetterUtil.getBoolean(user.getMale(), true), 1, 1, 1970,
 				user.getJobTitle(),
 				new long[] {accountEntry.getAccountEntryGroupId()}, null, null,
 				null, false, serviceContext);
@@ -93,7 +93,6 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 				invitedUser.getReminderQueryAnswer(),
 				invitedUser.getScreenName(),
 				GetterUtil.get(user.getEmail(), invitedUser.getEmailAddress()),
-				invitedUser.getFacebookId(), invitedUser.getOpenId(),
 				invitedUser.getLanguageId(), invitedUser.getTimeZoneId(),
 				invitedUser.getGreeting(), invitedUser.getComments(),
 				user.getFirstName(),

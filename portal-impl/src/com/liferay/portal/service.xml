@@ -1363,7 +1363,7 @@
 		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
 		</finder>
-		<finder name="C_DP" return-type="PasswordPolicy">
+		<finder name="C_DP" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="defaultPolicy" />
 		</finder>

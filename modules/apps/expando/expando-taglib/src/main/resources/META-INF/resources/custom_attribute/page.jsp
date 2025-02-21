@@ -752,10 +752,12 @@ ExpandoBridge expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(company.
 				else {
 					sb.append((String)value);
 				}
+
+				boolean calendarBooking = className.contains("CalendarBooking");
 				%>
 
 				<c:if test="<%= (type != ExpandoColumnConstants.GEOLOCATION) && (editable || Validator.isNotNull(sb.toString())) %>">
-					<aui:field-wrapper label="<%= label ? localizedName : StringPool.BLANK %>">
+					<aui:field-wrapper label="<%= label ? (calendarBooking ? localizedName + ':' : localizedName) : StringPool.BLANK %>">
 						<span id="<%= randomNamespace %><%= HtmlUtil.getAUICompatibleId(name) %>"><%= HtmlUtil.escape(sb.toString()) %></span>
 					</aui:field-wrapper>
 				</c:if>

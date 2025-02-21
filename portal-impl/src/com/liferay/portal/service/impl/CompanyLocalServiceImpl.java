@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.exception.CompanyNameException;
 import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.CompanyWebIdException;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredCompanyException;
@@ -878,7 +879,18 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	 */
 	@Override
 	public Company getCompanyByMx(String mx) throws PortalException {
-		return companyPersistence.findByMx(mx);
+		List<Company> companies = companyPersistence.findByMx(mx);
+
+		if (companies.isEmpty()) {
+			throw new NoSuchCompanyException(
+				"No company exists using the mail domain " + mx);
+		}
+
+		if ((companies.size() > 1) && _log.isWarnEnabled()) {
+			_log.warn("Multiple companies are using the mail domain " + mx);
+		}
+
+		return companies.get(companies.size() - 1);
 	}
 
 	/**

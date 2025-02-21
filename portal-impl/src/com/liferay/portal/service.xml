@@ -161,7 +161,7 @@
 		<finder name="WebId" return-type="Company" unique="true">
 			<finder-column name="webId" />
 		</finder>
-		<finder name="Mx" return-type="Company">
+		<finder name="Mx" return-type="Collection">
 			<finder-column name="mx" />
 		</finder>
 		<finder name="LogoId" return-type="Collection">

@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
+import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
@@ -731,7 +732,7 @@ public class CompanyLocalServiceTest {
 			layoutSetPrototypes.toString(), 0, layoutSetPrototypes.size());
 	}
 
-	@Test(expected = NoSuchPasswordPolicyException.class)
+	@Test
 	public void testDeleteCompanyDeletesNondefaultPasswordPolicies()
 		throws Throwable {
 
@@ -742,8 +743,11 @@ public class CompanyLocalServiceTest {
 		TransactionInvokerUtil.invoke(
 			_transactionConfig,
 			() -> {
-				_passwordPolicyLocalService.getPasswordPolicy(
-					company.getCompanyId(), false);
+				List<PasswordPolicy> passwordPolicies =
+					_passwordPolicyLocalService.getNondefaultPasswordPolicies(
+						company.getCompanyId());
+
+				Assert.assertTrue(passwordPolicies.isEmpty());
 
 				return null;
 			});

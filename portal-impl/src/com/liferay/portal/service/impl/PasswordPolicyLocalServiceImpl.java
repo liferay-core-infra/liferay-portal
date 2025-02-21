@@ -9,9 +9,12 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCachable;
 import com.liferay.portal.kernel.exception.DuplicatePasswordPolicyException;
+import com.liferay.portal.kernel.exception.NoSuchPasswordPolicyException;
 import com.liferay.portal.kernel.exception.PasswordPolicyNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredPasswordPolicyException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PasswordPolicyRel;
@@ -224,7 +227,22 @@ public class PasswordPolicyLocalServiceImpl
 	public PasswordPolicy getDefaultPasswordPolicy(long companyId)
 		throws PortalException {
 
-		return passwordPolicyPersistence.findByC_DP(companyId, true);
+		List<PasswordPolicy> passwordPolicies =
+			passwordPolicyPersistence.findByC_DP(companyId, true);
+
+		if (passwordPolicies.isEmpty()) {
+			throw new NoSuchPasswordPolicyException(
+				"No default password policy exists for company ID " +
+					companyId);
+		}
+
+		if (passwordPolicies.size() > 1) {
+			_log.error(
+				"Duplicate default password policies exist for company ID " +
+					companyId);
+		}
+
+		return passwordPolicies.get(passwordPolicies.size() - 1);
 	}
 
 	@Override
@@ -273,8 +291,7 @@ public class PasswordPolicyLocalServiceImpl
 			user.getCompanyId());
 
 		if (count == 1) {
-			return passwordPolicyPersistence.findByC_DP(
-				user.getCompanyId(), true);
+			return getDefaultPasswordPolicy(user.getCompanyId());
 		}
 
 		PasswordPolicyRel passwordPolicyRel =
@@ -290,8 +307,7 @@ public class PasswordPolicyLocalServiceImpl
 			user.getUserId());
 
 		if (organizationIds.length == 0) {
-			return passwordPolicyPersistence.findByC_DP(
-				user.getCompanyId(), true);
+			return getDefaultPasswordPolicy(user.getCompanyId());
 		}
 
 		return getPasswordPolicy(user.getCompanyId(), organizationIds);
@@ -392,6 +408,9 @@ public class PasswordPolicyLocalServiceImpl
 				"{passwordPolicyId=" + passwordPolicyId + "}");
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PasswordPolicyLocalServiceImpl.class);
 
 	@BeanReference(type = ClassNameLocalService.class)
 	private ClassNameLocalService _classNameLocalService;

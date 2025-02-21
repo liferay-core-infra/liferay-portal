@@ -252,6 +252,9 @@ public interface PasswordPolicyLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<PasswordPolicy> getNondefaultPasswordPolicies(long companyId);
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -290,11 +293,6 @@ public interface PasswordPolicyLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PasswordPolicy getPasswordPolicy(long passwordPolicyId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PasswordPolicy getPasswordPolicy(
-			long companyId, boolean defaultPolicy)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

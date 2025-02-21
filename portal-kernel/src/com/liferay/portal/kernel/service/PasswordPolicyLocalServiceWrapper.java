@@ -321,6 +321,14 @@ public class PasswordPolicyLocalServiceWrapper
 		return _passwordPolicyLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.PasswordPolicy>
+		getNondefaultPasswordPolicies(long companyId) {
+
+		return _passwordPolicyLocalService.getNondefaultPasswordPolicies(
+			companyId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -372,15 +380,6 @@ public class PasswordPolicyLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _passwordPolicyLocalService.getPasswordPolicy(passwordPolicyId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PasswordPolicy getPasswordPolicy(
-			long companyId, boolean defaultPolicy)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _passwordPolicyLocalService.getPasswordPolicy(
-			companyId, defaultPolicy);
 	}
 
 	@Override

@@ -285,6 +285,12 @@ public class PasswordPolicyLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static List<PasswordPolicy> getNondefaultPasswordPolicies(
+		long companyId) {
+
+		return getService().getNondefaultPasswordPolicies(companyId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -329,13 +335,6 @@ public class PasswordPolicyLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getPasswordPolicy(passwordPolicyId);
-	}
-
-	public static PasswordPolicy getPasswordPolicy(
-			long companyId, boolean defaultPolicy)
-		throws PortalException {
-
-		return getService().getPasswordPolicy(companyId, defaultPolicy);
 	}
 
 	public static PasswordPolicy getPasswordPolicy(

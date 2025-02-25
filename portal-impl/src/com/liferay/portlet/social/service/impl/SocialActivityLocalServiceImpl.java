@@ -16,6 +16,8 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mass.delete.MassDeleteCacheThreadLocal;
 import com.liferay.portal.kernel.messaging.async.Async;
 import com.liferay.portal.kernel.model.Group;
@@ -407,11 +409,17 @@ public class SocialActivityLocalServiceImpl
 
 		socialActivityPersistence.remove(activity);
 
-		SocialActivity mirrorActivity =
-			socialActivityPersistence.fetchByMirrorActivityId(
+		List<SocialActivity> mirrorActivities =
+			socialActivityPersistence.findByMirrorActivityId(
 				activity.getActivityId());
 
-		if (mirrorActivity != null) {
+		if (mirrorActivities.size() > 1) {
+			_log.error(
+				"Multiple mirror activities exist for activity ID " +
+					activity.getActivityId());
+		}
+
+		for (SocialActivity mirrorActivity : mirrorActivities) {
 			socialActivityPersistence.remove(mirrorActivity);
 		}
 	}
@@ -1199,6 +1207,9 @@ public class SocialActivityLocalServiceImpl
 
 		return false;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SocialActivityLocalServiceImpl.class);
 
 	@BeanReference(type = AssetEntryLocalService.class)
 	private AssetEntryLocalService _assetEntryLocalService;

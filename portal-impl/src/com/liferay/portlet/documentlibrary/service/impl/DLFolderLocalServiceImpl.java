@@ -566,7 +566,21 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 
 	@Override
 	public DLFolder getMountFolder(long repositoryId) throws PortalException {
-		return dlFolderPersistence.findByR_M(repositoryId, true);
+		List<DLFolder> dlFolders = dlFolderPersistence.findByR_M(
+			repositoryId, true);
+
+		if (dlFolders.isEmpty()) {
+			throw new NoSuchFolderException(
+				"No mount folder exists for repository ID " + repositoryId);
+		}
+
+		if (dlFolders.size() > 1) {
+			_log.error(
+				"Multiple mount folders exist for repository ID " +
+					repositoryId);
+		}
+
+		return dlFolders.get(dlFolders.size() - 1);
 	}
 
 	@Override

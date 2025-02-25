@@ -572,47 +572,6 @@ public class SocialActivityServiceHttp {
 		}
 	}
 
-	public static com.liferay.social.kernel.model.SocialActivity
-			getMirrorActivity(
-				HttpPrincipal httpPrincipal, long mirrorActivityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		try {
-			MethodKey methodKey = new MethodKey(
-				SocialActivityServiceUtil.class, "getMirrorActivity",
-				_getMirrorActivityParameterTypes14);
-
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, mirrorActivityId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
-			}
-
-			return (com.liferay.social.kernel.model.SocialActivity)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
-
-			_log.error(systemException, systemException);
-
-			throw systemException;
-		}
-	}
-
 	public static java.util.List<com.liferay.social.kernel.model.SocialActivity>
 			getOrganizationActivities(
 				HttpPrincipal httpPrincipal, long organizationId, int start,
@@ -622,7 +581,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getOrganizationActivities",
-				_getOrganizationActivitiesParameterTypes15);
+				_getOrganizationActivitiesParameterTypes14);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, organizationId, start, end);
@@ -663,7 +622,7 @@ public class SocialActivityServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class,
 				"getOrganizationActivitiesCount",
-				_getOrganizationActivitiesCountParameterTypes16);
+				_getOrganizationActivitiesCountParameterTypes15);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, organizationId);
@@ -699,7 +658,7 @@ public class SocialActivityServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class,
 				"getOrganizationUsersActivities",
-				_getOrganizationUsersActivitiesParameterTypes17);
+				_getOrganizationUsersActivitiesParameterTypes16);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, organizationId, start, end);
@@ -740,7 +699,7 @@ public class SocialActivityServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class,
 				"getOrganizationUsersActivitiesCount",
-				_getOrganizationUsersActivitiesCountParameterTypes18);
+				_getOrganizationUsersActivitiesCountParameterTypes17);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, organizationId);
@@ -774,7 +733,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getRelationActivities",
-				_getRelationActivitiesParameterTypes19);
+				_getRelationActivitiesParameterTypes18);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, start, end);
@@ -817,7 +776,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getRelationActivities",
-				_getRelationActivitiesParameterTypes20);
+				_getRelationActivitiesParameterTypes19);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, type, start, end);
@@ -857,7 +816,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getRelationActivitiesCount",
-				_getRelationActivitiesCountParameterTypes21);
+				_getRelationActivitiesCountParameterTypes20);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId);
 
@@ -888,7 +847,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getRelationActivitiesCount",
-				_getRelationActivitiesCountParameterTypes22);
+				_getRelationActivitiesCountParameterTypes21);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, type);
@@ -922,7 +881,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getUserActivities",
-				_getUserActivitiesParameterTypes23);
+				_getUserActivitiesParameterTypes22);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, start, end);
@@ -962,7 +921,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getUserActivitiesCount",
-				_getUserActivitiesCountParameterTypes24);
+				_getUserActivitiesCountParameterTypes23);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId);
 
@@ -995,7 +954,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getUserGroupsActivities",
-				_getUserGroupsActivitiesParameterTypes25);
+				_getUserGroupsActivitiesParameterTypes24);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, start, end);
@@ -1035,7 +994,7 @@ public class SocialActivityServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class, "getUserGroupsActivitiesCount",
-				_getUserGroupsActivitiesCountParameterTypes26);
+				_getUserGroupsActivitiesCountParameterTypes25);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId);
 
@@ -1069,7 +1028,7 @@ public class SocialActivityServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class,
 				"getUserGroupsAndOrganizationsActivities",
-				_getUserGroupsAndOrganizationsActivitiesParameterTypes27);
+				_getUserGroupsAndOrganizationsActivitiesParameterTypes26);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, start, end);
@@ -1110,7 +1069,7 @@ public class SocialActivityServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class,
 				"getUserGroupsAndOrganizationsActivitiesCount",
-				_getUserGroupsAndOrganizationsActivitiesCountParameterTypes28);
+				_getUserGroupsAndOrganizationsActivitiesCountParameterTypes27);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId);
 
@@ -1144,7 +1103,7 @@ public class SocialActivityServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class,
 				"getUserOrganizationsActivities",
-				_getUserOrganizationsActivitiesParameterTypes29);
+				_getUserOrganizationsActivitiesParameterTypes28);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, start, end);
@@ -1185,7 +1144,7 @@ public class SocialActivityServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				SocialActivityServiceUtil.class,
 				"getUserOrganizationsActivitiesCount",
-				_getUserOrganizationsActivitiesCountParameterTypes30);
+				_getUserOrganizationsActivitiesCountParameterTypes29);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId);
 
@@ -1246,55 +1205,53 @@ public class SocialActivityServiceHttp {
 		_getGroupUsersActivitiesCountParameterTypes13 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _getMirrorActivityParameterTypes14 =
-		new Class[] {long.class};
-	private static final Class<?>[] _getOrganizationActivitiesParameterTypes15 =
+	private static final Class<?>[] _getOrganizationActivitiesParameterTypes14 =
 		new Class[] {long.class, int.class, int.class};
 	private static final Class<?>[]
-		_getOrganizationActivitiesCountParameterTypes16 = new Class[] {
+		_getOrganizationActivitiesCountParameterTypes15 = new Class[] {
 			long.class
 		};
 	private static final Class<?>[]
-		_getOrganizationUsersActivitiesParameterTypes17 = new Class[] {
+		_getOrganizationUsersActivitiesParameterTypes16 = new Class[] {
 			long.class, int.class, int.class
 		};
 	private static final Class<?>[]
-		_getOrganizationUsersActivitiesCountParameterTypes18 = new Class[] {
+		_getOrganizationUsersActivitiesCountParameterTypes17 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _getRelationActivitiesParameterTypes19 =
+	private static final Class<?>[] _getRelationActivitiesParameterTypes18 =
 		new Class[] {long.class, int.class, int.class};
-	private static final Class<?>[] _getRelationActivitiesParameterTypes20 =
+	private static final Class<?>[] _getRelationActivitiesParameterTypes19 =
 		new Class[] {long.class, int.class, int.class, int.class};
 	private static final Class<?>[]
-		_getRelationActivitiesCountParameterTypes21 = new Class[] {long.class};
+		_getRelationActivitiesCountParameterTypes20 = new Class[] {long.class};
 	private static final Class<?>[]
-		_getRelationActivitiesCountParameterTypes22 = new Class[] {
+		_getRelationActivitiesCountParameterTypes21 = new Class[] {
 			long.class, int.class
 		};
-	private static final Class<?>[] _getUserActivitiesParameterTypes23 =
+	private static final Class<?>[] _getUserActivitiesParameterTypes22 =
 		new Class[] {long.class, int.class, int.class};
-	private static final Class<?>[] _getUserActivitiesCountParameterTypes24 =
+	private static final Class<?>[] _getUserActivitiesCountParameterTypes23 =
 		new Class[] {long.class};
-	private static final Class<?>[] _getUserGroupsActivitiesParameterTypes25 =
+	private static final Class<?>[] _getUserGroupsActivitiesParameterTypes24 =
 		new Class[] {long.class, int.class, int.class};
 	private static final Class<?>[]
-		_getUserGroupsActivitiesCountParameterTypes26 = new Class[] {
+		_getUserGroupsActivitiesCountParameterTypes25 = new Class[] {
 			long.class
 		};
 	private static final Class<?>[]
-		_getUserGroupsAndOrganizationsActivitiesParameterTypes27 = new Class[] {
+		_getUserGroupsAndOrganizationsActivitiesParameterTypes26 = new Class[] {
 			long.class, int.class, int.class
 		};
 	private static final Class<?>[]
-		_getUserGroupsAndOrganizationsActivitiesCountParameterTypes28 =
+		_getUserGroupsAndOrganizationsActivitiesCountParameterTypes27 =
 			new Class[] {long.class};
 	private static final Class<?>[]
-		_getUserOrganizationsActivitiesParameterTypes29 = new Class[] {
+		_getUserOrganizationsActivitiesParameterTypes28 = new Class[] {
 			long.class, int.class, int.class
 		};
 	private static final Class<?>[]
-		_getUserOrganizationsActivitiesCountParameterTypes30 = new Class[] {
+		_getUserOrganizationsActivitiesCountParameterTypes29 = new Class[] {
 			long.class
 		};
 

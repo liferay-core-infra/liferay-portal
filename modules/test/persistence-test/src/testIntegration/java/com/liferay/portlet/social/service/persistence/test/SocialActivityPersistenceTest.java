@@ -592,12 +592,6 @@ public class SocialActivityPersistenceTest {
 
 	private void _assertOriginalValues(SocialActivity socialActivity) {
 		Assert.assertEquals(
-			Long.valueOf(socialActivity.getMirrorActivityId()),
-			ReflectionTestUtil.<Long>invoke(
-				socialActivity, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "mirrorActivityId"));
-
-		Assert.assertEquals(
 			Long.valueOf(socialActivity.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
 				socialActivity, "getColumnOriginalValue",

@@ -287,16 +287,6 @@ public interface SocialActivityService extends BaseService {
 	public int getGroupUsersActivitiesCount(long groupId);
 
 	/**
-	 * Returns the activity that has the mirror activity.
-	 *
-	 * @param mirrorActivityId the primary key of the mirror activity
-	 * @return Returns the mirror activity
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SocialActivity getMirrorActivity(long mirrorActivityId)
-		throws PortalException;
-
-	/**
 	 * Returns a range of all the activities done in the organization. This
 	 * method only finds activities without mirrors.
 	 *

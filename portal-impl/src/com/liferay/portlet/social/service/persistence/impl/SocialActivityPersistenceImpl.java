@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portlet.social.model.impl.SocialActivityImpl;
 import com.liferay.portlet.social.model.impl.SocialActivityModelImpl;
 import com.liferay.social.kernel.exception.NoSuchActivityException;
@@ -2123,93 +2122,490 @@ public class SocialActivityPersistenceImpl
 	private static final String _FINDER_COLUMN_ACTIVITYSETID_ACTIVITYSETID_2 =
 		"socialActivity.activitySetId = ?";
 
-	private FinderPath _finderPathFetchByMirrorActivityId;
+	private FinderPath _finderPathWithPaginationFindByMirrorActivityId;
+	private FinderPath _finderPathWithoutPaginationFindByMirrorActivityId;
+	private FinderPath _finderPathCountByMirrorActivityId;
 
 	/**
-	 * Returns the social activity where mirrorActivityId = &#63; or throws a <code>NoSuchActivityException</code> if it could not be found.
+	 * Returns all the social activities where mirrorActivityId = &#63;.
 	 *
 	 * @param mirrorActivityId the mirror activity ID
-	 * @return the matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @return the matching social activities
 	 */
 	@Override
-	public SocialActivity findByMirrorActivityId(long mirrorActivityId)
-		throws NoSuchActivityException {
-
-		SocialActivity socialActivity = fetchByMirrorActivityId(
-			mirrorActivityId);
-
-		if (socialActivity == null) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			sb.append("mirrorActivityId=");
-			sb.append(mirrorActivityId);
-
-			sb.append("}");
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
-			}
-
-			throw new NoSuchActivityException(sb.toString());
-		}
-
-		return socialActivity;
+	public List<SocialActivity> findByMirrorActivityId(long mirrorActivityId) {
+		return findByMirrorActivityId(
+			mirrorActivityId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns the social activity where mirrorActivityId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the social activities where mirrorActivityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SocialActivityModelImpl</code>.
+	 * </p>
 	 *
 	 * @param mirrorActivityId the mirror activity ID
-	 * @return the matching social activity, or <code>null</code> if a matching social activity could not be found
+	 * @param start the lower bound of the range of social activities
+	 * @param end the upper bound of the range of social activities (not inclusive)
+	 * @return the range of matching social activities
 	 */
 	@Override
-	public SocialActivity fetchByMirrorActivityId(long mirrorActivityId) {
-		return fetchByMirrorActivityId(mirrorActivityId, true);
+	public List<SocialActivity> findByMirrorActivityId(
+		long mirrorActivityId, int start, int end) {
+
+		return findByMirrorActivityId(mirrorActivityId, start, end, null);
 	}
 
 	/**
-	 * Returns the social activity where mirrorActivityId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the social activities where mirrorActivityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SocialActivityModelImpl</code>.
+	 * </p>
 	 *
 	 * @param mirrorActivityId the mirror activity ID
+	 * @param start the lower bound of the range of social activities
+	 * @param end the upper bound of the range of social activities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching social activities
+	 */
+	@Override
+	public List<SocialActivity> findByMirrorActivityId(
+		long mirrorActivityId, int start, int end,
+		OrderByComparator<SocialActivity> orderByComparator) {
+
+		return findByMirrorActivityId(
+			mirrorActivityId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the social activities where mirrorActivityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SocialActivityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param start the lower bound of the range of social activities
+	 * @param end the upper bound of the range of social activities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching social activity, or <code>null</code> if a matching social activity could not be found
+	 * @return the ordered range of matching social activities
 	 */
 	@Override
-	public SocialActivity fetchByMirrorActivityId(
-		long mirrorActivityId, boolean useFinderCache) {
+	public List<SocialActivity> findByMirrorActivityId(
+		long mirrorActivityId, int start, int end,
+		OrderByComparator<SocialActivity> orderByComparator,
+		boolean useFinderCache) {
 
 		try (SafeCloseable safeCloseable =
 				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
 					SocialActivity.class)) {
 
+			FinderPath finderPath = null;
 			Object[] finderArgs = null;
 
-			if (useFinderCache) {
-				finderArgs = new Object[] {mirrorActivityId};
+			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+
+				if (useFinderCache) {
+					finderPath =
+						_finderPathWithoutPaginationFindByMirrorActivityId;
+					finderArgs = new Object[] {mirrorActivityId};
+				}
+			}
+			else if (useFinderCache) {
+				finderPath = _finderPathWithPaginationFindByMirrorActivityId;
+				finderArgs = new Object[] {
+					mirrorActivityId, start, end, orderByComparator
+				};
 			}
 
-			Object result = null;
+			List<SocialActivity> list = null;
 
 			if (useFinderCache) {
-				result = FinderCacheUtil.getResult(
-					_finderPathFetchByMirrorActivityId, finderArgs, this);
-			}
+				list = (List<SocialActivity>)FinderCacheUtil.getResult(
+					finderPath, finderArgs, this);
 
-			if (result instanceof SocialActivity) {
-				SocialActivity socialActivity = (SocialActivity)result;
+				if ((list != null) && !list.isEmpty()) {
+					for (SocialActivity socialActivity : list) {
+						if (mirrorActivityId !=
+								socialActivity.getMirrorActivityId()) {
 
-				if (mirrorActivityId != socialActivity.getMirrorActivityId()) {
-					result = null;
+							list = null;
+
+							break;
+						}
+					}
 				}
 			}
 
-			if (result == null) {
-				StringBundler sb = new StringBundler(3);
+			if (list == null) {
+				StringBundler sb = null;
+
+				if (orderByComparator != null) {
+					sb = new StringBundler(
+						3 + (orderByComparator.getOrderByFields().length * 2));
+				}
+				else {
+					sb = new StringBundler(3);
+				}
 
 				sb.append(_SQL_SELECT_SOCIALACTIVITY_WHERE);
+
+				sb.append(_FINDER_COLUMN_MIRRORACTIVITYID_MIRRORACTIVITYID_2);
+
+				if (orderByComparator != null) {
+					appendOrderByComparator(
+						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				}
+				else {
+					sb.append(SocialActivityModelImpl.ORDER_BY_JPQL);
+				}
+
+				String sql = sb.toString();
+
+				Session session = null;
+
+				try {
+					session = openSession();
+
+					Query query = session.createQuery(sql);
+
+					QueryPos queryPos = QueryPos.getInstance(query);
+
+					queryPos.add(mirrorActivityId);
+
+					list = (List<SocialActivity>)QueryUtil.list(
+						query, getDialect(), start, end);
+
+					cacheResult(list);
+
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
+				}
+				catch (Exception exception) {
+					throw processException(exception);
+				}
+				finally {
+					closeSession(session);
+				}
+			}
+
+			return list;
+		}
+	}
+
+	/**
+	 * Returns the first social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching social activity
+	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 */
+	@Override
+	public SocialActivity findByMirrorActivityId_First(
+			long mirrorActivityId,
+			OrderByComparator<SocialActivity> orderByComparator)
+		throws NoSuchActivityException {
+
+		SocialActivity socialActivity = fetchByMirrorActivityId_First(
+			mirrorActivityId, orderByComparator);
+
+		if (socialActivity != null) {
+			return socialActivity;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("mirrorActivityId=");
+		sb.append(mirrorActivityId);
+
+		sb.append("}");
+
+		throw new NoSuchActivityException(sb.toString());
+	}
+
+	/**
+	 * Returns the first social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching social activity, or <code>null</code> if a matching social activity could not be found
+	 */
+	@Override
+	public SocialActivity fetchByMirrorActivityId_First(
+		long mirrorActivityId,
+		OrderByComparator<SocialActivity> orderByComparator) {
+
+		List<SocialActivity> list = findByMirrorActivityId(
+			mirrorActivityId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching social activity
+	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 */
+	@Override
+	public SocialActivity findByMirrorActivityId_Last(
+			long mirrorActivityId,
+			OrderByComparator<SocialActivity> orderByComparator)
+		throws NoSuchActivityException {
+
+		SocialActivity socialActivity = fetchByMirrorActivityId_Last(
+			mirrorActivityId, orderByComparator);
+
+		if (socialActivity != null) {
+			return socialActivity;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("mirrorActivityId=");
+		sb.append(mirrorActivityId);
+
+		sb.append("}");
+
+		throw new NoSuchActivityException(sb.toString());
+	}
+
+	/**
+	 * Returns the last social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching social activity, or <code>null</code> if a matching social activity could not be found
+	 */
+	@Override
+	public SocialActivity fetchByMirrorActivityId_Last(
+		long mirrorActivityId,
+		OrderByComparator<SocialActivity> orderByComparator) {
+
+		int count = countByMirrorActivityId(mirrorActivityId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<SocialActivity> list = findByMirrorActivityId(
+			mirrorActivityId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the social activities before and after the current social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param activityId the primary key of the current social activity
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next social activity
+	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 */
+	@Override
+	public SocialActivity[] findByMirrorActivityId_PrevAndNext(
+			long activityId, long mirrorActivityId,
+			OrderByComparator<SocialActivity> orderByComparator)
+		throws NoSuchActivityException {
+
+		SocialActivity socialActivity = findByPrimaryKey(activityId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			SocialActivity[] array = new SocialActivityImpl[3];
+
+			array[0] = getByMirrorActivityId_PrevAndNext(
+				session, socialActivity, mirrorActivityId, orderByComparator,
+				true);
+
+			array[1] = socialActivity;
+
+			array[2] = getByMirrorActivityId_PrevAndNext(
+				session, socialActivity, mirrorActivityId, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected SocialActivity getByMirrorActivityId_PrevAndNext(
+		Session session, SocialActivity socialActivity, long mirrorActivityId,
+		OrderByComparator<SocialActivity> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_SOCIALACTIVITY_WHERE);
+
+		sb.append(_FINDER_COLUMN_MIRRORACTIVITYID_MIRRORACTIVITYID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(SocialActivityModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(mirrorActivityId);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						socialActivity)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<SocialActivity> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the social activities where mirrorActivityId = &#63; from the database.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 */
+	@Override
+	public void removeByMirrorActivityId(long mirrorActivityId) {
+		for (SocialActivity socialActivity :
+				findByMirrorActivityId(
+					mirrorActivityId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(socialActivity);
+		}
+	}
+
+	/**
+	 * Returns the number of social activities where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @return the number of matching social activities
+	 */
+	@Override
+	public int countByMirrorActivityId(long mirrorActivityId) {
+		try (SafeCloseable safeCloseable =
+				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
+					SocialActivity.class)) {
+
+			FinderPath finderPath = _finderPathCountByMirrorActivityId;
+
+			Object[] finderArgs = new Object[] {mirrorActivityId};
+
+			Long count = (Long)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
+
+			if (count == null) {
+				StringBundler sb = new StringBundler(2);
+
+				sb.append(_SQL_COUNT_SOCIALACTIVITY_WHERE);
 
 				sb.append(_FINDER_COLUMN_MIRRORACTIVITYID_MIRRORACTIVITYID_2);
 
@@ -2226,39 +2622,9 @@ public class SocialActivityPersistenceImpl
 
 					queryPos.add(mirrorActivityId);
 
-					List<SocialActivity> list = query.list();
+					count = (Long)query.uniqueResult();
 
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							FinderCacheUtil.putResult(
-								_finderPathFetchByMirrorActivityId, finderArgs,
-								list);
-						}
-					}
-					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										mirrorActivityId
-									};
-								}
-
-								_log.warn(
-									"SocialActivityPersistenceImpl.fetchByMirrorActivityId(long, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
-						SocialActivity socialActivity = list.get(0);
-
-						result = socialActivity;
-
-						cacheResult(socialActivity);
-					}
+					FinderCacheUtil.putResult(finderPath, finderArgs, count);
 				}
 				catch (Exception exception) {
 					throw processException(exception);
@@ -2268,47 +2634,8 @@ public class SocialActivityPersistenceImpl
 				}
 			}
 
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (SocialActivity)result;
-			}
+			return count.intValue();
 		}
-	}
-
-	/**
-	 * Removes the social activity where mirrorActivityId = &#63; from the database.
-	 *
-	 * @param mirrorActivityId the mirror activity ID
-	 * @return the social activity that was removed
-	 */
-	@Override
-	public SocialActivity removeByMirrorActivityId(long mirrorActivityId)
-		throws NoSuchActivityException {
-
-		SocialActivity socialActivity = findByMirrorActivityId(
-			mirrorActivityId);
-
-		return remove(socialActivity);
-	}
-
-	/**
-	 * Returns the number of social activities where mirrorActivityId = &#63;.
-	 *
-	 * @param mirrorActivityId the mirror activity ID
-	 * @return the number of matching social activities
-	 */
-	@Override
-	public int countByMirrorActivityId(long mirrorActivityId) {
-		SocialActivity socialActivity = fetchByMirrorActivityId(
-			mirrorActivityId);
-
-		if (socialActivity == null) {
-			return 0;
-		}
-
-		return 1;
 	}
 
 	private static final String
@@ -6162,11 +6489,6 @@ public class SocialActivityPersistenceImpl
 				socialActivity);
 
 			FinderCacheUtil.putResult(
-				_finderPathFetchByMirrorActivityId,
-				new Object[] {socialActivity.getMirrorActivityId()},
-				socialActivity);
-
-			FinderCacheUtil.putResult(
 				_finderPathFetchByG_U_CD_C_C_T_R,
 				new Object[] {
 					socialActivity.getGroupId(), socialActivity.getUserId(),
@@ -6262,14 +6584,6 @@ public class SocialActivityPersistenceImpl
 					socialActivityModelImpl.getCtCollectionId())) {
 
 			Object[] args = new Object[] {
-				socialActivityModelImpl.getMirrorActivityId()
-			};
-
-			FinderCacheUtil.putResult(
-				_finderPathFetchByMirrorActivityId, args,
-				socialActivityModelImpl);
-
-			args = new Object[] {
 				socialActivityModelImpl.getGroupId(),
 				socialActivityModelImpl.getUserId(),
 				socialActivityModelImpl.getCreateDate(),
@@ -7052,10 +7366,23 @@ public class SocialActivityPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"activitySetId"},
 			false);
 
-		_finderPathFetchByMirrorActivityId = new FinderPath(
-			FINDER_CLASS_NAME_ENTITY, "fetchByMirrorActivityId",
+		_finderPathWithPaginationFindByMirrorActivityId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByMirrorActivityId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"mirrorActivityId"}, true);
+
+		_finderPathWithoutPaginationFindByMirrorActivityId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByMirrorActivityId",
 			new String[] {Long.class.getName()},
 			new String[] {"mirrorActivityId"}, true);
+
+		_finderPathCountByMirrorActivityId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByMirrorActivityId", new String[] {Long.class.getName()},
+			new String[] {"mirrorActivityId"}, false);
 
 		_finderPathWithPaginationFindByReceiverUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByReceiverUserId",

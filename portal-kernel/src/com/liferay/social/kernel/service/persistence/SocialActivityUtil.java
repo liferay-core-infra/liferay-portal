@@ -784,54 +784,169 @@ public class SocialActivityUtil {
 	}
 
 	/**
-	 * Returns the social activity where mirrorActivityId = &#63; or throws a <code>NoSuchActivityException</code> if it could not be found.
+	 * Returns all the social activities where mirrorActivityId = &#63;.
 	 *
 	 * @param mirrorActivityId the mirror activity ID
-	 * @return the matching social activity
-	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 * @return the matching social activities
 	 */
-	public static SocialActivity findByMirrorActivityId(long mirrorActivityId)
-		throws com.liferay.social.kernel.exception.NoSuchActivityException {
+	public static List<SocialActivity> findByMirrorActivityId(
+		long mirrorActivityId) {
 
 		return getPersistence().findByMirrorActivityId(mirrorActivityId);
 	}
 
 	/**
-	 * Returns the social activity where mirrorActivityId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the social activities where mirrorActivityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SocialActivityModelImpl</code>.
+	 * </p>
 	 *
 	 * @param mirrorActivityId the mirror activity ID
-	 * @return the matching social activity, or <code>null</code> if a matching social activity could not be found
+	 * @param start the lower bound of the range of social activities
+	 * @param end the upper bound of the range of social activities (not inclusive)
+	 * @return the range of matching social activities
 	 */
-	public static SocialActivity fetchByMirrorActivityId(
-		long mirrorActivityId) {
+	public static List<SocialActivity> findByMirrorActivityId(
+		long mirrorActivityId, int start, int end) {
 
-		return getPersistence().fetchByMirrorActivityId(mirrorActivityId);
+		return getPersistence().findByMirrorActivityId(
+			mirrorActivityId, start, end);
 	}
 
 	/**
-	 * Returns the social activity where mirrorActivityId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the social activities where mirrorActivityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SocialActivityModelImpl</code>.
+	 * </p>
 	 *
 	 * @param mirrorActivityId the mirror activity ID
+	 * @param start the lower bound of the range of social activities
+	 * @param end the upper bound of the range of social activities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching social activities
+	 */
+	public static List<SocialActivity> findByMirrorActivityId(
+		long mirrorActivityId, int start, int end,
+		OrderByComparator<SocialActivity> orderByComparator) {
+
+		return getPersistence().findByMirrorActivityId(
+			mirrorActivityId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the social activities where mirrorActivityId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>SocialActivityModelImpl</code>.
+	 * </p>
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param start the lower bound of the range of social activities
+	 * @param end the upper bound of the range of social activities (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching social activity, or <code>null</code> if a matching social activity could not be found
+	 * @return the ordered range of matching social activities
 	 */
-	public static SocialActivity fetchByMirrorActivityId(
-		long mirrorActivityId, boolean useFinderCache) {
+	public static List<SocialActivity> findByMirrorActivityId(
+		long mirrorActivityId, int start, int end,
+		OrderByComparator<SocialActivity> orderByComparator,
+		boolean useFinderCache) {
 
-		return getPersistence().fetchByMirrorActivityId(
-			mirrorActivityId, useFinderCache);
+		return getPersistence().findByMirrorActivityId(
+			mirrorActivityId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	 * Removes the social activity where mirrorActivityId = &#63; from the database.
+	 * Returns the first social activity in the ordered set where mirrorActivityId = &#63;.
 	 *
 	 * @param mirrorActivityId the mirror activity ID
-	 * @return the social activity that was removed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching social activity
+	 * @throws NoSuchActivityException if a matching social activity could not be found
 	 */
-	public static SocialActivity removeByMirrorActivityId(long mirrorActivityId)
+	public static SocialActivity findByMirrorActivityId_First(
+			long mirrorActivityId,
+			OrderByComparator<SocialActivity> orderByComparator)
 		throws com.liferay.social.kernel.exception.NoSuchActivityException {
 
-		return getPersistence().removeByMirrorActivityId(mirrorActivityId);
+		return getPersistence().findByMirrorActivityId_First(
+			mirrorActivityId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching social activity, or <code>null</code> if a matching social activity could not be found
+	 */
+	public static SocialActivity fetchByMirrorActivityId_First(
+		long mirrorActivityId,
+		OrderByComparator<SocialActivity> orderByComparator) {
+
+		return getPersistence().fetchByMirrorActivityId_First(
+			mirrorActivityId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching social activity
+	 * @throws NoSuchActivityException if a matching social activity could not be found
+	 */
+	public static SocialActivity findByMirrorActivityId_Last(
+			long mirrorActivityId,
+			OrderByComparator<SocialActivity> orderByComparator)
+		throws com.liferay.social.kernel.exception.NoSuchActivityException {
+
+		return getPersistence().findByMirrorActivityId_Last(
+			mirrorActivityId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching social activity, or <code>null</code> if a matching social activity could not be found
+	 */
+	public static SocialActivity fetchByMirrorActivityId_Last(
+		long mirrorActivityId,
+		OrderByComparator<SocialActivity> orderByComparator) {
+
+		return getPersistence().fetchByMirrorActivityId_Last(
+			mirrorActivityId, orderByComparator);
+	}
+
+	/**
+	 * Returns the social activities before and after the current social activity in the ordered set where mirrorActivityId = &#63;.
+	 *
+	 * @param activityId the primary key of the current social activity
+	 * @param mirrorActivityId the mirror activity ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next social activity
+	 * @throws NoSuchActivityException if a social activity with the primary key could not be found
+	 */
+	public static SocialActivity[] findByMirrorActivityId_PrevAndNext(
+			long activityId, long mirrorActivityId,
+			OrderByComparator<SocialActivity> orderByComparator)
+		throws com.liferay.social.kernel.exception.NoSuchActivityException {
+
+		return getPersistence().findByMirrorActivityId_PrevAndNext(
+			activityId, mirrorActivityId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the social activities where mirrorActivityId = &#63; from the database.
+	 *
+	 * @param mirrorActivityId the mirror activity ID
+	 */
+	public static void removeByMirrorActivityId(long mirrorActivityId) {
+		getPersistence().removeByMirrorActivityId(mirrorActivityId);
 	}
 
 	/**

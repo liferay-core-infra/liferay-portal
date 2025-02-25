@@ -442,7 +442,7 @@
 			<finder-column name="companyId" />
 			<finder-column comparator="!=" name="status" />
 		</finder>
-		<finder name="R_M" return-type="DLFolder">
+		<finder name="R_M" return-type="Collection">
 			<finder-column name="repositoryId" />
 			<finder-column name="mountPoint" />
 		</finder>

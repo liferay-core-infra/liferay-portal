@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portlet.asset.model.impl.AssetEntryImpl;
 import com.liferay.portlet.asset.model.impl.AssetEntryModelImpl;
 
@@ -3390,23 +3389,6 @@ public class AssetEntryPersistenceImpl
 						}
 					}
 					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										groupId, classUuid
-									};
-								}
-
-								_log.warn(
-									"AssetEntryPersistenceImpl.fetchByG_CU(long, String, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
 						AssetEntry assetEntry = list.get(0);
 
 						result = assetEntry;
@@ -6676,6 +6658,8 @@ public class AssetEntryPersistenceImpl
 			CTColumnResolutionType.STRICT, ctStrictColumnNames);
 
 		_mappingTableNames.add("AssetEntries_AssetTags");
+
+		_uniqueIndexColumnNames.add(new String[] {"groupId", "classUuid"});
 
 		_uniqueIndexColumnNames.add(new String[] {"classNameId", "classPK"});
 	}

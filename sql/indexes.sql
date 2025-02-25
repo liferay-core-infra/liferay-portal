@@ -32,13 +32,13 @@ create unique index IX_8C99329D on AssetCategory (vocabularyId, parentCategoryId
 create index IX_112337B8 on AssetEntries_AssetTags (companyId);
 create index IX_B2A61B55 on AssetEntries_AssetTags (tagId);
 
-create unique index IX_7BF8337B on AssetEntry (classNameId, classPK, ctCollectionId);
 create index IX_23280E2 on AssetEntry (classNameId, companyId);
+create unique index IX_750F67F on AssetEntry (classNameId, ctCollectionId, classPK);
 create index IX_7306C60 on AssetEntry (companyId);
 create index IX_75D42FF9 on AssetEntry (expirationDate);
 create index IX_6418BB52 on AssetEntry (groupId, classNameId, publishDate, expirationDate);
 create index IX_82C4BEF6 on AssetEntry (groupId, classNameId, visible);
-create index IX_1EBA6821 on AssetEntry (groupId, classUuid[$COLUMN_LENGTH:75$]);
+create unique index IX_3F110F03 on AssetEntry (groupId, ctCollectionId, classUuid[$COLUMN_LENGTH:75$]);
 create index IX_FEC4A201 on AssetEntry (layoutUuid[$COLUMN_LENGTH:75$]);
 create index IX_2E4E3885 on AssetEntry (publishDate);
 create index IX_9029E15A on AssetEntry (visible);

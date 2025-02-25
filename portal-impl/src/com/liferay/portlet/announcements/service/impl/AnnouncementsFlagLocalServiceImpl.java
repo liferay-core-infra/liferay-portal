@@ -5,8 +5,12 @@
 
 package com.liferay.portlet.announcements.service.impl;
 
+import com.liferay.announcements.kernel.exception.NoSuchFlagException;
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portlet.announcements.service.base.AnnouncementsFlagLocalServiceBaseImpl;
 
 import java.util.Date;
@@ -60,7 +64,27 @@ public class AnnouncementsFlagLocalServiceImpl
 	public AnnouncementsFlag getFlag(long userId, long entryId, int value)
 		throws PortalException {
 
-		return announcementsFlagPersistence.findByU_E_V(userId, entryId, value);
+		List<AnnouncementsFlag> announcementsFlags =
+			announcementsFlagPersistence.findByU_E_V(userId, entryId, value);
+
+		if (announcementsFlags.isEmpty()) {
+			throw new NoSuchFlagException(
+				StringBundler.concat(
+					"No announcements flag was found for user ID ", userId,
+					", entry ID ", entryId, " and value ", value));
+		}
+
+		if (announcementsFlags.size() > 1) {
+			_log.error(
+				StringBundler.concat(
+					"Duplicate announcements flags were found for user ID ",
+					userId, ", entry ID ", entryId, " and value ", value));
+		}
+
+		return announcementsFlags.get(announcementsFlags.size() - 1);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AnnouncementsFlagLocalServiceImpl.class);
 
 }

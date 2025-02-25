@@ -360,31 +360,6 @@ public class SocialActivityServiceImpl extends SocialActivityServiceBaseImpl {
 	}
 
 	/**
-	 * Returns the activity that has the mirror activity.
-	 *
-	 * @param  mirrorActivityId the primary key of the mirror activity
-	 * @return Returns the mirror activity
-	 */
-	@Override
-	public SocialActivity getMirrorActivity(long mirrorActivityId)
-		throws PortalException {
-
-		SocialActivity activity = socialActivityLocalService.getMirrorActivity(
-			mirrorActivityId);
-
-		if (!hasPermission(
-				activity,
-				_socialActivityInterpreterLocalService.getActivityInterpreters(
-					StringPool.BLANK))) {
-
-			throw new PrincipalException.MustHavePermission(
-				0, SocialActivity.class.getName(), mirrorActivityId);
-		}
-
-		return activity;
-	}
-
-	/**
 	 * Returns a range of all the activities done in the organization. This
 	 * method only finds activities without mirrors.
 	 *

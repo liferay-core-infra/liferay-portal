@@ -51,7 +51,7 @@
 		<finder name="ActivitySetId" return-type="Collection">
 			<finder-column name="activitySetId" />
 		</finder>
-		<finder name="MirrorActivityId" return-type="SocialActivity">
+		<finder name="MirrorActivityId" return-type="Collection">
 			<finder-column name="mirrorActivityId" />
 		</finder>
 		<finder name="ReceiverUserId" return-type="Collection">

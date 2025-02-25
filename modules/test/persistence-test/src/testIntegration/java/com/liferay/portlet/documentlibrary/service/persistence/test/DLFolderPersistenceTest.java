@@ -778,17 +778,6 @@ public class DLFolderPersistenceTest {
 				new Class<?>[] {String.class}, "groupId"));
 
 		Assert.assertEquals(
-			Long.valueOf(dlFolder.getRepositoryId()),
-			ReflectionTestUtil.<Long>invoke(
-				dlFolder, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "repositoryId"));
-		Assert.assertEquals(
-			Boolean.valueOf(dlFolder.getMountPoint()),
-			ReflectionTestUtil.<Boolean>invoke(
-				dlFolder, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "mountPoint"));
-
-		Assert.assertEquals(
 			Long.valueOf(dlFolder.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
 				dlFolder, "getColumnOriginalValue",

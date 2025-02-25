@@ -1573,58 +1573,181 @@ public class DLFolderUtil {
 	}
 
 	/**
-	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
+	 * Returns all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
-	 * @return the matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @return the matching document library folders
 	 */
-	public static DLFolder findByR_M(long repositoryId, boolean mountPoint)
-		throws com.liferay.document.library.kernel.exception.
-			NoSuchFolderException {
+	public static List<DLFolder> findByR_M(
+		long repositoryId, boolean mountPoint) {
 
 		return getPersistence().findByR_M(repositoryId, mountPoint);
 	}
 
 	/**
-	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DLFolderModelImpl</code>.
+	 * </p>
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
-	 * @return the matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 * @param start the lower bound of the range of document library folders
+	 * @param end the upper bound of the range of document library folders (not inclusive)
+	 * @return the range of matching document library folders
 	 */
-	public static DLFolder fetchByR_M(long repositoryId, boolean mountPoint) {
-		return getPersistence().fetchByR_M(repositoryId, mountPoint);
+	public static List<DLFolder> findByR_M(
+		long repositoryId, boolean mountPoint, int start, int end) {
+
+		return getPersistence().findByR_M(repositoryId, mountPoint, start, end);
 	}
 
 	/**
-	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DLFolderModelImpl</code>.
+	 * </p>
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
+	 * @param start the lower bound of the range of document library folders
+	 * @param end the upper bound of the range of document library folders (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching document library folders
+	 */
+	public static List<DLFolder> findByR_M(
+		long repositoryId, boolean mountPoint, int start, int end,
+		OrderByComparator<DLFolder> orderByComparator) {
+
+		return getPersistence().findByR_M(
+			repositoryId, mountPoint, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DLFolderModelImpl</code>.
+	 * </p>
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param start the lower bound of the range of document library folders
+	 * @param end the upper bound of the range of document library folders (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 * @return the ordered range of matching document library folders
 	 */
-	public static DLFolder fetchByR_M(
-		long repositoryId, boolean mountPoint, boolean useFinderCache) {
+	public static List<DLFolder> findByR_M(
+		long repositoryId, boolean mountPoint, int start, int end,
+		OrderByComparator<DLFolder> orderByComparator, boolean useFinderCache) {
 
-		return getPersistence().fetchByR_M(
-			repositoryId, mountPoint, useFinderCache);
+		return getPersistence().findByR_M(
+			repositoryId, mountPoint, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
-	 * Removes the document library folder where repositoryId = &#63; and mountPoint = &#63; from the database.
+	 * Returns the first document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
-	 * @return the document library folder that was removed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching document library folder
+	 * @throws NoSuchFolderException if a matching document library folder could not be found
 	 */
-	public static DLFolder removeByR_M(long repositoryId, boolean mountPoint)
+	public static DLFolder findByR_M_First(
+			long repositoryId, boolean mountPoint,
+			OrderByComparator<DLFolder> orderByComparator)
 		throws com.liferay.document.library.kernel.exception.
 			NoSuchFolderException {
 
-		return getPersistence().removeByR_M(repositoryId, mountPoint);
+		return getPersistence().findByR_M_First(
+			repositoryId, mountPoint, orderByComparator);
+	}
+
+	/**
+	 * Returns the first document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 */
+	public static DLFolder fetchByR_M_First(
+		long repositoryId, boolean mountPoint,
+		OrderByComparator<DLFolder> orderByComparator) {
+
+		return getPersistence().fetchByR_M_First(
+			repositoryId, mountPoint, orderByComparator);
+	}
+
+	/**
+	 * Returns the last document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching document library folder
+	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 */
+	public static DLFolder findByR_M_Last(
+			long repositoryId, boolean mountPoint,
+			OrderByComparator<DLFolder> orderByComparator)
+		throws com.liferay.document.library.kernel.exception.
+			NoSuchFolderException {
+
+		return getPersistence().findByR_M_Last(
+			repositoryId, mountPoint, orderByComparator);
+	}
+
+	/**
+	 * Returns the last document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 */
+	public static DLFolder fetchByR_M_Last(
+		long repositoryId, boolean mountPoint,
+		OrderByComparator<DLFolder> orderByComparator) {
+
+		return getPersistence().fetchByR_M_Last(
+			repositoryId, mountPoint, orderByComparator);
+	}
+
+	/**
+	 * Returns the document library folders before and after the current document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param folderId the primary key of the current document library folder
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next document library folder
+	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 */
+	public static DLFolder[] findByR_M_PrevAndNext(
+			long folderId, long repositoryId, boolean mountPoint,
+			OrderByComparator<DLFolder> orderByComparator)
+		throws com.liferay.document.library.kernel.exception.
+			NoSuchFolderException {
+
+		return getPersistence().findByR_M_PrevAndNext(
+			folderId, repositoryId, mountPoint, orderByComparator);
+	}
+
+	/**
+	 * Removes all the document library folders where repositoryId = &#63; and mountPoint = &#63; from the database.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 */
+	public static void removeByR_M(long repositoryId, boolean mountPoint) {
+		getPersistence().removeByR_M(repositoryId, mountPoint);
 	}
 
 	/**

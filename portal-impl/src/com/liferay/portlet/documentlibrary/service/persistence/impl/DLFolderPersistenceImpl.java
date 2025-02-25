@@ -4793,100 +4793,514 @@ public class DLFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_C_NOTS_STATUS_2 =
 		"dlFolder.status != ?";
 
-	private FinderPath _finderPathFetchByR_M;
+	private FinderPath _finderPathWithPaginationFindByR_M;
+	private FinderPath _finderPathWithoutPaginationFindByR_M;
+	private FinderPath _finderPathCountByR_M;
 
 	/**
-	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
+	 * Returns all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
-	 * @return the matching document library folder
-	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 * @return the matching document library folders
 	 */
 	@Override
-	public DLFolder findByR_M(long repositoryId, boolean mountPoint)
-		throws NoSuchFolderException {
-
-		DLFolder dlFolder = fetchByR_M(repositoryId, mountPoint);
-
-		if (dlFolder == null) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			sb.append("repositoryId=");
-			sb.append(repositoryId);
-
-			sb.append(", mountPoint=");
-			sb.append(mountPoint);
-
-			sb.append("}");
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
-			}
-
-			throw new NoSuchFolderException(sb.toString());
-		}
-
-		return dlFolder;
+	public List<DLFolder> findByR_M(long repositoryId, boolean mountPoint) {
+		return findByR_M(
+			repositoryId, mountPoint, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
 	}
 
 	/**
-	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DLFolderModelImpl</code>.
+	 * </p>
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
-	 * @return the matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 * @param start the lower bound of the range of document library folders
+	 * @param end the upper bound of the range of document library folders (not inclusive)
+	 * @return the range of matching document library folders
 	 */
 	@Override
-	public DLFolder fetchByR_M(long repositoryId, boolean mountPoint) {
-		return fetchByR_M(repositoryId, mountPoint, true);
+	public List<DLFolder> findByR_M(
+		long repositoryId, boolean mountPoint, int start, int end) {
+
+		return findByR_M(repositoryId, mountPoint, start, end, null);
 	}
 
 	/**
-	 * Returns the document library folder where repositoryId = &#63; and mountPoint = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DLFolderModelImpl</code>.
+	 * </p>
 	 *
 	 * @param repositoryId the repository ID
 	 * @param mountPoint the mount point
+	 * @param start the lower bound of the range of document library folders
+	 * @param end the upper bound of the range of document library folders (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching document library folders
+	 */
+	@Override
+	public List<DLFolder> findByR_M(
+		long repositoryId, boolean mountPoint, int start, int end,
+		OrderByComparator<DLFolder> orderByComparator) {
+
+		return findByR_M(
+			repositoryId, mountPoint, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the document library folders where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>DLFolderModelImpl</code>.
+	 * </p>
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param start the lower bound of the range of document library folders
+	 * @param end the upper bound of the range of document library folders (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 * @return the ordered range of matching document library folders
 	 */
 	@Override
-	public DLFolder fetchByR_M(
-		long repositoryId, boolean mountPoint, boolean useFinderCache) {
+	public List<DLFolder> findByR_M(
+		long repositoryId, boolean mountPoint, int start, int end,
+		OrderByComparator<DLFolder> orderByComparator, boolean useFinderCache) {
 
 		try (SafeCloseable safeCloseable =
 				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
 					DLFolder.class)) {
 
+			FinderPath finderPath = null;
 			Object[] finderArgs = null;
 
-			if (useFinderCache) {
-				finderArgs = new Object[] {repositoryId, mountPoint};
+			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+
+				if (useFinderCache) {
+					finderPath = _finderPathWithoutPaginationFindByR_M;
+					finderArgs = new Object[] {repositoryId, mountPoint};
+				}
+			}
+			else if (useFinderCache) {
+				finderPath = _finderPathWithPaginationFindByR_M;
+				finderArgs = new Object[] {
+					repositoryId, mountPoint, start, end, orderByComparator
+				};
 			}
 
-			Object result = null;
+			List<DLFolder> list = null;
 
 			if (useFinderCache) {
-				result = FinderCacheUtil.getResult(
-					_finderPathFetchByR_M, finderArgs, this);
-			}
+				list = (List<DLFolder>)FinderCacheUtil.getResult(
+					finderPath, finderArgs, this);
 
-			if (result instanceof DLFolder) {
-				DLFolder dlFolder = (DLFolder)result;
+				if ((list != null) && !list.isEmpty()) {
+					for (DLFolder dlFolder : list) {
+						if ((repositoryId != dlFolder.getRepositoryId()) ||
+							(mountPoint != dlFolder.isMountPoint())) {
 
-				if ((repositoryId != dlFolder.getRepositoryId()) ||
-					(mountPoint != dlFolder.isMountPoint())) {
+							list = null;
 
-					result = null;
+							break;
+						}
+					}
 				}
 			}
 
-			if (result == null) {
-				StringBundler sb = new StringBundler(4);
+			if (list == null) {
+				StringBundler sb = null;
+
+				if (orderByComparator != null) {
+					sb = new StringBundler(
+						4 + (orderByComparator.getOrderByFields().length * 2));
+				}
+				else {
+					sb = new StringBundler(4);
+				}
 
 				sb.append(_SQL_SELECT_DLFOLDER_WHERE);
+
+				sb.append(_FINDER_COLUMN_R_M_REPOSITORYID_2);
+
+				sb.append(_FINDER_COLUMN_R_M_MOUNTPOINT_2);
+
+				if (orderByComparator != null) {
+					appendOrderByComparator(
+						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				}
+				else {
+					sb.append(DLFolderModelImpl.ORDER_BY_JPQL);
+				}
+
+				String sql = sb.toString();
+
+				Session session = null;
+
+				try {
+					session = openSession();
+
+					Query query = session.createQuery(sql);
+
+					QueryPos queryPos = QueryPos.getInstance(query);
+
+					queryPos.add(repositoryId);
+
+					queryPos.add(mountPoint);
+
+					list = (List<DLFolder>)QueryUtil.list(
+						query, getDialect(), start, end);
+
+					cacheResult(list);
+
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
+				}
+				catch (Exception exception) {
+					throw processException(exception);
+				}
+				finally {
+					closeSession(session);
+				}
+			}
+
+			return list;
+		}
+	}
+
+	/**
+	 * Returns the first document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching document library folder
+	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 */
+	@Override
+	public DLFolder findByR_M_First(
+			long repositoryId, boolean mountPoint,
+			OrderByComparator<DLFolder> orderByComparator)
+		throws NoSuchFolderException {
+
+		DLFolder dlFolder = fetchByR_M_First(
+			repositoryId, mountPoint, orderByComparator);
+
+		if (dlFolder != null) {
+			return dlFolder;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("repositoryId=");
+		sb.append(repositoryId);
+
+		sb.append(", mountPoint=");
+		sb.append(mountPoint);
+
+		sb.append("}");
+
+		throw new NoSuchFolderException(sb.toString());
+	}
+
+	/**
+	 * Returns the first document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 */
+	@Override
+	public DLFolder fetchByR_M_First(
+		long repositoryId, boolean mountPoint,
+		OrderByComparator<DLFolder> orderByComparator) {
+
+		List<DLFolder> list = findByR_M(
+			repositoryId, mountPoint, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching document library folder
+	 * @throws NoSuchFolderException if a matching document library folder could not be found
+	 */
+	@Override
+	public DLFolder findByR_M_Last(
+			long repositoryId, boolean mountPoint,
+			OrderByComparator<DLFolder> orderByComparator)
+		throws NoSuchFolderException {
+
+		DLFolder dlFolder = fetchByR_M_Last(
+			repositoryId, mountPoint, orderByComparator);
+
+		if (dlFolder != null) {
+			return dlFolder;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("repositoryId=");
+		sb.append(repositoryId);
+
+		sb.append(", mountPoint=");
+		sb.append(mountPoint);
+
+		sb.append("}");
+
+		throw new NoSuchFolderException(sb.toString());
+	}
+
+	/**
+	 * Returns the last document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	 */
+	@Override
+	public DLFolder fetchByR_M_Last(
+		long repositoryId, boolean mountPoint,
+		OrderByComparator<DLFolder> orderByComparator) {
+
+		int count = countByR_M(repositoryId, mountPoint);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<DLFolder> list = findByR_M(
+			repositoryId, mountPoint, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the document library folders before and after the current document library folder in the ordered set where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param folderId the primary key of the current document library folder
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next document library folder
+	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
+	 */
+	@Override
+	public DLFolder[] findByR_M_PrevAndNext(
+			long folderId, long repositoryId, boolean mountPoint,
+			OrderByComparator<DLFolder> orderByComparator)
+		throws NoSuchFolderException {
+
+		DLFolder dlFolder = findByPrimaryKey(folderId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			DLFolder[] array = new DLFolderImpl[3];
+
+			array[0] = getByR_M_PrevAndNext(
+				session, dlFolder, repositoryId, mountPoint, orderByComparator,
+				true);
+
+			array[1] = dlFolder;
+
+			array[2] = getByR_M_PrevAndNext(
+				session, dlFolder, repositoryId, mountPoint, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected DLFolder getByR_M_PrevAndNext(
+		Session session, DLFolder dlFolder, long repositoryId,
+		boolean mountPoint, OrderByComparator<DLFolder> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(4);
+		}
+
+		sb.append(_SQL_SELECT_DLFOLDER_WHERE);
+
+		sb.append(_FINDER_COLUMN_R_M_REPOSITORYID_2);
+
+		sb.append(_FINDER_COLUMN_R_M_MOUNTPOINT_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(DLFolderModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(repositoryId);
+
+		queryPos.add(mountPoint);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(dlFolder)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<DLFolder> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the document library folders where repositoryId = &#63; and mountPoint = &#63; from the database.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 */
+	@Override
+	public void removeByR_M(long repositoryId, boolean mountPoint) {
+		for (DLFolder dlFolder :
+				findByR_M(
+					repositoryId, mountPoint, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
+			remove(dlFolder);
+		}
+	}
+
+	/**
+	 * Returns the number of document library folders where repositoryId = &#63; and mountPoint = &#63;.
+	 *
+	 * @param repositoryId the repository ID
+	 * @param mountPoint the mount point
+	 * @return the number of matching document library folders
+	 */
+	@Override
+	public int countByR_M(long repositoryId, boolean mountPoint) {
+		try (SafeCloseable safeCloseable =
+				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
+					DLFolder.class)) {
+
+			FinderPath finderPath = _finderPathCountByR_M;
+
+			Object[] finderArgs = new Object[] {repositoryId, mountPoint};
+
+			Long count = (Long)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
+
+			if (count == null) {
+				StringBundler sb = new StringBundler(3);
+
+				sb.append(_SQL_COUNT_DLFOLDER_WHERE);
 
 				sb.append(_FINDER_COLUMN_R_M_REPOSITORYID_2);
 
@@ -4907,38 +5321,9 @@ public class DLFolderPersistenceImpl
 
 					queryPos.add(mountPoint);
 
-					List<DLFolder> list = query.list();
+					count = (Long)query.uniqueResult();
 
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							FinderCacheUtil.putResult(
-								_finderPathFetchByR_M, finderArgs, list);
-						}
-					}
-					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										repositoryId, mountPoint
-									};
-								}
-
-								_log.warn(
-									"DLFolderPersistenceImpl.fetchByR_M(long, boolean, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
-						DLFolder dlFolder = list.get(0);
-
-						result = dlFolder;
-
-						cacheResult(dlFolder);
-					}
+					FinderCacheUtil.putResult(finderPath, finderArgs, count);
 				}
 				catch (Exception exception) {
 					throw processException(exception);
@@ -4948,47 +5333,8 @@ public class DLFolderPersistenceImpl
 				}
 			}
 
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (DLFolder)result;
-			}
+			return count.intValue();
 		}
-	}
-
-	/**
-	 * Removes the document library folder where repositoryId = &#63; and mountPoint = &#63; from the database.
-	 *
-	 * @param repositoryId the repository ID
-	 * @param mountPoint the mount point
-	 * @return the document library folder that was removed
-	 */
-	@Override
-	public DLFolder removeByR_M(long repositoryId, boolean mountPoint)
-		throws NoSuchFolderException {
-
-		DLFolder dlFolder = findByR_M(repositoryId, mountPoint);
-
-		return remove(dlFolder);
-	}
-
-	/**
-	 * Returns the number of document library folders where repositoryId = &#63; and mountPoint = &#63;.
-	 *
-	 * @param repositoryId the repository ID
-	 * @param mountPoint the mount point
-	 * @return the number of matching document library folders
-	 */
-	@Override
-	public int countByR_M(long repositoryId, boolean mountPoint) {
-		DLFolder dlFolder = fetchByR_M(repositoryId, mountPoint);
-
-		if (dlFolder == null) {
-			return 0;
-		}
-
-		return 1;
 	}
 
 	private static final String _FINDER_COLUMN_R_M_REPOSITORYID_2 =
@@ -14123,13 +14469,6 @@ public class DLFolderPersistenceImpl
 				dlFolder);
 
 			FinderCacheUtil.putResult(
-				_finderPathFetchByR_M,
-				new Object[] {
-					dlFolder.getRepositoryId(), dlFolder.isMountPoint()
-				},
-				dlFolder);
-
-			FinderCacheUtil.putResult(
 				_finderPathFetchByG_P_N,
 				new Object[] {
 					dlFolder.getGroupId(), dlFolder.getParentFolderId(),
@@ -14231,14 +14570,6 @@ public class DLFolderPersistenceImpl
 
 			FinderCacheUtil.putResult(
 				_finderPathFetchByUUID_G, args, dlFolderModelImpl);
-
-			args = new Object[] {
-				dlFolderModelImpl.getRepositoryId(),
-				dlFolderModelImpl.isMountPoint()
-			};
-
-			FinderCacheUtil.putResult(
-				_finderPathFetchByR_M, args, dlFolderModelImpl);
 
 			args = new Object[] {
 				dlFolderModelImpl.getGroupId(),
@@ -15542,10 +15873,24 @@ public class DLFolderPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"companyId", "status"}, false);
 
-		_finderPathFetchByR_M = new FinderPath(
-			FINDER_CLASS_NAME_ENTITY, "fetchByR_M",
+		_finderPathWithPaginationFindByR_M = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_M",
+			new String[] {
+				Long.class.getName(), Boolean.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			},
+			new String[] {"repositoryId", "mountPoint"}, true);
+
+		_finderPathWithoutPaginationFindByR_M = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_M",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
 			new String[] {"repositoryId", "mountPoint"}, true);
+
+		_finderPathCountByR_M = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_M",
+			new String[] {Long.class.getName(), Boolean.class.getName()},
+			new String[] {"repositoryId", "mountPoint"}, false);
 
 		_finderPathWithPaginationFindByR_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_P",

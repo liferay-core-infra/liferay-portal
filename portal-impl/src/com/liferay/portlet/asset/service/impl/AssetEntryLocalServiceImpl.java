@@ -6,6 +6,7 @@
 package com.liferay.portlet.asset.service.impl;
 
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.exception.NoSuchEntryException;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntries_AssetTagsTable;
 import com.liferay.asset.kernel.model.AssetEntry;
@@ -23,6 +24,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -33,6 +35,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mass.delete.MassDeleteCacheThreadLocal;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -247,7 +251,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 	@Override
 	public AssetEntry fetchEntry(long groupId, String classUuid) {
-		return assetEntryPersistence.fetchByG_CU(groupId, classUuid);
+		return _fetchEntryByG_CU(groupId, classUuid);
 	}
 
 	@Override
@@ -341,7 +345,16 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	public AssetEntry getEntry(long groupId, String classUuid)
 		throws PortalException {
 
-		return assetEntryPersistence.findByG_CU(groupId, classUuid);
+		AssetEntry assetEntry = _fetchEntryByG_CU(groupId, classUuid);
+
+		if (assetEntry == null) {
+			throw new NoSuchEntryException(
+				StringBundler.concat(
+					"No entry exists for group ID ", groupId,
+					" and class UUID ", classUuid));
+		}
+
+		return assetEntry;
 	}
 
 	@Override
@@ -1401,6 +1414,28 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		return entry;
 	}
 
+	private AssetEntry _fetchEntryByG_CU(long groupId, String classUuid) {
+		if (groupId <= 0) {
+			return null;
+		}
+
+		List<AssetEntry> assetEntries = assetEntryPersistence.findByG_CU(
+			groupId, classUuid);
+
+		if (assetEntries.isEmpty()) {
+			return null;
+		}
+
+		if (assetEntries.size() > 1) {
+			_log.error(
+				StringBundler.concat(
+					"Multiple entries are mapped to group ID ", groupId,
+					" and class UUID ", classUuid));
+		}
+
+		return assetEntries.get(assetEntries.size() - 1);
+	}
+
 	private List<AssetEntryValidator> _getAssetEntryValidators(
 		String className) {
 
@@ -1471,6 +1506,9 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntryLocalServiceImpl.class);
 
 	private static final CentralizedThreadLocal
 		<Function<AssetEntry, AssetEntry>> _removeFunctionThreadLocal =

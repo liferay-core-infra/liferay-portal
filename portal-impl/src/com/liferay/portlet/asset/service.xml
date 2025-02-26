@@ -153,7 +153,7 @@
 		<finder name="LayoutUuid" return-type="Collection">
 			<finder-column name="layoutUuid" />
 		</finder>
-		<finder name="G_CU" return-type="AssetEntry">
+		<finder name="G_CU" return-type="Collection">
 			<finder-column name="groupId" />
 			<finder-column name="classUuid" />
 		</finder>

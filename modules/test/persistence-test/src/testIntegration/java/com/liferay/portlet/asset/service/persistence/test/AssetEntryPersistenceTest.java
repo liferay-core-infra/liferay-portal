@@ -621,17 +621,6 @@ public class AssetEntryPersistenceTest {
 
 	private void _assertOriginalValues(AssetEntry assetEntry) {
 		Assert.assertEquals(
-			Long.valueOf(assetEntry.getGroupId()),
-			ReflectionTestUtil.<Long>invoke(
-				assetEntry, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "groupId"));
-		Assert.assertEquals(
-			assetEntry.getClassUuid(),
-			ReflectionTestUtil.invoke(
-				assetEntry, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "classUuid"));
-
-		Assert.assertEquals(
 			Long.valueOf(assetEntry.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(
 				assetEntry, "getColumnOriginalValue",

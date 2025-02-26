@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portlet.asset.model.impl.AssetEntryImpl;
 import com.liferay.portlet.asset.model.impl.AssetEntryModelImpl;
 
@@ -3254,68 +3253,86 @@ public class AssetEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_LAYOUTUUID_LAYOUTUUID_3 =
 		"(assetEntry.layoutUuid IS NULL OR assetEntry.layoutUuid = '')";
 
-	private FinderPath _finderPathFetchByG_CU;
+	private FinderPath _finderPathWithPaginationFindByG_CU;
+	private FinderPath _finderPathWithoutPaginationFindByG_CU;
+	private FinderPath _finderPathCountByG_CU;
 
 	/**
-	 * Returns the asset entry where groupId = &#63; and classUuid = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
+	 * Returns all the asset entries where groupId = &#63; and classUuid = &#63;.
 	 *
 	 * @param groupId the group ID
 	 * @param classUuid the class uuid
-	 * @return the matching asset entry
-	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 * @return the matching asset entries
 	 */
 	@Override
-	public AssetEntry findByG_CU(long groupId, String classUuid)
-		throws NoSuchEntryException {
-
-		AssetEntry assetEntry = fetchByG_CU(groupId, classUuid);
-
-		if (assetEntry == null) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			sb.append("groupId=");
-			sb.append(groupId);
-
-			sb.append(", classUuid=");
-			sb.append(classUuid);
-
-			sb.append("}");
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
-			}
-
-			throw new NoSuchEntryException(sb.toString());
-		}
-
-		return assetEntry;
+	public List<AssetEntry> findByG_CU(long groupId, String classUuid) {
+		return findByG_CU(
+			groupId, classUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns the asset entry where groupId = &#63; and classUuid = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the asset entries where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AssetEntryModelImpl</code>.
+	 * </p>
 	 *
 	 * @param groupId the group ID
 	 * @param classUuid the class uuid
-	 * @return the matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	 * @param start the lower bound of the range of asset entries
+	 * @param end the upper bound of the range of asset entries (not inclusive)
+	 * @return the range of matching asset entries
 	 */
 	@Override
-	public AssetEntry fetchByG_CU(long groupId, String classUuid) {
-		return fetchByG_CU(groupId, classUuid, true);
+	public List<AssetEntry> findByG_CU(
+		long groupId, String classUuid, int start, int end) {
+
+		return findByG_CU(groupId, classUuid, start, end, null);
 	}
 
 	/**
-	 * Returns the asset entry where groupId = &#63; and classUuid = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the asset entries where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AssetEntryModelImpl</code>.
+	 * </p>
 	 *
 	 * @param groupId the group ID
 	 * @param classUuid the class uuid
+	 * @param start the lower bound of the range of asset entries
+	 * @param end the upper bound of the range of asset entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching asset entries
+	 */
+	@Override
+	public List<AssetEntry> findByG_CU(
+		long groupId, String classUuid, int start, int end,
+		OrderByComparator<AssetEntry> orderByComparator) {
+
+		return findByG_CU(
+			groupId, classUuid, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the asset entries where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AssetEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 * @param start the lower bound of the range of asset entries
+	 * @param end the upper bound of the range of asset entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	 * @return the ordered range of matching asset entries
 	 */
 	@Override
-	public AssetEntry fetchByG_CU(
-		long groupId, String classUuid, boolean useFinderCache) {
+	public List<AssetEntry> findByG_CU(
+		long groupId, String classUuid, int start, int end,
+		OrderByComparator<AssetEntry> orderByComparator,
+		boolean useFinderCache) {
 
 		try (SafeCloseable safeCloseable =
 				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
@@ -3323,33 +3340,454 @@ public class AssetEntryPersistenceImpl
 
 			classUuid = Objects.toString(classUuid, "");
 
+			FinderPath finderPath = null;
 			Object[] finderArgs = null;
 
-			if (useFinderCache) {
-				finderArgs = new Object[] {groupId, classUuid};
+			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+
+				if (useFinderCache) {
+					finderPath = _finderPathWithoutPaginationFindByG_CU;
+					finderArgs = new Object[] {groupId, classUuid};
+				}
+			}
+			else if (useFinderCache) {
+				finderPath = _finderPathWithPaginationFindByG_CU;
+				finderArgs = new Object[] {
+					groupId, classUuid, start, end, orderByComparator
+				};
 			}
 
-			Object result = null;
+			List<AssetEntry> list = null;
 
 			if (useFinderCache) {
-				result = FinderCacheUtil.getResult(
-					_finderPathFetchByG_CU, finderArgs, this);
-			}
+				list = (List<AssetEntry>)FinderCacheUtil.getResult(
+					finderPath, finderArgs, this);
 
-			if (result instanceof AssetEntry) {
-				AssetEntry assetEntry = (AssetEntry)result;
+				if ((list != null) && !list.isEmpty()) {
+					for (AssetEntry assetEntry : list) {
+						if ((groupId != assetEntry.getGroupId()) ||
+							!classUuid.equals(assetEntry.getClassUuid())) {
 
-				if ((groupId != assetEntry.getGroupId()) ||
-					!Objects.equals(classUuid, assetEntry.getClassUuid())) {
+							list = null;
 
-					result = null;
+							break;
+						}
+					}
 				}
 			}
 
-			if (result == null) {
-				StringBundler sb = new StringBundler(4);
+			if (list == null) {
+				StringBundler sb = null;
+
+				if (orderByComparator != null) {
+					sb = new StringBundler(
+						4 + (orderByComparator.getOrderByFields().length * 2));
+				}
+				else {
+					sb = new StringBundler(4);
+				}
 
 				sb.append(_SQL_SELECT_ASSETENTRY_WHERE);
+
+				sb.append(_FINDER_COLUMN_G_CU_GROUPID_2);
+
+				boolean bindClassUuid = false;
+
+				if (classUuid.isEmpty()) {
+					sb.append(_FINDER_COLUMN_G_CU_CLASSUUID_3);
+				}
+				else {
+					bindClassUuid = true;
+
+					sb.append(_FINDER_COLUMN_G_CU_CLASSUUID_2);
+				}
+
+				if (orderByComparator != null) {
+					appendOrderByComparator(
+						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				}
+				else {
+					sb.append(AssetEntryModelImpl.ORDER_BY_JPQL);
+				}
+
+				String sql = sb.toString();
+
+				Session session = null;
+
+				try {
+					session = openSession();
+
+					Query query = session.createQuery(sql);
+
+					QueryPos queryPos = QueryPos.getInstance(query);
+
+					queryPos.add(groupId);
+
+					if (bindClassUuid) {
+						queryPos.add(classUuid);
+					}
+
+					list = (List<AssetEntry>)QueryUtil.list(
+						query, getDialect(), start, end);
+
+					cacheResult(list);
+
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
+				}
+				catch (Exception exception) {
+					throw processException(exception);
+				}
+				finally {
+					closeSession(session);
+				}
+			}
+
+			return list;
+		}
+	}
+
+	/**
+	 * Returns the first asset entry in the ordered set where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching asset entry
+	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 */
+	@Override
+	public AssetEntry findByG_CU_First(
+			long groupId, String classUuid,
+			OrderByComparator<AssetEntry> orderByComparator)
+		throws NoSuchEntryException {
+
+		AssetEntry assetEntry = fetchByG_CU_First(
+			groupId, classUuid, orderByComparator);
+
+		if (assetEntry != null) {
+			return assetEntry;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append(", classUuid=");
+		sb.append(classUuid);
+
+		sb.append("}");
+
+		throw new NoSuchEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the first asset entry in the ordered set where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	 */
+	@Override
+	public AssetEntry fetchByG_CU_First(
+		long groupId, String classUuid,
+		OrderByComparator<AssetEntry> orderByComparator) {
+
+		List<AssetEntry> list = findByG_CU(
+			groupId, classUuid, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last asset entry in the ordered set where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching asset entry
+	 * @throws NoSuchEntryException if a matching asset entry could not be found
+	 */
+	@Override
+	public AssetEntry findByG_CU_Last(
+			long groupId, String classUuid,
+			OrderByComparator<AssetEntry> orderByComparator)
+		throws NoSuchEntryException {
+
+		AssetEntry assetEntry = fetchByG_CU_Last(
+			groupId, classUuid, orderByComparator);
+
+		if (assetEntry != null) {
+			return assetEntry;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("groupId=");
+		sb.append(groupId);
+
+		sb.append(", classUuid=");
+		sb.append(classUuid);
+
+		sb.append("}");
+
+		throw new NoSuchEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the last asset entry in the ordered set where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	 */
+	@Override
+	public AssetEntry fetchByG_CU_Last(
+		long groupId, String classUuid,
+		OrderByComparator<AssetEntry> orderByComparator) {
+
+		int count = countByG_CU(groupId, classUuid);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<AssetEntry> list = findByG_CU(
+			groupId, classUuid, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the asset entries before and after the current asset entry in the ordered set where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * @param entryId the primary key of the current asset entry
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next asset entry
+	 * @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	 */
+	@Override
+	public AssetEntry[] findByG_CU_PrevAndNext(
+			long entryId, long groupId, String classUuid,
+			OrderByComparator<AssetEntry> orderByComparator)
+		throws NoSuchEntryException {
+
+		classUuid = Objects.toString(classUuid, "");
+
+		AssetEntry assetEntry = findByPrimaryKey(entryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			AssetEntry[] array = new AssetEntryImpl[3];
+
+			array[0] = getByG_CU_PrevAndNext(
+				session, assetEntry, groupId, classUuid, orderByComparator,
+				true);
+
+			array[1] = assetEntry;
+
+			array[2] = getByG_CU_PrevAndNext(
+				session, assetEntry, groupId, classUuid, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected AssetEntry getByG_CU_PrevAndNext(
+		Session session, AssetEntry assetEntry, long groupId, String classUuid,
+		OrderByComparator<AssetEntry> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(4);
+		}
+
+		sb.append(_SQL_SELECT_ASSETENTRY_WHERE);
+
+		sb.append(_FINDER_COLUMN_G_CU_GROUPID_2);
+
+		boolean bindClassUuid = false;
+
+		if (classUuid.isEmpty()) {
+			sb.append(_FINDER_COLUMN_G_CU_CLASSUUID_3);
+		}
+		else {
+			bindClassUuid = true;
+
+			sb.append(_FINDER_COLUMN_G_CU_CLASSUUID_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AssetEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(groupId);
+
+		if (bindClassUuid) {
+			queryPos.add(classUuid);
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(assetEntry)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<AssetEntry> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the asset entries where groupId = &#63; and classUuid = &#63; from the database.
+	 *
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 */
+	@Override
+	public void removeByG_CU(long groupId, String classUuid) {
+		for (AssetEntry assetEntry :
+				findByG_CU(
+					groupId, classUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(assetEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of asset entries where groupId = &#63; and classUuid = &#63;.
+	 *
+	 * @param groupId the group ID
+	 * @param classUuid the class uuid
+	 * @return the number of matching asset entries
+	 */
+	@Override
+	public int countByG_CU(long groupId, String classUuid) {
+		try (SafeCloseable safeCloseable =
+				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
+					AssetEntry.class)) {
+
+			classUuid = Objects.toString(classUuid, "");
+
+			FinderPath finderPath = _finderPathCountByG_CU;
+
+			Object[] finderArgs = new Object[] {groupId, classUuid};
+
+			Long count = (Long)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
+
+			if (count == null) {
+				StringBundler sb = new StringBundler(3);
+
+				sb.append(_SQL_COUNT_ASSETENTRY_WHERE);
 
 				sb.append(_FINDER_COLUMN_G_CU_GROUPID_2);
 
@@ -3381,38 +3819,9 @@ public class AssetEntryPersistenceImpl
 						queryPos.add(classUuid);
 					}
 
-					List<AssetEntry> list = query.list();
+					count = (Long)query.uniqueResult();
 
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							FinderCacheUtil.putResult(
-								_finderPathFetchByG_CU, finderArgs, list);
-						}
-					}
-					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										groupId, classUuid
-									};
-								}
-
-								_log.warn(
-									"AssetEntryPersistenceImpl.fetchByG_CU(long, String, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
-						AssetEntry assetEntry = list.get(0);
-
-						result = assetEntry;
-
-						cacheResult(assetEntry);
-					}
+					FinderCacheUtil.putResult(finderPath, finderArgs, count);
 				}
 				catch (Exception exception) {
 					throw processException(exception);
@@ -3422,47 +3831,8 @@ public class AssetEntryPersistenceImpl
 				}
 			}
 
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (AssetEntry)result;
-			}
+			return count.intValue();
 		}
-	}
-
-	/**
-	 * Removes the asset entry where groupId = &#63; and classUuid = &#63; from the database.
-	 *
-	 * @param groupId the group ID
-	 * @param classUuid the class uuid
-	 * @return the asset entry that was removed
-	 */
-	@Override
-	public AssetEntry removeByG_CU(long groupId, String classUuid)
-		throws NoSuchEntryException {
-
-		AssetEntry assetEntry = findByG_CU(groupId, classUuid);
-
-		return remove(assetEntry);
-	}
-
-	/**
-	 * Returns the number of asset entries where groupId = &#63; and classUuid = &#63;.
-	 *
-	 * @param groupId the group ID
-	 * @param classUuid the class uuid
-	 * @return the number of matching asset entries
-	 */
-	@Override
-	public int countByG_CU(long groupId, String classUuid) {
-		AssetEntry assetEntry = fetchByG_CU(groupId, classUuid);
-
-		if (assetEntry == null) {
-			return 0;
-		}
-
-		return 1;
 	}
 
 	private static final String _FINDER_COLUMN_G_CU_GROUPID_2 =
@@ -5538,13 +5908,6 @@ public class AssetEntryPersistenceImpl
 				AssetEntryImpl.class, assetEntry.getPrimaryKey(), assetEntry);
 
 			FinderCacheUtil.putResult(
-				_finderPathFetchByG_CU,
-				new Object[] {
-					assetEntry.getGroupId(), assetEntry.getClassUuid()
-				},
-				assetEntry);
-
-			FinderCacheUtil.putResult(
 				_finderPathFetchByC_C,
 				new Object[] {
 					assetEntry.getClassNameId(), assetEntry.getClassPK()
@@ -5634,14 +5997,6 @@ public class AssetEntryPersistenceImpl
 					assetEntryModelImpl.getCtCollectionId())) {
 
 			Object[] args = new Object[] {
-				assetEntryModelImpl.getGroupId(),
-				assetEntryModelImpl.getClassUuid()
-			};
-
-			FinderCacheUtil.putResult(
-				_finderPathFetchByG_CU, args, assetEntryModelImpl);
-
-			args = new Object[] {
 				assetEntryModelImpl.getClassNameId(),
 				assetEntryModelImpl.getClassPK()
 			};
@@ -6811,10 +7166,24 @@ public class AssetEntryPersistenceImpl
 			new String[] {String.class.getName()}, new String[] {"layoutUuid"},
 			false);
 
-		_finderPathFetchByG_CU = new FinderPath(
-			FINDER_CLASS_NAME_ENTITY, "fetchByG_CU",
+		_finderPathWithPaginationFindByG_CU = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_CU",
+			new String[] {
+				Long.class.getName(), String.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			},
+			new String[] {"groupId", "classUuid"}, true);
+
+		_finderPathWithoutPaginationFindByG_CU = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_CU",
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"groupId", "classUuid"}, true);
+
+		_finderPathCountByG_CU = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_CU",
+			new String[] {Long.class.getName(), String.class.getName()},
+			new String[] {"groupId", "classUuid"}, false);
 
 		_finderPathWithPaginationFindByC_CN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_CN",

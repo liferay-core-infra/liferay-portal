@@ -5,7 +5,6 @@
 
 package com.liferay.announcements.kernel.service;
 
-import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -27,27 +26,6 @@ public class AnnouncementsFlagServiceWrapper
 		AnnouncementsFlagService announcementsFlagService) {
 
 		_announcementsFlagService = announcementsFlagService;
-	}
-
-	@Override
-	public void addFlag(long entryId, int value)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_announcementsFlagService.addFlag(entryId, value);
-	}
-
-	@Override
-	public void deleteFlag(long flagId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_announcementsFlagService.deleteFlag(flagId);
-	}
-
-	@Override
-	public AnnouncementsFlag getFlag(long entryId, int value)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _announcementsFlagService.getFlag(entryId, value);
 	}
 
 	/**

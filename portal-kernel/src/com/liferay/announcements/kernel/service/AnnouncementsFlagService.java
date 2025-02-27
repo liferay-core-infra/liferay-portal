@@ -5,7 +5,6 @@
 
 package com.liferay.announcements.kernel.service;
 
-import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -13,7 +12,6 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.transaction.Isolation;
-import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -42,13 +40,6 @@ public interface AnnouncementsFlagService extends BaseService {
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.portlet.announcements.service.impl.AnnouncementsFlagServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the announcements flag remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link AnnouncementsFlagServiceUtil} if injection and service tracking are not available.
 	 */
-	public void addFlag(long entryId, int value) throws PortalException;
-
-	public void deleteFlag(long flagId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AnnouncementsFlag getFlag(long entryId, int value)
-		throws PortalException;
 
 	/**
 	 * Returns the OSGi service identifier.

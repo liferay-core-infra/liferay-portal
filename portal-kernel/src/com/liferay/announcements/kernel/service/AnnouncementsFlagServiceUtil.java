@@ -5,9 +5,6 @@
 
 package com.liferay.announcements.kernel.service;
 
-import com.liferay.announcements.kernel.model.AnnouncementsFlag;
-import com.liferay.portal.kernel.exception.PortalException;
-
 /**
  * Provides the remote service utility for AnnouncementsFlag. This utility wraps
  * <code>com.liferay.portlet.announcements.service.impl.AnnouncementsFlagServiceImpl</code> and is an
@@ -27,26 +24,13 @@ public class AnnouncementsFlagServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portlet.announcements.service.impl.AnnouncementsFlagServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static void addFlag(long entryId, int value) throws PortalException {
-		getService().addFlag(entryId, value);
-	}
-
-	public static void deleteFlag(long flagId) throws PortalException {
-		getService().deleteFlag(flagId);
-	}
-
-	public static AnnouncementsFlag getFlag(long entryId, int value)
-		throws PortalException {
-
-		return getService().getFlag(entryId, value);
-	}
 
 	/**
 	 * Returns the OSGi service identifier.
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 

@@ -17,8 +17,6 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.Session;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -423,75 +421,6 @@ public class AnnouncementsFlagPersistenceTest {
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
 		Assert.assertEquals(0, result.size());
-	}
-
-	@Test
-	public void testResetOriginalValues() throws Exception {
-		AnnouncementsFlag newAnnouncementsFlag = addAnnouncementsFlag();
-
-		_persistence.clearCache();
-
-		_assertOriginalValues(
-			_persistence.findByPrimaryKey(
-				newAnnouncementsFlag.getPrimaryKey()));
-	}
-
-	@Test
-	public void testResetOriginalValuesWithDynamicQueryLoadFromDatabase()
-		throws Exception {
-
-		_testResetOriginalValuesWithDynamicQuery(true);
-	}
-
-	@Test
-	public void testResetOriginalValuesWithDynamicQueryLoadFromSession()
-		throws Exception {
-
-		_testResetOriginalValuesWithDynamicQuery(false);
-	}
-
-	private void _testResetOriginalValuesWithDynamicQuery(boolean clearSession)
-		throws Exception {
-
-		AnnouncementsFlag newAnnouncementsFlag = addAnnouncementsFlag();
-
-		if (clearSession) {
-			Session session = _persistence.openSession();
-
-			session.flush();
-
-			session.clear();
-		}
-
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			AnnouncementsFlag.class, _dynamicQueryClassLoader);
-
-		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq(
-				"flagId", newAnnouncementsFlag.getFlagId()));
-
-		List<AnnouncementsFlag> result = _persistence.findWithDynamicQuery(
-			dynamicQuery);
-
-		_assertOriginalValues(result.get(0));
-	}
-
-	private void _assertOriginalValues(AnnouncementsFlag announcementsFlag) {
-		Assert.assertEquals(
-			Long.valueOf(announcementsFlag.getUserId()),
-			ReflectionTestUtil.<Long>invoke(
-				announcementsFlag, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "userId"));
-		Assert.assertEquals(
-			Long.valueOf(announcementsFlag.getEntryId()),
-			ReflectionTestUtil.<Long>invoke(
-				announcementsFlag, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "entryId"));
-		Assert.assertEquals(
-			Integer.valueOf(announcementsFlag.getValue()),
-			ReflectionTestUtil.<Integer>invoke(
-				announcementsFlag, "getColumnOriginalValue",
-				new Class<?>[] {String.class}, "value"));
 	}
 
 	protected AnnouncementsFlag addAnnouncementsFlag() throws Exception {

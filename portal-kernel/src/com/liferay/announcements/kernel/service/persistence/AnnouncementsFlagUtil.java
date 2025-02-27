@@ -454,64 +454,189 @@ public class AnnouncementsFlagUtil {
 	}
 
 	/**
-	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or throws a <code>NoSuchFlagException</code> if it could not be found.
+	 * Returns all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
 	 *
 	 * @param userId the user ID
 	 * @param entryId the entry ID
 	 * @param value the value
-	 * @return the matching announcements flag
-	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 * @return the matching announcements flags
 	 */
-	public static AnnouncementsFlag findByU_E_V(
-			long userId, long entryId, int value)
-		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
+	public static List<AnnouncementsFlag> findByU_E_V(
+		long userId, long entryId, int value) {
 
 		return getPersistence().findByU_E_V(userId, entryId, value);
 	}
 
 	/**
-	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns a range of all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnnouncementsFlagModelImpl</code>.
+	 * </p>
 	 *
 	 * @param userId the user ID
 	 * @param entryId the entry ID
 	 * @param value the value
-	 * @return the matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
+	 * @param start the lower bound of the range of announcements flags
+	 * @param end the upper bound of the range of announcements flags (not inclusive)
+	 * @return the range of matching announcements flags
 	 */
-	public static AnnouncementsFlag fetchByU_E_V(
-		long userId, long entryId, int value) {
+	public static List<AnnouncementsFlag> findByU_E_V(
+		long userId, long entryId, int value, int start, int end) {
 
-		return getPersistence().fetchByU_E_V(userId, entryId, value);
+		return getPersistence().findByU_E_V(userId, entryId, value, start, end);
 	}
 
 	/**
-	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns an ordered range of all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnnouncementsFlagModelImpl</code>.
+	 * </p>
 	 *
 	 * @param userId the user ID
 	 * @param entryId the entry ID
 	 * @param value the value
+	 * @param start the lower bound of the range of announcements flags
+	 * @param end the upper bound of the range of announcements flags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching announcements flags
+	 */
+	public static List<AnnouncementsFlag> findByU_E_V(
+		long userId, long entryId, int value, int start, int end,
+		OrderByComparator<AnnouncementsFlag> orderByComparator) {
+
+		return getPersistence().findByU_E_V(
+			userId, entryId, value, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnnouncementsFlagModelImpl</code>.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param start the lower bound of the range of announcements flags
+	 * @param end the upper bound of the range of announcements flags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
+	 * @return the ordered range of matching announcements flags
 	 */
-	public static AnnouncementsFlag fetchByU_E_V(
-		long userId, long entryId, int value, boolean useFinderCache) {
+	public static List<AnnouncementsFlag> findByU_E_V(
+		long userId, long entryId, int value, int start, int end,
+		OrderByComparator<AnnouncementsFlag> orderByComparator,
+		boolean useFinderCache) {
 
-		return getPersistence().fetchByU_E_V(
-			userId, entryId, value, useFinderCache);
+		return getPersistence().findByU_E_V(
+			userId, entryId, value, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
-	 * Removes the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; from the database.
+	 * Returns the first announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
 	 *
 	 * @param userId the user ID
 	 * @param entryId the entry ID
 	 * @param value the value
-	 * @return the announcements flag that was removed
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching announcements flag
+	 * @throws NoSuchFlagException if a matching announcements flag could not be found
 	 */
-	public static AnnouncementsFlag removeByU_E_V(
-			long userId, long entryId, int value)
+	public static AnnouncementsFlag findByU_E_V_First(
+			long userId, long entryId, int value,
+			OrderByComparator<AnnouncementsFlag> orderByComparator)
 		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
 
-		return getPersistence().removeByU_E_V(userId, entryId, value);
+		return getPersistence().findByU_E_V_First(
+			userId, entryId, value, orderByComparator);
+	}
+
+	/**
+	 * Returns the first announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
+	 */
+	public static AnnouncementsFlag fetchByU_E_V_First(
+		long userId, long entryId, int value,
+		OrderByComparator<AnnouncementsFlag> orderByComparator) {
+
+		return getPersistence().fetchByU_E_V_First(
+			userId, entryId, value, orderByComparator);
+	}
+
+	/**
+	 * Returns the last announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching announcements flag
+	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 */
+	public static AnnouncementsFlag findByU_E_V_Last(
+			long userId, long entryId, int value,
+			OrderByComparator<AnnouncementsFlag> orderByComparator)
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
+
+		return getPersistence().findByU_E_V_Last(
+			userId, entryId, value, orderByComparator);
+	}
+
+	/**
+	 * Returns the last announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
+	 */
+	public static AnnouncementsFlag fetchByU_E_V_Last(
+		long userId, long entryId, int value,
+		OrderByComparator<AnnouncementsFlag> orderByComparator) {
+
+		return getPersistence().fetchByU_E_V_Last(
+			userId, entryId, value, orderByComparator);
+	}
+
+	/**
+	 * Returns the announcements flags before and after the current announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param flagId the primary key of the current announcements flag
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next announcements flag
+	 * @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	 */
+	public static AnnouncementsFlag[] findByU_E_V_PrevAndNext(
+			long flagId, long userId, long entryId, int value,
+			OrderByComparator<AnnouncementsFlag> orderByComparator)
+		throws com.liferay.announcements.kernel.exception.NoSuchFlagException {
+
+		return getPersistence().findByU_E_V_PrevAndNext(
+			flagId, userId, entryId, value, orderByComparator);
+	}
+
+	/**
+	 * Removes all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 */
+	public static void removeByU_E_V(long userId, long entryId, int value) {
+		getPersistence().removeByU_E_V(userId, entryId, value);
 	}
 
 	/**

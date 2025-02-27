@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsFlagImpl;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsFlagModelImpl;
 
@@ -1110,110 +1109,544 @@ public class AnnouncementsFlagPersistenceImpl
 	private static final String _FINDER_COLUMN_ENTRYID_ENTRYID_2 =
 		"announcementsFlag.entryId = ?";
 
-	private FinderPath _finderPathFetchByU_E_V;
+	private FinderPath _finderPathWithPaginationFindByU_E_V;
+	private FinderPath _finderPathWithoutPaginationFindByU_E_V;
+	private FinderPath _finderPathCountByU_E_V;
 
 	/**
-	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or throws a <code>NoSuchFlagException</code> if it could not be found.
+	 * Returns all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
 	 *
 	 * @param userId the user ID
 	 * @param entryId the entry ID
 	 * @param value the value
-	 * @return the matching announcements flag
-	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 * @return the matching announcements flags
 	 */
 	@Override
-	public AnnouncementsFlag findByU_E_V(long userId, long entryId, int value)
-		throws NoSuchFlagException {
-
-		AnnouncementsFlag announcementsFlag = fetchByU_E_V(
-			userId, entryId, value);
-
-		if (announcementsFlag == null) {
-			StringBundler sb = new StringBundler(8);
-
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			sb.append("userId=");
-			sb.append(userId);
-
-			sb.append(", entryId=");
-			sb.append(entryId);
-
-			sb.append(", value=");
-			sb.append(value);
-
-			sb.append("}");
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
-			}
-
-			throw new NoSuchFlagException(sb.toString());
-		}
-
-		return announcementsFlag;
-	}
-
-	/**
-	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @param entryId the entry ID
-	 * @param value the value
-	 * @return the matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
-	 */
-	@Override
-	public AnnouncementsFlag fetchByU_E_V(
+	public List<AnnouncementsFlag> findByU_E_V(
 		long userId, long entryId, int value) {
 
-		return fetchByU_E_V(userId, entryId, value, true);
+		return findByU_E_V(
+			userId, entryId, value, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns a range of all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnnouncementsFlagModelImpl</code>.
+	 * </p>
 	 *
 	 * @param userId the user ID
 	 * @param entryId the entry ID
 	 * @param value the value
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
+	 * @param start the lower bound of the range of announcements flags
+	 * @param end the upper bound of the range of announcements flags (not inclusive)
+	 * @return the range of matching announcements flags
 	 */
 	@Override
-	public AnnouncementsFlag fetchByU_E_V(
-		long userId, long entryId, int value, boolean useFinderCache) {
+	public List<AnnouncementsFlag> findByU_E_V(
+		long userId, long entryId, int value, int start, int end) {
+
+		return findByU_E_V(userId, entryId, value, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnnouncementsFlagModelImpl</code>.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param start the lower bound of the range of announcements flags
+	 * @param end the upper bound of the range of announcements flags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching announcements flags
+	 */
+	@Override
+	public List<AnnouncementsFlag> findByU_E_V(
+		long userId, long entryId, int value, int start, int end,
+		OrderByComparator<AnnouncementsFlag> orderByComparator) {
+
+		return findByU_E_V(
+			userId, entryId, value, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnnouncementsFlagModelImpl</code>.
+	 * </p>
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param start the lower bound of the range of announcements flags
+	 * @param end the upper bound of the range of announcements flags (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching announcements flags
+	 */
+	@Override
+	public List<AnnouncementsFlag> findByU_E_V(
+		long userId, long entryId, int value, int start, int end,
+		OrderByComparator<AnnouncementsFlag> orderByComparator,
+		boolean useFinderCache) {
 
 		try (SafeCloseable safeCloseable =
 				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
 					AnnouncementsFlag.class)) {
 
+			FinderPath finderPath = null;
 			Object[] finderArgs = null;
 
-			if (useFinderCache) {
-				finderArgs = new Object[] {userId, entryId, value};
+			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+
+				if (useFinderCache) {
+					finderPath = _finderPathWithoutPaginationFindByU_E_V;
+					finderArgs = new Object[] {userId, entryId, value};
+				}
+			}
+			else if (useFinderCache) {
+				finderPath = _finderPathWithPaginationFindByU_E_V;
+				finderArgs = new Object[] {
+					userId, entryId, value, start, end, orderByComparator
+				};
 			}
 
-			Object result = null;
+			List<AnnouncementsFlag> list = null;
 
 			if (useFinderCache) {
-				result = FinderCacheUtil.getResult(
-					_finderPathFetchByU_E_V, finderArgs, this);
-			}
+				list = (List<AnnouncementsFlag>)FinderCacheUtil.getResult(
+					finderPath, finderArgs, this);
 
-			if (result instanceof AnnouncementsFlag) {
-				AnnouncementsFlag announcementsFlag = (AnnouncementsFlag)result;
+				if ((list != null) && !list.isEmpty()) {
+					for (AnnouncementsFlag announcementsFlag : list) {
+						if ((userId != announcementsFlag.getUserId()) ||
+							(entryId != announcementsFlag.getEntryId()) ||
+							(value != announcementsFlag.getValue())) {
 
-				if ((userId != announcementsFlag.getUserId()) ||
-					(entryId != announcementsFlag.getEntryId()) ||
-					(value != announcementsFlag.getValue())) {
+							list = null;
 
-					result = null;
+							break;
+						}
+					}
 				}
 			}
 
-			if (result == null) {
-				StringBundler sb = new StringBundler(5);
+			if (list == null) {
+				StringBundler sb = null;
+
+				if (orderByComparator != null) {
+					sb = new StringBundler(
+						5 + (orderByComparator.getOrderByFields().length * 2));
+				}
+				else {
+					sb = new StringBundler(5);
+				}
 
 				sb.append(_SQL_SELECT_ANNOUNCEMENTSFLAG_WHERE);
+
+				sb.append(_FINDER_COLUMN_U_E_V_USERID_2);
+
+				sb.append(_FINDER_COLUMN_U_E_V_ENTRYID_2);
+
+				sb.append(_FINDER_COLUMN_U_E_V_VALUE_2);
+
+				if (orderByComparator != null) {
+					appendOrderByComparator(
+						sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+				}
+				else {
+					sb.append(AnnouncementsFlagModelImpl.ORDER_BY_JPQL);
+				}
+
+				String sql = sb.toString();
+
+				Session session = null;
+
+				try {
+					session = openSession();
+
+					Query query = session.createQuery(sql);
+
+					QueryPos queryPos = QueryPos.getInstance(query);
+
+					queryPos.add(userId);
+
+					queryPos.add(entryId);
+
+					queryPos.add(value);
+
+					list = (List<AnnouncementsFlag>)QueryUtil.list(
+						query, getDialect(), start, end);
+
+					cacheResult(list);
+
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
+				}
+				catch (Exception exception) {
+					throw processException(exception);
+				}
+				finally {
+					closeSession(session);
+				}
+			}
+
+			return list;
+		}
+	}
+
+	/**
+	 * Returns the first announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching announcements flag
+	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 */
+	@Override
+	public AnnouncementsFlag findByU_E_V_First(
+			long userId, long entryId, int value,
+			OrderByComparator<AnnouncementsFlag> orderByComparator)
+		throws NoSuchFlagException {
+
+		AnnouncementsFlag announcementsFlag = fetchByU_E_V_First(
+			userId, entryId, value, orderByComparator);
+
+		if (announcementsFlag != null) {
+			return announcementsFlag;
+		}
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("userId=");
+		sb.append(userId);
+
+		sb.append(", entryId=");
+		sb.append(entryId);
+
+		sb.append(", value=");
+		sb.append(value);
+
+		sb.append("}");
+
+		throw new NoSuchFlagException(sb.toString());
+	}
+
+	/**
+	 * Returns the first announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
+	 */
+	@Override
+	public AnnouncementsFlag fetchByU_E_V_First(
+		long userId, long entryId, int value,
+		OrderByComparator<AnnouncementsFlag> orderByComparator) {
+
+		List<AnnouncementsFlag> list = findByU_E_V(
+			userId, entryId, value, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching announcements flag
+	 * @throws NoSuchFlagException if a matching announcements flag could not be found
+	 */
+	@Override
+	public AnnouncementsFlag findByU_E_V_Last(
+			long userId, long entryId, int value,
+			OrderByComparator<AnnouncementsFlag> orderByComparator)
+		throws NoSuchFlagException {
+
+		AnnouncementsFlag announcementsFlag = fetchByU_E_V_Last(
+			userId, entryId, value, orderByComparator);
+
+		if (announcementsFlag != null) {
+			return announcementsFlag;
+		}
+
+		StringBundler sb = new StringBundler(8);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("userId=");
+		sb.append(userId);
+
+		sb.append(", entryId=");
+		sb.append(entryId);
+
+		sb.append(", value=");
+		sb.append(value);
+
+		sb.append("}");
+
+		throw new NoSuchFlagException(sb.toString());
+	}
+
+	/**
+	 * Returns the last announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching announcements flag, or <code>null</code> if a matching announcements flag could not be found
+	 */
+	@Override
+	public AnnouncementsFlag fetchByU_E_V_Last(
+		long userId, long entryId, int value,
+		OrderByComparator<AnnouncementsFlag> orderByComparator) {
+
+		int count = countByU_E_V(userId, entryId, value);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<AnnouncementsFlag> list = findByU_E_V(
+			userId, entryId, value, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the announcements flags before and after the current announcements flag in the ordered set where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param flagId the primary key of the current announcements flag
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next announcements flag
+	 * @throws NoSuchFlagException if a announcements flag with the primary key could not be found
+	 */
+	@Override
+	public AnnouncementsFlag[] findByU_E_V_PrevAndNext(
+			long flagId, long userId, long entryId, int value,
+			OrderByComparator<AnnouncementsFlag> orderByComparator)
+		throws NoSuchFlagException {
+
+		AnnouncementsFlag announcementsFlag = findByPrimaryKey(flagId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			AnnouncementsFlag[] array = new AnnouncementsFlagImpl[3];
+
+			array[0] = getByU_E_V_PrevAndNext(
+				session, announcementsFlag, userId, entryId, value,
+				orderByComparator, true);
+
+			array[1] = announcementsFlag;
+
+			array[2] = getByU_E_V_PrevAndNext(
+				session, announcementsFlag, userId, entryId, value,
+				orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected AnnouncementsFlag getByU_E_V_PrevAndNext(
+		Session session, AnnouncementsFlag announcementsFlag, long userId,
+		long entryId, int value,
+		OrderByComparator<AnnouncementsFlag> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(5);
+		}
+
+		sb.append(_SQL_SELECT_ANNOUNCEMENTSFLAG_WHERE);
+
+		sb.append(_FINDER_COLUMN_U_E_V_USERID_2);
+
+		sb.append(_FINDER_COLUMN_U_E_V_ENTRYID_2);
+
+		sb.append(_FINDER_COLUMN_U_E_V_VALUE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(AnnouncementsFlagModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(userId);
+
+		queryPos.add(entryId);
+
+		queryPos.add(value);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						announcementsFlag)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<AnnouncementsFlag> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the announcements flags where userId = &#63; and entryId = &#63; and value = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 */
+	@Override
+	public void removeByU_E_V(long userId, long entryId, int value) {
+		for (AnnouncementsFlag announcementsFlag :
+				findByU_E_V(
+					userId, entryId, value, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
+			remove(announcementsFlag);
+		}
+	}
+
+	/**
+	 * Returns the number of announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param entryId the entry ID
+	 * @param value the value
+	 * @return the number of matching announcements flags
+	 */
+	@Override
+	public int countByU_E_V(long userId, long entryId, int value) {
+		try (SafeCloseable safeCloseable =
+				CTPersistenceHelperUtil.setCTCollectionIdWithSafeCloseable(
+					AnnouncementsFlag.class)) {
+
+			FinderPath finderPath = _finderPathCountByU_E_V;
+
+			Object[] finderArgs = new Object[] {userId, entryId, value};
+
+			Long count = (Long)FinderCacheUtil.getResult(
+				finderPath, finderArgs, this);
+
+			if (count == null) {
+				StringBundler sb = new StringBundler(4);
+
+				sb.append(_SQL_COUNT_ANNOUNCEMENTSFLAG_WHERE);
 
 				sb.append(_FINDER_COLUMN_U_E_V_USERID_2);
 
@@ -1238,38 +1671,9 @@ public class AnnouncementsFlagPersistenceImpl
 
 					queryPos.add(value);
 
-					List<AnnouncementsFlag> list = query.list();
+					count = (Long)query.uniqueResult();
 
-					if (list.isEmpty()) {
-						if (useFinderCache) {
-							FinderCacheUtil.putResult(
-								_finderPathFetchByU_E_V, finderArgs, list);
-						}
-					}
-					else {
-						if (list.size() > 1) {
-							Collections.sort(list, Collections.reverseOrder());
-
-							if (_log.isWarnEnabled()) {
-								if (!useFinderCache) {
-									finderArgs = new Object[] {
-										userId, entryId, value
-									};
-								}
-
-								_log.warn(
-									"AnnouncementsFlagPersistenceImpl.fetchByU_E_V(long, long, int, boolean) with parameters (" +
-										StringUtil.merge(finderArgs) +
-											") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-							}
-						}
-
-						AnnouncementsFlag announcementsFlag = list.get(0);
-
-						result = announcementsFlag;
-
-						cacheResult(announcementsFlag);
-					}
+					FinderCacheUtil.putResult(finderPath, finderArgs, count);
 				}
 				catch (Exception exception) {
 					throw processException(exception);
@@ -1279,51 +1683,8 @@ public class AnnouncementsFlagPersistenceImpl
 				}
 			}
 
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (AnnouncementsFlag)result;
-			}
+			return count.intValue();
 		}
-	}
-
-	/**
-	 * Removes the announcements flag where userId = &#63; and entryId = &#63; and value = &#63; from the database.
-	 *
-	 * @param userId the user ID
-	 * @param entryId the entry ID
-	 * @param value the value
-	 * @return the announcements flag that was removed
-	 */
-	@Override
-	public AnnouncementsFlag removeByU_E_V(long userId, long entryId, int value)
-		throws NoSuchFlagException {
-
-		AnnouncementsFlag announcementsFlag = findByU_E_V(
-			userId, entryId, value);
-
-		return remove(announcementsFlag);
-	}
-
-	/**
-	 * Returns the number of announcements flags where userId = &#63; and entryId = &#63; and value = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @param entryId the entry ID
-	 * @param value the value
-	 * @return the number of matching announcements flags
-	 */
-	@Override
-	public int countByU_E_V(long userId, long entryId, int value) {
-		AnnouncementsFlag announcementsFlag = fetchByU_E_V(
-			userId, entryId, value);
-
-		if (announcementsFlag == null) {
-			return 0;
-		}
-
-		return 1;
 	}
 
 	private static final String _FINDER_COLUMN_U_E_V_USERID_2 =
@@ -1357,14 +1718,6 @@ public class AnnouncementsFlagPersistenceImpl
 
 			EntityCacheUtil.putResult(
 				AnnouncementsFlagImpl.class, announcementsFlag.getPrimaryKey(),
-				announcementsFlag);
-
-			FinderCacheUtil.putResult(
-				_finderPathFetchByU_E_V,
-				new Object[] {
-					announcementsFlag.getUserId(),
-					announcementsFlag.getEntryId(), announcementsFlag.getValue()
-				},
 				announcementsFlag);
 		}
 	}
@@ -1443,24 +1796,6 @@ public class AnnouncementsFlagPersistenceImpl
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsFlagImpl.class, primaryKey);
-		}
-	}
-
-	protected void cacheUniqueFindersCache(
-		AnnouncementsFlagModelImpl announcementsFlagModelImpl) {
-
-		try (SafeCloseable safeCloseable =
-				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
-					announcementsFlagModelImpl.getCtCollectionId())) {
-
-			Object[] args = new Object[] {
-				announcementsFlagModelImpl.getUserId(),
-				announcementsFlagModelImpl.getEntryId(),
-				announcementsFlagModelImpl.getValue()
-			};
-
-			FinderCacheUtil.putResult(
-				_finderPathFetchByU_E_V, args, announcementsFlagModelImpl);
 		}
 	}
 
@@ -1639,8 +1974,6 @@ public class AnnouncementsFlagPersistenceImpl
 		EntityCacheUtil.putResult(
 			AnnouncementsFlagImpl.class, announcementsFlagModelImpl, false,
 			true);
-
-		cacheUniqueFindersCache(announcementsFlagModelImpl);
 
 		if (isNew) {
 			announcementsFlag.setNew(false);
@@ -2197,13 +2530,30 @@ public class AnnouncementsFlagPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"entryId"},
 			false);
 
-		_finderPathFetchByU_E_V = new FinderPath(
-			FINDER_CLASS_NAME_ENTITY, "fetchByU_E_V",
+		_finderPathWithPaginationFindByU_E_V = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_E_V",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"userId", "entryId", "value"}, true);
+
+		_finderPathWithoutPaginationFindByU_E_V = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_E_V",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
 			new String[] {"userId", "entryId", "value"}, true);
+
+		_finderPathCountByU_E_V = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_E_V",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			},
+			new String[] {"userId", "entryId", "value"}, false);
 
 		AnnouncementsFlagUtil.setPersistence(this);
 	}

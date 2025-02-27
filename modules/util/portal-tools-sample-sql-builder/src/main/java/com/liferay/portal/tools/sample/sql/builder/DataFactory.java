@@ -5918,12 +5918,14 @@ public class DataFactory {
 	}
 
 	public List<FragmentEntryLinkModel> newObjectFieldsFragmentEntryLinkModels(
-			LayoutModel layoutModel, List<ObjectFieldModel> objectFieldModels,
-			long segmentsExperienceId)
+			List<LayoutModel> layoutModels,
+			List<ObjectFieldModel> objectFieldModels, long segmentsExperienceId)
 		throws Exception {
 
-		List<FragmentEntryLinkModel> fragmentEntryLinkModels =
+		List<FragmentEntryLinkModel> originalFragmentEntryLinkModels =
 			new ArrayList<>();
+
+		LayoutModel nonhiddenLayout = null;
 
 		String editValueJSON = _readFile(
 			"fragment_component/fragment_component_heading_editValue.json");
@@ -5933,37 +5935,65 @@ public class DataFactory {
 			_getFragmentComponentInputStream("heading", "html"));
 		String paragraphRenderNamespace = StringUtil.randomId();
 
-		for (ObjectFieldModel objectFieldModel : objectFieldModels) {
-			if (objectFieldModel.isSystem()) {
+		for (LayoutModel layoutModel : layoutModels) {
+			if (!layoutModel.isHidden()) {
+				nonhiddenLayout = layoutModel;
+
 				continue;
 			}
 
-			String editValue;
+			for (ObjectFieldModel objectFieldModel : objectFieldModels) {
+				if (objectFieldModel.isSystem()) {
+					continue;
+				}
 
-			if (StringUtil.equals(
-					objectFieldModel.getBusinessType(),
-					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
+				String editValue;
 
-				editValue = StringUtil.replace(
-					_readFile(
-						"fragment_component" +
-							"/fragment_component_heading_editValue_" +
-								"attachment_object_field.json"),
-					"${objectFieldId}",
-					String.valueOf(objectFieldModel.getObjectFieldId()));
+				if (StringUtil.equals(
+						objectFieldModel.getBusinessType(),
+						ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
+
+					editValue = StringUtil.replace(
+						_readFile(
+							"fragment_component" +
+								"/fragment_component_heading_editValue_" +
+									"attachment_object_field.json"),
+						"${objectFieldId}",
+						String.valueOf(objectFieldModel.getObjectFieldId()));
+				}
+				else {
+					editValue = StringUtil.replaceFirst(
+						editValueJSON, "${collectionFieldId}",
+						"ObjectField_" + objectFieldModel.getName());
+				}
+
+				originalFragmentEntryLinkModels.add(
+					newFragmentEntryLinkModel(
+						layoutModel, 0, segmentsExperienceId, headingCss,
+						headingHtml, StringPool.BLANK, editValue,
+						paragraphRenderNamespace, 0,
+						_FRAGMENT_COMPONENT_RENDER_KEY_HEADING));
 			}
-			else {
-				editValue = StringUtil.replaceFirst(
-					editValueJSON, "${collectionFieldId}",
-					"ObjectField_" + objectFieldModel.getName());
-			}
+		}
+
+		List<FragmentEntryLinkModel> fragmentEntryLinkModels = new ArrayList<>(
+			originalFragmentEntryLinkModels);
+
+		for (FragmentEntryLinkModel originalFragmentEntryLinkModel :
+				originalFragmentEntryLinkModels) {
 
 			fragmentEntryLinkModels.add(
 				newFragmentEntryLinkModel(
-					layoutModel, 0, segmentsExperienceId, headingCss,
-					headingHtml, StringPool.BLANK, editValue,
-					paragraphRenderNamespace, 0,
-					_FRAGMENT_COMPONENT_RENDER_KEY_HEADING));
+					nonhiddenLayout,
+					originalFragmentEntryLinkModel.getFragmentEntryLinkId(),
+					originalFragmentEntryLinkModel.getSegmentsExperienceId(),
+					originalFragmentEntryLinkModel.getCss(),
+					originalFragmentEntryLinkModel.getHtml(),
+					originalFragmentEntryLinkModel.getConfiguration(),
+					originalFragmentEntryLinkModel.getEditableValues(),
+					originalFragmentEntryLinkModel.getNamespace(),
+					originalFragmentEntryLinkModel.getPosition(),
+					originalFragmentEntryLinkModel.getRendererKey()));
 		}
 
 		return fragmentEntryLinkModels;

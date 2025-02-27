@@ -5565,7 +5565,8 @@ public class DataFactory {
 		layoutPageTemplateStructureRelModel.setLayoutPageTemplateStructureId(
 			layoutPageTemplateStructureModel.
 				getLayoutPageTemplateStructureId());
-		layoutPageTemplateStructureRelModel.setSegmentsExperienceId(0L);
+
+		long segmentsExperienceId = 0L;
 
 		String data = _readFile(
 			"object/object_definition_layout_page_template_structure_rel.json");
@@ -5581,7 +5582,13 @@ public class DataFactory {
 				data, "${fragmentEntryLinkId}",
 				String.valueOf(
 					fragmentEntryLinkModel.getFragmentEntryLinkId()));
+
+			segmentsExperienceId =
+				fragmentEntryLinkModel.getSegmentsExperienceId();
 		}
+
+		layoutPageTemplateStructureRelModel.setSegmentsExperienceId(
+			segmentsExperienceId);
 
 		layoutPageTemplateStructureRelModel.setData(data);
 

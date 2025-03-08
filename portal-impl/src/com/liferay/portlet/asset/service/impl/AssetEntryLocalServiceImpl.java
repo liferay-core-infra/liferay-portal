@@ -1429,7 +1429,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		if (assetEntries.size() > 1) {
 			_log.error(
 				StringBundler.concat(
-					"Multiple entries are mapped to group ID ", groupId,
+					"Multiple asset entries are mapped to group ID ", groupId,
 					" and class UUID ", classUuid));
 		}
 

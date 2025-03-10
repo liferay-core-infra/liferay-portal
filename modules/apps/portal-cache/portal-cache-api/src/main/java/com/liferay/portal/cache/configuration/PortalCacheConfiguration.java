@@ -5,6 +5,8 @@
 
 package com.liferay.portal.cache.configuration;
 
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
@@ -18,7 +20,8 @@ public class PortalCacheConfiguration {
 	public static final String PORTAL_CACHE_LISTENER_PROPERTIES_KEY_SCOPE =
 		"PORTAL_CACHE_LISTENER_PROPERTIES_KEY_SCOPE";
 
-	public static final String PORTAL_CACHE_NAME_DEFAULT = "default";
+	public static final String PORTAL_CACHE_NAME_DEFAULT =
+		PortalUUIDUtil.generate();
 
 	public PortalCacheConfiguration(
 		String portalCacheName,

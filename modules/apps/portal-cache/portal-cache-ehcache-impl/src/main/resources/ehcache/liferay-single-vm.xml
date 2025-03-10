@@ -17,6 +17,7 @@
 		</expiry>
 		<heap>10000</heap>
 	</cache-template>
+	<cache alias="${default.cache.name}" uses-template="default" />
 	<cache alias="com.liferay.portal.servlet.ComboServlet" uses-template="default">
 		<heap>1000</heap>
 	</cache>

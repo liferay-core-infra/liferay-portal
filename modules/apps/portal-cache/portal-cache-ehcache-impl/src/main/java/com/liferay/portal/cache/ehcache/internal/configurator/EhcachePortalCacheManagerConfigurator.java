@@ -5,7 +5,6 @@
 
 package com.liferay.portal.cache.ehcache.internal.configurator;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cache.PortalCacheReplicator;
 import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
@@ -17,7 +16,6 @@ import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 
@@ -25,7 +23,6 @@ import java.net.URL;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
@@ -34,14 +31,8 @@ import org.ehcache.config.Configuration;
 import org.ehcache.config.FluentConfigurationBuilder;
 import org.ehcache.config.ResourcePools;
 import org.ehcache.config.ResourceType;
-import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.expiry.ExpiryPolicy;
 import org.ehcache.xml.XmlConfiguration;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * @author Tina Tian
@@ -133,20 +124,6 @@ public class EhcachePortalCacheManagerConfigurator {
 	private EhcachePortalCacheManagerConfiguration _parseConfiguration(
 		XmlConfiguration xmlConfiguration) {
 
-		PortalCacheConfiguration defaultPortalCacheConfiguration = null;
-
-		CacheConfiguration<?, ?> defaultCacheConfiguration =
-			_parseDefaultCacheConfiguration(xmlConfiguration);
-
-		if (defaultCacheConfiguration != null) {
-			defaultPortalCacheConfiguration =
-				new EhcachePortalCacheConfiguration(
-					"default", new HashSet<>(),
-					defaultCacheConfiguration.getKeyType(),
-					defaultCacheConfiguration.getValueType(),
-					_isRequireSerialization(defaultCacheConfiguration));
-		}
-
 		Set<PortalCacheConfiguration> portalCacheConfigurations =
 			new HashSet<>();
 
@@ -156,88 +133,42 @@ public class EhcachePortalCacheManagerConfigurator {
 		for (Map.Entry<String, CacheConfiguration<?, ?>> entry :
 				cacheConfigurations.entrySet()) {
 
+			String portalCacheName = entry.getKey();
+
+			if (portalCacheName.equals(
+					PortalCacheConfiguration.PORTAL_CACHE_NAME_DEFAULT)) {
+
+				continue;
+			}
+
 			CacheConfiguration<?, ?> cacheConfiguration = entry.getValue();
 
 			portalCacheConfigurations.add(
 				new EhcachePortalCacheConfiguration(
-					entry.getKey(), new HashSet<>(),
+					portalCacheName, new HashSet<>(),
 					cacheConfiguration.getKeyType(),
 					cacheConfiguration.getValueType(),
 					_isRequireSerialization(cacheConfiguration)));
 		}
 
+		CacheConfiguration<?, ?> defaultCacheConfiguration =
+			cacheConfigurations.get(
+				PortalCacheConfiguration.PORTAL_CACHE_NAME_DEFAULT);
+
+		PortalCacheConfiguration defaultPortalCacheConfiguration = null;
+
+		if (defaultCacheConfiguration != null) {
+			defaultPortalCacheConfiguration =
+				new EhcachePortalCacheConfiguration(
+					PortalCacheConfiguration.PORTAL_CACHE_NAME_DEFAULT,
+					new HashSet<>(), defaultCacheConfiguration.getKeyType(),
+					defaultCacheConfiguration.getValueType(),
+					_isRequireSerialization(defaultCacheConfiguration));
+		}
+
 		return new EhcachePortalCacheManagerConfiguration(
 			defaultCacheConfiguration, defaultPortalCacheConfiguration,
 			portalCacheConfigurations);
-	}
-
-	private CacheConfiguration<?, ?> _parseDefaultCacheConfiguration(
-		XmlConfiguration xmlConfiguration) {
-
-		Document document = xmlConfiguration.asDocument();
-
-		Element documentElement = document.getDocumentElement();
-
-		NodeList cacheTemplateElements = documentElement.getElementsByTagName(
-			"cache-template");
-
-		if (cacheTemplateElements.getLength() == 0) {
-			return null;
-		}
-
-		Class<?> keyType = Object.class;
-		Class<?> valueType = Object.class;
-
-		try {
-			for (int i = 0; i < cacheTemplateElements.getLength(); i++) {
-				Element element = (Element)cacheTemplateElements.item(i);
-
-				if (Objects.equals(element.getAttribute("name"), "default")) {
-					keyType = _parseTypeClass(
-						xmlConfiguration,
-						element.getElementsByTagName("key-type"));
-
-					valueType = _parseTypeClass(
-						xmlConfiguration,
-						element.getElementsByTagName("value-type"));
-
-					break;
-				}
-			}
-
-			CacheConfigurationBuilder<?, ?> cacheConfigurationBuilder =
-				xmlConfiguration.newCacheConfigurationBuilderFromTemplate(
-					"default", keyType, valueType);
-
-			if (cacheConfigurationBuilder != null) {
-				return cacheConfigurationBuilder.build();
-			}
-		}
-		catch (Exception exception) {
-			ReflectionUtil.throwException(exception);
-		}
-
-		return null;
-	}
-
-	private Class<?> _parseTypeClass(
-			XmlConfiguration xmlConfiguration, NodeList nodeList)
-		throws ClassNotFoundException {
-
-		if (nodeList.getLength() == 1) {
-			Element typeElement = (Element)nodeList.item(0);
-
-			Node contentNode = typeElement.getFirstChild();
-
-			String className = contentNode.getNodeValue();
-
-			if (Validator.isNotNull(className)) {
-				return XmlConfiguration.getClassForName(
-					className, xmlConfiguration.getClassLoader());
-			}
-		}
-
-		return Object.class;
 	}
 
 	private void _populateCacheReplicator(
@@ -320,5 +251,11 @@ public class EhcachePortalCacheManagerConfigurator {
 
 	private final String _defaultReplicatorPropertiesString;
 	private final Properties _replicatorProperties;
+
+	static {
+		System.setProperty(
+			"default.cache.name",
+			PortalCacheConfiguration.PORTAL_CACHE_NAME_DEFAULT);
+	}
 
 }

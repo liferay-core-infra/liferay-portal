@@ -2880,6 +2880,7 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 														maxIdle="20"
 														maxWait="1000"
 														name="jdbc/LiferayPool"
+														transactionIsolation="TRANSACTION_READ_COMMITTED"
 														type="javax.sql.DataSource"
 													/>
 											]]>

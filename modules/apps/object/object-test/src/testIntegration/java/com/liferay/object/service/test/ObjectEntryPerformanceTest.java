@@ -178,9 +178,8 @@ public class ObjectEntryPerformanceTest {
 		catch (ConnectException connectException) {
 			throw new Exception(
 				StringBundler.concat(
-					"Failed to visit ", _getPath(""),
-					"! Please add the host name: ", _VIRTUAL_HOST_NAME,
-					" to the host file and rerun the test!"),
+					"Please add the virtual host name: ", _VIRTUAL_HOST_NAME,
+					" to the hosts file and rerun the test!"),
 				connectException);
 		}
 
@@ -212,7 +211,8 @@ public class ObjectEntryPerformanceTest {
 				GetterUtil.getInteger(
 					_properties.getProperty("object.entries.import.max.time")),
 				StringBundler.concat(
-					" Import ", _objectEntryCount, " Object Entries"))) {
+					"Import all the ", _objectEntriesCount, " Object Entries ",
+					"by HttpInvoker"))) {
 
 			_invokeHttp(
 				_createObjectEntryJSON(), HttpInvoker.HttpMethod.POST,
@@ -235,7 +235,8 @@ public class ObjectEntryPerformanceTest {
 				GetterUtil.getInteger(
 					_properties.getProperty("object.entries.delete.max.time")),
 				StringBundler.concat(
-					" Delete ", _objectEntryCount, " Object Entries"))) {
+					"Delete all the ", _objectEntriesCount, " Object Entries ",
+					"by HttpInvoker"))) {
 
 			HttpInvoker.HttpResponse httpResponse = _invokeHttp(
 				null, HttpInvoker.HttpMethod.GET,

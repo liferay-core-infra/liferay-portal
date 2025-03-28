@@ -12,6 +12,8 @@ GroupURLProvider groupURLProvider = (GroupURLProvider)request.getAttribute(SiteW
 
 SitesItemSelectorViewDisplayContext sitesItemSelectorViewDisplayContext = (SitesItemSelectorViewDisplayContext)request.getAttribute(SitesItemSelectorWebKeys.SITES_ITEM_SELECTOR_DISPLAY_CONTEXT);
 
+GroupSearch groupSearch = sitesItemSelectorViewDisplayContext.getGroupSearch();
+
 String displayStyle = sitesItemSelectorViewDisplayContext.getDisplayStyle();
 
 GroupItemSelectorCriterion groupItemSelectorCriterion = sitesItemSelectorViewDisplayContext.getGroupItemSelectorCriterion();
@@ -20,7 +22,7 @@ String target = ParamUtil.getString(request, "target", groupItemSelectorCriterio
 %>
 
 <clay:management-toolbar
-	managementToolbarDisplayContext="<%= new SitesItemSelectorViewManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, sitesItemSelectorViewDisplayContext) %>"
+	managementToolbarDisplayContext="<%= new SitesItemSelectorViewManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, groupSearch, sitesItemSelectorViewDisplayContext) %>"
 />
 
 <aui:form action="<%= sitesItemSelectorViewDisplayContext.getPortletURL() %>" cssClass="container-fluid" method="post" name="selectGroupFm">
@@ -33,7 +35,7 @@ String target = ParamUtil.getString(request, "target", groupItemSelectorCriterio
 	</c:if>
 
 	<liferay-ui:search-container
-		searchContainer="<%= sitesItemSelectorViewDisplayContext.getGroupSearch() %>"
+		searchContainer="<%= groupSearch %>"
 	>
 		<liferay-ui:search-container-row
 			className="com.liferay.portal.kernel.model.Group"

@@ -58,6 +58,7 @@ import java.io.Closeable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.Predicate;
 
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -210,13 +211,10 @@ public class ObjectEntryPerformanceTest {
 			_customObjectDefinition = objectDefinitions.get(
 				_OBJECT_DEFINITION_LIST_INDEX);
 
-			long currentObjectEntriesCount = 0;
-
-			while (currentObjectEntriesCount < _objectEntriesCount) {
-				currentObjectEntriesCount =
-					_objectEntryLocalService.getObjectEntriesCount(
-						_customObjectDefinition.getObjectDefinitionId());
-			}
+			_waitForObjectEntriesCountChangedTo(
+				0,
+				currentObjectEntriesCount ->
+					currentObjectEntriesCount < _objectEntriesCount);
 		}
 
 		try (PerformanceTimer performanceTimer = new PerformanceTimer(
@@ -239,13 +237,9 @@ public class ObjectEntryPerformanceTest {
 				jsonArray.toString(), HttpInvoker.HttpMethod.DELETE,
 				_getPath(_PATH_SUFFIX));
 
-			long currentObjectEntriesCount = _objectEntriesCount;
-
-			while (currentObjectEntriesCount != 0) {
-				currentObjectEntriesCount =
-					_objectEntryLocalService.getObjectEntriesCount(
-						_customObjectDefinition.getObjectDefinitionId());
-			}
+			_waitForObjectEntriesCountChangedTo(
+				_objectEntriesCount,
+				currentObjectEntriesCount -> currentObjectEntriesCount != 0);
 		}
 	}
 
@@ -282,6 +276,16 @@ public class ObjectEntryPerformanceTest {
 				PropsValues.DEFAULT_ADMIN_PASSWORD));
 
 		return httpInvoker.invoke();
+	}
+
+	private void _waitForObjectEntriesCountChangedTo(
+		long currentObjectEntriesCount, Predicate<Long> condition) {
+
+		while (condition.test(currentObjectEntriesCount)) {
+			currentObjectEntriesCount =
+				_objectEntryLocalService.getObjectEntriesCount(
+					_customObjectDefinition.getObjectDefinitionId());
+		}
 	}
 
 	private static final int _CUSTOM_OBJECT_DEFINITION_STATUS = 0;

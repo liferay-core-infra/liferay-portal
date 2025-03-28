@@ -87,19 +87,13 @@ public class ObjectEntryPerformanceTest {
 	public static void setUpClass() throws Exception {
 		Class<?> clazz = ObjectEntryPerformanceTest.class;
 
-		Properties properties = PropertiesUtil.load(
+		_properties = PropertiesUtil.load(
 			clazz.getResourceAsStream(
 				"dependencies/object-entry-performance.properties"),
 			"UTF-8");
 
-		_objectEntryCount = GetterUtil.getInteger(
-			properties.getProperty("object.entries.count"));
-
-		_expectedImportTime = GetterUtil.getInteger(
-			properties.getProperty("expected.import.time"));
-
-		_expectedDeletionTime = GetterUtil.getInteger(
-			properties.getProperty("expected.deletion.time"));
+		_objectEntriesCount = GetterUtil.getInteger(
+			_properties.getProperty("object.entries.count"));
 	}
 
 	@Test
@@ -127,7 +121,7 @@ public class ObjectEntryPerformanceTest {
 				false, Collections.emptyMap(), _dtoConverterRegistry, null,
 				LocaleUtil.getDefault(), null, TestPropsValues.getUser());
 
-		for (int i = 0; i < _objectEntryCount; i++) {
+		for (int i = 0; i < _objectEntriesCount; i++) {
 			objectEntryManager.addObjectEntry(
 				dtoConverterContext, _customObjectDefinition,
 				new ObjectEntry() {
@@ -199,7 +193,8 @@ public class ObjectEntryPerformanceTest {
 			objectFolder.getExternalReferenceCode(), objectFolder);
 
 		try (PerformanceTimer performanceTimer1 = new PerformanceTimer(
-				_expectedImportTime,
+				GetterUtil.getInteger(
+					_properties.getProperty("object.entries.import.max.time")),
 				StringBundler.concat(
 					" Import ", _objectEntryCount, " Object Entries"))) {
 
@@ -214,23 +209,25 @@ public class ObjectEntryPerformanceTest {
 			_customObjectDefinition = objectDefinitions.get(
 				_OBJECT_DEFINITION_LIST_INDEX);
 
-			long currentObjectEntryCount = 0;
+			long currentObjectEntriesCount = 0;
 
-			while (currentObjectEntryCount < _objectEntryCount) {
-				currentObjectEntryCount =
+			while (currentObjectEntriesCount < _objectEntriesCount) {
+				currentObjectEntriesCount =
 					_objectEntryLocalService.getObjectEntriesCount(
 						_customObjectDefinition.getObjectDefinitionId());
 			}
 		}
 
 		try (PerformanceTimer performanceTimer = new PerformanceTimer(
-				_expectedDeletionTime,
+				GetterUtil.getInteger(
+					_properties.getProperty("object.entries.delete.max.time")),
 				StringBundler.concat(
 					" Delete ", _objectEntryCount, " Object Entries"))) {
 
 			HttpInvoker.HttpResponse httpResponse = _invokeHttp(
 				null, HttpInvoker.HttpMethod.GET,
-				_getPath("/o/c/foos/?fields=id&pageSize=" + _objectEntryCount));
+				_getPath(
+					"/o/c/foos/?fields=id&pageSize=" + _objectEntriesCount));
 
 			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				httpResponse.getContent());
@@ -241,10 +238,10 @@ public class ObjectEntryPerformanceTest {
 				jsonArray.toString(), HttpInvoker.HttpMethod.DELETE,
 				_getPath(_PATH_SUFFIX));
 
-			long currentObjectEntryCount = _objectEntryCount;
+			long currentObjectEntriesCount = _objectEntriesCount;
 
-			while (currentObjectEntryCount != 0) {
-				currentObjectEntryCount =
+			while (currentObjectEntriesCount != 0) {
+				currentObjectEntriesCount =
 					_objectEntryLocalService.getObjectEntriesCount(
 						_customObjectDefinition.getObjectDefinitionId());
 			}
@@ -254,7 +251,7 @@ public class ObjectEntryPerformanceTest {
 	private String _createObjectEntryJSON() {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		for (int i = 0; i < _objectEntryCount; i++) {
+		for (int i = 0; i < _objectEntriesCount; i++) {
 			jsonArray.put(JSONUtil.put("alpha", "foo"));
 		}
 
@@ -294,9 +291,8 @@ public class ObjectEntryPerformanceTest {
 
 	private static final String _VIRTUAL_HOST_NAME = "www.able.com";
 
-	private static int _expectedDeletionTime;
-	private static int _expectedImportTime;
-	private static int _objectEntryCount;
+	private static int _objectEntriesCount;
+	private static Properties _properties;
 
 	@DeleteAfterTestRun
 	private Company _company;

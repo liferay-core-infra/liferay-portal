@@ -611,6 +611,7 @@
 				<element name="qname" type="xs:QName"/>
 				<element name="name" type="xs:NCName"/>
 			</choice>
+			<element name="alias" type="xs:QName" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
 		<attribute name="id" type="portlet:string" use="optional"/>
 	</complexType>

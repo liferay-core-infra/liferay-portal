@@ -9,7 +9,7 @@ Import-Package:\
 	!org.eclipse.jdt.internal.compiler.impl,\
 	!org.eclipse.jdt.internal.compiler.problem,\
 	\
-	jakarta.el;version='[5.0.0,6.0)',\
+	jakarta.el;version='[6.0.0,7.0)',\
 	\
 	jakarta.servlet;version='[6.0.0,7.0.0)',\
 	jakarta.servlet.annotation;version='[6.0.0,7.0.0)',\

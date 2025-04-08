@@ -97,7 +97,7 @@
 			<matches></matches>
 		</ignore-error>
 		<ignore-error description="LPD-52261">
-			<contains>JAXB is unavailable. Will fallback to SDK implementation which may be less performant.If you are using Java 9+, you will need to include javax.xml.bind:jaxb-api as a dependency.</contains>
+			<contains>JAXB is unavailable. Will fallback to SDK implementation which may be less performant.If you are using Java 9+, you will need to include jakarta.xml.bind:jaxb-api as a dependency.</contains>
 			<matches></matches>
 		</ignore-error>
 		<ignore-error description="LPS-22821">

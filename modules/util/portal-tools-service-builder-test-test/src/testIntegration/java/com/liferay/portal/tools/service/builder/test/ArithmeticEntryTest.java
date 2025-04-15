@@ -88,8 +88,6 @@ public class ArithmeticEntryTest {
 
 		arithmeticEntry.setNumber1(number1);
 
-		arithmeticEntry.setNumber2(0L);
-
 		_arithmeticEntries.add(
 			_arithmeticEntryPersistence.update(arithmeticEntry));
 

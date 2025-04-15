@@ -54,7 +54,7 @@ public class ArithmeticEntryTest {
 	}
 
 	@Test
-	public void testDecimalDivision() {
+	public void testDivideByDecimal() {
 		ArithmeticEntry arithmeticEntry = _arithmeticEntryPersistence.create(
 			RandomTestUtil.nextLong());
 
@@ -80,13 +80,11 @@ public class ArithmeticEntryTest {
 	}
 
 	@Test
-	public void testZeroDivisor() {
+	public void testDivideByNull() {
 		ArithmeticEntry arithmeticEntry = _arithmeticEntryPersistence.create(
 			RandomTestUtil.nextLong());
 
-		long number1 = RandomTestUtil.nextLong();
-
-		arithmeticEntry.setNumber1(number1);
+		arithmeticEntry.setNumber1(3L);
 
 		_arithmeticEntries.add(
 			_arithmeticEntryPersistence.update(arithmeticEntry));

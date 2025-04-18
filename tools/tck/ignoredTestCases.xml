@@ -175,6 +175,18 @@
 	<entry key="V2PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_actionURL5"></entry>
 	<entry key="V2PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_renderURL3"></entry>
 	<entry key="V2PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_renderURL5"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_actionURL3"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_actionURL5"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_renderURL18"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_renderURL19"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_renderURL2"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_renderURL20"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_renderURL3"></entry>
+	<entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_renderURL5"></entry>
+	<entry key="V3PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_actionURL3"></entry>
+	<entry key="V3PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_actionURL5"></entry>
+	<entry key="V3PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_renderURL3"></entry>
+	<entry key="V3PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_renderURL5"></entry>
 
 	<!-- https://issues.liferay.com/browse/LPS-77746 -->
 
@@ -262,12 +274,17 @@
 	<!-- https://issues.liferay.com/browse/LPS-108235 -->
 
 	<entry key="V2PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_actionURL20"></entry>
+    <entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_actionURL20"></entry>
 	<entry key="V2AddlPortletTests_SPEC2_13_ResourceServing_resourceURLs8"></entry>
 	<entry key="V2AddlPortletTests_SPEC2_13_ResourceServing_resourceURLs9"></entry>
 	<entry key="V2PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_resourceURL4"></entry>
 	<entry key="V2PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_actionURL20"></entry>
 	<entry key="V2PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_renderURL20"></entry>
 	<entry key="V2PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_resourceURL4"></entry>
+    <entry key="V3PortletTagLibraryTests2_SPEC2_26_IncludeJSPRender_resourceURL4"></entry>
+	<entry key="V3PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_actionURL20"></entry>
+	<entry key="V3PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_renderURL20"></entry>
+	<entry key="V3PortletTagLibraryTests3_SPEC2_26_IncludeJSPResource_resourceURL4"></entry>
 	<entry key="V2URLTests_BaseURL_ApiRenderRenurl_setParameterB1"></entry>
 	<entry key="V2URLTests_BaseURL_ApiRenderRenurl_setParameterB2"></entry>
 	<entry key="V2URLTests_BaseURL_ApiRenderRenurl_setParameterB6"></entry>

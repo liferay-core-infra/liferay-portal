@@ -11,6 +11,7 @@ import {Page, expect, mergeTests} from '@playwright/test';
 
 import {accountSettingsPagesTest} from '../../fixtures/accountSettingsPagesTest';
 import {dataApiHelpersTest} from '../../fixtures/dataApiHelpersTest';
+import {featureFlagsTest} from '../../fixtures/featureFlagsTest';
 import {formsPagesTest} from '../../fixtures/formsPagesTest';
 import {isolatedSiteTest} from '../../fixtures/isolatedSiteTest';
 import {listTypeDefinitionsPagesTest} from '../../fixtures/listTypeDefinitionsPagesTest';
@@ -18,12 +19,17 @@ import {loginTest} from '../../fixtures/loginTest';
 import {objectPagesTest} from '../../fixtures/objectPagesTest';
 import {siteSettingsPagesTest} from '../../fixtures/siteSettingsPagesTest';
 import {getRandomInt} from '../../utils/getRandomInt';
+import getRandomString from '../../utils/getRandomString';
 import {waitForAlert} from '../../utils/waitForAlert';
 import {mockObjectFields} from './utils/mockObjectFields';
 
 export const test = mergeTests(
 	accountSettingsPagesTest,
 	dataApiHelpersTest,
+	featureFlagsTest({
+		'LPD-24055': {enabled: true},
+		'LPS-178642': {enabled: true},
+	}),
 	formsPagesTest,
 	isolatedSiteTest,
 	listTypeDefinitionsPagesTest,
@@ -242,6 +248,59 @@ test.describe('manage picklists inside the picklists portlet', () => {
 		await listTypeDefinitionPage.deletePicklistItem();
 		await frame.waitForLoadState('load');
 		await expect(frame.getByText('No Results Found')).toBeVisible();
+	});
+
+	test('can create, edit and delete a custom item in a system picklist', async ({
+		listTypeDefinitionPage,
+		page,
+	}) => {
+		await listTypeDefinitionPage.goto();
+
+		const systemPicklistName = 'Scope';
+
+		await page.getByRole('link', {name: systemPicklistName}).click();
+
+		await listTypeDefinitionPage.addPicklistItemButton.click();
+
+		await listTypeDefinitionPage.modalSaveButton.click();
+
+		expect(await page.getByText('Required').count()).toBe(2);
+
+		await listTypeDefinitionPage.modalNameInput.fill('site');
+
+		await listTypeDefinitionPage.modalSaveButton.click();
+
+		await waitForAlert(page, 'Duplicate key site', {
+			type: 'danger',
+		});
+
+		const listTypeItemName = getRandomString();
+
+		await listTypeDefinitionPage.modalNameInput.fill(listTypeItemName);
+
+		await listTypeDefinitionPage.modalSaveButton.click();
+
+		await waitForAlert(page, 'The picklist item was created successfully.');
+
+		await listTypeDefinitionPage
+			.getPicklistItemLinkLocator(listTypeItemName)
+			.click();
+
+		await listTypeDefinitionPage.modalSaveButton.waitFor({
+			state: 'visible',
+		});
+
+		await page
+			.getByLabel('External Reference Code')
+			.fill(getRandomString());
+
+		await listTypeDefinitionPage.modalSaveButton.click();
+
+		await waitForAlert(page, 'The picklist item was updated successfully.');
+
+		await listTypeDefinitionPage.deletePicklistItem();
+
+		await waitForAlert(page, 'The picklist item was deleted successfully.');
 	});
 });
 

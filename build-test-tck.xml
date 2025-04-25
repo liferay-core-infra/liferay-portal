@@ -228,7 +228,7 @@
 		<exec dir="${tck.home}" executable="mvn" failonerror="true">
 			<env key="JAVA_HOME" value="${java.jdk.home}" />
 			<env key="JAVA_OPTS" value="${java.jdk.opts}" />
-			<arg line="-Pliferay,run-tck -Djava.awt.headless=true ${tck.properties} -Dtest.browser=${browser.type[tck]} @{chrome.properties} -Dtest.list.file=${tck.tests.xml} -Dtest.server.login.url=${tck.login.url} test" />
+			<arg line="-Pliferay,run-tck -Djava.awt.headless=true ${tck.properties} -Dtest.browser=${browser.type[tck]} ${chrome.properties} -Dtest.list.file=${tck.tests.xml} -Dtest.server.login.url=${tck.login.url} test" />
 		</exec>
 
 		<if>

@@ -62,6 +62,13 @@ public abstract class BaseSQLTransformerLogicTestCase {
 	}
 
 	@Test
+	public void testReplaceCastFloat() {
+		Assert.assertEquals(
+			getCastFloatTransformedSQL(),
+			sqlTransformer.transform(getCastFloatOriginalSQL()));
+	}
+
+	@Test
 	public void testReplaceCastLong() {
 		Assert.assertEquals(
 			getCastLongTransformedSQL(),
@@ -203,6 +210,16 @@ public abstract class BaseSQLTransformerLogicTestCase {
 	protected String getCastClobTextTransformedSQL() {
 		return "select foo || (foo || (bar || foo)), foo || (bar || foo) " +
 			"from Foo";
+	}
+
+	protected String getCastFloatOriginalSQL() {
+		return "select CAST_FLOAT(1 + (CAST_FLOAT(foo) - (bar x 2))), " +
+			"CAST_FLOAT(foo + (bar x 3)) from Foo";
+	}
+
+	protected String getCastFloatTransformedSQL() {
+		return "select (CAST 1 + ((CAST foo as FLOAT) - (bar x 2)) as FLOAT)" +
+			", (CAST foo + (bar x 3) as FLOAT) from Foo";
 	}
 
 	protected String getCastLongOriginalSQL() {

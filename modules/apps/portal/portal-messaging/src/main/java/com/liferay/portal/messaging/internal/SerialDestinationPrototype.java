@@ -7,7 +7,7 @@ package com.liferay.portal.messaging.internal;
 
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.MessageListenerRegistry;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -31,22 +31,21 @@ public class SerialDestinationPrototype implements DestinationPrototype {
 
 	@Override
 	public Destination createDestination(
-		DestinationConfiguration destinationConfiguration) {
+		DestinationDefinition destinationDefinition) {
 
 		SerialDestination serialDestination = new SerialDestination();
 
 		serialDestination.setDestinationType(
-			destinationConfiguration.getDestinationType());
-		serialDestination.setName(
-			destinationConfiguration.getDestinationName());
+			destinationDefinition.getDestinationType());
+		serialDestination.setName(destinationDefinition.getDestinationName());
 		serialDestination.setMaximumQueueSize(
-			destinationConfiguration.getMaximumQueueSize());
+			destinationDefinition.getMaximumQueueSize());
 		serialDestination.setMessageListenerRegistry(_messageListenerRegistry);
 		serialDestination.setPermissionCheckerFactory(
 			_permissionCheckerFactory);
 		serialDestination.setPortalExecutorManager(_portalExecutorManager);
 		serialDestination.setRejectedExecutionHandler(
-			destinationConfiguration.getRejectedExecutionHandler());
+			destinationDefinition.getRejectedExecutionHandler());
 		serialDestination.setUserLocalService(_userLocalService);
 		serialDestination.setWorkersSize(_WORKERS_CORE_SIZE, _WORKERS_MAX_SIZE);
 

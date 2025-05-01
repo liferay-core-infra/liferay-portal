@@ -15,7 +15,10 @@ import java.util.Set;
 
 /**
  * @author Michael C. Han
+ *
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public interface MessagingConfigurator {
 
 	public void destroy();

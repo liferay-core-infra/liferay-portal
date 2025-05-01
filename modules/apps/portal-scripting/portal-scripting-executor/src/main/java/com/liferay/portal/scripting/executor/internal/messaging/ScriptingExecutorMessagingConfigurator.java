@@ -5,17 +5,11 @@
 
 package com.liferay.portal.scripting.executor.internal.messaging;
 
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.scripting.Scripting;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.scripting.executor.internal.constants.ScriptingExecutorMessagingConstants;
-
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.List;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -27,50 +21,44 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(service = {})
-public class ScriptingExecutorMessagingConfigurator {
+@Component(
+	property = "destination.name=" + ScriptingExecutorMessagingConstants.DESTINATION_NAME,
+	service = DestinationDefinition.class
+)
+public class ScriptingExecutorMessagingConfigurator
+	implements DestinationDefinition {
+
+	@Override
+	public String getDestinationName() {
+		return ScriptingExecutorMessagingConstants.DESTINATION_NAME;
+	}
+
+	@Override
+	public String getDestinationType() {
+		return DESTINATION_TYPE_PARALLEL;
+	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		DestinationConfiguration destinationConfiguration =
-			new DestinationConfiguration(
-				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				ScriptingExecutorMessagingConstants.DESTINATION_NAME);
-
-		Destination destination = _destinationFactory.createDestination(
-			destinationConfiguration);
-
-		Dictionary<String, Object> properties =
+		_serviceRegistration = bundleContext.registerService(
+			MessageListener.class,
+			new ScriptingExecutorMessageListener(_scripting),
 			HashMapDictionaryBuilder.<String, Object>put(
-				"destination.name", destination.getName()
-			).build();
-
-		_serviceRegistrations.add(
-			bundleContext.registerService(
-				Destination.class, destination, properties));
-
-		_serviceRegistrations.add(
-			bundleContext.registerService(
-				MessageListener.class,
-				new ScriptingExecutorMessageListener(_scripting), properties));
+				"destination.name",
+				ScriptingExecutorMessagingConstants.DESTINATION_NAME
+			).build());
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		for (ServiceRegistration<?> serviceRegistration :
-				_serviceRegistrations) {
-
-			serviceRegistration.unregister();
+		if (_serviceRegistration != null) {
+			_serviceRegistration.unregister();
 		}
 	}
 
 	@Reference
-	private DestinationFactory _destinationFactory;
-
-	@Reference
 	private Scripting _scripting;
 
-	private final List<ServiceRegistration<?>> _serviceRegistrations =
-		new ArrayList<>();
+	private ServiceRegistration<MessageListener> _serviceRegistration;
 
 }

@@ -13,6 +13,8 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
+import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusInterceptor;
@@ -98,15 +100,19 @@ public class DefaultMessageBus implements MessageBus {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, Destination.class, "destination.name",
-			new ServiceTrackerCustomizer<Destination, Destination>() {
+			bundleContext, DestinationDefinition.class, "destination.name",
+			new ServiceTrackerCustomizer<DestinationDefinition, Destination>() {
 
 				@Override
 				public Destination addingService(
-					ServiceReference<Destination> serviceReference) {
+					ServiceReference<DestinationDefinition> serviceReference) {
 
-					Destination destination = bundleContext.getService(
-						serviceReference);
+					DestinationDefinition destinationDefinition =
+						bundleContext.getService(serviceReference);
+
+					Destination destination =
+						_destinationFactory.createDestination(
+							destinationDefinition);
 
 					destination.open();
 
@@ -123,13 +129,13 @@ public class DefaultMessageBus implements MessageBus {
 
 				@Override
 				public void modifiedService(
-					ServiceReference<Destination> serviceReference,
+					ServiceReference<DestinationDefinition> serviceReference,
 					Destination destination) {
 				}
 
 				@Override
 				public void removedService(
-					ServiceReference<Destination> serviceReference,
+					ServiceReference<DestinationDefinition> serviceReference,
 					Destination destination) {
 
 					destination.destroy();
@@ -186,6 +192,9 @@ public class DefaultMessageBus implements MessageBus {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private DestinationFactory _destinationFactory;
 
 	private final Map<String, DestinationWorkerConfiguration>
 		_destinationWorkerConfigurations = new ConcurrentHashMap<>();

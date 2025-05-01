@@ -6,7 +6,7 @@
 package com.liferay.push.notifications.sender.apple.internal.component.enabler;
 
 import com.liferay.osgi.util.ComponentUtil;
-import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.push.notifications.constants.PushNotificationsDestinationNames;
 import com.liferay.push.notifications.sender.apple.internal.messaging.ApplePushNotificationsResponseMessageListener;
 
@@ -23,7 +23,7 @@ public class ComponentEnabler {
 	@Activate
 	protected void activate(ComponentContext componentContext) {
 		ComponentUtil.enableComponents(
-			Destination.class,
+			DestinationDefinition.class,
 			"(destination.name= " +
 				PushNotificationsDestinationNames.PUSH_NOTIFICATION_RESPONSE +
 					")",

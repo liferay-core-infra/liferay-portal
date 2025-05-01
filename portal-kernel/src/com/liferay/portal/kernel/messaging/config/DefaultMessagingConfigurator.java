@@ -5,20 +5,17 @@
 
 package com.liferay.portal.kernel.messaging.config;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +27,10 @@ import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Michael C. Han
+ *
+ * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
  */
+@Deprecated
 public class DefaultMessagingConfigurator implements MessagingConfigurator {
 
 	public void afterPropertiesSet() {
@@ -51,8 +51,7 @@ public class DefaultMessagingConfigurator implements MessagingConfigurator {
 
 		_serviceRegistrations.clear();
 
-		_destinationConfigurations.clear();
-		_destinations.clear();
+		_destinationDefinitions.clear();
 		_messageListeners.clear();
 	}
 
@@ -60,12 +59,12 @@ public class DefaultMessagingConfigurator implements MessagingConfigurator {
 	public void setDestinationConfigurations(
 		Set<DestinationConfiguration> destinationConfigurations) {
 
-		_destinationConfigurations.addAll(destinationConfigurations);
+		_destinationDefinitions.addAll(destinationConfigurations);
 	}
 
 	@Override
 	public void setDestinations(List<Destination> destinations) {
-		_destinations.addAll(destinations);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -76,72 +75,38 @@ public class DefaultMessagingConfigurator implements MessagingConfigurator {
 	}
 
 	protected void initialize() {
-		registerDestinations();
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		for (DestinationDefinition destinationDefinition :
+				_destinationDefinitions) {
+
+			_serviceRegistrations.add(
+				bundleContext.registerService(
+					DestinationDefinition.class, destinationDefinition,
+					MapUtil.singletonDictionary(
+						"destination.name",
+						destinationDefinition.getDestinationName())));
+		}
 
 		for (Map.Entry<String, List<MessageListener>> messageListeners :
 				_messageListeners.entrySet()) {
 
 			String destinationName = messageListeners.getKey();
 
-			ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
+			for (MessageListener messageListener :
+					messageListeners.getValue()) {
 
-			serviceLatch.waitFor(
-				StringBundler.concat(
-					"(&(destination.name=", destinationName, ")(objectClass=",
-					Destination.class.getName(), "))"));
-
-			serviceLatch.openOn(
-				bundleContext -> {
-					Dictionary<String, Object> properties =
-						HashMapDictionaryBuilder.<String, Object>put(
-							"destination.name", destinationName
-						).build();
-
-					for (MessageListener messageListener :
-							messageListeners.getValue()) {
-
-						_serviceRegistrations.add(
-							bundleContext.registerService(
-								MessageListener.class, messageListener,
-								properties));
-					}
-				});
+				_serviceRegistrations.add(
+					bundleContext.registerService(
+						MessageListener.class, messageListener,
+						MapUtil.singletonDictionary(
+							"destination.name", destinationName)));
+			}
 		}
 	}
 
-	protected void registerDestinations() {
-		for (DestinationConfiguration destinationConfiguration :
-				_destinationConfigurations) {
-
-			DestinationFactory destinationFactory =
-				_destinationFactorySnapshot.get();
-
-			_destinations.add(
-				destinationFactory.createDestination(destinationConfiguration));
-		}
-
-		if (_destinations.isEmpty()) {
-			return;
-		}
-
-		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
-
-		for (Destination destination : _destinations) {
-			_serviceRegistrations.add(
-				bundleContext.registerService(
-					Destination.class, destination,
-					MapUtil.singletonDictionary(
-						"destination.name", destination.getName())));
-		}
-	}
-
-	private static final Snapshot<DestinationFactory>
-		_destinationFactorySnapshot = new Snapshot<>(
-			DefaultMessagingConfigurator.class, DestinationFactory.class);
-
-	private final Set<DestinationConfiguration> _destinationConfigurations =
+	private final Set<DestinationDefinition> _destinationDefinitions =
 		new HashSet<>();
-	private final List<Destination> _destinations = new ArrayList<>();
 	private final Map<String, List<MessageListener>> _messageListeners =
 		new HashMap<>();
 	private final List<ServiceRegistration<?>> _serviceRegistrations =

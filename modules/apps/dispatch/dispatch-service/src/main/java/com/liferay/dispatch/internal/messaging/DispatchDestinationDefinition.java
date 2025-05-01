@@ -16,15 +16,14 @@ import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterTokenTransitionListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
-import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -33,8 +32,47 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Matija Petanjek
  */
-@Component(service = {})
-public class DispatchConfigurator {
+@Component(
+	property = "destination.name=" + DispatchConstants.EXECUTOR_DESTINATION_NAME,
+	service = DestinationDefinition.class
+)
+public class DispatchDestinationDefinition implements DestinationDefinition {
+
+	@Override
+	public String getDestinationName() {
+		return DispatchConstants.EXECUTOR_DESTINATION_NAME;
+	}
+
+	@Override
+	public String getDestinationType() {
+		return DestinationConfiguration.DESTINATION_TYPE_PARALLEL;
+	}
+
+	@Override
+	public int getMaximumQueueSize() {
+		return _MAXIMUM_QUEUE_SIZE;
+	}
+
+	@Override
+	public RejectedExecutionHandler getRejectedExecutionHandler() {
+		return new ThreadPoolExecutor.CallerRunsPolicy() {
+
+			@Override
+			public void rejectedExecution(
+				Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
+
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"The current thread will handle the request because " +
+							"the graph walker's task queue is at its maximum " +
+								"capacity");
+				}
+
+				super.rejectedExecution(runnable, threadPoolExecutor);
+			}
+
+		};
+	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
@@ -46,48 +84,12 @@ public class DispatchConfigurator {
 				_dispatchClusterMasterTokenTransitionListener);
 		}
 
-		DestinationConfiguration destinationConfiguration =
-			new DestinationConfiguration(
-				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				DispatchConstants.EXECUTOR_DESTINATION_NAME);
-
-		destinationConfiguration.setMaximumQueueSize(_MAXIMUM_QUEUE_SIZE);
-		destinationConfiguration.setRejectedExecutionHandler(
-			new ThreadPoolExecutor.CallerRunsPolicy() {
-
-				@Override
-				public void rejectedExecution(
-					Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
-
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"The current thread will handle the request " +
-								"because the graph walker's task queue is at " +
-									"its maximum capacity");
-					}
-
-					super.rejectedExecution(runnable, threadPoolExecutor);
-				}
-
-			});
-
-		Destination destination = _destinationFactory.createDestination(
-			destinationConfiguration);
-
-		_serviceRegistration = bundleContext.registerService(
-			Destination.class, destination,
-			HashMapDictionaryBuilder.<String, Object>put(
-				"destination.name", destination.getName()
-			).build());
-
 		_addScheduledJobs();
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_deleteScheduledJobs();
-
-		_serviceRegistration.unregister();
 
 		if (_clusterMasterExecutor.isEnabled()) {
 			_clusterMasterExecutor.removeClusterMasterTokenTransitionListener(
@@ -156,7 +158,7 @@ public class DispatchConfigurator {
 	private static final int _MAXIMUM_QUEUE_SIZE = 100;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DispatchConfigurator.class);
+		DispatchDestinationDefinition.class);
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
@@ -172,8 +174,6 @@ public class DispatchConfigurator {
 
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
-
-	private ServiceRegistration<Destination> _serviceRegistration;
 
 	private class DispatchClusterMasterTokenTransitionListener
 		extends BaseClusterMasterTokenTransitionListener {

@@ -6,7 +6,9 @@
 package com.liferay.portal.messaging.internal.jmx;
 
 import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationStatistics;
+import com.liferay.portal.kernel.messaging.MessageBus;
 
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
@@ -18,12 +20,14 @@ import javax.management.StandardMBean;
 public class DestinationStatisticsManager
 	extends StandardMBean implements DestinationStatisticsManagerMBean {
 
-	public DestinationStatisticsManager(Destination destination)
+	public DestinationStatisticsManager(
+			DestinationDefinition destinationDefinition, MessageBus messageBus)
 		throws NotCompliantMBeanException {
 
 		super(DestinationStatisticsManagerMBean.class);
 
-		_destination = destination;
+		_destinationDefinition = destinationDefinition;
+		_messageBus = messageBus;
 	}
 
 	@Override
@@ -77,11 +81,13 @@ public class DestinationStatisticsManager
 	}
 
 	public String getObjectName() {
-		return _OBJECT_NAME_PREFIX + _destination.getName();
+		return _OBJECT_NAME_PREFIX +
+			_destinationDefinition.getDestinationName();
 	}
 
 	public String getObjectNameCacheKey() {
-		return _OBJECT_NAME_CACHE_KEY_PREFIX + _destination.getName();
+		return _OBJECT_NAME_CACHE_KEY_PREFIX +
+			_destinationDefinition.getDestinationName();
 	}
 
 	@Override
@@ -120,7 +126,17 @@ public class DestinationStatisticsManager
 	public void refresh() {
 		if (System.currentTimeMillis() > _lastRefresh) {
 			_lastRefresh = System.currentTimeMillis();
-			_destinationStatistics = _destination.getDestinationStatistics();
+
+			Destination destination = _messageBus.getDestination(
+				_destinationDefinition.getDestinationName());
+
+			if (destination == null) {
+				_destinationStatistics = _emptyDestinationStatistics;
+
+				return;
+			}
+
+			_destinationStatistics = destination.getDestinationStatistics();
 		}
 	}
 
@@ -136,9 +152,13 @@ public class DestinationStatisticsManager
 		"com.liferay.portal.messaging:classification=messaging_destination," +
 			"name=MessagingDestinationStatistics-";
 
+	private static final DestinationStatistics _emptyDestinationStatistics =
+		new DestinationStatistics();
+
 	private boolean _autoRefresh;
-	private final Destination _destination;
+	private final DestinationDefinition _destinationDefinition;
 	private DestinationStatistics _destinationStatistics;
 	private long _lastRefresh;
+	private final MessageBus _messageBus;
 
 }

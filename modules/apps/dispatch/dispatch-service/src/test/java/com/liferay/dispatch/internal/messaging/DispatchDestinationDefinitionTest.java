@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.scheduler.StorageType;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -31,13 +30,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Vendel Toreki
  * @author Carlos Correa
  */
-public class DispatchConfiguratorTest {
+public class DispatchDestinationDefinitionTest {
 
 	@ClassRule
 	@Rule
@@ -105,7 +103,7 @@ public class DispatchConfiguratorTest {
 			false
 		);
 
-		_dispatchConfigurator.activate(_bundleContext);
+		_dispatchDestinationDefinition.activate(_bundleContext);
 
 		Mockito.reset(_dispatchTriggerHelper);
 
@@ -115,7 +113,7 @@ public class DispatchConfiguratorTest {
 			Mockito.any()
 		);
 
-		_dispatchConfigurator.deactivate();
+		_dispatchDestinationDefinition.deactivate();
 
 		Mockito.verify(
 			_clusterMasterExecutor, Mockito.never()
@@ -134,7 +132,7 @@ public class DispatchConfiguratorTest {
 			true
 		);
 
-		_dispatchConfigurator.activate(_bundleContext);
+		_dispatchDestinationDefinition.activate(_bundleContext);
 
 		Mockito.verify(
 			_dispatchTriggerLocalService
@@ -195,7 +193,7 @@ public class DispatchConfiguratorTest {
 			false
 		);
 
-		_dispatchConfigurator.activate(_bundleContext);
+		_dispatchDestinationDefinition.activate(_bundleContext);
 
 		Mockito.verify(
 			_dispatchTriggerLocalService
@@ -256,13 +254,7 @@ public class DispatchConfiguratorTest {
 			true
 		);
 
-		ServiceRegistration<Destination> serviceRegistration = Mockito.mock(
-			ServiceRegistration.class);
-
-		ReflectionTestUtil.setFieldValue(
-			_dispatchConfigurator, "_serviceRegistration", serviceRegistration);
-
-		_dispatchConfigurator.deactivate();
+		_dispatchDestinationDefinition.deactivate();
 
 		Mockito.verify(
 			_dispatchTriggerLocalService
@@ -323,13 +315,7 @@ public class DispatchConfiguratorTest {
 			false
 		);
 
-		ServiceRegistration<Destination> serviceRegistration = Mockito.mock(
-			ServiceRegistration.class);
-
-		ReflectionTestUtil.setFieldValue(
-			_dispatchConfigurator, "_serviceRegistration", serviceRegistration);
-
-		_dispatchConfigurator.deactivate();
+		_dispatchDestinationDefinition.deactivate();
 
 		Mockito.verify(
 			_dispatchTriggerLocalService
@@ -401,7 +387,7 @@ public class DispatchConfiguratorTest {
 		ArgumentCaptor<ClusterMasterTokenTransitionListener> argumentCaptor =
 			ArgumentCaptor.forClass(ClusterMasterTokenTransitionListener.class);
 
-		_dispatchConfigurator.activate(_bundleContext);
+		_dispatchDestinationDefinition.activate(_bundleContext);
 
 		Mockito.reset(_dispatchTriggerHelper);
 
@@ -456,7 +442,7 @@ public class DispatchConfiguratorTest {
 			Mockito.eq(StorageType.PERSISTED), Mockito.any()
 		);
 
-		_dispatchConfigurator.deactivate();
+		_dispatchDestinationDefinition.deactivate();
 
 		Mockito.verify(
 			_clusterMasterExecutor
@@ -484,7 +470,7 @@ public class DispatchConfiguratorTest {
 		ArgumentCaptor<ClusterMasterTokenTransitionListener> argumentCaptor =
 			ArgumentCaptor.forClass(ClusterMasterTokenTransitionListener.class);
 
-		_dispatchConfigurator.activate(_bundleContext);
+		_dispatchDestinationDefinition.activate(_bundleContext);
 
 		Mockito.reset(_dispatchTriggerHelper);
 
@@ -539,7 +525,7 @@ public class DispatchConfiguratorTest {
 			Mockito.eq(StorageType.PERSISTED), Mockito.any()
 		);
 
-		_dispatchConfigurator.deactivate();
+		_dispatchDestinationDefinition.deactivate();
 
 		Mockito.verify(
 			_clusterMasterExecutor
@@ -561,8 +547,8 @@ public class DispatchConfiguratorTest {
 	private DestinationFactory _destinationFactory;
 
 	@InjectMocks
-	private final DispatchConfigurator _dispatchConfigurator =
-		new DispatchConfigurator();
+	private final DispatchDestinationDefinition _dispatchDestinationDefinition =
+		new DispatchDestinationDefinition();
 
 	@Mock
 	private DispatchTriggerHelper _dispatchTriggerHelper;

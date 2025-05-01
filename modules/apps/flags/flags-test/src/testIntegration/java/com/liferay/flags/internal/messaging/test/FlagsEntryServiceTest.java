@@ -8,9 +8,8 @@ package com.liferay.flags.internal.messaging.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.flags.service.FlagsEntryService;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
@@ -122,26 +121,22 @@ public class FlagsEntryServiceTest {
 	}
 
 	private void _registerDestination(MessageListener messageListener) {
-		Destination destination = _destinationFactory.createDestination(
-			new DestinationConfiguration(
-				DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
-				DestinationNames.SUBSCRIPTION_SENDER));
-
 		Dictionary<String, Object> dictionary = MapUtil.singletonDictionary(
-			"destination.name", destination.getName());
+			"destination.name", DestinationNames.SUBSCRIPTION_SENDER);
 
 		_serviceRegistrations.add(
 			_bundleContext.registerService(
-				Destination.class, destination, dictionary));
+				DestinationDefinition.class,
+				new DestinationConfiguration(
+					DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
+					DestinationNames.SUBSCRIPTION_SENDER),
+				dictionary));
 		_serviceRegistrations.add(
 			_bundleContext.registerService(
 				MessageListener.class, messageListener, dictionary));
 	}
 
 	private BundleContext _bundleContext;
-
-	@Inject
-	private DestinationFactory _destinationFactory;
 
 	@Inject
 	private FlagsEntryService _flagsEntryService;

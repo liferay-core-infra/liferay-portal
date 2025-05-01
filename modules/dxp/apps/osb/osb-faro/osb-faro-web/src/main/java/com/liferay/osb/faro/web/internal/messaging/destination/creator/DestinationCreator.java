@@ -5,8 +5,8 @@
 
 package com.liferay.osb.faro.web.internal.messaging.destination.creator;
 
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 
@@ -22,14 +22,14 @@ public class DestinationCreator {
 		BundleContext bundleContext, DestinationFactory destinationFactory,
 		String destinationName) {
 
-		Destination destination = destinationFactory.createDestination(
+		DestinationDefinition destinationDefinition =
 			DestinationConfiguration.createSerialDestinationConfiguration(
-				destinationName));
+				destinationName);
 
 		_serviceRegistration = bundleContext.registerService(
-			Destination.class, destination,
+			DestinationDefinition.class, destinationDefinition,
 			HashMapDictionaryBuilder.<String, Object>put(
-				"destination.name", destination.getName()
+				"destination.name", destinationName
 			).build());
 	}
 
@@ -39,6 +39,6 @@ public class DestinationCreator {
 		}
 	}
 
-	private ServiceRegistration<Destination> _serviceRegistration;
+	private ServiceRegistration<DestinationDefinition> _serviceRegistration;
 
 }

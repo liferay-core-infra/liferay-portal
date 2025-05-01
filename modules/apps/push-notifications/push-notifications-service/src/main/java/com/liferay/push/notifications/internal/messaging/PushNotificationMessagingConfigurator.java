@@ -6,9 +6,8 @@
 package com.liferay.push.notifications.internal.messaging;
 
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.push.notifications.constants.PushNotificationsDestinationNames;
@@ -61,25 +60,23 @@ public class PushNotificationMessagingConfigurator {
 		BundleContext bundleContext, String destinationName,
 		MessageListener messageListener) {
 
-		Destination destination = _destinationFactory.createDestination(
+		DestinationDefinition destinationDefinition =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_SERIAL,
-				destinationName));
+				destinationName);
 
 		Dictionary<String, Object> dictionary = MapUtil.singletonDictionary(
-			"destination.name", destination.getName());
+			"destination.name", destinationName);
 
 		_serviceRegistrations.add(
 			bundleContext.registerService(
-				Destination.class, destination, dictionary));
+				DestinationDefinition.class, destinationDefinition,
+				dictionary));
 
 		_serviceRegistrations.add(
 			bundleContext.registerService(
 				MessageListener.class, messageListener, dictionary));
 	}
-
-	@Reference
-	private DestinationFactory _destinationFactory;
 
 	@Reference
 	private JSONFactory _jsonFactory;

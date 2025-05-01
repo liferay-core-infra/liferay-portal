@@ -9,8 +9,8 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.dispatch.scheduler.SchedulerResponseManager;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
@@ -75,16 +75,16 @@ public class SchedulerResponseManagerTest {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		Destination destination = _destinationFactory.createDestination(
-			DestinationConfiguration.createSynchronousDestinationConfiguration(
-				_TEST_DESTINATION_NAME));
-
 		Dictionary<String, Object> dictionary = MapUtil.singletonDictionary(
 			"destination.name", _TEST_DESTINATION_NAME);
 
 		ServiceRegistration<?> serviceRegistration1 =
 			bundleContext.registerService(
-				Destination.class, destination, dictionary);
+				DestinationDefinition.class,
+				DestinationConfiguration.
+					createSynchronousDestinationConfiguration(
+						_TEST_DESTINATION_NAME),
+				dictionary);
 
 		TestMessageListener testMessageListener = new TestMessageListener();
 

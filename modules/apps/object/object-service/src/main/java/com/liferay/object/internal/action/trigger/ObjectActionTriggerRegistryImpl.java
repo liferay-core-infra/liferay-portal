@@ -13,7 +13,7 @@ import com.liferay.object.internal.action.trigger.util.ObjectActionTriggerUtil;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -63,52 +63,54 @@ public class ObjectActionTriggerRegistryImpl
 			bundleContext.createFilter(
 				StringBundler.concat(
 					"(&(object.action.trigger.class.name=*)(objectClass=",
-					Destination.class.getName(), "))")),
+					DestinationDefinition.class.getName(), "))")),
 			new ServiceTrackerCustomizer
-				<Destination, List<ServiceRegistration<?>>>() {
+				<DestinationDefinition, List<ServiceRegistration<?>>>() {
 
 				@Override
 				public List<ServiceRegistration<?>> addingService(
-					ServiceReference<Destination> serviceReference) {
+					ServiceReference<DestinationDefinition> serviceReference) {
 
 					String className = String.valueOf(
 						serviceReference.getProperty(
 							"object.action.trigger.class.name"));
-					Destination destination = bundleContext.getService(
-						serviceReference);
+					DestinationDefinition destinationDefinition =
+						bundleContext.getService(serviceReference);
 
 					return Arrays.asList(
 						bundleContext.registerService(
 							MessageListener.class,
 							new ObjectActionTriggerMessageListener(
 								className, _objectActionEngine,
-								destination.getName()),
+								destinationDefinition.getDestinationName()),
 							HashMapDictionaryBuilder.<String, Object>put(
-								"destination.name", destination.getName()
+								"destination.name",
+								destinationDefinition.getDestinationName()
 							).put(
 								"object.action.trigger.key",
-								destination.getName()
+								destinationDefinition.getDestinationName()
 							).build()),
 						bundleContext.registerService(
 							ObjectActionTrigger.class,
-							new ObjectActionTrigger(destination.getName()),
+							new ObjectActionTrigger(
+								destinationDefinition.getDestinationName()),
 							HashMapDictionaryBuilder.<String, Object>put(
 								"object.action.trigger.class.name", className
 							).put(
 								"object.action.trigger.key",
-								destination.getName()
+								destinationDefinition.getDestinationName()
 							).build()));
 				}
 
 				@Override
 				public void modifiedService(
-					ServiceReference<Destination> serviceReference,
+					ServiceReference<DestinationDefinition> serviceReference,
 					List<ServiceRegistration<?>> serviceRegistrations) {
 				}
 
 				@Override
 				public void removedService(
-					ServiceReference<Destination> serviceReference,
+					ServiceReference<DestinationDefinition> serviceReference,
 					List<ServiceRegistration<?>> serviceRegistrations) {
 
 					for (ServiceRegistration<?> serviceRegistration :
@@ -136,7 +138,7 @@ public class ObjectActionTriggerRegistryImpl
 	@Reference
 	private ObjectActionEngine _objectActionEngine;
 
-	private ServiceTracker<Destination, List<ServiceRegistration<?>>>
+	private ServiceTracker<DestinationDefinition, List<ServiceRegistration<?>>>
 		_serviceTracker;
 	private ServiceTrackerMap<String, List<ObjectActionTrigger>>
 		_serviceTrackerMap;

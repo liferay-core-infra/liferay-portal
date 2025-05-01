@@ -6,7 +6,7 @@
 package com.liferay.portal.messaging.internal;
 
 import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.MessageListenerRegistry;
 
 /**
@@ -22,17 +22,17 @@ public class SynchronousDestinationPrototype implements DestinationPrototype {
 
 	@Override
 	public Destination createDestination(
-		DestinationConfiguration destinationConfiguration) {
+		DestinationDefinition destinationDefinition) {
 
 		SynchronousDestination synchronousDestination =
 			new SynchronousDestination();
 
 		synchronousDestination.setDestinationType(
-			destinationConfiguration.getDestinationType());
+			destinationDefinition.getDestinationType());
 		synchronousDestination.setMessageListenerRegistry(
 			_messageListenerRegistry);
 		synchronousDestination.setName(
-			destinationConfiguration.getDestinationName());
+			destinationDefinition.getDestinationName());
 
 		return synchronousDestination;
 	}

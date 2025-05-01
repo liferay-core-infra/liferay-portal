@@ -15,9 +15,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -269,16 +268,14 @@ public class OfflineOpenIdConnectSessionManager {
 			DestinationConfiguration.createSerialDestinationConfiguration(
 				OpenIdConnectDestinationNames.OPENID_CONNECT_TOKEN_REFRESH);
 
-		Destination destination = _destinationFactory.createDestination(
-			destinationConfiguration);
-
 		Dictionary<String, Object> dictionary =
 			HashMapDictionaryBuilder.<String, Object>put(
-				"destination.name", destination.getName()
+				"destination.name",
+				OpenIdConnectDestinationNames.OPENID_CONNECT_TOKEN_REFRESH
 			).build();
 
 		_destinationServiceRegistration = bundleContext.registerService(
-			Destination.class, destination, dictionary);
+			DestinationDefinition.class, destinationConfiguration, dictionary);
 
 		_messageListenerServiceRegistration = bundleContext.registerService(
 			MessageListener.class, new TokenRefreshMessageListener(),
@@ -354,10 +351,8 @@ public class OfflineOpenIdConnectSessionManager {
 	@Reference
 	private CounterLocalService _counterLocalService;
 
-	@Reference
-	private DestinationFactory _destinationFactory;
-
-	private ServiceRegistration<Destination> _destinationServiceRegistration;
+	private ServiceRegistration<DestinationDefinition>
+		_destinationServiceRegistration;
 
 	@Reference
 	private MessageBus _messageBus;

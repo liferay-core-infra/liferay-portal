@@ -8,7 +8,8 @@ package com.liferay.portal.messaging.internal.jmx;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerRegistry;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -70,25 +71,26 @@ public class MessageBusManager
 			bundleContext,
 			bundleContext.createFilter(
 				StringBundler.concat(
-					"(&(objectClass=", Destination.class.getName(),
+					"(&(objectClass=", DestinationDefinition.class.getName(),
 					")(destination.name=*))")),
 			new ServiceTrackerCustomizer
-				<Destination, ServiceRegistration<DynamicMBean>>() {
+				<DestinationDefinition, ServiceRegistration<DynamicMBean>>() {
 
 				@Override
 				public ServiceRegistration<DynamicMBean> addingService(
-					ServiceReference<Destination> serviceReference) {
+					ServiceReference<DestinationDefinition> serviceReference) {
 
 					ServiceRegistration<DynamicMBean> serviceRegistration =
 						null;
 
-					Destination destination = bundleContext.getService(
-						serviceReference);
+					DestinationDefinition destinationDefinition =
+						bundleContext.getService(serviceReference);
 
 					try {
 						DestinationStatisticsManager
 							destinationStatisticsManager =
-								new DestinationStatisticsManager(destination);
+								new DestinationStatisticsManager(
+									destinationDefinition, _messageBus);
 
 						Dictionary<String, Object> mBeanProperties =
 							HashMapDictionaryBuilder.<String, Object>put(
@@ -119,13 +121,13 @@ public class MessageBusManager
 
 				@Override
 				public void modifiedService(
-					ServiceReference<Destination> serviceReference,
+					ServiceReference<DestinationDefinition> serviceReference,
 					ServiceRegistration<DynamicMBean> serviceRegistration) {
 				}
 
 				@Override
 				public void removedService(
-					ServiceReference<Destination> serviceReference,
+					ServiceReference<DestinationDefinition> serviceReference,
 					ServiceRegistration<DynamicMBean> serviceRegistration) {
 
 					bundleContext.ungetService(serviceReference);
@@ -147,9 +149,13 @@ public class MessageBusManager
 		MessageBusManager.class);
 
 	@Reference
+	private MessageBus _messageBus;
+
+	@Reference
 	private MessageListenerRegistry _messageListenerRegistry;
 
-	private ServiceTracker<Destination, ServiceRegistration<DynamicMBean>>
-		_serviceTracker;
+	private ServiceTracker
+		<DestinationDefinition, ServiceRegistration<DynamicMBean>>
+			_serviceTracker;
 
 }

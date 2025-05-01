@@ -39,6 +39,7 @@ public class LiferayIntegrationTestRule extends AggregateTestRule {
 		testRules.add(new FeatureFlagTestRule(true));
 		testRules.add(LanguageIdsTestRule.INSTANCE);
 		testRules.add(PortalRunModeClassTestRule.INSTANCE);
+		testRules.add(DestinationFactoryTestRule.INSTANCE);
 		testRules.add(SynchronousDestinationTestRule.INSTANCE);
 		testRules.add(DataGuardTestRule.INSTANCE);
 		testRules.add(LogAssertionTestRule.INSTANCE);

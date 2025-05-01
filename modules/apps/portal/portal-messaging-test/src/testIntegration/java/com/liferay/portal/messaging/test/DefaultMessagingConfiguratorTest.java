@@ -8,7 +8,9 @@ package com.liferay.portal.messaging.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerRegistry;
 import com.liferay.portal.kernel.messaging.config.DefaultMessagingConfigurator;
@@ -17,7 +19,6 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,17 +27,10 @@ import java.util.concurrent.CountDownLatch;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Michael C. Han
@@ -49,24 +43,14 @@ public class DefaultMessagingConfiguratorTest {
 	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
 		new LiferayIntegrationTestRule();
 
-	@BeforeClass
-	public static void setUpClass() {
-		Bundle bundle = FrameworkUtil.getBundle(
-			DefaultMessagingConfiguratorTest.class);
-
-		_bundleContext = bundle.getBundleContext();
-	}
-
 	@After
 	public void tearDown() {
-		_serviceTracker.close();
-
 		_defaultMessagingConfigurator.destroy();
 	}
 
 	@Test
 	public void testPortalClassLoaderDestinationConfiguration()
-		throws InterruptedException, InvalidSyntaxException {
+		throws InterruptedException {
 
 		CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -114,23 +98,15 @@ public class DefaultMessagingConfiguratorTest {
 
 		_defaultMessagingConfigurator.afterPropertiesSet();
 
-		_serviceTracker = new ServiceTracker<>(
-			_bundleContext,
-			_bundleContext.createFilter(
-				"(&(destination.name=*portaltest*)(objectClass=com.liferay." +
-					"portal.kernel.messaging.Destination))"),
-			null);
-
-		_serviceTracker.open();
-
 		countDownLatch.await();
 
-		Object[] services = _serviceTracker.getServices();
+		for (DestinationDefinition destinationDefinition :
+				destinationConfigurations) {
 
-		Assert.assertEquals(Arrays.toString(services), 2, services.length);
+			Destination destination = _messageBus.getDestination(
+				destinationDefinition.getDestinationName());
 
-		for (Object service : services) {
-			Destination destination = (Destination)service;
+			Assert.assertNotNull(destination);
 
 			String destinationName = destination.getName();
 
@@ -156,14 +132,13 @@ public class DefaultMessagingConfiguratorTest {
 		}
 	}
 
-	private static BundleContext _bundleContext;
-
 	private DefaultMessagingConfigurator _defaultMessagingConfigurator;
 
 	@Inject
-	private MessageListenerRegistry _messageListenerRegistry;
+	private MessageBus _messageBus;
 
-	private ServiceTracker<Destination, Destination> _serviceTracker;
+	@Inject
+	private MessageListenerRegistry _messageListenerRegistry;
 
 	private static class TestMessageListener implements MessageListener {
 

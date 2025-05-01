@@ -14,9 +14,8 @@ import com.liferay.portal.kernel.cluster.ClusterableContextThreadLocal;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
@@ -344,15 +343,13 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
 				destinationName);
 
-		Destination destination = _destinationFactory.createDestination(
-			destinationConfiguration);
-
 		Dictionary<String, Object> dictionary = MapUtil.singletonDictionary(
-			"destination.name", destination.getName());
+			"destination.name", destinationName);
 
 		_serviceRegistrations.add(
 			bundleContext.registerService(
-				Destination.class, destination, dictionary));
+				DestinationDefinition.class, destinationConfiguration,
+				dictionary));
 
 		if (messageListener == null) {
 			return;
@@ -367,10 +364,6 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		SchedulerEngineHelperImpl.class);
 
 	private volatile BundleContext _bundleContext;
-
-	@Reference
-	private DestinationFactory _destinationFactory;
-
 	private final Map<String, ServiceRegistration<MessageListener>>
 		_messageListenerServiceRegistrations = new ConcurrentHashMap<>();
 

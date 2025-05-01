@@ -8,6 +8,7 @@ package com.liferay.portal.messaging.internal;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.MessageListenerRegistry;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
@@ -31,9 +32,9 @@ public class DefaultDestinationFactory implements DestinationFactory {
 
 	@Override
 	public Destination createDestination(
-		DestinationConfiguration destinationConfiguration) {
+		DestinationDefinition destinationDefinition) {
 
-		String type = destinationConfiguration.getDestinationType();
+		String type = destinationDefinition.getDestinationType();
 
 		DestinationPrototype destinationPrototype = _destinationPrototypes.get(
 			type);
@@ -43,7 +44,7 @@ public class DefaultDestinationFactory implements DestinationFactory {
 				"No destination prototype configured for " + type);
 		}
 
-		return destinationPrototype.createDestination(destinationConfiguration);
+		return destinationPrototype.createDestination(destinationDefinition);
 	}
 
 	@Override

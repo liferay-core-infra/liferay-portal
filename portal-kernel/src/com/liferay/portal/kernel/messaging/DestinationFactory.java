@@ -13,7 +13,7 @@ import java.util.Collection;
 public interface DestinationFactory {
 
 	public Destination createDestination(
-		DestinationConfiguration destinationConfiguration);
+		DestinationDefinition destinationDefinition);
 
 	public Collection<String> getDestinationTypes();
 

@@ -8,20 +8,16 @@ package com.liferay.commerce.internal.messaging;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceShipment;
 import com.liferay.commerce.price.list.model.CommercePriceList;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-
-import java.util.Dictionary;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Andrea Di Giorgi
@@ -72,40 +68,31 @@ public class CommerceMessagingConfigurator {
 		}
 	}
 
-	private ServiceRegistration<Destination> _registerDestination(
+	private ServiceRegistration<DestinationDefinition> _registerDestination(
 		BundleContext bundleContext, String destinationName, String className) {
 
-		DestinationConfiguration destinationConfiguration =
+		DestinationDefinition destinationDefinition =
 			DestinationConfiguration.createParallelDestinationConfiguration(
 				destinationName);
 
-		Destination destination = _destinationFactory.createDestination(
-			destinationConfiguration);
-
-		Dictionary<String, Object> dictionary =
+		return bundleContext.registerService(
+			DestinationDefinition.class, destinationDefinition,
 			HashMapDictionaryBuilder.<String, Object>put(
-				"destination.name", destination.getName()
+				"destination.name", destinationName
 			).put(
 				"object.action.trigger.class.name", className
-			).build();
-
-		return bundleContext.registerService(
-			Destination.class, destination, dictionary);
+			).build());
 	}
 
-	private volatile ServiceRegistration<Destination>
+	private volatile ServiceRegistration<DestinationDefinition>
 		_basePriceListServiceRegistration;
-
-	@Reference
-	private DestinationFactory _destinationFactory;
-
-	private volatile ServiceRegistration<Destination>
+	private volatile ServiceRegistration<DestinationDefinition>
 		_orderStatusServiceRegistration;
-	private volatile ServiceRegistration<Destination>
+	private volatile ServiceRegistration<DestinationDefinition>
 		_paymentStatusServiceRegistration;
-	private volatile ServiceRegistration<Destination>
+	private volatile ServiceRegistration<DestinationDefinition>
 		_shipmentStatusServiceRegistration;
-	private volatile ServiceRegistration<Destination>
+	private volatile ServiceRegistration<DestinationDefinition>
 		_subscriptionStatusServiceRegistration;
 
 }

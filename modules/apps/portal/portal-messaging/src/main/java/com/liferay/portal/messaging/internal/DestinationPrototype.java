@@ -6,7 +6,7 @@
 package com.liferay.portal.messaging.internal;
 
 import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 
 /**
  * @author Michael C. Han
@@ -14,6 +14,6 @@ import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 public interface DestinationPrototype {
 
 	public Destination createDestination(
-		DestinationConfiguration destinationConfiguration);
+		DestinationDefinition destinationDefinition);
 
 }

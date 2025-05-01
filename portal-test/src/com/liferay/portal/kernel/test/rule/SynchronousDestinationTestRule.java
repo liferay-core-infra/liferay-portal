@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseDestination;
 import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -24,6 +25,7 @@ import com.liferay.portal.kernel.messaging.MessageListenerRegistry;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule.SyncHandler;
+import com.liferay.portal.kernel.test.util.DestinationFactoryTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -60,7 +62,8 @@ public class SynchronousDestinationTestRule
 
 	@Override
 	public void afterMethod(
-		Description description, SyncHandler syncHandler, Object target) {
+			Description description, SyncHandler syncHandler, Object target)
+		throws Exception {
 
 		if (syncHandler != null) {
 			syncHandler.restorePreviousSync();
@@ -111,50 +114,60 @@ public class SynchronousDestinationTestRule
 			}
 
 			testSynchronousDestination.setMessageListenerRegistry(
-				_serviceTracker.getService());
+				_messageListenerRegistryServiceTracker.getService());
 			testSynchronousDestination.setName(destinationName);
 
 			return testSynchronousDestination;
 		}
 
 		public void enableSync() {
-			_serviceTracker.open();
+			_messageListenerRegistryServiceTracker.open();
 
-			Filter audioProcessorFilter = _registerDestinationFilter(
+			Filter audioProcessorFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.DOCUMENT_LIBRARY_AUDIO_PROCESSOR);
-			Filter asyncFilter = _registerDestinationFilter(
+			Filter asyncFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.ASYNC_SERVICE);
-			Filter backgroundTaskFilter = _registerDestinationFilter(
+			Filter backgroundTaskFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.BACKGROUND_TASK);
-			Filter backgroundTaskStatusFilter = _registerDestinationFilter(
-				DestinationNames.BACKGROUND_TASK_STATUS);
-			Filter commerceBasePriceListFilter = _registerDestinationFilter(
-				DestinationNames.COMMERCE_BASE_PRICE_LIST);
-			Filter commerceOrderFilter = _registerDestinationFilter(
+			Filter backgroundTaskStatusFilter =
+				_registerDestinationDefinitionFilter(
+					DestinationNames.BACKGROUND_TASK_STATUS);
+			Filter commerceBasePriceListFilter =
+				_registerDestinationDefinitionFilter(
+					DestinationNames.COMMERCE_BASE_PRICE_LIST);
+			Filter commerceOrderFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.COMMERCE_ORDER_STATUS);
-			Filter commercePaymentFilter = _registerDestinationFilter(
+			Filter commercePaymentFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.COMMERCE_PAYMENT_STATUS);
-			Filter commerceShipmentFilter = _registerDestinationFilter(
-				DestinationNames.COMMERCE_SHIPMENT_STATUS);
-			Filter commerceSubscriptionFilter = _registerDestinationFilter(
-				DestinationNames.COMMERCE_SUBSCRIPTION_STATUS);
-			Filter ddmStructureReindexFilter = _registerDestinationFilter(
-				"liferay/ddm_structure_reindex");
-			Filter deletionProcessorFilter = _registerDestinationFilter(
-				DestinationNames.DOCUMENT_LIBRARY_DELETION);
-			Filter mailFilter = _registerDestinationFilter(
+			Filter commerceShipmentFilter =
+				_registerDestinationDefinitionFilter(
+					DestinationNames.COMMERCE_SHIPMENT_STATUS);
+			Filter commerceSubscriptionFilter =
+				_registerDestinationDefinitionFilter(
+					DestinationNames.COMMERCE_SUBSCRIPTION_STATUS);
+			Filter ddmStructureReindexFilter =
+				_registerDestinationDefinitionFilter(
+					"liferay/ddm_structure_reindex");
+			Filter deletionProcessorFilter =
+				_registerDestinationDefinitionFilter(
+					DestinationNames.DOCUMENT_LIBRARY_DELETION);
+			Filter mailFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.MAIL);
-			Filter pdfProcessorFilter = _registerDestinationFilter(
+			Filter pdfProcessorFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.DOCUMENT_LIBRARY_PDF_PROCESSOR);
-			Filter rawMetaDataProcessorFilter = _registerDestinationFilter(
-				DestinationNames.DOCUMENT_LIBRARY_RAW_METADATA_PROCESSOR);
-			Filter segmentsEntryReindexFilter = _registerDestinationFilter(
-				"liferay/segments_entry_reindex");
-			Filter subscrpitionSenderFilter = _registerDestinationFilter(
-				DestinationNames.SUBSCRIPTION_SENDER);
-			Filter tensorflowModelDownloadFilter = _registerDestinationFilter(
-				"liferay/tensorflow_model_download");
-			Filter videoProcessorFilter = _registerDestinationFilter(
+			Filter rawMetaDataProcessorFilter =
+				_registerDestinationDefinitionFilter(
+					DestinationNames.DOCUMENT_LIBRARY_RAW_METADATA_PROCESSOR);
+			Filter segmentsEntryReindexFilter =
+				_registerDestinationDefinitionFilter(
+					"liferay/segments_entry_reindex");
+			Filter subscrpitionSenderFilter =
+				_registerDestinationDefinitionFilter(
+					DestinationNames.SUBSCRIPTION_SENDER);
+			Filter tensorflowModelDownloadFilter =
+				_registerDestinationDefinitionFilter(
+					"liferay/tensorflow_model_download");
+			Filter videoProcessorFilter = _registerDestinationDefinitionFilter(
 				DestinationNames.DOCUMENT_LIBRARY_VIDEO_PROCESSOR);
 
 			_waitForDependencies(
@@ -170,6 +183,12 @@ public class SynchronousDestinationTestRule
 			_bufferedIncrementForceSyncSafeCloseable =
 				BufferedIncrementThreadLocal.setForceSyncWithSafeCloseable(
 					true);
+
+			_destinationProviderAutoCloseables.add(
+				DestinationFactoryTestUtil.registerTestDestinationProvider(
+					_DESTINATION_TYPE_SYNC_TEST,
+					destinationDefinition -> createSynchronousDestination(
+						destinationDefinition.getDestinationName())));
 
 			replaceDestination(DestinationNames.ASYNC_SERVICE);
 			replaceDestination(DestinationNames.BACKGROUND_TASK);
@@ -210,22 +229,54 @@ public class SynchronousDestinationTestRule
 				return;
 			}
 
-			_registerDestination(
-				new TestSynchronousDestination() {
+			_destinationProviderAutoCloseables.add(
+				DestinationFactoryTestUtil.registerTestDestinationProvider(
+					_DESTINATION_TYPE_SYNC_TEST_EMPTY,
+					destinationDefinition -> new TestSynchronousDestination() {
 
-					@Override
-					public String getName() {
-						return DestinationNames.SCHEDULER_DISPATCH;
-					}
+						@Override
+						public String getDestinationType() {
+							return _DESTINATION_TYPE_SYNC_TEST_EMPTY;
+						}
 
-					@Override
-					public void send(Message message) {
-					}
+						@Override
+						public String getName() {
+							return destinationDefinition.getDestinationName();
+						}
 
-				});
+						@Override
+						public void send(Message message) {
+						}
+
+					}));
+
+			replaceDestination(
+				DestinationNames.SCHEDULER_DISPATCH,
+				_DESTINATION_TYPE_SYNC_TEST_EMPTY);
 		}
 
 		public void replaceDestination(String destinationName) {
+			replaceDestination(destinationName, _DESTINATION_TYPE_SYNC_TEST);
+		}
+
+		public void replaceDestination(
+			String destinationName, String destinationType) {
+
+			DestinationDefinition destinationDefinition =
+				new DestinationDefinition() {
+
+					@Override
+					public String getDestinationName() {
+						return destinationName;
+					}
+
+					@Override
+					public String getDestinationType() {
+						return destinationType;
+					}
+
+				};
+
 			Destination destination = MessageBusUtil.getDestination(
 				destinationName);
 
@@ -235,32 +286,36 @@ public class SynchronousDestinationTestRule
 						destination.getClass(),
 						"_noticeableThreadPoolExecutor");
 
-					_registerDestination(
-						createSynchronousDestination(destinationName));
+					_registerDestination(destinationDefinition);
 				}
 				catch (Exception exception) {
 				}
 			}
 			else {
-				_registerDestination(
-					createSynchronousDestination(destinationName));
+				_registerDestination(destinationDefinition);
 			}
 		}
 
-		public void restorePreviousSync() {
+		public void restorePreviousSync() throws Exception {
 			if (_bufferedIncrementForceSyncSafeCloseable != null) {
 				_bufferedIncrementForceSyncSafeCloseable.close();
 			}
 
-			for (ServiceRegistration<Destination> serviceRegistration :
-					_serviceRegistrations) {
+			for (ServiceRegistration<DestinationDefinition>
+					serviceRegistration : _serviceRegistrations) {
 
 				serviceRegistration.unregister();
 			}
 
 			_serviceRegistrations.clear();
 
-			_serviceTracker.close();
+			for (AutoCloseable autoCloseable :
+					_destinationProviderAutoCloseables) {
+
+				autoCloseable.close();
+			}
+
+			_messageListenerRegistryServiceTracker.close();
 		}
 
 		/**
@@ -274,22 +329,27 @@ public class SynchronousDestinationTestRule
 			_sync = sync;
 		}
 
-		private void _registerDestination(Destination destination) {
+		private void _registerDestination(
+			DestinationDefinition destinationDefinition) {
+
 			_serviceRegistrations.add(
 				_bundleContext.registerService(
-					Destination.class, destination,
+					DestinationDefinition.class, destinationDefinition,
 					HashMapDictionaryBuilder.<String, Object>put(
-						"destination.name", destination.getName()
+						"destination.name",
+						destinationDefinition.getDestinationName()
 					).put(
 						"service.ranking", Integer.MAX_VALUE - 500
 					).build()));
 		}
 
-		private Filter _registerDestinationFilter(String destinationName) {
+		private Filter _registerDestinationDefinitionFilter(
+			String destinationName) {
+
 			return SystemBundleUtil.createFilter(
 				StringBundler.concat(
 					"(&(destination.name=", destinationName, ")(objectClass=",
-					Destination.class.getName(), "))"));
+					DestinationDefinition.class.getName(), "))"));
 		}
 
 		private void _waitForDependencies(Filter... filters) {
@@ -311,13 +371,13 @@ public class SynchronousDestinationTestRule
 						}
 
 						System.out.println(
-							"Waiting for destination " + filter.toString());
+							"Waiting for destination definition " + filter);
 					}
 					catch (InterruptedException interruptedException) {
 						System.out.println(
 							StringBundler.concat(
-								"Stopped waiting for destination ", filter,
-								" due to interruption"));
+								"Stopped waiting for destination definition ",
+								filter, " due to interruption"));
 
 						return;
 					}
@@ -325,14 +385,21 @@ public class SynchronousDestinationTestRule
 			}
 		}
 
+		private static final String _DESTINATION_TYPE_SYNC_TEST = "sync_test";
+
+		private static final String _DESTINATION_TYPE_SYNC_TEST_EMPTY =
+			"sync_test_empty";
+
 		private SafeCloseable _bufferedIncrementForceSyncSafeCloseable;
-		private final List<ServiceRegistration<Destination>>
-			_serviceRegistrations = new ArrayList<>();
+		private final List<AutoCloseable> _destinationProviderAutoCloseables =
+			new ArrayList<>();
 		private final ServiceTracker
-			<MessageListenerRegistry, MessageListenerRegistry> _serviceTracker =
-				new ServiceTracker<>(
+			<MessageListenerRegistry, MessageListenerRegistry>
+				_messageListenerRegistryServiceTracker = new ServiceTracker<>(
 					SystemBundleUtil.getBundleContext(),
 					MessageListenerRegistry.class, null);
+		private final List<ServiceRegistration<DestinationDefinition>>
+			_serviceRegistrations = new ArrayList<>();
 		private Sync _sync;
 
 	}

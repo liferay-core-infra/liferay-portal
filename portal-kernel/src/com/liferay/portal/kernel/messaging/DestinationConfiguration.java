@@ -8,21 +8,13 @@ package com.liferay.portal.kernel.messaging;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.Serializable;
-
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionHandler;
 
 /**
  * @author Michael C. Han
  */
-public class DestinationConfiguration implements Serializable {
-
-	public static final String DESTINATION_TYPE_PARALLEL = "parallel";
-
-	public static final String DESTINATION_TYPE_SERIAL = "serial";
-
-	public static final String DESTINATION_TYPE_SYNCHRONOUS = "synchronous";
+public class DestinationConfiguration implements DestinationDefinition {
 
 	public static DestinationConfiguration
 		createParallelDestinationConfiguration(String destinationName) {
@@ -74,26 +66,32 @@ public class DestinationConfiguration implements Serializable {
 			_destinationName, destinationConfiguration._destinationName);
 	}
 
+	@Override
 	public String getDestinationName() {
 		return _destinationName;
 	}
 
+	@Override
 	public String getDestinationType() {
 		return _destinationType;
 	}
 
+	@Override
 	public int getMaximumQueueSize() {
 		return _maximumQueueSize;
 	}
 
+	@Override
 	public RejectedExecutionHandler getRejectedExecutionHandler() {
 		return _rejectedExecutionHandler;
 	}
 
+	@Override
 	public int getWorkersCoreSize() {
 		return _workersCoreSize;
 	}
 
+	@Override
 	public int getWorkersMaxSize() {
 		return _workersMaxSize;
 	}

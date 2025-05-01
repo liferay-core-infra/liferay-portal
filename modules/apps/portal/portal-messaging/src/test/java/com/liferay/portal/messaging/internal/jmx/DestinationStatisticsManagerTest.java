@@ -5,7 +5,7 @@
 
 package com.liferay.portal.messaging.internal.jmx;
 
-import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.lang.management.ManagementFactory;
@@ -34,10 +34,11 @@ public class DestinationStatisticsManagerTest {
 	public void testRegisterMBean() throws Exception {
 		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
-		Destination destination = Mockito.mock(Destination.class);
+		DestinationDefinition destinationDefinition = Mockito.mock(
+			DestinationDefinition.class);
 
 		Mockito.when(
-			destination.getName()
+			destinationDefinition.getDestinationName()
 		).thenReturn(
 			"test"
 		);
@@ -45,10 +46,11 @@ public class DestinationStatisticsManagerTest {
 		ObjectName objectName = new ObjectName(
 			"com.liferay.portal.messaging:classification=" +
 				"messaging_destination,name=MessagingDestinationStatistics-" +
-					destination.getName());
+					destinationDefinition.getDestinationName());
 
 		mBeanServer.registerMBean(
-			new DestinationStatisticsManager(destination), objectName);
+			new DestinationStatisticsManager(destinationDefinition, null),
+			objectName);
 
 		Assert.assertTrue(mBeanServer.isRegistered(objectName));
 	}

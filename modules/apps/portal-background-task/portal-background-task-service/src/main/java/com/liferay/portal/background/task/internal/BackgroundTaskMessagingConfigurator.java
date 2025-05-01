@@ -14,9 +14,8 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutorRegistry;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistry;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocalManager;
 import com.liferay.portal.kernel.lock.LockManager;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
@@ -93,15 +92,13 @@ public class BackgroundTaskMessagingConfigurator {
 		destinationConfiguration.setWorkersCoreSize(workersCoreSize);
 		destinationConfiguration.setWorkersMaxSize(workersMaxSize);
 
-		Destination destination = _destinationFactory.createDestination(
-			destinationConfiguration);
-
 		Dictionary<String, String> dictionary = MapUtil.singletonDictionary(
-			"destination.name", destination.getName());
+			"destination.name", destinationName);
 
 		_serviceRegistrations.add(
 			bundleContext.registerService(
-				Destination.class, destination, dictionary));
+				DestinationDefinition.class, destinationConfiguration,
+				dictionary));
 
 		_serviceRegistrations.add(
 			bundleContext.registerService(
@@ -119,9 +116,6 @@ public class BackgroundTaskMessagingConfigurator {
 
 	@Reference
 	private BackgroundTaskThreadLocalManager _backgroundTaskThreadLocalManager;
-
-	@Reference
-	private DestinationFactory _destinationFactory;
 
 	@Reference
 	private LockManager _lockManager;

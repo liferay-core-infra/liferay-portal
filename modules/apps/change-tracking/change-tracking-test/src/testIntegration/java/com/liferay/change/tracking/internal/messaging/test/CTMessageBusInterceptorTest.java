@@ -16,6 +16,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.DestinationStatistics;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.DestinationFactoryTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -65,8 +67,26 @@ public class CTMessageBusInterceptorTest {
 					DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
 					DestinationNames.SUBSCRIPTION_SENDER)));
 
+		_autoCloseable =
+			DestinationFactoryTestUtil.registerTestDestinationProvider(
+				CTMessageBusInterceptorTest.class.getName(),
+				destinationDefinition -> _testDestination);
+
 		_serviceRegistration = _bundleContext.registerService(
-			Destination.class, _testDestination,
+			DestinationDefinition.class,
+			new DestinationDefinition() {
+
+				@Override
+				public String getDestinationName() {
+					return DestinationNames.SUBSCRIPTION_SENDER;
+				}
+
+				@Override
+				public String getDestinationType() {
+					return CTMessageBusInterceptorTest.class.getName();
+				}
+
+			},
 			HashMapDictionaryBuilder.<String, Object>put(
 				"destination.name", DestinationNames.SUBSCRIPTION_SENDER
 			).put(
@@ -75,11 +95,15 @@ public class CTMessageBusInterceptorTest {
 	}
 
 	@After
-	public void tearDown() {
+	public void tearDown() throws Exception {
 		if (_serviceRegistration != null) {
 			_serviceRegistration.unregister();
 
 			_serviceRegistration = null;
+		}
+
+		if (_autoCloseable != null) {
+			_autoCloseable.close();
 		}
 	}
 
@@ -176,10 +200,12 @@ public class CTMessageBusInterceptorTest {
 	@Inject
 	private static DestinationFactory _destinationFactory;
 
+	private AutoCloseable _autoCloseable;
+
 	@DeleteAfterTestRun
 	private CTCollection _ctCollection;
 
-	private ServiceRegistration<Destination> _serviceRegistration;
+	private ServiceRegistration<DestinationDefinition> _serviceRegistration;
 	private TestDestination _testDestination;
 
 	private static class TestDestination implements Destination {

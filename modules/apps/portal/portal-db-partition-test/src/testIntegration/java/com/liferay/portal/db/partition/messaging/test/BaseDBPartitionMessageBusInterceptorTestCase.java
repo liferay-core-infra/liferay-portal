@@ -8,8 +8,8 @@ package com.liferay.portal.db.partition.messaging.test;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.db.partition.test.util.BaseDBPartitionTestCase;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationDefinition;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
@@ -273,20 +273,20 @@ public abstract class BaseDBPartitionMessageBusInterceptorTestCase {
 
 		_testDBPartitionMessageListener = new TestDBPartitionMessageListener();
 
-		Destination destination = _destinationFactory.createDestination(
-			new DestinationConfiguration(destinationType, _DESTINATION_NAME));
-
 		Bundle bundle = FrameworkUtil.getBundle(
 			BaseDBPartitionMessageBusInterceptorTestCase.class);
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
 		Dictionary<String, Object> dictionary = MapUtil.singletonDictionary(
-			"destination.name", destination.getName());
+			"destination.name", _DESTINATION_NAME);
 
 		_serviceRegistrations.add(
 			bundleContext.registerService(
-				Destination.class, destination, dictionary));
+				DestinationDefinition.class,
+				new DestinationConfiguration(
+					destinationType, _DESTINATION_NAME),
+				dictionary));
 		_serviceRegistrations.add(
 			bundleContext.registerService(
 				MessageListener.class, _testDBPartitionMessageListener,

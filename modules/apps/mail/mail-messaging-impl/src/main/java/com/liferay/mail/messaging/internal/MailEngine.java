@@ -260,6 +260,12 @@ public class MailEngine {
 				PropsUtil.get(PropsKeys.MAIL_BATCH_SIZE), _BATCH_SIZE);
 
 			_send(session, message, bulkAddresses, batchSize);
+
+			if (ListUtil.isNotEmpty(fileAttachments)) {
+				for (FileAttachment fileAttachment : fileAttachments) {
+					fileAttachment.close();
+				}
+			}
 		}
 		catch (SendFailedException sendFailedException) {
 			_log.error(sendFailedException);

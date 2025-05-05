@@ -5,13 +5,18 @@
 
 package com.liferay.mail.kernel.model;
 
+import com.liferay.portal.kernel.util.FileUtil;
+
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Barrie Selack
  * @author Brian Wing Shun Chan
  */
-public class FileAttachment {
+public class FileAttachment implements Closeable {
 
 	public FileAttachment() {
 	}
@@ -19,6 +24,28 @@ public class FileAttachment {
 	public FileAttachment(File file, String fileName) {
 		_file = file;
 		_fileName = fileName;
+	}
+
+	public FileAttachment(File file, String fileName, boolean tempFile) {
+		_file = file;
+		_fileName = fileName;
+		_tempFile = tempFile;
+	}
+
+	public FileAttachment(InputStream inputStream, String fileName)
+		throws IOException {
+
+		_fileName = fileName;
+
+		_file = FileUtil.createTempFile(inputStream);
+		_tempFile = true;
+	}
+
+	@Override
+	public void close() throws IOException {
+		if (_tempFile && _file.exists()) {
+			_file.delete();
+		}
 	}
 
 	public File getFile() {
@@ -29,15 +56,12 @@ public class FileAttachment {
 		return _fileName;
 	}
 
-	public void setFile(File file) {
-		_file = file;
-	}
-
-	public void setFileName(String fileName) {
-		_fileName = fileName;
+	public boolean isTempFile() {
+		return _tempFile;
 	}
 
 	private File _file;
 	private String _fileName;
+	private boolean _tempFile;
 
 }

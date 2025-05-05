@@ -55,6 +55,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -111,6 +112,29 @@ public class SubscriptionSender implements Serializable {
 		FileAttachment attachment = new FileAttachment(file, fileName);
 
 		fileAttachments.add(attachment);
+	}
+
+	public void addFileAttachment(InputStream inputStream, String fileName) {
+		if (inputStream == null) {
+			return;
+		}
+
+		if (fileAttachments == null) {
+			fileAttachments = new ArrayList<>();
+		}
+
+		try {
+			FileAttachment attachment = new FileAttachment(
+				inputStream, fileName);
+
+			fileAttachments.add(attachment);
+		}
+		catch (IOException ioException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Unable to add attachment: " + fileName, ioException);
+			}
+		}
 	}
 
 	public <T> void addHook(Hook.Event<T> event, Hook<T> hook) {
@@ -911,7 +935,8 @@ public class SubscriptionSender implements Serializable {
 		if (fileAttachments != null) {
 			for (FileAttachment fileAttachment : fileAttachments) {
 				mailMessage.addFileAttachment(
-					fileAttachment.getFile(), fileAttachment.getFileName());
+					fileAttachment.getFile(), fileAttachment.getFileName(),
+					fileAttachment.isTempFile());
 			}
 		}
 

@@ -54,11 +54,18 @@ public class MailMessage implements Serializable {
 	}
 
 	public void addFileAttachment(File file, String fileName) {
+		addFileAttachment(file, fileName, false);
+	}
+
+	public void addFileAttachment(
+		File file, String fileName, boolean tempFile) {
+
 		if (file == null) {
 			return;
 		}
 
-		FileAttachment fileAttachment = new FileAttachment(file, fileName);
+		FileAttachment fileAttachment = new FileAttachment(
+			file, fileName, tempFile);
 
 		_fileAttachments.add(fileAttachment);
 	}

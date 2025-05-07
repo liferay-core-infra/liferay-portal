@@ -72,8 +72,6 @@ public class SourceTransformer {
 
 		_transformTopLevelProjects();
 
-		_generateThirdPartyPathModules();
-
 		Set<String> keySet = new HashSet<>(_libMappings.keySet());
 
 		keySet.removeAll(_transformedLibIds);
@@ -83,102 +81,6 @@ public class SourceTransformer {
 		}
 		else {
 			System.err.println("Unused lib maping ids : " + keySet);
-		}
-	}
-
-	private static void _generateThirdPartyPathModules() throws Exception {
-		_installCache(
-			Paths.get(
-				"modules", "util", "portal-tools-jakarta-ee-transformer"));
-
-		for (Map.Entry<String, String> entry : _libMappings.entrySet()) {
-			String value = entry.getValue();
-
-			if (!value.startsWith("jakarta:")) {
-				continue;
-			}
-
-			String symbolicName = value.substring(8);
-
-			String key = entry.getKey();
-
-			String[] parts = key.split(":");
-
-			String patchedVersion = parts[2] + ".JAKARTA-LIFERAY-PATCHED-1";
-
-			Path path = Paths.get(
-				"modules", "third-party", symbolicName.replace('.', '-'));
-
-			Files.createDirectories(path);
-
-			StringBuilder sb = new StringBuilder();
-
-			sb.append("Bundle-SymbolicName: ");
-			sb.append(symbolicName);
-			sb.append("\nBundle-Version: ");
-			sb.append(patchedVersion);
-
-			String bndBndContent = sb.toString();
-
-			Files.write(
-				path.resolve("bnd.bnd"), bndBndContent.getBytes("UTF-8"),
-				StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
-				StandardOpenOption.WRITE);
-
-			sb = new StringBuilder();
-
-			sb.append("apply from: \"../../build-jakarta-transformer.gradle\"");
-			sb.append("\n\ndependencies {\n");
-			sb.append("	compileOnly group: \"");
-			sb.append(parts[0]);
-			sb.append("\", name: \"");
-			sb.append(parts[1]);
-			sb.append("\", transitive: false, version: \"");
-			sb.append(parts[2]);
-			sb.append("\"\n}");
-
-			if (Objects.equals(
-					symbolicName, "org.apache.aries.jax.rs.whiteboard")) {
-
-				sb.append("\n\njar {\n");
-				sb.append(
-					"\trename(\"javax.ws.rs.sse.SseEventSource.Builder\"");
-				sb.append(", \"jakarta.ws.rs.sse.SseEventSource.Builder\")\n");
-				sb.append("}");
-			}
-
-			String buildGradleContent = sb.toString();
-
-			Files.write(
-				path.resolve("build.gradle"),
-				buildGradleContent.getBytes("UTF-8"), StandardOpenOption.CREATE,
-				StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
-
-			_installCache(path);
-		}
-	}
-
-	private static void _installCache(Path modulePath) throws Exception {
-		System.err.println("Installing cache for " + modulePath);
-
-		Path gradlewPath = Paths.get("gradlew");
-
-		ProcessBuilder processBuilder = new ProcessBuilder(
-			String.valueOf(gradlewPath.toAbsolutePath()), "clean", "jar",
-			"installCache");
-
-		processBuilder.directory(modulePath.toFile());
-
-		processBuilder.inheritIO();
-
-		Process process = processBuilder.start();
-
-		int exitCode = process.waitFor();
-
-		if (exitCode != 0) {
-			throw new Exception(
-				"Unable to install cache for " + modulePath + ", exit code :" +
-					exitCode);
 		}
 	}
 

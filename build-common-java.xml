@@ -125,6 +125,20 @@
 				<bnd-invoker output="${jar.file}.jar" />
 
 				<if>
+					<or>
+						<equals arg1="${jar.file}" arg2="portal-test" />
+						<equals arg1="${jar.file}" arg2="util-taglib" />
+					</or>
+					<then>
+						<unjar src="${jar.file}.jar" dest="temp-unjar" />
+
+						<jar destfile="${jar.file}.jar" basedir="temp-unjar" manifest= "temp-unjar/META-INF/MANIFEST.MF" />
+
+						<delete dir="temp-unjar" />
+					</then>
+				</if>
+
+				<if>
 					<not>
 						<equals arg1="${baseline.jar.report.level}" arg2="off" />
 					</not>

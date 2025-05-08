@@ -384,10 +384,10 @@ public class SerializerTest {
 
 	@Test
 	public void testReleaseLargeBuffer() throws Exception {
-		ThreadLocal<?> bufferQueue = ReflectionTestUtil.getFieldValue(
-			Serializer.class, "_bufferQueue");
+		ThreadLocal<?> bufferQueueThreadLocal =
+			ReflectionTestUtil.getFieldValue(Serializer.class, "_bufferQueue");
 
-		bufferQueue.remove();
+		bufferQueueThreadLocal.remove();
 
 		Serializer serializer = new Serializer();
 

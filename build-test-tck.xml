@@ -35,11 +35,6 @@
 	</macrodef>
 
 	<target name="clean-up-tck">
-		<exec dir="${tck.home}/.." executable="git" failonerror="false">
-			<arg value="apply" />
-			<arg value="--reverse" />
-			<arg value="${project.dir}/tools/tck/pluto-patch.diff" />
-		</exec>
 	</target>
 
 	<target name="prepare-tck">
@@ -89,20 +84,8 @@
 		configured statically in order for top_head.jsp to output render data.
 		-->
 
-		<exec dir="${tck.home}/.." executable="git" failonerror="true">
-			<arg value="apply" />
-			<arg value="${project.dir}/tools/tck/pluto-patch.diff" />
-		</exec>
-
-		<local name="java.jdk.home" />
-		<local name="java.jdk.opts" />
-
-		<get-java-jdk-home architecture="x64" type="oracle" version="8" />
-		<get-java-jdk-opts architecture="x64" type="oracle" version="8" />
-
 		<exec dir="${tck.home}/.." executable="mvn" failonerror="true">
-			<env key="JAVA_HOME" value="${java.jdk.home}" />
-			<env key="JAVA_OPTS" value="${java.jdk.opts}" />
+			<arg value="-Dmaven.javadoc.skip=true" />
 			<arg value="-P" />
 			<arg value="all,liferay" />
 			<arg value="clean" />
@@ -130,7 +113,7 @@
 
 		<echo
 			file="${liferay.home}/osgi/configs/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.config"
-		>configFile="${tck.home}/deploy/target/deploy-files/pluto-portal-driver-config.xml"</echo
+		>configFile="${tck.home}/deploy/target/generated-resources/xml/final/pluto-portal-driver-config.xml"</echo
 	>
 		<gradle-execute dir="modules/test/portlet-tck-bridge" task="deploy" />
 
@@ -177,26 +160,18 @@
 
 		<var name="tck.properties" value="-Dtest.context.base='${test.context.base[tck]}' -Dtest.server.username.id='${test.server.username.id[tck]}' -Dtest.server.username='${test.server.username[tck]}' -Dtest.server.password.id='${test.server.password.id[tck]}' -Dtest.server.password='${test.server.password[tck]}' -Dtest.timeout='${test.timeout[tck]}' -Dtest.ignore.list.file=${project.dir}/tools/tck/ignoredTestCases.xml -Dtest.non.exclusive.file=${project.dir}/tools/tck/nonExclusiveTestCases.xml -Dtest.server.login.url=${tck.login.url}" />
 
-		<local name="java.jdk.home" />
-		<local name="java.jdk.opts" />
-
-		<get-java-jdk-home architecture="x64" type="oracle" version="8" />
-		<get-java-jdk-opts architecture="x64" type="oracle" version="8" />
-
 		<exec dir="${tck.home}" executable="mvn" failonerror="true">
-			<env key="JAVA_HOME" value="${java.jdk.home}" />
-			<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 			<arg line="-Pliferay,run-tck -Djava.awt.headless=true ${tck.properties} -Dtest.browser=htmlunit -Dtest.browser.binary= -Dtest.browser.webDriver= -Dtest.list.file=${project.dir}/tools/tck/htmlunit-tests.xml test" />
 		</exec>
 
 		<if>
-			<available file="${tck.home}/driver/target/surefire-reports/TEST-javax.portlet.tck.driver.TCKLiferayTestDriver.xml" />
+			<available file="${tck.home}/driver/target/surefire-reports/TEST-jakarta.portlet.tck.driver.TCKLiferayTestDriver.xml" />
 			<then>
 				<mkdir dir="${project.dir}/tools/tck/test-results" />
 
 				<copy
-					file="${tck.home}/driver/target/surefire-reports/TEST-javax.portlet.tck.driver.TCKLiferayTestDriver.xml"
-					tofile="${project.dir}/tools/tck/test-results/TEST-javax.portlet.tck.driver.TCKLiferayTestDriver-htmlunit.xml"
+					file="${tck.home}/driver/target/surefire-reports/TEST-jakarta.portlet.tck.driver.TCKLiferayTestDriver.xml"
+					tofile="${project.dir}/tools/tck/test-results/TEST-jakarta.portlet.tck.driver.TCKLiferayTestDriver-htmlunit.xml"
 				/>
 			</then>
 			<else>
@@ -226,19 +201,17 @@
 		</if>
 
 		<exec dir="${tck.home}" executable="mvn" failonerror="true">
-			<env key="JAVA_HOME" value="${java.jdk.home}" />
-			<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 			<arg line="-Pliferay,run-tck -Djava.awt.headless=true ${tck.properties} -Dtest.browser=${browser.type[tck]} ${chrome.properties} -Dtest.list.file=${tck.tests.xml} -Dtest.server.login.url=${tck.login.url} test" />
 		</exec>
 
 		<if>
-			<available file="${tck.home}/driver/target/surefire-reports/TEST-javax.portlet.tck.driver.TCKLiferayTestDriver.xml" />
+			<available file="${tck.home}/driver/target/surefire-reports/TEST-jakarta.portlet.tck.driver.TCKLiferayTestDriver.xml" />
 			<then>
 				<mkdir dir="${project.dir}/tools/tck/test-results" />
 
 				<copy
-					file="${tck.home}/driver/target/surefire-reports/TEST-javax.portlet.tck.driver.TCKLiferayTestDriver.xml"
-					tofile="${project.dir}/tools/tck/test-results/TEST-javax.portlet.tck.driver.TCKLiferayTestDriver-${browser.type[tck]}.xml"
+					file="${tck.home}/driver/target/surefire-reports/TEST-jakarta.portlet.tck.driver.TCKLiferayTestDriver.xml"
+					tofile="${project.dir}/tools/tck/test-results/TEST-jakarta.portlet.tck.driver.TCKLiferayTestDriver-${browser.type[tck]}.xml"
 				/>
 			</then>
 			<else>

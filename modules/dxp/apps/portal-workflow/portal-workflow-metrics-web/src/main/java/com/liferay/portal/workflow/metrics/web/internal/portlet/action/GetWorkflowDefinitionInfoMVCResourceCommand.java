@@ -16,8 +16,8 @@ import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.workflow.manager.WorkflowDefinitionManager;
 import com.liferay.portal.workflow.metrics.web.internal.constants.WorkflowMetricsPortletKeys;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + WorkflowMetricsPortletKeys.WORKFLOW_METRICS,
+		"jakarta.portlet.name=" + WorkflowMetricsPortletKeys.WORKFLOW_METRICS,
 		"mvc.command.name=/workflow_metrics/get_workflow_definition_info"
 	},
 	service = MVCResourceCommand.class

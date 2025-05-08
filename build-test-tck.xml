@@ -44,6 +44,23 @@
 		-->
 
 		<echo>prepare-tck</echo>
+
+		<exec dir="${tck.home}/.." executable="git">
+			<arg line="branch" />
+			<arg line="-d" />
+			<arg line="liferay-jakarta-tck-test-4-28" />
+		</exec>
+
+		<exec dir="${tck.home}/.." executable="git">
+			<arg line="pull" />
+			<arg line="upstream" />
+			<arg line="liferay-jakarta-tck-test-4-28" />
+		</exec>
+
+		<exec dir="${tck.home}/.." executable="git">
+			<arg line="checkout" />
+			<arg line="liferay-jakarta-tck-test-4-28" />
+		</exec>
 	</target>
 
 	<target name="prepare-tck-app-server">

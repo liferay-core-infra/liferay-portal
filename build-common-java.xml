@@ -130,9 +130,16 @@
 						<equals arg1="${jar.file}" arg2="util-taglib" />
 					</or>
 					<then>
-						<unjar src="${jar.file}.jar" dest="temp-unjar" />
+						<unjar
+							dest="temp-unjar"
+							src="${jar.file}.jar"
+						/>
 
-						<jar destfile="${jar.file}.jar" basedir="temp-unjar" manifest= "temp-unjar/META-INF/MANIFEST.MF" />
+						<jar
+							basedir="temp-unjar"
+							destfile="${jar.file}.jar"
+							manifest="temp-unjar/META-INF/MANIFEST.MF"
+						/>
 
 						<delete dir="temp-unjar" />
 					</then>

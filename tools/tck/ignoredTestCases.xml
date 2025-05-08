@@ -16,6 +16,7 @@
 
 	<entry key="V2URLTests_BaseURL_ApiRenderActurl_setSecure2"></entry>
 	<entry key="V2URLTests_BaseURL_ApiRenderRenurl_setSecure2"></entry>
+	<entry key="V2URLTests_BaseURL_ApiRenderResurl_setSecure2"></entry>
 
 	<!-- https://liferay.atlassian.net/browse/LPD-53826 -->
 

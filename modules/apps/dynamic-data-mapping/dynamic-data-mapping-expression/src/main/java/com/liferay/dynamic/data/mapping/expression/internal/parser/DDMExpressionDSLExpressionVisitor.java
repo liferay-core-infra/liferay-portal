@@ -91,7 +91,8 @@ public class DDMExpressionDSLExpressionVisitor
 		Expression<Number> expression2 = (Expression<Number>)_getExpression(
 			visitChild(divisionExpressionContext, 2));
 
-		return DSLFunctionFactoryUtil.divide(expression1, expression2);
+		return DSLFunctionFactoryUtil.divide(
+			DSLFunctionFactoryUtil.castFloat(expression1), expression2);
 	}
 
 	@Override

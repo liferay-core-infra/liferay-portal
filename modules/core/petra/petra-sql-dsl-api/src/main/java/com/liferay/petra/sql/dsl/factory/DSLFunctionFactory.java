@@ -49,11 +49,11 @@ public interface DSLFunctionFactory {
 
 	public Expression<Long> countDistinct(Expression<?> expression);
 
-	public <N extends Number> Expression<N> divide(
-		Expression<N> expression1, Expression<N> expression2);
+	public <L extends Number, N extends Number, R extends Number> Expression<N>
+		divide(Expression<L> expression1, Expression<R> expression2);
 
-	public <N extends Number> Expression<N> divide(
-		Expression<N> expression, N value);
+	public <L extends Number, N extends Number, R extends Number> Expression<N>
+		divide(Expression<L> expression, R value);
 
 	public Expression<String> lower(Expression<String> expression);
 

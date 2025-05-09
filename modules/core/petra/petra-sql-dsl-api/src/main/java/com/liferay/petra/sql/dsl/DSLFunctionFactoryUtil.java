@@ -91,14 +91,15 @@ public class DSLFunctionFactoryUtil {
 		return _DSL_FUNCTION_FACTORY.countDistinct(expression);
 	}
 
-	public static <N extends Number> Expression<N> divide(
-		Expression<N> expression1, Expression<N> expression2) {
+	public static <L extends Number, N extends Number, R extends Number>
+		Expression<N> divide(
+			Expression<L> expression1, Expression<R> expression2) {
 
 		return _DSL_FUNCTION_FACTORY.divide(expression1, expression2);
 	}
 
-	public static <N extends Number> Expression<N> divide(
-		Expression<N> expression, N value) {
+	public static <L extends Number, N extends Number, R extends Number>
+		Expression<N> divide(Expression<L> expression, R value) {
 
 		return _DSL_FUNCTION_FACTORY.divide(expression, value);
 	}

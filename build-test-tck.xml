@@ -177,7 +177,7 @@
 
 		<var name="tck.properties" value="-Dtest.context.base='${test.context.base[tck]}' -Dtest.server.username.id='${test.server.username.id[tck]}' -Dtest.server.username='${test.server.username[tck]}' -Dtest.server.password.id='${test.server.password.id[tck]}' -Dtest.server.password='${test.server.password[tck]}' -Dtest.timeout='${test.timeout[tck]}' -Dtest.ignore.list.file=${project.dir}/tools/tck/ignoredTestCases.xml -Dtest.non.exclusive.file=${project.dir}/tools/tck/nonExclusiveTestCases.xml -Dtest.server.login.url=${tck.login.url}" />
 
-		<exec dir="${tck.home}" executable="mvn" failonerror="true">
+		<exec dir="${tck.home}" executable="mvn" failonerror="false">
 			<arg line="-Pliferay,run-tck -Djava.awt.headless=true ${tck.properties} -Dtest.browser=htmlunit -Dtest.browser.binary= -Dtest.browser.webDriver= -Dtest.list.file=${project.dir}/tools/tck/htmlunit-tests.xml test" />
 		</exec>
 

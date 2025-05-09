@@ -79,7 +79,7 @@
 			<param name="app.server.classes.portal.dir" value="${app.server.classes.portal.dir}" />
 		</antcall>
 
-		<echo append="true" file="${app.server.classes.portal.dir}/portal-ext.properties"><![CDATA[
+		<echo append="false" file="${app.server.classes.portal.dir}/../portal-setup-wizard.properties"><![CDATA[
 			browser.launcher.url=
 			enterprise.product.notification.enabled=false
 			javascript.single.page.application.enabled=false

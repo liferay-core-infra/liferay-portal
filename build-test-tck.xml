@@ -49,6 +49,23 @@
 		-->
 
 		<echo>prepare-tck</echo>
+
+		<exec dir="${tck.home}/.." executable="git">
+			<arg line="branch" />
+			<arg line="-d" />
+			<arg line="tck3-jakarta-chrome" />
+		</exec>
+
+		<exec dir="${tck.home}/.." executable="git">
+			<arg line="pull" />
+			<arg line="upstream" />
+			<arg line="tck3-jakarta-chrome" />
+		</exec>
+
+		<exec dir="${tck.home}/.." executable="git">
+			<arg line="checkout" />
+			<arg line="tck3-jakarta-chrome" />
+		</exec>
 	</target>
 
 	<target name="prepare-tck-app-server">

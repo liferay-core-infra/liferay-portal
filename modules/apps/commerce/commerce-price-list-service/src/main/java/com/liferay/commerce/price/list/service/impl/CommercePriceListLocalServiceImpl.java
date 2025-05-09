@@ -786,10 +786,9 @@ public class CommercePriceListLocalServiceImpl
 
 		Expression<BigDecimal> expression = DSLFunctionFactoryUtil.divide(
 			CommercePriceEntryTable.INSTANCE.price,
-			CommerceCurrencyTable.INSTANCE.rate
-		).as(
-			"convertedPrice"
-		);
+			CommerceCurrencyTable.INSTANCE.rate);
+
+		expression = expression.as("convertedPrice");
 
 		List<Object[]> results = _commercePriceEntryPersistence.dslQuery(
 			_getGroupByStep(

@@ -25,23 +25,23 @@ import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
 import com.liferay.search.experiences.rest.dto.v1_0.SearchResponse;
 import com.liferay.search.experiences.rest.resource.v1_0.SearchResponseResource;
 
+import jakarta.annotation.Generated;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import jakarta.ws.rs.core.UriInfo;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Generated;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import javax.ws.rs.core.UriInfo;
 
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @Generated("")
-@javax.ws.rs.Path("/v1.0")
+@jakarta.ws.rs.Path("/v1.0")
 public abstract class BaseSearchResponseResourceImpl
 	implements SearchResponseResource {
 
@@ -74,16 +74,16 @@ public abstract class BaseSearchResponseResourceImpl
 			@io.swagger.v3.oas.annotations.tags.Tag(name = "SearchResponse")
 		}
 	)
-	@javax.ws.rs.Consumes({"application/json", "application/xml"})
-	@javax.ws.rs.Path("/search")
-	@javax.ws.rs.POST
-	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@jakarta.ws.rs.Consumes({"application/json", "application/xml"})
+	@jakarta.ws.rs.Path("/search")
+	@jakarta.ws.rs.POST
+	@jakarta.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
 	public SearchResponse postSearch(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
-			@javax.ws.rs.QueryParam("query")
+			@jakarta.ws.rs.QueryParam("query")
 			String query,
-			@javax.ws.rs.core.Context Pagination pagination,
+			@jakarta.ws.rs.core.Context Pagination pagination,
 			SXPBlueprint sxpBlueprint)
 		throws Exception {
 

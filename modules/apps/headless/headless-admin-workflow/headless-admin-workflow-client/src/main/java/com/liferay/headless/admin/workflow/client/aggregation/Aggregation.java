@@ -5,10 +5,10 @@
 
 package com.liferay.headless.admin.workflow.client.aggregation;
 
+import jakarta.annotation.Generated;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Generated;
 
 /**
  * @author Javier Gamarra

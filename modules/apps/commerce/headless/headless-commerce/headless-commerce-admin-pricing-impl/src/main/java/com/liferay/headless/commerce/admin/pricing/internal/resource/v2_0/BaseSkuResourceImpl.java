@@ -22,23 +22,23 @@ import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.UriInfoUtil;
 
+import jakarta.annotation.Generated;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import jakarta.ws.rs.core.UriInfo;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Generated;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import javax.ws.rs.core.UriInfo;
 
 /**
  * @author Zoltán Takács
  * @generated
  */
 @Generated("")
-@javax.ws.rs.Path("/v2.0")
+@jakarta.ws.rs.Path("/v2.0")
 public abstract class BaseSkuResourceImpl implements SkuResource {
 
 	/**
@@ -57,14 +57,14 @@ public abstract class BaseSkuResourceImpl implements SkuResource {
 	@io.swagger.v3.oas.annotations.tags.Tags(
 		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Sku")}
 	)
-	@javax.ws.rs.GET
-	@javax.ws.rs.Path("/discount-skus/{discountSkuId}/sku")
-	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@jakarta.ws.rs.GET
+	@jakarta.ws.rs.Path("/discount-skus/{discountSkuId}/sku")
+	@jakarta.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
 	public Sku getDiscountSkuSku(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
-			@javax.validation.constraints.NotNull
-			@javax.ws.rs.PathParam("discountSkuId")
+			@jakarta.validation.constraints.NotNull
+			@jakarta.ws.rs.PathParam("discountSkuId")
 			Long discountSkuId)
 		throws Exception {
 
@@ -87,14 +87,14 @@ public abstract class BaseSkuResourceImpl implements SkuResource {
 	@io.swagger.v3.oas.annotations.tags.Tags(
 		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Sku")}
 	)
-	@javax.ws.rs.GET
-	@javax.ws.rs.Path("/price-entries/{priceEntryId}/sku")
-	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@jakarta.ws.rs.GET
+	@jakarta.ws.rs.Path("/price-entries/{priceEntryId}/sku")
+	@jakarta.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
 	public Sku getPriceEntryIdSku(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
-			@javax.validation.constraints.NotNull
-			@javax.ws.rs.PathParam("priceEntryId")
+			@jakarta.validation.constraints.NotNull
+			@jakarta.ws.rs.PathParam("priceEntryId")
 			Long priceEntryId)
 		throws Exception {
 

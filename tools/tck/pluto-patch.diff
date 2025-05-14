@@ -46,3 +46,60 @@ index 7a811f8ae..5d67d4dd0 100644
  		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
  		<!-- To automatically generate a list of test cases, each module transforms the portlet.xml file -->
  		<!-- using an XSLT transformation. -->
+diff --git a/test-base/src/main/java/org/apache/portals/pluto/test/utilities/SimpleTestDriver.java b/test-base/src/main/java/org/apache/portals/pluto/test/utilities/SimpleTestDriver.java
+index b52b73fec..51c2f7c3e 100644
+--- a/test-base/src/main/java/org/apache/portals/pluto/test/utilities/SimpleTestDriver.java
++++ b/test-base/src/main/java/org/apache/portals/pluto/test/utilities/SimpleTestDriver.java
+@@ -20,6 +20,8 @@ package org.apache.portals.pluto.test.utilities;
+ import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
+ import com.gargoylesoftware.htmlunit.WebClient;
+ import com.gargoylesoftware.htmlunit.WebClientOptions;
++
++import java.net.URL;
+ import java.util.List;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
+@@ -37,6 +39,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
+ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+ import org.openqa.selenium.ie.InternetExplorerDriver;
+ import org.openqa.selenium.remote.DesiredCapabilities;
++import org.openqa.selenium.remote.RemoteWebDriver;
+ import org.openqa.selenium.safari.SafariDriver;
+ import org.openqa.selenium.phantomjs.PhantomJSDriver;
+ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+@@ -91,6 +94,7 @@ public class SimpleTestDriver {
+          timeout = ((str != null) && str.matches("\\d+")) ? Integer.parseInt(str) : 3;
+          String wd = System.getProperty("test.browser.webDriver");
+          String binary = System.getProperty("test.browser.binary");
++         String remoteDriverUrl = System.getProperty("test.browser.webDriver.url");
+          String headlessProperty = System.getProperty("test.browser.headless");
+          boolean headless = (((headlessProperty == null) || (headlessProperty.length() == 0) ||
+                Boolean.valueOf(headlessProperty)));
+@@ -138,7 +142,6 @@ public class SimpleTestDriver {
+             driver = new InternetExplorerDriver();
+          } else if (browser.equalsIgnoreCase("chrome")) {
+ 
+-            System.setProperty("webdriver.chrome.driver", wd);
+             ChromeOptions options = new ChromeOptions();
+ 
+             if ((binary != null) && (binary.length() > 0)) {
+@@ -158,7 +161,18 @@ public class SimpleTestDriver {
+                options.addArguments("--window-size=1920,1200");
+             }
+ 
+-            driver = new ChromeDriver(options);
++            if (remoteDriverUrl == null) {
++               System.setProperty("webdriver.chrome.driver", wd);
++
++               if ((binary != null) && (binary.length() > 0)) {
++                  options.setBinary(binary);
++               }
++
++               driver = new ChromeDriver(options);
++            }
++            else {
++               driver = new RemoteWebDriver(new URL(remoteDriverUrl + "/wd/hub"), options);
++            }
+ 
+          } else if (browser.equalsIgnoreCase("phantomjs")) {
+             DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();

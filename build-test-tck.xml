@@ -46,6 +46,11 @@
 		<echo>prepare-tck</echo>
 
 		<exec dir="${tck.home}/.." executable="git">
+			<arg line="clean" />
+			<arg line="-fdx" />
+		</exec>
+
+		<exec dir="${tck.home}/.." executable="git">
 			<arg line="branch" />
 			<arg line="-d" />
 			<arg line="liferay-jakarta-tck-test-4-28" />
@@ -60,6 +65,10 @@
 		<exec dir="${tck.home}/.." executable="git">
 			<arg line="checkout" />
 			<arg line="liferay-jakarta-tck-test-4-28" />
+		</exec>
+
+		<exec dir="${tck.home}/.." executable="git">
+			<arg line="status" />
 		</exec>
 	</target>
 

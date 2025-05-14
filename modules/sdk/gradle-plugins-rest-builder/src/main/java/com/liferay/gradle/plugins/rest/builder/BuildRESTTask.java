@@ -138,7 +138,7 @@ public class BuildRESTTask extends JavaExec {
 
 		// TODO Dev Tools needs to decide here based on the workspace / branch
 
-		return false;
+		return true;
 	}
 
 	private Object _copyrightFile;

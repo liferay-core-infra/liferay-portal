@@ -197,6 +197,12 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 		};
 
 		if ((xmls[0] == null) && (xmls[1] == null)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Unable to register portlet for " + servletContextName +
+						", because no portlet.xml");
+			}
+
 			return;
 		}
 

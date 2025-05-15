@@ -156,7 +156,8 @@ public class LiferayFileItemTest {
 		liferayFileItem.getOutputStream();
 
 		Assert.assertEquals(
-			ContentTypes.TEXT_PLAIN, liferayFileItem.getContentType());
+			ContentTypes.APPLICATION_OCTET_STREAM,
+			liferayFileItem.getContentType());
 	}
 
 	@Test

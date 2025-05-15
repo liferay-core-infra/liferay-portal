@@ -3,6 +3,10 @@
 
 <properties>
 
+    <!-- https://liferay.atlassian.net/browse/LPD-55665 -->
+
+	<entry key="V3AnnotationPortletArtifactValidityTests_SPEC3_20_PortletArtifacts_contextPath"></entry>
+
 	<!-- Failures related to friendly-url / PLUTO-683 -->
 
 	<entry key="V2URLTests_BaseURL_ApiRenderResurl_setParameters1"></entry>

@@ -52,7 +52,7 @@
 
 		<exec dir="${tck.home}/.." executable="git">
 			<arg line="branch" />
-			<arg line="-d" />
+			<arg line="-D" />
 			<arg line="liferay-jakarta-tck-test-4-28" />
 		</exec>
 

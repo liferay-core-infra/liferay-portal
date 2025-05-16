@@ -5,7 +5,10 @@
 
 	<!-- https://liferay.atlassian.net/browse/LPD-55665 -->
 
+    <entry key="V3AnnotationPortletArtifactValidityTests_SPEC3_20_PortletArtifacts_cookies"></entry>
 	<entry key="V3AnnotationPortletArtifactValidityTests_SPEC3_20_PortletArtifacts_contextPath"></entry>
+    <entry key="V4AnnotationPortletArtifactValidityTests_SPEC3_20_PortletArtifacts_cookies"></entry>
+    <entry key="V4AnnotationPortletArtifactValidityTests_SPEC3_20_PortletArtifacts_contextPath"></entry>
 
 	<!-- Failures related to friendly-url / PLUTO-683 -->
 

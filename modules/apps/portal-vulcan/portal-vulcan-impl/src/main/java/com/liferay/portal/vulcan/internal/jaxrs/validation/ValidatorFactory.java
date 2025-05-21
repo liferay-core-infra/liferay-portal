@@ -5,13 +5,13 @@
 
 package com.liferay.portal.vulcan.internal.jaxrs.validation;
 
-import java.util.Collections;
-import java.util.List;
-
 import jakarta.validation.Validation;
 import jakarta.validation.ValidationProviderResolver;
 import jakarta.validation.Validator;
 import jakarta.validation.spi.ValidationProvider;
+
+import java.util.Collections;
+import java.util.List;
 
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.HibernateValidatorConfiguration;

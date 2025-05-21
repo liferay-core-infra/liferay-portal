@@ -12,12 +12,12 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuil
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 
-import java.util.List;
-
 import jakarta.portlet.RenderResponse;
 import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  * @author Víctor Galán

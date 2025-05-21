@@ -23,12 +23,12 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.util.Date;
-import java.util.function.Function;
-
 import jakarta.portlet.ActionRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Date;
+import java.util.function.Function;
 
 /**
  * @author Alejandro Tardín

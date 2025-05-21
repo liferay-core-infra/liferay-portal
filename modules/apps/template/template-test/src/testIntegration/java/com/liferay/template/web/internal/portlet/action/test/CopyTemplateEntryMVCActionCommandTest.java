@@ -38,11 +38,11 @@ import com.liferay.template.model.TemplateEntry;
 import com.liferay.template.service.TemplateEntryLocalService;
 import com.liferay.template.test.util.TemplateTestUtil;
 
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
+
+import java.util.List;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -22,12 +22,12 @@ import com.liferay.portal.search.web.internal.result.display.context.SearchResul
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portlet.internal.MutableRenderParametersImpl;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.junit.Assert;
 import org.junit.Before;

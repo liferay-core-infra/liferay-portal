@@ -5,10 +5,6 @@
 
 package com.liferay.portal.kernel.test.portlet;
 
-import java.io.IOException;
-
-import java.util.Map;
-
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletMode;
@@ -16,6 +12,10 @@ import jakarta.portlet.PortletModeException;
 import jakarta.portlet.RenderURL;
 import jakarta.portlet.WindowState;
 import jakarta.portlet.WindowStateException;
+
+import java.io.IOException;
+
+import java.util.Map;
 
 /**
  * @author Dante Wang

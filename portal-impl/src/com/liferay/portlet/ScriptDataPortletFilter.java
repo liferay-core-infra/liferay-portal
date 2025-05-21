@@ -12,9 +12,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.internal.MimeResponseImpl;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
@@ -28,6 +25,9 @@ import jakarta.portlet.filter.RenderFilter;
 import jakarta.portlet.filter.ResourceFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author Shuyang Zhou

@@ -11,11 +11,11 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.util.TagResourceBundleUtil;
 
-import java.util.Map;
-import java.util.Set;
-
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Kresimir Coko

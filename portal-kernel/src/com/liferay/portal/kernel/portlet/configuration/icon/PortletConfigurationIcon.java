@@ -5,16 +5,16 @@
 
 package com.liferay.portal.kernel.portlet.configuration.icon;
 
-import java.io.IOException;
-
-import java.util.Collections;
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author Eudaldo Alonso

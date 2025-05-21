@@ -12,12 +12,12 @@ import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.upload.UploadPortletRequestImpl;
 
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jiefeng Wu

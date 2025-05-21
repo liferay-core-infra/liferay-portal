@@ -9,13 +9,13 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.io.IOException;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 /**
  * @author Adolfo Pérez

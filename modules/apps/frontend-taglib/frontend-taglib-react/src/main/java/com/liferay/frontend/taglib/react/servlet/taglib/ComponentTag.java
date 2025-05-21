@@ -17,13 +17,13 @@ import com.liferay.portal.template.react.renderer.ComponentDescriptor;
 import com.liferay.portal.template.react.renderer.ReactRenderer;
 import com.liferay.taglib.util.ParamAndPropertyAncestorTagImpl;
 
-import java.util.Collections;
-import java.util.Map;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author Chema Balsas

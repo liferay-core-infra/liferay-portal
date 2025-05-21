@@ -35,11 +35,11 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.template.engine.TemplateContextHelper;
 import com.liferay.portlet.display.template.PortletDisplayTemplate;
 
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

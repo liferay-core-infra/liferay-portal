@@ -11,14 +11,14 @@ import com.liferay.portal.kernel.dao.search.SearchEntry;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.search.DateSearchEntry;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspTagException;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Raymond Augé

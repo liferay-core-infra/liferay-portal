@@ -5,11 +5,11 @@
 
 package com.liferay.portal.kernel.backgroundtask.display;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.Serializable;
 
 import java.util.Locale;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.annotation.versioning.ProviderType;
 

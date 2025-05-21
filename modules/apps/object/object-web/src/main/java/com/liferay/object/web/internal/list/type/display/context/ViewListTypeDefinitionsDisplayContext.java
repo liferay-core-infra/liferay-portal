@@ -20,15 +20,15 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.util.Arrays;
-import java.util.List;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.WindowStateException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Gabriel Albuquerque

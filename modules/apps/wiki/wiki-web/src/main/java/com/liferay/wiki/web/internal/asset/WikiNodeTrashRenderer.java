@@ -11,13 +11,13 @@ import com.liferay.trash.TrashHelper;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.model.WikiNode;
 
-import java.util.Locale;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Locale;
 
 /**
  * @author Eudaldo Alonso

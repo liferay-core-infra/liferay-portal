@@ -14,12 +14,12 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 
+import jakarta.portlet.Portlet;
+
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;

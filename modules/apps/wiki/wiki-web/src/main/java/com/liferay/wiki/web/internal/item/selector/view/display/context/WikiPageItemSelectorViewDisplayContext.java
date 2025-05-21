@@ -31,15 +31,15 @@ import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 import com.liferay.wiki.web.internal.item.selector.WikiPageItemSelectorReturnTypeResolver;
 import com.liferay.wiki.web.internal.item.selector.view.WikiPageItemSelectorView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Roberto Díaz

@@ -11,13 +11,13 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.text.DateFormat;
-
-import java.util.Calendar;
-
 import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.text.DateFormat;
+
+import java.util.Calendar;
 
 /**
  * @author Brian Wing Shun Chan

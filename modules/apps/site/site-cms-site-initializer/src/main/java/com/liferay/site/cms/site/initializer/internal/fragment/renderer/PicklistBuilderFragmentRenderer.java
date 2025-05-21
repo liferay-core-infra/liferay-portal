@@ -16,13 +16,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.site.cms.site.initializer.internal.display.context.PicklistBuilderDisplayContext;
 import com.liferay.taglib.servlet.PageContextFactoryUtil;
 
-import java.io.PrintWriter;
-
-import java.util.Locale;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
+
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

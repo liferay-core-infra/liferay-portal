@@ -16,12 +16,12 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Eudaldo Alonso

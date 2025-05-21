@@ -21,8 +21,6 @@ import com.liferay.portal.search.web.constants.SearchPortletKeys;
 import com.liferay.portal.search.web.internal.display.context.SearchDisplayContext;
 import com.liferay.portal.search.web.internal.display.context.SearchDisplayContextFactory;
 
-import java.io.IOException;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
@@ -34,6 +32,8 @@ import jakarta.portlet.ResourceURL;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -54,7 +54,8 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.private-session-attributes=false",
 		"com.liferay.portlet.restore-current-view=false",
 		"com.liferay.portlet.use-default-template=true",
-		"jakarta.portlet.display-name=Search", "jakarta.portlet.expiration-cache=0",
+		"jakarta.portlet.display-name=Search",
+		"jakarta.portlet.expiration-cache=0",
 		"jakarta.portlet.init-param.template-path=/META-INF/resources/",
 		"jakarta.portlet.init-param.view-template=/view.jsp",
 		"jakarta.portlet.name=" + SearchPortletKeys.SEARCH,

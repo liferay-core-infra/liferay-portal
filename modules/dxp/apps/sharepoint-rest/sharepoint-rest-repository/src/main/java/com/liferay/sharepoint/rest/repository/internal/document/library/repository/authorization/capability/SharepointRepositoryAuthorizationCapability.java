@@ -20,13 +20,13 @@ import com.liferay.sharepoint.rest.repository.internal.configuration.SharepointR
 import com.liferay.sharepoint.rest.repository.internal.document.library.repository.authorization.oauth2.SharepointRepositoryRequestState;
 import com.liferay.sharepoint.rest.repository.internal.document.library.repository.authorization.oauth2.SharepointRepositoryTokenBroker;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 /**
  * @author Adolfo Pérez

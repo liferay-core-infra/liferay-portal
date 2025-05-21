@@ -35,9 +35,9 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portlet.test.MockLiferayPortletContext;
 
-import java.util.Arrays;
-
 import jakarta.portlet.Portlet;
+
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -23,14 +23,14 @@ import com.liferay.portal.kernel.xmlrpc.Method;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialRequestInterpreter;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PreferencesValidator;
 
 import jakarta.servlet.ServletContext;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.osgi.annotation.versioning.ProviderType;
 

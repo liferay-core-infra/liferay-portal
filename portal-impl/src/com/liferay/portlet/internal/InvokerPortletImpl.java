@@ -36,13 +36,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.InvokerPortletResponse;
 import com.liferay.portlet.InvokerPortletUtil;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.EventRequest;
@@ -73,6 +66,13 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.time.StopWatch;
 

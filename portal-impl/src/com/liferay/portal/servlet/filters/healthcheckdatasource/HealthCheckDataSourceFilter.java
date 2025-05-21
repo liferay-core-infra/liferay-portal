@@ -7,12 +7,6 @@ package com.liferay.portal.servlet.filters.healthcheckdatasource;
 
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -20,6 +14,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 

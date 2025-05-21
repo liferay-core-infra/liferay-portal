@@ -14,8 +14,6 @@ import com.liferay.portal.security.audit.AuditEvent;
 import com.liferay.portal.security.audit.web.internal.AuditEventManagerUtil;
 import com.liferay.portal.security.audit.web.internal.constants.AuditPortletKeys;
 
-import java.io.IOException;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.Portlet;
@@ -25,6 +23,8 @@ import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -36,7 +36,8 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.display-category=category.hidden",
 		"com.liferay.portlet.icon=/icons/audit.png",
 		"com.liferay.portlet.instanceable=false",
-		"jakarta.portlet.display-name=Audit", "jakarta.portlet.expiration-cache=0",
+		"jakarta.portlet.display-name=Audit",
+		"jakarta.portlet.expiration-cache=0",
 		"jakarta.portlet.init-param.view-template=/view.jsp",
 		"jakarta.portlet.name=" + AuditPortletKeys.AUDIT,
 		"jakarta.portlet.portlet-info.short-title=Audit",

@@ -11,14 +11,14 @@ import com.liferay.social.bookmarks.taglib.internal.util.SocialBookmarksRegistry
 import com.liferay.taglib.servlet.PipingServletResponseFactory;
 import com.liferay.taglib.util.AttributesTagSupport;
 
-import java.io.IOException;
-
-import java.util.Map;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.PageContext;
+
+import java.io.IOException;
+
+import java.util.Map;
 
 /**
  * @author David Truong

@@ -8,11 +8,11 @@ package com.liferay.expando.taglib.servlet.taglib;
 import com.liferay.expando.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
-import java.util.Locale;
-import java.util.Set;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.PageContext;
+
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan

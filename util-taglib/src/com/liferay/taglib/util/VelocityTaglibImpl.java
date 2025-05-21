@@ -29,11 +29,6 @@ import com.liferay.taglib.ui.IconHelpTag;
 import com.liferay.taglib.ui.IconTag;
 import com.liferay.taglib.ui.LanguageTag;
 
-import java.io.Writer;
-
-import java.util.Map;
-import java.util.Set;
-
 import jakarta.portlet.PortletMode;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletURL;
@@ -45,6 +40,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspFactory;
 import jakarta.servlet.jsp.PageContext;
+
+import java.io.Writer;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan

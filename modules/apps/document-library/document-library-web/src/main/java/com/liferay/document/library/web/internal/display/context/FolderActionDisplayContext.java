@@ -56,14 +56,14 @@ import com.liferay.staging.StagingGroupHelper;
 import com.liferay.staging.StagingGroupHelperUtil;
 import com.liferay.taglib.security.PermissionsURLTag;
 
-import java.util.List;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  * @author Adolfo Pérez

@@ -20,10 +20,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.AsyncPortletServletRequest;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import jakarta.portlet.PortletAsyncContext;
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletContext;
@@ -41,6 +37,10 @@ import jakarta.servlet.AsyncContext;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan

@@ -34,12 +34,12 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.StrictPortletPreferencesImpl;
 
+import jakarta.servlet.ServletContext;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import jakarta.servlet.ServletContext;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -75,6 +75,10 @@ import com.liferay.portlet.PortletBagFactory;
 import com.liferay.portlet.PortletContextBag;
 import com.liferay.portlet.PortletContextBagPool;
 
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.WindowState;
+
 import java.io.IOException;
 
 import java.net.URL;
@@ -94,10 +98,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 import java.util.function.Supplier;
-
-import jakarta.portlet.Portlet;
-import jakarta.portlet.PortletMode;
-import jakarta.portlet.WindowState;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -437,14 +437,16 @@ public class PortletTracker
 			portletModel.setPortletName(portletName);
 			portletModel.setDisplayName(
 				GetterUtil.getString(
-					serviceReference.getProperty("jakarta.portlet.display-name"),
+					serviceReference.getProperty(
+						"jakarta.portlet.display-name"),
 					portletName));
 
 			Class<?> portletClazz = portlet.getClass();
 
 			portletModel.setPortletClass(
 				GetterUtil.getString(
-					serviceReference.getProperty("jakarta.portlet.portlet-class"),
+					serviceReference.getProperty(
+						"jakarta.portlet.portlet-class"),
 					portletClazz.getName()));
 
 			_collectJxPortletFeatures(serviceReference, portletModel);
@@ -552,7 +554,8 @@ public class PortletTracker
 
 		portletModel.setAsyncSupported(
 			GetterUtil.getBoolean(
-				serviceReference.getProperty("jakarta.portlet.async-supported")));
+				serviceReference.getProperty(
+					"jakarta.portlet.async-supported")));
 	}
 
 	private void _collectContainerRuntimeOptions(

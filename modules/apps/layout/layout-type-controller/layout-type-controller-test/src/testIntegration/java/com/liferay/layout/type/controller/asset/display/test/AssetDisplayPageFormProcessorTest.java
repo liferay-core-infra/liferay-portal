@@ -39,13 +39,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.security.Principal;
-
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.PortalContext;
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.PortletMode;
@@ -56,6 +49,13 @@ import jakarta.portlet.RenderParameters;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.Cookie;
+
+import java.security.Principal;
+
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;

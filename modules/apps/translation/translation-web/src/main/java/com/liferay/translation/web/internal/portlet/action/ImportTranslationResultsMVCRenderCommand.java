@@ -12,8 +12,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.translation.constants.TranslationPortletKeys;
 import com.liferay.translation.web.internal.display.context.ImportTranslationResultsDisplayContext;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
@@ -21,6 +19,8 @@ import jakarta.portlet.RenderResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

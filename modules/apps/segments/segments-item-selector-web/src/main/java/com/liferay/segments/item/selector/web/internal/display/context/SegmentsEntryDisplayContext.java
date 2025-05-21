@@ -19,12 +19,12 @@ import com.liferay.segments.item.selector.SegmentsEntryItemSelectorCriterion;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.service.SegmentsEntryLocalService;
 
-import java.util.Objects;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Objects;
 
 /**
  * @author Stefan Tanasie

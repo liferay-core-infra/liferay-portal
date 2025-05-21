@@ -13,11 +13,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.net.URI;
-
-import java.util.List;
-import java.util.Map;
-
 import jakarta.annotation.Priority;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -25,6 +20,11 @@ import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.net.URI;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Shinn Lok

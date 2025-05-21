@@ -5,11 +5,11 @@
 
 package com.liferay.portal.kernel.servlet;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.WriteListener;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author Shuyang Zhou

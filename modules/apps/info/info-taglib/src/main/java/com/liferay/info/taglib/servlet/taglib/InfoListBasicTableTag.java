@@ -10,11 +10,11 @@ import com.liferay.info.item.renderer.InfoItemRendererRegistry;
 import com.liferay.info.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
-import java.util.List;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.PageContext;
+
+import java.util.List;
 
 /**
  * @author Guilherme Camacho

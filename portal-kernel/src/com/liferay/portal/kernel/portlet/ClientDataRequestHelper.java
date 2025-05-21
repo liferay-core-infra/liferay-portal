@@ -7,13 +7,13 @@ package com.liferay.portal.kernel.portlet;
 
 import com.liferay.portal.kernel.model.Portlet;
 
-import java.io.IOException;
-
-import java.util.Collection;
-
 import jakarta.portlet.PortletException;
 
 import jakarta.servlet.http.Part;
+
+import java.io.IOException;
+
+import java.util.Collection;
 
 /**
  * @author Jiefeng Wu

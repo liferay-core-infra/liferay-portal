@@ -12,13 +12,13 @@ import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Dante Wang

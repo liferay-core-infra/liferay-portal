@@ -7,12 +7,12 @@ package com.liferay.portal.remote.soap.extender.test;
 
 import com.liferay.petra.string.StringBundler;
 
-import java.util.List;
-
 import jakarta.xml.ws.Binding;
 import jakarta.xml.ws.Endpoint;
 import jakarta.xml.ws.handler.Handler;
 import jakarta.xml.ws.spi.Provider;
+
+import java.util.List;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

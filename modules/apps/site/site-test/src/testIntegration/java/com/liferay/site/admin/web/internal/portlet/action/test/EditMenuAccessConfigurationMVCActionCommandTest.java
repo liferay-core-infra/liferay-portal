@@ -33,11 +33,11 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.site.configuration.MenuAccessConfiguration;
 
-import java.util.Arrays;
-import java.util.Dictionary;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
+
+import java.util.Arrays;
+import java.util.Dictionary;
 
 import org.junit.Assert;
 import org.junit.Before;

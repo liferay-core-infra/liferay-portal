@@ -25,13 +25,13 @@ import com.liferay.users.admin.item.selector.UserUserGroupItemSelectorCriterion;
 import com.liferay.users.admin.search.UserSearch;
 import com.liferay.users.admin.search.UserSearchTerms;
 
-import java.util.LinkedHashMap;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.LinkedHashMap;
 
 /**
  * @author Pei-Jung Lan

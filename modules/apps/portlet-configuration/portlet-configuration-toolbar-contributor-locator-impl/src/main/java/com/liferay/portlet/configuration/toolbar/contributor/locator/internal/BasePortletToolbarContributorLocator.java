@@ -16,9 +16,9 @@ import com.liferay.portal.kernel.portlet.toolbar.contributor.locator.PortletTool
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
-import java.util.List;
-
 import jakarta.portlet.PortletRequest;
+
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;

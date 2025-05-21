@@ -28,8 +28,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.lang.reflect.Method;
-
 import jakarta.annotation.Priority;
 import jakarta.annotation.security.RolesAllowed;
 
@@ -44,6 +42,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.lang.reflect.Method;
 
 /**
  * @author Matthew Kong

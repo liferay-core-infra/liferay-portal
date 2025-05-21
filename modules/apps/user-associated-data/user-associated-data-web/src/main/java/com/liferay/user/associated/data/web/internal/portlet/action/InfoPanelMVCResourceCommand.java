@@ -18,12 +18,12 @@ import com.liferay.user.associated.data.web.internal.display.UADHierarchyDisplay
 import com.liferay.user.associated.data.web.internal.display.UADInfoPanelDisplay;
 import com.liferay.user.associated.data.web.internal.registry.UADRegistry;
 
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import jakarta.portlet.ResourceRequest;
-import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

@@ -19,13 +19,13 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.util.comparator.TeamNameComparator;
 
-import java.util.LinkedHashMap;
-import java.util.Objects;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.LinkedHashMap;
+import java.util.Objects;
 
 /**
  * @author Eudaldo Alonso

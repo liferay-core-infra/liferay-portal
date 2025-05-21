@@ -23,12 +23,6 @@ import com.liferay.portlet.LiferayPortletUtil;
 import com.liferay.portlet.PortletServletRequest;
 import com.liferay.portlet.PortletServletResponse;
 
-import java.io.IOException;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletRequest;
@@ -43,6 +37,12 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan

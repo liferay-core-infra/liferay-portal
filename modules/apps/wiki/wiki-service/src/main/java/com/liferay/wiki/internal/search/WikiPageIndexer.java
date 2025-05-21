@@ -55,11 +55,11 @@ import com.liferay.wiki.service.WikiNodeLocalService;
 import com.liferay.wiki.service.WikiNodeService;
 import com.liferay.wiki.service.WikiPageLocalService;
 
-import java.util.List;
-import java.util.Locale;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
+
+import java.util.List;
+import java.util.Locale;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

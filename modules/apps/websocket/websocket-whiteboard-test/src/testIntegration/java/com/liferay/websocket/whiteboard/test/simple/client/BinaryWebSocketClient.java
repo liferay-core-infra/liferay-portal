@@ -5,17 +5,17 @@
 
 package com.liferay.websocket.whiteboard.test.simple.client;
 
-import java.io.IOException;
-
-import java.nio.ByteBuffer;
-
-import java.util.concurrent.BlockingQueue;
-
 import jakarta.websocket.ClientEndpoint;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.RemoteEndpoint;
 import jakarta.websocket.Session;
+
+import java.io.IOException;
+
+import java.nio.ByteBuffer;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * @author Cristina González

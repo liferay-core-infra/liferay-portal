@@ -22,11 +22,11 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
-import java.io.InputStream;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.io.InputStream;
 
 import org.osgi.service.component.annotations.Component;
 

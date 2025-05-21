@@ -10,17 +10,17 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.xml.Document;
 
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.Serializable;
 
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
-
-import jakarta.portlet.PortletPreferences;
-import jakarta.portlet.PortletRequest;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Alexander Chow

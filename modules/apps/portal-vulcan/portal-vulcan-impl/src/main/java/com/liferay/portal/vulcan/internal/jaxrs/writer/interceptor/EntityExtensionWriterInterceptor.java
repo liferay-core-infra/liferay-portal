@@ -12,8 +12,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.vulcan.extension.EntityExtensionHandler;
 import com.liferay.portal.vulcan.jaxrs.extension.ExtendedEntity;
 
-import java.io.IOException;
-
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.ext.ContextResolver;
@@ -21,6 +19,8 @@ import jakarta.ws.rs.ext.Provider;
 import jakarta.ws.rs.ext.Providers;
 import jakarta.ws.rs.ext.WriterInterceptor;
 import jakarta.ws.rs.ext.WriterInterceptorContext;
+
+import java.io.IOException;
 
 /**
  * @author Javier de Arcos

@@ -7,8 +7,6 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.portlet.LiferayPortlet;
 
-import java.io.IOException;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.EventRequest;
@@ -19,6 +17,8 @@ import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.io.IOException;
 
 /**
  * @author     Brian Wing Shun Chan

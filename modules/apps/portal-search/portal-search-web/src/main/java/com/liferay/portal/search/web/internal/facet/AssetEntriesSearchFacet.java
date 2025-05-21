@@ -24,11 +24,11 @@ import com.liferay.portal.search.facet.type.AssetEntriesFacetFactory;
 import com.liferay.portal.search.web.facet.BaseJSPSearchFacet;
 import com.liferay.portal.search.web.facet.SearchFacet;
 
-import java.util.List;
-
 import jakarta.portlet.ActionRequest;
 
 import jakarta.servlet.ServletContext;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

@@ -29,7 +29,8 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"jakarta.portlet.name=" + TrashPortletKeys.TRASH, "path=/view_content.jsp"
+		"jakarta.portlet.name=" + TrashPortletKeys.TRASH,
+		"path=/view_content.jsp"
 	},
 	service = PortletConfigurationIcon.class
 )

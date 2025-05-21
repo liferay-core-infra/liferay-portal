@@ -12,12 +12,6 @@ import com.liferay.portal.vulcan.fields.FieldsQueryParam;
 import com.liferay.portal.vulcan.fields.RestrictFieldsQueryParam;
 import com.liferay.portal.vulcan.jackson.databind.ser.VulcanPropertyFilter;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
 import jakarta.ws.rs.InternalServerErrorException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
@@ -26,6 +20,12 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.MessageBodyWriter;
 import jakarta.ws.rs.ext.Providers;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 /**
  * @author Alejandro Hernández

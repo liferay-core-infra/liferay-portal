@@ -29,14 +29,14 @@ import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionVersionLocalService;
 import com.liferay.portal.workflow.manager.WorkflowDefinitionManager;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletRequest;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Reference;
 

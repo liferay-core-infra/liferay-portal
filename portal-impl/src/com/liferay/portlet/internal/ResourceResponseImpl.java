@@ -14,8 +14,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portlet.extra.config.ExtraPortletAppConfig;
 import com.liferay.portlet.extra.config.ExtraPortletAppConfigRegistry;
 
-import java.util.Locale;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.ResourceRequest;
@@ -24,6 +22,8 @@ import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Locale;
 
 /**
  * @author Brian Wing Shun Chan

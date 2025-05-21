@@ -8,10 +8,10 @@ package com.liferay.portal.remote.jaxrs.whiteboard.internal.servlet.filter;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.remote.jaxrs.whiteboard.lifecycle.JAXRSLifecycle;
 
-import java.util.concurrent.CountDownLatch;
-
 import jakarta.servlet.Filter;
 import jakarta.servlet.ServletException;
+
+import java.util.concurrent.CountDownLatch;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

@@ -91,10 +91,6 @@ import com.liferay.translation.url.provider.TranslationURLProvider;
 import com.liferay.trash.TrashHelper;
 import com.liferay.trash.util.TrashWebKeys;
 
-import java.io.IOException;
-
-import java.util.Objects;
-
 import jakarta.persistence.PersistenceException;
 
 import jakarta.portlet.Portlet;
@@ -105,6 +101,10 @@ import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

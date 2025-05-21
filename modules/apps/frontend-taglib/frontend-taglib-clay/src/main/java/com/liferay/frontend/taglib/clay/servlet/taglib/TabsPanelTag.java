@@ -9,11 +9,11 @@ import com.liferay.frontend.taglib.clay.internal.servlet.taglib.BaseContainerTag
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.TabsItem;
 import com.liferay.petra.string.StringPool;
 
-import java.util.List;
-import java.util.Set;
-
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.BodyTag;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Carlos Lancha

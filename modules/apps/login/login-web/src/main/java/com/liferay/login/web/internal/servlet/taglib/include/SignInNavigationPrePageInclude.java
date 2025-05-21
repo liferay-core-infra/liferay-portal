@@ -23,8 +23,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.include.PageInclude;
 import com.liferay.taglib.ui.IconTag;
 
-import java.util.Objects;
-
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletMode;
@@ -35,6 +33,8 @@ import jakarta.portlet.WindowState;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.PageContext;
+
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

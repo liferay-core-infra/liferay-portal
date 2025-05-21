@@ -12,12 +12,12 @@ import com.liferay.site.item.selector.renderer.SiteItemSelectorViewRenderer;
 import com.liferay.site.item.selector.web.internal.constants.SitesItemSelectorWebKeys;
 import com.liferay.site.provider.GroupURLProvider;
 
-import java.io.IOException;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

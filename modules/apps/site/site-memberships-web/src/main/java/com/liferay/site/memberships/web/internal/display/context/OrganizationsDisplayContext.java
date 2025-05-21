@@ -25,13 +25,13 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.memberships.constants.SiteMembershipsPortletKeys;
 import com.liferay.site.memberships.web.internal.util.GroupUtil;
 
-import java.util.LinkedHashMap;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.LinkedHashMap;
 
 /**
  * @author Eudaldo Alonso

@@ -36,9 +36,9 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.portal.upgrade.test.util.UpgradeTestUtil;
 
-import java.util.HashMap;
-
 import jakarta.portlet.Portlet;
+
+import java.util.HashMap;
 
 import org.junit.After;
 import org.junit.Assert;

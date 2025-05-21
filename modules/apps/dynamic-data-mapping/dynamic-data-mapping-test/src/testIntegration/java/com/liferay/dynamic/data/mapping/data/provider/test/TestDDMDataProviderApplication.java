@@ -9,14 +9,14 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 
-import java.util.Collections;
-import java.util.Set;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author Carolina Barbosa

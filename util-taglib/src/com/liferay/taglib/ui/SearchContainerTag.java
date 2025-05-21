@@ -17,8 +17,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.util.ParamAndPropertyAncestorTagImpl;
 
-import java.util.List;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
@@ -26,6 +24,8 @@ import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
+
+import java.util.List;
 
 /**
  * @author Raymond Augé

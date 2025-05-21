@@ -27,11 +27,11 @@ import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.service.persistence.WikiNodeUtil;
 
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.ReadOnlyException;
+
+import java.util.List;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

@@ -666,9 +666,10 @@ public class PortletPreferencesLocalServiceImpl
 						ownerId = portletPreferences.getOwnerId();
 						preferencesPlid = portletPreferences.getPlid();
 
-						jakarta.portlet.PortletPreferences jxPortletPreferences =
-							_portletPreferenceValueLocalService.getPreferences(
-								portletPreferences);
+						jakarta.portlet.PortletPreferences
+							jxPortletPreferences =
+								_portletPreferenceValueLocalService.
+									getPreferences(portletPreferences);
 
 						preferences = PortletPreferencesFactoryUtil.toXML(
 							jxPortletPreferences);

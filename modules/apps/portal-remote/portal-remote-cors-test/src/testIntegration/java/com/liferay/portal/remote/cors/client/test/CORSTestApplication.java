@@ -7,12 +7,12 @@ package com.liferay.portal.remote.cors.client.test;
 
 import com.liferay.portal.remote.cors.annotation.CORS;
 
-import java.util.Collections;
-import java.util.Set;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Application;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author Marta Medio

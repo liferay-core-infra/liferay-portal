@@ -12,16 +12,6 @@ import com.liferay.oauth2.provider.scope.spi.scope.finder.ScopeFinder;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-
 import jakarta.annotation.Priority;
 
 import jakarta.ws.rs.HttpMethod;
@@ -36,6 +26,16 @@ import jakarta.ws.rs.core.Feature;
 import jakarta.ws.rs.core.FeatureContext;
 import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.ext.Provider;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

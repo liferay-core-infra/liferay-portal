@@ -7,11 +7,11 @@ package com.liferay.portal.kernel.security.auth;
 
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Tomas Polesovsky

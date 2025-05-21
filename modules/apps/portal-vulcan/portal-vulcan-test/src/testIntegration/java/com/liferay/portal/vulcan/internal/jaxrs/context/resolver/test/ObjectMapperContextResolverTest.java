@@ -16,14 +16,14 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 
-import java.util.Collections;
-import java.util.Set;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Application;
+
+import java.util.Collections;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Assert;

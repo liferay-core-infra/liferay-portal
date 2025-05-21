@@ -29,9 +29,9 @@ import com.liferay.portal.search.web.internal.category.facet.constants.CategoryF
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.util.HashMap;
-
 import jakarta.portlet.PortletPreferences;
+
+import java.util.HashMap;
 
 import org.junit.Assert;
 import org.junit.Before;

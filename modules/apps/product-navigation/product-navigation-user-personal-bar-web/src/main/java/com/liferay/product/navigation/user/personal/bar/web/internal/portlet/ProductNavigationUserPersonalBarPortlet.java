@@ -18,12 +18,12 @@ import com.liferay.product.navigation.user.personal.bar.web.internal.constants.P
 import com.liferay.product.navigation.user.personal.bar.web.internal.constants.ProductNavigationUserPersonalBarWebKeys;
 import com.liferay.site.manager.RecentGroupManager;
 
-import java.io.IOException;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

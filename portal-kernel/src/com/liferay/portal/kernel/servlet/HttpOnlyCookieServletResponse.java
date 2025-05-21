@@ -8,12 +8,12 @@ package com.liferay.portal.kernel.servlet;
 import com.liferay.portal.kernel.cookies.constants.CookiesConstants;
 import com.liferay.portal.kernel.util.SystemProperties;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Samuel Kong

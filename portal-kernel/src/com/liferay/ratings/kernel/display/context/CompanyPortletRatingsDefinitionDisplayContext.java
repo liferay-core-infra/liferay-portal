@@ -15,13 +15,13 @@ import com.liferay.ratings.kernel.definition.PortletRatingsDefinitionUtil;
 import com.liferay.ratings.kernel.definition.PortletRatingsDefinitionValues;
 import com.liferay.ratings.kernel.transformer.RatingsDataTransformerUtil;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import jakarta.portlet.PortletPreferences;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Roberto Díaz

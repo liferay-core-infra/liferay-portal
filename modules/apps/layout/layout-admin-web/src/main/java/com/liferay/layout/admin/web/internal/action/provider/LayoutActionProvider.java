@@ -38,12 +38,12 @@ import com.liferay.site.navigation.model.SiteNavigationMenu;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalService;
 import com.liferay.taglib.security.PermissionsURLTag;
 
-import java.util.Objects;
-
 import jakarta.portlet.ActionURL;
 import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Objects;
 
 /**
  * @author Rubén Pulido

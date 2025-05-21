@@ -11,15 +11,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.servlet.URLEncoder;
 import com.liferay.portlet.test.MockActionURL;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.ActionURL;
 import jakarta.portlet.CacheControl;
 import jakarta.portlet.PortletURL;
@@ -29,6 +20,15 @@ import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+
+import java.util.Collection;
+import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.mock.web.MockHttpServletResponse;
 

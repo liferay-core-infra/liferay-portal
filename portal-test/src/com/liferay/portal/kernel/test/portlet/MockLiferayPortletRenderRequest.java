@@ -11,16 +11,16 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.Objects;
-
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.PortletResponse;
 import jakarta.portlet.RenderParameters;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 

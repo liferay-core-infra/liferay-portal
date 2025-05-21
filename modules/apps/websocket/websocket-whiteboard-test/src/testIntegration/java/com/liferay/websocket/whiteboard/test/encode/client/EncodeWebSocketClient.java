@@ -9,16 +9,16 @@ import com.liferay.websocket.whiteboard.test.encode.data.Example;
 import com.liferay.websocket.whiteboard.test.encode.data.ExampleDecoder;
 import com.liferay.websocket.whiteboard.test.encode.data.ExampleEncoder;
 
-import java.io.IOException;
-
-import java.util.concurrent.BlockingQueue;
-
 import jakarta.websocket.ClientEndpoint;
 import jakarta.websocket.EncodeException;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.RemoteEndpoint;
 import jakarta.websocket.Session;
+
+import java.io.IOException;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * @author Cristina González

@@ -33,13 +33,13 @@ import com.liferay.taglib.security.PermissionsURLTag;
 import com.liferay.users.admin.user.action.contributor.UserActionContributor;
 import com.liferay.users.admin.web.internal.display.context.UserActionDisplayContext;
 
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Eudaldo Alonso

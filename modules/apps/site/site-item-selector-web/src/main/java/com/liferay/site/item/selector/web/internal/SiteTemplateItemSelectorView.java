@@ -18,18 +18,18 @@ import com.liferay.site.item.selector.SiteItemSelectorCriterion;
 import com.liferay.site.item.selector.web.internal.renderer.SiteTemplateItemSelectorViewRenderer;
 import com.liferay.site.provider.GroupURLProvider;
 
-import java.io.IOException;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+
+import java.io.IOException;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;

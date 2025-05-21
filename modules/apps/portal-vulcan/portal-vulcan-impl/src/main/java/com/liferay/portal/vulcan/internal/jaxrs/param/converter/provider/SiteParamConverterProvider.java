@@ -11,11 +11,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.vulcan.util.GroupUtil;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
-import java.util.List;
-
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Context;
@@ -24,6 +19,11 @@ import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.utils.AnnotationUtils;

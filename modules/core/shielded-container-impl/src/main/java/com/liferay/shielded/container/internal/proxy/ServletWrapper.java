@@ -5,16 +5,16 @@
 
 package com.liferay.shielded.container.internal.proxy;
 
-import java.io.IOException;
-
-import java.util.function.Supplier;
-
 import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+
+import java.io.IOException;
+
+import java.util.function.Supplier;
 
 /**
  * @author Shuyang Zhou

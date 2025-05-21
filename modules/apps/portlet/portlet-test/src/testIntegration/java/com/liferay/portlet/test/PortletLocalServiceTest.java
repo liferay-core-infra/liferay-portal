@@ -22,11 +22,11 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import jakarta.portlet.Portlet;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import jakarta.portlet.Portlet;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

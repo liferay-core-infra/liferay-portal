@@ -23,10 +23,10 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.web.internal.category.facet.constants.CategoryFacetPortletKeys;
 import com.liferay.portal.search.web.internal.category.facet.portlet.CategoryFacetPortletPreferences;
 
+import jakarta.portlet.PortletPreferences;
+
 import java.util.Enumeration;
 import java.util.Map;
-
-import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

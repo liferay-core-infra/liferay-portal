@@ -22,9 +22,11 @@ public interface JavaConstants {
 	public static final String JAVAX_PORTLET_LONG_TITLE =
 		"jakarta.portlet.long-title";
 
-	public static final String JAVAX_PORTLET_PORTLET = "jakarta.portlet.portlet";
+	public static final String JAVAX_PORTLET_PORTLET =
+		"jakarta.portlet.portlet";
 
-	public static final String JAVAX_PORTLET_REQUEST = "jakarta.portlet.request";
+	public static final String JAVAX_PORTLET_REQUEST =
+		"jakarta.portlet.request";
 
 	public static final String JAVAX_PORTLET_RESPONSE =
 		"jakarta.portlet.response";
@@ -64,7 +66,8 @@ public interface JavaConstants {
 	public static final String JAVAX_SERVLET_FORWARD_SERVLET_PATH =
 		"jakarta.servlet.forward.servlet_path";
 
-	public static final String JAVAX_SERVLET_INCLUDE = "jakarta.servlet.include.";
+	public static final String JAVAX_SERVLET_INCLUDE =
+		"jakarta.servlet.include.";
 
 	public static final String JAVAX_SERVLET_INCLUDE_CONTEXT_PATH =
 		"jakarta.servlet.include.context_path";

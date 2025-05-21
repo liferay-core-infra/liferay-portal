@@ -23,12 +23,12 @@ import com.liferay.trash.constants.TrashPortletKeys;
 import com.liferay.trash.model.TrashEntry;
 import com.liferay.trash.web.internal.display.context.TrashDisplayContext;
 
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.ServletContext;
+
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -38,7 +38,8 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"jakarta.portlet.name=" + TrashPortletKeys.TRASH, "path=/view_content.jsp"
+		"jakarta.portlet.name=" + TrashPortletKeys.TRASH,
+		"path=/view_content.jsp"
 	},
 	service = PortletConfigurationIcon.class
 )

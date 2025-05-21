@@ -19,11 +19,11 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletURL;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Leonardo Barros

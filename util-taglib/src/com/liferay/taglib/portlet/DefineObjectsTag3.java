@@ -9,10 +9,6 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.aui.AUIUtil;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletRequest;
@@ -21,6 +17,10 @@ import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.StateAwareResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Brian Wing Shun Chan

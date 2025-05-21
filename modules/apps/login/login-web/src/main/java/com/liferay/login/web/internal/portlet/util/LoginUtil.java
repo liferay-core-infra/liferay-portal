@@ -35,10 +35,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
-import java.io.IOException;
-
-import java.util.Map;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletMode;
@@ -50,6 +46,10 @@ import jakarta.portlet.WindowState;
 import jakarta.portlet.WindowStateException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan

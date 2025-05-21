@@ -5,11 +5,6 @@
 
 package com.liferay.portal.search.web.internal.portlet.shared.search;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import java.util.Map;
-
 import jakarta.portlet.MutableRenderParameters;
 import jakarta.portlet.PortletMode;
 import jakarta.portlet.PortletModeException;
@@ -18,6 +13,11 @@ import jakarta.portlet.PortletURL;
 import jakarta.portlet.WindowState;
 import jakarta.portlet.WindowStateException;
 import jakarta.portlet.annotations.PortletSerializable;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import java.util.Map;
 
 /**
  * @author André de Oliveira

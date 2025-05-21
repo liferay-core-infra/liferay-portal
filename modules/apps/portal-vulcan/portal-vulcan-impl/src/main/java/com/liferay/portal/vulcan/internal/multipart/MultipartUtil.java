@@ -5,11 +5,11 @@
 
 package com.liferay.portal.vulcan.internal.multipart;
 
-import java.lang.reflect.Parameter;
-
 import jakarta.servlet.http.Part;
 
 import jakarta.ws.rs.core.HttpHeaders;
+
+import java.lang.reflect.Parameter;
 
 /**
  * @author Javier Gamarra

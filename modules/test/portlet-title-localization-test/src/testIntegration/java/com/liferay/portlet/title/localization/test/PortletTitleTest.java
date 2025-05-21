@@ -17,11 +17,11 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import jakarta.portlet.PortletConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import jakarta.portlet.PortletConfig;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

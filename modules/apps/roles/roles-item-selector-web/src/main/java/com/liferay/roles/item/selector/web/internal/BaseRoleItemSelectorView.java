@@ -24,12 +24,6 @@ import com.liferay.roles.item.selector.web.internal.constants.RoleItemSelectorVi
 import com.liferay.roles.item.selector.web.internal.display.context.RoleItemSelectorViewDisplayContext;
 import com.liferay.roles.item.selector.web.internal.search.RoleItemSelectorChecker;
 
-import java.io.IOException;
-
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
@@ -40,6 +34,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Reference;
 

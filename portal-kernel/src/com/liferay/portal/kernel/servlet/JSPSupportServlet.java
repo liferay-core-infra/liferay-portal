@@ -5,12 +5,12 @@
 
 package com.liferay.portal.kernel.servlet;
 
-import java.util.Collections;
-import java.util.Enumeration;
-
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServlet;
+
+import java.util.Collections;
+import java.util.Enumeration;
 
 /**
  * @author Raymond Augé

@@ -29,12 +29,12 @@ import com.liferay.portal.sharepoint.dws.MemberResponseElement;
 import com.liferay.portal.sharepoint.dws.ResponseElement;
 import com.liferay.portal.sharepoint.dws.RoleResponseElement;
 
-import java.util.List;
-
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
 
 /**
  * @author Bruno Farache

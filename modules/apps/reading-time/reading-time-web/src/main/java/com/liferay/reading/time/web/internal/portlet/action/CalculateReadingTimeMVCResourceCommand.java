@@ -15,10 +15,10 @@ import com.liferay.reading.time.calculator.ReadingTimeCalculator;
 import com.liferay.reading.time.message.ReadingTimeMessageProvider;
 import com.liferay.reading.time.web.internal.constants.ReadingTimePortletKeys;
 
-import java.time.Duration;
-
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.time.Duration;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

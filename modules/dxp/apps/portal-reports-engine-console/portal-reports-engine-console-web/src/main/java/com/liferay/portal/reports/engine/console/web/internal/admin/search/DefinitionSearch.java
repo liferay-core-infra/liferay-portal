@@ -12,11 +12,11 @@ import com.liferay.portal.reports.engine.console.constants.ReportsEngineConsoleP
 import com.liferay.portal.reports.engine.console.model.Definition;
 import com.liferay.portal.reports.engine.console.util.comparator.DefinitionCreateDateComparator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletURL;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Rafael Praxedes

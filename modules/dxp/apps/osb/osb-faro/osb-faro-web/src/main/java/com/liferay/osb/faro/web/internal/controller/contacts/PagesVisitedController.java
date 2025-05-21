@@ -15,9 +15,6 @@ import com.liferay.osb.faro.web.internal.param.FaroParam;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.RoleConstants;
 
-import java.util.Date;
-import java.util.List;
-
 import jakarta.annotation.security.RolesAllowed;
 
 import jakarta.ws.rs.DefaultValue;
@@ -29,6 +26,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.Date;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 

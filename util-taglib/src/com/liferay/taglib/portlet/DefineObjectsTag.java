@@ -11,12 +11,6 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-
-import java.util.Map;
-import java.util.function.Function;
-
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.PortletRequest;
@@ -25,6 +19,12 @@ import jakarta.portlet.PortletSession;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.tagext.TagSupport;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Brian Wing Shun Chan

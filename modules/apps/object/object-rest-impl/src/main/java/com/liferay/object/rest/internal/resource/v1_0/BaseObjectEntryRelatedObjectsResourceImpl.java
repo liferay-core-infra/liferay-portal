@@ -18,9 +18,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 
-import java.util.Collection;
-import java.util.List;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +30,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Carlos Correa

@@ -40,11 +40,11 @@ import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.test.util.WikiTestUtil;
 
+import jakarta.portlet.PortletPreferences;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;

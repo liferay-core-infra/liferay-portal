@@ -47,10 +47,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.ThemeUtil;
 
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.ws.rs.NotAuthorizedException;
@@ -59,6 +55,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Providers;
+
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

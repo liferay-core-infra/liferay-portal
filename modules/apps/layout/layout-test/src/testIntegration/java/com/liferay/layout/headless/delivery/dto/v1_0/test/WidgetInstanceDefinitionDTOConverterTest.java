@@ -49,6 +49,9 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 
+import jakarta.portlet.GenericPortlet;
+import jakarta.portlet.Portlet;
+
 import java.lang.reflect.Constructor;
 
 import java.util.ArrayList;
@@ -56,9 +59,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import jakarta.portlet.GenericPortlet;
-import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -21,12 +21,12 @@ import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.service.base.PortletPreferencesServiceBaseImpl;
 
+import jakarta.portlet.ReadOnlyException;
+import jakarta.portlet.ValidatorException;
+
 import java.io.IOException;
 
 import java.util.Map;
-
-import jakarta.portlet.ReadOnlyException;
-import jakarta.portlet.ValidatorException;
 
 /**
  * @author Jorge Ferrer

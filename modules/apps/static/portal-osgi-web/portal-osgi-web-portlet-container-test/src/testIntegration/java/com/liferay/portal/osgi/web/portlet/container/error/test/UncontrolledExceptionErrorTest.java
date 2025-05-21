@@ -24,6 +24,11 @@ import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+
 import java.io.IOException;
 
 import java.util.Arrays;
@@ -32,11 +37,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-import jakarta.portlet.PortletException;
-import jakarta.portlet.PortletRequest;
-import jakarta.portlet.RenderRequest;
-import jakarta.portlet.RenderResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -134,7 +134,8 @@ public class UncontrolledExceptionErrorTest
 				"jakarta.portlet.display-name",
 				"Uncontrolled Exception Error Portlet"
 			).put(
-				"jakarta.portlet.init-param.view-template", "/error_test/view.jsp"
+				"jakarta.portlet.init-param.view-template",
+				"/error_test/view.jsp"
 			).put(
 				"jakarta.portlet.name", _PORTLET_NAME
 			).put(

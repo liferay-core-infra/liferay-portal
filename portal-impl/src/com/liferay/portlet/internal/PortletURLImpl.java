@@ -48,22 +48,6 @@ import com.liferay.portlet.PortletURLListenerFactory;
 import com.liferay.portlet.PublicRenderParametersPool;
 import com.liferay.portlet.RenderParametersPool;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.Writer;
-
-import java.security.Key;
-
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiConsumer;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.MutableActionParameters;
 import jakarta.portlet.MutableRenderParameters;
@@ -84,6 +68,22 @@ import jakarta.portlet.annotations.RenderStateScoped;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.Writer;
+
+import java.security.Key;
+
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 /**
  * @author Brian Wing Shun Chan

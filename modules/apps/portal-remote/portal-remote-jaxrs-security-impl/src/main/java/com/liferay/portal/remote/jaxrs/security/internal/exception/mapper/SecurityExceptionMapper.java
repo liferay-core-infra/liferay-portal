@@ -7,8 +7,6 @@ package com.liferay.portal.remote.jaxrs.security.internal.exception.mapper;
 
 import com.liferay.portal.remote.jaxrs.security.internal.entity.ForbiddenEntity;
 
-import java.util.List;
-
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -16,6 +14,8 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.MessageBodyWriter;
 import jakarta.ws.rs.ext.Providers;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 

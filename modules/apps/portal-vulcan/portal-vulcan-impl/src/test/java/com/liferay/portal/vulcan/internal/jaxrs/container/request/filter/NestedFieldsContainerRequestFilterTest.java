@@ -9,16 +9,16 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.vulcan.fields.NestedFieldsContext;
 import com.liferay.portal.vulcan.fields.NestedFieldsContextThreadLocal;
 
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.PathSegment;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.cxf.jaxrs.impl.PathSegmentImpl;
 

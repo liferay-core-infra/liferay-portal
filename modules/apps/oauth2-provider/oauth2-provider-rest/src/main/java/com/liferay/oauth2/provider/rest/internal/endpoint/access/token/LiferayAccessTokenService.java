@@ -12,11 +12,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.remote.cors.annotation.CORS;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.ws.rs.Consumes;
@@ -26,6 +21,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import java.util.Map;
 
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.cxf.rs.security.oauth2.common.Client;

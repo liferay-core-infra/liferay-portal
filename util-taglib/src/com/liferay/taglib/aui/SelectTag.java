@@ -16,13 +16,13 @@ import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.aui.base.BaseSelectTag;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.BodyTag;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Julio Camarero

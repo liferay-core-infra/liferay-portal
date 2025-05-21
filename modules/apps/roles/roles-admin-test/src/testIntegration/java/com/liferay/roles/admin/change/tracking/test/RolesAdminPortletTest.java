@@ -42,12 +42,12 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.roles.admin.constants.RolesAdminPortletKeys;
 
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.Portlet;
+
+import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;

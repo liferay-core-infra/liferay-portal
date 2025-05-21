@@ -18,14 +18,14 @@ import com.liferay.product.navigation.control.menu.manager.ProductNavigationCont
 import com.liferay.product.navigation.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.taglib.util.IncludeTag;
 
-import java.io.IOException;
-
-import java.util.List;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.PageContext;
+
+import java.io.IOException;
+
+import java.util.List;
 
 /**
  * @author Eudaldo Alonso

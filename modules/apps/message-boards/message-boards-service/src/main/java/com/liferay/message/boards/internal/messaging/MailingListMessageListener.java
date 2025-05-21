@@ -35,11 +35,6 @@ import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.util.List;
-
 import jakarta.mail.Address;
 import jakarta.mail.Flags;
 import jakarta.mail.Folder;
@@ -49,6 +44,11 @@ import jakarta.mail.Session;
 import jakarta.mail.Store;
 import jakarta.mail.URLName;
 import jakarta.mail.internet.InternetAddress;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.List;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

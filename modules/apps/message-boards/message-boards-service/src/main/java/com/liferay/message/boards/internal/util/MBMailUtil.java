@@ -25,13 +25,13 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
-import java.io.InputStream;
-
 import jakarta.mail.BodyPart;
 import jakarta.mail.Message;
 import jakarta.mail.Part;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+
+import java.io.InputStream;
 
 /**
  * @author Sergio González

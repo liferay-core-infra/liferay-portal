@@ -22,14 +22,14 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.struts.StrutsUtil;
 import com.liferay.portal.util.PropsUtil;
 
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Collection;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Raymond Augé

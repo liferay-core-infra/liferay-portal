@@ -48,15 +48,15 @@ import com.liferay.segments.service.SegmentsExperimentRelService;
 import com.liferay.segments.service.SegmentsExperimentService;
 import com.liferay.staging.StagingGroupHelper;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;

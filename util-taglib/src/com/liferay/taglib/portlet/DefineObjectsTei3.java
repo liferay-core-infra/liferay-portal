@@ -8,9 +8,6 @@ package com.liferay.taglib.portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.ActionParameters;
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
@@ -41,6 +38,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.jsp.tagext.TagData;
 import jakarta.servlet.jsp.tagext.TagExtraInfo;
 import jakarta.servlet.jsp.tagext.VariableInfo;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Neil Griffin

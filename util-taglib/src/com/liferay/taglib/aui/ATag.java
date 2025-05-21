@@ -18,16 +18,16 @@ import com.liferay.taglib.aui.base.BaseATag;
 import com.liferay.taglib.util.InlineUtil;
 import com.liferay.taglib.util.TagResourceBundleUtil;
 
-import java.io.CharArrayWriter;
-
-import java.util.Map;
-
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.tagext.BodyContent;
 import jakarta.servlet.jsp.tagext.BodyTag;
+
+import java.io.CharArrayWriter;
+
+import java.util.Map;
 
 /**
  * @author Julio Camarero

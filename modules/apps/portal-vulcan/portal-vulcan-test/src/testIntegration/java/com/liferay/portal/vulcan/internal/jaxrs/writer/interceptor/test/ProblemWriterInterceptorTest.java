@@ -15,15 +15,15 @@ import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Application;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Assert;

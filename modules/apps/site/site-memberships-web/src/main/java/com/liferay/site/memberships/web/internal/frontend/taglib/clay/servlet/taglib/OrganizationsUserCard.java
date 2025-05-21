@@ -16,12 +16,12 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.site.memberships.web.internal.servlet.taglib.util.OrganizationActionDropdownItemsProvider;
 
-import java.util.List;
-
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  * @author Eudaldo Alonso

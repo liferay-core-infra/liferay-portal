@@ -15,17 +15,17 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Matthew Kong

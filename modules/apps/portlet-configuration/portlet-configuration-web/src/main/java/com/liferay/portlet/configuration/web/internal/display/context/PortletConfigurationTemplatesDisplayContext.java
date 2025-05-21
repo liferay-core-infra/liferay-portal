@@ -27,14 +27,14 @@ import com.liferay.portlet.configuration.web.internal.servlet.taglib.util.Archiv
 import com.liferay.portlet.configuration.web.internal.util.comparator.ArchivedSettingsModifiedDateComparator;
 import com.liferay.portlet.configuration.web.internal.util.comparator.ArchivedSettingsNameComparator;
 
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Eudaldo Alonso

@@ -24,7 +24,8 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.instanceable=false",
 		"com.liferay.portlet.preferences-owned-by-group=true",
-		"com.liferay.portlet.scopeable=true", "jakarta.portlet.display-name=Test",
+		"com.liferay.portlet.scopeable=true",
+		"jakarta.portlet.display-name=Test",
 		"jakarta.portlet.expiration-cache=0",
 		"jakarta.portlet.name=" + FragmentEntryLinkPortletKeys.FRAGMENT_ENTRY_LINK_NONINSTANCEABLE_TEST_PORTLET,
 		"jakarta.portlet.version=4.0"

@@ -20,11 +20,6 @@ import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.MutableRenderParameters;
 import jakarta.portlet.PortletException;
@@ -35,6 +30,11 @@ import jakarta.portlet.RenderParameters;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan

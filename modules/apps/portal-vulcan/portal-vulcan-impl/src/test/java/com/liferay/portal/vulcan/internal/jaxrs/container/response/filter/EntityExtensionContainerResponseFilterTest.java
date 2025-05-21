@@ -13,16 +13,16 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.vulcan.extension.EntityExtensionHandler;
 import com.liferay.portal.vulcan.extension.EntityExtensionThreadLocal;
 
-import java.io.Serializable;
-
-import java.util.Collections;
-import java.util.Map;
-
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Providers;
+
+import java.io.Serializable;
+
+import java.util.Collections;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.ClassRule;

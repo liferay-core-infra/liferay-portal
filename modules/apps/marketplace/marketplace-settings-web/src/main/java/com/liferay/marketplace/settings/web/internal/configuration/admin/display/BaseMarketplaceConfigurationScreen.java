@@ -8,14 +8,14 @@ package com.liferay.marketplace.settings.web.internal.configuration.admin.displa
 import com.liferay.configuration.admin.display.ConfigurationScreen;
 import com.liferay.portal.kernel.language.LanguageUtil;
 
-import java.io.IOException;
-
-import java.util.Locale;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import java.util.Locale;
 
 /**
  * @author Eduardo Diniz

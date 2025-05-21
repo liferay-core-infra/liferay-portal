@@ -28,7 +28,8 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"jakarta.portlet.name=" + SharingPortletKeys.SHARING, "mvc.command.name=/"
+		"jakarta.portlet.name=" + SharingPortletKeys.SHARING,
+		"mvc.command.name=/"
 	},
 	service = MVCRenderCommand.class
 )

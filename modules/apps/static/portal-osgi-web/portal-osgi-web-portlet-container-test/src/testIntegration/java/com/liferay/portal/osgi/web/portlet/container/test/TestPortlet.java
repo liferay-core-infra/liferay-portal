@@ -5,8 +5,6 @@
 
 package com.liferay.portal.osgi.web.portlet.container.test;
 
-import java.io.IOException;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.GenericPortlet;
@@ -15,6 +13,8 @@ import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.io.IOException;
 
 /**
  * @author Raymond Augé

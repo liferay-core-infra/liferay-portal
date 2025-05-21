@@ -16,16 +16,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.simple.Element;
 
-import java.io.Serializable;
-
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletMode;
@@ -38,6 +28,16 @@ import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceURL;
 import jakarta.portlet.WindowState;
 import jakarta.portlet.WindowStateException;
+
+import java.io.Serializable;
+
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * @author Shuyang Zhou

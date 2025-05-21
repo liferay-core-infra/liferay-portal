@@ -29,10 +29,10 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.sites.kernel.util.Sites;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
-import java.util.List;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

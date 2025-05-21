@@ -21,11 +21,11 @@ import com.liferay.portlet.display.template.util.PortletDisplayTemplateUtil;
 import com.liferay.site.navigation.breadcrumb.web.internal.configuration.SiteNavigationBreadcrumbPortletInstanceConfiguration;
 import com.liferay.site.navigation.taglib.servlet.taglib.util.BreadcrumbEntriesUtil;
 
-import java.util.HashMap;
-import java.util.List;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Julio Camarero

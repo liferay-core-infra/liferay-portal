@@ -5,10 +5,10 @@
 
 package com.liferay.exportimport.kernel.configuration;
 
+import jakarta.portlet.PortletRequest;
+
 import java.util.List;
 import java.util.Map;
-
-import jakarta.portlet.PortletRequest;
 
 import org.osgi.annotation.versioning.ProviderType;
 

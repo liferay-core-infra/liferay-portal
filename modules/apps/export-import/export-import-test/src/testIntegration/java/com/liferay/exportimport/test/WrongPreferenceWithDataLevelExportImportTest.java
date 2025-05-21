@@ -18,9 +18,9 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
-import java.util.Dictionary;
-
 import jakarta.portlet.Portlet;
+
+import java.util.Dictionary;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

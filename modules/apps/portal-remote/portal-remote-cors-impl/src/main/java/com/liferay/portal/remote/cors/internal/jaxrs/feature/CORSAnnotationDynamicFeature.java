@@ -16,8 +16,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.remote.cors.annotation.CORS;
 import com.liferay.portal.remote.cors.internal.CORSSupport;
 
-import java.io.IOException;
-
 import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -30,6 +28,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.FeatureContext;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;

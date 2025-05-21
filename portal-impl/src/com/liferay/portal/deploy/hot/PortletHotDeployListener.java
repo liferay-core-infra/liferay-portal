@@ -45,6 +45,14 @@ import com.liferay.portlet.PortletContextBagPool;
 import com.liferay.portlet.PortletFilterFactory;
 import com.liferay.portlet.PortletURLListenerFactory;
 
+import jakarta.portlet.PortletURLGenerationListener;
+import jakarta.portlet.filter.ActionFilter;
+import jakarta.portlet.filter.EventFilter;
+import jakarta.portlet.filter.RenderFilter;
+import jakarta.portlet.filter.ResourceFilter;
+
+import jakarta.servlet.ServletContext;
+
 import java.io.InputStream;
 
 import java.util.HashMap;
@@ -60,14 +68,6 @@ import java.util.jar.Manifest;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
-import jakarta.portlet.PortletURLGenerationListener;
-import jakarta.portlet.filter.ActionFilter;
-import jakarta.portlet.filter.EventFilter;
-import jakarta.portlet.filter.RenderFilter;
-import jakarta.portlet.filter.ResourceFilter;
-
-import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -409,8 +409,8 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 					},
 					portletFilter.getFilterClass());
 
-			Map<String, jakarta.portlet.filter.PortletFilter> portletFiltersMap =
-				portletContextBag.getPortletFilters();
+			Map<String, jakarta.portlet.filter.PortletFilter>
+				portletFiltersMap = portletContextBag.getPortletFilters();
 
 			portletFiltersMap.put(
 				portletFilter.getFilterName(), portletFilterInstance);

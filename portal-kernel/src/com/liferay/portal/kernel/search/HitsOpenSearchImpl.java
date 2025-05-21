@@ -18,13 +18,13 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.ratings.kernel.model.RatingsStats;
 import com.liferay.ratings.kernel.service.RatingsStatsLocalServiceUtil;
 
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Charles May

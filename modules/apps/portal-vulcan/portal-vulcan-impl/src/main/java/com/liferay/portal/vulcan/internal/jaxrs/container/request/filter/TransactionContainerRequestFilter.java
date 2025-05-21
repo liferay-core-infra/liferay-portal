@@ -17,18 +17,18 @@ import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionStatusAdapter;
 import com.liferay.portal.vulcan.internal.constants.VulcanConstants;
 
-import java.io.IOException;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
+
+import java.io.IOException;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.cxf.interceptor.InterceptorChain;
 import org.apache.cxf.message.Message;

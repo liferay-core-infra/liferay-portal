@@ -17,7 +17,8 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = {
-		"jakarta.portlet.description=", "jakarta.portlet.display-name=Fragments",
+		"jakarta.portlet.description=",
+		"jakarta.portlet.display-name=Fragments",
 		"jakarta.portlet.name=" + MarketplacePortletKeys.FRAGMENTS,
 		"jakarta.portlet.resource-bundle=content.Language",
 		"jakarta.portlet.security-role-ref=administrator",

@@ -5,13 +5,13 @@
 
 package com.liferay.portal.kernel.portlet;
 
-import java.util.List;
-
 import jakarta.portlet.filter.ActionFilter;
 import jakarta.portlet.filter.EventFilter;
 import jakarta.portlet.filter.HeaderFilter;
 import jakarta.portlet.filter.RenderFilter;
 import jakarta.portlet.filter.ResourceFilter;
+
+import java.util.List;
 
 import org.osgi.annotation.versioning.ProviderType;
 

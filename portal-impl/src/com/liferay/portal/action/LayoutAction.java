@@ -44,12 +44,6 @@ import com.liferay.portlet.RenderParametersPool;
 import com.liferay.portlet.internal.RenderData;
 import com.liferay.portlet.internal.RenderStateUtil;
 
-import java.io.PrintWriter;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.PortletMode;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.ResourceRequest;
@@ -58,6 +52,12 @@ import jakarta.portlet.WindowState;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.io.PrintWriter;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan

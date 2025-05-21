@@ -27,11 +27,6 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.io.Serializable;
-
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 import jakarta.portlet.PortletURL;
@@ -39,6 +34,11 @@ import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.Serializable;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Bruno Farache

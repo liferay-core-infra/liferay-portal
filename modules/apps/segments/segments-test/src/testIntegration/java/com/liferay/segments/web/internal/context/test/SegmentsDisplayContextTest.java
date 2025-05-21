@@ -56,13 +56,13 @@ import com.liferay.segments.criteria.CriteriaSerializer;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
+import jakarta.portlet.Portlet;
+
 import java.net.URLEncoder;
 
 import java.nio.charset.StandardCharsets;
 
 import java.util.Map;
-
-import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;

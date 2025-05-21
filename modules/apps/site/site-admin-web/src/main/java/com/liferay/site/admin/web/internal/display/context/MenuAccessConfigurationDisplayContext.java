@@ -28,15 +28,15 @@ import com.liferay.roles.item.selector.RegularRoleItemSelectorCriterion;
 import com.liferay.roles.item.selector.SiteRoleItemSelectorCriterion;
 import com.liferay.site.configuration.manager.MenuAccessConfigurationManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Mikel Lorza

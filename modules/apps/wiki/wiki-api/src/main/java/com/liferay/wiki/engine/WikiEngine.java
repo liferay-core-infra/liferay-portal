@@ -9,16 +9,16 @@ import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 
-import java.io.IOException;
-
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+
+import java.io.IOException;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Jorge Ferrer

@@ -9,11 +9,11 @@ import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletFilter;
 import com.liferay.portlet.internal.FilterConfigImpl;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.filter.FilterConfig;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Brian Wing Shun Chan

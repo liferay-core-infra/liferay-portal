@@ -30,13 +30,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.net.URI;
-
-import java.security.Principal;
-
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.annotation.Priority;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,6 +44,13 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.Provider;
+
+import java.net.URI;
+
+import java.security.Principal;
+
+import java.util.List;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

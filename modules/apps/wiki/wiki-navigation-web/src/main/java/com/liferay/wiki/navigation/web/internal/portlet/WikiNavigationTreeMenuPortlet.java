@@ -13,14 +13,14 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
 import com.liferay.wiki.navigation.web.internal.constants.WikiNavigationPortletKeys;
 
-import java.io.IOException;
-
-import java.util.Map;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.io.IOException;
+
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;

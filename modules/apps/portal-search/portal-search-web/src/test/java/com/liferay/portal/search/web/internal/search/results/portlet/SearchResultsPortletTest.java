@@ -38,11 +38,6 @@ import com.liferay.portal.search.web.search.request.SearchSettings;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 
-import java.io.IOException;
-
-import java.util.Arrays;
-import java.util.Collections;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
@@ -50,6 +45,11 @@ import jakarta.portlet.RenderResponse;
 import jakarta.portlet.RenderURL;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

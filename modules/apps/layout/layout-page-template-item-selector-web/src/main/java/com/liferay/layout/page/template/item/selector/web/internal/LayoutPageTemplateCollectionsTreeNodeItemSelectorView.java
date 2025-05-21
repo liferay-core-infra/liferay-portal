@@ -17,13 +17,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.template.react.renderer.ComponentDescriptor;
 import com.liferay.portal.template.react.renderer.ReactRenderer;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.ServletContext;
@@ -31,6 +24,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

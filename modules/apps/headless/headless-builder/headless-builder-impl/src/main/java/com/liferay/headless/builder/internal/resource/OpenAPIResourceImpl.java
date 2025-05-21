@@ -7,9 +7,6 @@ package com.liferay.headless.builder.internal.resource;
 
 import com.liferay.portal.vulcan.resource.OpenAPIResource;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.ws.rs.GET;
@@ -20,6 +17,9 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Carlos Correa

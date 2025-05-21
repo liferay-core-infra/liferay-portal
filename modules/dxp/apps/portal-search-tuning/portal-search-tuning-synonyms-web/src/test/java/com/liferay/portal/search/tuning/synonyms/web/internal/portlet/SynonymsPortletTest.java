@@ -15,16 +15,16 @@ import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.search.tuning.synonyms.web.internal.BaseSynonymsWebTestCase;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.ResourceBundle;
-
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.ResourceBundle;
 
 import org.junit.Before;
 import org.junit.ClassRule;

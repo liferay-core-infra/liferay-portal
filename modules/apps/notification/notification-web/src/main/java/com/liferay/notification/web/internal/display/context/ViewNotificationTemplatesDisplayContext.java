@@ -28,16 +28,16 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.WindowStateException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Gabriel Albuquerque

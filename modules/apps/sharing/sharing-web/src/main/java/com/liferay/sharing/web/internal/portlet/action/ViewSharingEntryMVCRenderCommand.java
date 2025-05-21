@@ -24,11 +24,11 @@ import com.liferay.sharing.web.internal.constants.SharingPortletKeys;
 import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContext;
 import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayContextFactory;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

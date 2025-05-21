@@ -16,8 +16,6 @@ import com.liferay.sharing.web.internal.display.context.ViewSharedAssetsDisplayC
 import com.liferay.sharing.web.internal.display.context.ViewSharingEntryAssetEntryDisplayContext;
 import com.liferay.sharing.web.internal.util.AssetRendererSharingUtil;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 
@@ -26,6 +24,8 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 /**
  * @author Alejandro Tardín

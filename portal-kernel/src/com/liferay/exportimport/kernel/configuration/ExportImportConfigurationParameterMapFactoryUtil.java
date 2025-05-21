@@ -7,10 +7,10 @@ package com.liferay.exportimport.kernel.configuration;
 
 import com.liferay.portal.kernel.module.service.Snapshot;
 
+import jakarta.portlet.PortletRequest;
+
 import java.util.List;
 import java.util.Map;
-
-import jakarta.portlet.PortletRequest;
 
 /**
  * @author Akos Thurzo

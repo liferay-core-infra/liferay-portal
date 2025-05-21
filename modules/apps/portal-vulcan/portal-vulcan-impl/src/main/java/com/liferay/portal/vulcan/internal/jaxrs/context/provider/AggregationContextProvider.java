@@ -16,12 +16,12 @@ import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.internal.accept.language.AcceptLanguageImpl;
 
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.ws.rs.ServerErrorException;
 import jakarta.ws.rs.ext.Provider;
+
+import java.util.Map;
 
 import org.apache.cxf.jaxrs.ext.ContextProvider;
 import org.apache.cxf.message.Message;

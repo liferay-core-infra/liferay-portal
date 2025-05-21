@@ -28,18 +28,18 @@ import com.liferay.product.navigation.product.menu.constants.ProductNavigationPr
 import com.liferay.product.navigation.product.menu.helper.ProductNavigationProductMenuHelper;
 import com.liferay.taglib.aui.IconTag;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import java.util.Locale;
-import java.util.Objects;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspException;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import java.util.Locale;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

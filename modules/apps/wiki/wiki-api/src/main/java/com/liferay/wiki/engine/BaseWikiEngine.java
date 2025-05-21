@@ -18,13 +18,6 @@ import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 
-import java.io.IOException;
-
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.RequestDispatcher;
@@ -35,6 +28,13 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.PageContext;
+
+import java.io.IOException;
+
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * @author Iván Zaera

@@ -20,7 +20,8 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.preferences-owned-by-group=true",
-		"com.liferay.portlet.scopeable=true", "jakarta.portlet.display-name=Test",
+		"com.liferay.portlet.scopeable=true",
+		"jakarta.portlet.display-name=Test",
 		"jakarta.portlet.expiration-cache=0",
 		"jakarta.portlet.name=" + ApplicationsMenuTestPortletKeys.APPLICATIONS_MENU_TEST_PORTLET,
 		"jakarta.portlet.version=4.0"

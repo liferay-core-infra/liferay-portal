@@ -31,15 +31,15 @@ import com.liferay.product.navigation.product.menu.constants.ProductNavigationPr
 import com.liferay.taglib.portletext.RuntimeTag;
 import com.liferay.taglib.servlet.PageContextFactoryUtil;
 
-import java.io.IOException;
-
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.PageContext;
+
+import java.io.IOException;
+
+import java.util.List;
+import java.util.Objects;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

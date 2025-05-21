@@ -24,12 +24,12 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.ServletContext;
+
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

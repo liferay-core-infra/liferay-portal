@@ -40,11 +40,11 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.segments.service.SegmentsExperienceService;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
+
+import java.util.Collections;
+import java.util.Iterator;
 
 import org.junit.After;
 import org.junit.Assert;

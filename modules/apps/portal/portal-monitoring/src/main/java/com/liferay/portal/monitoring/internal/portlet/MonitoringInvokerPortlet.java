@@ -15,10 +15,6 @@ import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.monitoring.internal.configuration.MonitoringConfiguration;
 
-import java.io.IOException;
-
-import java.util.List;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.EventRequest;
@@ -39,6 +35,10 @@ import jakarta.portlet.filter.EventFilter;
 import jakarta.portlet.filter.HeaderFilter;
 import jakarta.portlet.filter.RenderFilter;
 import jakarta.portlet.filter.ResourceFilter;
+
+import java.io.IOException;
+
+import java.util.List;
 
 /**
  * @author Michael C. Han

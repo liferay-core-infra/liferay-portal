@@ -20,13 +20,13 @@ import com.liferay.portal.service.persistence.constants.UserGroupFinderConstants
 import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 import com.liferay.site.teams.web.internal.constants.SiteTeamsPortletKeys;
 
-import java.util.LinkedHashMap;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.LinkedHashMap;
 
 /**
  * @author Eudaldo Alonso

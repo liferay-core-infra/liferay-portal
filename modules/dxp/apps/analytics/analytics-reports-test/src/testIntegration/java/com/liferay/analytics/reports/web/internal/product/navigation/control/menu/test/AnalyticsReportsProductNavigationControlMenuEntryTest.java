@@ -43,11 +43,11 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portlet.PortalPreferencesImpl;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 
-import java.util.Dictionary;
-import java.util.Objects;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.Dictionary;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Before;

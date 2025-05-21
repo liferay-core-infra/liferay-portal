@@ -7,15 +7,15 @@ package com.liferay.oauth2.provider.web.internal.tree.tag;
 
 import com.liferay.oauth2.provider.web.internal.tree.Tree;
 
-import java.io.IOException;
-
-import java.util.Collection;
-import java.util.LinkedList;
-
 import jakarta.servlet.jsp.JspContext;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.JspFragment;
 import jakarta.servlet.jsp.tagext.SimpleTagSupport;
+
+import java.io.IOException;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author Marta Medio

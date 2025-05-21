@@ -52,9 +52,9 @@ import freemarker.debug.impl.DebuggerService;
 
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.jakarta.jsp.TaglibFactory;
-import freemarker.ext.jsp.internal.WriterFactoryUtil;
 import freemarker.ext.jakarta.servlet.HttpRequestHashModel;
 import freemarker.ext.jakarta.servlet.ServletContextHashModel;
+import freemarker.ext.jsp.internal.WriterFactoryUtil;
 
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
@@ -62,6 +62,11 @@ import freemarker.template.SimpleNumber;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+
+import jakarta.servlet.GenericServlet;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,11 +94,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-
-import jakarta.servlet.GenericServlet;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

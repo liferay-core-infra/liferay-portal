@@ -20,11 +20,11 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.util.Collections;
-import java.util.Dictionary;
-
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
+
+import java.util.Collections;
+import java.util.Dictionary;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

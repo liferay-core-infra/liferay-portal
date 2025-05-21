@@ -11,13 +11,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.taglib.BodyContentWrapper;
 import com.liferay.portal.kernel.util.ServerDetector;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.BodyContent;
 import jakarta.servlet.jsp.tagext.BodyTag;
+
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * <p>

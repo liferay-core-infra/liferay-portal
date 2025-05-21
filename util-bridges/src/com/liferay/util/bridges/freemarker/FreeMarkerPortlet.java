@@ -18,14 +18,14 @@ import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResourceLoaderUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
+
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author Raymond Augé

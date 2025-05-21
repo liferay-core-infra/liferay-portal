@@ -31,9 +31,6 @@ import com.liferay.portal.theme.ThemeDisplayFactory;
 import com.liferay.portal.upload.LiferayServletRequest;
 import com.liferay.upload.UniqueFileNameProvider;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletURL;
@@ -42,6 +39,9 @@ import jakarta.portlet.ResourceResponse;
 
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.junit.Assert;
 import org.junit.Before;

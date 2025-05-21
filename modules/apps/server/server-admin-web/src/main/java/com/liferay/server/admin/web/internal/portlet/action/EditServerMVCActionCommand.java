@@ -114,6 +114,13 @@ import com.liferay.portal.util.ShutdownUtil;
 import com.liferay.server.admin.web.internal.constants.ImageMagickResourceLimitConstants;
 import com.liferay.server.admin.web.internal.scripting.util.ServerScriptingUtil;
 
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.WindowState;
+
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -123,13 +130,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-
-import jakarta.portlet.ActionRequest;
-import jakarta.portlet.ActionResponse;
-import jakarta.portlet.PortletConfig;
-import jakarta.portlet.PortletPreferences;
-import jakarta.portlet.PortletSession;
-import jakarta.portlet.WindowState;
 
 import org.apache.logging.log4j.Level;
 

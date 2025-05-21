@@ -18,11 +18,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 import com.liferay.users.admin.web.internal.portlet.action.ActionUtil;
 
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.ServletContext;
+
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

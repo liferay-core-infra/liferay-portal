@@ -561,8 +561,7 @@ public class JspAnalyzerPlugin implements AnalyzerPlugin {
 	}
 
 	private static final String[] _JSTL_CORE_URIS = {
-		"jakarta.tags.core", "jakarta.tags.fmt",
-		"jakarta.tags.functions",
+		"jakarta.tags.core", "jakarta.tags.fmt", "jakarta.tags.functions",
 		"jakarta.tags.sql", "jakarta.tags.xml"
 	};
 

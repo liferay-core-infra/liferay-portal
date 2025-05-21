@@ -27,11 +27,11 @@ import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
-import java.util.List;
-import java.util.logging.Level;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
+
+import java.util.List;
+import java.util.logging.Level;
 
 import org.junit.After;
 import org.junit.Assert;

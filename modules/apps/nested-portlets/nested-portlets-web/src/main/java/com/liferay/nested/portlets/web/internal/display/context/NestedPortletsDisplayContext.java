@@ -17,12 +17,12 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.plugin.PluginUtil;
 
-import java.util.List;
-import java.util.TreeMap;
-
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * @author Juergen Kappler

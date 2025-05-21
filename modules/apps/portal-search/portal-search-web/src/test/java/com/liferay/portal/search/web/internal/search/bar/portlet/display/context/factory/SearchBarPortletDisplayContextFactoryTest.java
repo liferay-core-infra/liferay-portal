@@ -42,12 +42,12 @@ import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portlet.PortletPreferencesImpl;
 
-import java.util.Collections;
-
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

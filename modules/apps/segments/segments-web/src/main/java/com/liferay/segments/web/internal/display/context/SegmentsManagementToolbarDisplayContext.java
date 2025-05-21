@@ -21,11 +21,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.constants.SegmentsActionKeys;
 import com.liferay.segments.web.internal.security.permission.resource.SegmentsResourcePermission;
 
-import java.util.List;
-
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  * @author Yurena Cabrera

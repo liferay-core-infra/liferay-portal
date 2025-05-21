@@ -112,6 +112,9 @@ import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletPreferences;
+
 import java.awt.image.BufferedImage;
 
 import java.io.ByteArrayOutputStream;
@@ -126,9 +129,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-
-import jakarta.portlet.Portlet;
-import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;

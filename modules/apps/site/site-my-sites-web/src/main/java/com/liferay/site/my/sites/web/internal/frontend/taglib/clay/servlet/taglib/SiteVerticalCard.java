@@ -21,14 +21,14 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.my.sites.web.internal.constants.MySitesWebKeys;
 import com.liferay.site.my.sites.web.internal.servlet.taglib.util.SiteActionDropdownItemsProvider;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Eudaldo Alonso

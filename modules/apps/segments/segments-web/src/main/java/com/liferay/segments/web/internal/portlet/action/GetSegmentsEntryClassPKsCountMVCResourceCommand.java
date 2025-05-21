@@ -17,16 +17,16 @@ import com.liferay.segments.criteria.contributor.SegmentsCriteriaContributorRegi
 import com.liferay.segments.odata.retriever.ODataRetriever;
 import com.liferay.segments.web.internal.constants.SegmentsWebKeys;
 
-import java.io.PrintWriter;
-
-import java.util.Locale;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletSession;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.PrintWriter;
+
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

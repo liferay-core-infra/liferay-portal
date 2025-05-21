@@ -11,8 +11,6 @@ import com.liferay.site.item.selector.web.internal.constants.SitesItemSelectorWe
 import com.liferay.site.item.selector.web.internal.display.context.MySitesItemSelectorViewDisplayContext;
 import com.liferay.site.provider.GroupURLProvider;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.RequestDispatcher;
@@ -21,6 +19,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
 
 /**
  * @author Cristina González

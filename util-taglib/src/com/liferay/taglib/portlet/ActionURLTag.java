@@ -23,10 +23,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.util.ParamAndPropertyAncestorTagImpl;
 import com.liferay.taglib.util.TypedParamAccessorTag;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletRequest;
@@ -36,6 +32,10 @@ import jakarta.portlet.PortletURL;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan

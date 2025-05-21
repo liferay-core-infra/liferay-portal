@@ -7,11 +7,11 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
-import java.util.function.Function;
-
 import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.function.Function;
 
 /**
  * @author André de Oliveira

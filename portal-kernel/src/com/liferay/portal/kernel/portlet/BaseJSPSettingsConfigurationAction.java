@@ -14,11 +14,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.IOException;
-
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletRequest;
 
@@ -27,6 +22,11 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Iván Zaera

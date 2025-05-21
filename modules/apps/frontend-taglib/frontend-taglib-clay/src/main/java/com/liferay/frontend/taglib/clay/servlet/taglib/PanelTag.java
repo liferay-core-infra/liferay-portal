@@ -11,11 +11,11 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Map;
-import java.util.Set;
-
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Eduardo Allegrini

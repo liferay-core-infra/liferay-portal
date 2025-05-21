@@ -23,14 +23,14 @@ import com.liferay.roles.admin.constants.RolesAdminPortletKeys;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.service.SegmentsEntryLocalServiceUtil;
 
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+
 import java.io.Serializable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import jakarta.portlet.RenderRequest;
-import jakarta.portlet.RenderResponse;
 
 /**
  * @author Pei-Jung Lan

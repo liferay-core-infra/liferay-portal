@@ -5,14 +5,14 @@
 
 package com.liferay.portlet.test;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletRequestDispatcher;
 import jakarta.portlet.PortletResponse;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.io.IOException;
 
 /**
  * @author David Arques

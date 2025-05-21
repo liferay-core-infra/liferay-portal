@@ -5,9 +5,9 @@
 
 package com.liferay.portal.kernel.util;
 
-import java.util.Properties;
-
 import jakarta.portlet.PortletPreferences;
+
+import java.util.Properties;
 
 import org.osgi.annotation.versioning.ProviderType;
 

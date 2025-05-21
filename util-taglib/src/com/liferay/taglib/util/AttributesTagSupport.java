@@ -7,11 +7,11 @@ package com.liferay.taglib.util;
 
 import com.liferay.petra.string.StringPool;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.tagext.DynamicAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Eduardo Lundgren

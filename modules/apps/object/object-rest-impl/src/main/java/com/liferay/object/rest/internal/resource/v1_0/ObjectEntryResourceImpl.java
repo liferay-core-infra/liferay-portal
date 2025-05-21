@@ -40,15 +40,15 @@ import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import java.io.Serializable;
-
-import java.util.Collection;
-import java.util.Map;
-
 import jakarta.ws.rs.NotSupportedException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
+
+import java.io.Serializable;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Javier Gamarra

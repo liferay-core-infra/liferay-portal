@@ -24,12 +24,12 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.util.Locale;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Locale;
 
 /**
  * @author Roberto Díaz

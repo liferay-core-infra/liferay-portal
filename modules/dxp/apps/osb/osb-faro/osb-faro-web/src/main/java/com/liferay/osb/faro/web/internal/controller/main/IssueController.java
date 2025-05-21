@@ -16,8 +16,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 
-import java.util.Date;
-
 import jakarta.annotation.security.RolesAllowed;
 
 import jakarta.mail.internet.InternetAddress;
@@ -28,6 +26,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

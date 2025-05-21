@@ -12,13 +12,13 @@ import com.liferay.social.kernel.model.SocialActivitySet;
 import com.liferay.social.kernel.util.SocialActivityDescriptor;
 import com.liferay.taglib.util.IncludeTag;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.PageContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Raymond Augé

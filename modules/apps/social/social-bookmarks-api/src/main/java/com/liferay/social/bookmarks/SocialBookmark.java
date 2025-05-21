@@ -5,13 +5,13 @@
 
 package com.liferay.social.bookmarks;
 
-import java.io.IOException;
-
-import java.util.Locale;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import java.util.Locale;
 
 /**
  * Provides a specialized interface to define a social bookmark.

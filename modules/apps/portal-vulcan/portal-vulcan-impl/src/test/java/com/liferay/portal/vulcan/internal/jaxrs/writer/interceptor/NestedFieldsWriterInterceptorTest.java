@@ -18,15 +18,6 @@ import com.liferay.portal.vulcan.internal.fields.servlet.NestedFieldsHttpServlet
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import java.io.IOException;
-
-import java.lang.reflect.Type;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.validation.constraints.NotNull;
 
 import jakarta.ws.rs.GET;
@@ -38,6 +29,15 @@ import jakarta.ws.rs.core.Configuration;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.ext.WriterInterceptorContext;
+
+import java.io.IOException;
+
+import java.lang.reflect.Type;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxrs.ext.ContextProvider;

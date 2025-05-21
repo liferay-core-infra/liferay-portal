@@ -50,6 +50,9 @@ import com.liferay.portal.upload.test.util.UploadTestUtil;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.upload.UploadHandler;
 
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -63,9 +66,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
-import jakarta.portlet.ActionRequest;
-import jakarta.portlet.ActionResponse;
 
 import org.junit.After;
 import org.junit.Assert;

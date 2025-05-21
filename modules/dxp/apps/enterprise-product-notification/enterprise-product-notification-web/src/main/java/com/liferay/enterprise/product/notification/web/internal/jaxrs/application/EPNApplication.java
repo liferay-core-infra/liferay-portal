@@ -8,9 +8,6 @@ package com.liferay.enterprise.product.notification.web.internal.jaxrs.applicati
 import com.liferay.enterprise.product.notification.web.internal.EPNManager;
 import com.liferay.portal.kernel.util.Portal;
 
-import java.util.Collections;
-import java.util.Set;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -19,6 +16,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+
+import java.util.Collections;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

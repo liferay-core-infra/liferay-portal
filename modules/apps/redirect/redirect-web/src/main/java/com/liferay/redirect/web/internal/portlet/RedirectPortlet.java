@@ -24,14 +24,14 @@ import com.liferay.redirect.web.internal.display.context.RedirectNotFoundEntries
 import com.liferay.redirect.web.internal.display.context.RedirectPatternConfigurationDisplayContext;
 import com.liferay.staging.StagingGroupHelper;
 
-import java.io.IOException;
-
-import java.util.Collections;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.io.IOException;
+
+import java.util.Collections;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

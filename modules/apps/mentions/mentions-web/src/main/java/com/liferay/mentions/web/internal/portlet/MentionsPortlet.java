@@ -38,15 +38,15 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.user.taglib.servlet.taglib.UserPortraitTag;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
 
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

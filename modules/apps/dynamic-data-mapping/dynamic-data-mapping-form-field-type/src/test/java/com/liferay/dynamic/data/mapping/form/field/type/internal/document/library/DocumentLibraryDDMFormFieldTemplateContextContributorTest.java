@@ -44,13 +44,13 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import jakarta.portlet.MutableResourceParameters;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.hamcrest.CoreMatchers;
 

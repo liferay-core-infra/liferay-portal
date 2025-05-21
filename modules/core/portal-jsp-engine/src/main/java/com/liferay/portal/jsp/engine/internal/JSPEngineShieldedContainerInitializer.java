@@ -24,12 +24,6 @@ import com.liferay.shielded.container.Ordered;
 import com.liferay.shielded.container.ShieldedContainerInitializer;
 import com.liferay.taglib.servlet.JspFactorySwapper;
 
-import java.io.File;
-import java.io.IOException;
-
-import java.util.EnumSet;
-import java.util.Map;
-
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -44,6 +38,12 @@ import jakarta.servlet.ServletRequestWrapper;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+
+import java.io.File;
+import java.io.IOException;
+
+import java.util.EnumSet;
+import java.util.Map;
 
 import org.apache.jasper.servlet.JasperInitializer;
 import org.apache.jasper.servlet.JspServlet;

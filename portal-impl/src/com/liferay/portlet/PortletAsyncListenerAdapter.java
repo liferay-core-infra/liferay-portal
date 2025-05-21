@@ -8,11 +8,6 @@ package com.liferay.portlet;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.portlet.PortletAsyncContext;
 import jakarta.portlet.PortletAsyncEvent;
 import jakarta.portlet.PortletAsyncListener;
@@ -22,6 +17,11 @@ import jakarta.portlet.ResourceResponse;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.AsyncEvent;
 import jakarta.servlet.AsyncListener;
+
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dante Wang

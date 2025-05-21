@@ -57,11 +57,11 @@ import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
 import com.liferay.portal.service.http.GroupServiceHttp;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
 
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.ReadOnlyException;
+
+import java.util.List;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

@@ -5,12 +5,12 @@
 
 package com.liferay.portal.vulcan.internal.jaxrs.container.response.filter;
 
-import java.io.IOException;
-
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.Response;
+
+import java.io.IOException;
 
 /**
  * @author Zoltán Takács

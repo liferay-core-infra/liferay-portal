@@ -5,9 +5,6 @@
 
 package com.liferay.taglib.servlet;
 
-import java.util.Collections;
-import java.util.Enumeration;
-
 import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -17,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspFactory;
 import jakarta.servlet.jsp.PageContext;
+
+import java.util.Collections;
+import java.util.Enumeration;
 
 /**
  * @author Shuyang Zhou

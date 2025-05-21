@@ -11,13 +11,13 @@ import com.liferay.portal.vulcan.openapi.contributor.OpenAPIContributor;
 
 import io.swagger.v3.oas.models.media.Schema;
 
-import java.util.Map;
-import java.util.Set;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Javier Gamarra

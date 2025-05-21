@@ -7,10 +7,10 @@ package com.liferay.portal.theme;
 
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 
+import jakarta.servlet.ServletContext;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

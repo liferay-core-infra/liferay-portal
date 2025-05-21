@@ -25,14 +25,14 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.RenderRequestFactory;
 import com.liferay.portlet.RenderResponseFactory;
 
-import java.util.Objects;
-
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletMode;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

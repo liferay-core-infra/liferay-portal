@@ -18,11 +18,11 @@ import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.taglib.servlet.PageContextFactoryUtil;
 
-import java.util.Collections;
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Collections;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 

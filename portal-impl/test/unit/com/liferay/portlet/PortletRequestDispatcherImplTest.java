@@ -21,9 +21,6 @@ import com.liferay.portlet.internal.PortletRequestDispatcherImpl;
 import com.liferay.portlet.internal.RenderRequestImpl;
 import com.liferay.portlet.internal.RenderResponseImpl;
 
-import java.util.Collections;
-import java.util.Set;
-
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
@@ -33,6 +30,9 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Collections;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;

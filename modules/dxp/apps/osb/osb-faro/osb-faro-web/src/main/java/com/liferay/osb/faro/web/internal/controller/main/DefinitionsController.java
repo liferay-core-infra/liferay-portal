@@ -14,8 +14,6 @@ import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.RoleConstants;
 
-import java.util.List;
-
 import jakarta.annotation.security.RolesAllowed;
 
 import jakarta.ws.rs.GET;
@@ -24,6 +22,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 

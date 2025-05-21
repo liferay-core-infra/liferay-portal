@@ -10,14 +10,14 @@ import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.ItemSelectorViewRenderer;
 import com.liferay.taglib.util.PortalIncludeUtil;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.PageContext;
+
+import java.io.IOException;
 
 /**
  * @author Iván Zaera

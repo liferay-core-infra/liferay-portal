@@ -18,14 +18,14 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.vulcan.internal.test.util.URLConnectionUtil;
 
-import java.util.Collections;
-import java.util.Set;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.Collections;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -16,13 +16,13 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.io.Serializable;
-
-import java.util.function.Supplier;
-
 import jakarta.validation.Valid;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.io.Serializable;
+
+import java.util.function.Supplier;
 
 /**
  * @author Carlos Correa

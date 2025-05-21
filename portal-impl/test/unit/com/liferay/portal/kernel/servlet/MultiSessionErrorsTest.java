@@ -12,12 +12,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 
-import java.security.Principal;
-
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.portlet.PortalContext;
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletContext;
@@ -31,6 +25,12 @@ import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.security.Principal;
+
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;

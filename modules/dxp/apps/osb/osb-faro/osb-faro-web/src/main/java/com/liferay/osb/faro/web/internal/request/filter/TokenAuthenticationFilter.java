@@ -12,10 +12,6 @@ import com.liferay.osb.faro.web.internal.util.ServletRequestUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.lang.reflect.Method;
-
-import java.util.Objects;
-
 import jakarta.annotation.Priority;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +22,10 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+
+import java.lang.reflect.Method;
+
+import java.util.Objects;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

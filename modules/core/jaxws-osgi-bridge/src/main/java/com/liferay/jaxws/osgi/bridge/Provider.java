@@ -7,13 +7,6 @@ package com.liferay.jaxws.osgi.bridge;
 
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
-import java.net.URL;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.Source;
 import jakarta.xml.ws.Endpoint;
 import jakarta.xml.ws.EndpointReference;
 import jakarta.xml.ws.Service;
@@ -21,6 +14,14 @@ import jakarta.xml.ws.WebServiceFeature;
 import jakarta.xml.ws.spi.Invoker;
 import jakarta.xml.ws.spi.ServiceDelegate;
 import jakarta.xml.ws.wsaddressing.W3CEndpointReference;
+
+import java.net.URL;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.Source;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -155,8 +156,8 @@ public class Provider extends jakarta.xml.ws.spi.Provider {
 
 	protected jakarta.xml.ws.spi.Provider getProvider() {
 		try {
-			jakarta.xml.ws.spi.Provider provider = _serviceTracker.waitForService(
-				10_000L);
+			jakarta.xml.ws.spi.Provider provider =
+				_serviceTracker.waitForService(10_000L);
 
 			if (provider == null) {
 				throw new IllegalStateException(
@@ -172,6 +173,7 @@ public class Provider extends jakarta.xml.ws.spi.Provider {
 	}
 
 	private final ServiceTracker
-		<jakarta.xml.ws.spi.Provider, jakarta.xml.ws.spi.Provider> _serviceTracker;
+		<jakarta.xml.ws.spi.Provider, jakarta.xml.ws.spi.Provider>
+			_serviceTracker;
 
 }

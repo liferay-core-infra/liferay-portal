@@ -13,12 +13,6 @@ import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.io.IOException;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-
 import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -26,6 +20,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;

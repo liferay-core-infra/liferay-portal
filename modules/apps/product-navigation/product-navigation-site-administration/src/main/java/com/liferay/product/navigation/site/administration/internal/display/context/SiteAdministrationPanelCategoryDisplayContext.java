@@ -45,15 +45,15 @@ import com.liferay.product.navigation.site.administration.internal.constants.Sit
 import com.liferay.site.manager.RecentGroupManager;
 import com.liferay.site.provider.GroupURLProvider;
 
-import java.net.ConnectException;
-
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.net.ConnectException;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Julio Camarero

@@ -55,15 +55,15 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 import com.liferay.subscription.test.util.BaseSubscriptionLocalizedContentTestCase;
 
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetHeaders;
 
 import jakarta.portlet.PortletPreferences;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Locale;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;

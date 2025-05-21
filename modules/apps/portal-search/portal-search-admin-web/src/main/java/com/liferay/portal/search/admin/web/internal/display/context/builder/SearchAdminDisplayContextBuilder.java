@@ -15,11 +15,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.admin.web.internal.display.context.SearchAdminDisplayContext;
 import com.liferay.portal.search.index.IndexInformation;
 
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Adam Brandizzi

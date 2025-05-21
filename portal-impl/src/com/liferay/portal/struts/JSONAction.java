@@ -30,14 +30,14 @@ import com.liferay.portal.struts.model.ActionForward;
 import com.liferay.portal.struts.model.ActionMapping;
 import com.liferay.portal.util.PropsValues;
 
-import java.io.OutputStream;
-
-import java.util.Set;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.OutputStream;
+
+import java.util.Set;
 
 /**
  * @author Ming-Gih Lam

@@ -23,12 +23,12 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.style.book.constants.StyleBookPortletKeys;
 import com.liferay.style.book.web.internal.constants.StyleBookWebKeys;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Rubén Pulido

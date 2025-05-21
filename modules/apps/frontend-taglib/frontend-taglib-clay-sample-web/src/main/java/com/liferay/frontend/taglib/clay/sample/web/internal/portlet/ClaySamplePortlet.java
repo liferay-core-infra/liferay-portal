@@ -15,12 +15,12 @@ import com.liferay.frontend.taglib.clay.sample.web.internal.display.context.Tabs
 import com.liferay.frontend.taglib.clay.sample.web.internal.display.context.VerticalNavDisplayContext;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
-import java.io.IOException;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 

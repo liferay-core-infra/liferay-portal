@@ -12,11 +12,11 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.comparator.TeamNameComparator;
 import com.liferay.site.teams.web.internal.constants.SiteTeamsPortletKeys;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletURL;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan

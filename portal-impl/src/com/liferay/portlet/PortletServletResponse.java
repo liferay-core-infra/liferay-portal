@@ -11,11 +11,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.servlet.ServletOutputStreamAdapter;
 import com.liferay.util.servlet.NullServletOutputStream;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import java.util.Locale;
-
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletRequest;
@@ -26,6 +21,11 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.util.Locale;
 
 /**
  * @author Brian Wing Shun Chan

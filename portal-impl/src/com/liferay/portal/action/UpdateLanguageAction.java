@@ -34,13 +34,13 @@ import com.liferay.portal.struts.Action;
 import com.liferay.portal.struts.model.ActionForward;
 import com.liferay.portal.struts.model.ActionMapping;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author Brian Wing Shun Chan

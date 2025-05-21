@@ -8,12 +8,12 @@ package com.liferay.rss.web.internal.portlet.validator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.rss.constants.RSSPortletKeys;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.PreferencesValidator;
 import jakarta.portlet.ValidatorException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 

@@ -7,16 +7,16 @@ package com.liferay.item.selector;
 
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 
-import java.io.IOException;
-
-import java.util.List;
-import java.util.Locale;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+
+import java.io.IOException;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Provides an interface to render an item selector view for a particular item

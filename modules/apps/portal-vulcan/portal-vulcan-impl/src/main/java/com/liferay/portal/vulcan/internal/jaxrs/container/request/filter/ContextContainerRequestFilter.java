@@ -26,15 +26,6 @@ import com.liferay.portal.vulcan.jaxrs.context.ContextDataInjector;
 import com.liferay.portal.vulcan.jaxrs.context.ContextDataInjectorBuilderFactory;
 import com.liferay.portal.vulcan.util.UriInfoUtil;
 
-import java.io.IOException;
-
-import java.lang.reflect.Method;
-
-import java.net.URI;
-
-import java.util.List;
-import java.util.Set;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -48,6 +39,15 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.Provider;
+
+import java.io.IOException;
+
+import java.lang.reflect.Method;
+
+import java.net.URI;
+
+import java.util.List;
+import java.util.Set;
 
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxrs.impl.UriInfoImpl;

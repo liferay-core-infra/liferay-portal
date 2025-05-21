@@ -5,8 +5,6 @@
 
 package com.liferay.portal.kernel.portlet;
 
-import java.io.IOException;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.EventRequest;
@@ -22,6 +20,8 @@ import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
 import jakarta.portlet.filter.FilterChain;
 import jakarta.portlet.filter.HeaderFilterChain;
+
+import java.io.IOException;
 
 /**
  * @author Michael Young

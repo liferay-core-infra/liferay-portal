@@ -21,8 +21,6 @@ import com.liferay.portal.search.web.internal.modified.facet.display.context.bui
 import com.liferay.portal.search.web.internal.util.DateRangeFactoryUtil;
 import com.liferay.portlet.display.template.portlet.action.BaseConfigurationAction;
 
-import java.text.ParseException;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.PortletConfig;
@@ -30,6 +28,8 @@ import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.text.ParseException;
 
 import org.osgi.service.component.annotations.Component;
 

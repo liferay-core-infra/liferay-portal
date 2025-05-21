@@ -8,8 +8,6 @@ package com.liferay.portal.kernel.portlet;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.servlet.URLEncoder;
 
-import java.util.Map;
-
 import jakarta.portlet.ActionURL;
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletResponse;
@@ -18,6 +16,8 @@ import jakarta.portlet.RenderURL;
 import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 

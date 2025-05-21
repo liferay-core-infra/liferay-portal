@@ -57,12 +57,12 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.segments.service.SegmentsExperienceService;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
-import java.util.Iterator;
-import java.util.List;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.PortletPreferences;
+
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;

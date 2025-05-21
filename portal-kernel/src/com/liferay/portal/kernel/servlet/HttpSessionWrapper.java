@@ -8,12 +8,12 @@ package com.liferay.portal.kernel.servlet;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
 
-import java.util.Enumeration;
-import java.util.List;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionContext;
+
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan

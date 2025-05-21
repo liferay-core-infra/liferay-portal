@@ -52,9 +52,9 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsUtil;
 
-import java.util.List;
-
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

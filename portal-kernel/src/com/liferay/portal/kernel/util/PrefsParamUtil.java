@@ -5,12 +5,12 @@
 
 package com.liferay.portal.kernel.util;
 
-import java.util.Locale;
-
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Locale;
 
 /**
  * @author Brian Wing Shun Chan

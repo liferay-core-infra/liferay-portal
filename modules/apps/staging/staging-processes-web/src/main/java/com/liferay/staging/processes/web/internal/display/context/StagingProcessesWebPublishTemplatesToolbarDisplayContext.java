@@ -24,12 +24,12 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.staging.processes.web.internal.search.PublishConfigurationDisplayTerms;
 import com.liferay.staging.processes.web.internal.search.PublishConfigurationSearchTerms;
 
-import java.util.Objects;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.PageContext;
+
+import java.util.Objects;
 
 /**
  * @author Péter Alius

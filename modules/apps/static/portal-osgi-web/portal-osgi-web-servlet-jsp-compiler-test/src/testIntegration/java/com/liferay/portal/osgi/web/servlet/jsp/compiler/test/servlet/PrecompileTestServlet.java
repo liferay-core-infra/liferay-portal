@@ -5,12 +5,12 @@
 
 package com.liferay.portal.osgi.web.servlet.jsp.compiler.test.servlet;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author Matthew Tambara

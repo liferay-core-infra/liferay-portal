@@ -7,9 +7,6 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.GenericPortlet;
@@ -20,6 +17,9 @@ import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author Tomas Polesovsky

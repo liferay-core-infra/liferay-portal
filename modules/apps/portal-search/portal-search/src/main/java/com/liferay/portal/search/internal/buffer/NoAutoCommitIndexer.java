@@ -16,11 +16,11 @@ import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
-import java.util.Collection;
-import java.util.Objects;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
+
+import java.util.Collection;
+import java.util.Objects;
 
 /**
  * @author André de Oliveira

@@ -7,8 +7,6 @@ package com.liferay.portal.kernel.scripting;
 
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
-import java.util.Map;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.PortletConfig;
@@ -19,6 +17,8 @@ import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.util.Map;
 
 /**
  * @author Shuyang Zhou

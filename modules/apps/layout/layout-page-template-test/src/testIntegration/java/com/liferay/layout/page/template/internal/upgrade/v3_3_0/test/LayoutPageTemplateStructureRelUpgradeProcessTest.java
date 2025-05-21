@@ -58,11 +58,11 @@ import com.liferay.portal.upgrade.test.util.UpgradeTestUtil;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.test.util.SegmentsTestUtil;
 
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.GenericPortlet;
 import jakarta.portlet.Portlet;
+
+import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;

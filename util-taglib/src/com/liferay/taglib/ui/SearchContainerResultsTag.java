@@ -7,12 +7,12 @@ package com.liferay.taglib.ui;
 
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspTagException;
 import jakarta.servlet.jsp.tagext.TagSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Raymond Augé

@@ -21,10 +21,10 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
+import jakarta.portlet.Portlet;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;

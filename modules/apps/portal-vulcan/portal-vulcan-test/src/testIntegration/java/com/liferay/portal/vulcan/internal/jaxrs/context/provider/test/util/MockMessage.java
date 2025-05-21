@@ -5,6 +5,10 @@
 
 package com.liferay.portal.vulcan.internal.jaxrs.context.provider.test.util;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import jakarta.ws.rs.core.Application;
+
 import java.io.Closeable;
 
 import java.lang.reflect.Method;
@@ -16,10 +20,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
-
-import jakarta.servlet.http.HttpServletRequest;
-
-import jakarta.ws.rs.core.Application;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;

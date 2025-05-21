@@ -22,6 +22,19 @@ import com.liferay.portal.vulcan.internal.fields.servlet.NestedFieldsHttpServlet
 import com.liferay.portal.vulcan.internal.jaxrs.message.exchange.ExchangeWrapper;
 import com.liferay.portal.vulcan.pagination.Page;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.UriInfo;
+import jakarta.ws.rs.ext.Provider;
+import jakarta.ws.rs.ext.WriterInterceptor;
+import jakarta.ws.rs.ext.WriterInterceptorContext;
+
 import java.io.IOException;
 
 import java.lang.annotation.Annotation;
@@ -38,19 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import jakarta.servlet.http.HttpServletRequest;
-
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MultivaluedMap;
-import jakarta.ws.rs.core.UriInfo;
-import jakarta.ws.rs.ext.Provider;
-import jakarta.ws.rs.ext.WriterInterceptor;
-import jakarta.ws.rs.ext.WriterInterceptorContext;
 
 import org.apache.cxf.jaxrs.ext.ContextProvider;
 import org.apache.cxf.jaxrs.impl.UriInfoImpl;

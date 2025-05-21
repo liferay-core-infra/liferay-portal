@@ -30,10 +30,10 @@ import com.liferay.site.navigation.constants.SiteNavigationMenuPortletKeys;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalService;
 
-import java.util.List;
-
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.ReadOnlyException;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

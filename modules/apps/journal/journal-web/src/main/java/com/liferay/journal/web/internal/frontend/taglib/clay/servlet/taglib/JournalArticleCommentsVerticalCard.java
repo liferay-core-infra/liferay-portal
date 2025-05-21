@@ -19,11 +19,11 @@ import com.liferay.portal.kernel.util.HtmlParserUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.Date;
-
 import jakarta.portlet.RenderRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Date;
 
 /**
  * @author Eudaldo Alonso

@@ -52,10 +52,10 @@ import com.liferay.subscription.service.SubscriptionLocalServiceUtil;
 import com.liferay.taglib.security.PermissionsURLTag;
 import com.liferay.trash.TrashHelper;
 
+import jakarta.portlet.PortletRequest;
+
 import java.util.List;
 import java.util.Objects;
-
-import jakarta.portlet.PortletRequest;
 
 /**
  * @author Adolfo Pérez

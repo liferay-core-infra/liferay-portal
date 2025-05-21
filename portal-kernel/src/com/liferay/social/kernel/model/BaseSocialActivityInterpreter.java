@@ -40,11 +40,11 @@ import com.liferay.social.kernel.service.SocialActivityLocalServiceUtil;
 import com.liferay.social.kernel.service.SocialActivitySetLocalServiceUtil;
 import com.liferay.social.kernel.service.persistence.SocialActivityUtil;
 
-import java.util.List;
-import java.util.ResourceBundle;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.WindowState;
+
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author Brian Wing Shun Chan

@@ -20,9 +20,9 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.taglib.security.PermissionsURLTag;
 
-import java.util.Locale;
-
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

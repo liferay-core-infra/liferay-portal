@@ -16,12 +16,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import java.security.InvalidParameterException;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -31,6 +25,12 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+
+import java.security.InvalidParameterException;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * @author Luis Miguel Barcos

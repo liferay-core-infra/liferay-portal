@@ -14,10 +14,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.lang.reflect.Constructor;
-
-import java.util.Map;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletModeException;
 import jakarta.portlet.PortletPreferences;
@@ -25,6 +21,10 @@ import jakarta.portlet.PortletRequest;
 import jakarta.portlet.WindowStateException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.lang.reflect.Constructor;
+
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan

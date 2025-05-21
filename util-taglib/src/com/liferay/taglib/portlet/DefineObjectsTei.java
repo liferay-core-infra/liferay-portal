@@ -8,8 +8,6 @@ package com.liferay.taglib.portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 
-import java.util.Map;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.EventRequest;
@@ -25,6 +23,8 @@ import jakarta.portlet.ResourceResponse;
 import jakarta.servlet.jsp.tagext.TagData;
 import jakarta.servlet.jsp.tagext.TagExtraInfo;
 import jakarta.servlet.jsp.tagext.VariableInfo;
+
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan

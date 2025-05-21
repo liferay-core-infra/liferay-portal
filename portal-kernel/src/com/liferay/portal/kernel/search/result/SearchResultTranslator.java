@@ -8,11 +8,11 @@ package com.liferay.portal.kernel.search.result;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchResult;
 
-import java.util.List;
-import java.util.Locale;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author André de Oliveira

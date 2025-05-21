@@ -5,11 +5,6 @@
 
 package com.liferay.portlet.internal;
 
-import java.io.IOException;
-
-import java.util.Collections;
-import java.util.List;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.EventPortlet;
@@ -33,6 +28,11 @@ import jakarta.portlet.filter.HeaderFilterChain;
 import jakarta.portlet.filter.PortletFilter;
 import jakarta.portlet.filter.RenderFilter;
 import jakarta.portlet.filter.ResourceFilter;
+
+import java.io.IOException;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan

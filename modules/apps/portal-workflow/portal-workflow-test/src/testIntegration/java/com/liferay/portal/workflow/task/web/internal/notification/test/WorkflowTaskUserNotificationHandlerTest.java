@@ -42,14 +42,14 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.product.navigation.personal.menu.util.PersonalApplicationURLUtil;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

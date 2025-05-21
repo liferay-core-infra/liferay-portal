@@ -5,13 +5,13 @@
 
 package com.liferay.portal.kernel.portlet;
 
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.ResourceURL;
+
 import java.io.Serializable;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
-
-import jakarta.portlet.PortletURL;
-import jakarta.portlet.ResourceURL;
 
 import org.osgi.annotation.versioning.ProviderType;
 

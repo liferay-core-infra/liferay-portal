@@ -22,8 +22,8 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"jakarta.portlet.name=" + PortletKeys.SERVER_ADMIN, "mvc.command.name=/",
-		"mvc.command.name=/server_admin/view"
+		"jakarta.portlet.name=" + PortletKeys.SERVER_ADMIN,
+		"mvc.command.name=/", "mvc.command.name=/server_admin/view"
 	},
 	service = MVCRenderCommand.class
 )

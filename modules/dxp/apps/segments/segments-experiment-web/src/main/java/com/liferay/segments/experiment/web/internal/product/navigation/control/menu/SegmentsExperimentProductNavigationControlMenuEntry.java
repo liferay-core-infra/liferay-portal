@@ -49,13 +49,6 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.segments.service.SegmentsExperimentService;
 import com.liferay.taglib.util.BodyBottomTag;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.ResourceURL;
 
@@ -64,6 +57,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.PageContext;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;

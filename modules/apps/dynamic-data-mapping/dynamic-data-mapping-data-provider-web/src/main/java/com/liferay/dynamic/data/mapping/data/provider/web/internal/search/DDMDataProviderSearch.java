@@ -8,11 +8,11 @@ package com.liferay.dynamic.data.mapping.data.provider.web.internal.search;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletURL;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Leonardo Barros

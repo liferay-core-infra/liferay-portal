@@ -21,8 +21,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.RenderParametersPool;
 import com.liferay.site.display.context.GroupDisplayContextHelper;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.RenderRequest;
@@ -34,6 +32,8 @@ import jakarta.portlet.filter.RenderFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

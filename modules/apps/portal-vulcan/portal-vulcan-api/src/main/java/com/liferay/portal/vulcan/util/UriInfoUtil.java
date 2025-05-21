@@ -16,18 +16,18 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.lang.reflect.Field;
-
-import java.net.URI;
-
-import java.util.List;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.PathSegment;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.lang.reflect.Field;
+
+import java.net.URI;
+
+import java.util.List;
 
 /**
  * @author Javier Gamarra

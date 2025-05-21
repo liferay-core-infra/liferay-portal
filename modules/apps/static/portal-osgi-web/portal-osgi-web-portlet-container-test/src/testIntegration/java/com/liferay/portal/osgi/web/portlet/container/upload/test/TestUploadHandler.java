@@ -30,11 +30,11 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UniqueFileNameProvider;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Manuel de la Peña

@@ -46,15 +46,6 @@ import com.liferay.portlet.ActionResponseFactory;
 import com.liferay.portlet.internal.MutableRenderParametersImpl;
 import com.liferay.portlet.test.MockLiferayPortletContext;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
-import java.util.logging.Level;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.PortletException;
@@ -63,6 +54,15 @@ import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+import java.util.logging.Level;
 
 import org.junit.After;
 import org.junit.Assert;

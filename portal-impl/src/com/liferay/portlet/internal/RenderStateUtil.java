@@ -25,14 +25,6 @@ import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portlet.PublicRenderParametersPool;
 import com.liferay.portlet.RenderParametersPool;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletMode;
 import jakarta.portlet.PortletRequest;
@@ -40,6 +32,14 @@ import jakarta.portlet.ResourceURL;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Neil Griffin

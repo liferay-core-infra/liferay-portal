@@ -12,17 +12,17 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.nio.charset.StandardCharsets;
-
-import java.util.Base64;
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.Provider;
+
+import java.nio.charset.StandardCharsets;
+
+import java.util.Base64;
+import java.util.Map;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
 import org.apache.cxf.jaxrs.utils.JAXRSUtils;

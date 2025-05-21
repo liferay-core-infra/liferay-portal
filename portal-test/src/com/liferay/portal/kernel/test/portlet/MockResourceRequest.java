@@ -5,10 +5,6 @@
 
 package com.liferay.portal.kernel.test.portlet;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import jakarta.portlet.PortalContext;
 import jakarta.portlet.PortletAsyncContext;
 import jakarta.portlet.PortletContext;
@@ -18,6 +14,10 @@ import jakarta.portlet.ResourceResponse;
 import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.DispatcherType;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Dante Wang

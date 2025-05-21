@@ -17,16 +17,16 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.util.PropsValues;
 
-import java.io.IOException;
-
-import java.util.Enumeration;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.ReadOnlyException;
+
+import java.io.IOException;
+
+import java.util.Enumeration;
 
 import org.osgi.service.component.annotations.Component;
 

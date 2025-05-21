@@ -20,14 +20,14 @@ import com.liferay.sharing.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.sharing.taglib.internal.servlet.SharingJavaScriptFactoryUtil;
 import com.liferay.sharing.taglib.internal.util.CollaboratorsUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.ResourceURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.PageContext;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Alejandro Tardín

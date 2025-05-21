@@ -16,10 +16,6 @@ import com.liferay.portal.vulcan.fields.FieldsQueryParam;
 import com.liferay.portal.vulcan.fields.RestrictFieldsQueryParam;
 import com.liferay.portal.vulcan.jackson.databind.ser.VulcanPropertyFilter;
 
-import java.io.IOException;
-
-import java.util.Map;
-
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
@@ -28,6 +24,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Provider;
 import jakarta.ws.rs.ext.Providers;
+
+import java.io.IOException;
+
+import java.util.Map;
 
 /**
  * @author Carlos Correa

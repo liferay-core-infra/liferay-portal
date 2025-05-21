@@ -5,13 +5,13 @@
 
 package com.liferay.portal.remote.rest.extender.client.test;
 
-import java.util.Collections;
-import java.util.Set;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Application;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author Carlos Sierra Andrés

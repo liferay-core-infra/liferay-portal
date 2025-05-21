@@ -57,10 +57,10 @@ import com.liferay.users.admin.web.internal.manager.OrgLaborContactInfoManager;
 import com.liferay.users.admin.web.internal.manager.PhoneContactInfoManager;
 import com.liferay.users.admin.web.internal.manager.WebsiteContactInfoManager;
 
-import java.util.Objects;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
+
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

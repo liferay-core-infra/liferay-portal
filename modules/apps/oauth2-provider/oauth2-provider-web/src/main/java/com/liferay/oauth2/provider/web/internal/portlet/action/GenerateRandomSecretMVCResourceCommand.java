@@ -9,12 +9,12 @@ import com.liferay.oauth2.provider.util.OAuth2SecureRandomGenerator;
 import com.liferay.oauth2.provider.web.internal.constants.OAuth2ProviderPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.osgi.service.component.annotations.Component;
 

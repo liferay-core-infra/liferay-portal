@@ -20,16 +20,16 @@ import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import jakarta.portlet.PortletException;
 import jakarta.portlet.filter.ActionFilter;
 import jakarta.portlet.filter.EventFilter;
 import jakarta.portlet.filter.PortletFilter;
 import jakarta.portlet.filter.RenderFilter;
 import jakarta.portlet.filter.ResourceFilter;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import org.junit.After;
 import org.junit.AfterClass;

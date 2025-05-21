@@ -9,11 +9,11 @@ import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.portal.kernel.portlet.async.PortletAsyncScopeManager;
 import com.liferay.portlet.PortletAsyncListenerAdapter;
 
-import java.io.IOException;
-
 import jakarta.portlet.PortletAsyncContext;
 
 import jakarta.servlet.AsyncEvent;
+
+import java.io.IOException;
 
 /**
  * @author Neil Griffin

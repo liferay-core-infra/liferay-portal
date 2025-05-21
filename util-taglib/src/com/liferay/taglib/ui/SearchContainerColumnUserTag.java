@@ -14,16 +14,16 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.search.UserSearchEntry;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspTagException;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Eudaldo Alonso

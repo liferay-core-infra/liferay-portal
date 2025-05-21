@@ -10,13 +10,13 @@ import com.liferay.exportimport.web.internal.constants.ExportImportWebKeys;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.trash.BaseJSPTrashRenderer;
 
-import java.util.Locale;
-
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Locale;
 
 /**
  * @author Levente Hudák

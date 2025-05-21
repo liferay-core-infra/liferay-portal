@@ -7,11 +7,11 @@ package com.liferay.portlet.internal;
 
 import com.liferay.portal.kernel.portlet.LiferayActionResponse;
 
-import java.io.IOException;
-
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.RenderURL;
+
+import java.io.IOException;
 
 /**
  * @author Brian Wing Shun Chan

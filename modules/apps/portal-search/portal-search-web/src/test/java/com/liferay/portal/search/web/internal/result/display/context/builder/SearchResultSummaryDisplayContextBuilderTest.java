@@ -38,12 +38,12 @@ import com.liferay.portal.search.web.internal.result.display.context.SearchResul
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 
-import java.util.Collections;
-import java.util.Locale;
-
 import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -7,10 +7,10 @@ package com.liferay.portal.kernel.test.portlet;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 
-import java.util.Set;
-
 import jakarta.portlet.MutablePortletParameters;
 import jakarta.portlet.PortletParameters;
+
+import java.util.Set;
 
 /**
  * @author Dante Wang

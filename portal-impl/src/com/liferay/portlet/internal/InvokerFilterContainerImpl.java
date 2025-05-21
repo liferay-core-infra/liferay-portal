@@ -22,16 +22,6 @@ import com.liferay.portal.model.impl.PortletFilterImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletFilterFactory;
 
-import java.io.Closeable;
-
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.PortletException;
 import jakarta.portlet.PortletRequest;
@@ -42,6 +32,16 @@ import jakarta.portlet.filter.HeaderFilter;
 import jakarta.portlet.filter.PortletFilter;
 import jakarta.portlet.filter.RenderFilter;
 import jakarta.portlet.filter.ResourceFilter;
+
+import java.io.Closeable;
+
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -132,7 +132,9 @@ public class InvokerFilterContainerImpl
 						Map<String, String> params = new HashMap<>();
 
 						for (String key : serviceReference.getPropertyKeys()) {
-							if (!key.startsWith("jakarta.portlet.init-param.")) {
+							if (!key.startsWith(
+									"jakarta.portlet.init-param.")) {
+
 								continue;
 							}
 

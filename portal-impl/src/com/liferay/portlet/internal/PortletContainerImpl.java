@@ -77,14 +77,6 @@ import com.liferay.portlet.ResourceRequestFactory;
 import com.liferay.portlet.ResourceResponseFactory;
 import com.liferay.util.SerializableUtil;
 
-import java.io.Serializable;
-import java.io.Writer;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import jakarta.portlet.Event;
 import jakarta.portlet.MimeResponse;
 import jakarta.portlet.PortletConfig;
@@ -102,6 +94,14 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.Serializable;
+import java.io.Writer;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Shuyang Zhou

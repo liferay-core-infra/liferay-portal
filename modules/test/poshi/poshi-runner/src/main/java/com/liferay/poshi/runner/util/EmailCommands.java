@@ -5,8 +5,6 @@
 
 package com.liferay.poshi.runner.util;
 
-import java.util.Properties;
-
 import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
@@ -15,6 +13,8 @@ import jakarta.mail.Store;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+
+import java.util.Properties;
 
 import org.eclipse.angus.mail.imap.IMAPFolder;
 

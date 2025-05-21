@@ -5,14 +5,14 @@
 
 package com.liferay.frontend.taglib.servlet.taglib;
 
-import java.util.ResourceBundle;
-
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.WindowState;
 
 import jakarta.servlet.jsp.tagext.TagData;
 import jakarta.servlet.jsp.tagext.TagExtraInfo;
 import jakarta.servlet.jsp.tagext.VariableInfo;
+
+import java.util.ResourceBundle;
 
 /**
  * @author Adolfo Pérez

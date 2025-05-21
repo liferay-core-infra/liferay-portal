@@ -139,9 +139,9 @@ public class FriendlyURLMapperTrackerImpl implements FriendlyURLMapperTracker {
 		}
 		else {
 			filterString = StringBundler.concat(
-				"(&(|(jakarta.portlet.name=", portletId, ")(jakarta.portlet.name=",
-				_portlet.getPortletName(), "))(objectClass=",
-				FriendlyURLMapper.class.getName(), "))");
+				"(&(|(jakarta.portlet.name=", portletId,
+				")(jakarta.portlet.name=", _portlet.getPortletName(),
+				"))(objectClass=", FriendlyURLMapper.class.getName(), "))");
 		}
 
 		ServiceTracker<FriendlyURLMapper, FriendlyURLMapper> serviceTracker =

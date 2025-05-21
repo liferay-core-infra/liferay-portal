@@ -48,10 +48,10 @@ import com.liferay.wiki.service.WikiNodeLocalService;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.test.util.WikiTestUtil;
 
-import java.util.Map;
-
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletPreferences;
+
+import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

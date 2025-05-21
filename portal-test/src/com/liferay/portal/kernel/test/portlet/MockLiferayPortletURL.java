@@ -9,15 +9,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
-
 import jakarta.portlet.MutablePortletParameters;
 import jakarta.portlet.MutableRenderParameters;
 import jakarta.portlet.MutableResourceParameters;
@@ -29,6 +20,15 @@ import jakarta.portlet.RenderURL;
 import jakarta.portlet.WindowState;
 import jakarta.portlet.WindowStateException;
 import jakarta.portlet.annotations.PortletSerializable;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 /**
  * @author Cristina González

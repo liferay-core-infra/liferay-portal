@@ -11,11 +11,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.taglib.BodyContentWrapper;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import java.util.Enumeration;
-
 import jakarta.el.ELContext;
 
 import jakarta.servlet.RequestDispatcher;
@@ -32,6 +27,11 @@ import jakarta.servlet.jsp.PageContext;
 import jakarta.servlet.jsp.el.ExpressionEvaluator;
 import jakarta.servlet.jsp.el.VariableResolver;
 import jakarta.servlet.jsp.tagext.BodyContent;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import java.util.Enumeration;
 
 /**
  * @author Brian Wing Shun Chan

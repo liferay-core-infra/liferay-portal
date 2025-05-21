@@ -23,13 +23,6 @@ import com.liferay.portal.kernel.util.TransientValue;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.Portlet;
@@ -38,6 +31,13 @@ import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletSession;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;

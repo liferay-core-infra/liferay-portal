@@ -5,14 +5,14 @@
 
 package com.liferay.portal.settings.configuration.admin.display;
 
-import java.util.Locale;
-
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.Locale;
 
 /**
  * @author Drew Brokke

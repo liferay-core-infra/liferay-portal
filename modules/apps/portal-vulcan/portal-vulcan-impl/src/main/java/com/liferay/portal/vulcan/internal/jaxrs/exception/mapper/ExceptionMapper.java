@@ -13,11 +13,11 @@ import com.liferay.portal.vulcan.jaxrs.exception.mapper.BaseExceptionMapper;
 import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 import com.liferay.portal.vulcan.problem.ProblemProvider;
 
-import java.util.Locale;
-
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Providers;
+
+import java.util.Locale;
 
 /**
  * @author Javier Gamarra

@@ -22,14 +22,14 @@ import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portlet.PortletContextFactoryUtil;
 import com.liferay.portlet.UndeployedPortlet;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import jakarta.portlet.PortletConfig;
 import jakarta.portlet.PortletContext;
 import jakarta.portlet.PortletException;
 
 import jakarta.servlet.ServletContext;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.util.tracker.ServiceTracker;
 

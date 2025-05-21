@@ -32,15 +32,15 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.UUID;
-
 import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * @author Cristina González

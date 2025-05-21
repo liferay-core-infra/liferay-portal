@@ -36,8 +36,8 @@ import com.liferay.portal.search.tuning.rankings.web.internal.searcher.helper.Ra
 
 import java.io.IOException;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -47,7 +47,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ResultRankingsPortletKeys.RESULT_RANKINGS,
+		"jakarta.portlet.name=" + ResultRankingsPortletKeys.RESULT_RANKINGS,
 		"mvc.command.name=/result_rankings/get_results"
 	},
 	service = MVCResourceCommand.class

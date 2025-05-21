@@ -35,7 +35,7 @@ import com.liferay.sites.kernel.util.Sites;
 
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Test;

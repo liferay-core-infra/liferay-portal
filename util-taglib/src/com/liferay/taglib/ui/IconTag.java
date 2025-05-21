@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

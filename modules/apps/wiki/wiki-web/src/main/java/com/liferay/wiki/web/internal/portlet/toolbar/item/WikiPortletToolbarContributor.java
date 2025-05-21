@@ -38,8 +38,8 @@ import com.liferay.wiki.service.WikiNodeService;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -49,7 +49,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + WikiPortletKeys.WIKI,
+		"jakarta.portlet.name=" + WikiPortletKeys.WIKI,
 		"mvc.render.command.name=/wiki/view_pages"
 	},
 	service = PortletToolbarContributor.class

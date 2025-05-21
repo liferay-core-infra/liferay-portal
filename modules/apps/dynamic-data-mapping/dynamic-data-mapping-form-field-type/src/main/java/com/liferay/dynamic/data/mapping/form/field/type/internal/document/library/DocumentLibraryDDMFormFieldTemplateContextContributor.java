@@ -66,9 +66,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ResourceURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -165,7 +165,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, DDMPermissionChecker.class, "javax.portlet.name");
+			bundleContext, DDMPermissionChecker.class, "jakarta.portlet.name");
 	}
 
 	protected boolean containsPermission(

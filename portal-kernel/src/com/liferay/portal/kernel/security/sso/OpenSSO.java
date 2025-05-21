@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Michael C. Han

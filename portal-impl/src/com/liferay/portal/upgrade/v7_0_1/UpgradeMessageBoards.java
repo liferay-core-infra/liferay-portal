@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Roberto Díaz

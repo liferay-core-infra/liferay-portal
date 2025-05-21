@@ -16,8 +16,8 @@ import com.liferay.portal.workflow.web.internal.util.WorkflowInstancePortletUtil
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Leonardo Barros

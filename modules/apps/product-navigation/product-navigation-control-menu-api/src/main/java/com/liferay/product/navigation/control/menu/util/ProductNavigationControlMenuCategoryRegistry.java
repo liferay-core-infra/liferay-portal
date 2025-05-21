@@ -9,7 +9,7 @@ import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuC
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Lance Ji

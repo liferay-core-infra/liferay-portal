@@ -93,14 +93,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Represents a portal layout, providing access to the layout's URLs, parent

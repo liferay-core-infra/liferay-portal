@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Alejandro Tardín

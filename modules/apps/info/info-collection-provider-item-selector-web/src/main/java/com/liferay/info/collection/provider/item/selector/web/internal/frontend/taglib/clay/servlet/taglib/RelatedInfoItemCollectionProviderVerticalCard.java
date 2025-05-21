@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 
 import java.util.List;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Jürgen Kappler

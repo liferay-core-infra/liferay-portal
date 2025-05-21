@@ -18,7 +18,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Sergio González

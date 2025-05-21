@@ -26,7 +26,7 @@ import com.liferay.site.search.GroupSearch;
 import java.util.List;
 import java.util.Set;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Cristina González

@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

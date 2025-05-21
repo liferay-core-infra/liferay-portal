@@ -26,8 +26,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import org.junit.After;
 import org.junit.Assert;

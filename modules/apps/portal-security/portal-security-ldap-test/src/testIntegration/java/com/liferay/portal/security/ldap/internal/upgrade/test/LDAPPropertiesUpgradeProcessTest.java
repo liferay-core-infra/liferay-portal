@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.After;
 import org.junit.AfterClass;

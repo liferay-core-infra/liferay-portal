@@ -39,7 +39,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Lino Alves

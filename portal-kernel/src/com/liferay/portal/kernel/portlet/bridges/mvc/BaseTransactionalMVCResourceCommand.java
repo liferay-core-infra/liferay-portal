@@ -10,9 +10,9 @@ import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 
 import java.util.concurrent.Callable;
 
-import javax.portlet.PortletException;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 /**
  * @author Igor Beslic

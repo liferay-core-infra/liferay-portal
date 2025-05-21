@@ -19,7 +19,7 @@ import com.liferay.template.web.internal.constants.TemplateConstants;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Lourdes Fernández Besada
  */
 @Component(
-	property = "javax.portlet.name=" + TemplatePortletKeys.TEMPLATE,
+	property = "jakarta.portlet.name=" + TemplatePortletKeys.TEMPLATE,
 	service = TemplateHandler.class
 )
 public class InformationTemplatesTemplateHandler extends BaseTemplateHandler {

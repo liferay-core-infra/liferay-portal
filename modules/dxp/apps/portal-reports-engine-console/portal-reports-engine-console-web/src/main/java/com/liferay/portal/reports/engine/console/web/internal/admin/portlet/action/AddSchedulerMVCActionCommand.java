@@ -32,8 +32,8 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ReportsEngineConsolePortletKeys.REPORTS_ADMIN,
+		"jakarta.portlet.name=" + ReportsEngineConsolePortletKeys.REPORTS_ADMIN,
 		"mvc.command.name=/reports_admin/add_scheduler"
 	},
 	service = MVCActionCommand.class

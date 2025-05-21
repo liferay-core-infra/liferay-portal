@@ -11,10 +11,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.websocket.CloseReason;
-import javax.websocket.Endpoint;
-import javax.websocket.EndpointConfig;
-import javax.websocket.Session;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.Endpoint;
+import jakarta.websocket.EndpointConfig;
+import jakarta.websocket.Session;
 
 import org.osgi.framework.ServiceObjects;
 import org.osgi.service.log.LogService;

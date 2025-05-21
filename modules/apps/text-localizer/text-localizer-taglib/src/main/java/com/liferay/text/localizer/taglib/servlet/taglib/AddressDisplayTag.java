@@ -13,9 +13,9 @@ import com.liferay.text.localizer.taglib.internal.address.util.AddressTextLocali
 
 import java.io.IOException;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTag;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.BodyTag;
 
 /**
  * @author Pei-Jung Lan

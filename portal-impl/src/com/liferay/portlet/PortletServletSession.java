@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.servlet.HttpSessionWrapper;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan

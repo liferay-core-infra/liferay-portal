@@ -123,11 +123,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * @author Eudaldo Alonso

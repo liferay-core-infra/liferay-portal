@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Brian Wing Shun Chan

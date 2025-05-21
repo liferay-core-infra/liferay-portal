@@ -19,14 +19,14 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Locale;
 
-import javax.portlet.ActionURL;
-import javax.portlet.CacheControl;
-import javax.portlet.MimeResponse;
-import javax.portlet.PortalContext;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.RenderURL;
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ActionURL;
+import jakarta.portlet.CacheControl;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortalContext;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderURL;
+import jakarta.portlet.ResourceURL;
 
 import org.springframework.util.CollectionUtils;
 

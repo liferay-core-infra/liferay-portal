@@ -25,10 +25,10 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.Locale;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eduardo García

@@ -15,7 +15,7 @@ import com.liferay.portal.url.builder.internal.util.URLUtil;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Iván Zaera Avellón

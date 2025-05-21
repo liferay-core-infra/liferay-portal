@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.BodyTag;
 
 /**
  * @author Julio Camarero

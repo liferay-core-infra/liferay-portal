@@ -16,9 +16,9 @@ import com.liferay.portal.kernel.plugin.PluginPackage;
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Stefan Tanasie

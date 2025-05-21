@@ -14,7 +14,7 @@ import com.liferay.portal.search.similar.results.web.internal.constants.SimilarR
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Felipe Lorenz
  */
 @Component(
-	property = "javax.portlet.name=" + SimilarResultsPortletKeys.SIMILAR_RESULTS,
+	property = "jakarta.portlet.name=" + SimilarResultsPortletKeys.SIMILAR_RESULTS,
 	service = ExportImportPortletPreferencesProcessor.class
 )
 public class SimilarResultsExportImportPortletPreferencesProcessor

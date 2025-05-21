@@ -41,14 +41,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.ResourceRequest;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Jorge Ferrer

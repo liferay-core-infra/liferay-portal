@@ -20,7 +20,7 @@ import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import java.util.Collections;
 import java.util.Objects;
 
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  * @author Javier Gamarra

@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Raymond Augé

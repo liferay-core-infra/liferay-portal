@@ -72,13 +72,13 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -728,7 +728,7 @@ public class DDMDataProviderDisplayContext {
 		BundleContext bundleContext = bundle.getBundleContext();
 
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, DDMDataProviderDisplay.class, "javax.portlet.name");
+			bundleContext, DDMDataProviderDisplay.class, "jakarta.portlet.name");
 	}
 
 	private DDMDataProviderInstance _ddmDataProviderInstance;

@@ -54,7 +54,7 @@ import com.liferay.portal.util.PropsUtil;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -527,9 +527,9 @@ public class ServicePreActionTest {
 					ServicePreActionTest.class.getName() + "_JspException");
 
 				httpServletRequest.setAttribute(
-					"javax.servlet.error.exception", exception);
+					"jakarta.servlet.error.exception", exception);
 				httpServletRequest.setAttribute(
-					"javax.servlet.jsp.jspException", exception);
+					"jakarta.servlet.jsp.jspException", exception);
 			}
 
 			throw new ActionException(ServicePreActionTest.class.getName());

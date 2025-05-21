@@ -36,8 +36,8 @@ import com.liferay.site.configuration.MenuAccessConfiguration;
 import java.util.Arrays;
 import java.util.Dictionary;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.junit.Assert;
 import org.junit.Before;

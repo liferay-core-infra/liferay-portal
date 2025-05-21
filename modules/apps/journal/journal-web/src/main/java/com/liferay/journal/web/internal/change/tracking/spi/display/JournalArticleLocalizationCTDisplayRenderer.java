@@ -24,9 +24,9 @@ import com.liferay.translation.service.TranslationEntryLocalService;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

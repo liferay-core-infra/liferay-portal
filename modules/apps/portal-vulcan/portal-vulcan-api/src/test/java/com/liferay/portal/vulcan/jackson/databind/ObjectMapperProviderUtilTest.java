@@ -16,9 +16,9 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.Serializable;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

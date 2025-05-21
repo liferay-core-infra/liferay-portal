@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletSession;
 
 /**
  * @author Marcellus Tavares

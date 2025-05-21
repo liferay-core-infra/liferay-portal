@@ -28,9 +28,9 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

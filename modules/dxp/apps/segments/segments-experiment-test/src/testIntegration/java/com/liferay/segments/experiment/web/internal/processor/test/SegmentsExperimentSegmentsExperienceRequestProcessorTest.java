@@ -38,7 +38,7 @@ import com.liferay.segments.test.util.SegmentsTestUtil;
 
 import java.util.Arrays;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import org.junit.Assert;
 import org.junit.Before;

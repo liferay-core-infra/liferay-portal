@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Calendar;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Rafael Praxedes

@@ -31,7 +31,7 @@ import com.liferay.portal.service.http.GroupServiceHttp;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.annotation.versioning.ProviderType;
 

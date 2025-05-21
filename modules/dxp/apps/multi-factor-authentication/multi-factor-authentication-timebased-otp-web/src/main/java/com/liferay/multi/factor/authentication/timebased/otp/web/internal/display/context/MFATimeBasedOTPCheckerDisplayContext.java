@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Christian Moura

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.portlet.MimeResponse;
+import jakarta.portlet.MimeResponse;
 
 /**
  * @author Shuyang Zhou

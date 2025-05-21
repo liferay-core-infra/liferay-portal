@@ -28,7 +28,7 @@ import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 import java.util.Arrays;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

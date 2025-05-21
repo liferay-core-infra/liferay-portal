@@ -12,9 +12,9 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.function.Function;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Shuyang Zhou

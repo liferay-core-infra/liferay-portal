@@ -9,10 +9,10 @@ import com.liferay.petra.string.StringBundler;
 
 import java.util.List;
 
-import javax.xml.ws.Binding;
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.spi.Provider;
+import jakarta.xml.ws.Binding;
+import jakarta.xml.ws.Endpoint;
+import jakarta.xml.ws.handler.Handler;
+import jakarta.xml.ws.spi.Provider;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

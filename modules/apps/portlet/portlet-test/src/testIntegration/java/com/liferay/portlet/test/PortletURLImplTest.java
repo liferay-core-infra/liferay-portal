@@ -25,7 +25,7 @@ import com.liferay.portlet.RenderParametersPool;
 
 import java.util.Collections;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

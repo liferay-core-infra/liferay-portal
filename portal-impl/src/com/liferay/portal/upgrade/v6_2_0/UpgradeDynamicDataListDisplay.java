@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Marcellus Tavares

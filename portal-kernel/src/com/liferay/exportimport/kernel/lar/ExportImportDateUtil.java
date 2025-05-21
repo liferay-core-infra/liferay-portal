@@ -41,8 +41,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Máté Thurzó

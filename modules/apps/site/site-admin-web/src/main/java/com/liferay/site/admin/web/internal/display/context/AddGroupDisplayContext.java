@@ -19,9 +19,9 @@ import com.liferay.site.admin.web.internal.constants.SiteAdminConstants;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Lourdes Fernández Besada

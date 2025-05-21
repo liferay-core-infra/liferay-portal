@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Brian Wing Shun Chan

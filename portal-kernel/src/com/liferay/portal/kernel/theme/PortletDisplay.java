@@ -26,9 +26,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Provides general configuration methods for the portlet, providing access to

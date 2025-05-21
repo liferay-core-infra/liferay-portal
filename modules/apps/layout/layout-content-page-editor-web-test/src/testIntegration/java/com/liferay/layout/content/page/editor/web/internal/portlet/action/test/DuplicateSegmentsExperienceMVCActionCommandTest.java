@@ -43,8 +43,8 @@ import com.liferay.segments.test.util.SegmentsTestUtil;
 import java.util.Collections;
 import java.util.Iterator;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.junit.After;
 import org.junit.Assert;

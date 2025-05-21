@@ -9,11 +9,11 @@ import com.liferay.portal.kernel.model.Portlet;
 
 import java.util.Map;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.annotation.versioning.ProviderType;
 

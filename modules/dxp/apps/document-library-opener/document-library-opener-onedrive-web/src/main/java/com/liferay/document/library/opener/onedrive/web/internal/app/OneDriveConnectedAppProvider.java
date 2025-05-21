@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

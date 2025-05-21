@@ -21,7 +21,7 @@ import com.liferay.portal.language.override.web.internal.display.LanguageItemDis
 import java.util.List;
 import java.util.Objects;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Drew Brokke

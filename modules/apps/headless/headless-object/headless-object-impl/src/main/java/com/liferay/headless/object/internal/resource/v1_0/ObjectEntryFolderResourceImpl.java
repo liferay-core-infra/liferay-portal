@@ -46,7 +46,7 @@ import com.liferay.portal.vulcan.util.SearchUtil;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

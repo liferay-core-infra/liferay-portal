@@ -7,7 +7,7 @@ package com.liferay.portlet.internal;
 
 import java.util.Set;
 
-import javax.portlet.RenderParameters;
+import jakarta.portlet.RenderParameters;
 
 /**
  * @author Neil Griffin

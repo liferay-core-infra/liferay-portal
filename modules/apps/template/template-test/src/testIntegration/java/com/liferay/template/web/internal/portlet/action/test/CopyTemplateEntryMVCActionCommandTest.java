@@ -41,8 +41,8 @@ import com.liferay.template.test.util.TemplateTestUtil;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -86,9 +86,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.WindowState;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.WindowState;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -102,8 +102,8 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS,
-		"javax.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS_ADMIN,
+		"jakarta.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS,
+		"jakarta.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS_ADMIN,
 		"mvc.command.name=/message_boards/edit_message"
 	},
 	service = MVCActionCommand.class

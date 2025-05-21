@@ -20,7 +20,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Ivica Cardic

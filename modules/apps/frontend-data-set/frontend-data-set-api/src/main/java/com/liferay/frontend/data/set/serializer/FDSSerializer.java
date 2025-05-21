@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Daniel Sanz

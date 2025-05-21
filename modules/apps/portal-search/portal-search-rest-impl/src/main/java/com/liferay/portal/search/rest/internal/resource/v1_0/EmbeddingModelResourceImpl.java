@@ -19,7 +19,7 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Collections;
 
-import javax.ws.rs.NotFoundException;
+import jakarta.ws.rs.NotFoundException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

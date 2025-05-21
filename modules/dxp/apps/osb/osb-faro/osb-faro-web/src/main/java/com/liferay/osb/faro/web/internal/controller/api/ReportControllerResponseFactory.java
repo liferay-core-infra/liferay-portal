@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 /**
  * @author Alejo Ceballos

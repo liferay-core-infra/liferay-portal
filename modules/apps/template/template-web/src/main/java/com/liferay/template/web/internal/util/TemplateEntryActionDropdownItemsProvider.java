@@ -26,7 +26,7 @@ import com.liferay.template.web.internal.security.permissions.resource.TemplateE
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

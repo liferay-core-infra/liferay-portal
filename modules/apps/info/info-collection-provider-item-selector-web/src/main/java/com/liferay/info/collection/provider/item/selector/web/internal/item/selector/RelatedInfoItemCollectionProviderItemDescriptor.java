@@ -17,9 +17,9 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Diego Hu

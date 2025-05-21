@@ -13,7 +13,7 @@ import hudson.security.Permission;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import jenkins.model.Jenkins;
 

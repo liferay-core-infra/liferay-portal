@@ -50,7 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -61,7 +61,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Akos Thurzo
  */
 @Component(
-	property = "javax.portlet.name=" + ChangesetPortletKeys.CHANGESET,
+	property = "jakarta.portlet.name=" + ChangesetPortletKeys.CHANGESET,
 	service = PortletDataHandler.class
 )
 public class ChangesetPortletDataHandler extends BasePortletDataHandler {

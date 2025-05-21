@@ -74,12 +74,12 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Provides various translation related functionalities for language keys

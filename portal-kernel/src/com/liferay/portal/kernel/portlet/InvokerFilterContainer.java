@@ -7,11 +7,11 @@ package com.liferay.portal.kernel.portlet;
 
 import java.util.List;
 
-import javax.portlet.filter.ActionFilter;
-import javax.portlet.filter.EventFilter;
-import javax.portlet.filter.HeaderFilter;
-import javax.portlet.filter.RenderFilter;
-import javax.portlet.filter.ResourceFilter;
+import jakarta.portlet.filter.ActionFilter;
+import jakarta.portlet.filter.EventFilter;
+import jakarta.portlet.filter.HeaderFilter;
+import jakarta.portlet.filter.RenderFilter;
+import jakarta.portlet.filter.ResourceFilter;
 
 import org.osgi.annotation.versioning.ProviderType;
 

@@ -9,8 +9,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Mika Koivisto

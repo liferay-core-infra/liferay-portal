@@ -97,7 +97,7 @@ import com.liferay.template.service.TemplateEntryLocalService;
 
 import java.io.File;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

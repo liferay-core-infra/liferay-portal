@@ -25,7 +25,7 @@ import com.liferay.portal.templateparser.Transformer;
 
 import java.util.Map;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Marcellus Tavares

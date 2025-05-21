@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 
 import java.util.Collection;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

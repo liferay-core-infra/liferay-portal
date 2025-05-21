@@ -22,8 +22,8 @@ import com.liferay.portal.search.web.internal.result.display.context.SearchResul
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Wade Cao

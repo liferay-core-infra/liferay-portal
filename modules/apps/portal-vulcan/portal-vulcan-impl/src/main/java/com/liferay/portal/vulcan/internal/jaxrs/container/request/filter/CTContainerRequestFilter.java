@@ -12,9 +12,9 @@ import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 
 import java.lang.reflect.Method;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.ext.Provider;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.ext.Provider;
 
 import org.apache.cxf.interceptor.InterceptorChain;
 import org.apache.cxf.message.Message;

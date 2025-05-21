@@ -12,7 +12,7 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 import org.junit.ClassRule;
 import org.junit.Rule;

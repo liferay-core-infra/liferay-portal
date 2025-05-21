@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

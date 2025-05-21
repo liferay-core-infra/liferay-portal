@@ -40,7 +40,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

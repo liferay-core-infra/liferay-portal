@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Gavin Wan

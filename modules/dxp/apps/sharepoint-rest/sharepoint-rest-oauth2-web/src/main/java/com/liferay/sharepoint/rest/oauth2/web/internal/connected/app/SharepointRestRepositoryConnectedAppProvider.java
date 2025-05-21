@@ -14,7 +14,7 @@ import com.liferay.sharepoint.rest.oauth2.service.SharepointOAuth2TokenEntryLoca
 
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

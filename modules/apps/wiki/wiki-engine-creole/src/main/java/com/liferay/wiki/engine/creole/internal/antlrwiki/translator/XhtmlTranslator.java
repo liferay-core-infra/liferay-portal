@@ -39,7 +39,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Miguel Pastor

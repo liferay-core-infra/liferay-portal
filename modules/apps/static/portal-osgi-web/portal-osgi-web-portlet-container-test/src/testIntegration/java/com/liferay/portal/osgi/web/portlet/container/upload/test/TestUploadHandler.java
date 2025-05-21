@@ -33,8 +33,8 @@ import com.liferay.upload.UniqueFileNameProvider;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 /**
  * @author Manuel de la Peña

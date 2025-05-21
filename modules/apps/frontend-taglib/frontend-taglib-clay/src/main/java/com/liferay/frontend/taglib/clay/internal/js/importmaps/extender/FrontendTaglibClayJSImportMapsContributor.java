@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;

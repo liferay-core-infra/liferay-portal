@@ -18,7 +18,7 @@ import com.liferay.portal.security.auth.http.HttpAuthManagerUtil;
 
 import java.util.Properties;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 

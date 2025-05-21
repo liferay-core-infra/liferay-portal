@@ -68,7 +68,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * @author Brian Wing Shun Chan

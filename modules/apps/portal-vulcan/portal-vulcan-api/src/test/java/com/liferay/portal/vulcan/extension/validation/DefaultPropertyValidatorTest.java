@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.validation.ValidationException;
+import jakarta.validation.ValidationException;
 
 import org.junit.ClassRule;
 import org.junit.Rule;

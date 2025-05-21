@@ -20,15 +20,15 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionURL;
-import javax.portlet.CacheControl;
-import javax.portlet.PortletURL;
-import javax.portlet.RenderURL;
-import javax.portlet.ResourceResponse;
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ActionURL;
+import jakarta.portlet.CacheControl;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderURL;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.ResourceURL;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.mock.web.MockHttpServletResponse;
 

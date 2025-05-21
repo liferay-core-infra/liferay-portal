@@ -23,7 +23,7 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Marko Cikos

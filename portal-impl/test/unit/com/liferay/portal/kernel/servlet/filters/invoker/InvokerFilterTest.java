@@ -18,7 +18,7 @@ import com.liferay.portal.tools.ToolDependencies;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;

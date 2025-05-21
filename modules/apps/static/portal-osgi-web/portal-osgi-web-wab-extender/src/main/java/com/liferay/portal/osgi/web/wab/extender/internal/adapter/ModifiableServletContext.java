@@ -12,7 +12,7 @@ import com.liferay.portal.osgi.web.wab.extender.internal.registration.ServletReg
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 

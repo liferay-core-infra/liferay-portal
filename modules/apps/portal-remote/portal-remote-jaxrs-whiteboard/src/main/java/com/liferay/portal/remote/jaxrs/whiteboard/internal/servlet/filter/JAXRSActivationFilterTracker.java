@@ -10,8 +10,8 @@ import com.liferay.portal.remote.jaxrs.whiteboard.lifecycle.JAXRSLifecycle;
 
 import java.util.concurrent.CountDownLatch;
 
-import javax.servlet.Filter;
-import javax.servlet.ServletException;
+import jakarta.servlet.Filter;
+import jakarta.servlet.ServletException;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

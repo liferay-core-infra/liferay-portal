@@ -21,10 +21,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import javax.portlet.PortletURL;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Mariano Álvaro Sáiz

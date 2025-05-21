@@ -29,11 +29,11 @@ import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
-import javax.websocket.ContainerProvider;
-import javax.websocket.Decoder;
-import javax.websocket.Encoder;
-import javax.websocket.Endpoint;
-import javax.websocket.WebSocketContainer;
+import jakarta.websocket.ContainerProvider;
+import jakarta.websocket.Decoder;
+import jakarta.websocket.Encoder;
+import jakarta.websocket.Endpoint;
+import jakarta.websocket.WebSocketContainer;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

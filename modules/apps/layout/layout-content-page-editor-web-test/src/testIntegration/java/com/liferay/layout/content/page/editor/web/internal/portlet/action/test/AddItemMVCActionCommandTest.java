@@ -41,7 +41,7 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 
 import java.util.List;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

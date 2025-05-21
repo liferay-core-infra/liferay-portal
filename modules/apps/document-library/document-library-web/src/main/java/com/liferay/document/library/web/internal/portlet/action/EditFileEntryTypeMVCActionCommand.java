@@ -45,10 +45,10 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -58,9 +58,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY,
-		"javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY_ADMIN,
-		"javax.portlet.name=" + DLPortletKeys.MEDIA_GALLERY_DISPLAY,
+		"jakarta.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY,
+		"jakarta.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY_ADMIN,
+		"jakarta.portlet.name=" + DLPortletKeys.MEDIA_GALLERY_DISPLAY,
 		"mvc.command.name=/document_library/edit_file_entry_type"
 	},
 	service = MVCActionCommand.class

@@ -30,9 +30,9 @@ import com.liferay.portal.kernel.xml.Element;
 
 import java.util.Date;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Charles May

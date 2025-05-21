@@ -38,11 +38,11 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.WindowStateException;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowStateException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Marco Leo

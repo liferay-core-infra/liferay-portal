@@ -61,11 +61,11 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -75,7 +75,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + TranslationPortletKeys.TRANSLATION,
+		"jakarta.portlet.name=" + TranslationPortletKeys.TRANSLATION,
 		"mvc.command.name=/translation/import_translation"
 	},
 	service = MVCActionCommand.class

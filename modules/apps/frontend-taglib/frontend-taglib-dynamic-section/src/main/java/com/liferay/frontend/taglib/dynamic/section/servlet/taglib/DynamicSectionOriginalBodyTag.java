@@ -10,8 +10,8 @@ import com.liferay.taglib.TagSupport;
 
 import java.io.IOException;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * @author Matthew Tambara

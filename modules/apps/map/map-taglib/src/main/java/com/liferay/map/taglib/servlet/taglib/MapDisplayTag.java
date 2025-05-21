@@ -16,8 +16,8 @@ import com.liferay.taglib.util.IncludeTag;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Chema Balsas

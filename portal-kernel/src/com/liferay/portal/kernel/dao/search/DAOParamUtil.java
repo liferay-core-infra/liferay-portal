@@ -15,9 +15,9 @@ import java.text.DateFormat;
 
 import java.util.Calendar;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

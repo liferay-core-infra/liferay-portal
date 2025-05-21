@@ -47,9 +47,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletException;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -59,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + TranslationPortletKeys.TRANSLATION,
+		"jakarta.portlet.name=" + TranslationPortletKeys.TRANSLATION,
 		"mvc.command.name=/translation/translate"
 	},
 	service = MVCRenderCommand.class

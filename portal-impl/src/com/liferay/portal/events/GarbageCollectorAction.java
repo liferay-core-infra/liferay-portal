@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.text.NumberFormat;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan

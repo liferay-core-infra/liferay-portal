@@ -31,9 +31,9 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -49,7 +49,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 @Component(
 	configurationPid = "com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration",
 	property = {
-		"javax.portlet.name=" + OAuth2ProviderPortletKeys.OAUTH2_ADMIN,
+		"jakarta.portlet.name=" + OAuth2ProviderPortletKeys.OAUTH2_ADMIN,
 		"mvc.command.name=/oauth2_provider/assign_scopes"
 	},
 	service = MVCRenderCommand.class

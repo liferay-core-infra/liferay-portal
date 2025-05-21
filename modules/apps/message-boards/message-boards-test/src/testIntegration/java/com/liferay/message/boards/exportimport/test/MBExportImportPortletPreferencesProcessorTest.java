@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -194,7 +194,7 @@ public class MBExportImportPortletPreferencesProcessorTest {
 			mbMessage.getMessageId(), GetterUtil.getLong(importedWikiPageId));
 	}
 
-	@Inject(filter = "javax.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS)
+	@Inject(filter = "jakarta.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS)
 	private ExportImportPortletPreferencesProcessor
 		_exportImportPortletPreferencesProcessor;
 

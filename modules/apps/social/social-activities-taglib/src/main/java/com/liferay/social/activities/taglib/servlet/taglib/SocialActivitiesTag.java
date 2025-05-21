@@ -15,10 +15,10 @@ import com.liferay.taglib.util.IncludeTag;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ResourceURL;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Raymond Augé

@@ -13,15 +13,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletAsyncContext;
-import javax.portlet.PortletAsyncEvent;
-import javax.portlet.PortletAsyncListener;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.PortletAsyncContext;
+import jakarta.portlet.PortletAsyncEvent;
+import jakarta.portlet.PortletAsyncListener;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.AsyncEvent;
+import jakarta.servlet.AsyncListener;
 
 /**
  * @author Dante Wang

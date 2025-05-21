@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.util.HashMapDictionary;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

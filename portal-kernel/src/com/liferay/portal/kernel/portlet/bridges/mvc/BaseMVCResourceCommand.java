@@ -11,12 +11,12 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.IOException;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequestDispatcher;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 /**
  * @author Brian Wing Shun Chan

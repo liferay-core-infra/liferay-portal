@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 /**
  * @author Eudaldo Alonso

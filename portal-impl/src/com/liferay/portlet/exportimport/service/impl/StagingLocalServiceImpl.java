@@ -91,7 +91,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Michael C. Han
@@ -1156,7 +1156,7 @@ public class StagingLocalServiceImpl extends StagingLocalServiceBaseImpl {
 				layoutRevision.getLayoutRevisionId());
 
 		for (PortletPreferences portletPreferences : portletPreferencesList) {
-			javax.portlet.PortletPreferences jxPortletPreferences =
+			jakarta.portlet.PortletPreferences jxPortletPreferences =
 				_portletPreferenceValueLocalService.getPreferences(
 					portletPreferences);
 

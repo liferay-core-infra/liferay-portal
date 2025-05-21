@@ -55,14 +55,14 @@ import java.net.ConnectException;
 
 import java.util.List;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.Portlet;
-import javax.portlet.PortletException;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -82,14 +82,14 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.show-portlet-inactive=false",
 		"com.liferay.portlet.system=true",
 		"com.liferay.portlet.use-default-template=false",
-		"javax.portlet.display-name=Staging Bar",
-		"javax.portlet.expiration-cache=0",
-		"javax.portlet.init-param.template-path=/META-INF/resources/",
-		"javax.portlet.init-param.view-template=/view.jsp",
-		"javax.portlet.name=" + StagingBarPortletKeys.STAGING_BAR,
-		"javax.portlet.resource-bundle=content.Language",
-		"javax.portlet.security-role-ref=power-user,user",
-		"javax.portlet.version=3.0"
+		"jakarta.portlet.display-name=Staging Bar",
+		"jakarta.portlet.expiration-cache=0",
+		"jakarta.portlet.init-param.template-path=/META-INF/resources/",
+		"jakarta.portlet.init-param.view-template=/view.jsp",
+		"jakarta.portlet.name=" + StagingBarPortletKeys.STAGING_BAR,
+		"jakarta.portlet.resource-bundle=content.Language",
+		"jakarta.portlet.security-role-ref=power-user,user",
+		"jakarta.portlet.version=4.0"
 	},
 	service = Portlet.class
 )

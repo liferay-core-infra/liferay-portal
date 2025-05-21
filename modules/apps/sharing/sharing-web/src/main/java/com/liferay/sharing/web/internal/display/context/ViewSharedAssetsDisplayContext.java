@@ -47,9 +47,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Sergio González

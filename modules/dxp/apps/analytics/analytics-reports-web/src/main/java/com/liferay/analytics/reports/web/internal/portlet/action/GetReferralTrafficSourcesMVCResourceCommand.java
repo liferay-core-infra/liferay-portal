@@ -31,8 +31,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + AnalyticsReportsPortletKeys.ANALYTICS_REPORTS,
+		"jakarta.portlet.name=" + AnalyticsReportsPortletKeys.ANALYTICS_REPORTS,
 		"mvc.command.name=/analytics_reports/get_referral_traffic_sources"
 	},
 	service = MVCResourceCommand.class

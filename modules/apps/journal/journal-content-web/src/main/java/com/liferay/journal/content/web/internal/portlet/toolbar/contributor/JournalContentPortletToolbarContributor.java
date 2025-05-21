@@ -53,9 +53,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -65,7 +65,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + JournalContentPortletKeys.JOURNAL_CONTENT,
+		"jakarta.portlet.name=" + JournalContentPortletKeys.JOURNAL_CONTENT,
 		"mvc.path=-", "mvc.path=/view.jsp"
 	},
 	service = PortletToolbarContributor.class

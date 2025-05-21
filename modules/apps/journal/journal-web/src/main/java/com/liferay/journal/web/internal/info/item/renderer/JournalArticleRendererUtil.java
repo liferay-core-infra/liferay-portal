@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Objects;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

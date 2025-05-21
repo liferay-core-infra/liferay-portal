@@ -22,9 +22,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Charles May

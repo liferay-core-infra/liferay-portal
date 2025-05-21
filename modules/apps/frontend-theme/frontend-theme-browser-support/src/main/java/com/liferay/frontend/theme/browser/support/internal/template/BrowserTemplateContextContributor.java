@@ -13,7 +13,7 @@ import com.liferay.portal.servlet.BrowserSnifferUtil;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 

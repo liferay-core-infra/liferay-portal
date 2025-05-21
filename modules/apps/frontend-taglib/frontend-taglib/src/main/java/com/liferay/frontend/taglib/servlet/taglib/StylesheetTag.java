@@ -17,9 +17,9 @@ import com.liferay.taglib.util.AttributesTagSupport;
 
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
 
 import org.osgi.framework.Bundle;
 

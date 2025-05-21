@@ -26,7 +26,7 @@ import com.liferay.portlet.display.template.exportimport.portlet.preferences.pro
 
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Máté Thurzó

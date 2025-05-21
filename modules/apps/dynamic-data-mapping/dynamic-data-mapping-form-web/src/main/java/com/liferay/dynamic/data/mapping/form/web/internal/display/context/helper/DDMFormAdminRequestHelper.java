@@ -12,9 +12,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Marcellus Tavares

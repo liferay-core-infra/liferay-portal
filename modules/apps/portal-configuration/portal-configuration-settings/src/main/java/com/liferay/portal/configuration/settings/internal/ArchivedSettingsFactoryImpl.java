@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.settings.SettingsException;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

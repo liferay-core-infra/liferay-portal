@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

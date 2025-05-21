@@ -11,7 +11,7 @@ import com.liferay.portal.workflow.metrics.rest.dto.v1_0.GenericError;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.ExceptionMapper;
 
 import org.osgi.service.component.annotations.Component;
 

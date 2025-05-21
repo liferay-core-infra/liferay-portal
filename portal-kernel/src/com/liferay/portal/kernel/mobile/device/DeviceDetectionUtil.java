@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Milen Dyankov

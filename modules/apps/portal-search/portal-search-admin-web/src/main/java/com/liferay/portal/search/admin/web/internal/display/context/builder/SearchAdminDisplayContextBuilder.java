@@ -18,8 +18,8 @@ import com.liferay.portal.search.index.IndexInformation;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Adam Brandizzi

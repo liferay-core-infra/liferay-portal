@@ -43,9 +43,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.WindowStateException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowStateException;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

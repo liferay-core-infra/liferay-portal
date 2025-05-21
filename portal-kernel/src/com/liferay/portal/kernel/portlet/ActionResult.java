@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.Event;
+import jakarta.portlet.Event;
 
 /**
  * @author Shuyang Zhou

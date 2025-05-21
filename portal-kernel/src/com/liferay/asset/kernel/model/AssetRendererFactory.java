@@ -15,8 +15,8 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import java.util.Locale;
 
-import javax.portlet.PortletURL;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowState;
 
 import org.osgi.annotation.versioning.ProviderType;
 

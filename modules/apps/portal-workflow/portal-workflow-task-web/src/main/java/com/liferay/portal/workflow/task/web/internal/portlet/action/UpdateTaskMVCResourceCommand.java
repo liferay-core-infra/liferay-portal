@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + PortletKeys.MY_WORKFLOW_TASK,
+		"jakarta.portlet.name=" + PortletKeys.MY_WORKFLOW_TASK,
 		"mvc.command.name=/portal_workflow_task/update_task"
 	},
 	service = MVCResourceCommand.class

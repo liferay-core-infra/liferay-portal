@@ -29,7 +29,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.osgi.service.component.annotations.Reference;
 

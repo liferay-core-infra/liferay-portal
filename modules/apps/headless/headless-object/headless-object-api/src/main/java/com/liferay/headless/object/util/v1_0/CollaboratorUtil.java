@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  * @author Mikel Lorza

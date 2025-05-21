@@ -12,7 +12,7 @@ import com.liferay.segments.web.internal.display.context.SegmentsCompanyConfigur
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Diego Hu

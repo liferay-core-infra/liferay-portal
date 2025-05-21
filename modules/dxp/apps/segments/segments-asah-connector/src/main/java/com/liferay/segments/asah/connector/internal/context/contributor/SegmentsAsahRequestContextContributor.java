@@ -13,8 +13,8 @@ import com.liferay.segments.context.contributor.RequestContextContributor;
 
 import java.util.Objects;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 

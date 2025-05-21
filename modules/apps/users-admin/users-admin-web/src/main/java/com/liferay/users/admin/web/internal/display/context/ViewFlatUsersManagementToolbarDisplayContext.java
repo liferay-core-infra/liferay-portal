@@ -31,7 +31,7 @@ import com.liferay.users.admin.web.internal.util.DisplayStyleUtil;
 
 import java.util.List;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Pei-Jung Lan

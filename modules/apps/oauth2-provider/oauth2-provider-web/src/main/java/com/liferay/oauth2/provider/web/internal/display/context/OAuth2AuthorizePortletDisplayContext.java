@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Tomas Polesovsky

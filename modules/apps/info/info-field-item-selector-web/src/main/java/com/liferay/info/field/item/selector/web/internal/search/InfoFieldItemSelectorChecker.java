@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 
 import java.util.List;
 
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Eudaldo Alonso

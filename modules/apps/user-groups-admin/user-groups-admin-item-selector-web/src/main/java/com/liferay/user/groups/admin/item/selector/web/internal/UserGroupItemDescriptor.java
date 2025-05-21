@@ -20,7 +20,7 @@ import com.liferay.user.groups.admin.item.selector.web.internal.frontend.taglib.
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Eudaldo Alonso

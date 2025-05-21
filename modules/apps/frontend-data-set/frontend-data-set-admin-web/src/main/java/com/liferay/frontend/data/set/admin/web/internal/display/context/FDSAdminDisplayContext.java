@@ -38,10 +38,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.ResourceURL;
 
 /**
  * @author Marko Cikos

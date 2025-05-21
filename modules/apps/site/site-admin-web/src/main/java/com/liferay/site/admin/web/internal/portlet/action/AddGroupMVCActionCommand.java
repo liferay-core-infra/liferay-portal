@@ -74,10 +74,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -87,7 +87,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + SiteAdminPortletKeys.SITE_ADMIN,
+		"jakarta.portlet.name=" + SiteAdminPortletKeys.SITE_ADMIN,
 		"mvc.command.name=/site_admin/add_group"
 	},
 	service = MVCActionCommand.class

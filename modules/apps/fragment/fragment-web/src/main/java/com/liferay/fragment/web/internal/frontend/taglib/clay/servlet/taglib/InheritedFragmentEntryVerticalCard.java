@@ -17,8 +17,8 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 
 import java.util.List;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Jürgen Kappler

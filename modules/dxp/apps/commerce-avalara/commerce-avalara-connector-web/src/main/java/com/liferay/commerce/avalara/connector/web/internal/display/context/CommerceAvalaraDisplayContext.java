@@ -14,8 +14,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.List;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Katie Nesterovich

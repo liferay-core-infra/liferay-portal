@@ -36,9 +36,9 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.File;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

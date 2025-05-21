@@ -32,9 +32,9 @@ import com.liferay.portal.kernel.util.Portal;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

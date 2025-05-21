@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 
 import java.util.function.Function;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 /**
  * @author Alejandro Tardín

@@ -12,11 +12,11 @@ import com.liferay.taglib.util.IncludeTag;
 
 import java.util.Map;
 
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspWriter;
 
 /**
  * @author Brian Wing Shun Chan

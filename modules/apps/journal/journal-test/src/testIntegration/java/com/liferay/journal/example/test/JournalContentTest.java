@@ -50,9 +50,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;

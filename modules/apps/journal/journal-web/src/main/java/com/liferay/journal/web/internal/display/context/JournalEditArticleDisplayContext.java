@@ -111,11 +111,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

@@ -67,20 +67,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortalContext;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderParameters;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortalContext;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.RenderParameters;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan

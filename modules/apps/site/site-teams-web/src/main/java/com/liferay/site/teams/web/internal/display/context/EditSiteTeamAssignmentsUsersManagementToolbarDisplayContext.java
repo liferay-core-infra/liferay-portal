@@ -24,7 +24,7 @@ import com.liferay.users.admin.item.selector.UserSiteTeamItemSelectorCriterion;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

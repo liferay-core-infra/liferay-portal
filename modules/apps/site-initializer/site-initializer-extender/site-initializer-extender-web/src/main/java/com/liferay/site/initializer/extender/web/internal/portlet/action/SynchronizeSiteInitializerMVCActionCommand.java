@@ -34,8 +34,8 @@ import java.io.InputStream;
 
 import java.util.concurrent.Callable;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -45,7 +45,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + SiteInitializerExtenderPortletKeys.SITE_INITIALIZER,
+		"jakarta.portlet.name=" + SiteInitializerExtenderPortletKeys.SITE_INITIALIZER,
 		"mvc.command.name=/site_initializer/synchronize_site_initializer"
 	},
 	service = MVCActionCommand.class

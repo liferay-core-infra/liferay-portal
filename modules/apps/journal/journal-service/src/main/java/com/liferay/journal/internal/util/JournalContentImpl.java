@@ -44,7 +44,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 import org.apache.commons.lang.time.StopWatch;
 

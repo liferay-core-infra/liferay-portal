@@ -37,8 +37,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Function;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,7 +48,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + AuditPortletKeys.AUDIT,
+		"jakarta.portlet.name=" + AuditPortletKeys.AUDIT,
 		"mvc.command.name=/audit/export_audit_events"
 	},
 	service = MVCResourceCommand.class

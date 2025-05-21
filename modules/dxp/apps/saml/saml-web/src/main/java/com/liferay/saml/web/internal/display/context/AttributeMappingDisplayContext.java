@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Stian Sigvartsen

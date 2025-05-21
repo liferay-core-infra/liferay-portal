@@ -47,8 +47,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 /**
  * @author David Arques

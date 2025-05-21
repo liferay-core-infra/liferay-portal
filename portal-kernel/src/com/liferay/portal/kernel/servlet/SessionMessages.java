@@ -18,10 +18,10 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan

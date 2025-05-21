@@ -19,8 +19,8 @@ import com.liferay.portal.util.PortalImpl;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

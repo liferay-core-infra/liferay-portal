@@ -17,14 +17,14 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSession;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 /**
  * @author Brian Wing Shun Chan

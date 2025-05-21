@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
+import jakarta.xml.ws.Service;
 
 import org.junit.After;
 import org.junit.Before;

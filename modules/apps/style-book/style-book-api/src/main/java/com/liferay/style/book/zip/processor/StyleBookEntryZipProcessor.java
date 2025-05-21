@@ -11,7 +11,7 @@ import java.io.File;
 
 import java.util.List;
 
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletException;
 
 /**
  * @author Jürgen Kappler

@@ -21,9 +21,9 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.hamcrest.CoreMatchers;
 

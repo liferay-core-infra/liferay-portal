@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 
 import java.util.Objects;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 /**
  * @author Shuyang Zhou

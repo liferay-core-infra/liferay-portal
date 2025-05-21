@@ -39,17 +39,17 @@ import java.io.IOException;
 
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletModeException;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.WindowState;
-import javax.portlet.WindowStateException;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletModeException;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowState;
+import jakarta.portlet.WindowStateException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

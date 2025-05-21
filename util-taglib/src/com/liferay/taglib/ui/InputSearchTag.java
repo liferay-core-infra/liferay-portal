@@ -13,7 +13,7 @@ import com.liferay.taglib.util.TagResourceBundleUtil;
 
 import java.util.ResourceBundle;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Roberto Díaz

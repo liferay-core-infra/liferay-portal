@@ -24,9 +24,9 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.List;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Drew Brokke

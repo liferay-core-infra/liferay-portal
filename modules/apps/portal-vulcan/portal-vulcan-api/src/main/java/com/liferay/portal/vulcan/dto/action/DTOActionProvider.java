@@ -7,7 +7,7 @@ package com.liferay.portal.vulcan.dto.action;
 
 import java.util.Map;
 
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  * @author Carlos Correa

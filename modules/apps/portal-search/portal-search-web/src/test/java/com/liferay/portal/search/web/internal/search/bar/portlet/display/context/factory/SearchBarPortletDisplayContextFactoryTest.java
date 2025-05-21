@@ -44,10 +44,10 @@ import com.liferay.portlet.PortletPreferencesImpl;
 
 import java.util.Collections;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

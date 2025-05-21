@@ -20,7 +20,7 @@ import com.liferay.portal.search.web.internal.portlet.preferences.BasePortletPre
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Lino Alves

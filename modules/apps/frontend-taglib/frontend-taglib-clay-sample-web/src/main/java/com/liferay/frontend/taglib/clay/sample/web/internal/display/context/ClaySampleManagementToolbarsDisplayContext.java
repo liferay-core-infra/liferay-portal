@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Carlos Lancha

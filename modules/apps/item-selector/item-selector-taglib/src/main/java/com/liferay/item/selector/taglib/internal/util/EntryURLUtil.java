@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Adolfo Pérez

@@ -24,10 +24,10 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import javax.portlet.MutableRenderParameters;
-import javax.portlet.PortletURL;
+import jakarta.portlet.MutableRenderParameters;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Drew Brokke

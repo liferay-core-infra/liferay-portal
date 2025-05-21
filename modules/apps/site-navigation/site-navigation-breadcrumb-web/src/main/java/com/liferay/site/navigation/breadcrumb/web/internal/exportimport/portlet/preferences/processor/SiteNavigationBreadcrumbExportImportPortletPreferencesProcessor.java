@@ -14,7 +14,7 @@ import com.liferay.site.navigation.breadcrumb.web.internal.constants.SiteNavigat
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jürgen Kappler
  */
 @Component(
-	property = "javax.portlet.name=" + SiteNavigationBreadcrumbPortletKeys.SITE_NAVIGATION_BREADCRUMB,
+	property = "jakarta.portlet.name=" + SiteNavigationBreadcrumbPortletKeys.SITE_NAVIGATION_BREADCRUMB,
 	service = ExportImportPortletPreferencesProcessor.class
 )
 public class SiteNavigationBreadcrumbExportImportPortletPreferencesProcessor

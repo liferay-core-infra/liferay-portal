@@ -50,7 +50,7 @@ import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ResourceRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

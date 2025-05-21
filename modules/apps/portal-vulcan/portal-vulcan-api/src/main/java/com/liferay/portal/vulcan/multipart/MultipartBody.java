@@ -14,8 +14,8 @@ import java.io.IOException;
 
 import java.util.Map;
 
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.InternalServerErrorException;
 
 /**
  * @author Javier Gamarra

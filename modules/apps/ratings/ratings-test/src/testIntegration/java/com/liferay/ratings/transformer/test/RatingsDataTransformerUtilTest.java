@@ -19,7 +19,7 @@ import com.liferay.ratings.kernel.transformer.RatingsDataTransformerUtil;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

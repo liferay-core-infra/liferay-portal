@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

@@ -19,10 +19,10 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Marco Galluzzi

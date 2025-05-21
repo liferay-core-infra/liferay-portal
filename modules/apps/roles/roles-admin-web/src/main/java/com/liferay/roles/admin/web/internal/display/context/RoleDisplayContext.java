@@ -49,10 +49,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletURL;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Pei-Jung Lan

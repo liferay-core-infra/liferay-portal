@@ -25,9 +25,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import javax.sql.DataSource;
 

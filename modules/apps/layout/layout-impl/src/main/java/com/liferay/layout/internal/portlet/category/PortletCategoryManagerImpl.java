@@ -76,11 +76,11 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.portlet.PortletConfig;
+import jakarta.portlet.PortletConfig;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -163,7 +163,7 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, PortletManager.class, "javax.portlet.name");
+			bundleContext, PortletManager.class, "jakarta.portlet.name");
 	}
 
 	@Deactivate

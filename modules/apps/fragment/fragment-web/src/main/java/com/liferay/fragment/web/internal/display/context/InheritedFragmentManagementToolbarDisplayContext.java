@@ -21,9 +21,9 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ResourceURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Jürgen Kappler

@@ -10,7 +10,7 @@ import com.liferay.portal.osgi.web.servlet.context.helper.definition.WebXMLDefin
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.annotation.versioning.ProviderType;
 

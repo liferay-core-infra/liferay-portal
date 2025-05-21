@@ -22,7 +22,7 @@ import com.liferay.portlet.PortletPreferencesImpl;
 
 import java.util.Date;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;

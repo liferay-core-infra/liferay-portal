@@ -7,8 +7,8 @@ package com.liferay.portal.kernel.portlet;
 
 import java.util.List;
 
-import javax.portlet.Event;
-import javax.portlet.StateAwareResponse;
+import jakarta.portlet.Event;
+import jakarta.portlet.StateAwareResponse;
 
 import org.osgi.annotation.versioning.ProviderType;
 

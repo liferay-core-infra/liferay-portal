@@ -9,8 +9,8 @@ import com.liferay.portal.kernel.servlet.taglib.ui.Menu;
 
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 /**
  * Provides an interface responsible for extending the portlet toolbar by adding

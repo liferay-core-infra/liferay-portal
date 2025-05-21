@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Michele Vigilante
  */
 @Component(
-	property = "javax.portlet.name=" + CommerceDashboardPortletKeys.COMMERCE_DASHBOARD_FORECASTS_CHART,
+	property = "jakarta.portlet.name=" + CommerceDashboardPortletKeys.COMMERCE_DASHBOARD_FORECASTS_CHART,
 	service = ExportImportPortletPreferencesProcessor.class
 )
 public class

@@ -27,8 +27,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Tomas Polesovsky

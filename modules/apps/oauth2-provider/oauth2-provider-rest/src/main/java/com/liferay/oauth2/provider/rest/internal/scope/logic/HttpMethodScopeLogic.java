@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 
 import java.util.function.Function;
 
-import javax.ws.rs.HttpMethod;
+import jakarta.ws.rs.HttpMethod;
 
 import org.osgi.framework.BundleContext;
 

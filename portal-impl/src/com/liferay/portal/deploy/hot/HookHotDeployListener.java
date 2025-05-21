@@ -118,8 +118,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import javax.servlet.Filter;
-import javax.servlet.ServletContext;
+import jakarta.servlet.Filter;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

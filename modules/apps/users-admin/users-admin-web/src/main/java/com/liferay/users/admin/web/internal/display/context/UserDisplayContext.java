@@ -52,9 +52,9 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Pei-Jung Lan

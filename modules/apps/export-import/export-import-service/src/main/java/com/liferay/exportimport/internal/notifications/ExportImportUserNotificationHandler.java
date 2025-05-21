@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Portal;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Akos Thurzo
  */
 @Component(
-	property = "javax.portlet.name=" + ExportImportPortletKeys.EXPORT_IMPORT,
+	property = "jakarta.portlet.name=" + ExportImportPortletKeys.EXPORT_IMPORT,
 	service = UserNotificationHandler.class
 )
 public class ExportImportUserNotificationHandler

@@ -28,9 +28,9 @@ import java.io.OutputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.ResourceResponse;
 
 /**
  * @author Brian Wing Shun Chan

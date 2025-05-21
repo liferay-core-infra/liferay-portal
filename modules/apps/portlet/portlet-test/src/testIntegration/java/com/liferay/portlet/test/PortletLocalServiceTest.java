@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -69,7 +69,7 @@ public class PortletLocalServiceTest {
 					CustomAttributesDisplay.class,
 					disabledFFCustomAttributesDisplay,
 					MapUtil.singletonDictionary(
-						"javax.portlet.name", portletName)));
+						"jakarta.portlet.name", portletName)));
 
 			String enabledFFKey = RandomTestUtil.randomString();
 
@@ -89,7 +89,7 @@ public class PortletLocalServiceTest {
 					CustomAttributesDisplay.class,
 					enabledFFCustomAttributesDisplay,
 					MapUtil.singletonDictionary(
-						"javax.portlet.name", portletName)));
+						"jakarta.portlet.name", portletName)));
 
 			TestCustomAttributesDisplay nullFFCustomAttributesDisplay =
 				new TestCustomAttributesDisplay(null);
@@ -99,13 +99,13 @@ public class PortletLocalServiceTest {
 					CustomAttributesDisplay.class,
 					nullFFCustomAttributesDisplay,
 					MapUtil.singletonDictionary(
-						"javax.portlet.name", portletName)));
+						"jakarta.portlet.name", portletName)));
 
 			serviceRegistrations.add(
 				bundleContext.registerService(
 					Portlet.class, new TestPortlet(),
 					MapUtil.singletonDictionary(
-						"javax.portlet.name", portletName)));
+						"jakarta.portlet.name", portletName)));
 
 			Thread.sleep(200);
 

@@ -23,9 +23,9 @@ import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + KaleoDesignerPortletKeys.KALEO_DESIGNER,
+		"jakarta.portlet.name=" + KaleoDesignerPortletKeys.KALEO_DESIGNER,
 		"path=/designer/edit_kaleo_definition_version.jsp"
 	},
 	service = PortletConfigurationIcon.class

@@ -14,8 +14,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.EventRequest;
-import javax.portlet.filter.EventRequestWrapper;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.filter.EventRequestWrapper;
 
 /**
  * @author Brian Wing Shun Chan

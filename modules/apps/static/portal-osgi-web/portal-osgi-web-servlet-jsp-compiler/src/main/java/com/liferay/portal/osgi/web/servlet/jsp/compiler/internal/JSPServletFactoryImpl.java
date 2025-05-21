@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-import javax.servlet.Servlet;
+import jakarta.servlet.Servlet;
 
 import org.apache.jasper.compiler.Compiler;
 

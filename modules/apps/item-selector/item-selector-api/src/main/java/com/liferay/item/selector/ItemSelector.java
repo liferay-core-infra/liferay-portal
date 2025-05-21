@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 import org.osgi.annotation.versioning.ProviderType;
 

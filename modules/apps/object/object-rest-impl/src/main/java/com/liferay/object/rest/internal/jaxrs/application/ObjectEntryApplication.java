@@ -11,7 +11,7 @@ import com.liferay.object.rest.openapi.v1_0.ObjectEntryOpenAPIResourceProvider;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
 /**
  * @author Javier de Arcos

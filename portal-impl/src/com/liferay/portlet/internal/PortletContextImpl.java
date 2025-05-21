@@ -26,10 +26,10 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.portlet.PortletRequestDispatcher;
+import jakarta.portlet.PortletRequestDispatcher;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

@@ -21,9 +21,9 @@ import com.liferay.trash.TrashHelper;
 
 import java.util.Map;
 
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ResourceURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Ambrín Chaudhary

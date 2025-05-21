@@ -14,8 +14,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.filter.RenderRequestWrapper;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.filter.RenderRequestWrapper;
 
 /**
  * @author Brian Wing Shun Chan

@@ -15,7 +15,7 @@ import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuE
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

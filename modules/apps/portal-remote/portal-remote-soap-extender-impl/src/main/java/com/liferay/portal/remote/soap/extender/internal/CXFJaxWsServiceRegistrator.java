@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.Binding;
-import javax.xml.ws.handler.Handler;
+import jakarta.xml.ws.Binding;
+import jakarta.xml.ws.handler.Handler;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;

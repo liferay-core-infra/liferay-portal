@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.module.service.Snapshot;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Akos Thurzo

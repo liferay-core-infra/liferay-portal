@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.util.comparator.GroupTypeComparator;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Brian Wing Shun Chan

@@ -15,12 +15,12 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletResponse;
-import javax.portlet.RenderParameters;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.RenderParameters;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 

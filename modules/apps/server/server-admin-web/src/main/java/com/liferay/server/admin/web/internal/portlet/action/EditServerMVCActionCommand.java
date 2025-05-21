@@ -124,12 +124,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletSession;
-import javax.portlet.WindowState;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.WindowState;
 
 import org.apache.logging.log4j.Level;
 
@@ -143,8 +143,8 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ConfigurationAdminPortletKeys.INSTANCE_SETTINGS,
-		"javax.portlet.name=" + PortletKeys.SERVER_ADMIN,
+		"jakarta.portlet.name=" + ConfigurationAdminPortletKeys.INSTANCE_SETTINGS,
+		"jakarta.portlet.name=" + PortletKeys.SERVER_ADMIN,
 		"mvc.command.name=/server_admin/edit_server"
 	},
 	service = MVCActionCommand.class

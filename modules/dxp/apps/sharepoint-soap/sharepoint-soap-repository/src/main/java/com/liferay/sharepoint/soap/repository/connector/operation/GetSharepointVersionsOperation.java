@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.DatatypeConverter;
+import jakarta.xml.bind.DatatypeConverter;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

@@ -18,8 +18,8 @@ import com.liferay.portal.workflow.kaleo.forms.model.KaleoTaskFormPairs;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + KaleoFormsPortletKeys.KALEO_FORMS_ADMIN,
+		"jakarta.portlet.name=" + KaleoFormsPortletKeys.KALEO_FORMS_ADMIN,
 		"mvc.command.name=/kaleo_forms_admin/update_kaleo_process"
 	},
 	service = MVCActionCommand.class

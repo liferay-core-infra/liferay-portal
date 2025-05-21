@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Jeyvison Nascimento

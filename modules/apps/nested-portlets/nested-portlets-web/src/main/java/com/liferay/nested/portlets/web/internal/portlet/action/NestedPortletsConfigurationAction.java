@@ -29,11 +29,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletConfig;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletConfig;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Peter Fellwock
  */
 @Component(
-	property = "javax.portlet.name=" + NestedPortletsPortletKeys.NESTED_PORTLETS,
+	property = "jakarta.portlet.name=" + NestedPortletsPortletKeys.NESTED_PORTLETS,
 	service = ConfigurationAction.class
 )
 public class NestedPortletsConfigurationAction

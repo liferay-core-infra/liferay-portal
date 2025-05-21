@@ -60,10 +60,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -279,7 +279,7 @@ public class SaveFormInstanceMVCCommandHelper {
 				"field-of-the-x-configuration-in-x-to-allow-it",
 			new String[] {
 				value, fieldName, "redirect-url-configuration-name",
-				"javax.portlet.title." +
+				"jakarta.portlet.title." +
 					ConfigurationAdminPortletKeys.INSTANCE_SETTINGS
 			});
 	}

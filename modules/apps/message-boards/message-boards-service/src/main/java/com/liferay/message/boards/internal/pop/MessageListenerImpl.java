@@ -43,8 +43,8 @@ import java.io.InputStream;
 
 import java.util.List;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
 
 import org.apache.commons.lang.time.StopWatch;
 

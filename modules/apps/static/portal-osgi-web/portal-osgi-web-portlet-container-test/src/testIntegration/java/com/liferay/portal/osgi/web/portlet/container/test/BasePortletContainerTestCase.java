@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -90,7 +90,7 @@ public abstract class BasePortletContainerTestCase {
 			String portletName, boolean addToLayout)
 		throws Exception {
 
-		properties.put("javax.portlet.name", portletName);
+		properties.put("jakarta.portlet.name", portletName);
 
 		registerService(Portlet.class, portlet, properties);
 

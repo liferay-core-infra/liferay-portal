@@ -29,7 +29,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 import jodd.introspector.CachingIntrospector;
 import jodd.introspector.ClassIntrospector;

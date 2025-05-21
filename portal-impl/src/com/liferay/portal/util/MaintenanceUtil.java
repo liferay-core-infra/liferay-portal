@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.util.Time;
 
 import java.util.Collection;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Alexander Chow

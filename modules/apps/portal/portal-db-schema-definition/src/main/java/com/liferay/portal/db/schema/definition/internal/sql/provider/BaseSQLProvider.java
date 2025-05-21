@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;

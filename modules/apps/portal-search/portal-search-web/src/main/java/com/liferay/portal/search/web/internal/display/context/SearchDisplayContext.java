@@ -53,12 +53,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

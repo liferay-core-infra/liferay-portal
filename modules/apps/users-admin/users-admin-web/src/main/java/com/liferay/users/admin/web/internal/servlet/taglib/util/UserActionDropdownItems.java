@@ -36,10 +36,10 @@ import com.liferay.users.admin.web.internal.display.context.UserActionDisplayCon
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

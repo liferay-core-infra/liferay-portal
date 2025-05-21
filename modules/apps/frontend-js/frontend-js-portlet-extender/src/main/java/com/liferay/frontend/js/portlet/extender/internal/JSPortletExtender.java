@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -118,7 +118,7 @@ public class JSPortletExtender {
 			"portlet");
 
 		String javaxPortletName = portletJSONObject.getString(
-			"javax.portlet.name");
+			"jakarta.portlet.name");
 
 		if (Validator.isNotNull(javaxPortletName)) {
 			portletName = javaxPortletName;
@@ -179,7 +179,7 @@ public class JSPortletExtender {
 
 			Dictionary<String, Object> properties = new Hashtable<>();
 
-			properties.put("javax.portlet.name", portletName);
+			properties.put("jakarta.portlet.name", portletName);
 
 			bundleContext.registerService(
 				new String[] {ConfigurationAction.class.getName()},
@@ -205,7 +205,7 @@ public class JSPortletExtender {
 		String packageName = packageJSONObject.getString("name");
 
 		properties.put(
-			"javax.portlet.name", _getPortletName(packageJSONObject));
+			"jakarta.portlet.name", _getPortletName(packageJSONObject));
 		properties.put("service.pid", packageName);
 
 		String packageVersion = packageJSONObject.getString("version");

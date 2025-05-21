@@ -43,7 +43,7 @@ import com.liferay.site.configuration.manager.SitemapConfigurationManager;
 
 import java.util.Dictionary;
 
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

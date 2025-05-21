@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Akos Thurzo
  */
 @Component(
-	property = "javax.portlet.name=" + ExpandoPortletKeys.EXPANDO,
+	property = "jakarta.portlet.name=" + ExpandoPortletKeys.EXPANDO,
 	service = PortletDataHandler.class
 )
 public class ExpandoPortletDataHandler extends BasePortletDataHandler {

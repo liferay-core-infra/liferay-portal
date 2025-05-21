@@ -14,7 +14,7 @@ import com.liferay.site.navigation.language.constants.SiteNavigationLanguagePort
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jürgen Kappler
  */
 @Component(
-	property = "javax.portlet.name=" + SiteNavigationLanguagePortletKeys.SITE_NAVIGATION_LANGUAGE,
+	property = "jakarta.portlet.name=" + SiteNavigationLanguagePortletKeys.SITE_NAVIGATION_LANGUAGE,
 	service = ExportImportPortletPreferencesProcessor.class
 )
 public class SiteNavigationLanguageExportImportPortletPreferencesProcessor

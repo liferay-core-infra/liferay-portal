@@ -47,9 +47,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.portlet.PortletURL;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -60,7 +60,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN,
+		"jakarta.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN,
 		"mvc.command.name=/users_admin/export_users"
 	},
 	service = MVCResourceCommand.class

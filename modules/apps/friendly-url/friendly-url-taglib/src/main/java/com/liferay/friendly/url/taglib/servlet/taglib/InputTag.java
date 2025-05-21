@@ -31,8 +31,8 @@ import com.liferay.taglib.util.IncludeTag;
 
 import java.util.Objects;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Adolfo Pérez

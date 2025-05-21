@@ -14,9 +14,9 @@ import com.liferay.portlet.internal.PortletSessionImpl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletSession;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Neil Griffin

@@ -25,7 +25,7 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Map;
 
-import javax.ws.rs.core.Context;
+import jakarta.ws.rs.core.Context;
 
 /**
  * @author Carlos Correa

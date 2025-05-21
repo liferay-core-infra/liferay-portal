@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 /**
  * @author Mikel Lorza

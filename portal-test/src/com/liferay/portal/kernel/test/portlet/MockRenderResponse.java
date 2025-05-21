@@ -7,8 +7,8 @@ package com.liferay.portal.kernel.test.portlet;
 
 import java.util.Collection;
 
-import javax.portlet.PortletMode;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Dante Wang

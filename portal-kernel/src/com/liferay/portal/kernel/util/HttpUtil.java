@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 import java.net.URL;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 /**
  * @author Brian Wing Shun Chan

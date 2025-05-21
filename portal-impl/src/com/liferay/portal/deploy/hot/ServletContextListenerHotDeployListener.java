@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.servlet.SecurePluginContextListener;
 
 import java.lang.reflect.Method;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

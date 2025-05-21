@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import javax.validation.ValidationException;
+import jakarta.validation.ValidationException;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -11,7 +11,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * @author Chema Balsas

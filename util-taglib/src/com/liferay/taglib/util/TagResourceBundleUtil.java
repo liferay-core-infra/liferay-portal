@@ -20,11 +20,11 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletConfig;
+import jakarta.portlet.PortletConfig;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Adolfo Pérez

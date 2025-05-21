@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Eudaldo Alonso

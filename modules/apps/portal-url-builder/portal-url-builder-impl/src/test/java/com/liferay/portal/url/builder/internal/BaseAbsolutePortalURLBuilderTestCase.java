@@ -19,7 +19,7 @@ import com.liferay.portal.url.builder.internal.util.CacheHelper;
 
 import java.util.Dictionary;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;

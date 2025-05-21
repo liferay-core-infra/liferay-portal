@@ -28,7 +28,7 @@ import com.liferay.redirect.service.RedirectNotFoundEntryLocalService;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Alejandro Tardín

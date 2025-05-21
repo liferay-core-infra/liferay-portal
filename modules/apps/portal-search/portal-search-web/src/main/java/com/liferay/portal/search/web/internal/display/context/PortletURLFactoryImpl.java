@@ -13,10 +13,10 @@ import com.liferay.portal.search.web.internal.portlet.shared.search.NullPortletU
 
 import java.util.Map;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author André de Oliveira

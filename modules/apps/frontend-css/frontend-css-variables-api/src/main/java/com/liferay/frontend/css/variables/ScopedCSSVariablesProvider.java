@@ -7,7 +7,7 @@ package com.liferay.frontend.css.variables;
 
 import java.util.Collection;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Iván Zaera Avellón

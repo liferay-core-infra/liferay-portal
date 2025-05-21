@@ -21,9 +21,9 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Carlos Correa

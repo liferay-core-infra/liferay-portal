@@ -14,12 +14,12 @@ import java.io.UnsupportedEncodingException;
 
 import java.util.Collection;
 
-import javax.portlet.ClientDataRequest;
-import javax.portlet.PortalContext;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
+import jakarta.portlet.ClientDataRequest;
+import jakarta.portlet.PortalContext;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
 
-import javax.servlet.http.Part;
+import jakarta.servlet.http.Part;
 
 /**
  * @author Dante Wang

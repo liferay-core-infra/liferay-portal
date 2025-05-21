@@ -19,7 +19,7 @@ import com.liferay.product.navigation.control.menu.util.ProductNavigationControl
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

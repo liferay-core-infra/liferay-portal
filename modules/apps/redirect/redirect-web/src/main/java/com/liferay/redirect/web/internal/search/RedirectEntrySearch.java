@@ -14,9 +14,9 @@ import com.liferay.redirect.web.internal.constants.RedirectPortletKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Alejandro Tardín

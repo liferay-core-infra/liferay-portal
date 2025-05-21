@@ -27,7 +27,7 @@ import com.liferay.sites.kernel.util.SitesUtil;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Adolfo Pérez

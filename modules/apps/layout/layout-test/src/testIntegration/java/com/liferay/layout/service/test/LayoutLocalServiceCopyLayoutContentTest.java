@@ -127,8 +127,8 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
-import javax.portlet.Portlet;
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -1467,7 +1467,7 @@ public class LayoutLocalServiceCopyLayoutContentTest {
 	private Portal _portal;
 
 	@Inject(
-		filter = "javax.portlet.name=" + LayoutPortletKeys.LAYOUT_TEST_PORTLET
+		filter = "jakarta.portlet.name=" + LayoutPortletKeys.LAYOUT_TEST_PORTLET
 	)
 	private final Portlet _portlet = null;
 

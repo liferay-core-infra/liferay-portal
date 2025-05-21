@@ -28,9 +28,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -111,7 +111,7 @@ public abstract class BaseSocialActivityInterpreterTestCase {
 			for (ServiceReference<SocialActivityInterpreter> serviceReference :
 					bundleContext.getServiceReferences(
 						SocialActivityInterpreter.class,
-						"(javax.portlet.name=" + portletId + ")")) {
+						"(jakarta.portlet.name=" + portletId + ")")) {
 
 				SocialActivityInterpreter socialActivityInterpreter =
 					bundleContext.getService(serviceReference);

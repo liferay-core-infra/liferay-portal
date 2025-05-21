@@ -10,7 +10,7 @@ import com.liferay.petra.function.UnsafeSupplier;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Hugo Huijser

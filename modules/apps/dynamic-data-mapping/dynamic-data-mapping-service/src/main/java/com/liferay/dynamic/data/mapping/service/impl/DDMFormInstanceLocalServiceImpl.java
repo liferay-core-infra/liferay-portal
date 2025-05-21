@@ -61,7 +61,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.InternetAddress;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

@@ -17,8 +17,8 @@ import com.liferay.users.admin.user.action.contributor.BaseUserActionContributor
 
 import java.util.Objects;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Reference;
 

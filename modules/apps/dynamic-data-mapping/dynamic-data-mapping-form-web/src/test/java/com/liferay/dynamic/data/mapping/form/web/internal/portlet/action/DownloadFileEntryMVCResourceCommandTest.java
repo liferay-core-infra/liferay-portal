@@ -29,8 +29,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.InputStream;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.junit.After;
 import org.junit.Before;

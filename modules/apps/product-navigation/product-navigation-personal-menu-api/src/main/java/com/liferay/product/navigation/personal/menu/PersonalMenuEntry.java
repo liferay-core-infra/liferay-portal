@@ -12,9 +12,9 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Provides an interface that defines the entries to be used by a {@code

@@ -57,8 +57,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.portlet.GenericPortlet;
-import javax.portlet.Portlet;
+import jakarta.portlet.GenericPortlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -259,7 +259,7 @@ public class WidgetInstanceDefinitionDTOConverterTest {
 				HashMapDictionaryBuilder.put(
 					"com.liferay.portlet.instanceable", "true"
 				).put(
-					"javax.portlet.name", portletId
+					"jakarta.portlet.name", portletId
 				).build()));
 	}
 

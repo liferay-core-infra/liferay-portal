@@ -64,8 +64,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -153,7 +153,7 @@ public class UploadAttachmentMVCActionCommandTest {
 				bundleContext.getServiceReferences(
 					MVCActionCommand.class,
 					StringBundler.concat(
-						"(&(javax.portlet.name=",
+						"(&(jakarta.portlet.name=",
 						objectDefinition.getPortletId(),
 						")(mvc.command.name=/object_entries/upload_attachment",
 						"))")));

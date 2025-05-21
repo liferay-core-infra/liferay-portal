@@ -27,7 +27,7 @@ import com.liferay.template.web.internal.security.permissions.resource.DDMTempla
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Lourdes Fernández Besada

@@ -13,12 +13,12 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PreferencesValidator;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PreferencesValidator;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.osgi.annotation.versioning.ProviderType;
 

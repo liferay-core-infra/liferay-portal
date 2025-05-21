@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Set;
 
-import javax.portlet.ValidatorException;
+import jakarta.portlet.ValidatorException;
 
 /**
  * @author Michael C. Han

@@ -33,10 +33,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -131,14 +131,14 @@ public class UncontrolledExceptionErrorTest
 				"com.liferay.portlet.use-default-template",
 				Boolean.TRUE.toString()
 			).put(
-				"javax.portlet.display-name",
+				"jakarta.portlet.display-name",
 				"Uncontrolled Exception Error Portlet"
 			).put(
-				"javax.portlet.init-param.view-template", "/error_test/view.jsp"
+				"jakarta.portlet.init-param.view-template", "/error_test/view.jsp"
 			).put(
-				"javax.portlet.name", _PORTLET_NAME
+				"jakarta.portlet.name", _PORTLET_NAME
 			).put(
-				"javax.portlet.resource-bundle", "content.Language"
+				"jakarta.portlet.resource-bundle", "content.Language"
 			).build(),
 			_PORTLET_NAME);
 

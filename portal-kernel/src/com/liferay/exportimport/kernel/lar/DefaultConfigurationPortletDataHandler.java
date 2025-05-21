@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Eduardo García

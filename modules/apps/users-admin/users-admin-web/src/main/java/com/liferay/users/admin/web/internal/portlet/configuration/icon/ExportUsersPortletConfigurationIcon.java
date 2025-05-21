@@ -22,9 +22,9 @@ import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Pei-Jung Lan
  */
 @Component(
-	property = "javax.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN,
+	property = "jakarta.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN,
 	service = PortletConfigurationIcon.class
 )
 public class ExportUsersPortletConfigurationIcon

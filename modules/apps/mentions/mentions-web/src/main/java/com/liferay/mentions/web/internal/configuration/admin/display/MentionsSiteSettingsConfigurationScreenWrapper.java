@@ -23,11 +23,11 @@ import com.liferay.site.settings.configuration.admin.display.SiteSettingsConfigu
 
 import java.util.Locale;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

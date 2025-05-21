@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 /**
  * @author Samuel Trong Tran

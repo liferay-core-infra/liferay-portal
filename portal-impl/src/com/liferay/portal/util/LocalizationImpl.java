@@ -46,10 +46,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;

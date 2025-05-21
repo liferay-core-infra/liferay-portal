@@ -45,7 +45,7 @@ import java.io.Serializable;
 
 import java.util.Collections;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;

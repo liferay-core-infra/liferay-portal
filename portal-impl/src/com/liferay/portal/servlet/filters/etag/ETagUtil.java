@@ -12,8 +12,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.nio.ByteBuffer;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Brian Wing Shun Chan

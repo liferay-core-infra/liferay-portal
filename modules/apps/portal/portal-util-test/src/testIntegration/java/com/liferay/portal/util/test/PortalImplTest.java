@@ -38,7 +38,7 @@ import com.liferay.portal.upload.UploadServletRequestImpl;
 
 import java.io.InputStream;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

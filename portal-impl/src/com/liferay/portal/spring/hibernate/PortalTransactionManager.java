@@ -12,7 +12,7 @@ import java.sql.Connection;
 
 import java.util.Map;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 
 import javax.sql.DataSource;
 

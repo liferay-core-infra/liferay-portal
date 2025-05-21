@@ -34,8 +34,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Jürgen Kappler

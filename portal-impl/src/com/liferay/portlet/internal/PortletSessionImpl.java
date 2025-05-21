@@ -16,10 +16,10 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletSession;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan

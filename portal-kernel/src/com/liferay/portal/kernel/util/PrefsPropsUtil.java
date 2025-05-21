@@ -7,7 +7,7 @@ package com.liferay.portal.kernel.util;
 
 import java.util.Properties;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Brian Wing Shun Chan

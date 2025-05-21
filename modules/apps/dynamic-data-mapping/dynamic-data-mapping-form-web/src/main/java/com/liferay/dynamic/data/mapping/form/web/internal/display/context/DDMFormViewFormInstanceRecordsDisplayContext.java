@@ -61,10 +61,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Leonardo Barros

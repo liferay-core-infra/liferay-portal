@@ -26,9 +26,9 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.util.Date;
 import java.util.function.Function;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Alejandro Tardín

@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.search.SearchException;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author André de Oliveira

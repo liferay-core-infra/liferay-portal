@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.model.Portlet;
 
 import java.util.function.Function;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.annotation.versioning.ProviderType;
 

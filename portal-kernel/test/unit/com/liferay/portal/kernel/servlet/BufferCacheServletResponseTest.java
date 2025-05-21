@@ -25,7 +25,7 @@ import java.nio.CharBuffer;
 
 import java.util.Collections;
 
-import javax.servlet.ServletOutputStream;
+import jakarta.servlet.ServletOutputStream;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

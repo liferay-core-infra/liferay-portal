@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Daniela Zapata Riesco
  */
 @Component(
-	property = "javax.portlet.name=" + LayoutPrototypePortletKeys.LAYOUT_PROTOTYPE,
+	property = "jakarta.portlet.name=" + LayoutPrototypePortletKeys.LAYOUT_PROTOTYPE,
 	service = PortletDataHandler.class
 )
 public class LayoutPrototypePortletDataHandler extends BasePortletDataHandler {

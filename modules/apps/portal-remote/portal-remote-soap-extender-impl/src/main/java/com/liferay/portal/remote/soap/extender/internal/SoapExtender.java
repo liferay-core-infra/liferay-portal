@@ -12,7 +12,7 @@ import com.liferay.portal.remote.soap.extender.internal.configuration.SoapExtend
 
 import java.util.Map;
 
-import javax.xml.ws.handler.Handler;
+import jakarta.xml.ws.handler.Handler;
 
 import org.apache.cxf.Bus;
 import org.apache.felix.dm.DependencyManager;

@@ -8,7 +8,7 @@ package com.liferay.exportimport.kernel.configuration;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.osgi.annotation.versioning.ProviderType;
 

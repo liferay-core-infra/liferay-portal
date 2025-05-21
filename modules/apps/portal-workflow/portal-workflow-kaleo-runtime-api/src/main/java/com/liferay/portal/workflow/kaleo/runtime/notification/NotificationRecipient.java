@@ -14,8 +14,8 @@ import java.io.UnsupportedEncodingException;
 
 import java.util.Objects;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * @author Michael C. Han

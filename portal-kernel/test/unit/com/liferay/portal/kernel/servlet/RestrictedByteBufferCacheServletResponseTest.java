@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 
 import java.nio.ByteBuffer;
 
-import javax.servlet.ServletOutputStream;
+import jakarta.servlet.ServletOutputStream;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

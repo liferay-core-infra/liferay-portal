@@ -10,7 +10,7 @@ import com.liferay.petra.string.StringPool;
 import java.io.IOException;
 import java.io.Writer;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 
 /**
  * @author Shuyang Zhou

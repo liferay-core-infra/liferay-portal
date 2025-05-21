@@ -15,10 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 
 /**
  * @author Iván Zaera

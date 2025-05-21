@@ -15,9 +15,9 @@ import com.liferay.portal.vulcan.problem.ProblemProvider;
 
 import java.util.Locale;
 
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Providers;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.Providers;
 
 /**
  * @author Javier Gamarra
@@ -48,7 +48,7 @@ public class ExceptionMapper extends BaseExceptionMapper<Exception> {
 			return super.toResponse(exception);
 		}
 
-		javax.ws.rs.ext.ExceptionMapper<Throwable> exceptionMapper =
+		jakarta.ws.rs.ext.ExceptionMapper<Throwable> exceptionMapper =
 			_providers.getExceptionMapper(
 				(Class<Throwable>)throwable.getClass());
 

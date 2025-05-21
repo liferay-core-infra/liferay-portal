@@ -15,8 +15,8 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import javax.ws.rs.core.Application;
-import javax.ws.rs.ext.RuntimeDelegate;
+import jakarta.ws.rs.core.Application;
+import jakarta.ws.rs.ext.RuntimeDelegate;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;

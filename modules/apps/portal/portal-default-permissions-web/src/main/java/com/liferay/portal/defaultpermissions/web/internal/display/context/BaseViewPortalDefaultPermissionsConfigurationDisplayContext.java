@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.List;
 import java.util.function.Predicate;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Stefano Motta

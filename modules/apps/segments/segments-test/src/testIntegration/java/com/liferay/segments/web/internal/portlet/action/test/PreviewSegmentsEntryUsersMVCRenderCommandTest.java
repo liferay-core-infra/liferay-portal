@@ -38,7 +38,7 @@ import com.liferay.segments.test.util.SegmentsTestUtil;
 
 import java.util.List;
 
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletSession;
 
 import org.junit.Assert;
 import org.junit.Before;

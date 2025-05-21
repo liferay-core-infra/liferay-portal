@@ -35,7 +35,7 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -41,7 +41,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.servlet.ServletRequest;
+import jakarta.servlet.ServletRequest;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.Event;
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.Event;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Shuyang Zhou

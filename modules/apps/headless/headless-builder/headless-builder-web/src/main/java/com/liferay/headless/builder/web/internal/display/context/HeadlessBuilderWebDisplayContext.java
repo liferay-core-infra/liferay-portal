@@ -12,9 +12,9 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.HashMap;
 
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Carlos Montenegro

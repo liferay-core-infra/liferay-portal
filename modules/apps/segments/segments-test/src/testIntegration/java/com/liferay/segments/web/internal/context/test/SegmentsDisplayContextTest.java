@@ -62,7 +62,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.Map;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -233,7 +233,7 @@ public class SegmentsDisplayContextTest {
 
 		Assert.assertTrue(
 			deleteURL.contains(
-				"param_javax.portlet.action=/segments/delete_segments_entry"));
+				"param_jakarta.portlet.action=/segments/delete_segments_entry"));
 		Assert.assertTrue(
 			deleteURL.contains(
 				"param_segmentsEntryId=" + segmentsEntry.getSegmentsEntryId()));

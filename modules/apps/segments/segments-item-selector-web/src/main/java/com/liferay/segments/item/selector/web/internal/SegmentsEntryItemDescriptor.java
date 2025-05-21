@@ -14,7 +14,7 @@ import com.liferay.segments.model.SegmentsEntry;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Stefan Tanasie

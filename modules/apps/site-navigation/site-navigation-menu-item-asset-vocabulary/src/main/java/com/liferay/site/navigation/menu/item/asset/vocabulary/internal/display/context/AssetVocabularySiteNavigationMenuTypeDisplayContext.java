@@ -35,9 +35,9 @@ import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 
 import java.util.Map;
 
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Lourdes Fernández Besada

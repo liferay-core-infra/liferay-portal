@@ -20,9 +20,9 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Provides utility methods for reading request parameters.

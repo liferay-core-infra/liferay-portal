@@ -16,10 +16,10 @@ import com.liferay.portal.search.document.Document;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletURL;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowState;
 
 import org.osgi.annotation.versioning.ProviderType;
 

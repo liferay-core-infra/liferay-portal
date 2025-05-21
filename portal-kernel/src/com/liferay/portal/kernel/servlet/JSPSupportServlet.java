@@ -8,9 +8,9 @@ package com.liferay.portal.kernel.servlet;
 import java.util.Collections;
 import java.util.Enumeration;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServlet;
 
 /**
  * @author Raymond Augé

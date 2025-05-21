@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * Provides a way to build a settings map for an {@link

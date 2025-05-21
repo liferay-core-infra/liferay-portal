@@ -19,10 +19,10 @@ import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Map;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletSession;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

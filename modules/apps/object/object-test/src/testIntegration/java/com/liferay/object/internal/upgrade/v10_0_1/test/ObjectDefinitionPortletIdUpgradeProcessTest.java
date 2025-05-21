@@ -38,7 +38,7 @@ import com.liferay.portal.upgrade.test.util.UpgradeTestUtil;
 
 import java.util.HashMap;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -93,7 +93,7 @@ public class ObjectDefinitionPortletIdUpgradeProcessTest {
 			).put(
 				"com.liferay.portlet.preferences-unique-per-layout", true
 			).put(
-				"javax.portlet.name", _oldPortletId
+				"jakarta.portlet.name", _oldPortletId
 			).build());
 
 		_objectDefinitionLocalService.addObjectDefinition(

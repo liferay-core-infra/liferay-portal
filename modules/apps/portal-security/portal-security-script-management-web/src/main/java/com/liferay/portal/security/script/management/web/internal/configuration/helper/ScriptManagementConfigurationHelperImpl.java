@@ -25,8 +25,8 @@ import java.io.IOException;
 
 import java.util.Map;
 
-import javax.portlet.PortletMode;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.WindowState;
 
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;

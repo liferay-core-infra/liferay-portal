@@ -207,9 +207,9 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.Feature;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.Feature;
 
 import org.hibernate.SessionFactory;
 

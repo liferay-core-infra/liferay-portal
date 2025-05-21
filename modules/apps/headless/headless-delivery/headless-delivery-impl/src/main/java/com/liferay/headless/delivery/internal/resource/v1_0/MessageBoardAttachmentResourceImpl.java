@@ -25,7 +25,7 @@ import com.liferay.portal.vulcan.pagination.Page;
 
 import java.util.Map;
 
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

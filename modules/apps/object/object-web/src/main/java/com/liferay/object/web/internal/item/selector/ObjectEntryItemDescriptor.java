@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Guilherme Camacho

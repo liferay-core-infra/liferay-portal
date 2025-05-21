@@ -7,9 +7,9 @@ package com.liferay.portal.vulcan.internal.multipart;
 
 import java.lang.reflect.Parameter;
 
-import javax.servlet.http.Part;
+import jakarta.servlet.http.Part;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 
 /**
  * @author Javier Gamarra

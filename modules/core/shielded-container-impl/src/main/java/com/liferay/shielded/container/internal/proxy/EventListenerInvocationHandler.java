@@ -10,8 +10,8 @@ import java.lang.reflect.Method;
 
 import java.util.EventObject;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Tina Tian

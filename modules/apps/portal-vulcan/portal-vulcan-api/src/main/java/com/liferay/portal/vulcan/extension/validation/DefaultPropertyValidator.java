@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import javax.validation.ValidationException;
+import jakarta.validation.ValidationException;
 
 /**
  * @author Carlos Correa

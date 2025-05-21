@@ -21,7 +21,7 @@ import java.sql.SQLFeatureNotSupportedException;
 
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import javax.sql.DataSource;
 

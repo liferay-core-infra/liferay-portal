@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.portlet.MutableRenderParameters;
+import jakarta.portlet.MutableRenderParameters;
 
 import org.junit.Assert;
 import org.junit.Before;

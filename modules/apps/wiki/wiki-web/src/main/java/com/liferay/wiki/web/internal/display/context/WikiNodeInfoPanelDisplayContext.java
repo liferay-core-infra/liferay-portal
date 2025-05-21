@@ -11,7 +11,7 @@ import com.liferay.wiki.web.internal.display.context.helper.WikiNodeInfoPanelReq
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Roberto Díaz

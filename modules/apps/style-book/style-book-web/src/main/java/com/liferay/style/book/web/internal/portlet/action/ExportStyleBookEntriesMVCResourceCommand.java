@@ -22,9 +22,9 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletException;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK,
+		"jakarta.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK,
 		"mvc.command.name=/style_book/export_style_book_entries"
 	},
 	service = MVCResourceCommand.class

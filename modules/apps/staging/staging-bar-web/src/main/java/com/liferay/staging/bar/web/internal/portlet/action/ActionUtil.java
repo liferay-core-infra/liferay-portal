@@ -14,8 +14,8 @@ import com.liferay.staging.bar.web.internal.portlet.constants.StagingBarPortletK
 
 import java.io.IOException;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 /**
  * @author Máté Thurzó

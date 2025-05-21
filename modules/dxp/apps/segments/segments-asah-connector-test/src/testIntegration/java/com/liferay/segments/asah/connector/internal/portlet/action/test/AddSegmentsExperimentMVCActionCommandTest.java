@@ -42,7 +42,7 @@ import com.liferay.segments.test.util.SegmentsTestUtil;
 
 import java.util.Collections;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

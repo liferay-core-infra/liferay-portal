@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.ForbiddenException;
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.ForbiddenException;
+import jakarta.ws.rs.core.Application;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;

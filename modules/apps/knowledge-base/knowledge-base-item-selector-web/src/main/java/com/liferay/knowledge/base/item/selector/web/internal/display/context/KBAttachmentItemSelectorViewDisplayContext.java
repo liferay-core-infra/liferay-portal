@@ -26,10 +26,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Locale;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Roberto Díaz

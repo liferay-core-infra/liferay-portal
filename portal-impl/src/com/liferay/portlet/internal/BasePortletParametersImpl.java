@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.portlet.MutablePortletParameters;
-import javax.portlet.PortletParameters;
+import jakarta.portlet.MutablePortletParameters;
+import jakarta.portlet.PortletParameters;
 
 /**
  * @author Neil Griffin

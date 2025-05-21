@@ -17,8 +17,8 @@ import com.liferay.portal.search.tuning.rankings.web.internal.util.RankingResult
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 /**
  * @author Wade Cao

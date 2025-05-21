@@ -16,10 +16,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PreferencesValidator;
-import javax.portlet.ReadOnlyException;
-import javax.portlet.ValidatorException;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PreferencesValidator;
+import jakarta.portlet.ReadOnlyException;
+import jakarta.portlet.ValidatorException;
 
 import org.springframework.util.Assert;
 

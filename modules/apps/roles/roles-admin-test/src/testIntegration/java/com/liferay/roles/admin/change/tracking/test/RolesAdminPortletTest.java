@@ -45,9 +45,9 @@ import com.liferay.roles.admin.constants.RolesAdminPortletKeys;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.Portlet;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;

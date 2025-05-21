@@ -8,7 +8,7 @@ package com.liferay.headless.discovery.internal.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Javier Gamarra

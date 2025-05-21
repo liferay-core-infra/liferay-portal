@@ -45,9 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -60,7 +60,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.wiki.configuration.WikiFileUploadConfiguration",
 	property = {
-		"javax.portlet.name=" + WikiPortletKeys.WIKI,
+		"jakarta.portlet.name=" + WikiPortletKeys.WIKI,
 		"mvc.command.name=/wiki/image_editor",
 		"mvc.command.name=/wiki/upload_page_attachment"
 	},

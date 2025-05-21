@@ -25,11 +25,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Roberto Díaz

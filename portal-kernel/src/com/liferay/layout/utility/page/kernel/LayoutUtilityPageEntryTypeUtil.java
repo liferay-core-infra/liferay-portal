@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Lourdes Fernández Besada

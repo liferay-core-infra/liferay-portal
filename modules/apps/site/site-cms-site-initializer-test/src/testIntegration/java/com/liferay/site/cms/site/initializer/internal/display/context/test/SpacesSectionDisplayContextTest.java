@@ -31,7 +31,7 @@ import com.liferay.portal.vulcan.pagination.Page;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

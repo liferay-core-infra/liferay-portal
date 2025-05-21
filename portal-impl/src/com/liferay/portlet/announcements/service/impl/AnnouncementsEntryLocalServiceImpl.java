@@ -76,7 +76,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * @author Brian Wing Shun Chan

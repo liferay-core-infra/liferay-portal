@@ -19,7 +19,7 @@ import com.liferay.portal.language.override.service.PLOEntryLocalService;
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Drew Brokke

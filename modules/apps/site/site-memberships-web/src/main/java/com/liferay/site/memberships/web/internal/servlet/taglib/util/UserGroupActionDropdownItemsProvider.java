@@ -22,7 +22,7 @@ import com.liferay.site.memberships.web.internal.display.context.SiteMemberships
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Diego Hu

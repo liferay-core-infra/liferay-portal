@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import java.util.Dictionary;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;

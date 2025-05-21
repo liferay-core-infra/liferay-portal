@@ -26,18 +26,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletSession;
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceURL;
-import javax.portlet.WindowState;
-import javax.portlet.WindowStateException;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceURL;
+import jakarta.portlet.WindowState;
+import jakarta.portlet.WindowStateException;
 
 /**
  * @author Shuyang Zhou

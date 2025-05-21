@@ -16,8 +16,8 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Collections;
 
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
+import jakarta.ws.rs.client.Invocation;
+import jakarta.ws.rs.client.WebTarget;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Jürgen KAppler

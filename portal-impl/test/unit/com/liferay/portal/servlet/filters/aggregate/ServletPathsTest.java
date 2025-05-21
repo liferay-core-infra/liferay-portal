@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Tom Wang

@@ -9,8 +9,8 @@ import com.liferay.portal.kernel.servlet.ProtectedPrincipal;
 
 import java.security.Principal;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.filter.RenderRequestWrapper;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.filter.RenderRequestWrapper;
 
 /**
  * @author Brian Wing Shun Chan

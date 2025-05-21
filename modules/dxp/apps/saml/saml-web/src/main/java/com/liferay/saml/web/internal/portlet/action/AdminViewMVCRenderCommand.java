@@ -24,11 +24,11 @@ import com.liferay.saml.web.internal.display.context.GeneralTabDefaultViewDispla
 
 import java.util.Map;
 
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.saml.runtime.configuration.SamlConfiguration",
 	property = {
-		"javax.portlet.name=" + SamlPortletKeys.SAML_ADMIN,
+		"jakarta.portlet.name=" + SamlPortletKeys.SAML_ADMIN,
 		"mvc.command.name=/", "mvc.command.name=/admin/view"
 	},
 	service = MVCRenderCommand.class

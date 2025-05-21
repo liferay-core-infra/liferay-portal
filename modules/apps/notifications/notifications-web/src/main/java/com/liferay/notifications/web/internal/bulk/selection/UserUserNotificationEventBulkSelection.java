@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 /**
  * @author Roberto Díaz

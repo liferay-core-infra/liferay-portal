@@ -7,7 +7,7 @@ package com.liferay.portal.kernel.servlet.taglib.ui;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Alicia Garcia

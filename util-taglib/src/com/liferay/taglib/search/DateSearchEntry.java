@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Julio Camarero

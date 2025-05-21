@@ -20,12 +20,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.ClientDataRequest;
-import javax.portlet.PortletException;
-import javax.portlet.RenderParameters;
+import jakarta.portlet.ClientDataRequest;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.RenderParameters;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 
 /**
  * @author Brian Wing Shun Chan

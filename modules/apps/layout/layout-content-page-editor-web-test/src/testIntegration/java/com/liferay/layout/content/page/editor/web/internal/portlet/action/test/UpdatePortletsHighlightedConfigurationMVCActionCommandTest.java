@@ -41,7 +41,7 @@ import com.liferay.portal.util.WebAppPool;
 
 import java.util.Set;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

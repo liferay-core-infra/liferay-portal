@@ -25,9 +25,9 @@ import com.liferay.wiki.service.WikiNodeService;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletException;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
+		"jakarta.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
 		"mvc.command.name=/wiki/import_pages"
 	},
 	service = MVCActionCommand.class

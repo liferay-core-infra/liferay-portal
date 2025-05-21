@@ -58,12 +58,12 @@ import com.liferay.taglib.security.PermissionsURLTag;
 
 import java.util.List;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.ResourceURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Adolfo Pérez

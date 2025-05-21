@@ -40,7 +40,7 @@ import com.liferay.template.service.TemplateEntryLocalService;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -49,7 +49,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Lourdes Fernández Besada
  */
 @Component(
-	property = "javax.portlet.name=" + TemplatePortletKeys.TEMPLATE,
+	property = "jakarta.portlet.name=" + TemplatePortletKeys.TEMPLATE,
 	service = PortletDataHandler.class
 )
 public class TemplatePortletDataHandler extends BasePortletDataHandler {

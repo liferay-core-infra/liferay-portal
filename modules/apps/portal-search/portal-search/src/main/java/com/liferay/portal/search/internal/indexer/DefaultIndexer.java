@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 /**
  * @author Michael C. Han

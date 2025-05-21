@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.portlet.toolbar.contributor.PortletToolbarContr
 
 import java.util.List;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * Provides an interface responsible for providing {@link

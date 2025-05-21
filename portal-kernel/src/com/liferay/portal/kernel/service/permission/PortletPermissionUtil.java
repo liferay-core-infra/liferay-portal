@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletMode;
+import jakarta.portlet.PortletMode;
 
 /**
  * @author Brian Wing Shun Chan

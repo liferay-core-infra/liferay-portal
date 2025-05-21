@@ -17,7 +17,7 @@ import com.liferay.site.navigation.constants.SiteNavigationMenuPortletKeys;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Eduardo García

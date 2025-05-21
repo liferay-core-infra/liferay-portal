@@ -15,10 +15,10 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Istvan Sajtos

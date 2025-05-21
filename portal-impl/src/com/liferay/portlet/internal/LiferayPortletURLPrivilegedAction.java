@@ -18,13 +18,13 @@ import java.lang.reflect.Constructor;
 
 import java.util.Map;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletModeException;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.WindowStateException;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletModeException;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.WindowStateException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

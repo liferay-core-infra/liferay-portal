@@ -27,10 +27,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.portlet.Portlet;
-import javax.portlet.PreferencesValidator;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PreferencesValidator;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.annotation.versioning.ProviderType;
 

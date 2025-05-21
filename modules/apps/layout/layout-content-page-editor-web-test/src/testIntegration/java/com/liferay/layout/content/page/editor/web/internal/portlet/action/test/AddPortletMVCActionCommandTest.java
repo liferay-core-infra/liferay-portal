@@ -50,8 +50,8 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Peter Shin

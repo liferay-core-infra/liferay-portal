@@ -19,7 +19,7 @@ import com.liferay.product.navigation.simulation.constants.ProductNavigationSimu
 
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -87,7 +87,7 @@ public class DevicePreviewPanelApp extends BaseJSPPanelApp {
 	private Language _language;
 
 	@Reference(
-		target = "(javax.portlet.name=" + ProductNavigationSimulationPortletKeys.PRODUCT_NAVIGATION_SIMULATION + ")"
+		target = "(jakarta.portlet.name=" + ProductNavigationSimulationPortletKeys.PRODUCT_NAVIGATION_SIMULATION + ")"
 	)
 	private Portlet _portlet;
 

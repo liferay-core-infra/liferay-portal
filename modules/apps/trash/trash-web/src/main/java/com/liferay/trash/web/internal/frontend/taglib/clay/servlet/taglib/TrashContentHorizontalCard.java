@@ -23,7 +23,7 @@ import com.liferay.trash.web.internal.servlet.taglib.util.TrashViewContentAction
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Pavel Savinov

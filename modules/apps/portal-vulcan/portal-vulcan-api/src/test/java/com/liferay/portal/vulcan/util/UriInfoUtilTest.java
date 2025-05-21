@@ -17,8 +17,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.net.URI;
 
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriInfo;
 
 import org.apache.cxf.jaxrs.impl.UriBuilderImpl;
 

@@ -38,7 +38,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -38,10 +38,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.ResourceURL;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.ResourceURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -54,7 +54,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + SocialActivitiesPortletKeys.SOCIAL_ACTIVITIES,
+		"jakarta.portlet.name=" + SocialActivitiesPortletKeys.SOCIAL_ACTIVITIES,
 		"mvc.command.name=/social_activities/rss"
 	},
 	service = MVCResourceCommand.class

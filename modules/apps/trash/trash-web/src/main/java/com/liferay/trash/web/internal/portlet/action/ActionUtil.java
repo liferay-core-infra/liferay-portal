@@ -12,7 +12,7 @@ import com.liferay.trash.service.TrashEntryLocalServiceUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ResourceRequest;
 
 /**
  * Provides a utility method to get Recycle Bin entries by row IDs from the

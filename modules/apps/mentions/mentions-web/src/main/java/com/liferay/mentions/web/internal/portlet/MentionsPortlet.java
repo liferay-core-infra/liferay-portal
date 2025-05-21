@@ -42,11 +42,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-import javax.portlet.Portlet;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -63,12 +63,12 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.display-category=category.hidden",
 		"com.liferay.portlet.icon=/icons/mentions.png",
-		"javax.portlet.display-name=Mentions",
-		"javax.portlet.expiration-cache=0",
-		"javax.portlet.name=" + MentionsPortletKeys.MENTIONS,
-		"javax.portlet.resource-bundle=content.Language",
-		"javax.portlet.security-role-ref=administrator",
-		"javax.portlet.version=3.0"
+		"jakarta.portlet.display-name=Mentions",
+		"jakarta.portlet.expiration-cache=0",
+		"jakarta.portlet.name=" + MentionsPortletKeys.MENTIONS,
+		"jakarta.portlet.resource-bundle=content.Language",
+		"jakarta.portlet.security-role-ref=administrator",
+		"jakarta.portlet.version=4.0"
 	},
 	service = Portlet.class
 )

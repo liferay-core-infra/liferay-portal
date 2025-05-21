@@ -11,9 +11,9 @@ import java.io.IOException;
 
 import java.util.Collection;
 
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletException;
 
-import javax.servlet.http.Part;
+import jakarta.servlet.http.Part;
 
 /**
  * @author Jiefeng Wu

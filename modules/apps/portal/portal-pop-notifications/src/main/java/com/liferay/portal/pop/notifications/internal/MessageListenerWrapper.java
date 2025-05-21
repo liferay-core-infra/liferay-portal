@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.util.ClassUtil;
 import java.util.List;
 import java.util.Objects;
 
-import javax.mail.Message;
+import jakarta.mail.Message;
 
 /**
  * @author Brian Wing Shun Chan

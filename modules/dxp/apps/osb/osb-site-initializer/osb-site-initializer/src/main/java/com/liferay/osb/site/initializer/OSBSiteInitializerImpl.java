@@ -17,7 +17,7 @@ import com.liferay.site.initializer.extender.SiteInitializerUtil;
 
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

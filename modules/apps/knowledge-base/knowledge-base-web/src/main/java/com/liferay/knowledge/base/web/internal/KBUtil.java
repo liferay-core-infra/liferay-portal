@@ -56,8 +56,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Roberto Díaz

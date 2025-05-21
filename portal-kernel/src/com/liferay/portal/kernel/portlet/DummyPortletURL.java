@@ -13,11 +13,11 @@ import java.io.Writer;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.portlet.MutableRenderParameters;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletURL;
-import javax.portlet.WindowState;
-import javax.portlet.annotations.PortletSerializable;
+import jakarta.portlet.MutableRenderParameters;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowState;
+import jakarta.portlet.annotations.PortletSerializable;
 
 /**
  * @author Brian Wing Shun Chan

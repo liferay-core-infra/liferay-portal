@@ -17,9 +17,9 @@ import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortletRequestDispatcher;
+import jakarta.portlet.PortletRequestDispatcher;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author David Arques

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.InternalServerErrorException;
 
 /**
  * @author Carolina Barbosa

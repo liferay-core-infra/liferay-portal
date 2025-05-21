@@ -7,8 +7,8 @@ package com.liferay.journal.util;
 
 import java.io.IOException;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 /**
  * @author Tom Wang

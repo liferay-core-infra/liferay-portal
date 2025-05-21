@@ -18,7 +18,7 @@ import java.text.DateFormat;
 
 import java.util.Date;
 
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ResourceURL;
 
 /**
  * @author Adolfo Pérez

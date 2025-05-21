@@ -13,9 +13,9 @@ import com.liferay.wiki.constants.WikiPortletKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -25,7 +25,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + WikiPortletKeys.WIKI_ADMIN, "path=/wiki/view"
+		"jakarta.portlet.name=" + WikiPortletKeys.WIKI_ADMIN, "path=/wiki/view"
 	},
 	service = PortletConfigurationIcon.class
 )

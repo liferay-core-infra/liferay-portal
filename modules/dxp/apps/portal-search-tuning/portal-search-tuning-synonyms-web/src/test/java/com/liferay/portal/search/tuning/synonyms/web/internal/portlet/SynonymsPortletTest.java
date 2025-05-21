@@ -19,12 +19,12 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 import org.junit.ClassRule;

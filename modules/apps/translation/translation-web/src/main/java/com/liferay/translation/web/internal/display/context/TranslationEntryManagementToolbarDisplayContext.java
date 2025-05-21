@@ -28,7 +28,7 @@ import com.liferay.translation.model.TranslationEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Adolfo Pérez

@@ -23,7 +23,7 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;

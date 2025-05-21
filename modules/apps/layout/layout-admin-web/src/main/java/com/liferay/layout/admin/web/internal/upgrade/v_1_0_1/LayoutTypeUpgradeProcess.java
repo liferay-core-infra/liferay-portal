@@ -27,7 +27,7 @@ import com.liferay.portlet.PortletPreferencesImpl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Alec Shay

@@ -11,9 +11,9 @@ import com.liferay.portlet.PortletAsyncListenerAdapter;
 
 import java.io.IOException;
 
-import javax.portlet.PortletAsyncContext;
+import jakarta.portlet.PortletAsyncContext;
 
-import javax.servlet.AsyncEvent;
+import jakarta.servlet.AsyncEvent;
 
 /**
  * @author Neil Griffin

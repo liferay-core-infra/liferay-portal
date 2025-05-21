@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

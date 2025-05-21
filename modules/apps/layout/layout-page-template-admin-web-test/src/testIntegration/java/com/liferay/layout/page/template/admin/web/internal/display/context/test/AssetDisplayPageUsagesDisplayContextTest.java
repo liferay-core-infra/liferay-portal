@@ -44,7 +44,7 @@ import com.liferay.portlet.test.MockLiferayPortletContext;
 import java.util.Date;
 import java.util.List;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.Assert;
 import org.junit.Before;

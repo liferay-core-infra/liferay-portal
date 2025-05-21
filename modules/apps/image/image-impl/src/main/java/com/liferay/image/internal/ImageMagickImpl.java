@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Future;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.im4java.process.ArrayListOutputConsumer;
 import org.im4java.process.ProcessEvent;

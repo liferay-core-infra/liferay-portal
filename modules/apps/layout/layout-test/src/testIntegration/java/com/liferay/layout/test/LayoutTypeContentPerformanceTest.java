@@ -50,7 +50,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.util.HashMap;
 import java.util.Locale;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.After;
 import org.junit.Assert;

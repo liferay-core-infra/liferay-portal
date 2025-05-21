@@ -66,7 +66,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.portlet.GenericPortlet;
+import jakarta.portlet.GenericPortlet;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -927,11 +927,11 @@ public class LayoutConverterTest {
 	private void _registerTestPortlet(String portletName) {
 		_serviceRegistrations.add(
 			_bundleContext.registerService(
-				javax.portlet.Portlet.class, new TestPortlet(),
+				jakarta.portlet.Portlet.class, new TestPortlet(),
 				HashMapDictionaryBuilder.put(
 					"com.liferay.portlet.instanceable", "true"
 				).put(
-					"javax.portlet.name", portletName
+					"jakarta.portlet.name", portletName
 				).build()));
 	}
 

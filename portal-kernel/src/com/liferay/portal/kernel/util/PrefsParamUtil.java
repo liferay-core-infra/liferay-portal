@@ -7,10 +7,10 @@ package com.liferay.portal.kernel.util;
 
 import java.util.Locale;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

@@ -8,9 +8,9 @@ package com.liferay.shielded.container.internal.proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 
 /**
  * @author Shuyang Zhou

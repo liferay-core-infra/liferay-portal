@@ -9,9 +9,9 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.ext.MessageBodyReader;
+import jakarta.ws.rs.ext.MessageBodyWriter;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

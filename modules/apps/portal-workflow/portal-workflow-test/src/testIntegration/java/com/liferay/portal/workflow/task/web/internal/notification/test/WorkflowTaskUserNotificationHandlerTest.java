@@ -46,10 +46,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -216,7 +216,7 @@ public class WorkflowTaskUserNotificationHandlerTest {
 	private UserNotificationEventLocalService
 		_userNotificationEventLocalService;
 
-	@Inject(filter = "javax.portlet.name=" + PortletKeys.MY_WORKFLOW_TASK)
+	@Inject(filter = "jakarta.portlet.name=" + PortletKeys.MY_WORKFLOW_TASK)
 	private UserNotificationHandler _userNotificationHandler;
 
 	@Inject

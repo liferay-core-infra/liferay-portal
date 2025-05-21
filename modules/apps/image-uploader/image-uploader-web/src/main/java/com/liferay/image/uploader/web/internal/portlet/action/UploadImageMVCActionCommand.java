@@ -61,9 +61,9 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -77,7 +77,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.document.library.configuration.DLConfiguration",
 	property = {
-		"javax.portlet.name=" + ImageUploaderPortletKeys.IMAGE_UPLOADER,
+		"jakarta.portlet.name=" + ImageUploaderPortletKeys.IMAGE_UPLOADER,
 		"mvc.command.name=/image_uploader/upload_image"
 	},
 	service = MVCActionCommand.class

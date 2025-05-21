@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

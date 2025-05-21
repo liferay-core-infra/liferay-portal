@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Brian Wing Shun Chan

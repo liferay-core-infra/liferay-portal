@@ -29,9 +29,9 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Sam Ziemer

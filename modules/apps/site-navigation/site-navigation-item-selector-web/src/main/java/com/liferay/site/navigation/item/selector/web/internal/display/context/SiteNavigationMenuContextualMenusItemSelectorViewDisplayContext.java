@@ -17,7 +17,7 @@ import com.liferay.site.navigation.item.selector.SiteNavigationMenuItemSelectorR
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Víctor Galán

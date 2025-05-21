@@ -30,7 +30,7 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
-import javax.servlet.Servlet;
+import jakarta.servlet.Servlet;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

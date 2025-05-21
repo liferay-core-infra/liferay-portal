@@ -13,11 +13,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletSession;
 
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
+import jakarta.servlet.http.HttpSessionBindingEvent;
+import jakarta.servlet.http.HttpSessionBindingListener;
 
 import org.springframework.mock.web.MockHttpSession;
 

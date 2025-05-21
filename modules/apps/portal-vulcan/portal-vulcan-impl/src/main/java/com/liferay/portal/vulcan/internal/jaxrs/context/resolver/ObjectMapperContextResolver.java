@@ -15,8 +15,8 @@ import io.swagger.v3.oas.models.OpenAPI;
 
 import java.util.Set;
 
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
+import jakarta.ws.rs.ext.ContextResolver;
+import jakarta.ws.rs.ext.Provider;
 
 /**
  * @author Javier Gamarra

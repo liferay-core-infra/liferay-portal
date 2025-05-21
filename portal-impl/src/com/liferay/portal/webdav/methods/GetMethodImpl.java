@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.webdav.methods.Method;
 
 import java.io.InputStream;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Brian Wing Shun Chan

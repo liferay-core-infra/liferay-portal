@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.Before;

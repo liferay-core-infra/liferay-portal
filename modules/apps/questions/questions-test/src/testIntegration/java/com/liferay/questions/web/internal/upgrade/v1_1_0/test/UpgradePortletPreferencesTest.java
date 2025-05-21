@@ -37,7 +37,7 @@ import com.liferay.questions.web.internal.constants.QuestionsPortletKeys;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;

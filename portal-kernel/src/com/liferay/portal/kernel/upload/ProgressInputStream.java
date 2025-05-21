@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletSession;
 
 /**
  * @author Jorge Ferrer

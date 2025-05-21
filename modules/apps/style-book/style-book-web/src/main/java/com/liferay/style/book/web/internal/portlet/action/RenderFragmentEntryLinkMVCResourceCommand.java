@@ -32,10 +32,10 @@ import com.liferay.style.book.constants.StyleBookPortletKeys;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -45,7 +45,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK,
+		"jakarta.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK,
 		"mvc.command.name=/style_book/render_fragment_entry_link"
 	},
 	service = MVCResourceCommand.class

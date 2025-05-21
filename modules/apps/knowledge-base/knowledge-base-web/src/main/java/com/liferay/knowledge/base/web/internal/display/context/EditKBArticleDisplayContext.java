@@ -53,9 +53,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletConfig;
+import jakarta.portlet.PortletConfig;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Adolfo Pérez

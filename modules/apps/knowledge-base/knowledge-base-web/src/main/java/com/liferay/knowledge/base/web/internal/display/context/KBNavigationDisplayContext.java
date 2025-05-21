@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Adolfo Pérez

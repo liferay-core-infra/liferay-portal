@@ -33,9 +33,9 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletMode;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.WindowState;
 
 import javax.xml.namespace.QName;
 

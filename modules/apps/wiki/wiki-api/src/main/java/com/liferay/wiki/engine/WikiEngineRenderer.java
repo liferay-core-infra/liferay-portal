@@ -11,7 +11,7 @@ import com.liferay.wiki.model.WikiPage;
 
 import java.util.Collection;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 import org.osgi.annotation.versioning.ProviderType;
 

@@ -25,9 +25,9 @@ import com.liferay.portlet.StrictPortletPreferencesImpl;
 
 import java.util.Objects;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Leonardo Barros

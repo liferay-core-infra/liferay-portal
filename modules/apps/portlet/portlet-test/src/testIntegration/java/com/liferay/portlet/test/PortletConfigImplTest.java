@@ -26,8 +26,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.portlet.GenericPortlet;
-import javax.portlet.PortletConfig;
+import jakarta.portlet.GenericPortlet;
+import jakarta.portlet.PortletConfig;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -108,11 +108,11 @@ public class PortletConfigImplTest {
 
 		_serviceRegistrations.add(
 			_bundleContext.registerService(
-				javax.portlet.Portlet.class, new TestPortlet(),
+				jakarta.portlet.Portlet.class, new TestPortlet(),
 				HashMapDictionaryBuilder.put(
-					"javax.portlet.name", portletId
+					"jakarta.portlet.name", portletId
 				).put(
-					"javax.portlet.resource-bundle", resourceBundle
+					"jakarta.portlet.resource-bundle", resourceBundle
 				).build()));
 
 		Portlet portlet = PortletLocalServiceUtil.getPortletById(portletId);

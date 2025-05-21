@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.function.Function;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 

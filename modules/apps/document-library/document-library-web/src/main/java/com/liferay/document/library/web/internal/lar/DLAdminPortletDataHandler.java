@@ -47,7 +47,7 @@ import com.liferay.portlet.documentlibrary.constants.DLConstants;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -62,7 +62,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Gergely Mathe
  */
 @Component(
-	property = "javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY_ADMIN,
+	property = "jakarta.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY_ADMIN,
 	service = PortletDataHandler.class
 )
 public class DLAdminPortletDataHandler extends BasePortletDataHandler {

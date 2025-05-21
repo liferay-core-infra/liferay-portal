@@ -12,7 +12,7 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

@@ -16,7 +16,7 @@ import com.liferay.portal.vulcan.resource.locator.ResourceLocatorFactory;
 
 import java.lang.reflect.Method;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;

@@ -20,7 +20,7 @@ import com.liferay.portal.remote.cors.internal.CORSSupport;
 import java.util.Dictionary;
 import java.util.Map;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;

@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Drew Brokke

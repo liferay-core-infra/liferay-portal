@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Before;
 

@@ -26,8 +26,8 @@ import com.liferay.template.web.internal.display.context.WidgetTemplatesEditDDMT
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.dynamic.data.mapping.configuration.DDMWebConfiguration",
 	property = {
-		"javax.portlet.name=" + TemplatePortletKeys.TEMPLATE,
+		"jakarta.portlet.name=" + TemplatePortletKeys.TEMPLATE,
 		"mvc.command.name=/template/edit_ddm_template_properties"
 	},
 	service = MVCRenderCommand.class

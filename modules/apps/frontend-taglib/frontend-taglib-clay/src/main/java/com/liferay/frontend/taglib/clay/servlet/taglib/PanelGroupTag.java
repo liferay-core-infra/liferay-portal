@@ -10,7 +10,7 @@ import com.liferay.frontend.taglib.clay.internal.servlet.taglib.BaseContainerTag
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * @author Eduardo Allegrini

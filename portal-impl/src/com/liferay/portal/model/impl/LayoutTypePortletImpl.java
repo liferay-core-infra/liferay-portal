@@ -72,7 +72,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Brian Wing Shun Chan

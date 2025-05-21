@@ -7,8 +7,8 @@ package com.liferay.frontend.taglib.dynamic.section;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Matthew Tambara

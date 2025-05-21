@@ -22,8 +22,8 @@ import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Objects;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.ReadOnlyException;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.ReadOnlyException;
 
 import org.osgi.framework.Constants;
 import org.osgi.service.cm.Configuration;

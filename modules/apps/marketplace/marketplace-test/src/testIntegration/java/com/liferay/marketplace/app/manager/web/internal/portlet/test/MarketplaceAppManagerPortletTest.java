@@ -31,9 +31,9 @@ import java.util.Dictionary;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.Portlet;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.Portlet;
 
 import org.junit.After;
 import org.junit.Assert;

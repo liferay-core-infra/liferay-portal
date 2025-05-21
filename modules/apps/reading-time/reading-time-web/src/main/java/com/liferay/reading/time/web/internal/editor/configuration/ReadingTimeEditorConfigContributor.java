@@ -16,7 +16,7 @@ import com.liferay.reading.time.web.internal.constants.ReadingTimePortletKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 

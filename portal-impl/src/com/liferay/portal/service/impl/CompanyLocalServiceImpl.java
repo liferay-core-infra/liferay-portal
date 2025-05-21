@@ -156,8 +156,8 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;

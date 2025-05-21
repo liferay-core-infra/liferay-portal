@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Leonardo Barros

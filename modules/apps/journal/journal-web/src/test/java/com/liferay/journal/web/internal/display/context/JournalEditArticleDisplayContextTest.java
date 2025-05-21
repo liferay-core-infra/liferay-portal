@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;

@@ -9,7 +9,7 @@ import com.liferay.site.item.selector.display.context.SitesItemSelectorViewDispl
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 /**
  * @author Alejandro Tardín

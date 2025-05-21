@@ -13,9 +13,9 @@ import com.liferay.portlet.internal.PortletContextImpl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletContext;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Michael C. Han

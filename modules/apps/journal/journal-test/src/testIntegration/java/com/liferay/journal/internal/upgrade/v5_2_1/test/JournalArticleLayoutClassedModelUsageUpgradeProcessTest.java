@@ -65,7 +65,7 @@ import com.liferay.portal.upgrade.test.util.UpgradeTestUtil;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.After;
 import org.junit.Assert;

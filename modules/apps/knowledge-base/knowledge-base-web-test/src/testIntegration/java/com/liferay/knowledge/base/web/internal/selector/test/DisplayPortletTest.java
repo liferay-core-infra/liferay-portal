@@ -37,7 +37,7 @@ import com.liferay.portlet.test.MockLiferayPortletContext;
 
 import java.util.Arrays;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -233,7 +233,7 @@ public class DisplayPortletTest {
 	private Company _company;
 
 	@Inject(
-		filter = "javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY
+		filter = "jakarta.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY
 	)
 	private Portlet _displayPortlet;
 

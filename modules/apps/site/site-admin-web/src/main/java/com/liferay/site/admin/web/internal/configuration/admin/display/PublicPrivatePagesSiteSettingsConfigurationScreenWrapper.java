@@ -20,8 +20,8 @@ import com.liferay.site.settings.configuration.admin.display.SiteSettingsConfigu
 
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

@@ -10,7 +10,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataException;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Máté Thurzó

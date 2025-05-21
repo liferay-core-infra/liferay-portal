@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ResourceRequest;
 
 /**
  * @author André de Oliveira

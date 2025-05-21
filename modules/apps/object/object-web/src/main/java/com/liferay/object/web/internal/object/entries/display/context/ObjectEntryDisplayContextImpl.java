@@ -132,11 +132,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Marco Leo

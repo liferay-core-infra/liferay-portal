@@ -31,7 +31,7 @@ import com.liferay.portal.reports.engine.console.jasper.internal.fill.manager.Xm
 import java.util.EnumMap;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;

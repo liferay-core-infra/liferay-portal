@@ -49,11 +49,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Marco Leo

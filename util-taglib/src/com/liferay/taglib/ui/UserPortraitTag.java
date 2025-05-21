@@ -21,8 +21,8 @@ import com.liferay.taglib.util.IncludeTag;
 
 import java.util.function.Supplier;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspWriter;
 
 /**
  * @author Eudaldo Alonso

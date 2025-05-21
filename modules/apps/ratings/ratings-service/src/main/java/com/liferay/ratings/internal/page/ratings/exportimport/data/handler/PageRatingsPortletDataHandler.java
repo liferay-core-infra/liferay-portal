@@ -36,7 +36,7 @@ import com.liferay.ratings.page.ratings.constants.PageRatingsPortletKeys;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Gergely Mathe
  */
 @Component(
-	property = "javax.portlet.name=" + PageRatingsPortletKeys.PAGE_RATINGS,
+	property = "jakarta.portlet.name=" + PageRatingsPortletKeys.PAGE_RATINGS,
 	service = PortletDataHandler.class
 )
 public class PageRatingsPortletDataHandler extends BasePortletDataHandler {

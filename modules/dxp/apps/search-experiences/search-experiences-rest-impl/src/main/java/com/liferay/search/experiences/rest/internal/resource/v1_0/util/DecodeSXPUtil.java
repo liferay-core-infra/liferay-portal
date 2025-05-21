@@ -13,7 +13,7 @@ import com.liferay.search.experiences.rest.dto.v1_0.SXPElement;
 
 import java.net.URLDecoder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * @author Gustavo Lima

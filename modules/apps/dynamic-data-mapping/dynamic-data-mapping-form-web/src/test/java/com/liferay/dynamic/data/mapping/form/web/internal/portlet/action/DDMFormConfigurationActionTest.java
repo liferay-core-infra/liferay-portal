@@ -20,7 +20,7 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.PortletConfig;
+import jakarta.portlet.PortletConfig;
 
 import org.junit.Assert;
 import org.junit.Before;

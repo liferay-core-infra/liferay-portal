@@ -11,8 +11,8 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 /**
  * @author Brian Wing Shun Chan

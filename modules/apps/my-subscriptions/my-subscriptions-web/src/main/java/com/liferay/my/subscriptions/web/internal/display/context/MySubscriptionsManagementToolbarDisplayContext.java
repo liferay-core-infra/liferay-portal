@@ -14,7 +14,7 @@ import com.liferay.subscription.service.SubscriptionLocalServiceUtil;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Alejandro Tardín

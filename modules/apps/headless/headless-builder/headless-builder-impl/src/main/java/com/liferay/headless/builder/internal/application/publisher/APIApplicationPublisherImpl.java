@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

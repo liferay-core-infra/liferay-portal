@@ -10,8 +10,8 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.osgi.annotation.versioning.ProviderType;
 

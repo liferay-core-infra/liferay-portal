@@ -40,10 +40,10 @@ import com.liferay.taglib.security.PermissionsURLTag;
 
 import java.util.Objects;
 
-import javax.portlet.ActionURL;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ActionURL;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Rubén Pulido

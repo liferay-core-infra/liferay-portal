@@ -16,8 +16,8 @@ import com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil;
 
 import java.util.Collection;
 
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Brian Wing Shun Chan

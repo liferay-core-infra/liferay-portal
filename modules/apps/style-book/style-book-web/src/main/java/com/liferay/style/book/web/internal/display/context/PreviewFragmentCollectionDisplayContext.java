@@ -26,9 +26,9 @@ import com.liferay.style.book.web.internal.constants.StyleBookWebKeys;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Rubén Pulido

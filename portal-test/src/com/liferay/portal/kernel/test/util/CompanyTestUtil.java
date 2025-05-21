@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Manuel de la Peña

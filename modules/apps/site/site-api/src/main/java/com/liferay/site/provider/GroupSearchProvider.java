@@ -28,7 +28,7 @@ import com.liferay.site.search.GroupSearch;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Julio Camarero

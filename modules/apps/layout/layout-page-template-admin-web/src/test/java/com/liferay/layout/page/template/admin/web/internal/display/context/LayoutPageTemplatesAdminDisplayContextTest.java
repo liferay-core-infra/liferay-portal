@@ -24,7 +24,7 @@ import com.liferay.staging.StagingGroupHelperUtil;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;

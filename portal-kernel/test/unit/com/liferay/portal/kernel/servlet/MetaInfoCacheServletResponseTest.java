@@ -27,8 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.Cookie;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

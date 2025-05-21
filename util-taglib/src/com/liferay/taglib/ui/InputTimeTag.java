@@ -9,7 +9,7 @@ import com.liferay.taglib.util.IncludeTag;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

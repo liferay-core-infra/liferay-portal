@@ -102,9 +102,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.portlet.GenericPortlet;
-import javax.portlet.Portlet;
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.GenericPortlet;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -1551,7 +1551,7 @@ public class PageTemplatesImporterTest {
 				HashMapDictionaryBuilder.put(
 					"com.liferay.portlet.instanceable", "true"
 				).put(
-					"javax.portlet.name", portletId
+					"jakarta.portlet.name", portletId
 				).build()));
 	}
 

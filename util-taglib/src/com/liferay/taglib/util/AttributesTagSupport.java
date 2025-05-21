@@ -10,8 +10,8 @@ import com.liferay.petra.string.StringPool;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.tagext.DynamicAttributes;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.tagext.DynamicAttributes;
 
 /**
  * @author Eduardo Lundgren

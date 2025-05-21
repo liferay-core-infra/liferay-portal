@@ -23,7 +23,7 @@ import com.liferay.template.constants.TemplatePortletKeys;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Lourdes Fernández Besada

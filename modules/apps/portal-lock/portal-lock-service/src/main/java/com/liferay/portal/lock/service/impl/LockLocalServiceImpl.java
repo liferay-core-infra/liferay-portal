@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.LockAcquisitionException;

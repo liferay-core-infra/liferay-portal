@@ -12,7 +12,7 @@ import com.liferay.segments.criteria.contributor.SegmentsCriteriaContributor;
 
 import java.util.List;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Eduardo García

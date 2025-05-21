@@ -34,7 +34,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

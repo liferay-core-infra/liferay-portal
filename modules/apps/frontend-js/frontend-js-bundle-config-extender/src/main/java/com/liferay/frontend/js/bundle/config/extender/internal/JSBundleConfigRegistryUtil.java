@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Dictionary;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

@@ -36,7 +36,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

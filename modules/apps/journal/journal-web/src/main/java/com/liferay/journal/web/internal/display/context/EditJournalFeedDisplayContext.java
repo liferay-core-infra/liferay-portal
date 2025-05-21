@@ -44,10 +44,10 @@ import com.liferay.rss.util.RSSUtil;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.ResourceURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.ResourceURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Lourdes Fernández Besada

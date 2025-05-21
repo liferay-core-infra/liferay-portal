@@ -25,8 +25,8 @@ import com.liferay.portal.kernel.util.Portal;
 
 import java.io.File;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + FragmentPortletKeys.FRAGMENT,
+		"jakarta.portlet.name=" + FragmentPortletKeys.FRAGMENT,
 		"mvc.command.name=/fragment/edit_fragment_entry"
 	},
 	service = MVCActionCommand.class

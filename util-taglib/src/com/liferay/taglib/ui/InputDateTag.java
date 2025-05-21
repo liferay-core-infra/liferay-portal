@@ -11,7 +11,7 @@ import com.liferay.taglib.BaseValidatorTagSupport;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

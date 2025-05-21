@@ -21,7 +21,7 @@ import com.liferay.segments.model.SegmentsExperience;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  * @author Jürgen Kappler

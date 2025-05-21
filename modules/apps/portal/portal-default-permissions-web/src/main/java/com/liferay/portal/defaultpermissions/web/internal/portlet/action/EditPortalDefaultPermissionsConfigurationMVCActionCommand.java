@@ -30,9 +30,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import javax.portlet.ActionParameters;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionParameters;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=com_liferay_portlet_configuration_web_portlet_PortletConfigurationPortlet",
+		"jakarta.portlet.name=com_liferay_portlet_configuration_web_portlet_PortletConfigurationPortlet",
 		"mvc.command.name=/configuration/edit_portal_default_permissions_configuration"
 	},
 	service = MVCActionCommand.class

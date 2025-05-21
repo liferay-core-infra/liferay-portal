@@ -14,7 +14,7 @@ import com.liferay.user.groups.admin.constants.UserGroupsAdminPortletKeys;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Máté Thurzó
  */
 @Component(
-	property = "javax.portlet.name=" + UserGroupsAdminPortletKeys.USER_GROUPS_ADMIN,
+	property = "jakarta.portlet.name=" + UserGroupsAdminPortletKeys.USER_GROUPS_ADMIN,
 	service = ExportImportPortletPreferencesProcessor.class
 )
 public class UserGroupsAdminExportImportPortletPreferencesProcessor

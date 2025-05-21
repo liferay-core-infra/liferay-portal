@@ -20,7 +20,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Eduardo García

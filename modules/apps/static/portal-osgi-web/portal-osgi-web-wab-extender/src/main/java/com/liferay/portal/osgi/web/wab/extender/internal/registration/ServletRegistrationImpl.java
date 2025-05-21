@@ -11,10 +11,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.Servlet;
-import javax.servlet.ServletRegistration;
-import javax.servlet.ServletSecurityElement;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletRegistration;
+import jakarta.servlet.ServletSecurityElement;
 
 /**
  * @author Juan González

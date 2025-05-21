@@ -36,7 +36,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;

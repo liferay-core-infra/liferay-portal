@@ -26,7 +26,7 @@ import com.liferay.portal.util.PropsUtil;
 
 import java.util.Objects;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.After;
 import org.junit.AfterClass;

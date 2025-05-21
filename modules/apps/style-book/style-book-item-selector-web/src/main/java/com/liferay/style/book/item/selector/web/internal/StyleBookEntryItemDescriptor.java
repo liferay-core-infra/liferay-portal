@@ -16,7 +16,7 @@ import com.liferay.style.book.model.StyleBookEntry;
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Eudaldo Alonso

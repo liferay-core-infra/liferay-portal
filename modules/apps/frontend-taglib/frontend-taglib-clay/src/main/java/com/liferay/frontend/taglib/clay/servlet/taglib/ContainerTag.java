@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Set;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * @author Chema Balsas

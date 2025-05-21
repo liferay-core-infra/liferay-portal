@@ -33,12 +33,12 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -136,7 +136,7 @@ public class ActionRequestPortletContainerTest
 		setUpPortlet(
 			testPortlet,
 			HashMapDictionaryBuilder.<String, Object>put(
-				"javax.portlet.init-param.check-auth-token",
+				"jakarta.portlet.init-param.check-auth-token",
 				Boolean.FALSE.toString()
 			).build(),
 			TEST_PORTLET_ID);

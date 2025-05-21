@@ -15,10 +15,10 @@ import java.io.PrintWriter;
 
 import java.util.Locale;
 
-import javax.portlet.CacheControl;
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.WindowState;
+import jakarta.portlet.CacheControl;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.WindowState;
 
 /**
  * @author Brian Wing Shun Chan

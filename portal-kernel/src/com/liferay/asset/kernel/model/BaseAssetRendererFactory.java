@@ -27,8 +27,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletURL;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowState;
 
 /**
  * @author Jorge Ferrer

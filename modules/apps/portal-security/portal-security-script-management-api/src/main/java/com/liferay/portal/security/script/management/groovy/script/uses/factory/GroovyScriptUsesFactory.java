@@ -9,7 +9,7 @@ import com.liferay.portal.security.script.management.groovy.script.use.GroovyScr
 
 import java.util.List;
 
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ResourceRequest;
 
 /**
  * @author Feliphe Marinho

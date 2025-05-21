@@ -21,7 +21,7 @@ import com.liferay.site.teams.web.internal.constants.SiteTeamsPortletKeys;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Akos Thurzo
  */
 @Component(
-	property = "javax.portlet.name=" + SiteTeamsPortletKeys.SITE_TEAMS,
+	property = "jakarta.portlet.name=" + SiteTeamsPortletKeys.SITE_TEAMS,
 	service = PortletDataHandler.class
 )
 public class SiteTeamsPortletDataHandler extends BasePortletDataHandler {

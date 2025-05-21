@@ -64,12 +64,12 @@ import com.liferay.site.initializer.SiteInitializerRegistry;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

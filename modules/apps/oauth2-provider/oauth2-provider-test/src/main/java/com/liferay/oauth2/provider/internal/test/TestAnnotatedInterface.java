@@ -11,8 +11,8 @@ import com.liferay.oauth2.provider.scope.RequiresScope;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
 /**
  * @author Carlos Sierra Andrés

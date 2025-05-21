@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.portlet.PortalContext;
-import javax.portlet.PortletMode;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortalContext;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.WindowState;
 
 /**
  * @author Brian Wing Shun Chan

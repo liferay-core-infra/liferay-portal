@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

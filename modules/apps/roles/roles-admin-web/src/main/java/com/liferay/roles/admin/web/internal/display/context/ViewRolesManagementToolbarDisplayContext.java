@@ -34,11 +34,11 @@ import com.liferay.roles.admin.web.internal.search.RoleChecker;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Pei-Jung Lan

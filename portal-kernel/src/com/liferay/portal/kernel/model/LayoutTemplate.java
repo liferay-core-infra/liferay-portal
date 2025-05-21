@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

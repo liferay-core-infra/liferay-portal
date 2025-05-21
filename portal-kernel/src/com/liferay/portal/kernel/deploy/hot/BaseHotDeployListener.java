@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.util.ProxyFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

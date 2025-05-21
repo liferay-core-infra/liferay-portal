@@ -29,7 +29,7 @@ import com.liferay.portal.service.permission.LayoutPrototypePermissionUtil;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

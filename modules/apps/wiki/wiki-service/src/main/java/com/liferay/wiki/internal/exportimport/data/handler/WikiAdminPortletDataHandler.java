@@ -32,7 +32,7 @@ import com.liferay.wiki.service.WikiPageLocalService;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -48,7 +48,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Gergely Mathe
  */
 @Component(
-	property = "javax.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
+	property = "jakarta.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
 	service = PortletDataHandler.class
 )
 public class WikiAdminPortletDataHandler extends BasePortletDataHandler {

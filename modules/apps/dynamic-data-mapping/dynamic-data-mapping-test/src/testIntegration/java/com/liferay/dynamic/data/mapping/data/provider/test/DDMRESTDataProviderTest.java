@@ -55,7 +55,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.List;
 import java.util.Locale;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
 import org.junit.After;
 import org.junit.AfterClass;

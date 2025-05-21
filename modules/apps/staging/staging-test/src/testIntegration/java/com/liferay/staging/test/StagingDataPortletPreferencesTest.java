@@ -50,8 +50,8 @@ import com.liferay.wiki.test.util.WikiTestUtil;
 
 import java.util.Map;
 
-import javax.portlet.Portlet;
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -100,7 +100,7 @@ public class StagingDataPortletPreferencesTest
 			ServiceTrackerFactory.open(
 				bundle.getBundleContext(),
 				StringBundler.concat(
-					"(javax.portlet.name=", DDLPortletKeys.DYNAMIC_DATA_LISTS,
+					"(jakarta.portlet.name=", DDLPortletKeys.DYNAMIC_DATA_LISTS,
 					")"),
 				null);
 

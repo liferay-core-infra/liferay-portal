@@ -30,10 +30,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 

@@ -13,7 +13,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.PortletMode;
+import jakarta.portlet.PortletMode;
 
 /**
  * @author Brian Wing Shun Chan

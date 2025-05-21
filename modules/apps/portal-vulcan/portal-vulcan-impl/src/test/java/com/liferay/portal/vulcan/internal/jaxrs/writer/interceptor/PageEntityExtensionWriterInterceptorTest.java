@@ -23,10 +23,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.Providers;
-import javax.ws.rs.ext.WriterInterceptorContext;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.ext.Providers;
+import jakarta.ws.rs.ext.WriterInterceptorContext;
 
 import org.junit.Assert;
 import org.junit.Before;

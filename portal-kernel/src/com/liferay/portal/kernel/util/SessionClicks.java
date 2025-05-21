@@ -15,8 +15,8 @@ import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import java.util.ConcurrentModificationException;
 import java.util.Enumeration;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan

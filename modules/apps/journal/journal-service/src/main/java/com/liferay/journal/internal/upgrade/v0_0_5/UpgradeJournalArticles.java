@@ -33,7 +33,7 @@ import java.sql.ResultSet;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Eudaldo Alonso

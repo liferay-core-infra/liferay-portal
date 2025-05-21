@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Gabriel Albuquerque

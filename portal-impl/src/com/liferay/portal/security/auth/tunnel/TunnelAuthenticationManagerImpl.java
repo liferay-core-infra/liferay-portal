@@ -32,7 +32,7 @@ import java.util.Objects;
 
 import javax.crypto.spec.SecretKeySpec;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Tomas Polesovsky

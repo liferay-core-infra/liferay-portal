@@ -67,7 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.ws.rs.ServerErrorException;
+import jakarta.ws.rs.ServerErrorException;
 
 /**
  * @author Marco Leo

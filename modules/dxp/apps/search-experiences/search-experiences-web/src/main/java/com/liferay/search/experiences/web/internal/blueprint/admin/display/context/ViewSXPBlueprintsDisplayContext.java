@@ -21,10 +21,10 @@ import com.liferay.search.experiences.web.internal.display.context.helper.SXPReq
 import java.util.Arrays;
 import java.util.List;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Kevin Tan

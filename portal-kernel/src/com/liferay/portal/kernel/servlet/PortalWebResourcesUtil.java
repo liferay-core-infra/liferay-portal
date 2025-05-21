@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.BundleContext;
 

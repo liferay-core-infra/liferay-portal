@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;

@@ -8,7 +8,7 @@ package com.liferay.portal.vulcan.dto.converter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  * @author Rubén Pulido

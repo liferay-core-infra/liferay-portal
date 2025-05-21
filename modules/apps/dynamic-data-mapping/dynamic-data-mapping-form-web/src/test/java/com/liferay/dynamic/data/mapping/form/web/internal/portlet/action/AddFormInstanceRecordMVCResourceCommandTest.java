@@ -30,7 +30,7 @@ import java.io.InputStream;
 
 import java.util.Objects;
 
-import javax.portlet.ResourceRequest;
+import jakarta.portlet.ResourceRequest;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;

@@ -7,8 +7,8 @@ package com.liferay.portlet.internal;
 
 import java.util.Map;
 
-import javax.portlet.MutableResourceParameters;
-import javax.portlet.ResourceParameters;
+import jakarta.portlet.MutableResourceParameters;
+import jakarta.portlet.ResourceParameters;
 
 /**
  * @author Neil Griffin

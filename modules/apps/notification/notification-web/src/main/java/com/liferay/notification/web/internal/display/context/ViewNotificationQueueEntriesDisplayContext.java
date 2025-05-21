@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Paulo Albuquerque

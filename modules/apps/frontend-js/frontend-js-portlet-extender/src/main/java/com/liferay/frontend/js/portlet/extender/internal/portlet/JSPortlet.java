@@ -29,9 +29,9 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.osgi.service.cm.ManagedService;
 

@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Arrays;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + PluginsAdminPortletKeys.PLUGINS_ADMIN,
+		"jakarta.portlet.name=" + PluginsAdminPortletKeys.PLUGINS_ADMIN,
 		"mvc.command.name=/plugins_admin/edit_plugin"
 	},
 	service = MVCActionCommand.class

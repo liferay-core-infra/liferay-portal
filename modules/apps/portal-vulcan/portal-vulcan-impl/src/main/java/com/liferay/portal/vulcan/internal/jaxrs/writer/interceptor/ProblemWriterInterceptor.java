@@ -11,9 +11,9 @@ import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 
 import java.io.IOException;
 
-import javax.ws.rs.ext.Provider;
-import javax.ws.rs.ext.WriterInterceptor;
-import javax.ws.rs.ext.WriterInterceptorContext;
+import jakarta.ws.rs.ext.Provider;
+import jakarta.ws.rs.ext.WriterInterceptor;
+import jakarta.ws.rs.ext.WriterInterceptorContext;
 
 /**
  * @author Carlos Correa

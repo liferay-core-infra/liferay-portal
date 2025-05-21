@@ -18,9 +18,9 @@ import com.liferay.style.book.constants.StyleBookPortletKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK, "path=-",
+		"jakarta.portlet.name=" + StyleBookPortletKeys.STYLE_BOOK, "path=-",
 		"path=/style_books", "path=/style_books/style_books"
 	},
 	service = PortletConfigurationIcon.class

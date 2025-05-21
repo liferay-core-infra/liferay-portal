@@ -83,7 +83,7 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

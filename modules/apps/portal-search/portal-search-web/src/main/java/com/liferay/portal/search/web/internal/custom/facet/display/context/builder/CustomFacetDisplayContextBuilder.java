@@ -44,7 +44,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Wade Cao

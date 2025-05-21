@@ -58,12 +58,12 @@ import com.liferay.subscription.test.util.BaseSubscriptionLocalizedContentTestCa
 import java.util.Locale;
 import java.util.Map;
 
-import javax.mail.Session;
-import javax.mail.internet.InternetHeaders;
+import jakarta.mail.Session;
+import jakarta.mail.internet.InternetHeaders;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;

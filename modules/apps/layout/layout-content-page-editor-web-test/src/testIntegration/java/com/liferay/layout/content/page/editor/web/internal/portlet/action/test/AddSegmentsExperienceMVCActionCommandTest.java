@@ -60,9 +60,9 @@ import com.liferay.segments.test.util.SegmentsTestUtil;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.After;
 import org.junit.Assert;

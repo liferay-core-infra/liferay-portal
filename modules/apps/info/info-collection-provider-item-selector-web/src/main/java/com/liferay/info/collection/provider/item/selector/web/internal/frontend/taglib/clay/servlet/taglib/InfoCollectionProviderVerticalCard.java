@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Eudaldo Alonso

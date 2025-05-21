@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -540,7 +540,7 @@ public abstract class BasePortletDataHandlerTestCase {
 				portletDataHandlerServiceReferences =
 					bundleContext.getServiceReferences(
 						PortletDataHandler.class,
-						"(javax.portlet.name=" + portletId + ")");
+						"(jakarta.portlet.name=" + portletId + ")");
 
 			Iterator<ServiceReference<PortletDataHandler>> iterator =
 				portletDataHandlerServiceReferences.iterator();

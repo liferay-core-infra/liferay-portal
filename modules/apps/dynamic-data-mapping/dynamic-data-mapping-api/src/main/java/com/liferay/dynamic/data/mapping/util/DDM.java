@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Eduardo Lundgren

@@ -144,7 +144,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Provides the local service for accessing, adding, deleting, exporting,

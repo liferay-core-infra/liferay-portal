@@ -73,7 +73,7 @@ import com.liferay.template.test.util.TemplateTestUtil;
 
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;

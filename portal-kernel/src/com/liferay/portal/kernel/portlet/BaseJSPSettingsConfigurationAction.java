@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Iván Zaera

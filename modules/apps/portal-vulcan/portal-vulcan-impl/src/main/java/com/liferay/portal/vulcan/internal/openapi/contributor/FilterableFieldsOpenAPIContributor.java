@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import javax.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedHashMap;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

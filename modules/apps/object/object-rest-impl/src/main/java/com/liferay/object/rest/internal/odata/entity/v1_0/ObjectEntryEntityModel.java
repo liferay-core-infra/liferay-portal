@@ -40,7 +40,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 
 /**
  * @author Javier de Arcos

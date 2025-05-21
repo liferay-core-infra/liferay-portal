@@ -46,8 +46,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.PortletException;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.PortletException;
 
 import org.junit.Assert;
 import org.junit.Before;

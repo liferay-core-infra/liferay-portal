@@ -31,9 +31,9 @@ import com.liferay.site.navigation.site.map.web.internal.configuration.SiteNavig
 
 import java.util.List;
 
-import javax.portlet.RenderResponse;
+import jakarta.portlet.RenderResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Juergen Kappler

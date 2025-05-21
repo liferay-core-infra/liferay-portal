@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.portlet.PortletParameterUtil;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -11,8 +11,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.InternetHeaders;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.InternetHeaders;
 
 /**
  * @author Brian Wing Shun Chan

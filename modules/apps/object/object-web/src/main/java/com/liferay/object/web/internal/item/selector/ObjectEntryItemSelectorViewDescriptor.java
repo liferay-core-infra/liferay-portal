@@ -41,10 +41,10 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.ArrayList;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Guilherme Camacho

@@ -26,11 +26,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Map;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + DDMPortletKeys.DYNAMIC_DATA_MAPPING,
+		"jakarta.portlet.name=" + DDMPortletKeys.DYNAMIC_DATA_MAPPING,
 		"mvc.command.name=/dynamic_data_mapping/render_structure_field"
 	},
 	service = MVCResourceCommand.class

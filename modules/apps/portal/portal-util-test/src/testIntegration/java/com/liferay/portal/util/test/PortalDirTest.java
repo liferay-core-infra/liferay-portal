@@ -15,7 +15,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

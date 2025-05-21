@@ -41,7 +41,7 @@ import java.net.URL;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

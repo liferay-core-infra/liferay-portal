@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;

@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 
 import java.util.Properties;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Jorge Ferrer

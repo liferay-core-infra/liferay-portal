@@ -12,11 +12,11 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURLGenerationListener;
-import javax.portlet.UnavailableException;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURLGenerationListener;
+import jakarta.portlet.UnavailableException;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

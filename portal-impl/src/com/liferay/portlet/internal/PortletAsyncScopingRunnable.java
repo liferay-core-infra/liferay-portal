@@ -11,8 +11,8 @@ import com.liferay.portal.kernel.portlet.async.PortletAsyncScopeManager;
 
 import java.io.IOException;
 
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
+import jakarta.servlet.AsyncEvent;
+import jakarta.servlet.AsyncListener;
 
 /**
  * @author Neil Griffin

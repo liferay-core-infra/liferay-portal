@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import java.util.Collection;
 
-import javax.portlet.ValidatorException;
+import jakarta.portlet.ValidatorException;
 
 /**
  * @author Iván Zaera

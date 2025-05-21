@@ -8,8 +8,8 @@ package com.liferay.portal.kernel.portlet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import javax.portlet.MutableResourceParameters;
-import javax.portlet.filter.PortletURLWrapper;
+import jakarta.portlet.MutableResourceParameters;
+import jakarta.portlet.filter.PortletURLWrapper;
 
 /**
  * @author Neil Griffin

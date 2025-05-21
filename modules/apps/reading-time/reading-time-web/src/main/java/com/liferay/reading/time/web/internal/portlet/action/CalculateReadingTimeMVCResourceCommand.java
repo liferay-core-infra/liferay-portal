@@ -17,8 +17,8 @@ import com.liferay.reading.time.web.internal.constants.ReadingTimePortletKeys;
 
 import java.time.Duration;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ReadingTimePortletKeys.READING_TIME,
+		"jakarta.portlet.name=" + ReadingTimePortletKeys.READING_TIME,
 		"mvc.command.name=/reading_time/calculate_reading_time"
 	},
 	service = MVCResourceCommand.class

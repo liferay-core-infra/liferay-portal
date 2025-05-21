@@ -56,9 +56,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  * @author Javier Gamarra

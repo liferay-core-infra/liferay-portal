@@ -24,8 +24,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Reference;
 

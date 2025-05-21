@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletException;
 
-import javax.servlet.ServletRequestWrapper;
-import javax.servlet.http.Part;
+import jakarta.servlet.ServletRequestWrapper;
+import jakarta.servlet.http.Part;
 
 import org.osgi.service.component.annotations.Component;
 

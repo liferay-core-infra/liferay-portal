@@ -33,13 +33,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
-import javax.portlet.ResourceURL;
-import javax.portlet.WindowState;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.ResourceURL;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Neil Griffin

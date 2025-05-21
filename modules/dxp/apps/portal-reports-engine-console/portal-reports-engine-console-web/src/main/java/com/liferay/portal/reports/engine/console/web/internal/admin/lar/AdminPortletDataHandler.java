@@ -24,7 +24,7 @@ import com.liferay.portal.reports.engine.console.web.internal.permission.AdminRe
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Máté Thurzó
  */
 @Component(
-	property = "javax.portlet.name=" + ReportsEngineConsolePortletKeys.REPORTS_ADMIN,
+	property = "jakarta.portlet.name=" + ReportsEngineConsolePortletKeys.REPORTS_ADMIN,
 	service = PortletDataHandler.class
 )
 public class AdminPortletDataHandler extends BasePortletDataHandler {

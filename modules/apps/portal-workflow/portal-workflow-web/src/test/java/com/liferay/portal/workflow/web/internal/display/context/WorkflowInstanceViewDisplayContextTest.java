@@ -36,9 +36,9 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Before;

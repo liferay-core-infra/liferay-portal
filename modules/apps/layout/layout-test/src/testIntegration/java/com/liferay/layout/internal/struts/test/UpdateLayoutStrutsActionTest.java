@@ -38,7 +38,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
 import java.util.List;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -147,7 +147,7 @@ public class UpdateLayoutStrutsActionTest {
 				).put(
 					"com.liferay.portlet.instanceable", true
 				).put(
-					"javax.portlet.name", portletId
+					"jakarta.portlet.name", portletId
 				).build());
 
 		try {

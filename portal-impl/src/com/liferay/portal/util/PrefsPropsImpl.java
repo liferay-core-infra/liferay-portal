@@ -41,9 +41,9 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.ReadOnlyException;
-import javax.portlet.ValidatorException;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.ReadOnlyException;
+import jakarta.portlet.ValidatorException;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

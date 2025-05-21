@@ -43,8 +43,8 @@ import com.liferay.social.kernel.service.persistence.SocialActivityUtil;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletURL;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowState;
 
 /**
  * @author Brian Wing Shun Chan

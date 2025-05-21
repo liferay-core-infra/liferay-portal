@@ -10,7 +10,7 @@ import com.liferay.portal.tools.rest.builder.test.resource.v1_0.EntityModelResou
 
 import java.util.Collections;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ServiceScope;

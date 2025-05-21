@@ -29,7 +29,7 @@ import java.io.InputStream;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * Provides the local service for accessing, adding, checking, and updating

@@ -20,7 +20,7 @@ import com.liferay.ratings.kernel.service.RatingsEntryLocalServiceUtil;
 
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Roberto Díaz

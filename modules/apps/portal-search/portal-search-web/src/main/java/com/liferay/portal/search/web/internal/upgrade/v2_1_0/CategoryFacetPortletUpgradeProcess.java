@@ -20,7 +20,7 @@ import com.liferay.portal.search.web.internal.category.facet.portlet.CategoryFac
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Joshua Cords

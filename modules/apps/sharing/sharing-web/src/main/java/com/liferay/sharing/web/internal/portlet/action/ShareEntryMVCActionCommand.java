@@ -30,10 +30,10 @@ import com.liferay.sharing.web.internal.display.SharingEntryPermissionDisplayAct
 
 import java.util.Date;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + SharingPortletKeys.SHARING,
+		"jakarta.portlet.name=" + SharingPortletKeys.SHARING,
 		"mvc.command.name=/sharing/share_entry"
 	},
 	service = MVCActionCommand.class

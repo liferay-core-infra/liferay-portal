@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -236,7 +236,7 @@ public class WabGenerator
 	private ServiceRegistration<FileInstaller> _serviceRegistration;
 
 	@Reference(
-		target = "(&(original.bean=true)(bean.id=javax.servlet.ServletContext))"
+		target = "(&(original.bean=true)(bean.id=jakarta.servlet.ServletContext))"
 	)
 	private ServletContext _servletContext;
 

@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Provides elements to be rendered in the portlet toolbar. To obtain those

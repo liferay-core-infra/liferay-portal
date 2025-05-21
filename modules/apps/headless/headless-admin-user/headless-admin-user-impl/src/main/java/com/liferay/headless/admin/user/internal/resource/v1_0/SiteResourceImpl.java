@@ -25,7 +25,7 @@ import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.validation.ValidationException;
+import jakarta.validation.ValidationException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

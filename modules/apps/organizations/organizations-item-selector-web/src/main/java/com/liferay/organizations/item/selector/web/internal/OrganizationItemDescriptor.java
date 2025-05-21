@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.model.Organization;
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Eudaldo Aloso

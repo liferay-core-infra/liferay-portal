@@ -16,8 +16,8 @@ import com.liferay.portlet.PortalPreferencesImpl;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

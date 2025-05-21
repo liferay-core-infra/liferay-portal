@@ -8,8 +8,8 @@ package com.liferay.portal.kernel.portlet.configuration.icon;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletResponse;
 
 /**
  * @author Eduardo García

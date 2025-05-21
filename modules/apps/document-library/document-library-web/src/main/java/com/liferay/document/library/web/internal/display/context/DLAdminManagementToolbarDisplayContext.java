@@ -81,11 +81,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletResponse;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Alejandro Tardín

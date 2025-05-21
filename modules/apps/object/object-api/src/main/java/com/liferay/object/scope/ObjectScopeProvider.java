@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Marco Leo

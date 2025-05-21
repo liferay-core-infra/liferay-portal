@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
 
-import javax.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 import org.apache.cxf.message.Message;
 

@@ -14,7 +14,7 @@ import com.liferay.segments.field.Field;
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * Provides an interface for extending the segment's {@link Criteria} by adding

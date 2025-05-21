@@ -51,10 +51,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortletException;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Alejandro Tardín
@@ -459,7 +459,7 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 		_dlPortletToolbarContributorSnapshot = new Snapshot<>(
 			ItemSelectorRepositoryEntryManagementToolbarDisplayContext.class,
 			PortletToolbarContributor.class,
-			"(javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY + ")");
+			"(jakarta.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY + ")");
 
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;

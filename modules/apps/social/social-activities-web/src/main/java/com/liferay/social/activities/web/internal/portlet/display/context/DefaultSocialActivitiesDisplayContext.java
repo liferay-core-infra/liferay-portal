@@ -20,7 +20,7 @@ import com.liferay.social.kernel.model.SocialActivitySet;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.portlet.ResourceURL;
+import jakarta.portlet.ResourceURL;
 
 /**
  * @author Adolfo Pérez

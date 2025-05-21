@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.security.auth.AuthException;
 
 import java.net.HttpURLConnection;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Tomas Polesovsky

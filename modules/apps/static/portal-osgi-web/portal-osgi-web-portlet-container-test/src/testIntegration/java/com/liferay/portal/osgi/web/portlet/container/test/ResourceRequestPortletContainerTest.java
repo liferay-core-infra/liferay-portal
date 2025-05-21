@@ -29,16 +29,16 @@ import java.util.Collections;
 import java.util.Dictionary;
 import java.util.List;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.PortletURL;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.portlet.WindowState;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletRequestDispatcher;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
+import jakarta.portlet.WindowState;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

@@ -25,9 +25,9 @@ import com.liferay.portlet.internal.MutableRenderParametersImpl;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.junit.Assert;
 import org.junit.Before;

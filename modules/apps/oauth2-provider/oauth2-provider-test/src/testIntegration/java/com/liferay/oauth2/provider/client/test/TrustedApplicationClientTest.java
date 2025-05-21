@@ -20,7 +20,7 @@ import java.net.URI;
 
 import java.util.Collections;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

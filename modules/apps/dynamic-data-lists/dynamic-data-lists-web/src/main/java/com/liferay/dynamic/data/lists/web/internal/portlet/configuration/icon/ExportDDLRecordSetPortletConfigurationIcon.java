@@ -23,9 +23,9 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS,
+		"jakarta.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS,
 		"path=/view_record_set.jsp"
 	},
 	service = PortletConfigurationIcon.class

@@ -15,8 +15,8 @@ import com.liferay.portal.reports.engine.console.util.comparator.DefinitionCreat
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 /**
  * @author Rafael Praxedes

@@ -7,7 +7,7 @@ package com.liferay.portlet.internal;
 
 import java.util.Map;
 
-import javax.portlet.MutableResourceParameters;
+import jakarta.portlet.MutableResourceParameters;
 
 /**
  * @author Neil Griffin

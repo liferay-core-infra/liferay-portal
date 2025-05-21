@@ -7,7 +7,7 @@ package com.liferay.portal.reports.engine;
 
 import java.util.Map;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Michael C. Han

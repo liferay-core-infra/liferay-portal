@@ -12,10 +12,10 @@ import java.lang.reflect.Method;
 
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
-import javax.validation.executable.ExecutableValidator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ValidationException;
+import jakarta.validation.Validator;
+import jakarta.validation.executable.ExecutableValidator;
 
 /**
  * @author Javier Gamarra

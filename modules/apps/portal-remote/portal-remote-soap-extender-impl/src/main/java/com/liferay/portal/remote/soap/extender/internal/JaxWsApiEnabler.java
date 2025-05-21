@@ -14,7 +14,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.xml.ws.spi.Provider;
+import jakarta.xml.ws.spi.Provider;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;

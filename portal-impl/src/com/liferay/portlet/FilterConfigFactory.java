@@ -12,8 +12,8 @@ import com.liferay.portlet.internal.FilterConfigImpl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletContext;
-import javax.portlet.filter.FilterConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.filter.FilterConfig;
 
 /**
  * @author Brian Wing Shun Chan

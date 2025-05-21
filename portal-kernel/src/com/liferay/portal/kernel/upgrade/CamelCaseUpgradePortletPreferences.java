@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.util.TextFormatter;
 
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Julio Camarero

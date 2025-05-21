@@ -17,10 +17,10 @@ import com.liferay.portal.util.PropsValues;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.Event;
+import jakarta.portlet.Event;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Shuyang Zhou

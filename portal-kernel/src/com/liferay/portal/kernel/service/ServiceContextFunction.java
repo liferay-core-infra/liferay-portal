@@ -9,9 +9,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.function.Function;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author André de Oliveira

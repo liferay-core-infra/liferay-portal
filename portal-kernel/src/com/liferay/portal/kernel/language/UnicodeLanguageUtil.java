@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.util.UnicodeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan

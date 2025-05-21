@@ -41,7 +41,7 @@ import com.liferay.staging.StagingGroupHelperUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
 import org.assertj.core.api.AbstractUriAssert;
 import org.assertj.core.api.Assertions;

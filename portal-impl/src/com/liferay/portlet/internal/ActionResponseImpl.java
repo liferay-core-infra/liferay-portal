@@ -9,9 +9,9 @@ import com.liferay.portal.kernel.portlet.LiferayActionResponse;
 
 import java.io.IOException;
 
-import javax.portlet.MimeResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderURL;
+import jakarta.portlet.MimeResponse;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.RenderURL;
 
 /**
  * @author Brian Wing Shun Chan

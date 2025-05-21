@@ -27,8 +27,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Map;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -41,8 +41,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.dynamic.data.lists.web.internal.configuration.DDLWebConfiguration",
 	property = {
-		"javax.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS,
-		"javax.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS_DISPLAY,
+		"jakarta.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS,
+		"jakarta.portlet.name=" + DDLPortletKeys.DYNAMIC_DATA_LISTS_DISPLAY,
 		"mvc.command.name=/dynamic_data_lists/export_record_set"
 	},
 	service = MVCResourceCommand.class

@@ -13,8 +13,8 @@ import com.liferay.portal.search.web.search.request.SearchSettings;
 
 import java.util.List;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.RenderRequest;
 
 import org.osgi.annotation.versioning.ProviderType;
 

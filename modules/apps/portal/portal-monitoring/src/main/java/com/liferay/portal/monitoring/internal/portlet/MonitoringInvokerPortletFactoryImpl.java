@@ -14,10 +14,10 @@ import com.liferay.portal.monitoring.internal.configuration.MonitoringConfigurat
 
 import java.util.Map;
 
-import javax.portlet.Portlet;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
+import jakarta.portlet.Portlet;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletException;
 
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;

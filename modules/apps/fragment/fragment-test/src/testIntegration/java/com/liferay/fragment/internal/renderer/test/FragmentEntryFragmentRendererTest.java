@@ -78,7 +78,7 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import java.util.HashMap;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

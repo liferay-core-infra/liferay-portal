@@ -17,9 +17,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
@@ -248,7 +248,7 @@ public class MockMessage implements Message {
 					@Override
 					public Object get(Object key) {
 						if (!Objects.equals(
-								key, "javax.ws.rs.core.Application")) {
+								key, "jakarta.ws.rs.core.Application")) {
 
 							return null;
 						}

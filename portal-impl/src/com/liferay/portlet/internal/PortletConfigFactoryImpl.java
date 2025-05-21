@@ -14,10 +14,10 @@ import com.liferay.portlet.PortletContextFactoryUtil;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
+import jakarta.portlet.PortletConfig;
+import jakarta.portlet.PortletContext;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Brian Wing Shun Chan

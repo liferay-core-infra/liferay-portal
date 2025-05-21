@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Alexander Chow

@@ -18,7 +18,7 @@ import com.liferay.style.book.util.DefaultStyleBookEntryUtil;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Víctor Galán

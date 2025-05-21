@@ -15,9 +15,9 @@ import com.liferay.taglib.util.TagResourceBundleUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyTag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.BodyTag;
 
 /**
  * @author Eudaldo Alonso

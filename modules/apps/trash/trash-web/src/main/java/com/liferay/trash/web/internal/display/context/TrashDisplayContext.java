@@ -55,9 +55,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Provides utility methods moved from the Recycle Bin portlet's JSP files to

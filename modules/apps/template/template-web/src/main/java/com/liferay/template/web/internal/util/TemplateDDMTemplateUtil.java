@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Lourdes Fernández Besada

@@ -15,7 +15,7 @@ import com.liferay.wiki.model.WikiPage;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Roberto Díaz

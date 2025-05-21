@@ -55,7 +55,7 @@ import com.liferay.trash.TrashHelper;
 import java.util.List;
 import java.util.Objects;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Adolfo Pérez

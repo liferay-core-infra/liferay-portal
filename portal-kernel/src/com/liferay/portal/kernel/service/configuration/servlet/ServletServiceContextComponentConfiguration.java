@@ -9,7 +9,7 @@ import com.liferay.portal.kernel.service.configuration.ServiceComponentConfigura
 
 import java.io.InputStream;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Miguel Pastor

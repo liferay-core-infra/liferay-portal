@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 
 /**
  * @author Víctor Galán

@@ -40,10 +40,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.portlet.PortletMode;
-import javax.portlet.PortletModeException;
-import javax.portlet.PortletURL;
-import javax.portlet.WindowStateException;
+import jakarta.portlet.PortletMode;
+import jakarta.portlet.PortletModeException;
+import jakarta.portlet.PortletURL;
+import jakarta.portlet.WindowStateException;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;

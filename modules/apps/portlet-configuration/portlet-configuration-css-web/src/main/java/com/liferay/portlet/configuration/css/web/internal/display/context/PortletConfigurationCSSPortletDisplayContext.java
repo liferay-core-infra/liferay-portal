@@ -34,12 +34,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Eudaldo Alonso

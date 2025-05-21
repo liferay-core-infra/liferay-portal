@@ -10,9 +10,9 @@ import com.liferay.roles.admin.role.type.contributor.RoleTypeContributor;
 
 import java.util.List;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Drew Brokke

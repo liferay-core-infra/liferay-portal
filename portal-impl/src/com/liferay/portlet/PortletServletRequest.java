@@ -27,17 +27,17 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.portlet.ClientDataRequest;
-import javax.portlet.EventRequest;
-import javax.portlet.PortletRequest;
+import jakarta.portlet.ClientDataRequest;
+import jakarta.portlet.EventRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan

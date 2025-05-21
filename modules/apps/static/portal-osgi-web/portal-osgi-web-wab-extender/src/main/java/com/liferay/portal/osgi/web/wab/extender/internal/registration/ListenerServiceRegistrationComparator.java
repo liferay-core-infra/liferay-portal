@@ -7,7 +7,7 @@ package com.liferay.portal.osgi.web.wab.extender.internal.registration;
 
 import java.util.Comparator;
 
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextListener;
 
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;

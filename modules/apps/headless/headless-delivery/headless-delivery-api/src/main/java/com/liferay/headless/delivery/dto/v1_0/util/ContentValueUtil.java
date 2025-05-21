@@ -13,8 +13,8 @@ import com.liferay.portal.kernel.util.Base64;
 
 import java.io.InputStream;
 
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.UriInfo;
 
 /**
  * @author Javier Gamarra

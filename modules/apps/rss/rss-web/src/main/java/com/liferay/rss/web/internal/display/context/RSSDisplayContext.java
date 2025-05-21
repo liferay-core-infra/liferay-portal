@@ -27,7 +27,7 @@ import com.liferay.rss.web.internal.util.RSSFeed;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

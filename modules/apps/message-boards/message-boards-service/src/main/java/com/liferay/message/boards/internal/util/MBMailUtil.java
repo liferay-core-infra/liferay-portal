@@ -27,11 +27,11 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.InputStream;
 
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.Part;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import jakarta.mail.BodyPart;
+import jakarta.mail.Message;
+import jakarta.mail.Part;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
 /**
  * @author Sergio González

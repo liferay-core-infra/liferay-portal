@@ -13,7 +13,7 @@ import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 
 import java.util.List;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 /**
  * Converts any {@code JsonMappingException} to a {@code 400} error.

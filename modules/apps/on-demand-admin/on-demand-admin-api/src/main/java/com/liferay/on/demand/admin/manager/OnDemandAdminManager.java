@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Pei-Jung Lan

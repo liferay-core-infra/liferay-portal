@@ -25,12 +25,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.portlet.PortletContext;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.PortletResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import jakarta.portlet.PortletContext;
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletRequestDispatcher;
+import jakarta.portlet.PortletResponse;
+import jakarta.portlet.RenderRequest;
+import jakarta.portlet.RenderResponse;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -62,7 +62,7 @@ public class MockPortletContext implements PortletContext {
 		String tempDir = System.getProperty("java.io.tmpdir");
 
 		if (tempDir != null) {
-			_attributes.put("javax.servlet.context.tempdir", new File(tempDir));
+			_attributes.put("jakarta.servlet.context.tempdir", new File(tempDir));
 		}
 
 		_resourceBasePath = Objects.requireNonNullElse(

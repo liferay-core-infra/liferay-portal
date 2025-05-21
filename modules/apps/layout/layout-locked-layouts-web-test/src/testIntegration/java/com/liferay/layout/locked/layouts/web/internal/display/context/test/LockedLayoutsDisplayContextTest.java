@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.portlet.Portlet;
+import jakarta.portlet.Portlet;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -26,7 +26,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.util.Date;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import org.junit.Assert;
 import org.junit.Before;

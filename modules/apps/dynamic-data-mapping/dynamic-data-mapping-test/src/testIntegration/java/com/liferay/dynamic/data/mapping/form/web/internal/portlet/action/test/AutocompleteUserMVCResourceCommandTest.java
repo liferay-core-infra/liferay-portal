@@ -33,7 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletException;
+import jakarta.portlet.PortletException;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import java.net.URL;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 /**
  * @author Minhchau Dang

@@ -20,9 +20,9 @@ import com.liferay.trash.constants.TrashPortletKeys;
 
 import java.util.Map;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Eudaldo Alonso
  */
 @Component(
-	property = "javax.portlet.name=" + TrashPortletKeys.TRASH,
+	property = "jakarta.portlet.name=" + TrashPortletKeys.TRASH,
 	service = PortletConfigurationIcon.class
 )
 public class EmptyTrashPortletConfigurationIcon

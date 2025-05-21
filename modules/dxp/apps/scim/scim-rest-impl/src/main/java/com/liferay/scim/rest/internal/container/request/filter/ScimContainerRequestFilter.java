@@ -10,8 +10,8 @@ import com.liferay.portal.vulcan.util.UriInfoUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 
 import org.osgi.service.component.annotations.Component;
 

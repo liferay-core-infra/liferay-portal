@@ -13,7 +13,7 @@ import com.liferay.portal.settings.configuration.admin.display.PortalSettingsCon
 
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

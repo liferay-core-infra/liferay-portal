@@ -39,9 +39,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletConfig;
+import jakarta.portlet.PortletConfig;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Eudaldo Alonso

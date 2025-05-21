@@ -23,7 +23,7 @@ import com.liferay.taglib.util.LexiconUtil;
 import java.util.Collections;
 import java.util.List;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Eudaldo Alonso

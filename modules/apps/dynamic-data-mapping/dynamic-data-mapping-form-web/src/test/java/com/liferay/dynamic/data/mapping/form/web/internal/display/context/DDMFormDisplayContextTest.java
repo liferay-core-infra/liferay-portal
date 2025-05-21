@@ -78,10 +78,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
+import jakarta.portlet.PortletSession;
+import jakarta.portlet.RenderRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.hamcrest.CoreMatchers;
 

@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.HttpMethod;
+import jakarta.ws.rs.HttpMethod;
 
 /**
  * @author Preston Crary

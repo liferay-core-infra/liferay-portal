@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.portlet.ReadOnlyException;
+import jakarta.portlet.ReadOnlyException;
 
 /**
  * @author Brian Wing Shun Chan

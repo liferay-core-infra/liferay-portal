@@ -43,7 +43,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.portlet.PortletRequest;
+import jakarta.portlet.PortletRequest;
 
 /**
  * @author Stian Sigvartsen

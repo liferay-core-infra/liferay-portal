@@ -12,7 +12,7 @@ import com.liferay.portal.remote.rest.extender.configuration.RestExtenderConfigu
 
 import java.util.Map;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
 import org.apache.cxf.Bus;
 import org.apache.felix.dm.DependencyManager;

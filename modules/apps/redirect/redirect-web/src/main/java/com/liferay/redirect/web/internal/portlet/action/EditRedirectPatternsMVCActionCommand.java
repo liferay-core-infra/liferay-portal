@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import jakarta.portlet.ActionRequest;
+import jakarta.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + RedirectPortletKeys.REDIRECT,
+		"jakarta.portlet.name=" + RedirectPortletKeys.REDIRECT,
 		"mvc.command.name=/redirect/edit_redirect_patterns"
 	},
 	service = MVCActionCommand.class

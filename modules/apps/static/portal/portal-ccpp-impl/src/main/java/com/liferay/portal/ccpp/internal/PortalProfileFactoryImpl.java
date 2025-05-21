@@ -17,7 +17,7 @@ import javax.ccpp.ProfileDescription;
 import javax.ccpp.ProfileFactory;
 import javax.ccpp.ValidationMode;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 

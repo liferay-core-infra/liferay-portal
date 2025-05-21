@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.MutableRenderParameters;
+import jakarta.portlet.MutableRenderParameters;
 
 /**
  * @author Neil Griffin

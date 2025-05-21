@@ -15,7 +15,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Víctor Galán

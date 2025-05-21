@@ -44,8 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.PortletPreferences;
-import javax.portlet.ReadOnlyException;
+import jakarta.portlet.PortletPreferences;
+import jakarta.portlet.ReadOnlyException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -54,7 +54,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Máté Thurzó
  */
 @Component(
-	property = "javax.portlet.name=" + JournalContentPortletKeys.JOURNAL_CONTENT,
+	property = "jakarta.portlet.name=" + JournalContentPortletKeys.JOURNAL_CONTENT,
 	service = ExportImportPortletPreferencesProcessor.class
 )
 public class JournalContentExportImportPortletPreferencesProcessor

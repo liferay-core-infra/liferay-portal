@@ -7,8 +7,8 @@ package com.liferay.taglib.servlet;
 
 import java.io.Writer;
 
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Shuyang Zhou

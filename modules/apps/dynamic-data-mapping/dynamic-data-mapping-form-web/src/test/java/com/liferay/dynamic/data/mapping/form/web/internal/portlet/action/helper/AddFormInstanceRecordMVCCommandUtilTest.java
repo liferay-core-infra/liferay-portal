@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.portlet.ActionRequest;
+import jakarta.portlet.ActionRequest;
 
 import org.junit.Assert;
 import org.junit.ClassRule;

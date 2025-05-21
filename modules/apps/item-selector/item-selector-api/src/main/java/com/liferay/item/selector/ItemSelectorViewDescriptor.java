@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.RenderRequest;
+import jakarta.portlet.RenderRequest;
 
 /**
  * @author Alejandro Tardín

@@ -18,8 +18,8 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.servlet.Filter;
-import javax.servlet.Servlet;
+import jakarta.servlet.Filter;
+import jakarta.servlet.Servlet;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

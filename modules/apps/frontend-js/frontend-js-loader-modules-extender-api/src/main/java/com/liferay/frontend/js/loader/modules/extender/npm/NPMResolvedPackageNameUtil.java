@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.net.URL;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleReference;

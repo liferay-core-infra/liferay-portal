@@ -13,7 +13,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 /**
  * @author Stian Sigvartsen

@@ -7,10 +7,10 @@ package com.liferay.item.selector;
 
 import java.io.IOException;
 
-import javax.portlet.PortletURL;
+import jakarta.portlet.PortletURL;
 
-import javax.servlet.ServletException;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.jsp.PageContext;
 
 /**
  * @author Iván Zaera

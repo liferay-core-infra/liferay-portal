@@ -67,10 +67,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
+import jakarta.portlet.ResourceRequest;
+import jakarta.portlet.ResourceResponse;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -80,7 +80,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + FDSAdminPortletKeys.FDS_ADMIN,
+		"jakarta.portlet.name=" + FDSAdminPortletKeys.FDS_ADMIN,
 		"mvc.command.name=/frontend_data_set_admin/import_system_data_set"
 	},
 	service = MVCResourceCommand.class

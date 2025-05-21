@@ -12,7 +12,7 @@ import com.liferay.exportimport.portlet.preferences.processor.Capability;
 
 import java.util.Map;
 
-import javax.portlet.PortletPreferences;
+import jakarta.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 

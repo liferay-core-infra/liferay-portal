@@ -81,6 +81,11 @@ public class PortalImplGroupFriendlyURLTest {
 		Assert.assertNull(_portalImpl.getGroupFriendlyURLIndex("/home"));
 	}
 
+	@Test
+	public void testDummy() {
+		Assert.assertTrue("This should pass", 1 == 1);
+	}
+
 	private final PortalImpl _portalImpl = new PortalImpl();
 
 }

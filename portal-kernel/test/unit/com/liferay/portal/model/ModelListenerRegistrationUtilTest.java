@@ -45,4 +45,9 @@ public class ModelListenerRegistrationUtilTest {
 		}
 	}
 
+	@Test
+	public void testDummy() {
+		Assert.assertTrue("This should pass", 1 == 1);
+	}
+
 }

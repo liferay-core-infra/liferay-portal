@@ -28,7 +28,9 @@ import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.log.LogCapture;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -154,6 +157,19 @@ public class UserAccountResourcePerformanceTest {
 			HashMapDictionaryBuilder.<String, Object>put(
 				"access.token.expires.in", Integer.MAX_VALUE
 			).build());
+
+		Class<?> clazz = UserAccountResourcePerformanceTest.class;
+
+		_properties = PropertiesUtil.load(
+			clazz.getResourceAsStream(
+				"dependencies/user-account-resource-performance.properties"),
+			"UTF-8");
+
+		_threadsCount = GetterUtil.getInteger(
+			_properties.getProperty("threads.count"));
+
+		_usersCount = GetterUtil.getInteger(
+			_properties.getProperty("users.count"));
 	}
 
 	@AfterClass
@@ -189,13 +205,12 @@ public class UserAccountResourcePerformanceTest {
 
 	@Test
 	public void testMultipleThreadsAddUsers() throws Exception {
-		int threadsCount = 10;
-		int usersCount = 10;
+		int usersCountPerThread = _usersCount / _threadsCount;
 
 		List<List<String>> jsonsList = new ArrayList<>();
 
-		for (int i = 0; i < threadsCount; i++) {
-			jsonsList.add(_createJSONs(usersCount));
+		for (int i = 0; i < _threadsCount; i++) {
+			jsonsList.add(_createJSONs(usersCountPerThread));
 		}
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
@@ -205,7 +220,7 @@ public class UserAccountResourcePerformanceTest {
 			long startTime = System.currentTimeMillis();
 
 			ExecutorService executorService = Executors.newFixedThreadPool(
-				threadsCount);
+				_threadsCount);
 
 			List<Future<?>> futures = new ArrayList<>();
 
@@ -222,10 +237,12 @@ public class UserAccountResourcePerformanceTest {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					StringBundler.concat(
-						threadsCount, " threads each added ", usersCount,
-						" users in ", endTime, " ms"));
+						_threadsCount, " threads each added ",
+						usersCountPerThread, " users in ", endTime, " ms"));
 
-				double tps = (double)usersCount * threadsCount / endTime * 1000;
+				double tps =
+					(double)usersCountPerThread * _threadsCount / endTime *
+						1000;
 
 				_log.info("TPS: " + String.format("%.2f", tps));
 			}
@@ -234,9 +251,7 @@ public class UserAccountResourcePerformanceTest {
 
 	@Test
 	public void testSingleThreadAddUsers() {
-		int usersCount = 100;
-
-		List<String> jsons = _createJSONs(usersCount);
+		List<String> jsons = _createJSONs(_usersCount);
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				"com.liferay.mail.messaging.internal.MailMessageListener",
@@ -251,10 +266,10 @@ public class UserAccountResourcePerformanceTest {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					StringBundler.concat(
-						"Single thread added ", usersCount, " users in ",
+						"Single thread added ", _usersCount, " users in ",
 						endTime, " ms"));
 
-				double tps = (double)usersCount / endTime * 1000;
+				double tps = (double)_usersCount / endTime * 1000;
 
 				_log.info("TPS: " + String.format("%.2f", tps));
 			}
@@ -308,6 +323,9 @@ public class UserAccountResourcePerformanceTest {
 
 	private static String _json;
 	private static String _pid;
+	private static Properties _properties;
+	private static int _threadsCount;
+	private static int _usersCount;
 
 	@Inject
 	private CompanyLocalService _companyLocalService;

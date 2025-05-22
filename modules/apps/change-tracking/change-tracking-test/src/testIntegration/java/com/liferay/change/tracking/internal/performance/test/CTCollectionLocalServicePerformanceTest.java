@@ -11,6 +11,7 @@ import com.liferay.change.tracking.service.CTCollectionLocalService;
 import com.liferay.change.tracking.service.CTProcessLocalService;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -133,12 +134,22 @@ public class CTCollectionLocalServicePerformanceTest {
 			}
 		}
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(45000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				45000,
+				StringBundler.concat(
+					"Add CTProcess with UserId: ", _ctCollection2.getUserId(),
+					", and CTCollectionId:  ",
+					_ctCollection2.getCtCollectionId()))) {
+
 			_ctProcessLocalService.addCTProcess(
 				_ctCollection2.getUserId(), _ctCollection2.getCtCollectionId());
 		}
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(10000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				10000,
+				"Check conflicts with CTCollectionId: " +
+					_ctCollection1.getCtCollectionId())) {
+
 			_ctCollectionLocalService.checkConflicts(_ctCollection1);
 		}
 
@@ -167,12 +178,22 @@ public class CTCollectionLocalServicePerformanceTest {
 			LayoutTestUtil.addTypeContentLayout(_group, layoutName);
 		}
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(10000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				10000,
+				StringBundler.concat(
+					"Add CTProcess with UserId: ", _ctCollection2.getUserId(),
+					", and CTCollectionId:  ",
+					_ctCollection2.getCtCollectionId()))) {
+
 			_ctProcessLocalService.addCTProcess(
 				_ctCollection2.getUserId(), _ctCollection2.getCtCollectionId());
 		}
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(10000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				10000,
+				"Check conflicts with CTCollectionId: " +
+					_ctCollection1.getCtCollectionId())) {
+
 			_ctCollectionLocalService.checkConflicts(_ctCollection1);
 		}
 	}
@@ -203,14 +224,22 @@ public class CTCollectionLocalServicePerformanceTest {
 			ServiceContextThreadLocal.popServiceContext();
 		}
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(10000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				10000,
+				"Get CTEntries with CTCollectionId: " +
+					_ctCollection1.getCtCollectionId())) {
+
 			_ctCollectionLocalService.getRelatedCTEntriesMap(
 				_ctCollection1.getCtCollectionId(),
 				_portal.getClassNameId(Layout.class.getName()),
 				layout.getPlid());
 		}
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(10000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				10000,
+				"Discard CTEntries with CTCollectionId: " +
+					_ctCollection1.getCtCollectionId())) {
+
 			_ctCollectionLocalService.discardCTEntry(
 				_ctCollection1.getCtCollectionId(),
 				_portal.getClassNameId(Layout.class.getName()),

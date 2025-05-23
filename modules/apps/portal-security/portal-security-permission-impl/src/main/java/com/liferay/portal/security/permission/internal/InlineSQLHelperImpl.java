@@ -475,9 +475,6 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 			permissionWherePredicate = permissionWherePredicate.or(
 				groupIdColumn.in(groupIdSet.toArray(new Long[0])));
-
-			permissionWherePredicate =
-				permissionWherePredicate.withParentheses();
 		}
 
 		return permissionWherePredicate.withParentheses();

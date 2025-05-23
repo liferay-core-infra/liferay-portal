@@ -351,13 +351,13 @@ public class InlineSQLHelperImplTest {
 			StringBundler.concat(
 				"select * from Layout inner join PortletPreferences on ",
 				"PortletPreferences.plid = Layout.plid where Layout.companyId ",
-				"= ? and Layout.plid in (select distinct ",
+				"= ? and (Layout.plid in (select distinct ",
 				"ResourcePermission.primKeyId from ResourcePermission where ",
 				"ResourcePermission.companyId = ? and ResourcePermission.name ",
 				"= ? and ResourcePermission.scope = ? and ",
 				"ResourcePermission.viewActionId = ? and ",
 				"(ResourcePermission.roleId in (?, ?) or ",
-				"ResourcePermission.ownerId = ?))"),
+				"ResourcePermission.ownerId = ?)))"),
 			dslQuery.toString());
 
 		_assertValidSql(dslQuery);

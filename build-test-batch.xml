@@ -10151,6 +10151,8 @@ information. Make sure to commit in all build services results.
 			<test-set-up>
 				<setup-test-environment />
 
+				<ant dir="portal-test" inheritAll="false" target="compile" />
+
 				<if>
 					<isset property="TEST_CLASS_GROUP_${axis.variable}" />
 					<then>

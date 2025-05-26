@@ -311,7 +311,8 @@ public class ExportImportTaskResourcePerformanceTest {
 		Map<String, String> classNamePartsMap = _splitClassName(className);
 
 		try (PerformanceTimer performanceTimer = new TestEntityPerformanceTimer(
-				count, maxExportTime, className + "#export")) {
+				count, maxExportTime,
+				StringBundler.concat(className, "#export ", count, " items"))) {
 
 			ExportTask exportTask = ExportImportTaskUtil.postExportTask(
 				classNamePartsMap.get("className"), "COMPLETED",
@@ -334,7 +335,9 @@ public class ExportImportTaskResourcePerformanceTest {
 		}
 
 		try (PerformanceTimer performanceTimer = new TestEntityPerformanceTimer(
-				count, maxDownloadTime, className + "#download")) {
+				count, maxDownloadTime,
+				StringBundler.concat(
+					className, "#download ", count, " items"))) {
 
 			try (InputStream inputStream = HTTPTestUtil.invokeToInputStream(
 					null,
@@ -366,7 +369,8 @@ public class ExportImportTaskResourcePerformanceTest {
 			classNamePartsMap.get("className"), count);
 
 		try (PerformanceTimer performanceTimer = new TestEntityPerformanceTimer(
-				count, maxTime, className)) {
+				count, maxTime,
+				StringBundler.concat(className, "#import ", count, " items"))) {
 
 			ImportTask importTask = ExportImportTaskUtil.postImportTask(
 				json, classNamePartsMap.get("className"), "COMPLETED",

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.io.Closeable;
 import java.io.InputStream;
 
 import java.nio.file.Path;
@@ -311,9 +310,8 @@ public class ExportImportTaskResourcePerformanceTest {
 
 		Map<String, String> classNamePartsMap = _splitClassName(className);
 
-		try (TestEntityPerformanceTimer itemCountPerformanceTimer =
-				new TestEntityPerformanceTimer(
-					count, maxExportTime, className + "#export")) {
+		try (PerformanceTimer performanceTimer = new TestEntityPerformanceTimer(
+				count, maxExportTime, className + "#export")) {
 
 			ExportTask exportTask = ExportImportTaskUtil.postExportTask(
 				classNamePartsMap.get("className"), "COMPLETED",
@@ -335,9 +333,8 @@ public class ExportImportTaskResourcePerformanceTest {
 			externalReferenceCode = exportTask.getExternalReferenceCode();
 		}
 
-		try (TestEntityPerformanceTimer itemCountPerformanceTimer =
-				new TestEntityPerformanceTimer(
-					count, maxDownloadTime, className + "#download")) {
+		try (PerformanceTimer performanceTimer = new TestEntityPerformanceTimer(
+				count, maxDownloadTime, className + "#download")) {
 
 			try (InputStream inputStream = HTTPTestUtil.invokeToInputStream(
 					null,
@@ -368,7 +365,7 @@ public class ExportImportTaskResourcePerformanceTest {
 		String json = _createBatchJSON(
 			classNamePartsMap.get("className"), count);
 
-		try (Closeable closeable = new TestEntityPerformanceTimer(
+		try (PerformanceTimer performanceTimer = new TestEntityPerformanceTimer(
 				count, maxTime, className)) {
 
 			ImportTask importTask = ExportImportTaskUtil.postImportTask(

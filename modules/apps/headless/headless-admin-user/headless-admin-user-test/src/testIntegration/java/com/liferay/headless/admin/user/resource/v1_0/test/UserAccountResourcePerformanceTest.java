@@ -17,11 +17,10 @@ import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.performance.PerformanceTimer;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
@@ -33,8 +32,6 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.test.log.LogCapture;
-import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -48,6 +45,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -168,8 +166,13 @@ public class UserAccountResourcePerformanceTest {
 		_threadsCount = GetterUtil.getInteger(
 			_properties.getProperty("threads.count"));
 
+		_usersAddMaxTime = GetterUtil.getInteger(
+			_properties.getProperty("users.add.max.time"));
+
 		_usersCount = GetterUtil.getInteger(
 			_properties.getProperty("users.count"));
+
+		_usersCountPerThread = _usersCount / _threadsCount;
 	}
 
 	@AfterClass
@@ -205,19 +208,18 @@ public class UserAccountResourcePerformanceTest {
 
 	@Test
 	public void testMultipleThreadsAddUsers() throws Exception {
-		int usersCountPerThread = _usersCount / _threadsCount;
-
 		List<List<String>> jsonsList = new ArrayList<>();
 
 		for (int i = 0; i < _threadsCount; i++) {
-			jsonsList.add(_createJSONs(usersCountPerThread));
+			jsonsList.add(_createJSONs(_usersCountPerThread));
 		}
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.mail.messaging.internal.MailMessageListener",
-				LoggerTestUtil.OFF)) {
-
-			long startTime = System.currentTimeMillis();
+		try (PerformanceTimer performanceTimer =
+				new UserAccountResourcePerformanceTimer(
+					_usersAddMaxTime,
+					StringBundler.concat(
+						_threadsCount, " threads each added ",
+						_usersCountPerThread, " users "))) {
 
 			ExecutorService executorService = Executors.newFixedThreadPool(
 				_threadsCount);
@@ -231,21 +233,6 @@ public class UserAccountResourcePerformanceTest {
 			for (Future<?> future : futures) {
 				future.get();
 			}
-
-			long endTime = System.currentTimeMillis() - startTime;
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					StringBundler.concat(
-						_threadsCount, " threads each added ",
-						usersCountPerThread, " users in ", endTime, " ms"));
-
-				double tps =
-					(double)usersCountPerThread * _threadsCount / endTime *
-						1000;
-
-				_log.info("TPS: " + String.format("%.2f", tps));
-			}
 		}
 	}
 
@@ -253,26 +240,13 @@ public class UserAccountResourcePerformanceTest {
 	public void testSingleThreadAddUsers() {
 		List<String> jsons = _createJSONs(_usersCount);
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.mail.messaging.internal.MailMessageListener",
-				LoggerTestUtil.OFF)) {
-
-			long startTime = System.currentTimeMillis();
+		try (PerformanceTimer performanceTimer =
+				new UserAccountResourcePerformanceTimer(
+					_usersAddMaxTime,
+					StringBundler.concat(
+						"Single thread added ", _usersCount, " users"))) {
 
 			_addUsers(jsons);
-
-			long endTime = System.currentTimeMillis() - startTime;
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					StringBundler.concat(
-						"Single thread added ", _usersCount, " users in ",
-						endTime, " ms"));
-
-				double tps = (double)_usersCount / endTime * 1000;
-
-				_log.info("TPS: " + String.format("%.2f", tps));
-			}
 		}
 	}
 
@@ -318,14 +292,13 @@ public class UserAccountResourcePerformanceTest {
 		return jsons;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		UserAccountResourcePerformanceTest.class);
-
 	private static String _json;
 	private static String _pid;
 	private static Properties _properties;
 	private static int _threadsCount;
+	private static int _usersAddMaxTime;
 	private static int _usersCount;
+	private static int _usersCountPerThread;
 
 	@Inject
 	private CompanyLocalService _companyLocalService;
@@ -340,5 +313,33 @@ public class UserAccountResourcePerformanceTest {
 
 	@Inject
 	private OAuth2ApplicationLocalService _oAuth2ApplicationLocalService;
+
+	private class UserAccountResourcePerformanceTimer extends PerformanceTimer {
+
+		public UserAccountResourcePerformanceTimer(long maxTime, String name) {
+			super(null, maxTime, name, System.currentTimeMillis());
+		}
+
+		@Override
+		public void close() {
+			long delta = System.currentTimeMillis() - startTime;
+
+			double tps =
+				(double)_usersCountPerThread * _threadsCount / delta * 1000;
+
+			log(
+				StringBundler.concat(
+					"Completed ", name, " in ", delta, " ms, TPS:",
+					String.format("%.2f", tps)));
+
+			Assert.assertTrue(
+				StringBundler.concat(
+					"Completed in ", delta,
+					"ms, but the expected completion time should be less than ",
+					maxTime, "ms"),
+				delta < maxTime);
+		}
+
+	}
 
 }

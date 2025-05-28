@@ -11,6 +11,8 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
@@ -213,8 +215,8 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 		measure(timesMap, "full test", () -> doTestTiming(timesMap));
 
-		if (_REPORT_TIMES_AND_FAIL) {
-			throw new RuntimeException(_getTimesReport(timesMap));
+		if (_log.isInfoEnabled()) {
+			_log.info(_getTimesReport(timesMap));
 		}
 	}
 
@@ -361,7 +363,8 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 	private static final String _CLASS_NAME = User.class.getName();
 
-	private static final boolean _REPORT_TIMES_AND_FAIL = false;
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserReindexerPerformanceOfLargeUserGroupInManySitesTest.class);
 
 	@Inject
 	private static OrganizationLocalService _organizationLocalService;

@@ -124,7 +124,8 @@ public class JspServletPerformanceTest {
 
 		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
-					_properties.getProperty("jsp.render.max.time")))) {
+					_properties.getProperty("jsp.render.max.time")),
+				StringBundler.concat("Total ", _requestsCount, " requests"))) {
 
 			_test(
 				_FILE_NAME_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP,
@@ -138,7 +139,8 @@ public class JspServletPerformanceTest {
 
 		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
-					_properties.getProperty("jsp.render.max.time")))) {
+					_properties.getProperty("jsp.render.max.time")),
+				StringBundler.concat("Total ", _requestsCount, " requests"))) {
 
 			_test(
 				_FILE_NAME_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP,
@@ -152,7 +154,8 @@ public class JspServletPerformanceTest {
 
 		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
-					_properties.getProperty("jsp.render.max.time")))) {
+					_properties.getProperty("jsp.render.max.time")),
+				StringBundler.concat("Total ", _requestsCount, " requests"))) {
 
 			_test(_FILE_NAME_TEST_JSP, _requestsCount);
 		}

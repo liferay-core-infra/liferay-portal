@@ -21,10 +21,13 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionLoca
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.test.util.ContentLayoutTestUtil;
 import com.liferay.layout.util.LayoutServiceContextHelper;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -85,6 +88,9 @@ public class LayoutTypeContentPerformanceTest {
 				"dependencies/layout-type-content-performance.properties"),
 			"UTF-8");
 
+		_layoutsCount = GetterUtil.getInteger(
+			_properties.getProperty("layouts.count"));
+
 		_group = GroupTestUtil.addGroup();
 
 		_serviceContext = ServiceContextTestUtil.getServiceContext(
@@ -138,11 +144,7 @@ public class LayoutTypeContentPerformanceTest {
 
 		String templateContent = _getLayoutContent(layout, siteDefaultLocale);
 
-		for (int i = 0;
-			 i < GetterUtil.getInteger(
-				 _properties.getProperty("layouts.count"));
-			 i++) {
-
+		for (int i = 0; i < _layoutsCount; i++) {
 			layout = _layoutLocalService.addLayout(
 				null, TestPropsValues.getUserId(), _group.getGroupId(), false,
 				0, _portal.getClassNameId(LayoutPageTemplateEntry.class),
@@ -162,15 +164,23 @@ public class LayoutTypeContentPerformanceTest {
 			_entityCache.clearCache();
 			_multiVMPool.clear();
 
-			try (PerformanceTimer performanceTimer = new PerformanceTimer(
-					GetterUtil.getInteger(
-						_properties.getProperty("layout.get.max.time")))) {
+			try (PerformanceTimer performanceTimer =
+					new TestLayoutPerformanceTimer(
+						GetterUtil.getInteger(
+							_properties.getProperty("layout.get.max.time")))) {
 
 				content = _getLayoutContent(layout, siteDefaultLocale);
 			}
 
 			Assert.assertNotEquals(StringPool.BLANK, content);
 			Assert.assertEquals(templateContent, content);
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Completed ", _layoutsCount, " layouts in ",
+					_totalExecutionTime, " ms"));
 		}
 	}
 
@@ -245,6 +255,11 @@ public class LayoutTypeContentPerformanceTest {
 		_assertPortletPreferences(journalArticle, layout, portletId);
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		LayoutTypeContentPerformanceTest.class);
+
+	private static long _totalExecutionTime;
+
 	@Inject
 	private AssetEntryLocalService _assetEntryLocalService;
 
@@ -268,6 +283,8 @@ public class LayoutTypeContentPerformanceTest {
 	private LayoutPageTemplateEntryLocalService
 		_layoutPageTemplateEntryLocalService;
 
+	private int _layoutsCount;
+
 	@Inject
 	private LayoutServiceContextHelper _layoutServiceContextHelper;
 
@@ -282,5 +299,29 @@ public class LayoutTypeContentPerformanceTest {
 
 	private Properties _properties;
 	private ServiceContext _serviceContext;
+
+	private class TestLayoutPerformanceTimer extends PerformanceTimer {
+
+		public TestLayoutPerformanceTimer(long maxTime) {
+			super(maxTime);
+		}
+
+		@Override
+		public void close() {
+			long delta = System.currentTimeMillis() - startTime;
+
+			_totalExecutionTime += delta;
+
+			log(StringBundler.concat("Completed ", name, " in ", delta, " ms"));
+
+			Assert.assertTrue(
+				StringBundler.concat(
+					"Completed in ", delta,
+					"ms, but the expected completion time should be less than ",
+					maxTime, "ms"),
+				delta < maxTime);
+		}
+
+	}
 
 }

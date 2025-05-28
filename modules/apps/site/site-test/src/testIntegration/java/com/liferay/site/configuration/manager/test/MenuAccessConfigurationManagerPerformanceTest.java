@@ -14,6 +14,8 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -21,6 +23,7 @@ import com.liferay.site.configuration.manager.MenuAccessConfigurationManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -43,7 +46,18 @@ public class MenuAccessConfigurationManagerPerformanceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		for (int i = 0; i < _NUMBER_GROUPS; i++) {
+		Class<?> clazz = MenuAccessConfigurationManagerPerformanceTest.class;
+
+		_properties = PropertiesUtil.load(
+			clazz.getResourceAsStream(
+				"dependencies/menu-access-configuration-manager-perfor" +
+					"mance.properties"),
+			"UTF-8");
+
+		_groupsCount = GetterUtil.getInteger(
+			_properties.getProperty("groups.count"));
+
+		for (int i = 0; i < _groupsCount; i++) {
 			_groups.add(GroupTestUtil.addGroup());
 		}
 	}
@@ -52,7 +66,10 @@ public class MenuAccessConfigurationManagerPerformanceTest {
 	public void testDeleteRoleAccessToControlMenu() throws Exception {
 		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(200)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("roles.delete.max.time")))) {
+
 			_menuAccessConfigurationManager.deleteRoleAccessToControlMenu(role);
 		}
 	}
@@ -63,7 +80,7 @@ public class MenuAccessConfigurationManagerPerformanceTest {
 
 		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
 
-		for (int i = 0; i < (_NUMBER_GROUPS / 5); i++) {
+		for (int i = 0; i < (_groupsCount / 5); i++) {
 			Group group = _groups.get(i);
 
 			_menuAccessConfigurationManager.updateMenuAccessConfiguration(
@@ -71,17 +88,22 @@ public class MenuAccessConfigurationManagerPerformanceTest {
 				new String[] {String.valueOf(role.getRoleId())}, true);
 		}
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(400)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("roles.delete.max.time")))) {
+
 			_menuAccessConfigurationManager.deleteRoleAccessToControlMenu(role);
 		}
 	}
 
-	private static final int _NUMBER_GROUPS = 100;
-
 	@DeleteAfterTestRun
 	private final List<Group> _groups = new ArrayList<>();
 
+	private int _groupsCount;
+
 	@Inject
 	private MenuAccessConfigurationManager _menuAccessConfigurationManager;
+
+	private Properties _properties;
 
 }

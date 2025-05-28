@@ -6,6 +6,9 @@
 package com.liferay.site.configuration.manager.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -57,6 +60,10 @@ public class MenuAccessConfigurationManagerPerformanceTest {
 		_groupsCount = GetterUtil.getInteger(
 			_properties.getProperty("groups.count"));
 
+		if (_log.isInfoEnabled()) {
+			_log.info(StringBundler.concat("Setup ", _groupsCount, " groups"));
+		}
+
 		for (int i = 0; i < _groupsCount; i++) {
 			_groups.add(GroupTestUtil.addGroup());
 		}
@@ -95,6 +102,9 @@ public class MenuAccessConfigurationManagerPerformanceTest {
 			_menuAccessConfigurationManager.deleteRoleAccessToControlMenu(role);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MenuAccessConfigurationManagerPerformanceTest.class);
 
 	@DeleteAfterTestRun
 	private final List<Group> _groups = new ArrayList<>();

@@ -115,15 +115,7 @@ public class ExportImportPerformanceTest {
 				"dependencies/export-import-performance.properties"),
 			"UTF-8");
 
-		_fragmentEntryLinksPerLayout = GetterUtil.getInteger(
-			_properties.getProperty("fragment.entry.links.per.layout"));
-		_layoutsCount = GetterUtil.getInteger(
-			_properties.getProperty("layouts.count"));
 		_layoutType = _properties.getProperty("layout.type");
-		_portletsPerContentLayout = GetterUtil.getInteger(
-			_properties.getProperty("portlets.per.content.layout"));
-		_portletsPerPortletLayout = GetterUtil.getInteger(
-			_properties.getProperty("portlets.per.portlet.layout"));
 	}
 
 	@Before
@@ -327,7 +319,11 @@ public class ExportImportPerformanceTest {
 			_segmentsExperienceLocalService.fetchDefaultSegmentsExperienceId(
 				draftLayout.getPlid());
 
-		for (int i = 0; i < _fragmentEntryLinksPerLayout; i++) {
+		for (int i = 0;
+			 i < GetterUtil.getInteger(
+				 _properties.getProperty("fragment.entry.links.per.layout"));
+			 i++) {
+
 			FragmentEntry fragmentEntry =
 				_fragmentCollectionContributorRegistry.getFragmentEntry(
 					"FEATURED_CONTENT-highlights-circle");
@@ -376,7 +372,11 @@ public class ExportImportPerformanceTest {
 				_serviceContext);
 		}
 
-		for (int i = 0; i < _portletsPerContentLayout; i++) {
+		for (int i = 0;
+			 i < GetterUtil.getInteger(
+				 _properties.getProperty("portlets.per.content.layout"));
+			 i++) {
+
 			String instanceId = PortletIdCodec.generateInstanceId();
 
 			_updateLayoutPortletSetup(
@@ -430,7 +430,11 @@ public class ExportImportPerformanceTest {
 	}
 
 	private void _addLayouts() throws Exception {
-		for (int i = 0; i < _layoutsCount; i++) {
+		for (int i = 0;
+			 i < GetterUtil.getInteger(
+				 _properties.getProperty("layouts.count"));
+			 i++) {
+
 			Layout layout = _layoutLocalService.addLayout(
 				null, TestPropsValues.getUserId(), _group.getGroupId(), false,
 				0, 0, 0,
@@ -456,7 +460,11 @@ public class ExportImportPerformanceTest {
 
 		String column1Value = unicodeProperties.getProperty("column-1");
 
-		for (int i = 0; i < _portletsPerPortletLayout; i++) {
+		for (int i = 0;
+			 i < GetterUtil.getInteger(
+				 _properties.getProperty("portlets.per.portlet.layout"));
+			 i++) {
+
 			String portletId = PortletIdCodec.encode(
 				JournalPortletKeys.JOURNAL,
 				PortletIdCodec.generateInstanceId());
@@ -537,11 +545,7 @@ public class ExportImportPerformanceTest {
 		ExportImportPerformanceTest.class,
 		"dependencies/portlet-preferences.tmpl");
 
-	private static int _fragmentEntryLinksPerLayout;
-	private static int _layoutsCount;
 	private static String _layoutType;
-	private static int _portletsPerContentLayout;
-	private static int _portletsPerPortletLayout;
 	private static Properties _properties;
 
 	@Inject

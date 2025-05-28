@@ -74,14 +74,8 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 	@Before
 	public void setUp() throws Exception {
-		if (_STRESS_MODE_10_MIN_TO_RUN_ALL_TESTS) {
-			_groupsCount = 5;
-			_usersCount = 100;
-		}
-		else {
-			_groupsCount = 2;
-			_usersCount = 3;
-		}
+		_groupsCount = 5;
+		_usersCount = 100;
 
 		groupSearchFixture = new GroupSearchFixture();
 
@@ -354,8 +348,6 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 	private static final String _CLASS_NAME = User.class.getName();
 
 	private static final boolean _REPORT_TIMES_AND_FAIL = false;
-
-	private static final boolean _STRESS_MODE_10_MIN_TO_RUN_ALL_TESTS = false;
 
 	@Inject
 	private static OrganizationLocalService _organizationLocalService;

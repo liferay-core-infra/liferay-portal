@@ -107,20 +107,20 @@ public class ExportImportPerformanceTest {
 	public static void setUpClass() throws Exception {
 		Class<?> clazz = ExportImportPerformanceTest.class;
 
-		Properties properties = PropertiesUtil.load(
+		_properties = PropertiesUtil.load(
 			clazz.getResourceAsStream(
 				"dependencies/export-import-performance.properties"),
 			"UTF-8");
 
 		_fragmentEntryLinksPerLayout = GetterUtil.getInteger(
-			properties.getProperty("fragment.entry.links.per.layout"));
+			_properties.getProperty("fragment.entry.links.per.layout"));
 		_layoutsCount = GetterUtil.getInteger(
-			properties.getProperty("layouts.count"));
-		_layoutType = properties.getProperty("layout.type");
+			_properties.getProperty("layouts.count"));
+		_layoutType = _properties.getProperty("layout.type");
 		_portletsPerContentLayout = GetterUtil.getInteger(
-			properties.getProperty("portlets.per.content.layout"));
+			_properties.getProperty("portlets.per.content.layout"));
 		_portletsPerPortletLayout = GetterUtil.getInteger(
-			properties.getProperty("portlets.per.portlet.layout"));
+			_properties.getProperty("portlets.per.portlet.layout"));
 	}
 
 	@Before
@@ -161,7 +161,10 @@ public class ExportImportPerformanceTest {
 
 	@Test
 	public void testExportGroupToLAR() throws Exception {
-		try (Closeable closeable = new PerformanceTimer(1000)) {
+		try (Closeable closeable = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("execution.max.time")))) {
+
 			Map<String, Serializable> exportLayoutSettingsMap =
 				_exportImportConfigurationSettingsMapFactory.
 					buildExportLayoutSettingsMap(
@@ -198,7 +201,10 @@ public class ExportImportPerformanceTest {
 		File file = _exportImportLocalService.exportLayoutsAsFile(
 			_exportImportConfiguration);
 
-		try (Closeable closeable = new PerformanceTimer(1000)) {
+		try (Closeable closeable = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("execution.max.time")))) {
+
 			Map<String, Serializable> importLayoutSettingsMap =
 				_exportImportConfigurationSettingsMapFactory.
 					buildImportLayoutSettingsMap(
@@ -219,7 +225,10 @@ public class ExportImportPerformanceTest {
 
 	@Test
 	public void testInitialStagingPublication() throws Exception {
-		try (Closeable closeable = new PerformanceTimer(10000)) {
+		try (Closeable closeable = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("execution.max.time")))) {
+
 			_stagingLocalService.enableLocalStaging(
 				TestPropsValues.getUserId(), _group, false, false,
 				_serviceContext);
@@ -257,7 +266,10 @@ public class ExportImportPerformanceTest {
 			_group, _layoutSetPrototype.getLayoutSetPrototypeId(), 0, true,
 			true);
 
-		try (Closeable closeable = new PerformanceTimer(1000)) {
+		try (Closeable closeable = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("execution.max.time")))) {
+
 			MergeLayoutPrototypesThreadLocal.clearMergeComplete();
 
 			_sites.mergeLayoutSetPrototypeLayouts(
@@ -270,7 +282,10 @@ public class ExportImportPerformanceTest {
 		_stagingLocalService.enableLocalStaging(
 			TestPropsValues.getUserId(), _group, false, false, _serviceContext);
 
-		try (Closeable closeable = new PerformanceTimer(1000)) {
+		try (Closeable closeable = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("execution.max.time")))) {
+
 			Group stagingGroup = _group.getStagingGroup();
 
 			Map<String, Serializable> stagingSettingsMap =
@@ -524,6 +539,7 @@ public class ExportImportPerformanceTest {
 	private static String _layoutType;
 	private static int _portletsPerContentLayout;
 	private static int _portletsPerPortletLayout;
+	private static Properties _properties;
 
 	@Inject
 	private AssetEntryLocalService _assetEntryLocalService;

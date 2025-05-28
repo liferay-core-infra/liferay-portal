@@ -40,8 +40,10 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -49,6 +51,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Properties;
 
 import javax.portlet.PortletPreferences;
 
@@ -75,6 +78,13 @@ public class LayoutTypeContentPerformanceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		Class<?> clazz = LayoutTypeContentPerformanceTest.class;
+
+		_properties = PropertiesUtil.load(
+			clazz.getResourceAsStream(
+				"dependencies/layout-type-content-performance.properties"),
+			"UTF-8");
+
 		_group = GroupTestUtil.addGroup();
 
 		_serviceContext = ServiceContextTestUtil.getServiceContext(
@@ -128,7 +138,11 @@ public class LayoutTypeContentPerformanceTest {
 
 		String templateContent = _getLayoutContent(layout, siteDefaultLocale);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0;
+			 i < GetterUtil.getInteger(
+				 _properties.getProperty("layouts.count"));
+			 i++) {
+
 			layout = _layoutLocalService.addLayout(
 				null, TestPropsValues.getUserId(), _group.getGroupId(), false,
 				0, _portal.getClassNameId(LayoutPageTemplateEntry.class),
@@ -149,7 +163,8 @@ public class LayoutTypeContentPerformanceTest {
 			_multiVMPool.clear();
 
 			try (PerformanceTimer performanceTimer = new PerformanceTimer(
-					500)) {
+					GetterUtil.getInteger(
+						_properties.getProperty("layout.get.max.time")))) {
 
 				content = _getLayoutContent(layout, siteDefaultLocale);
 			}
@@ -265,6 +280,7 @@ public class LayoutTypeContentPerformanceTest {
 	@Inject
 	private PortletPreferencesFactory _portletPreferencesFactory;
 
+	private Properties _properties;
 	private ServiceContext _serviceContext;
 
 }

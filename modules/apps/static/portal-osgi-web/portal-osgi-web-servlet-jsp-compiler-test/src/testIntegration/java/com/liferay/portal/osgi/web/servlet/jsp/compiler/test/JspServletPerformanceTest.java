@@ -11,7 +11,9 @@ import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.test.performance.PerformanceTimer;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.URLUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -21,6 +23,7 @@ import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -60,6 +63,16 @@ public class JspServletPerformanceTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		Class<?> clazz = JspServletPerformanceTest.class;
+
+		_properties = PropertiesUtil.load(
+			clazz.getResourceAsStream(
+				"dependencies/jsp-servlet-performance.properties"),
+			"UTF-8");
+
+		_requestsCount = GetterUtil.getInteger(
+			_properties.getProperty("requests.count"));
+
 		Bundle bundle = FrameworkUtil.getBundle(
 			JspServletPerformanceTest.class);
 
@@ -109,10 +122,13 @@ public class JspServletPerformanceTest {
 
 		_test(_FILE_NAME_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP, 1);
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(15000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("jsp.render.max.time")))) {
+
 			_test(
 				_FILE_NAME_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP,
-				_NUMBER_OF_REQUESTS);
+				_requestsCount);
 		}
 	}
 
@@ -120,10 +136,13 @@ public class JspServletPerformanceTest {
 	public void testElExpressionWithUndefinedVariablesJsp() throws Exception {
 		_test(_FILE_NAME_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP, 1);
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(15000)) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("jsp.render.max.time")))) {
+
 			_test(
 				_FILE_NAME_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP,
-				_NUMBER_OF_REQUESTS);
+				_requestsCount);
 		}
 	}
 
@@ -131,8 +150,11 @@ public class JspServletPerformanceTest {
 	public void testJsp() throws Exception {
 		_test(_FILE_NAME_TEST_JSP, 1);
 
-		try (PerformanceTimer performanceTimer = new PerformanceTimer(15000)) {
-			_test(_FILE_NAME_TEST_JSP, _NUMBER_OF_REQUESTS);
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("jsp.render.max.time")))) {
+
+			_test(_FILE_NAME_TEST_JSP, _requestsCount);
 		}
 	}
 
@@ -250,12 +272,12 @@ public class JspServletPerformanceTest {
 
 	private static final String _FILE_NAME_TEST_JSP = "test.jsp";
 
-	private static final int _NUMBER_OF_REQUESTS = 1000;
-
 	private static final String _WEB_CONTEXT_PATH =
 		"/test-jsp-servlet-performance";
 
 	private static Bundle _bundle;
 	private static ExecutorService _executorService;
+	private static Properties _properties;
+	private static int _requestsCount;
 
 }

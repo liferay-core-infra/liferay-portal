@@ -35,7 +35,6 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocal
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
-import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
@@ -74,12 +73,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.Serializable;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -124,20 +117,10 @@ public class ExportImportPerformanceTest {
 		_layoutsCount = GetterUtil.getInteger(
 			properties.getProperty("layouts.count"));
 		_layoutType = properties.getProperty("layout.type");
-		_logFilePath = Paths.get(properties.getProperty("log.file"));
 		_portletsPerContentLayout = GetterUtil.getInteger(
 			properties.getProperty("portlets.per.content.layout"));
 		_portletsPerPortletLayout = GetterUtil.getInteger(
 			properties.getProperty("portlets.per.portlet.layout"));
-
-		Files.deleteIfExists(_logFilePath);
-
-		_writeToLogFile(
-			"Properties:",
-			StreamUtil.toString(
-				clazz.getResourceAsStream(
-					"dependencies/export-import-performance.properties")),
-			"\nResults:");
 	}
 
 	@Before
@@ -178,7 +161,7 @@ public class ExportImportPerformanceTest {
 
 	@Test
 	public void testExportGroupToLAR() throws Exception {
-		try (Closeable closeable = new PerformanceTimer(_logFilePath, 1000)) {
+		try (Closeable closeable = new PerformanceTimer(1000)) {
 			Map<String, Serializable> exportLayoutSettingsMap =
 				_exportImportConfigurationSettingsMapFactory.
 					buildExportLayoutSettingsMap(
@@ -215,7 +198,7 @@ public class ExportImportPerformanceTest {
 		File file = _exportImportLocalService.exportLayoutsAsFile(
 			_exportImportConfiguration);
 
-		try (Closeable closeable = new PerformanceTimer(_logFilePath, 1000)) {
+		try (Closeable closeable = new PerformanceTimer(1000)) {
 			Map<String, Serializable> importLayoutSettingsMap =
 				_exportImportConfigurationSettingsMapFactory.
 					buildImportLayoutSettingsMap(
@@ -236,7 +219,7 @@ public class ExportImportPerformanceTest {
 
 	@Test
 	public void testInitialStagingPublication() throws Exception {
-		try (Closeable closeable = new PerformanceTimer(_logFilePath, 10000)) {
+		try (Closeable closeable = new PerformanceTimer(10000)) {
 			_stagingLocalService.enableLocalStaging(
 				TestPropsValues.getUserId(), _group, false, false,
 				_serviceContext);
@@ -274,7 +257,7 @@ public class ExportImportPerformanceTest {
 			_group, _layoutSetPrototype.getLayoutSetPrototypeId(), 0, true,
 			true);
 
-		try (Closeable closeable = new PerformanceTimer(_logFilePath, 1000)) {
+		try (Closeable closeable = new PerformanceTimer(1000)) {
 			MergeLayoutPrototypesThreadLocal.clearMergeComplete();
 
 			_sites.mergeLayoutSetPrototypeLayouts(
@@ -287,7 +270,7 @@ public class ExportImportPerformanceTest {
 		_stagingLocalService.enableLocalStaging(
 			TestPropsValues.getUserId(), _group, false, false, _serviceContext);
 
-		try (Closeable closeable = new PerformanceTimer(_logFilePath, 1000)) {
+		try (Closeable closeable = new PerformanceTimer(1000)) {
 			Group stagingGroup = _group.getStagingGroup();
 
 			Map<String, Serializable> stagingSettingsMap =
@@ -313,12 +296,6 @@ public class ExportImportPerformanceTest {
 
 			Assert.assertTrue(backgroundTask.isCompleted());
 		}
-	}
-
-	private static void _writeToLogFile(String... contents) throws Exception {
-		Files.write(
-			_logFilePath, Arrays.asList(contents), StandardOpenOption.APPEND,
-			StandardOpenOption.CREATE, StandardOpenOption.WRITE);
 	}
 
 	private void _addFragmentEntryLinks(Layout layout) throws Exception {
@@ -545,7 +522,6 @@ public class ExportImportPerformanceTest {
 	private static int _fragmentEntryLinksPerLayout;
 	private static int _layoutsCount;
 	private static String _layoutType;
-	private static Path _logFilePath;
 	private static int _portletsPerContentLayout;
 	private static int _portletsPerPortletLayout;
 

@@ -69,7 +69,6 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.sites.kernel.util.Sites;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.Serializable;
 
@@ -161,7 +160,7 @@ public class ExportImportPerformanceTest {
 
 	@Test
 	public void testExportGroupToLAR() throws Exception {
-		try (Closeable closeable = new PerformanceTimer(
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
 					_properties.getProperty("execution.max.time")))) {
 
@@ -201,7 +200,7 @@ public class ExportImportPerformanceTest {
 		File file = _exportImportLocalService.exportLayoutsAsFile(
 			_exportImportConfiguration);
 
-		try (Closeable closeable = new PerformanceTimer(
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
 					_properties.getProperty("execution.max.time")))) {
 
@@ -225,7 +224,7 @@ public class ExportImportPerformanceTest {
 
 	@Test
 	public void testInitialStagingPublication() throws Exception {
-		try (Closeable closeable = new PerformanceTimer(
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
 					_properties.getProperty("execution.max.time")))) {
 
@@ -266,7 +265,7 @@ public class ExportImportPerformanceTest {
 			_group, _layoutSetPrototype.getLayoutSetPrototypeId(), 0, true,
 			true);
 
-		try (Closeable closeable = new PerformanceTimer(
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
 					_properties.getProperty("execution.max.time")))) {
 
@@ -282,7 +281,7 @@ public class ExportImportPerformanceTest {
 		_stagingLocalService.enableLocalStaging(
 			TestPropsValues.getUserId(), _group, false, false, _serviceContext);
 
-		try (Closeable closeable = new PerformanceTimer(
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
 				GetterUtil.getInteger(
 					_properties.getProperty("execution.max.time")))) {
 

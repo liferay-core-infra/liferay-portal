@@ -23,8 +23,10 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.search.configuration.ReindexerConfiguration;
 import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
@@ -49,6 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -74,8 +77,19 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_groupsCount = 5;
-		_usersCount = 100;
+		Class<?> clazz =
+			UserReindexerPerformanceOfLargeUserGroupInManySitesTest.class;
+
+		_properties = PropertiesUtil.load(
+			clazz.getResourceAsStream(
+				"dependencies/user-reindexer-performance.properties"),
+			"UTF-8");
+
+		_groupsCount = GetterUtil.getInteger(
+			_properties.getProperty("groups.count"));
+
+		_usersCount = GetterUtil.getInteger(
+			_properties.getProperty("users.count"));
 
 		groupSearchFixture = new GroupSearchFixture();
 
@@ -380,6 +394,8 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 	@DeleteAfterTestRun
 	private List<Organization> _organizations;
+
+	private Properties _properties;
 
 	@DeleteAfterTestRun
 	private List<UserGroup> _userGroups;

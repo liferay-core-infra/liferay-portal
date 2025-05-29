@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.performance.PerformanceTimer;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -80,10 +81,10 @@ import java.util.Objects;
 import java.util.Properties;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -91,7 +92,6 @@ import org.junit.runner.RunWith;
 /**
  * @author Pavel Savinov
  */
-@Ignore
 @RunWith(Arquillian.class)
 public class ExportImportPerformanceTest {
 
@@ -99,8 +99,12 @@ public class ExportImportPerformanceTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(),
+			new AssumeTestRule("assume"), new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
+
+	public static void assume() {
+		Assume.assumeTrue(Validator.isNull(System.getenv("JENKINS_HOME")));
+	}
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {

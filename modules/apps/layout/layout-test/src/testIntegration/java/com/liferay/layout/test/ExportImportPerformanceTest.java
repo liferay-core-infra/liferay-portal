@@ -35,9 +35,12 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocal
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -446,9 +449,32 @@ public class ExportImportPerformanceTest {
 				new HashMap<>(), 0, _serviceContext);
 
 			if (Objects.equals(_layoutType, LayoutConstants.TYPE_CONTENT)) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						StringBundler.concat(
+							"Add ", _properties.getProperty("layouts.count"),
+							" content layouts, ",
+							_properties.getProperty(
+								"portlets.per.content.layout"),
+							" portlets per layout, ",
+							_properties.getProperty(
+								"fragment.entry.links.per.layout"),
+							" fragmentEntryLinks per layout."));
+				}
+
 				_addFragmentEntryLinks(layout);
 			}
 			else {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						StringBundler.concat(
+							"Add ", _properties.getProperty("layouts.count"),
+							" portlet layouts, ",
+							_properties.getProperty(
+								"portlets.per.portlet.layout"),
+							" portlets per layout."));
+				}
+
 				_addPortletIds(layout);
 			}
 		}
@@ -544,6 +570,9 @@ public class ExportImportPerformanceTest {
 	private static final String _TMPL_PORTLET_PREFERENCES = StringUtil.read(
 		ExportImportPerformanceTest.class,
 		"dependencies/portlet-preferences.tmpl");
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ExportImportPerformanceTest.class);
 
 	private static String _layoutType;
 	private static Properties _properties;

@@ -7,6 +7,7 @@ package com.liferay.users.admin.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -89,6 +90,13 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 		_usersCount = GetterUtil.getInteger(
 			_properties.getProperty("users.count"));
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				StringBundler.concat(
+					"Setup ", _groupsCount, " groups and ", _usersCount,
+					" users."));
+		}
 
 		groupSearchFixture = new GroupSearchFixture();
 

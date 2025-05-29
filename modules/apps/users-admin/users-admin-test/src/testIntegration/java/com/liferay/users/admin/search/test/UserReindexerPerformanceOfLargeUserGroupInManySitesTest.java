@@ -7,8 +7,6 @@ package com.liferay.users.admin.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.transform.TransformUtil;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -22,6 +20,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.test.performance.PerformanceTimer;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -54,8 +53,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import org.apache.commons.lang.time.StopWatch;
 
 import org.junit.After;
 import org.junit.Before;
@@ -213,11 +210,7 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 	protected void doTest() {
 		Map<String, String> timesMap = new LinkedHashMap<>();
 
-		measure(timesMap, "full test", () -> doTestTiming(timesMap));
-
-		if (_log.isInfoEnabled()) {
-			_log.info(_getTimesReport(timesMap));
-		}
+		measure("full test", () -> doTestTiming(timesMap));
 	}
 
 	protected void doTest(Map<String, String> map) throws Exception {
@@ -237,27 +230,24 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 
 		List<User> users = new ArrayList<>();
 
-		measure(timesMap, "addUsers", () -> addUsers(_usersCount, users));
+		measure("addUsers", () -> addUsers(_usersCount, users));
 
 		measure(
-			timesMap, "addUserGroupUsers",
-			() -> addUserGroupUsers(userGroupId, users));
+			"addUserGroupUsers", () -> addUserGroupUsers(userGroupId, users));
 
-		measure(
-			timesMap, "reindex after addUserGroupUsers", () -> reindex(users));
+		measure("reindex after addUserGroupUsers", () -> reindex(users));
 
 		List<Group> groups = new ArrayList<>();
 
-		measure(timesMap, "addGroups", () -> addGroups(_groupsCount, groups));
+		measure("addGroups", () -> addGroups(_groupsCount, groups));
 
 		for (Group group : groups) {
 			measure(
-				timesMap, "addGroupUserGroup " + group.getGroupId(),
+				"addGroupUserGroup " + group.getGroupId(),
 				() -> addGroupUserGroup(group, userGroup));
 		}
 
-		measure(
-			timesMap, "reindex after addGroupUserGroup", () -> reindex(users));
+		measure("reindex after addGroupUserGroup", () -> reindex(users));
 
 		SearchResponse searchResponse = searchUsersInAllGroups(
 			groups, getTestUserId());
@@ -285,16 +275,14 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 		}
 	}
 
-	protected void measure(
-		Map<String, String> map, String name, Runnable runnable) {
+	protected void measure(String name, Runnable runnable) {
+		try (PerformanceTimer performanceTimer = new PerformanceTimer(
+				GetterUtil.getInteger(
+					_properties.getProperty("execution.max.time")),
+				name)) {
 
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
-
-		runnable.run();
-
-		map.put(name, stopWatch.toString());
+			runnable.run();
+		}
 	}
 
 	protected void reindex(List<User> users) {
@@ -343,19 +331,6 @@ public class UserReindexerPerformanceOfLargeUserGroupInManySitesTest {
 	protected OrganizationSearchFixture organizationSearchFixture;
 	protected UserGroupSearchFixture userGroupSearchFixture;
 	protected UserSearchFixture userSearchFixture;
-
-	private String _getTimesReport(Map<String, String> map) {
-		StringBundler sb = new StringBundler((2 * map.size()) + 1);
-
-		sb.append(StringPool.NEW_LINE);
-
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			sb.append(String.valueOf(entry));
-			sb.append(StringPool.NEW_LINE);
-		}
-
-		return sb.toString();
-	}
 
 	private Dictionary<String, Object> _toDictionary(Map<String, String> map) {
 		return new HashMapDictionary<>(new HashMap<String, Object>(map));

@@ -640,33 +640,36 @@ ExpandoBridge expandoBridge = ExpandoBridgeFactoryUtil.getExpandoBridge(company.
 							value = ParamUtil.getString(request, "ExpandoAttribute--" + name + "--", String.valueOf(value));
 							%>
 
+							<aui:style type="text/css">
+							:root {
+								--expando-textarea-height: <%= (propertyHeight > 0) ? propertyHeight : "auto" %>px;
+								--expando-textarea-width: <%= (propertyWidth > 0) ? propertyWidth : "auto" %>px;
+								--expando-input-width: <%= (propertyWidth > 0)? propertyWidth : "auto" %>px;
+							}
+							</aui:style>
+
+							<aui:style type="text/css">
+							.expando-textarea {
+								height: var(--expando-textarea-height);
+								width: var(--expando-textarea-width);
+								}
+
+								.expando-input {
+								width: var(--expando-input-width);
+								}
+							}
+							</aui:style>
+
 							<c:choose>
 								<c:when test="<%= propertyHeight > 0 %>">
 									<textarea
-										class="field form-control lfr-input-text"
+										class="expando-textarea field form-control lfr-input-text"
 										id="<portlet:namespace /><%= randomNamespace %><%= HtmlUtil.getAUICompatibleId(name) %>"
-										name="<portlet:namespace />ExpandoAttribute--<%= HtmlUtil.escapeAttribute(name) %>--"
-										style="
-										<c:if test="<%= propertyHeight > 0 %>">
-											height: <%= propertyHeight %>px;
-										</c:if>
-
-										<c:if test="<%= propertyWidth > 0 %>">
-											width: <%= propertyWidth %>px;
-										</c:if>"
-									><%= HtmlUtil.escape(String.valueOf(value)) %></textarea>
+										name="<portlet:namespace />ExpandoAttribute--<%= HtmlUtil.escapeAttribute(name) %>--"><%= HtmlUtil.escape(String.valueOf(value)) %></textarea
+									>
 								</c:when>
 								<c:otherwise>
-									<input
-										class="field form-control lfr-input-text"
-										id="<portlet:namespace /><%= randomNamespace %><%= HtmlUtil.getAUICompatibleId(name) %>"
-										name="<portlet:namespace />ExpandoAttribute--<%= HtmlUtil.escapeAttribute(name) %>--"
-										style="
-										<c:if test="<%= propertyWidth > 0 %>">
-											width: <%= propertyWidth %>px;
-										</c:if>"
-										type="<%= propertySecret ? "password" : "text" %>" value="<%= HtmlUtil.escape(String.valueOf(value)) %>"
-									/>
+									<input class="expando-input field form-control lfr-input-text" id="<portlet:namespace /><%= randomNamespace %><%= HtmlUtil.getAUICompatibleId(name) %>" name="<portlet:namespace />ExpandoAttribute--<%= HtmlUtil.escapeAttribute(name) %>--" type="<%= propertySecret ? "password" : "text" %>" value="<%= HtmlUtil.escape(String.valueOf(value)) %>" />
 								</c:otherwise>
 							</c:choose>
 						</c:otherwise>

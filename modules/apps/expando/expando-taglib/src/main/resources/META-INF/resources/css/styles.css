@@ -1,0 +1,7 @@
+.expando-input {
+    width: var(--dynamic-width);
+}
+.expando-textarea {
+    height: var(--dynamic-height);
+    width: var(--dynamic-width);
+}

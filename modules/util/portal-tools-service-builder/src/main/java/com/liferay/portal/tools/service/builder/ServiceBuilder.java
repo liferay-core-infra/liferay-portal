@@ -4244,6 +4244,20 @@ public class ServiceBuilder {
 				indexMetadatasMap.put(
 					tableName, _optimizeForBTreeIndexes(indexMetadatas));
 			}
+
+			for (EntityFinder dynamicEntityFinder :
+					entity.getDynamicEntityFinders()) {
+
+				IndexMetadata dynamicIndexMetadata = _createIndexMetadata(
+					entity, dynamicEntityFinder, false);
+
+				if (dynamicIndexMetadata != null) {
+					_addIndexMetadata(
+						indexMetadatasMap, tableName,
+						entity.getPKEntityColumnDBNames(), dynamicIndexMetadata,
+						false);
+				}
+			}
 		}
 
 		for (Map.Entry<String, EntityMapping> entry :
@@ -6648,6 +6662,7 @@ public class ServiceBuilder {
 		}
 
 		List<EntityFinder> entityFinders = new ArrayList<>();
+		List<EntityFinder> dynamicEntityFinders = new ArrayList<>();
 
 		List<Element> finderElements = entityElement.elements("finder");
 
@@ -6910,11 +6925,19 @@ public class ServiceBuilder {
 						"company"));
 			}
 
-			entityFinders.add(
-				new EntityFinder(
-					this, finderName, finderPluralName, finderPretouch,
-					finderReturn, finderUnique, finderWhere, finderDBWhere,
-					finderDBIndex, finderEntityColumns));
+			EntityFinder entityFinder = new EntityFinder(
+				this, finderName, finderPluralName, finderPretouch,
+				finderReturn, finderUnique, finderWhere, finderDBWhere,
+				finderDBIndex, finderEntityColumns);
+
+			if (GetterUtil.getBoolean(
+					finderElement.attributeValue("dynamic"))) {
+
+				dynamicEntityFinders.add(entityFinder);
+			}
+			else {
+				entityFinders.add(entityFinder);
+			}
 		}
 
 		String uadOutputPath =
@@ -7007,9 +7030,9 @@ public class ServiceBuilder {
 			mvccEnabled, trashEnabled, uadApplicationName, uadAutoDelete,
 			uadOutputPath, uadPackagePath, deprecated, pkEntityColumns,
 			regularEntityColumns, blobEntityColumns, collectionEntityColumns,
-			entityColumns, entityOrder, entityFinders, referenceEntities,
-			unresolvedReferenceEntityNames, txRequiredMethodNames,
-			resourceActionModel);
+			entityColumns, entityOrder, entityFinders, dynamicEntityFinders,
+			referenceEntities, unresolvedReferenceEntityNames,
+			txRequiredMethodNames, resourceActionModel);
 
 		if (changeTrackingEnabled && !columnElements.isEmpty()) {
 			if (!mvccEnabled) {

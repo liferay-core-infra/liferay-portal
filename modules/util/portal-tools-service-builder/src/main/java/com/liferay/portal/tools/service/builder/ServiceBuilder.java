@@ -6922,7 +6922,8 @@ public class ServiceBuilder {
 				finderDBIndex, finderEntityColumns);
 
 			if (GetterUtil.getBoolean(
-					finderElement.attributeValue("dynamic"))) {
+					finderElement.attributeValue("dynamic")) &&
+				entityName.equals("ResourcePermission")) {
 
 				dynamicEntityFinders.add(entityFinder);
 			}

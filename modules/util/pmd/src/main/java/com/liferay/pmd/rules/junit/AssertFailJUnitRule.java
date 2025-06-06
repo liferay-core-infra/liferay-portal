@@ -16,7 +16,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
 import net.sourceforge.pmd.lang.java.ast.ASTStatementExpression;
 import net.sourceforge.pmd.lang.java.ast.ASTTryStatement;
-import net.sourceforge.pmd.lang.java.rule.junit.AbstractJUnitRule;
+import net.sourceforge.pmd.lang.java.rule.AbstractJUnitRule;
 
 /**
  * @author Cristina González

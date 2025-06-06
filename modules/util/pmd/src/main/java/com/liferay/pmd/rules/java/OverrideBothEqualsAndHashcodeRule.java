@@ -16,7 +16,7 @@ import net.sourceforge.pmd.lang.java.ast.JavaNode;
  * @author Shuyang Zhou
  */
 public class OverrideBothEqualsAndHashcodeRule
-	extends net.sourceforge.pmd.lang.java.rule.basic.
+	extends net.sourceforge.pmd.lang.java.rule.errorprone.
 				OverrideBothEqualsAndHashcodeRule {
 
 	@Override

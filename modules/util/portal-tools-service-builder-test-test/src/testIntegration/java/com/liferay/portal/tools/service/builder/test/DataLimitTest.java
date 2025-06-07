@@ -7,9 +7,8 @@ package com.liferay.portal.tools.service.builder.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.counter.kernel.service.CounterLocalService;
-import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.exception.DataLimitExceededException;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.Inject;
@@ -43,18 +42,7 @@ public class DataLimitTest {
 		_setDataLimitModelMaxCount(3);
 
 		try {
-			_test();
-
-			// Asserting limit is per company
-
-			long companyId = CompanyThreadLocal.getCompanyId();
-
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-						companyId + 1)) {
-
-				_test();
-			}
+			CompanyLocalServiceUtil.forEachCompanyId(companyId -> _test());
 		}
 		finally {
 			_setDataLimitModelMaxCount(0);

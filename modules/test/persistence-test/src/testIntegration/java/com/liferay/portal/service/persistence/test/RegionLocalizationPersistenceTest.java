@@ -79,7 +79,8 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = CounterLocalServiceUtil.getCurrentId(
+				RegionLocalization.class.getName()) + 1;
 
 		RegionLocalization regionLocalization = _persistence.create(pk);
 
@@ -108,7 +109,8 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = CounterLocalServiceUtil.getCurrentId(
+				RegionLocalization.class.getName()) + 1;
 
 		RegionLocalization newRegionLocalization = _persistence.create(pk);
 
@@ -182,7 +184,8 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchRegionLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = CounterLocalServiceUtil.getCurrentId(
+				RegionLocalization.class.getName()) + 1;;
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -213,7 +216,8 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = CounterLocalServiceUtil.getCurrentId(
+				RegionLocalization.class.getName()) + 1;
 
 		RegionLocalization missingRegionLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -249,9 +253,11 @@ public class RegionLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = CounterLocalServiceUtil.getCurrentId(
+				RegionLocalization.class.getName()) + 1;
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = CounterLocalServiceUtil.getCurrentId(
+				RegionLocalization.class.getName()) + 1;
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -270,7 +276,8 @@ public class RegionLocalizationPersistenceTest {
 
 		RegionLocalization newRegionLocalization = addRegionLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = CounterLocalServiceUtil.getCurrentId(
+				RegionLocalization.class.getName()) + 1;
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -342,7 +349,8 @@ public class RegionLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"regionLocalizationId", RandomTestUtil.nextLong()));
+				"regionLocalizationId", CounterLocalServiceUtil.getCurrentId(
+							RegionLocalization.class.getName()) + 1));
 
 		List<RegionLocalization> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -389,7 +397,8 @@ public class RegionLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"regionLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {CounterLocalServiceUtil.getCurrentId(
+						RegionLocalization.class.getName()) + 1}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 

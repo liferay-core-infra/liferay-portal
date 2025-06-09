@@ -6,6 +6,7 @@
 package com.liferay.portal.service.persistence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
@@ -461,7 +462,9 @@ public class RegionLocalizationPersistenceTest {
 	}
 
 	protected RegionLocalization addRegionLocalization() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.randomInt(
+				(int)CounterLocalServiceUtil.getCurrentId(
+						RegionLocalization.class.getName()), Integer.MAX_VALUE);
 
 		RegionLocalization regionLocalization = _persistence.create(pk);
 

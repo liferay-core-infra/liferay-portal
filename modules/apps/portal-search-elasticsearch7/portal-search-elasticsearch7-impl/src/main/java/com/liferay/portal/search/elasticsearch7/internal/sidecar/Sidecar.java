@@ -355,22 +355,22 @@ public class Sidecar {
 				ioException);
 		}
 
-		arguments.add("-Des.path.conf=" + configFolder);
 		arguments.add("-Des.distribution.type=tar");
 		arguments.add("-Des.networkaddress.cache.negative.ttl=10");
 		arguments.add("-Des.networkaddress.cache.ttl=60");
+		arguments.add("-Des.path.conf=" + configFolder);
 		arguments.add("-Dfile.encoding=UTF-8");
 		arguments.add("-Dio.netty.noUnsafe=true");
 		arguments.add("-Dio.netty.noKeySetOptimization=true");
 		arguments.add("-Dio.netty.recycler.maxCapacityPerThread=0");
+		arguments.add("-Djava.awt.headless=true");
+		arguments.add("-Djava.io.tmpdir=" + _sidecarTempDirPath);
+		arguments.add("-Djna.nosys=true");
 		arguments.add("-Dlog4j.shutdownHookEnabled=false");
 		arguments.add("-Dlog4j2.disable.jmx=true");
 		arguments.add("-Dlog4j2.formatMsgNoLookups=true");
 		arguments.add(
 			"-Dorg.apache.lucene.vectorization.upperJavaFeatureVersion=21");
-		arguments.add("-Djava.awt.headless=true");
-		arguments.add("-Djava.io.tmpdir=" + _sidecarTempDirPath);
-		arguments.add("-Djna.nosys=true");
 
 		if (JavaDetector.isJDK21() && OSDetector.isLinux()) {
 			arguments.add("-XX:-UseContainerSupport");

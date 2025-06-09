@@ -148,6 +148,10 @@
 		<!-- Other fields -->
 
 		<column name="name" type="String" />
+		<column name="bigDecimalValue" type="BigDecimal" />
+		<column name="doubleValue" type="double" />
+		<column name="intValue" type="int" />
+		<column name="longValue" type="long" />
 	</entity>
 	<entity cache-enabled="true" local-service="true" name="DSLQueryStatusEntry" remote-service="false">
 

@@ -6,6 +6,7 @@
 package com.liferay.portal.tools.service.builder.test.service.persistence.impl.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.expression.Expression;
@@ -24,6 +25,8 @@ import com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntry;
 import com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntryTable;
 import com.liferay.portal.tools.service.builder.test.service.persistence.DSLQueryEntryPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.DSLQueryStatusEntryPersistence;
+
+import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -428,6 +431,29 @@ public class DSLQueryEntryPersistenceImplTest {
 	}
 
 	@Test
+	public void testDSLQueryWithFloatDivideOnColumn() {
+		_testDSLQueryEntry1.setBigDecimalValue(new BigDecimal("9".repeat(14)));
+		_testDSLQueryEntry1.setDoubleValue(Double.valueOf("9".repeat(36)));
+		_testDSLQueryEntry1.setIntValue(Integer.MAX_VALUE);
+		_testDSLQueryEntry1.setLongValue(Long.MAX_VALUE);
+
+		_testDSLQueryEntry1 = _dslQueryEntryPersistence.updateImpl(
+			_testDSLQueryEntry1);
+
+		_testDSLQueryWithFloatDivideOnColumn(
+			1.0F, DSLQueryEntryTable.INSTANCE.bigDecimalValue);
+
+		_testDSLQueryWithFloatDivideOnColumn(
+			1.0F, DSLQueryEntryTable.INSTANCE.doubleValue);
+
+		_testDSLQueryWithFloatDivideOnColumn(
+			1.0F, DSLQueryEntryTable.INSTANCE.intValue);
+
+		_testDSLQueryWithFloatDivideOnColumn(
+			1.0F, DSLQueryEntryTable.INSTANCE.longValue);
+	}
+
+	@Test
 	public void testDSLQueryWithUpdate() {
 		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
 			DSLQueryEntryTable.INSTANCE.name
@@ -528,6 +554,25 @@ public class DSLQueryEntryPersistenceImplTest {
 		_dslQueryStatusEntries.add(dslQueryStatusEntry);
 
 		return dslQueryStatusEntry;
+	}
+
+	private void _testDSLQueryWithFloatDivideOnColumn(
+		float expectedResult, Column<?, ?> column) {
+
+		Assert.assertEquals(
+			Arrays.asList(expectedResult),
+			_dslQueryEntryPersistence.dslQuery(
+				DSLQueryFactoryUtil.select(
+					DSLFunctionFactoryUtil.floatDivide(
+						(Expression<Number>)column, (Expression<Number>)column
+					).as(
+						"alias"
+					)
+				).from(
+					DSLQueryEntryTable.INSTANCE
+				).where(
+					DSLQueryEntryTable.INSTANCE.dslQueryEntryId.eq(1L)
+				)));
 	}
 
 	private static final String _TEST_NAME_1 = "test.name.1";

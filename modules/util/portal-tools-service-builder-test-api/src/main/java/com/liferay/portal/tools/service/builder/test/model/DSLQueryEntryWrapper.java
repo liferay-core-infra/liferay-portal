@@ -8,6 +8,8 @@ package com.liferay.portal.tools.service.builder.test.model;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
+import java.math.BigDecimal;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +36,10 @@ public class DSLQueryEntryWrapper
 
 		attributes.put("dslQueryEntryId", getDslQueryEntryId());
 		attributes.put("name", getName());
+		attributes.put("bigDecimalValue", getBigDecimalValue());
+		attributes.put("doubleValue", getDoubleValue());
+		attributes.put("intValue", getIntValue());
+		attributes.put("longValue", getLongValue());
 
 		return attributes;
 	}
@@ -51,11 +57,56 @@ public class DSLQueryEntryWrapper
 		if (name != null) {
 			setName(name);
 		}
+
+		BigDecimal bigDecimalValue = (BigDecimal)attributes.get(
+			"bigDecimalValue");
+
+		if (bigDecimalValue != null) {
+			setBigDecimalValue(bigDecimalValue);
+		}
+
+		Double doubleValue = (Double)attributes.get("doubleValue");
+
+		if (doubleValue != null) {
+			setDoubleValue(doubleValue);
+		}
+
+		Integer intValue = (Integer)attributes.get("intValue");
+
+		if (intValue != null) {
+			setIntValue(intValue);
+		}
+
+		Long longValue = (Long)attributes.get("longValue");
+
+		if (longValue != null) {
+			setLongValue(longValue);
+		}
 	}
 
 	@Override
 	public DSLQueryEntry cloneWithOriginalValues() {
 		return wrap(model.cloneWithOriginalValues());
+	}
+
+	/**
+	 * Returns the big decimal value of this dsl query entry.
+	 *
+	 * @return the big decimal value of this dsl query entry
+	 */
+	@Override
+	public BigDecimal getBigDecimalValue() {
+		return model.getBigDecimalValue();
+	}
+
+	/**
+	 * Returns the double value of this dsl query entry.
+	 *
+	 * @return the double value of this dsl query entry
+	 */
+	@Override
+	public double getDoubleValue() {
+		return model.getDoubleValue();
 	}
 
 	/**
@@ -66,6 +117,26 @@ public class DSLQueryEntryWrapper
 	@Override
 	public long getDslQueryEntryId() {
 		return model.getDslQueryEntryId();
+	}
+
+	/**
+	 * Returns the int value of this dsl query entry.
+	 *
+	 * @return the int value of this dsl query entry
+	 */
+	@Override
+	public int getIntValue() {
+		return model.getIntValue();
+	}
+
+	/**
+	 * Returns the long value of this dsl query entry.
+	 *
+	 * @return the long value of this dsl query entry
+	 */
+	@Override
+	public long getLongValue() {
+		return model.getLongValue();
 	}
 
 	/**
@@ -94,6 +165,26 @@ public class DSLQueryEntryWrapper
 	}
 
 	/**
+	 * Sets the big decimal value of this dsl query entry.
+	 *
+	 * @param bigDecimalValue the big decimal value of this dsl query entry
+	 */
+	@Override
+	public void setBigDecimalValue(BigDecimal bigDecimalValue) {
+		model.setBigDecimalValue(bigDecimalValue);
+	}
+
+	/**
+	 * Sets the double value of this dsl query entry.
+	 *
+	 * @param doubleValue the double value of this dsl query entry
+	 */
+	@Override
+	public void setDoubleValue(double doubleValue) {
+		model.setDoubleValue(doubleValue);
+	}
+
+	/**
 	 * Sets the dsl query entry ID of this dsl query entry.
 	 *
 	 * @param dslQueryEntryId the dsl query entry ID of this dsl query entry
@@ -101,6 +192,26 @@ public class DSLQueryEntryWrapper
 	@Override
 	public void setDslQueryEntryId(long dslQueryEntryId) {
 		model.setDslQueryEntryId(dslQueryEntryId);
+	}
+
+	/**
+	 * Sets the int value of this dsl query entry.
+	 *
+	 * @param intValue the int value of this dsl query entry
+	 */
+	@Override
+	public void setIntValue(int intValue) {
+		model.setIntValue(intValue);
+	}
+
+	/**
+	 * Sets the long value of this dsl query entry.
+	 *
+	 * @param longValue the long value of this dsl query entry
+	 */
+	@Override
+	public void setLongValue(long longValue) {
+		model.setLongValue(longValue);
 	}
 
 	/**

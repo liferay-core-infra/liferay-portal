@@ -37,7 +37,11 @@ create table CacheMissEntry (
 
 create table DSLQueryEntry (
 	dslQueryEntryId LONG not null primary key,
-	name VARCHAR(75) null
+	name VARCHAR(75) null,
+	bigDecimalValue BIGDECIMAL null,
+	doubleValue DOUBLE,
+	intValue INTEGER,
+	longValue LONG
 );
 
 create table DSLQueryStatusEntry (

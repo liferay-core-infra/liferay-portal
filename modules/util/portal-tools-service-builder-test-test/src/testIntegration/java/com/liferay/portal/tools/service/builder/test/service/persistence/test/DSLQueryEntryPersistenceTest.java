@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.test.AssertUtils;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -28,6 +29,8 @@ import com.liferay.portal.tools.service.builder.test.service.persistence.DSLQuer
 import com.liferay.portal.tools.service.builder.test.service.persistence.DSLQueryEntryUtil;
 
 import java.io.Serializable;
+
+import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -115,6 +118,15 @@ public class DSLQueryEntryPersistenceTest {
 
 		newDSLQueryEntry.setName(RandomTestUtil.randomString());
 
+		newDSLQueryEntry.setBigDecimalValue(
+			new BigDecimal(RandomTestUtil.nextDouble()));
+
+		newDSLQueryEntry.setDoubleValue(RandomTestUtil.nextDouble());
+
+		newDSLQueryEntry.setIntValue(RandomTestUtil.nextInt());
+
+		newDSLQueryEntry.setLongValue(RandomTestUtil.nextLong());
+
 		_dslQueryEntries.add(_persistence.update(newDSLQueryEntry));
 
 		DSLQueryEntry existingDSLQueryEntry = _persistence.findByPrimaryKey(
@@ -125,6 +137,18 @@ public class DSLQueryEntryPersistenceTest {
 			newDSLQueryEntry.getDslQueryEntryId());
 		Assert.assertEquals(
 			existingDSLQueryEntry.getName(), newDSLQueryEntry.getName());
+		Assert.assertEquals(
+			existingDSLQueryEntry.getBigDecimalValue(),
+			newDSLQueryEntry.getBigDecimalValue());
+		AssertUtils.assertEquals(
+			existingDSLQueryEntry.getDoubleValue(),
+			newDSLQueryEntry.getDoubleValue());
+		Assert.assertEquals(
+			existingDSLQueryEntry.getIntValue(),
+			newDSLQueryEntry.getIntValue());
+		Assert.assertEquals(
+			existingDSLQueryEntry.getLongValue(),
+			newDSLQueryEntry.getLongValue());
 	}
 
 	@Test
@@ -152,7 +176,9 @@ public class DSLQueryEntryPersistenceTest {
 
 	protected OrderByComparator<DSLQueryEntry> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create(
-			"DSLQueryEntry", "dslQueryEntryId", true, "name", true);
+			"DSLQueryEntry", "dslQueryEntryId", true, "name", true,
+			"bigDecimalValue", true, "doubleValue", true, "intValue", true,
+			"longValue", true);
 	}
 
 	@Test
@@ -374,6 +400,15 @@ public class DSLQueryEntryPersistenceTest {
 		DSLQueryEntry dslQueryEntry = _persistence.create(pk);
 
 		dslQueryEntry.setName(RandomTestUtil.randomString());
+
+		dslQueryEntry.setBigDecimalValue(
+			new BigDecimal(RandomTestUtil.nextDouble()));
+
+		dslQueryEntry.setDoubleValue(RandomTestUtil.nextDouble());
+
+		dslQueryEntry.setIntValue(RandomTestUtil.nextInt());
+
+		dslQueryEntry.setLongValue(RandomTestUtil.nextLong());
 
 		_dslQueryEntries.add(_persistence.update(dslQueryEntry));
 

@@ -43,6 +43,10 @@
 	<model name="com.liferay.portal.tools.service.builder.test.model.DSLQueryEntry">
 		<field name="dslQueryEntryId" type="long" />
 		<field name="name" type="String" />
+		<field name="bigDecimalValue" type="BigDecimal" />
+		<field name="doubleValue" type="double" />
+		<field name="intValue" type="int" />
+		<field name="longValue" type="long" />
 	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntry">
 		<field name="dslQueryStatusEntryId" type="long" />

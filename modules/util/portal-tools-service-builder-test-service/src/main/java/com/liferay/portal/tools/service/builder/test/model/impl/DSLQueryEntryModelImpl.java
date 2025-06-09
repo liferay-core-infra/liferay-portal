@@ -23,6 +23,8 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.math.BigDecimal;
+
 import java.sql.Blob;
 import java.sql.Types;
 
@@ -57,7 +59,9 @@ public class DSLQueryEntryModelImpl
 	public static final String TABLE_NAME = "DSLQueryEntry";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"dslQueryEntryId", Types.BIGINT}, {"name", Types.VARCHAR}
+		{"dslQueryEntryId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"bigDecimalValue", Types.DECIMAL}, {"doubleValue", Types.DOUBLE},
+		{"intValue", Types.INTEGER}, {"longValue", Types.BIGINT}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -66,10 +70,14 @@ public class DSLQueryEntryModelImpl
 	static {
 		TABLE_COLUMNS_MAP.put("dslQueryEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("bigDecimalValue", Types.DECIMAL);
+		TABLE_COLUMNS_MAP.put("doubleValue", Types.DOUBLE);
+		TABLE_COLUMNS_MAP.put("intValue", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("longValue", Types.BIGINT);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table DSLQueryEntry (dslQueryEntryId LONG not null primary key,name VARCHAR(75) null)";
+		"create table DSLQueryEntry (dslQueryEntryId LONG not null primary key,name VARCHAR(75) null,bigDecimalValue BIGDECIMAL null,doubleValue DOUBLE,intValue INTEGER,longValue LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table DSLQueryEntry";
 
@@ -214,6 +222,14 @@ public class DSLQueryEntryModelImpl
 			attributeGetterFunctions.put(
 				"dslQueryEntryId", DSLQueryEntry::getDslQueryEntryId);
 			attributeGetterFunctions.put("name", DSLQueryEntry::getName);
+			attributeGetterFunctions.put(
+				"bigDecimalValue", DSLQueryEntry::getBigDecimalValue);
+			attributeGetterFunctions.put(
+				"doubleValue", DSLQueryEntry::getDoubleValue);
+			attributeGetterFunctions.put(
+				"intValue", DSLQueryEntry::getIntValue);
+			attributeGetterFunctions.put(
+				"longValue", DSLQueryEntry::getLongValue);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -238,6 +254,20 @@ public class DSLQueryEntryModelImpl
 			attributeSetterBiConsumers.put(
 				"name",
 				(BiConsumer<DSLQueryEntry, String>)DSLQueryEntry::setName);
+			attributeSetterBiConsumers.put(
+				"bigDecimalValue",
+				(BiConsumer<DSLQueryEntry, BigDecimal>)
+					DSLQueryEntry::setBigDecimalValue);
+			attributeSetterBiConsumers.put(
+				"doubleValue",
+				(BiConsumer<DSLQueryEntry, Double>)
+					DSLQueryEntry::setDoubleValue);
+			attributeSetterBiConsumers.put(
+				"intValue",
+				(BiConsumer<DSLQueryEntry, Integer>)DSLQueryEntry::setIntValue);
+			attributeSetterBiConsumers.put(
+				"longValue",
+				(BiConsumer<DSLQueryEntry, Long>)DSLQueryEntry::setLongValue);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -276,6 +306,62 @@ public class DSLQueryEntryModelImpl
 		}
 
 		_name = name;
+	}
+
+	@Override
+	public BigDecimal getBigDecimalValue() {
+		return _bigDecimalValue;
+	}
+
+	@Override
+	public void setBigDecimalValue(BigDecimal bigDecimalValue) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_bigDecimalValue = bigDecimalValue;
+	}
+
+	@Override
+	public double getDoubleValue() {
+		return _doubleValue;
+	}
+
+	@Override
+	public void setDoubleValue(double doubleValue) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_doubleValue = doubleValue;
+	}
+
+	@Override
+	public int getIntValue() {
+		return _intValue;
+	}
+
+	@Override
+	public void setIntValue(int intValue) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_intValue = intValue;
+	}
+
+	@Override
+	public long getLongValue() {
+		return _longValue;
+	}
+
+	@Override
+	public void setLongValue(long longValue) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_longValue = longValue;
 	}
 
 	public long getColumnBitmask() {
@@ -336,6 +422,10 @@ public class DSLQueryEntryModelImpl
 
 		dslQueryEntryImpl.setDslQueryEntryId(getDslQueryEntryId());
 		dslQueryEntryImpl.setName(getName());
+		dslQueryEntryImpl.setBigDecimalValue(getBigDecimalValue());
+		dslQueryEntryImpl.setDoubleValue(getDoubleValue());
+		dslQueryEntryImpl.setIntValue(getIntValue());
+		dslQueryEntryImpl.setLongValue(getLongValue());
 
 		dslQueryEntryImpl.resetOriginalValues();
 
@@ -349,6 +439,14 @@ public class DSLQueryEntryModelImpl
 		dslQueryEntryImpl.setDslQueryEntryId(
 			this.<Long>getColumnOriginalValue("dslQueryEntryId"));
 		dslQueryEntryImpl.setName(this.<String>getColumnOriginalValue("name"));
+		dslQueryEntryImpl.setBigDecimalValue(
+			this.<BigDecimal>getColumnOriginalValue("bigDecimalValue"));
+		dslQueryEntryImpl.setDoubleValue(
+			this.<Double>getColumnOriginalValue("doubleValue"));
+		dslQueryEntryImpl.setIntValue(
+			this.<Integer>getColumnOriginalValue("intValue"));
+		dslQueryEntryImpl.setLongValue(
+			this.<Long>getColumnOriginalValue("longValue"));
 
 		return dslQueryEntryImpl;
 	}
@@ -435,6 +533,14 @@ public class DSLQueryEntryModelImpl
 			dslQueryEntryCacheModel.name = null;
 		}
 
+		dslQueryEntryCacheModel.bigDecimalValue = getBigDecimalValue();
+
+		dslQueryEntryCacheModel.doubleValue = getDoubleValue();
+
+		dslQueryEntryCacheModel.intValue = getIntValue();
+
+		dslQueryEntryCacheModel.longValue = getLongValue();
+
 		return dslQueryEntryCacheModel;
 	}
 
@@ -498,6 +604,10 @@ public class DSLQueryEntryModelImpl
 
 	private long _dslQueryEntryId;
 	private String _name;
+	private BigDecimal _bigDecimalValue;
+	private double _doubleValue;
+	private int _intValue;
+	private long _longValue;
 
 	public <T> T getColumnValue(String columnName) {
 		Function<DSLQueryEntry, Object> function =
@@ -529,6 +639,10 @@ public class DSLQueryEntryModelImpl
 
 		_columnOriginalValues.put("dslQueryEntryId", _dslQueryEntryId);
 		_columnOriginalValues.put("name", _name);
+		_columnOriginalValues.put("bigDecimalValue", _bigDecimalValue);
+		_columnOriginalValues.put("doubleValue", _doubleValue);
+		_columnOriginalValues.put("intValue", _intValue);
+		_columnOriginalValues.put("longValue", _longValue);
 	}
 
 	private transient Map<String, Object> _columnOriginalValues;
@@ -545,6 +659,14 @@ public class DSLQueryEntryModelImpl
 		columnBitmasks.put("dslQueryEntryId", 1L);
 
 		columnBitmasks.put("name", 2L);
+
+		columnBitmasks.put("bigDecimalValue", 4L);
+
+		columnBitmasks.put("doubleValue", 8L);
+
+		columnBitmasks.put("intValue", 16L);
+
+		columnBitmasks.put("longValue", 32L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

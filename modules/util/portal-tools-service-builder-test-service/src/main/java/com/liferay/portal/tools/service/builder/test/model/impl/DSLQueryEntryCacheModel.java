@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import java.math.BigDecimal;
+
 /**
  * The cache model class for representing DSLQueryEntry in entity cache.
  *
@@ -51,12 +53,20 @@ public class DSLQueryEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{dslQueryEntryId=");
 		sb.append(dslQueryEntryId);
 		sb.append(", name=");
 		sb.append(name);
+		sb.append(", bigDecimalValue=");
+		sb.append(bigDecimalValue);
+		sb.append(", doubleValue=");
+		sb.append(doubleValue);
+		sb.append(", intValue=");
+		sb.append(intValue);
+		sb.append(", longValue=");
+		sb.append(longValue);
 		sb.append("}");
 
 		return sb.toString();
@@ -75,15 +85,29 @@ public class DSLQueryEntryCacheModel
 			dslQueryEntryImpl.setName(name);
 		}
 
+		dslQueryEntryImpl.setBigDecimalValue(bigDecimalValue);
+		dslQueryEntryImpl.setDoubleValue(doubleValue);
+		dslQueryEntryImpl.setIntValue(intValue);
+		dslQueryEntryImpl.setLongValue(longValue);
+
 		dslQueryEntryImpl.resetOriginalValues();
 
 		return dslQueryEntryImpl;
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		dslQueryEntryId = objectInput.readLong();
 		name = objectInput.readUTF();
+		bigDecimalValue = (BigDecimal)objectInput.readObject();
+
+		doubleValue = objectInput.readDouble();
+
+		intValue = objectInput.readInt();
+
+		longValue = objectInput.readLong();
 	}
 
 	@Override
@@ -96,9 +120,21 @@ public class DSLQueryEntryCacheModel
 		else {
 			objectOutput.writeUTF(name);
 		}
+
+		objectOutput.writeObject(bigDecimalValue);
+
+		objectOutput.writeDouble(doubleValue);
+
+		objectOutput.writeInt(intValue);
+
+		objectOutput.writeLong(longValue);
 	}
 
 	public long dslQueryEntryId;
 	public String name;
+	public BigDecimal bigDecimalValue;
+	public double doubleValue;
+	public int intValue;
+	public long longValue;
 
 }

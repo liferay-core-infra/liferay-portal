@@ -8,6 +8,8 @@ package com.liferay.portal.tools.service.builder.test.model;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 
+import java.math.BigDecimal;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -72,6 +74,62 @@ public interface DSLQueryEntryModel extends BaseModel<DSLQueryEntry> {
 	 * @param name the name of this dsl query entry
 	 */
 	public void setName(String name);
+
+	/**
+	 * Returns the big decimal value of this dsl query entry.
+	 *
+	 * @return the big decimal value of this dsl query entry
+	 */
+	public BigDecimal getBigDecimalValue();
+
+	/**
+	 * Sets the big decimal value of this dsl query entry.
+	 *
+	 * @param bigDecimalValue the big decimal value of this dsl query entry
+	 */
+	public void setBigDecimalValue(BigDecimal bigDecimalValue);
+
+	/**
+	 * Returns the double value of this dsl query entry.
+	 *
+	 * @return the double value of this dsl query entry
+	 */
+	public double getDoubleValue();
+
+	/**
+	 * Sets the double value of this dsl query entry.
+	 *
+	 * @param doubleValue the double value of this dsl query entry
+	 */
+	public void setDoubleValue(double doubleValue);
+
+	/**
+	 * Returns the int value of this dsl query entry.
+	 *
+	 * @return the int value of this dsl query entry
+	 */
+	public int getIntValue();
+
+	/**
+	 * Sets the int value of this dsl query entry.
+	 *
+	 * @param intValue the int value of this dsl query entry
+	 */
+	public void setIntValue(int intValue);
+
+	/**
+	 * Returns the long value of this dsl query entry.
+	 *
+	 * @return the long value of this dsl query entry
+	 */
+	public long getLongValue();
+
+	/**
+	 * Sets the long value of this dsl query entry.
+	 *
+	 * @param longValue the long value of this dsl query entry
+	 */
+	public void setLongValue(long longValue);
 
 	@Override
 	public DSLQueryEntry cloneWithOriginalValues();

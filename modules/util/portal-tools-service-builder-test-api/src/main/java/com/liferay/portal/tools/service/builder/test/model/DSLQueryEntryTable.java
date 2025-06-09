@@ -8,6 +8,8 @@ package com.liferay.portal.tools.service.builder.test.model;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.base.BaseTable;
 
+import java.math.BigDecimal;
+
 import java.sql.Types;
 
 /**
@@ -26,6 +28,16 @@ public class DSLQueryEntryTable extends BaseTable<DSLQueryEntryTable> {
 			"dslQueryEntryId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
 	public final Column<DSLQueryEntryTable, String> name = createColumn(
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<DSLQueryEntryTable, BigDecimal> bigDecimalValue =
+		createColumn(
+			"bigDecimalValue", BigDecimal.class, Types.DECIMAL,
+			Column.FLAG_DEFAULT);
+	public final Column<DSLQueryEntryTable, Double> doubleValue = createColumn(
+		"doubleValue", Double.class, Types.DOUBLE, Column.FLAG_DEFAULT);
+	public final Column<DSLQueryEntryTable, Integer> intValue = createColumn(
+		"intValue", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
+	public final Column<DSLQueryEntryTable, Long> longValue = createColumn(
+		"longValue", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 
 	private DSLQueryEntryTable() {
 		super("DSLQueryEntry", DSLQueryEntryTable::new);

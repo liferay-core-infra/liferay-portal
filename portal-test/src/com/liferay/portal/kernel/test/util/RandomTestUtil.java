@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -36,8 +37,28 @@ public class RandomTestUtil {
 		return (int)CounterLocalServiceUtil.increment();
 	}
 
+	public static int nextInt(String name) {
+		List<String> counterNames = CounterLocalServiceUtil.getNames();
+
+		if (counterNames.contains(name)) {
+			return (int)CounterLocalServiceUtil.increment(name);
+		}
+
+		return nextInt();
+	}
+
 	public static long nextLong() {
 		return CounterLocalServiceUtil.increment();
+	}
+
+	public static long nextLong(String name) {
+		List<String> counterNames = CounterLocalServiceUtil.getNames();
+
+		if (counterNames.contains(name)) {
+			return CounterLocalServiceUtil.increment(name);
+		}
+
+		return nextLong();
 	}
 
 	public static boolean randomBoolean() {

@@ -138,12 +138,12 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
 					<#if stringUtil.equals(entityColumn.name, "companyId")>
 						CompanyThreadLocal.getCompanyId()
 					<#else>
-						RandomTestUtil.nextLong()
+						RandomTestUtil.nextLong(${entity.name}.class.getName())
 					</#if>
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
@@ -167,9 +167,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -213,9 +213,9 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -238,9 +238,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -344,9 +344,9 @@ public class ${entity.name}PersistenceTest {
 				${entityColumn.type} pk =
 
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -411,9 +411,9 @@ public class ${entity.name}PersistenceTest {
 				${entityColumn.type} pk =
 
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -668,9 +668,9 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -693,9 +693,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -787,9 +787,9 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -812,9 +812,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -857,9 +857,9 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -881,9 +881,9 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -906,9 +906,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk1 =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -924,9 +924,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk2 =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -959,9 +959,9 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -982,9 +982,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -1091,9 +1091,9 @@ public class ${entity.name}PersistenceTest {
 				dynamicQuery.add(RestrictionsFactoryUtil.eq("id.${entityColumn.name}",
 
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -1112,9 +1112,9 @@ public class ${entity.name}PersistenceTest {
 			dynamicQuery.add(RestrictionsFactoryUtil.eq("${entityColumn.name}",
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -1179,9 +1179,9 @@ public class ${entity.name}PersistenceTest {
 		dynamicQuery.add(RestrictionsFactoryUtil.in("${propertyName}", new Object[] {
 
 		<#if stringUtil.equals(entityColumn.type, "int")>
-			RandomTestUtil.nextInt()
+			RandomTestUtil.nextInt(${entity.name}.class.getName())
 		<#elseif stringUtil.equals(entityColumn.type, "long")>
-			RandomTestUtil.nextLong()
+			RandomTestUtil.nextLong(${entity.name}.class.getName())
 		<#elseif stringUtil.equals(entityColumn.type, "String")>
 			<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -1294,9 +1294,9 @@ public class ${entity.name}PersistenceTest {
 
 			<#list entity.PKEntityColumns as entityColumn>
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -1319,9 +1319,9 @@ public class ${entity.name}PersistenceTest {
 			${entityColumn.type} pk =
 
 			<#if stringUtil.equals(entityColumn.type, "int")>
-				RandomTestUtil.nextInt()
+				RandomTestUtil.nextInt(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "long")>
-				RandomTestUtil.nextLong()
+				RandomTestUtil.nextLong(${entity.name}.class.getName())
 			<#elseif stringUtil.equals(entityColumn.type, "String")>
 				<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -1560,9 +1560,9 @@ public class ${entity.name}PersistenceTest {
 
 				<#list entity.PKEntityColumns as entityColumn>
 					<#if stringUtil.equals(entityColumn.type, "int")>
-						RandomTestUtil.nextInt()
+						RandomTestUtil.nextInt(${entity.name}.class.getName())
 					<#elseif stringUtil.equals(entityColumn.type, "long")>
-						RandomTestUtil.nextLong()
+						RandomTestUtil.nextLong(${entity.name}.class.getName())
 					<#elseif stringUtil.equals(entityColumn.type, "String")>
 						<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 
@@ -1585,9 +1585,9 @@ public class ${entity.name}PersistenceTest {
 				${entityColumn.type} pk =
 
 				<#if stringUtil.equals(entityColumn.type, "int")>
-					RandomTestUtil.nextInt()
+					RandomTestUtil.nextInt(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "long")>
-					RandomTestUtil.nextLong()
+					RandomTestUtil.nextLong(${entity.name}.class.getName())
 				<#elseif stringUtil.equals(entityColumn.type, "String")>
 					<#assign maxLength = serviceBuilder.getMaxLength(entity.getName(), entityColumn) />
 

@@ -83,7 +83,7 @@ public class AccountEntryUserRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
 		AccountEntryUserRel accountEntryUserRel = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class AccountEntryUserRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
 		AccountEntryUserRel newAccountEntryUserRel = _persistence.create(pk);
 
@@ -183,7 +183,7 @@ public class AccountEntryUserRelPersistenceTest {
 
 	@Test(expected = NoSuchEntryUserRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -215,7 +215,7 @@ public class AccountEntryUserRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
 		AccountEntryUserRel missingAccountEntryUserRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -251,9 +251,9 @@ public class AccountEntryUserRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -272,7 +272,7 @@ public class AccountEntryUserRelPersistenceTest {
 
 		AccountEntryUserRel newAccountEntryUserRel = addAccountEntryUserRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -372,7 +372,8 @@ public class AccountEntryUserRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"accountEntryUserRelId", RandomTestUtil.nextLong()));
+				"accountEntryUserRelId",
+				RandomTestUtil.nextLong(AccountEntryUserRel.class.getName())));
 
 		List<AccountEntryUserRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -419,7 +420,9 @@ public class AccountEntryUserRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"accountEntryUserRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(AccountEntryUserRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -494,7 +497,7 @@ public class AccountEntryUserRelPersistenceTest {
 	}
 
 	protected AccountEntryUserRel addAccountEntryUserRel() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntryUserRel.class.getName());
 
 		AccountEntryUserRel accountEntryUserRel = _persistence.create(pk);
 

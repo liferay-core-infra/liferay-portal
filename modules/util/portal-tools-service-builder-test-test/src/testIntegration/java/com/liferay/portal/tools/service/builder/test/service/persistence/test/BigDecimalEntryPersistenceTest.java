@@ -80,7 +80,7 @@ public class BigDecimalEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
 		BigDecimalEntry bigDecimalEntry = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class BigDecimalEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
 		BigDecimalEntry newBigDecimalEntry = _persistence.create(pk);
 
@@ -166,7 +166,7 @@ public class BigDecimalEntryPersistenceTest {
 
 	@Test(expected = NoSuchBigDecimalEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -195,7 +195,7 @@ public class BigDecimalEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
 		BigDecimalEntry missingBigDecimalEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -231,9 +231,9 @@ public class BigDecimalEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -252,7 +252,7 @@ public class BigDecimalEntryPersistenceTest {
 
 		BigDecimalEntry newBigDecimalEntry = addBigDecimalEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -324,7 +324,8 @@ public class BigDecimalEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"bigDecimalEntryId", RandomTestUtil.nextLong()));
+				"bigDecimalEntryId",
+				RandomTestUtil.nextLong(BigDecimalEntry.class.getName())));
 
 		List<BigDecimalEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -367,7 +368,10 @@ public class BigDecimalEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"bigDecimalEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"bigDecimalEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(BigDecimalEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -375,7 +379,7 @@ public class BigDecimalEntryPersistenceTest {
 	}
 
 	protected BigDecimalEntry addBigDecimalEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BigDecimalEntry.class.getName());
 
 		BigDecimalEntry bigDecimalEntry = _persistence.create(pk);
 

@@ -82,7 +82,7 @@ public class CTPreferencesPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
 		CTPreferences ctPreferences = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class CTPreferencesPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
 		CTPreferences newCTPreferences = _persistence.create(pk);
 
@@ -187,7 +187,7 @@ public class CTPreferencesPersistenceTest {
 
 	@Test(expected = NoSuchPreferencesException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -217,7 +217,7 @@ public class CTPreferencesPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
 		CTPreferences missingCTPreferences = _persistence.fetchByPrimaryKey(pk);
 
@@ -252,9 +252,9 @@ public class CTPreferencesPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -273,7 +273,7 @@ public class CTPreferencesPersistenceTest {
 
 		CTPreferences newCTPreferences = addCTPreferences();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -368,7 +368,8 @@ public class CTPreferencesPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctPreferencesId", RandomTestUtil.nextLong()));
+				"ctPreferencesId",
+				RandomTestUtil.nextLong(CTPreferences.class.getName())));
 
 		List<CTPreferences> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -411,7 +412,10 @@ public class CTPreferencesPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctPreferencesId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctPreferencesId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTPreferences.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -482,7 +486,7 @@ public class CTPreferencesPersistenceTest {
 	}
 
 	protected CTPreferences addCTPreferences() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTPreferences.class.getName());
 
 		CTPreferences ctPreferences = _persistence.create(pk);
 

@@ -87,7 +87,7 @@ public class BookmarksFolderPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
 		BookmarksFolder bookmarksFolder = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class BookmarksFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
 		BookmarksFolder newBookmarksFolder = _persistence.create(pk);
 
@@ -314,7 +314,7 @@ public class BookmarksFolderPersistenceTest {
 
 	@Test(expected = NoSuchFolderException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -372,7 +372,7 @@ public class BookmarksFolderPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
 		BookmarksFolder missingBookmarksFolder = _persistence.fetchByPrimaryKey(
 			pk);
@@ -408,9 +408,9 @@ public class BookmarksFolderPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -429,7 +429,7 @@ public class BookmarksFolderPersistenceTest {
 
 		BookmarksFolder newBookmarksFolder = addBookmarksFolder();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -523,7 +523,9 @@ public class BookmarksFolderPersistenceTest {
 			BookmarksFolder.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("folderId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"folderId",
+				RandomTestUtil.nextLong(BookmarksFolder.class.getName())));
 
 		List<BookmarksFolder> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -563,7 +565,10 @@ public class BookmarksFolderPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"folderId", new Object[] {RandomTestUtil.nextLong()}));
+				"folderId",
+				new Object[] {
+					RandomTestUtil.nextLong(BookmarksFolder.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -634,7 +639,7 @@ public class BookmarksFolderPersistenceTest {
 	}
 
 	protected BookmarksFolder addBookmarksFolder() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksFolder.class.getName());
 
 		BookmarksFolder bookmarksFolder = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class ObjectValidationRulePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectValidationRule.class.getName());
 
 		ObjectValidationRule objectValidationRule = _persistence.create(pk);
 
@@ -114,7 +114,7 @@ public class ObjectValidationRulePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectValidationRule.class.getName());
 
 		ObjectValidationRule newObjectValidationRule = _persistence.create(pk);
 
@@ -299,7 +299,7 @@ public class ObjectValidationRulePersistenceTest {
 
 	@Test(expected = NoSuchObjectValidationRuleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectValidationRule.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -335,7 +335,7 @@ public class ObjectValidationRulePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectValidationRule.class.getName());
 
 		ObjectValidationRule missingObjectValidationRule =
 			_persistence.fetchByPrimaryKey(pk);
@@ -375,9 +375,11 @@ public class ObjectValidationRulePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ObjectValidationRule.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ObjectValidationRule.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -397,7 +399,7 @@ public class ObjectValidationRulePersistenceTest {
 		ObjectValidationRule newObjectValidationRule =
 			addObjectValidationRule();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectValidationRule.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -499,7 +501,8 @@ public class ObjectValidationRulePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectValidationRuleId", RandomTestUtil.nextLong()));
+				"objectValidationRuleId",
+				RandomTestUtil.nextLong(ObjectValidationRule.class.getName())));
 
 		List<ObjectValidationRule> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -547,7 +550,10 @@ public class ObjectValidationRulePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectValidationRuleId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ObjectValidationRule.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -629,7 +635,7 @@ public class ObjectValidationRulePersistenceTest {
 	}
 
 	protected ObjectValidationRule addObjectValidationRule() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectValidationRule.class.getName());
 
 		ObjectValidationRule objectValidationRule = _persistence.create(pk);
 

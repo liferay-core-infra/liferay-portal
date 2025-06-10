@@ -83,7 +83,7 @@ public class BackgroundTaskPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
 		BackgroundTask backgroundTask = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class BackgroundTaskPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
 		BackgroundTask newBackgroundTask = _persistence.create(pk);
 
@@ -363,7 +363,7 @@ public class BackgroundTaskPersistenceTest {
 
 	@Test(expected = NoSuchBackgroundTaskException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -395,7 +395,7 @@ public class BackgroundTaskPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
 		BackgroundTask missingBackgroundTask = _persistence.fetchByPrimaryKey(
 			pk);
@@ -431,9 +431,9 @@ public class BackgroundTaskPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -452,7 +452,7 @@ public class BackgroundTaskPersistenceTest {
 
 		BackgroundTask newBackgroundTask = addBackgroundTask();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -547,7 +547,8 @@ public class BackgroundTaskPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"backgroundTaskId", RandomTestUtil.nextLong()));
+				"backgroundTaskId",
+				RandomTestUtil.nextLong(BackgroundTask.class.getName())));
 
 		List<BackgroundTask> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -590,7 +591,10 @@ public class BackgroundTaskPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"backgroundTaskId", new Object[] {RandomTestUtil.nextLong()}));
+				"backgroundTaskId",
+				new Object[] {
+					RandomTestUtil.nextLong(BackgroundTask.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -598,7 +602,7 @@ public class BackgroundTaskPersistenceTest {
 	}
 
 	protected BackgroundTask addBackgroundTask() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BackgroundTask.class.getName());
 
 		BackgroundTask backgroundTask = _persistence.create(pk);
 

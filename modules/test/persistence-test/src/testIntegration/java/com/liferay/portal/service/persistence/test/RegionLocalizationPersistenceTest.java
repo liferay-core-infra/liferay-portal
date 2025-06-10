@@ -78,7 +78,7 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
 		RegionLocalization regionLocalization = _persistence.create(pk);
 
@@ -107,7 +107,7 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
 		RegionLocalization newRegionLocalization = _persistence.create(pk);
 
@@ -181,7 +181,7 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchRegionLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -212,7 +212,7 @@ public class RegionLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
 		RegionLocalization missingRegionLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -248,9 +248,9 @@ public class RegionLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -269,7 +269,7 @@ public class RegionLocalizationPersistenceTest {
 
 		RegionLocalization newRegionLocalization = addRegionLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -341,7 +341,8 @@ public class RegionLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"regionLocalizationId", RandomTestUtil.nextLong()));
+				"regionLocalizationId",
+				RandomTestUtil.nextLong(RegionLocalization.class.getName())));
 
 		List<RegionLocalization> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -388,7 +389,9 @@ public class RegionLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"regionLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(RegionLocalization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -461,7 +464,7 @@ public class RegionLocalizationPersistenceTest {
 	}
 
 	protected RegionLocalization addRegionLocalization() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RegionLocalization.class.getName());
 
 		RegionLocalization regionLocalization = _persistence.create(pk);
 

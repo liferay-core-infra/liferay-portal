@@ -84,7 +84,7 @@ public class DDMStructureLayoutPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
 		DDMStructureLayout ddmStructureLayout = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class DDMStructureLayoutPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
 		DDMStructureLayout newDDMStructureLayout = _persistence.create(pk);
 
@@ -295,7 +295,7 @@ public class DDMStructureLayoutPersistenceTest {
 
 	@Test(expected = NoSuchStructureLayoutException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -328,7 +328,7 @@ public class DDMStructureLayoutPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
 		DDMStructureLayout missingDDMStructureLayout =
 			_persistence.fetchByPrimaryKey(pk);
@@ -364,9 +364,9 @@ public class DDMStructureLayoutPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -385,7 +385,7 @@ public class DDMStructureLayoutPersistenceTest {
 
 		DDMStructureLayout newDDMStructureLayout = addDDMStructureLayout();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -484,7 +484,8 @@ public class DDMStructureLayoutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"structureLayoutId", RandomTestUtil.nextLong()));
+				"structureLayoutId",
+				RandomTestUtil.nextLong(DDMStructureLayout.class.getName())));
 
 		List<DDMStructureLayout> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -528,7 +529,10 @@ public class DDMStructureLayoutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"structureLayoutId", new Object[] {RandomTestUtil.nextLong()}));
+				"structureLayoutId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMStructureLayout.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -623,7 +627,7 @@ public class DDMStructureLayoutPersistenceTest {
 	}
 
 	protected DDMStructureLayout addDDMStructureLayout() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLayout.class.getName());
 
 		DDMStructureLayout ddmStructureLayout = _persistence.create(pk);
 

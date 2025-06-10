@@ -82,7 +82,7 @@ public class LayoutFriendlyURLPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
 		LayoutFriendlyURL layoutFriendlyURL = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class LayoutFriendlyURLPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
 		LayoutFriendlyURL newLayoutFriendlyURL = _persistence.create(pk);
 
@@ -313,7 +313,7 @@ public class LayoutFriendlyURLPersistenceTest {
 
 	@Test(expected = NoSuchLayoutFriendlyURLException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -346,7 +346,7 @@ public class LayoutFriendlyURLPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
 		LayoutFriendlyURL missingLayoutFriendlyURL =
 			_persistence.fetchByPrimaryKey(pk);
@@ -382,9 +382,9 @@ public class LayoutFriendlyURLPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -403,7 +403,7 @@ public class LayoutFriendlyURLPersistenceTest {
 
 		LayoutFriendlyURL newLayoutFriendlyURL = addLayoutFriendlyURL();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -500,7 +500,8 @@ public class LayoutFriendlyURLPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutFriendlyURLId", RandomTestUtil.nextLong()));
+				"layoutFriendlyURLId",
+				RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName())));
 
 		List<LayoutFriendlyURL> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -546,7 +547,9 @@ public class LayoutFriendlyURLPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"layoutFriendlyURLId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -651,7 +654,7 @@ public class LayoutFriendlyURLPersistenceTest {
 	}
 
 	protected LayoutFriendlyURL addLayoutFriendlyURL() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutFriendlyURL.class.getName());
 
 		LayoutFriendlyURL layoutFriendlyURL = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class FragmentEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		FragmentEntry fragmentEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class FragmentEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		FragmentEntry newFragmentEntry = _persistence.create(pk);
 
@@ -269,7 +269,7 @@ public class FragmentEntryPersistenceTest {
 	public void testCreateDraft() throws Exception {
 		FragmentEntry fragmentEntry = addFragmentEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		FragmentEntry draftFragmentEntry = _persistence.create(pk);
 
@@ -392,7 +392,7 @@ public class FragmentEntryPersistenceTest {
 
 		FragmentEntry fragmentEntry1 = addFragmentEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		FragmentEntry fragmentEntry2 = _persistence.create(pk);
 
@@ -770,7 +770,7 @@ public class FragmentEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -807,7 +807,7 @@ public class FragmentEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		FragmentEntry missingFragmentEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -842,9 +842,9 @@ public class FragmentEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -863,7 +863,7 @@ public class FragmentEntryPersistenceTest {
 
 		FragmentEntry newFragmentEntry = addFragmentEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -958,7 +958,8 @@ public class FragmentEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fragmentEntryId", RandomTestUtil.nextLong()));
+				"fragmentEntryId",
+				RandomTestUtil.nextLong(FragmentEntry.class.getName())));
 
 		List<FragmentEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -1001,7 +1002,10 @@ public class FragmentEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"fragmentEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"fragmentEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(FragmentEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -1100,7 +1104,7 @@ public class FragmentEntryPersistenceTest {
 	}
 
 	protected FragmentEntry addFragmentEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntry.class.getName());
 
 		FragmentEntry fragmentEntry = _persistence.create(pk);
 

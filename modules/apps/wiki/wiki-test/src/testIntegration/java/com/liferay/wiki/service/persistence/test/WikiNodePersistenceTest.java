@@ -88,7 +88,7 @@ public class WikiNodePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiNode.class.getName());
 
 		WikiNode wikiNode = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class WikiNodePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiNode.class.getName());
 
 		WikiNode newWikiNode = _persistence.create(pk);
 
@@ -315,7 +315,7 @@ public class WikiNodePersistenceTest {
 
 	@Test(expected = NoSuchNodeException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiNode.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -373,7 +373,7 @@ public class WikiNodePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiNode.class.getName());
 
 		WikiNode missingWikiNode = _persistence.fetchByPrimaryKey(pk);
 
@@ -406,9 +406,9 @@ public class WikiNodePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(WikiNode.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(WikiNode.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -427,7 +427,7 @@ public class WikiNodePersistenceTest {
 
 		WikiNode newWikiNode = addWikiNode();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiNode.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -517,7 +517,8 @@ public class WikiNodePersistenceTest {
 			WikiNode.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("nodeId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"nodeId", RandomTestUtil.nextLong(WikiNode.class.getName())));
 
 		List<WikiNode> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -556,7 +557,10 @@ public class WikiNodePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"nodeId", new Object[] {RandomTestUtil.nextLong()}));
+				"nodeId",
+				new Object[] {
+					RandomTestUtil.nextLong(WikiNode.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -647,7 +651,7 @@ public class WikiNodePersistenceTest {
 	}
 
 	protected WikiNode addWikiNode() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiNode.class.getName());
 
 		WikiNode wikiNode = _persistence.create(pk);
 

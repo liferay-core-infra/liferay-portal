@@ -86,7 +86,8 @@ public class CPAttachmentFileEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
 		CPAttachmentFileEntry cpAttachmentFileEntry = _persistence.create(pk);
 
@@ -116,7 +117,8 @@ public class CPAttachmentFileEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
 		CPAttachmentFileEntry newCPAttachmentFileEntry = _persistence.create(
 			pk);
@@ -456,7 +458,8 @@ public class CPAttachmentFileEntryPersistenceTest {
 
 	@Test(expected = NoSuchCPAttachmentFileEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -496,7 +499,8 @@ public class CPAttachmentFileEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
 		CPAttachmentFileEntry missingCPAttachmentFileEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -536,9 +540,11 @@ public class CPAttachmentFileEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -558,7 +564,8 @@ public class CPAttachmentFileEntryPersistenceTest {
 		CPAttachmentFileEntry newCPAttachmentFileEntry =
 			addCPAttachmentFileEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -662,7 +669,9 @@ public class CPAttachmentFileEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPAttachmentFileEntryId", RandomTestUtil.nextLong()));
+				"CPAttachmentFileEntryId",
+				RandomTestUtil.nextLong(
+					CPAttachmentFileEntry.class.getName())));
 
 		List<CPAttachmentFileEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -710,7 +719,10 @@ public class CPAttachmentFileEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPAttachmentFileEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPAttachmentFileEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -800,7 +812,8 @@ public class CPAttachmentFileEntryPersistenceTest {
 	protected CPAttachmentFileEntry addCPAttachmentFileEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPAttachmentFileEntry.class.getName());
 
 		CPAttachmentFileEntry cpAttachmentFileEntry = _persistence.create(pk);
 

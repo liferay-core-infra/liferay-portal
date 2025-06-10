@@ -86,7 +86,8 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
 		CommerceMLForecastAlertEntry commerceMLForecastAlertEntry =
 			_persistence.create(pk);
@@ -117,7 +118,8 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
 		CommerceMLForecastAlertEntry newCommerceMLForecastAlertEntry =
 			_persistence.create(pk);
@@ -302,7 +304,8 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 
 	@Test(expected = NoSuchMLForecastAlertEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -340,7 +343,8 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
 		CommerceMLForecastAlertEntry missingCommerceMLForecastAlertEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -381,9 +385,11 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -404,7 +410,8 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 		CommerceMLForecastAlertEntry newCommerceMLForecastAlertEntry =
 			addCommerceMLForecastAlertEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -515,7 +522,9 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceMLForecastAlertEntryId", RandomTestUtil.nextLong()));
+				"commerceMLForecastAlertEntryId",
+				RandomTestUtil.nextLong(
+					CommerceMLForecastAlertEntry.class.getName())));
 
 		List<CommerceMLForecastAlertEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -564,7 +573,10 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceMLForecastAlertEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceMLForecastAlertEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -649,7 +661,8 @@ public class CommerceMLForecastAlertEntryPersistenceTest {
 	protected CommerceMLForecastAlertEntry addCommerceMLForecastAlertEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceMLForecastAlertEntry.class.getName());
 
 		CommerceMLForecastAlertEntry commerceMLForecastAlertEntry =
 			_persistence.create(pk);

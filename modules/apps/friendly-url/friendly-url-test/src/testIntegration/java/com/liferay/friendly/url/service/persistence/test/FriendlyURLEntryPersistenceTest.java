@@ -83,7 +83,7 @@ public class FriendlyURLEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
 		FriendlyURLEntry friendlyURLEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class FriendlyURLEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
 		FriendlyURLEntry newFriendlyURLEntry = _persistence.create(pk);
 
@@ -238,7 +238,7 @@ public class FriendlyURLEntryPersistenceTest {
 
 	@Test(expected = NoSuchFriendlyURLEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -269,7 +269,7 @@ public class FriendlyURLEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
 		FriendlyURLEntry missingFriendlyURLEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -305,9 +305,9 @@ public class FriendlyURLEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -326,7 +326,7 @@ public class FriendlyURLEntryPersistenceTest {
 
 		FriendlyURLEntry newFriendlyURLEntry = addFriendlyURLEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -422,7 +422,8 @@ public class FriendlyURLEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"friendlyURLEntryId", RandomTestUtil.nextLong()));
+				"friendlyURLEntryId",
+				RandomTestUtil.nextLong(FriendlyURLEntry.class.getName())));
 
 		List<FriendlyURLEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -467,7 +468,9 @@ public class FriendlyURLEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"friendlyURLEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(FriendlyURLEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -539,7 +542,7 @@ public class FriendlyURLEntryPersistenceTest {
 	}
 
 	protected FriendlyURLEntry addFriendlyURLEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FriendlyURLEntry.class.getName());
 
 		FriendlyURLEntry friendlyURLEntry = _persistence.create(pk);
 

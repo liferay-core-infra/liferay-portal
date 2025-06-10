@@ -84,7 +84,7 @@ public class AssetListEntryUsagePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
 		AssetListEntryUsage assetListEntryUsage = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class AssetListEntryUsagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
 		AssetListEntryUsage newAssetListEntryUsage = _persistence.create(pk);
 
@@ -320,7 +320,7 @@ public class AssetListEntryUsagePersistenceTest {
 
 	@Test(expected = NoSuchEntryUsageException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -355,7 +355,7 @@ public class AssetListEntryUsagePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
 		AssetListEntryUsage missingAssetListEntryUsage =
 			_persistence.fetchByPrimaryKey(pk);
@@ -391,9 +391,9 @@ public class AssetListEntryUsagePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -412,7 +412,7 @@ public class AssetListEntryUsagePersistenceTest {
 
 		AssetListEntryUsage newAssetListEntryUsage = addAssetListEntryUsage();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -512,7 +512,8 @@ public class AssetListEntryUsagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"assetListEntryUsageId", RandomTestUtil.nextLong()));
+				"assetListEntryUsageId",
+				RandomTestUtil.nextLong(AssetListEntryUsage.class.getName())));
 
 		List<AssetListEntryUsage> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -559,7 +560,9 @@ public class AssetListEntryUsagePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"assetListEntryUsageId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(AssetListEntryUsage.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -665,7 +668,7 @@ public class AssetListEntryUsagePersistenceTest {
 	}
 
 	protected AssetListEntryUsage addAssetListEntryUsage() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntryUsage.class.getName());
 
 		AssetListEntryUsage assetListEntryUsage = _persistence.create(pk);
 

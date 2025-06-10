@@ -83,7 +83,7 @@ public class SubscriptionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Subscription.class.getName());
 
 		Subscription subscription = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class SubscriptionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Subscription.class.getName());
 
 		Subscription newSubscription = _persistence.create(pk);
 
@@ -244,7 +244,7 @@ public class SubscriptionPersistenceTest {
 
 	@Test(expected = NoSuchSubscriptionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Subscription.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -276,7 +276,7 @@ public class SubscriptionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Subscription.class.getName());
 
 		Subscription missingSubscription = _persistence.fetchByPrimaryKey(pk);
 
@@ -311,9 +311,9 @@ public class SubscriptionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Subscription.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Subscription.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -332,7 +332,7 @@ public class SubscriptionPersistenceTest {
 
 		Subscription newSubscription = addSubscription();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Subscription.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -427,7 +427,8 @@ public class SubscriptionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"subscriptionId", RandomTestUtil.nextLong()));
+				"subscriptionId",
+				RandomTestUtil.nextLong(Subscription.class.getName())));
 
 		List<Subscription> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -470,7 +471,10 @@ public class SubscriptionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"subscriptionId", new Object[] {RandomTestUtil.nextLong()}));
+				"subscriptionId",
+				new Object[] {
+					RandomTestUtil.nextLong(Subscription.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -551,7 +555,7 @@ public class SubscriptionPersistenceTest {
 	}
 
 	protected Subscription addSubscription() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Subscription.class.getName());
 
 		Subscription subscription = _persistence.create(pk);
 

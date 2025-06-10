@@ -84,7 +84,7 @@ public class AccountEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
 		AccountEntry accountEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class AccountEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
 		AccountEntry newAccountEntry = _persistence.create(pk);
 
@@ -327,7 +327,7 @@ public class AccountEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -364,7 +364,7 @@ public class AccountEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
 		AccountEntry missingAccountEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -399,9 +399,9 @@ public class AccountEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -420,7 +420,7 @@ public class AccountEntryPersistenceTest {
 
 		AccountEntry newAccountEntry = addAccountEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -515,7 +515,8 @@ public class AccountEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"accountEntryId", RandomTestUtil.nextLong()));
+				"accountEntryId",
+				RandomTestUtil.nextLong(AccountEntry.class.getName())));
 
 		List<AccountEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -558,7 +559,10 @@ public class AccountEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"accountEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"accountEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(AccountEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -629,7 +633,7 @@ public class AccountEntryPersistenceTest {
 	}
 
 	protected AccountEntry addAccountEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountEntry.class.getName());
 
 		AccountEntry accountEntry = _persistence.create(pk);
 

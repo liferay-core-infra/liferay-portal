@@ -84,7 +84,8 @@ public class LayoutClassedModelUsagePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
 		LayoutClassedModelUsage layoutClassedModelUsage = _persistence.create(
 			pk);
@@ -115,7 +116,8 @@ public class LayoutClassedModelUsagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
 		LayoutClassedModelUsage newLayoutClassedModelUsage =
 			_persistence.create(pk);
@@ -344,7 +346,8 @@ public class LayoutClassedModelUsagePersistenceTest {
 
 	@Test(expected = NoSuchLayoutClassedModelUsageException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -383,7 +386,8 @@ public class LayoutClassedModelUsagePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
 		LayoutClassedModelUsage missingLayoutClassedModelUsage =
 			_persistence.fetchByPrimaryKey(pk);
@@ -423,9 +427,11 @@ public class LayoutClassedModelUsagePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -445,7 +451,8 @@ public class LayoutClassedModelUsagePersistenceTest {
 		LayoutClassedModelUsage newLayoutClassedModelUsage =
 			addLayoutClassedModelUsage();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -549,7 +556,9 @@ public class LayoutClassedModelUsagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutClassedModelUsageId", RandomTestUtil.nextLong()));
+				"layoutClassedModelUsageId",
+				RandomTestUtil.nextLong(
+					LayoutClassedModelUsage.class.getName())));
 
 		List<LayoutClassedModelUsage> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -597,7 +606,10 @@ public class LayoutClassedModelUsagePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"layoutClassedModelUsageId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						LayoutClassedModelUsage.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -712,7 +724,8 @@ public class LayoutClassedModelUsagePersistenceTest {
 	protected LayoutClassedModelUsage addLayoutClassedModelUsage()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutClassedModelUsage.class.getName());
 
 		LayoutClassedModelUsage layoutClassedModelUsage = _persistence.create(
 			pk);

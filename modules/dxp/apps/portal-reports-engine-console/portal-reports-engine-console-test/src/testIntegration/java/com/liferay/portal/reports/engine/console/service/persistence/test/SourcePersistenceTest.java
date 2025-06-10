@@ -88,7 +88,7 @@ public class SourcePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Source.class.getName());
 
 		Source source = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class SourcePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Source.class.getName());
 
 		Source newSource = _persistence.create(pk);
 
@@ -235,7 +235,7 @@ public class SourcePersistenceTest {
 
 	@Test(expected = NoSuchSourceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Source.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -291,7 +291,7 @@ public class SourcePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Source.class.getName());
 
 		Source missingSource = _persistence.fetchByPrimaryKey(pk);
 
@@ -324,9 +324,9 @@ public class SourcePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Source.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Source.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -345,7 +345,7 @@ public class SourcePersistenceTest {
 
 		Source newSource = addSource();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Source.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -433,7 +433,8 @@ public class SourcePersistenceTest {
 			Source.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("sourceId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"sourceId", RandomTestUtil.nextLong(Source.class.getName())));
 
 		List<Source> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -472,7 +473,10 @@ public class SourcePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"sourceId", new Object[] {RandomTestUtil.nextLong()}));
+				"sourceId",
+				new Object[] {
+					RandomTestUtil.nextLong(Source.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -541,7 +545,7 @@ public class SourcePersistenceTest {
 	}
 
 	protected Source addSource() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Source.class.getName());
 
 		Source source = _persistence.create(pk);
 

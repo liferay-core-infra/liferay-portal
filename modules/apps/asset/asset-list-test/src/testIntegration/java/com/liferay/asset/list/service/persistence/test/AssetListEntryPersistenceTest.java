@@ -88,7 +88,7 @@ public class AssetListEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
 		AssetListEntry assetListEntry = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class AssetListEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
 		AssetListEntry newAssetListEntry = _persistence.create(pk);
 
@@ -403,7 +403,7 @@ public class AssetListEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -461,7 +461,7 @@ public class AssetListEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
 		AssetListEntry missingAssetListEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -497,9 +497,9 @@ public class AssetListEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -518,7 +518,7 @@ public class AssetListEntryPersistenceTest {
 
 		AssetListEntry newAssetListEntry = addAssetListEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -613,7 +613,8 @@ public class AssetListEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"assetListEntryId", RandomTestUtil.nextLong()));
+				"assetListEntryId",
+				RandomTestUtil.nextLong(AssetListEntry.class.getName())));
 
 		List<AssetListEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -656,7 +657,10 @@ public class AssetListEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"assetListEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"assetListEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(AssetListEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -760,7 +764,7 @@ public class AssetListEntryPersistenceTest {
 	}
 
 	protected AssetListEntry addAssetListEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetListEntry.class.getName());
 
 		AssetListEntry assetListEntry = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class AMImageEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
 		AMImageEntry amImageEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class AMImageEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
 		AMImageEntry newAMImageEntry = _persistence.create(pk);
 
@@ -267,7 +267,7 @@ public class AMImageEntryPersistenceTest {
 
 	@Test(expected = NoSuchAMImageEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -299,7 +299,7 @@ public class AMImageEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
 		AMImageEntry missingAMImageEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -334,9 +334,9 @@ public class AMImageEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -355,7 +355,7 @@ public class AMImageEntryPersistenceTest {
 
 		AMImageEntry newAMImageEntry = addAMImageEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -450,7 +450,8 @@ public class AMImageEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"amImageEntryId", RandomTestUtil.nextLong()));
+				"amImageEntryId",
+				RandomTestUtil.nextLong(AMImageEntry.class.getName())));
 
 		List<AMImageEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -493,7 +494,10 @@ public class AMImageEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"amImageEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"amImageEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(AMImageEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -575,7 +579,7 @@ public class AMImageEntryPersistenceTest {
 	}
 
 	protected AMImageEntry addAMImageEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AMImageEntry.class.getName());
 
 		AMImageEntry amImageEntry = _persistence.create(pk);
 

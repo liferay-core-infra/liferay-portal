@@ -83,7 +83,7 @@ public class SegmentsEntryRolePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
 		SegmentsEntryRole segmentsEntryRole = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class SegmentsEntryRolePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
 		SegmentsEntryRole newSegmentsEntryRole = _persistence.create(pk);
 
@@ -205,7 +205,7 @@ public class SegmentsEntryRolePersistenceTest {
 
 	@Test(expected = NoSuchEntryRoleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -237,7 +237,7 @@ public class SegmentsEntryRolePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
 		SegmentsEntryRole missingSegmentsEntryRole =
 			_persistence.fetchByPrimaryKey(pk);
@@ -273,9 +273,9 @@ public class SegmentsEntryRolePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -294,7 +294,7 @@ public class SegmentsEntryRolePersistenceTest {
 
 		SegmentsEntryRole newSegmentsEntryRole = addSegmentsEntryRole();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -391,7 +391,8 @@ public class SegmentsEntryRolePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"segmentsEntryRoleId", RandomTestUtil.nextLong()));
+				"segmentsEntryRoleId",
+				RandomTestUtil.nextLong(SegmentsEntryRole.class.getName())));
 
 		List<SegmentsEntryRole> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -437,7 +438,9 @@ public class SegmentsEntryRolePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"segmentsEntryRoleId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(SegmentsEntryRole.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -510,7 +513,7 @@ public class SegmentsEntryRolePersistenceTest {
 	}
 
 	protected SegmentsEntryRole addSegmentsEntryRole() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntryRole.class.getName());
 
 		SegmentsEntryRole segmentsEntryRole = _persistence.create(pk);
 

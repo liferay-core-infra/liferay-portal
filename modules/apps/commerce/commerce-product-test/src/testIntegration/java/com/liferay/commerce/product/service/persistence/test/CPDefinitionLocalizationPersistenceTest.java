@@ -80,7 +80,8 @@ public class CPDefinitionLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
 		CPDefinitionLocalization cpDefinitionLocalization = _persistence.create(
 			pk);
@@ -111,7 +112,8 @@ public class CPDefinitionLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
 		CPDefinitionLocalization newCPDefinitionLocalization =
 			_persistence.create(pk);
@@ -222,7 +224,8 @@ public class CPDefinitionLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -259,7 +262,8 @@ public class CPDefinitionLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
 		CPDefinitionLocalization missingCPDefinitionLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -299,9 +303,11 @@ public class CPDefinitionLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -321,7 +327,8 @@ public class CPDefinitionLocalizationPersistenceTest {
 		CPDefinitionLocalization newCPDefinitionLocalization =
 			addCPDefinitionLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -399,7 +406,9 @@ public class CPDefinitionLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"cpDefinitionLocalizationId", RandomTestUtil.nextLong()));
+				"cpDefinitionLocalizationId",
+				RandomTestUtil.nextLong(
+					CPDefinitionLocalization.class.getName())));
 
 		List<CPDefinitionLocalization> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -447,7 +456,10 @@ public class CPDefinitionLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"cpDefinitionLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDefinitionLocalization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -526,7 +538,8 @@ public class CPDefinitionLocalizationPersistenceTest {
 	protected CPDefinitionLocalization addCPDefinitionLocalization()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionLocalization.class.getName());
 
 		CPDefinitionLocalization cpDefinitionLocalization = _persistence.create(
 			pk);

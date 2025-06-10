@@ -82,7 +82,7 @@ public class PasswordPolicyPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
 		PasswordPolicy passwordPolicy = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class PasswordPolicyPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
 		PasswordPolicy newPasswordPolicy = _persistence.create(pk);
 
@@ -333,7 +333,7 @@ public class PasswordPolicyPersistenceTest {
 
 	@Test(expected = NoSuchPasswordPolicyException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -373,7 +373,7 @@ public class PasswordPolicyPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
 		PasswordPolicy missingPasswordPolicy = _persistence.fetchByPrimaryKey(
 			pk);
@@ -409,9 +409,9 @@ public class PasswordPolicyPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -430,7 +430,7 @@ public class PasswordPolicyPersistenceTest {
 
 		PasswordPolicy newPasswordPolicy = addPasswordPolicy();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -525,7 +525,8 @@ public class PasswordPolicyPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"passwordPolicyId", RandomTestUtil.nextLong()));
+				"passwordPolicyId",
+				RandomTestUtil.nextLong(PasswordPolicy.class.getName())));
 
 		List<PasswordPolicy> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -568,7 +569,10 @@ public class PasswordPolicyPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"passwordPolicyId", new Object[] {RandomTestUtil.nextLong()}));
+				"passwordPolicyId",
+				new Object[] {
+					RandomTestUtil.nextLong(PasswordPolicy.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -639,7 +643,7 @@ public class PasswordPolicyPersistenceTest {
 	}
 
 	protected PasswordPolicy addPasswordPolicy() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordPolicy.class.getName());
 
 		PasswordPolicy passwordPolicy = _persistence.create(pk);
 

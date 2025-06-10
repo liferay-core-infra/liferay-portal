@@ -83,7 +83,7 @@ public class ObjectStatePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectState.class.getName());
 
 		ObjectState objectState = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ObjectStatePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectState.class.getName());
 
 		ObjectState newObjectState = _persistence.create(pk);
 
@@ -218,7 +218,7 @@ public class ObjectStatePersistenceTest {
 
 	@Test(expected = NoSuchObjectStateException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectState.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -249,7 +249,7 @@ public class ObjectStatePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectState.class.getName());
 
 		ObjectState missingObjectState = _persistence.fetchByPrimaryKey(pk);
 
@@ -282,9 +282,9 @@ public class ObjectStatePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectState.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectState.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -303,7 +303,7 @@ public class ObjectStatePersistenceTest {
 
 		ObjectState newObjectState = addObjectState();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectState.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -396,7 +396,8 @@ public class ObjectStatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectStateId", RandomTestUtil.nextLong()));
+				"objectStateId",
+				RandomTestUtil.nextLong(ObjectState.class.getName())));
 
 		List<ObjectState> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -439,7 +440,10 @@ public class ObjectStatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectStateId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectStateId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectState.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -510,7 +514,7 @@ public class ObjectStatePersistenceTest {
 	}
 
 	protected ObjectState addObjectState() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectState.class.getName());
 
 		ObjectState objectState = _persistence.create(pk);
 

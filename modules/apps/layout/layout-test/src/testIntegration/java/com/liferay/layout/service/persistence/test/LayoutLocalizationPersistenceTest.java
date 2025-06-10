@@ -83,7 +83,7 @@ public class LayoutLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
 		LayoutLocalization layoutLocalization = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class LayoutLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
 		LayoutLocalization newLayoutLocalization = _persistence.create(pk);
 
@@ -250,7 +250,7 @@ public class LayoutLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchLayoutLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -282,7 +282,7 @@ public class LayoutLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
 		LayoutLocalization missingLayoutLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -318,9 +318,9 @@ public class LayoutLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -339,7 +339,7 @@ public class LayoutLocalizationPersistenceTest {
 
 		LayoutLocalization newLayoutLocalization = addLayoutLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -438,7 +438,8 @@ public class LayoutLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutLocalizationId", RandomTestUtil.nextLong()));
+				"layoutLocalizationId",
+				RandomTestUtil.nextLong(LayoutLocalization.class.getName())));
 
 		List<LayoutLocalization> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -485,7 +486,9 @@ public class LayoutLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"layoutLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(LayoutLocalization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -585,7 +588,7 @@ public class LayoutLocalizationPersistenceTest {
 	}
 
 	protected LayoutLocalization addLayoutLocalization() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutLocalization.class.getName());
 
 		LayoutLocalization layoutLocalization = _persistence.create(pk);
 

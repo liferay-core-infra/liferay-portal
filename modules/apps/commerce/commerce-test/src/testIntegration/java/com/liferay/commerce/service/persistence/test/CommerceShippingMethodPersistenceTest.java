@@ -85,7 +85,8 @@ public class CommerceShippingMethodPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
 		CommerceShippingMethod commerceShippingMethod = _persistence.create(pk);
 
@@ -115,7 +116,8 @@ public class CommerceShippingMethodPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
 		CommerceShippingMethod newCommerceShippingMethod = _persistence.create(
 			pk);
@@ -250,7 +252,8 @@ public class CommerceShippingMethodPersistenceTest {
 
 	@Test(expected = NoSuchShippingMethodException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -286,7 +289,8 @@ public class CommerceShippingMethodPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
 		CommerceShippingMethod missingCommerceShippingMethod =
 			_persistence.fetchByPrimaryKey(pk);
@@ -326,9 +330,11 @@ public class CommerceShippingMethodPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -348,7 +354,8 @@ public class CommerceShippingMethodPersistenceTest {
 		CommerceShippingMethod newCommerceShippingMethod =
 			addCommerceShippingMethod();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -452,7 +459,9 @@ public class CommerceShippingMethodPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceShippingMethodId", RandomTestUtil.nextLong()));
+				"commerceShippingMethodId",
+				RandomTestUtil.nextLong(
+					CommerceShippingMethod.class.getName())));
 
 		List<CommerceShippingMethod> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -500,7 +509,10 @@ public class CommerceShippingMethodPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceShippingMethodId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceShippingMethod.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -579,7 +591,8 @@ public class CommerceShippingMethodPersistenceTest {
 	protected CommerceShippingMethod addCommerceShippingMethod()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingMethod.class.getName());
 
 		CommerceShippingMethod commerceShippingMethod = _persistence.create(pk);
 

@@ -81,7 +81,7 @@ public class ClassNamePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClassName.class.getName());
 
 		ClassName className = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ClassNamePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClassName.class.getName());
 
 		ClassName newClassName = _persistence.create(pk);
 
@@ -151,7 +151,7 @@ public class ClassNamePersistenceTest {
 
 	@Test(expected = NoSuchClassNameException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClassName.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -180,7 +180,7 @@ public class ClassNamePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClassName.class.getName());
 
 		ClassName missingClassName = _persistence.fetchByPrimaryKey(pk);
 
@@ -213,9 +213,9 @@ public class ClassNamePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ClassName.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ClassName.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -234,7 +234,7 @@ public class ClassNamePersistenceTest {
 
 		ClassName newClassName = addClassName();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClassName.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -327,7 +327,8 @@ public class ClassNamePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"classNameId", RandomTestUtil.nextLong()));
+				"classNameId",
+				RandomTestUtil.nextLong(ClassName.class.getName())));
 
 		List<ClassName> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -370,7 +371,10 @@ public class ClassNamePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"classNameId", new Object[] {RandomTestUtil.nextLong()}));
+				"classNameId",
+				new Object[] {
+					RandomTestUtil.nextLong(ClassName.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -436,7 +440,7 @@ public class ClassNamePersistenceTest {
 	}
 
 	protected ClassName addClassName() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClassName.class.getName());
 
 		ClassName className = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class ERCGroupEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
 		ERCGroupEntry ercGroupEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class ERCGroupEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
 		ERCGroupEntry newERCGroupEntry = _persistence.create(pk);
 
@@ -213,7 +213,7 @@ public class ERCGroupEntryPersistenceTest {
 
 	@Test(expected = NoSuchERCGroupEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -242,7 +242,7 @@ public class ERCGroupEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
 		ERCGroupEntry missingERCGroupEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -277,9 +277,9 @@ public class ERCGroupEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -298,7 +298,7 @@ public class ERCGroupEntryPersistenceTest {
 
 		ERCGroupEntry newERCGroupEntry = addERCGroupEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -393,7 +393,8 @@ public class ERCGroupEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ercGroupEntryId", RandomTestUtil.nextLong()));
+				"ercGroupEntryId",
+				RandomTestUtil.nextLong(ERCGroupEntry.class.getName())));
 
 		List<ERCGroupEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -436,7 +437,10 @@ public class ERCGroupEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ercGroupEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"ercGroupEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(ERCGroupEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -518,7 +522,7 @@ public class ERCGroupEntryPersistenceTest {
 	}
 
 	protected ERCGroupEntry addERCGroupEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ERCGroupEntry.class.getName());
 
 		ERCGroupEntry ercGroupEntry = _persistence.create(pk);
 

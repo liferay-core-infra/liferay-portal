@@ -80,7 +80,7 @@ public class ContactPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Contact.class.getName());
 
 		Contact contact = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class ContactPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Contact.class.getName());
 
 		Contact newContact = _persistence.create(pk);
 
@@ -278,7 +278,7 @@ public class ContactPersistenceTest {
 
 	@Test(expected = NoSuchContactException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Contact.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -314,7 +314,7 @@ public class ContactPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Contact.class.getName());
 
 		Contact missingContact = _persistence.fetchByPrimaryKey(pk);
 
@@ -347,9 +347,9 @@ public class ContactPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Contact.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Contact.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -368,7 +368,7 @@ public class ContactPersistenceTest {
 
 		Contact newContact = addContact();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Contact.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -458,7 +458,8 @@ public class ContactPersistenceTest {
 			Contact.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("contactId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"contactId", RandomTestUtil.nextLong(Contact.class.getName())));
 
 		List<Contact> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -498,7 +499,10 @@ public class ContactPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"contactId", new Object[] {RandomTestUtil.nextLong()}));
+				"contactId",
+				new Object[] {
+					RandomTestUtil.nextLong(Contact.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -506,7 +510,7 @@ public class ContactPersistenceTest {
 	}
 
 	protected Contact addContact() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Contact.class.getName());
 
 		Contact contact = _persistence.create(pk);
 

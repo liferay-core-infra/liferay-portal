@@ -88,7 +88,7 @@ public class JournalFeedPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
 		JournalFeed journalFeed = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class JournalFeedPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
 		JournalFeed newJournalFeed = _persistence.create(pk);
 
@@ -297,7 +297,7 @@ public class JournalFeedPersistenceTest {
 
 	@Test(expected = NoSuchFeedException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -357,7 +357,7 @@ public class JournalFeedPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
 		JournalFeed missingJournalFeed = _persistence.fetchByPrimaryKey(pk);
 
@@ -390,9 +390,9 @@ public class JournalFeedPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -411,7 +411,7 @@ public class JournalFeedPersistenceTest {
 
 		JournalFeed newJournalFeed = addJournalFeed();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -502,7 +502,8 @@ public class JournalFeedPersistenceTest {
 			JournalFeed.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("id", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"id", RandomTestUtil.nextLong(JournalFeed.class.getName())));
 
 		List<JournalFeed> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -542,7 +543,10 @@ public class JournalFeedPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"id", new Object[] {RandomTestUtil.nextLong()}));
+				"id",
+				new Object[] {
+					RandomTestUtil.nextLong(JournalFeed.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -623,7 +627,7 @@ public class JournalFeedPersistenceTest {
 	}
 
 	protected JournalFeed addJournalFeed() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFeed.class.getName());
 
 		JournalFeed journalFeed = _persistence.create(pk);
 

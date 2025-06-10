@@ -83,7 +83,8 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
 		CommerceAvailabilityEstimate commerceAvailabilityEstimate =
 			_persistence.create(pk);
@@ -114,7 +115,8 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
 		CommerceAvailabilityEstimate newCommerceAvailabilityEstimate =
 			_persistence.create(pk);
@@ -236,7 +238,8 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 
 	@Test(expected = NoSuchAvailabilityEstimateException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -273,7 +276,8 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
 		CommerceAvailabilityEstimate missingCommerceAvailabilityEstimate =
 			_persistence.fetchByPrimaryKey(pk);
@@ -314,9 +318,11 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -337,7 +343,8 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 		CommerceAvailabilityEstimate newCommerceAvailabilityEstimate =
 			addCommerceAvailabilityEstimate();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -448,7 +455,9 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceAvailabilityEstimateId", RandomTestUtil.nextLong()));
+				"commerceAvailabilityEstimateId",
+				RandomTestUtil.nextLong(
+					CommerceAvailabilityEstimate.class.getName())));
 
 		List<CommerceAvailabilityEstimate> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -497,7 +506,10 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceAvailabilityEstimateId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceAvailabilityEstimate.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -507,7 +519,8 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 	protected CommerceAvailabilityEstimate addCommerceAvailabilityEstimate()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAvailabilityEstimate.class.getName());
 
 		CommerceAvailabilityEstimate commerceAvailabilityEstimate =
 			_persistence.create(pk);

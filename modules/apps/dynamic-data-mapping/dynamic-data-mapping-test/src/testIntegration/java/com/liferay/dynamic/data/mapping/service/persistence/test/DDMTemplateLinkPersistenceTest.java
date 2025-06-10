@@ -83,7 +83,7 @@ public class DDMTemplateLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
 		DDMTemplateLink ddmTemplateLink = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class DDMTemplateLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
 		DDMTemplateLink newDDMTemplateLink = _persistence.create(pk);
 
@@ -182,7 +182,7 @@ public class DDMTemplateLinkPersistenceTest {
 
 	@Test(expected = NoSuchTemplateLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -212,7 +212,7 @@ public class DDMTemplateLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
 		DDMTemplateLink missingDDMTemplateLink = _persistence.fetchByPrimaryKey(
 			pk);
@@ -248,9 +248,9 @@ public class DDMTemplateLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -269,7 +269,7 @@ public class DDMTemplateLinkPersistenceTest {
 
 		DDMTemplateLink newDDMTemplateLink = addDDMTemplateLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -364,7 +364,8 @@ public class DDMTemplateLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"templateLinkId", RandomTestUtil.nextLong()));
+				"templateLinkId",
+				RandomTestUtil.nextLong(DDMTemplateLink.class.getName())));
 
 		List<DDMTemplateLink> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -407,7 +408,10 @@ public class DDMTemplateLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"templateLinkId", new Object[] {RandomTestUtil.nextLong()}));
+				"templateLinkId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMTemplateLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -478,7 +482,7 @@ public class DDMTemplateLinkPersistenceTest {
 	}
 
 	protected DDMTemplateLink addDDMTemplateLink() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateLink.class.getName());
 
 		DDMTemplateLink ddmTemplateLink = _persistence.create(pk);
 

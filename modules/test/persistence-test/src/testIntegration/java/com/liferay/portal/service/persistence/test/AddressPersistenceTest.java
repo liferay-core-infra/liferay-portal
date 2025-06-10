@@ -84,7 +84,7 @@ public class AddressPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Address.class.getName());
 
 		Address address = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class AddressPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Address.class.getName());
 
 		Address newAddress = _persistence.create(pk);
 
@@ -381,7 +381,7 @@ public class AddressPersistenceTest {
 
 	@Test(expected = NoSuchAddressException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Address.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -417,7 +417,7 @@ public class AddressPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Address.class.getName());
 
 		Address missingAddress = _persistence.fetchByPrimaryKey(pk);
 
@@ -450,9 +450,9 @@ public class AddressPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Address.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Address.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -471,7 +471,7 @@ public class AddressPersistenceTest {
 
 		Address newAddress = addAddress();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Address.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -561,7 +561,8 @@ public class AddressPersistenceTest {
 			Address.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("addressId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"addressId", RandomTestUtil.nextLong(Address.class.getName())));
 
 		List<Address> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -601,7 +602,10 @@ public class AddressPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"addressId", new Object[] {RandomTestUtil.nextLong()}));
+				"addressId",
+				new Object[] {
+					RandomTestUtil.nextLong(Address.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -670,7 +674,7 @@ public class AddressPersistenceTest {
 	}
 
 	protected Address addAddress() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Address.class.getName());
 
 		Address address = _persistence.create(pk);
 

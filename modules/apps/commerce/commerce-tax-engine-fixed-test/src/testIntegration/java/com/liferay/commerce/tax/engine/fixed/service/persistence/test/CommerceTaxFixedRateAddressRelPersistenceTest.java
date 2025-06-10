@@ -84,7 +84,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
 		CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel =
 			_persistence.create(pk);
@@ -115,7 +116,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
 		CommerceTaxFixedRateAddressRel newCommerceTaxFixedRateAddressRel =
 			_persistence.create(pk);
@@ -249,7 +251,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 
 	@Test(expected = NoSuchTaxFixedRateAddressRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -288,7 +291,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
 		CommerceTaxFixedRateAddressRel missingCommerceTaxFixedRateAddressRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -329,9 +333,11 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -352,7 +358,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 		CommerceTaxFixedRateAddressRel newCommerceTaxFixedRateAddressRel =
 			addCommerceTaxFixedRateAddressRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -464,7 +471,9 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceTaxFixedRateAddressRelId", RandomTestUtil.nextLong()));
+				"commerceTaxFixedRateAddressRelId",
+				RandomTestUtil.nextLong(
+					CommerceTaxFixedRateAddressRel.class.getName())));
 
 		List<CommerceTaxFixedRateAddressRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -514,7 +523,10 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceTaxFixedRateAddressRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceTaxFixedRateAddressRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -524,7 +536,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 	protected CommerceTaxFixedRateAddressRel addCommerceTaxFixedRateAddressRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceTaxFixedRateAddressRel.class.getName());
 
 		CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel =
 			_persistence.create(pk);

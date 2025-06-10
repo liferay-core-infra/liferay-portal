@@ -83,7 +83,7 @@ public class DDMFieldPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMField.class.getName());
 
 		DDMField ddmField = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class DDMFieldPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMField.class.getName());
 
 		DDMField newDDMField = _persistence.create(pk);
 
@@ -224,7 +224,7 @@ public class DDMFieldPersistenceTest {
 
 	@Test(expected = NoSuchFieldException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMField.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -255,7 +255,7 @@ public class DDMFieldPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMField.class.getName());
 
 		DDMField missingDDMField = _persistence.fetchByPrimaryKey(pk);
 
@@ -288,9 +288,9 @@ public class DDMFieldPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMField.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMField.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -309,7 +309,7 @@ public class DDMFieldPersistenceTest {
 
 		DDMField newDDMField = addDDMField();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMField.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -399,7 +399,8 @@ public class DDMFieldPersistenceTest {
 			DDMField.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("fieldId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"fieldId", RandomTestUtil.nextLong(DDMField.class.getName())));
 
 		List<DDMField> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -438,7 +439,10 @@ public class DDMFieldPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"fieldId", new Object[] {RandomTestUtil.nextLong()}));
+				"fieldId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMField.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -507,7 +511,7 @@ public class DDMFieldPersistenceTest {
 	}
 
 	protected DDMField addDDMField() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMField.class.getName());
 
 		DDMField ddmField = _persistence.create(pk);
 

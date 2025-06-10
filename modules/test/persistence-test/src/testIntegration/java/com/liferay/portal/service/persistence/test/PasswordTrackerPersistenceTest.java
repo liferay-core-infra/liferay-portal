@@ -80,7 +80,7 @@ public class PasswordTrackerPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
 		PasswordTracker passwordTracker = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class PasswordTrackerPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
 		PasswordTracker newPasswordTracker = _persistence.create(pk);
 
@@ -166,7 +166,7 @@ public class PasswordTrackerPersistenceTest {
 
 	@Test(expected = NoSuchPasswordTrackerException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -196,7 +196,7 @@ public class PasswordTrackerPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
 		PasswordTracker missingPasswordTracker = _persistence.fetchByPrimaryKey(
 			pk);
@@ -232,9 +232,9 @@ public class PasswordTrackerPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -253,7 +253,7 @@ public class PasswordTrackerPersistenceTest {
 
 		PasswordTracker newPasswordTracker = addPasswordTracker();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -349,7 +349,8 @@ public class PasswordTrackerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"passwordTrackerId", RandomTestUtil.nextLong()));
+				"passwordTrackerId",
+				RandomTestUtil.nextLong(PasswordTracker.class.getName())));
 
 		List<PasswordTracker> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -392,7 +393,10 @@ public class PasswordTrackerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"passwordTrackerId", new Object[] {RandomTestUtil.nextLong()}));
+				"passwordTrackerId",
+				new Object[] {
+					RandomTestUtil.nextLong(PasswordTracker.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -400,7 +404,7 @@ public class PasswordTrackerPersistenceTest {
 	}
 
 	protected PasswordTracker addPasswordTracker() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PasswordTracker.class.getName());
 
 		PasswordTracker passwordTracker = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class DDLRecordPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
 		DDLRecord ddlRecord = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class DDLRecordPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
 		DDLRecord newDDLRecord = _persistence.create(pk);
 
@@ -289,7 +289,7 @@ public class DDLRecordPersistenceTest {
 
 	@Test(expected = NoSuchRecordException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -323,7 +323,7 @@ public class DDLRecordPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
 		DDLRecord missingDDLRecord = _persistence.fetchByPrimaryKey(pk);
 
@@ -356,9 +356,9 @@ public class DDLRecordPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -377,7 +377,7 @@ public class DDLRecordPersistenceTest {
 
 		DDLRecord newDDLRecord = addDDLRecord();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -468,7 +468,9 @@ public class DDLRecordPersistenceTest {
 			DDLRecord.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("recordId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"recordId",
+				RandomTestUtil.nextLong(DDLRecord.class.getName())));
 
 		List<DDLRecord> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -508,7 +510,10 @@ public class DDLRecordPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"recordId", new Object[] {RandomTestUtil.nextLong()}));
+				"recordId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDLRecord.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -578,7 +583,7 @@ public class DDLRecordPersistenceTest {
 	}
 
 	protected DDLRecord addDDLRecord() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecord.class.getName());
 
 		DDLRecord ddlRecord = _persistence.create(pk);
 

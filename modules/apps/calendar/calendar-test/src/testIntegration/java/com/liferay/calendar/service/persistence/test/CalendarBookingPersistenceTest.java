@@ -83,7 +83,7 @@ public class CalendarBookingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
 		CalendarBooking calendarBooking = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class CalendarBookingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
 		CalendarBooking newCalendarBooking = _persistence.create(pk);
 
@@ -382,7 +382,7 @@ public class CalendarBookingPersistenceTest {
 
 	@Test(expected = NoSuchBookingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -421,7 +421,7 @@ public class CalendarBookingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
 		CalendarBooking missingCalendarBooking = _persistence.fetchByPrimaryKey(
 			pk);
@@ -457,9 +457,9 @@ public class CalendarBookingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -478,7 +478,7 @@ public class CalendarBookingPersistenceTest {
 
 		CalendarBooking newCalendarBooking = addCalendarBooking();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -574,7 +574,8 @@ public class CalendarBookingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"calendarBookingId", RandomTestUtil.nextLong()));
+				"calendarBookingId",
+				RandomTestUtil.nextLong(CalendarBooking.class.getName())));
 
 		List<CalendarBooking> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -617,7 +618,10 @@ public class CalendarBookingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"calendarBookingId", new Object[] {RandomTestUtil.nextLong()}));
+				"calendarBookingId",
+				new Object[] {
+					RandomTestUtil.nextLong(CalendarBooking.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -711,7 +715,7 @@ public class CalendarBookingPersistenceTest {
 	}
 
 	protected CalendarBooking addCalendarBooking() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarBooking.class.getName());
 
 		CalendarBooking calendarBooking = _persistence.create(pk);
 

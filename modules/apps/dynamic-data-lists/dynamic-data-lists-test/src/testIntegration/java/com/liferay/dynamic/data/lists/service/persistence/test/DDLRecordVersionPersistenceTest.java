@@ -84,7 +84,7 @@ public class DDLRecordVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
 		DDLRecordVersion ddlRecordVersion = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class DDLRecordVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
 		DDLRecordVersion newDDLRecordVersion = _persistence.create(pk);
 
@@ -267,7 +267,7 @@ public class DDLRecordVersionPersistenceTest {
 
 	@Test(expected = NoSuchRecordVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -301,7 +301,7 @@ public class DDLRecordVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
 		DDLRecordVersion missingDDLRecordVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -337,9 +337,9 @@ public class DDLRecordVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -358,7 +358,7 @@ public class DDLRecordVersionPersistenceTest {
 
 		DDLRecordVersion newDDLRecordVersion = addDDLRecordVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -453,7 +453,8 @@ public class DDLRecordVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"recordVersionId", RandomTestUtil.nextLong()));
+				"recordVersionId",
+				RandomTestUtil.nextLong(DDLRecordVersion.class.getName())));
 
 		List<DDLRecordVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -496,7 +497,10 @@ public class DDLRecordVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"recordVersionId", new Object[] {RandomTestUtil.nextLong()}));
+				"recordVersionId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDLRecordVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -567,7 +571,7 @@ public class DDLRecordVersionPersistenceTest {
 	}
 
 	protected DDLRecordVersion addDDLRecordVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordVersion.class.getName());
 
 		DDLRecordVersion ddlRecordVersion = _persistence.create(pk);
 

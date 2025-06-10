@@ -85,7 +85,7 @@ public class COREntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(COREntry.class.getName());
 
 		COREntry corEntry = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class COREntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(COREntry.class.getName());
 
 		COREntry newCOREntry = _persistence.create(pk);
 
@@ -320,7 +320,7 @@ public class COREntryPersistenceTest {
 
 	@Test(expected = NoSuchCOREntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(COREntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -355,7 +355,7 @@ public class COREntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(COREntry.class.getName());
 
 		COREntry missingCOREntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -388,9 +388,9 @@ public class COREntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(COREntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(COREntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -409,7 +409,7 @@ public class COREntryPersistenceTest {
 
 		COREntry newCOREntry = addCOREntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(COREntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -501,7 +501,8 @@ public class COREntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"COREntryId", RandomTestUtil.nextLong()));
+				"COREntryId",
+				RandomTestUtil.nextLong(COREntry.class.getName())));
 
 		List<COREntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -543,7 +544,10 @@ public class COREntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"COREntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"COREntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(COREntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -613,7 +617,7 @@ public class COREntryPersistenceTest {
 	}
 
 	protected COREntry addCOREntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(COREntry.class.getName());
 
 		COREntry corEntry = _persistence.create(pk);
 

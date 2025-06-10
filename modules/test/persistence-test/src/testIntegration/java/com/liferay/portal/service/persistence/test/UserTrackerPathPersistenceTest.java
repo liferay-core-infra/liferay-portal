@@ -80,7 +80,7 @@ public class UserTrackerPathPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
 		UserTrackerPath userTrackerPath = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class UserTrackerPathPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
 		UserTrackerPath newUserTrackerPath = _persistence.create(pk);
 
@@ -165,7 +165,7 @@ public class UserTrackerPathPersistenceTest {
 
 	@Test(expected = NoSuchUserTrackerPathException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -195,7 +195,7 @@ public class UserTrackerPathPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
 		UserTrackerPath missingUserTrackerPath = _persistence.fetchByPrimaryKey(
 			pk);
@@ -231,9 +231,9 @@ public class UserTrackerPathPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -252,7 +252,7 @@ public class UserTrackerPathPersistenceTest {
 
 		UserTrackerPath newUserTrackerPath = addUserTrackerPath();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -348,7 +348,8 @@ public class UserTrackerPathPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"userTrackerPathId", RandomTestUtil.nextLong()));
+				"userTrackerPathId",
+				RandomTestUtil.nextLong(UserTrackerPath.class.getName())));
 
 		List<UserTrackerPath> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -391,7 +392,10 @@ public class UserTrackerPathPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"userTrackerPathId", new Object[] {RandomTestUtil.nextLong()}));
+				"userTrackerPathId",
+				new Object[] {
+					RandomTestUtil.nextLong(UserTrackerPath.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -399,7 +403,7 @@ public class UserTrackerPathPersistenceTest {
 	}
 
 	protected UserTrackerPath addUserTrackerPath() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTrackerPath.class.getName());
 
 		UserTrackerPath userTrackerPath = _persistence.create(pk);
 

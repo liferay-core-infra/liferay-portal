@@ -84,7 +84,8 @@ public class CPInstanceOptionValueRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
 		CPInstanceOptionValueRel cpInstanceOptionValueRel = _persistence.create(
 			pk);
@@ -115,7 +116,8 @@ public class CPInstanceOptionValueRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
 		CPInstanceOptionValueRel newCPInstanceOptionValueRel =
 			_persistence.create(pk);
@@ -280,7 +282,8 @@ public class CPInstanceOptionValueRelPersistenceTest {
 
 	@Test(expected = NoSuchCPInstanceOptionValueRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -317,7 +320,8 @@ public class CPInstanceOptionValueRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
 		CPInstanceOptionValueRel missingCPInstanceOptionValueRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -357,9 +361,11 @@ public class CPInstanceOptionValueRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -379,7 +385,8 @@ public class CPInstanceOptionValueRelPersistenceTest {
 		CPInstanceOptionValueRel newCPInstanceOptionValueRel =
 			addCPInstanceOptionValueRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -485,7 +492,9 @@ public class CPInstanceOptionValueRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPInstanceOptionValueRelId", RandomTestUtil.nextLong()));
+				"CPInstanceOptionValueRelId",
+				RandomTestUtil.nextLong(
+					CPInstanceOptionValueRel.class.getName())));
 
 		List<CPInstanceOptionValueRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -533,7 +542,10 @@ public class CPInstanceOptionValueRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPInstanceOptionValueRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPInstanceOptionValueRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -641,7 +653,8 @@ public class CPInstanceOptionValueRelPersistenceTest {
 	protected CPInstanceOptionValueRel addCPInstanceOptionValueRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceOptionValueRel.class.getName());
 
 		CPInstanceOptionValueRel cpInstanceOptionValueRel = _persistence.create(
 			pk);

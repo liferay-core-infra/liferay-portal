@@ -81,7 +81,7 @@ public class ExpandoValuePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
 		ExpandoValue expandoValue = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ExpandoValuePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
 		ExpandoValue newExpandoValue = _persistence.create(pk);
 
@@ -254,7 +254,7 @@ public class ExpandoValuePersistenceTest {
 
 	@Test(expected = NoSuchValueException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -284,7 +284,7 @@ public class ExpandoValuePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
 		ExpandoValue missingExpandoValue = _persistence.fetchByPrimaryKey(pk);
 
@@ -319,9 +319,9 @@ public class ExpandoValuePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -340,7 +340,7 @@ public class ExpandoValuePersistenceTest {
 
 		ExpandoValue newExpandoValue = addExpandoValue();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -434,7 +434,9 @@ public class ExpandoValuePersistenceTest {
 			ExpandoValue.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("valueId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"valueId",
+				RandomTestUtil.nextLong(ExpandoValue.class.getName())));
 
 		List<ExpandoValue> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -474,7 +476,10 @@ public class ExpandoValuePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"valueId", new Object[] {RandomTestUtil.nextLong()}));
+				"valueId",
+				new Object[] {
+					RandomTestUtil.nextLong(ExpandoValue.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -561,7 +566,7 @@ public class ExpandoValuePersistenceTest {
 	}
 
 	protected ExpandoValue addExpandoValue() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoValue.class.getName());
 
 		ExpandoValue expandoValue = _persistence.create(pk);
 

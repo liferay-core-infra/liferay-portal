@@ -84,7 +84,7 @@ public class TemplateEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
 		TemplateEntry templateEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class TemplateEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
 		TemplateEntry newTemplateEntry = _persistence.create(pk);
 
@@ -307,7 +307,7 @@ public class TemplateEntryPersistenceTest {
 
 	@Test(expected = NoSuchTemplateEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -340,7 +340,7 @@ public class TemplateEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
 		TemplateEntry missingTemplateEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -375,9 +375,9 @@ public class TemplateEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -396,7 +396,7 @@ public class TemplateEntryPersistenceTest {
 
 		TemplateEntry newTemplateEntry = addTemplateEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -491,7 +491,8 @@ public class TemplateEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"templateEntryId", RandomTestUtil.nextLong()));
+				"templateEntryId",
+				RandomTestUtil.nextLong(TemplateEntry.class.getName())));
 
 		List<TemplateEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -534,7 +535,10 @@ public class TemplateEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"templateEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"templateEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(TemplateEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -622,7 +626,7 @@ public class TemplateEntryPersistenceTest {
 	}
 
 	protected TemplateEntry addTemplateEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TemplateEntry.class.getName());
 
 		TemplateEntry templateEntry = _persistence.create(pk);
 

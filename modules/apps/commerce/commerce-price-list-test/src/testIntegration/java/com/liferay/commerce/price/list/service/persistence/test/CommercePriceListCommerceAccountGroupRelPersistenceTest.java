@@ -86,7 +86,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
 		CommercePriceListCommerceAccountGroupRel
 			commercePriceListCommerceAccountGroupRel = _persistence.create(pk);
@@ -121,7 +122,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
 		CommercePriceListCommerceAccountGroupRel
 			newCommercePriceListCommerceAccountGroupRel = _persistence.create(
@@ -282,7 +284,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 
 	@Test(expected = NoSuchPriceListCommerceAccountGroupRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -324,7 +327,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
 		CommercePriceListCommerceAccountGroupRel
 			missingCommercePriceListCommerceAccountGroupRel =
@@ -371,9 +375,11 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -395,7 +401,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 			newCommercePriceListCommerceAccountGroupRel =
 				addCommercePriceListCommerceAccountGroupRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -517,7 +524,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
 				"commercePriceListCommerceAccountGroupRelId",
-				RandomTestUtil.nextLong()));
+				RandomTestUtil.nextLong(
+					CommercePriceListCommerceAccountGroupRel.class.getName())));
 
 		List<CommercePriceListCommerceAccountGroupRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -573,7 +581,11 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commercePriceListCommerceAccountGroupRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommercePriceListCommerceAccountGroupRel.class.
+							getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -664,7 +676,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceTest {
 			addCommercePriceListCommerceAccountGroupRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePriceListCommerceAccountGroupRel.class.getName());
 
 		CommercePriceListCommerceAccountGroupRel
 			commercePriceListCommerceAccountGroupRel = _persistence.create(pk);

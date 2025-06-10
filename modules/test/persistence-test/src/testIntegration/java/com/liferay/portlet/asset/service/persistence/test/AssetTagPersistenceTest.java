@@ -83,7 +83,7 @@ public class AssetTagPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTag.class.getName());
 
 		AssetTag assetTag = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class AssetTagPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTag.class.getName());
 
 		AssetTag newAssetTag = _persistence.create(pk);
 
@@ -301,7 +301,7 @@ public class AssetTagPersistenceTest {
 
 	@Test(expected = NoSuchTagException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTag.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -333,7 +333,7 @@ public class AssetTagPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTag.class.getName());
 
 		AssetTag missingAssetTag = _persistence.fetchByPrimaryKey(pk);
 
@@ -366,9 +366,9 @@ public class AssetTagPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AssetTag.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AssetTag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -387,7 +387,7 @@ public class AssetTagPersistenceTest {
 
 		AssetTag newAssetTag = addAssetTag();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -477,7 +477,8 @@ public class AssetTagPersistenceTest {
 			AssetTag.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("tagId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"tagId", RandomTestUtil.nextLong(AssetTag.class.getName())));
 
 		List<AssetTag> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -516,7 +517,10 @@ public class AssetTagPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"tagId", new Object[] {RandomTestUtil.nextLong()}));
+				"tagId",
+				new Object[] {
+					RandomTestUtil.nextLong(AssetTag.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -596,7 +600,7 @@ public class AssetTagPersistenceTest {
 	}
 
 	protected AssetTag addAssetTag() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTag.class.getName());
 
 		AssetTag assetTag = _persistence.create(pk);
 

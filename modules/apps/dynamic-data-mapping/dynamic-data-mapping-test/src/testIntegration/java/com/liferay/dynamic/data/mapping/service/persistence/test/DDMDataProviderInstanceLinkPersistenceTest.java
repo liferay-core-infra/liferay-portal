@@ -84,7 +84,8 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
 		DDMDataProviderInstanceLink ddmDataProviderInstanceLink =
 			_persistence.create(pk);
@@ -115,7 +116,8 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
 		DDMDataProviderInstanceLink newDDMDataProviderInstanceLink =
 			_persistence.create(pk);
@@ -199,7 +201,8 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 
 	@Test(expected = NoSuchDataProviderInstanceLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -236,7 +239,8 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
 		DDMDataProviderInstanceLink missingDDMDataProviderInstanceLink =
 			_persistence.fetchByPrimaryKey(pk);
@@ -277,9 +281,11 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -300,7 +306,8 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 		DDMDataProviderInstanceLink newDDMDataProviderInstanceLink =
 			addDDMDataProviderInstanceLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -411,7 +418,9 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"dataProviderInstanceLinkId", RandomTestUtil.nextLong()));
+				"dataProviderInstanceLinkId",
+				RandomTestUtil.nextLong(
+					DDMDataProviderInstanceLink.class.getName())));
 
 		List<DDMDataProviderInstanceLink> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -459,7 +468,10 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"dataProviderInstanceLinkId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						DDMDataProviderInstanceLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -540,7 +552,8 @@ public class DDMDataProviderInstanceLinkPersistenceTest {
 	protected DDMDataProviderInstanceLink addDDMDataProviderInstanceLink()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMDataProviderInstanceLink.class.getName());
 
 		DDMDataProviderInstanceLink ddmDataProviderInstanceLink =
 			_persistence.create(pk);

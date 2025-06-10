@@ -83,7 +83,7 @@ public class CommerceTaxMethodPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
 		CommerceTaxMethod commerceTaxMethod = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CommerceTaxMethodPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
 		CommerceTaxMethod newCommerceTaxMethod = _persistence.create(pk);
 
@@ -227,7 +227,7 @@ public class CommerceTaxMethodPersistenceTest {
 
 	@Test(expected = NoSuchTaxMethodException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -260,7 +260,7 @@ public class CommerceTaxMethodPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
 		CommerceTaxMethod missingCommerceTaxMethod =
 			_persistence.fetchByPrimaryKey(pk);
@@ -296,9 +296,9 @@ public class CommerceTaxMethodPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -317,7 +317,7 @@ public class CommerceTaxMethodPersistenceTest {
 
 		CommerceTaxMethod newCommerceTaxMethod = addCommerceTaxMethod();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +414,8 @@ public class CommerceTaxMethodPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceTaxMethodId", RandomTestUtil.nextLong()));
+				"commerceTaxMethodId",
+				RandomTestUtil.nextLong(CommerceTaxMethod.class.getName())));
 
 		List<CommerceTaxMethod> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -460,7 +461,9 @@ public class CommerceTaxMethodPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceTaxMethodId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CommerceTaxMethod.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -533,7 +536,7 @@ public class CommerceTaxMethodPersistenceTest {
 	}
 
 	protected CommerceTaxMethod addCommerceTaxMethod() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceTaxMethod.class.getName());
 
 		CommerceTaxMethod commerceTaxMethod = _persistence.create(pk);
 

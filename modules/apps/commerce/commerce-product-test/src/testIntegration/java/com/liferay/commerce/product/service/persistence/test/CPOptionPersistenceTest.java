@@ -84,7 +84,7 @@ public class CPOptionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOption.class.getName());
 
 		CPOption cpOption = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CPOptionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOption.class.getName());
 
 		CPOption newCPOption = _persistence.create(pk);
 
@@ -272,7 +272,7 @@ public class CPOptionPersistenceTest {
 
 	@Test(expected = NoSuchCPOptionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOption.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -305,7 +305,7 @@ public class CPOptionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOption.class.getName());
 
 		CPOption missingCPOption = _persistence.fetchByPrimaryKey(pk);
 
@@ -338,9 +338,9 @@ public class CPOptionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPOption.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPOption.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -359,7 +359,7 @@ public class CPOptionPersistenceTest {
 
 		CPOption newCPOption = addCPOption();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOption.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -451,7 +451,8 @@ public class CPOptionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPOptionId", RandomTestUtil.nextLong()));
+				"CPOptionId",
+				RandomTestUtil.nextLong(CPOption.class.getName())));
 
 		List<CPOption> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -493,7 +494,10 @@ public class CPOptionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"CPOptionId", new Object[] {RandomTestUtil.nextLong()}));
+				"CPOptionId",
+				new Object[] {
+					RandomTestUtil.nextLong(CPOption.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -574,7 +578,7 @@ public class CPOptionPersistenceTest {
 	}
 
 	protected CPOption addCPOption() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOption.class.getName());
 
 		CPOption cpOption = _persistence.create(pk);
 

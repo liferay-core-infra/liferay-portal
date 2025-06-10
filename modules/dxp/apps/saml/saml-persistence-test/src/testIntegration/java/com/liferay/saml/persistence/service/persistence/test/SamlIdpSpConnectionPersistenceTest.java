@@ -84,7 +84,7 @@ public class SamlIdpSpConnectionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
 		SamlIdpSpConnection samlIdpSpConnection = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class SamlIdpSpConnectionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
 		SamlIdpSpConnection newSamlIdpSpConnection = _persistence.create(pk);
 
@@ -256,7 +256,7 @@ public class SamlIdpSpConnectionPersistenceTest {
 
 	@Test(expected = NoSuchIdpSpConnectionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -292,7 +292,7 @@ public class SamlIdpSpConnectionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
 		SamlIdpSpConnection missingSamlIdpSpConnection =
 			_persistence.fetchByPrimaryKey(pk);
@@ -328,9 +328,9 @@ public class SamlIdpSpConnectionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -349,7 +349,7 @@ public class SamlIdpSpConnectionPersistenceTest {
 
 		SamlIdpSpConnection newSamlIdpSpConnection = addSamlIdpSpConnection();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -449,7 +449,8 @@ public class SamlIdpSpConnectionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"samlIdpSpConnectionId", RandomTestUtil.nextLong()));
+				"samlIdpSpConnectionId",
+				RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName())));
 
 		List<SamlIdpSpConnection> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -496,7 +497,9 @@ public class SamlIdpSpConnectionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"samlIdpSpConnectionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -571,7 +574,7 @@ public class SamlIdpSpConnectionPersistenceTest {
 	}
 
 	protected SamlIdpSpConnection addSamlIdpSpConnection() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpConnection.class.getName());
 
 		SamlIdpSpConnection samlIdpSpConnection = _persistence.create(pk);
 

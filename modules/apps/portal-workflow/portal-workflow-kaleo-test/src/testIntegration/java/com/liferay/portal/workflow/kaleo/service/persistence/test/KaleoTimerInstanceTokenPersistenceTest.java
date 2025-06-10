@@ -85,7 +85,8 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
 		KaleoTimerInstanceToken kaleoTimerInstanceToken = _persistence.create(
 			pk);
@@ -116,7 +117,8 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
 		KaleoTimerInstanceToken newKaleoTimerInstanceToken =
 			_persistence.create(pk);
@@ -305,7 +307,8 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 	@Test(expected = NoSuchTimerInstanceTokenException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -346,7 +349,8 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
 		KaleoTimerInstanceToken missingKaleoTimerInstanceToken =
 			_persistence.fetchByPrimaryKey(pk);
@@ -386,9 +390,11 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -408,7 +414,8 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 		KaleoTimerInstanceToken newKaleoTimerInstanceToken =
 			addKaleoTimerInstanceToken();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -512,7 +519,9 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoTimerInstanceTokenId", RandomTestUtil.nextLong()));
+				"kaleoTimerInstanceTokenId",
+				RandomTestUtil.nextLong(
+					KaleoTimerInstanceToken.class.getName())));
 
 		List<KaleoTimerInstanceToken> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -560,7 +569,10 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"kaleoTimerInstanceTokenId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						KaleoTimerInstanceToken.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -639,7 +651,8 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 	protected KaleoTimerInstanceToken addKaleoTimerInstanceToken()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTimerInstanceToken.class.getName());
 
 		KaleoTimerInstanceToken kaleoTimerInstanceToken = _persistence.create(
 			pk);

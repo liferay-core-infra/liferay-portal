@@ -85,7 +85,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
 		ClientExtensionEntryRel clientExtensionEntryRel = _persistence.create(
 			pk);
@@ -116,7 +117,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
 		ClientExtensionEntryRel newClientExtensionEntryRel =
 			_persistence.create(pk);
@@ -335,7 +337,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 	@Test(expected = NoSuchClientExtensionEntryRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -374,7 +377,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
 		ClientExtensionEntryRel missingClientExtensionEntryRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -414,9 +418,11 @@ public class ClientExtensionEntryRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -436,7 +442,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 		ClientExtensionEntryRel newClientExtensionEntryRel =
 			addClientExtensionEntryRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -540,7 +547,9 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"clientExtensionEntryRelId", RandomTestUtil.nextLong()));
+				"clientExtensionEntryRelId",
+				RandomTestUtil.nextLong(
+					ClientExtensionEntryRel.class.getName())));
 
 		List<ClientExtensionEntryRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -588,7 +597,10 @@ public class ClientExtensionEntryRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"clientExtensionEntryRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ClientExtensionEntryRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -678,7 +690,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 	protected ClientExtensionEntryRel addClientExtensionEntryRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ClientExtensionEntryRel.class.getName());
 
 		ClientExtensionEntryRel clientExtensionEntryRel = _persistence.create(
 			pk);

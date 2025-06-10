@@ -90,7 +90,8 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
 		LayoutPageTemplateCollection layoutPageTemplateCollection =
 			_persistence.create(pk);
@@ -121,7 +122,8 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
 		LayoutPageTemplateCollection newLayoutPageTemplateCollection =
 			_persistence.create(pk);
@@ -391,7 +393,8 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 
 	@Test(expected = NoSuchPageTemplateCollectionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -455,7 +458,8 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
 		LayoutPageTemplateCollection missingLayoutPageTemplateCollection =
 			_persistence.fetchByPrimaryKey(pk);
@@ -496,9 +500,11 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -519,7 +525,8 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 		LayoutPageTemplateCollection newLayoutPageTemplateCollection =
 			addLayoutPageTemplateCollection();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -630,7 +637,9 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutPageTemplateCollectionId", RandomTestUtil.nextLong()));
+				"layoutPageTemplateCollectionId",
+				RandomTestUtil.nextLong(
+					LayoutPageTemplateCollection.class.getName())));
 
 		List<LayoutPageTemplateCollection> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -679,7 +688,10 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"layoutPageTemplateCollectionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						LayoutPageTemplateCollection.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -809,7 +821,8 @@ public class LayoutPageTemplateCollectionPersistenceTest {
 	protected LayoutPageTemplateCollection addLayoutPageTemplateCollection()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateCollection.class.getName());
 
 		LayoutPageTemplateCollection layoutPageTemplateCollection =
 			_persistence.create(pk);

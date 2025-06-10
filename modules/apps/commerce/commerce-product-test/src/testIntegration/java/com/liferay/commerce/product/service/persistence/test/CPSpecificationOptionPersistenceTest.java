@@ -86,7 +86,8 @@ public class CPSpecificationOptionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
 		CPSpecificationOption cpSpecificationOption = _persistence.create(pk);
 
@@ -116,7 +117,8 @@ public class CPSpecificationOptionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
 		CPSpecificationOption newCPSpecificationOption = _persistence.create(
 			pk);
@@ -315,7 +317,8 @@ public class CPSpecificationOptionPersistenceTest {
 
 	@Test(expected = NoSuchCPSpecificationOptionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -352,7 +355,8 @@ public class CPSpecificationOptionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
 		CPSpecificationOption missingCPSpecificationOption =
 			_persistence.fetchByPrimaryKey(pk);
@@ -392,9 +396,11 @@ public class CPSpecificationOptionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +420,8 @@ public class CPSpecificationOptionPersistenceTest {
 		CPSpecificationOption newCPSpecificationOption =
 			addCPSpecificationOption();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -518,7 +525,9 @@ public class CPSpecificationOptionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPSpecificationOptionId", RandomTestUtil.nextLong()));
+				"CPSpecificationOptionId",
+				RandomTestUtil.nextLong(
+					CPSpecificationOption.class.getName())));
 
 		List<CPSpecificationOption> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -566,7 +575,10 @@ public class CPSpecificationOptionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPSpecificationOptionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPSpecificationOption.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -656,7 +668,8 @@ public class CPSpecificationOptionPersistenceTest {
 	protected CPSpecificationOption addCPSpecificationOption()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOption.class.getName());
 
 		CPSpecificationOption cpSpecificationOption = _persistence.create(pk);
 

@@ -85,7 +85,7 @@ public class CPMeasurementUnitPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
 		CPMeasurementUnit cpMeasurementUnit = _persistence.create(pk);
 
@@ -114,7 +114,7 @@ public class CPMeasurementUnitPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
 		CPMeasurementUnit newCPMeasurementUnit = _persistence.create(pk);
 
@@ -317,7 +317,7 @@ public class CPMeasurementUnitPersistenceTest {
 
 	@Test(expected = NoSuchCPMeasurementUnitException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -351,7 +351,7 @@ public class CPMeasurementUnitPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
 		CPMeasurementUnit missingCPMeasurementUnit =
 			_persistence.fetchByPrimaryKey(pk);
@@ -387,9 +387,9 @@ public class CPMeasurementUnitPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -408,7 +408,7 @@ public class CPMeasurementUnitPersistenceTest {
 
 		CPMeasurementUnit newCPMeasurementUnit = addCPMeasurementUnit();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -505,7 +505,8 @@ public class CPMeasurementUnitPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPMeasurementUnitId", RandomTestUtil.nextLong()));
+				"CPMeasurementUnitId",
+				RandomTestUtil.nextLong(CPMeasurementUnit.class.getName())));
 
 		List<CPMeasurementUnit> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -551,7 +552,9 @@ public class CPMeasurementUnitPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPMeasurementUnitId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CPMeasurementUnit.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -646,7 +649,7 @@ public class CPMeasurementUnitPersistenceTest {
 	}
 
 	protected CPMeasurementUnit addCPMeasurementUnit() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPMeasurementUnit.class.getName());
 
 		CPMeasurementUnit cpMeasurementUnit = _persistence.create(pk);
 

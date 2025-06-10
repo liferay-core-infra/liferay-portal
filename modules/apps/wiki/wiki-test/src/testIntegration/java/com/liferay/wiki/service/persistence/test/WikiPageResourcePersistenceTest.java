@@ -82,7 +82,7 @@ public class WikiPageResourcePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
 		WikiPageResource wikiPageResource = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class WikiPageResourcePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
 		WikiPageResource newWikiPageResource = _persistence.create(pk);
 
@@ -206,7 +206,7 @@ public class WikiPageResourcePersistenceTest {
 
 	@Test(expected = NoSuchPageResourceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -236,7 +236,7 @@ public class WikiPageResourcePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
 		WikiPageResource missingWikiPageResource =
 			_persistence.fetchByPrimaryKey(pk);
@@ -272,9 +272,9 @@ public class WikiPageResourcePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -293,7 +293,7 @@ public class WikiPageResourcePersistenceTest {
 
 		WikiPageResource newWikiPageResource = addWikiPageResource();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -388,7 +388,8 @@ public class WikiPageResourcePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"resourcePrimKey", RandomTestUtil.nextLong()));
+				"resourcePrimKey",
+				RandomTestUtil.nextLong(WikiPageResource.class.getName())));
 
 		List<WikiPageResource> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -431,7 +432,10 @@ public class WikiPageResourcePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"resourcePrimKey", new Object[] {RandomTestUtil.nextLong()}));
+				"resourcePrimKey",
+				new Object[] {
+					RandomTestUtil.nextLong(WikiPageResource.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -513,7 +517,7 @@ public class WikiPageResourcePersistenceTest {
 	}
 
 	protected WikiPageResource addWikiPageResource() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPageResource.class.getName());
 
 		WikiPageResource wikiPageResource = _persistence.create(pk);
 

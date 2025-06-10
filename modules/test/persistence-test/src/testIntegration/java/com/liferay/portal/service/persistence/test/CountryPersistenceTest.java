@@ -83,7 +83,7 @@ public class CountryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Country.class.getName());
 
 		Country country = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class CountryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Country.class.getName());
 
 		Country newCountry = _persistence.create(pk);
 
@@ -321,7 +321,7 @@ public class CountryPersistenceTest {
 
 	@Test(expected = NoSuchCountryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Country.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -356,7 +356,7 @@ public class CountryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Country.class.getName());
 
 		Country missingCountry = _persistence.fetchByPrimaryKey(pk);
 
@@ -389,9 +389,9 @@ public class CountryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Country.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Country.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -410,7 +410,7 @@ public class CountryPersistenceTest {
 
 		Country newCountry = addCountry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Country.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -500,7 +500,8 @@ public class CountryPersistenceTest {
 			Country.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("countryId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"countryId", RandomTestUtil.nextLong(Country.class.getName())));
 
 		List<Country> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -540,7 +541,10 @@ public class CountryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"countryId", new Object[] {RandomTestUtil.nextLong()}));
+				"countryId",
+				new Object[] {
+					RandomTestUtil.nextLong(Country.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -642,7 +646,7 @@ public class CountryPersistenceTest {
 	}
 
 	protected Country addCountry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Country.class.getName());
 
 		Country country = _persistence.create(pk);
 

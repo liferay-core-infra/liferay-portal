@@ -83,7 +83,7 @@ public class MBThreadFlagPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
 		MBThreadFlag mbThreadFlag = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class MBThreadFlagPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
 		MBThreadFlag newMBThreadFlag = _persistence.create(pk);
 
@@ -236,7 +236,7 @@ public class MBThreadFlagPersistenceTest {
 
 	@Test(expected = NoSuchThreadFlagException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -267,7 +267,7 @@ public class MBThreadFlagPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
 		MBThreadFlag missingMBThreadFlag = _persistence.fetchByPrimaryKey(pk);
 
@@ -302,9 +302,9 @@ public class MBThreadFlagPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -323,7 +323,7 @@ public class MBThreadFlagPersistenceTest {
 
 		MBThreadFlag newMBThreadFlag = addMBThreadFlag();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -418,7 +418,8 @@ public class MBThreadFlagPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"threadFlagId", RandomTestUtil.nextLong()));
+				"threadFlagId",
+				RandomTestUtil.nextLong(MBThreadFlag.class.getName())));
 
 		List<MBThreadFlag> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -461,7 +462,10 @@ public class MBThreadFlagPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"threadFlagId", new Object[] {RandomTestUtil.nextLong()}));
+				"threadFlagId",
+				new Object[] {
+					RandomTestUtil.nextLong(MBThreadFlag.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -543,7 +547,7 @@ public class MBThreadFlagPersistenceTest {
 	}
 
 	protected MBThreadFlag addMBThreadFlag() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThreadFlag.class.getName());
 
 		MBThreadFlag mbThreadFlag = _persistence.create(pk);
 

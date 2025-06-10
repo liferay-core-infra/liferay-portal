@@ -88,7 +88,7 @@ public class LazyBlobEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
 		LazyBlobEntry lazyBlobEntry = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class LazyBlobEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
 		LazyBlobEntry newLazyBlobEntry = _persistence.create(pk);
 
@@ -196,7 +196,7 @@ public class LazyBlobEntryPersistenceTest {
 
 	@Test(expected = NoSuchLazyBlobEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -225,7 +225,7 @@ public class LazyBlobEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
 		LazyBlobEntry missingLazyBlobEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -260,9 +260,9 @@ public class LazyBlobEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -281,7 +281,7 @@ public class LazyBlobEntryPersistenceTest {
 
 		LazyBlobEntry newLazyBlobEntry = addLazyBlobEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -376,7 +376,8 @@ public class LazyBlobEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"lazyBlobEntryId", RandomTestUtil.nextLong()));
+				"lazyBlobEntryId",
+				RandomTestUtil.nextLong(LazyBlobEntry.class.getName())));
 
 		List<LazyBlobEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -419,7 +420,10 @@ public class LazyBlobEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"lazyBlobEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"lazyBlobEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(LazyBlobEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -490,7 +494,7 @@ public class LazyBlobEntryPersistenceTest {
 	}
 
 	protected LazyBlobEntry addLazyBlobEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LazyBlobEntry.class.getName());
 
 		LazyBlobEntry lazyBlobEntry = _persistence.create(pk);
 

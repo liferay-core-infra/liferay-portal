@@ -83,7 +83,7 @@ public class TranslationEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
 		TranslationEntry translationEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class TranslationEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
 		TranslationEntry newTranslationEntry = _persistence.create(pk);
 
@@ -271,7 +271,7 @@ public class TranslationEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -305,7 +305,7 @@ public class TranslationEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
 		TranslationEntry missingTranslationEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -341,9 +341,9 @@ public class TranslationEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -362,7 +362,7 @@ public class TranslationEntryPersistenceTest {
 
 		TranslationEntry newTranslationEntry = addTranslationEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -458,7 +458,8 @@ public class TranslationEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"translationEntryId", RandomTestUtil.nextLong()));
+				"translationEntryId",
+				RandomTestUtil.nextLong(TranslationEntry.class.getName())));
 
 		List<TranslationEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -503,7 +504,9 @@ public class TranslationEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"translationEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(TranslationEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -591,7 +594,7 @@ public class TranslationEntryPersistenceTest {
 	}
 
 	protected TranslationEntry addTranslationEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TranslationEntry.class.getName());
 
 		TranslationEntry translationEntry = _persistence.create(pk);
 

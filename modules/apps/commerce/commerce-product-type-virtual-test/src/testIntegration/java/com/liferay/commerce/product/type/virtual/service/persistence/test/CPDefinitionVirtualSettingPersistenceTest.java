@@ -85,7 +85,8 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
 		CPDefinitionVirtualSetting cpDefinitionVirtualSetting =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
 		CPDefinitionVirtualSetting newCPDefinitionVirtualSetting =
 			_persistence.create(pk);
@@ -309,7 +311,8 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionVirtualSettingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -350,7 +353,8 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
 		CPDefinitionVirtualSetting missingCPDefinitionVirtualSetting =
 			_persistence.fetchByPrimaryKey(pk);
@@ -391,9 +395,11 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +420,8 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 		CPDefinitionVirtualSetting newCPDefinitionVirtualSetting =
 			addCPDefinitionVirtualSetting();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -524,7 +531,9 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDefinitionVirtualSettingId", RandomTestUtil.nextLong()));
+				"CPDefinitionVirtualSettingId",
+				RandomTestUtil.nextLong(
+					CPDefinitionVirtualSetting.class.getName())));
 
 		List<CPDefinitionVirtualSetting> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -573,7 +582,10 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDefinitionVirtualSettingId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDefinitionVirtualSetting.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -664,7 +676,8 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 	protected CPDefinitionVirtualSetting addCPDefinitionVirtualSetting()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionVirtualSetting.class.getName());
 
 		CPDefinitionVirtualSetting cpDefinitionVirtualSetting =
 			_persistence.create(pk);

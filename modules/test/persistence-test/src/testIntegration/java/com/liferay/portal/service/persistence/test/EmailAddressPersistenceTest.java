@@ -83,7 +83,7 @@ public class EmailAddressPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
 		EmailAddress emailAddress = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class EmailAddressPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
 		EmailAddress newEmailAddress = _persistence.create(pk);
 
@@ -288,7 +288,7 @@ public class EmailAddressPersistenceTest {
 
 	@Test(expected = NoSuchEmailAddressException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -320,7 +320,7 @@ public class EmailAddressPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
 		EmailAddress missingEmailAddress = _persistence.fetchByPrimaryKey(pk);
 
@@ -355,9 +355,9 @@ public class EmailAddressPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -376,7 +376,7 @@ public class EmailAddressPersistenceTest {
 
 		EmailAddress newEmailAddress = addEmailAddress();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -471,7 +471,8 @@ public class EmailAddressPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"emailAddressId", RandomTestUtil.nextLong()));
+				"emailAddressId",
+				RandomTestUtil.nextLong(EmailAddress.class.getName())));
 
 		List<EmailAddress> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -514,7 +515,10 @@ public class EmailAddressPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"emailAddressId", new Object[] {RandomTestUtil.nextLong()}));
+				"emailAddressId",
+				new Object[] {
+					RandomTestUtil.nextLong(EmailAddress.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -585,7 +589,7 @@ public class EmailAddressPersistenceTest {
 	}
 
 	protected EmailAddress addEmailAddress() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EmailAddress.class.getName());
 
 		EmailAddress emailAddress = _persistence.create(pk);
 

@@ -88,7 +88,8 @@ public class CommerceShippingFixedOptionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
 		CommerceShippingFixedOption commerceShippingFixedOption =
 			_persistence.create(pk);
@@ -119,7 +120,8 @@ public class CommerceShippingFixedOptionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
 		CommerceShippingFixedOption newCommerceShippingFixedOption =
 			_persistence.create(pk);
@@ -244,7 +246,8 @@ public class CommerceShippingFixedOptionPersistenceTest {
 
 	@Test(expected = NoSuchShippingFixedOptionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -283,7 +286,8 @@ public class CommerceShippingFixedOptionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
 		CommerceShippingFixedOption missingCommerceShippingFixedOption =
 			_persistence.fetchByPrimaryKey(pk);
@@ -324,9 +328,11 @@ public class CommerceShippingFixedOptionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -347,7 +353,8 @@ public class CommerceShippingFixedOptionPersistenceTest {
 		CommerceShippingFixedOption newCommerceShippingFixedOption =
 			addCommerceShippingFixedOption();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -458,7 +465,9 @@ public class CommerceShippingFixedOptionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceShippingFixedOptionId", RandomTestUtil.nextLong()));
+				"commerceShippingFixedOptionId",
+				RandomTestUtil.nextLong(
+					CommerceShippingFixedOption.class.getName())));
 
 		List<CommerceShippingFixedOption> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -507,7 +516,10 @@ public class CommerceShippingFixedOptionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceShippingFixedOptionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceShippingFixedOption.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -587,7 +599,8 @@ public class CommerceShippingFixedOptionPersistenceTest {
 	protected CommerceShippingFixedOption addCommerceShippingFixedOption()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOption.class.getName());
 
 		CommerceShippingFixedOption commerceShippingFixedOption =
 			_persistence.create(pk);

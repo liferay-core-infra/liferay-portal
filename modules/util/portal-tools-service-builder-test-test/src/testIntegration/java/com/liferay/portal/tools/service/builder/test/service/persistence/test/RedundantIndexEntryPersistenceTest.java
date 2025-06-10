@@ -84,7 +84,7 @@ public class RedundantIndexEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
 		RedundantIndexEntry redundantIndexEntry = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class RedundantIndexEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
 		RedundantIndexEntry newRedundantIndexEntry = _persistence.create(pk);
 
@@ -161,7 +161,7 @@ public class RedundantIndexEntryPersistenceTest {
 
 	@Test(expected = NoSuchRedundantIndexEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -192,7 +192,7 @@ public class RedundantIndexEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
 		RedundantIndexEntry missingRedundantIndexEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -228,9 +228,9 @@ public class RedundantIndexEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -249,7 +249,7 @@ public class RedundantIndexEntryPersistenceTest {
 
 		RedundantIndexEntry newRedundantIndexEntry = addRedundantIndexEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -349,7 +349,8 @@ public class RedundantIndexEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"redundantIndexEntryId", RandomTestUtil.nextLong()));
+				"redundantIndexEntryId",
+				RandomTestUtil.nextLong(RedundantIndexEntry.class.getName())));
 
 		List<RedundantIndexEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -396,7 +397,9 @@ public class RedundantIndexEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"redundantIndexEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(RedundantIndexEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -471,7 +474,7 @@ public class RedundantIndexEntryPersistenceTest {
 	}
 
 	protected RedundantIndexEntry addRedundantIndexEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedundantIndexEntry.class.getName());
 
 		RedundantIndexEntry redundantIndexEntry = _persistence.create(pk);
 

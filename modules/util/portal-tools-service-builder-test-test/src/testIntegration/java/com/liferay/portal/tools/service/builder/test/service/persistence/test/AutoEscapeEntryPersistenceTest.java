@@ -78,7 +78,7 @@ public class AutoEscapeEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
 		AutoEscapeEntry autoEscapeEntry = _persistence.create(pk);
 
@@ -106,7 +106,7 @@ public class AutoEscapeEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
 		AutoEscapeEntry newAutoEscapeEntry = _persistence.create(pk);
 
@@ -144,7 +144,7 @@ public class AutoEscapeEntryPersistenceTest {
 
 	@Test(expected = NoSuchAutoEscapeEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -173,7 +173,7 @@ public class AutoEscapeEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
 		AutoEscapeEntry missingAutoEscapeEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -209,9 +209,9 @@ public class AutoEscapeEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -230,7 +230,7 @@ public class AutoEscapeEntryPersistenceTest {
 
 		AutoEscapeEntry newAutoEscapeEntry = addAutoEscapeEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -302,7 +302,8 @@ public class AutoEscapeEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"autoEscapeEntryId", RandomTestUtil.nextLong()));
+				"autoEscapeEntryId",
+				RandomTestUtil.nextLong(AutoEscapeEntry.class.getName())));
 
 		List<AutoEscapeEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -345,7 +346,10 @@ public class AutoEscapeEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"autoEscapeEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"autoEscapeEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(AutoEscapeEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -353,7 +357,7 @@ public class AutoEscapeEntryPersistenceTest {
 	}
 
 	protected AutoEscapeEntry addAutoEscapeEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AutoEscapeEntry.class.getName());
 
 		AutoEscapeEntry autoEscapeEntry = _persistence.create(pk);
 

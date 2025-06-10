@@ -83,7 +83,7 @@ public class KBCommentPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBComment.class.getName());
 
 		KBComment kbComment = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class KBCommentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBComment.class.getName());
 
 		KBComment newKBComment = _persistence.create(pk);
 
@@ -283,7 +283,7 @@ public class KBCommentPersistenceTest {
 
 	@Test(expected = NoSuchCommentException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBComment.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -316,7 +316,7 @@ public class KBCommentPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBComment.class.getName());
 
 		KBComment missingKBComment = _persistence.fetchByPrimaryKey(pk);
 
@@ -349,9 +349,9 @@ public class KBCommentPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KBComment.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KBComment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -370,7 +370,7 @@ public class KBCommentPersistenceTest {
 
 		KBComment newKBComment = addKBComment();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBComment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -463,7 +463,8 @@ public class KBCommentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kbCommentId", RandomTestUtil.nextLong()));
+				"kbCommentId",
+				RandomTestUtil.nextLong(KBComment.class.getName())));
 
 		List<KBComment> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -506,7 +507,10 @@ public class KBCommentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kbCommentId", new Object[] {RandomTestUtil.nextLong()}));
+				"kbCommentId",
+				new Object[] {
+					RandomTestUtil.nextLong(KBComment.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -577,7 +581,7 @@ public class KBCommentPersistenceTest {
 	}
 
 	protected KBComment addKBComment() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBComment.class.getName());
 
 		KBComment kbComment = _persistence.create(pk);
 

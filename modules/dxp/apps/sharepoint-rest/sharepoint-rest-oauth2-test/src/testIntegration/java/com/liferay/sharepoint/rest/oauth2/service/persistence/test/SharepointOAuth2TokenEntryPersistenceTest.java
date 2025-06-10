@@ -85,7 +85,8 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
 		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
 		SharepointOAuth2TokenEntry newSharepointOAuth2TokenEntry =
 			_persistence.create(pk);
@@ -214,7 +216,8 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 
 	@Test(expected = NoSuch2TokenEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -249,7 +252,8 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
 		SharepointOAuth2TokenEntry missingSharepointOAuth2TokenEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -290,9 +294,11 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -313,7 +319,8 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 		SharepointOAuth2TokenEntry newSharepointOAuth2TokenEntry =
 			addSharepointOAuth2TokenEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -423,7 +430,9 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"sharepointOAuth2TokenEntryId", RandomTestUtil.nextLong()));
+				"sharepointOAuth2TokenEntryId",
+				RandomTestUtil.nextLong(
+					SharepointOAuth2TokenEntry.class.getName())));
 
 		List<SharepointOAuth2TokenEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -472,7 +481,10 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"sharepointOAuth2TokenEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						SharepointOAuth2TokenEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -552,7 +564,8 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 	protected SharepointOAuth2TokenEntry addSharepointOAuth2TokenEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SharepointOAuth2TokenEntry.class.getName());
 
 		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry =
 			_persistence.create(pk);

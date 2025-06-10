@@ -84,7 +84,7 @@ public class DDMTemplateVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
 		DDMTemplateVersion ddmTemplateVersion = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class DDMTemplateVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
 		DDMTemplateVersion newDDMTemplateVersion = _persistence.create(pk);
 
@@ -261,7 +261,7 @@ public class DDMTemplateVersionPersistenceTest {
 
 	@Test(expected = NoSuchTemplateVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -295,7 +295,7 @@ public class DDMTemplateVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
 		DDMTemplateVersion missingDDMTemplateVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -331,9 +331,9 @@ public class DDMTemplateVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -352,7 +352,7 @@ public class DDMTemplateVersionPersistenceTest {
 
 		DDMTemplateVersion newDDMTemplateVersion = addDDMTemplateVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -451,7 +451,8 @@ public class DDMTemplateVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"templateVersionId", RandomTestUtil.nextLong()));
+				"templateVersionId",
+				RandomTestUtil.nextLong(DDMTemplateVersion.class.getName())));
 
 		List<DDMTemplateVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -495,7 +496,10 @@ public class DDMTemplateVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"templateVersionId", new Object[] {RandomTestUtil.nextLong()}));
+				"templateVersionId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMTemplateVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -568,7 +572,7 @@ public class DDMTemplateVersionPersistenceTest {
 	}
 
 	protected DDMTemplateVersion addDDMTemplateVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplateVersion.class.getName());
 
 		DDMTemplateVersion ddmTemplateVersion = _persistence.create(pk);
 

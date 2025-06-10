@@ -81,7 +81,7 @@ public class BrowserTrackerPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
 		BrowserTracker browserTracker = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class BrowserTrackerPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
 		BrowserTracker newBrowserTracker = _persistence.create(pk);
 
@@ -161,7 +161,7 @@ public class BrowserTrackerPersistenceTest {
 
 	@Test(expected = NoSuchBrowserTrackerException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -190,7 +190,7 @@ public class BrowserTrackerPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
 		BrowserTracker missingBrowserTracker = _persistence.fetchByPrimaryKey(
 			pk);
@@ -226,9 +226,9 @@ public class BrowserTrackerPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -247,7 +247,7 @@ public class BrowserTrackerPersistenceTest {
 
 		BrowserTracker newBrowserTracker = addBrowserTracker();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -342,7 +342,8 @@ public class BrowserTrackerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"browserTrackerId", RandomTestUtil.nextLong()));
+				"browserTrackerId",
+				RandomTestUtil.nextLong(BrowserTracker.class.getName())));
 
 		List<BrowserTracker> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -385,7 +386,10 @@ public class BrowserTrackerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"browserTrackerId", new Object[] {RandomTestUtil.nextLong()}));
+				"browserTrackerId",
+				new Object[] {
+					RandomTestUtil.nextLong(BrowserTracker.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -451,7 +455,7 @@ public class BrowserTrackerPersistenceTest {
 	}
 
 	protected BrowserTracker addBrowserTracker() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BrowserTracker.class.getName());
 
 		BrowserTracker browserTracker = _persistence.create(pk);
 

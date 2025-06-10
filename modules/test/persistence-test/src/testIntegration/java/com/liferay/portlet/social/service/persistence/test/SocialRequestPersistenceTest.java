@@ -81,7 +81,7 @@ public class SocialRequestPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
 		SocialRequest socialRequest = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class SocialRequestPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
 		SocialRequest newSocialRequest = _persistence.create(pk);
 
@@ -301,7 +301,7 @@ public class SocialRequestPersistenceTest {
 
 	@Test(expected = NoSuchRequestException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -333,7 +333,7 @@ public class SocialRequestPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
 		SocialRequest missingSocialRequest = _persistence.fetchByPrimaryKey(pk);
 
@@ -368,9 +368,9 @@ public class SocialRequestPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -389,7 +389,7 @@ public class SocialRequestPersistenceTest {
 
 		SocialRequest newSocialRequest = addSocialRequest();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -483,7 +483,9 @@ public class SocialRequestPersistenceTest {
 			SocialRequest.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("requestId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"requestId",
+				RandomTestUtil.nextLong(SocialRequest.class.getName())));
 
 		List<SocialRequest> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -524,7 +526,10 @@ public class SocialRequestPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"requestId", new Object[] {RandomTestUtil.nextLong()}));
+				"requestId",
+				new Object[] {
+					RandomTestUtil.nextLong(SocialRequest.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -621,7 +626,7 @@ public class SocialRequestPersistenceTest {
 	}
 
 	protected SocialRequest addSocialRequest() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRequest.class.getName());
 
 		SocialRequest socialRequest = _persistence.create(pk);
 

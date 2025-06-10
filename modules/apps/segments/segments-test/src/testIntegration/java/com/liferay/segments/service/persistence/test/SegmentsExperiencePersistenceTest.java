@@ -88,7 +88,7 @@ public class SegmentsExperiencePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
 		SegmentsExperience segmentsExperience = _persistence.create(pk);
 
@@ -117,7 +117,7 @@ public class SegmentsExperiencePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
 		SegmentsExperience newSegmentsExperience = _persistence.create(pk);
 
@@ -391,7 +391,7 @@ public class SegmentsExperiencePersistenceTest {
 
 	@Test(expected = NoSuchExperienceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -450,7 +450,7 @@ public class SegmentsExperiencePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
 		SegmentsExperience missingSegmentsExperience =
 			_persistence.fetchByPrimaryKey(pk);
@@ -486,9 +486,9 @@ public class SegmentsExperiencePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -507,7 +507,7 @@ public class SegmentsExperiencePersistenceTest {
 
 		SegmentsExperience newSegmentsExperience = addSegmentsExperience();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -606,7 +606,8 @@ public class SegmentsExperiencePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"segmentsExperienceId", RandomTestUtil.nextLong()));
+				"segmentsExperienceId",
+				RandomTestUtil.nextLong(SegmentsExperience.class.getName())));
 
 		List<SegmentsExperience> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -653,7 +654,9 @@ public class SegmentsExperiencePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"segmentsExperienceId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(SegmentsExperience.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -769,7 +772,7 @@ public class SegmentsExperiencePersistenceTest {
 	}
 
 	protected SegmentsExperience addSegmentsExperience() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsExperience.class.getName());
 
 		SegmentsExperience segmentsExperience = _persistence.create(pk);
 

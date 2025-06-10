@@ -83,7 +83,7 @@ public class CommerceChannelRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
 		CommerceChannelRel commerceChannelRel = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CommerceChannelRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
 		CommerceChannelRel newCommerceChannelRel = _persistence.create(pk);
 
@@ -215,7 +215,7 @@ public class CommerceChannelRelPersistenceTest {
 
 	@Test(expected = NoSuchChannelRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -247,7 +247,7 @@ public class CommerceChannelRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
 		CommerceChannelRel missingCommerceChannelRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -283,9 +283,9 @@ public class CommerceChannelRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -304,7 +304,7 @@ public class CommerceChannelRelPersistenceTest {
 
 		CommerceChannelRel newCommerceChannelRel = addCommerceChannelRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -403,7 +403,8 @@ public class CommerceChannelRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceChannelRelId", RandomTestUtil.nextLong()));
+				"commerceChannelRelId",
+				RandomTestUtil.nextLong(CommerceChannelRel.class.getName())));
 
 		List<CommerceChannelRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -450,7 +451,9 @@ public class CommerceChannelRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceChannelRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CommerceChannelRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -528,7 +531,7 @@ public class CommerceChannelRelPersistenceTest {
 	}
 
 	protected CommerceChannelRel addCommerceChannelRel() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceChannelRel.class.getName());
 
 		CommerceChannelRel commerceChannelRel = _persistence.create(pk);
 

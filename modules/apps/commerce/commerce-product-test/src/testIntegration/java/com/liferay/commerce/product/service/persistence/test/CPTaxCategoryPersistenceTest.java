@@ -84,7 +84,7 @@ public class CPTaxCategoryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
 		CPTaxCategory cpTaxCategory = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CPTaxCategoryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
 		CPTaxCategory newCPTaxCategory = _persistence.create(pk);
 
@@ -245,7 +245,7 @@ public class CPTaxCategoryPersistenceTest {
 
 	@Test(expected = NoSuchCPTaxCategoryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -277,7 +277,7 @@ public class CPTaxCategoryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
 		CPTaxCategory missingCPTaxCategory = _persistence.fetchByPrimaryKey(pk);
 
@@ -312,9 +312,9 @@ public class CPTaxCategoryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -333,7 +333,7 @@ public class CPTaxCategoryPersistenceTest {
 
 		CPTaxCategory newCPTaxCategory = addCPTaxCategory();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -428,7 +428,8 @@ public class CPTaxCategoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPTaxCategoryId", RandomTestUtil.nextLong()));
+				"CPTaxCategoryId",
+				RandomTestUtil.nextLong(CPTaxCategory.class.getName())));
 
 		List<CPTaxCategory> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -471,7 +472,10 @@ public class CPTaxCategoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"CPTaxCategoryId", new Object[] {RandomTestUtil.nextLong()}));
+				"CPTaxCategoryId",
+				new Object[] {
+					RandomTestUtil.nextLong(CPTaxCategory.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -542,7 +546,7 @@ public class CPTaxCategoryPersistenceTest {
 	}
 
 	protected CPTaxCategory addCPTaxCategory() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPTaxCategory.class.getName());
 
 		CPTaxCategory cpTaxCategory = _persistence.create(pk);
 

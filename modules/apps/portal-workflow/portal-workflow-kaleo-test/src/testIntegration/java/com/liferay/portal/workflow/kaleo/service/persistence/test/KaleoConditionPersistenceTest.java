@@ -84,7 +84,7 @@ public class KaleoConditionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
 		KaleoCondition kaleoCondition = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class KaleoConditionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
 		KaleoCondition newKaleoCondition = _persistence.create(pk);
 
@@ -229,7 +229,7 @@ public class KaleoConditionPersistenceTest {
 
 	@Test(expected = NoSuchConditionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -262,7 +262,7 @@ public class KaleoConditionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
 		KaleoCondition missingKaleoCondition = _persistence.fetchByPrimaryKey(
 			pk);
@@ -298,9 +298,9 @@ public class KaleoConditionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -319,7 +319,7 @@ public class KaleoConditionPersistenceTest {
 
 		KaleoCondition newKaleoCondition = addKaleoCondition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +414,8 @@ public class KaleoConditionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoConditionId", RandomTestUtil.nextLong()));
+				"kaleoConditionId",
+				RandomTestUtil.nextLong(KaleoCondition.class.getName())));
 
 		List<KaleoCondition> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -457,7 +458,10 @@ public class KaleoConditionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kaleoConditionId", new Object[] {RandomTestUtil.nextLong()}));
+				"kaleoConditionId",
+				new Object[] {
+					RandomTestUtil.nextLong(KaleoCondition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -523,7 +527,7 @@ public class KaleoConditionPersistenceTest {
 	}
 
 	protected KaleoCondition addKaleoCondition() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoCondition.class.getName());
 
 		KaleoCondition kaleoCondition = _persistence.create(pk);
 

@@ -79,7 +79,7 @@ public class OrgLaborPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
 		OrgLabor orgLabor = _persistence.create(pk);
 
@@ -107,7 +107,7 @@ public class OrgLaborPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
 		OrgLabor newOrgLabor = _persistence.create(pk);
 
@@ -212,7 +212,7 @@ public class OrgLaborPersistenceTest {
 
 	@Test(expected = NoSuchOrgLaborException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -245,7 +245,7 @@ public class OrgLaborPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
 		OrgLabor missingOrgLabor = _persistence.fetchByPrimaryKey(pk);
 
@@ -278,9 +278,9 @@ public class OrgLaborPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -299,7 +299,7 @@ public class OrgLaborPersistenceTest {
 
 		OrgLabor newOrgLabor = addOrgLabor();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -391,7 +391,8 @@ public class OrgLaborPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"orgLaborId", RandomTestUtil.nextLong()));
+				"orgLaborId",
+				RandomTestUtil.nextLong(OrgLabor.class.getName())));
 
 		List<OrgLabor> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -433,7 +434,10 @@ public class OrgLaborPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"orgLaborId", new Object[] {RandomTestUtil.nextLong()}));
+				"orgLaborId",
+				new Object[] {
+					RandomTestUtil.nextLong(OrgLabor.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -441,7 +445,7 @@ public class OrgLaborPersistenceTest {
 	}
 
 	protected OrgLabor addOrgLabor() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OrgLabor.class.getName());
 
 		OrgLabor orgLabor = _persistence.create(pk);
 

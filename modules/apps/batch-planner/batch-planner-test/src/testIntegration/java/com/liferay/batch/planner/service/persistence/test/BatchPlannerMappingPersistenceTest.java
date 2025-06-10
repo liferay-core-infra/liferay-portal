@@ -84,7 +84,7 @@ public class BatchPlannerMappingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
 		BatchPlannerMapping batchPlannerMapping = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class BatchPlannerMappingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
 		BatchPlannerMapping newBatchPlannerMapping = _persistence.create(pk);
 
@@ -223,7 +223,7 @@ public class BatchPlannerMappingPersistenceTest {
 
 	@Test(expected = NoSuchMappingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -257,7 +257,7 @@ public class BatchPlannerMappingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
 		BatchPlannerMapping missingBatchPlannerMapping =
 			_persistence.fetchByPrimaryKey(pk);
@@ -293,9 +293,9 @@ public class BatchPlannerMappingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -314,7 +314,7 @@ public class BatchPlannerMappingPersistenceTest {
 
 		BatchPlannerMapping newBatchPlannerMapping = addBatchPlannerMapping();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +414,8 @@ public class BatchPlannerMappingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"batchPlannerMappingId", RandomTestUtil.nextLong()));
+				"batchPlannerMappingId",
+				RandomTestUtil.nextLong(BatchPlannerMapping.class.getName())));
 
 		List<BatchPlannerMapping> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -461,7 +462,9 @@ public class BatchPlannerMappingPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"batchPlannerMappingId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(BatchPlannerMapping.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -541,7 +544,7 @@ public class BatchPlannerMappingPersistenceTest {
 	}
 
 	protected BatchPlannerMapping addBatchPlannerMapping() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerMapping.class.getName());
 
 		BatchPlannerMapping batchPlannerMapping = _persistence.create(pk);
 

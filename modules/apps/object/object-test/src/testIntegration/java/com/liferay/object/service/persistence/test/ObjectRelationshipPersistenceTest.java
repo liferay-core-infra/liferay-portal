@@ -83,7 +83,7 @@ public class ObjectRelationshipPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
 		ObjectRelationship objectRelationship = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class ObjectRelationshipPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
 		ObjectRelationship newObjectRelationship = _persistence.create(pk);
 
@@ -433,7 +433,7 @@ public class ObjectRelationshipPersistenceTest {
 
 	@Test(expected = NoSuchObjectRelationshipException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -469,7 +469,7 @@ public class ObjectRelationshipPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
 		ObjectRelationship missingObjectRelationship =
 			_persistence.fetchByPrimaryKey(pk);
@@ -505,9 +505,9 @@ public class ObjectRelationshipPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -526,7 +526,7 @@ public class ObjectRelationshipPersistenceTest {
 
 		ObjectRelationship newObjectRelationship = addObjectRelationship();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -625,7 +625,8 @@ public class ObjectRelationshipPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectRelationshipId", RandomTestUtil.nextLong()));
+				"objectRelationshipId",
+				RandomTestUtil.nextLong(ObjectRelationship.class.getName())));
 
 		List<ObjectRelationship> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -672,7 +673,9 @@ public class ObjectRelationshipPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectRelationshipId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectRelationship.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -804,7 +807,7 @@ public class ObjectRelationshipPersistenceTest {
 	}
 
 	protected ObjectRelationship addObjectRelationship() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectRelationship.class.getName());
 
 		ObjectRelationship objectRelationship = _persistence.create(pk);
 

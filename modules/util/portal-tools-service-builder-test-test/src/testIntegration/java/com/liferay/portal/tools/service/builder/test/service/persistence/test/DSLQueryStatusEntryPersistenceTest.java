@@ -83,7 +83,7 @@ public class DSLQueryStatusEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
 		DSLQueryStatusEntry dslQueryStatusEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class DSLQueryStatusEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
 		DSLQueryStatusEntry newDSLQueryStatusEntry = _persistence.create(pk);
 
@@ -156,7 +156,7 @@ public class DSLQueryStatusEntryPersistenceTest {
 
 	@Test(expected = NoSuchDSLQueryStatusEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -187,7 +187,7 @@ public class DSLQueryStatusEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
 		DSLQueryStatusEntry missingDSLQueryStatusEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -223,9 +223,9 @@ public class DSLQueryStatusEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -244,7 +244,7 @@ public class DSLQueryStatusEntryPersistenceTest {
 
 		DSLQueryStatusEntry newDSLQueryStatusEntry = addDSLQueryStatusEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -344,7 +344,8 @@ public class DSLQueryStatusEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"dslQueryStatusEntryId", RandomTestUtil.nextLong()));
+				"dslQueryStatusEntryId",
+				RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName())));
 
 		List<DSLQueryStatusEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -391,7 +392,9 @@ public class DSLQueryStatusEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"dslQueryStatusEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -399,7 +402,7 @@ public class DSLQueryStatusEntryPersistenceTest {
 	}
 
 	protected DSLQueryStatusEntry addDSLQueryStatusEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DSLQueryStatusEntry.class.getName());
 
 		DSLQueryStatusEntry dslQueryStatusEntry = _persistence.create(pk);
 

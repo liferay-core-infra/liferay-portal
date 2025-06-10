@@ -81,7 +81,8 @@ public class VersionedEntryVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
 		VersionedEntryVersion versionedEntryVersion = _persistence.create(pk);
 
@@ -111,7 +112,8 @@ public class VersionedEntryVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
 		VersionedEntryVersion newVersionedEntryVersion = _persistence.create(
 			pk);
@@ -188,7 +190,8 @@ public class VersionedEntryVersionPersistenceTest {
 
 	@Test(expected = NoSuchVersionedEntryVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -220,7 +223,8 @@ public class VersionedEntryVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
 		VersionedEntryVersion missingVersionedEntryVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -260,9 +264,11 @@ public class VersionedEntryVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -282,7 +288,8 @@ public class VersionedEntryVersionPersistenceTest {
 		VersionedEntryVersion newVersionedEntryVersion =
 			addVersionedEntryVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -359,7 +366,9 @@ public class VersionedEntryVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"versionedEntryVersionId", RandomTestUtil.nextLong()));
+				"versionedEntryVersionId",
+				RandomTestUtil.nextLong(
+					VersionedEntryVersion.class.getName())));
 
 		List<VersionedEntryVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -407,7 +416,10 @@ public class VersionedEntryVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"versionedEntryVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						VersionedEntryVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -486,7 +498,8 @@ public class VersionedEntryVersionPersistenceTest {
 	protected VersionedEntryVersion addVersionedEntryVersion()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			VersionedEntryVersion.class.getName());
 
 		VersionedEntryVersion versionedEntryVersion = _persistence.create(pk);
 

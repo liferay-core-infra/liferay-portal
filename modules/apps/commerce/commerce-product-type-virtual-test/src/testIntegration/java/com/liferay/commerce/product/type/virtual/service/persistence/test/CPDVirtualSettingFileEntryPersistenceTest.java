@@ -85,7 +85,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
 		CPDVirtualSettingFileEntry cpdVirtualSettingFileEntry =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
 		CPDVirtualSettingFileEntry newCPDVirtualSettingFileEntry =
 			_persistence.create(pk);
@@ -260,7 +262,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 
 	@Test(expected = NoSuchCPDVirtualSettingFileEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -297,7 +300,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
 		CPDVirtualSettingFileEntry missingCPDVirtualSettingFileEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -338,9 +342,11 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -361,7 +367,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 		CPDVirtualSettingFileEntry newCPDVirtualSettingFileEntry =
 			addCPDVirtualSettingFileEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -472,7 +479,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
 				"CPDefinitionVirtualSettingFileEntryId",
-				RandomTestUtil.nextLong()));
+				RandomTestUtil.nextLong(
+					CPDVirtualSettingFileEntry.class.getName())));
 
 		List<CPDVirtualSettingFileEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -524,7 +532,10 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDefinitionVirtualSettingFileEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDVirtualSettingFileEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -604,7 +615,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 	protected CPDVirtualSettingFileEntry addCPDVirtualSettingFileEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDVirtualSettingFileEntry.class.getName());
 
 		CPDVirtualSettingFileEntry cpdVirtualSettingFileEntry =
 			_persistence.create(pk);

@@ -83,7 +83,7 @@ public class DDMStructureLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
 		DDMStructureLink ddmStructureLink = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class DDMStructureLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
 		DDMStructureLink newDDMStructureLink = _persistence.create(pk);
 
@@ -191,7 +191,7 @@ public class DDMStructureLinkPersistenceTest {
 
 	@Test(expected = NoSuchStructureLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -221,7 +221,7 @@ public class DDMStructureLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
 		DDMStructureLink missingDDMStructureLink =
 			_persistence.fetchByPrimaryKey(pk);
@@ -257,9 +257,9 @@ public class DDMStructureLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -278,7 +278,7 @@ public class DDMStructureLinkPersistenceTest {
 
 		DDMStructureLink newDDMStructureLink = addDDMStructureLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -373,7 +373,8 @@ public class DDMStructureLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"structureLinkId", RandomTestUtil.nextLong()));
+				"structureLinkId",
+				RandomTestUtil.nextLong(DDMStructureLink.class.getName())));
 
 		List<DDMStructureLink> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -416,7 +417,10 @@ public class DDMStructureLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"structureLinkId", new Object[] {RandomTestUtil.nextLong()}));
+				"structureLinkId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMStructureLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -492,7 +496,7 @@ public class DDMStructureLinkPersistenceTest {
 	}
 
 	protected DDMStructureLink addDDMStructureLink() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureLink.class.getName());
 
 		DDMStructureLink ddmStructureLink = _persistence.create(pk);
 

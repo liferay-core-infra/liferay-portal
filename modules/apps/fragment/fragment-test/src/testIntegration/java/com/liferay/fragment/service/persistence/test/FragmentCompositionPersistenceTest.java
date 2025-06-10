@@ -85,7 +85,7 @@ public class FragmentCompositionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
 		FragmentComposition fragmentComposition = _persistence.create(pk);
 
@@ -114,7 +114,7 @@ public class FragmentCompositionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
 		FragmentComposition newFragmentComposition = _persistence.create(pk);
 
@@ -379,7 +379,7 @@ public class FragmentCompositionPersistenceTest {
 
 	@Test(expected = NoSuchCompositionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -417,7 +417,7 @@ public class FragmentCompositionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
 		FragmentComposition missingFragmentComposition =
 			_persistence.fetchByPrimaryKey(pk);
@@ -453,9 +453,9 @@ public class FragmentCompositionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -474,7 +474,7 @@ public class FragmentCompositionPersistenceTest {
 
 		FragmentComposition newFragmentComposition = addFragmentComposition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -574,7 +574,8 @@ public class FragmentCompositionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fragmentCompositionId", RandomTestUtil.nextLong()));
+				"fragmentCompositionId",
+				RandomTestUtil.nextLong(FragmentComposition.class.getName())));
 
 		List<FragmentComposition> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -621,7 +622,9 @@ public class FragmentCompositionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"fragmentCompositionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(FragmentComposition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -718,7 +721,7 @@ public class FragmentCompositionPersistenceTest {
 	}
 
 	protected FragmentComposition addFragmentComposition() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentComposition.class.getName());
 
 		FragmentComposition fragmentComposition = _persistence.create(pk);
 

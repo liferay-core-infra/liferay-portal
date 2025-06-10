@@ -83,7 +83,8 @@ public class AccountEntryOrganizationRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
 		AccountEntryOrganizationRel accountEntryOrganizationRel =
 			_persistence.create(pk);
@@ -114,7 +115,8 @@ public class AccountEntryOrganizationRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
 		AccountEntryOrganizationRel newAccountEntryOrganizationRel =
 			_persistence.create(pk);
@@ -193,7 +195,8 @@ public class AccountEntryOrganizationRelPersistenceTest {
 
 	@Test(expected = NoSuchEntryOrganizationRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -229,7 +232,8 @@ public class AccountEntryOrganizationRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
 		AccountEntryOrganizationRel missingAccountEntryOrganizationRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -270,9 +274,11 @@ public class AccountEntryOrganizationRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -293,7 +299,8 @@ public class AccountEntryOrganizationRelPersistenceTest {
 		AccountEntryOrganizationRel newAccountEntryOrganizationRel =
 			addAccountEntryOrganizationRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -404,7 +411,9 @@ public class AccountEntryOrganizationRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"accountEntryOrganizationRelId", RandomTestUtil.nextLong()));
+				"accountEntryOrganizationRelId",
+				RandomTestUtil.nextLong(
+					AccountEntryOrganizationRel.class.getName())));
 
 		List<AccountEntryOrganizationRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -453,7 +462,10 @@ public class AccountEntryOrganizationRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"accountEntryOrganizationRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						AccountEntryOrganizationRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -533,7 +545,8 @@ public class AccountEntryOrganizationRelPersistenceTest {
 	protected AccountEntryOrganizationRel addAccountEntryOrganizationRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AccountEntryOrganizationRel.class.getName());
 
 		AccountEntryOrganizationRel accountEntryOrganizationRel =
 			_persistence.create(pk);

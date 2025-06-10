@@ -85,7 +85,7 @@ public class CommercePricingClassPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommercePricingClass.class.getName());
 
 		CommercePricingClass commercePricingClass = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class CommercePricingClassPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommercePricingClass.class.getName());
 
 		CommercePricingClass newCommercePricingClass = _persistence.create(pk);
 
@@ -269,7 +269,7 @@ public class CommercePricingClassPersistenceTest {
 
 	@Test(expected = NoSuchPricingClassException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommercePricingClass.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -304,7 +304,7 @@ public class CommercePricingClassPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommercePricingClass.class.getName());
 
 		CommercePricingClass missingCommercePricingClass =
 			_persistence.fetchByPrimaryKey(pk);
@@ -344,9 +344,11 @@ public class CommercePricingClassPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommercePricingClass.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommercePricingClass.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -366,7 +368,7 @@ public class CommercePricingClassPersistenceTest {
 		CommercePricingClass newCommercePricingClass =
 			addCommercePricingClass();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommercePricingClass.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -470,7 +472,8 @@ public class CommercePricingClassPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commercePricingClassId", RandomTestUtil.nextLong()));
+				"commercePricingClassId",
+				RandomTestUtil.nextLong(CommercePricingClass.class.getName())));
 
 		List<CommercePricingClass> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -518,7 +521,10 @@ public class CommercePricingClassPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commercePricingClassId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommercePricingClass.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -595,7 +601,7 @@ public class CommercePricingClassPersistenceTest {
 	}
 
 	protected CommercePricingClass addCommercePricingClass() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommercePricingClass.class.getName());
 
 		CommercePricingClass commercePricingClass = _persistence.create(pk);
 

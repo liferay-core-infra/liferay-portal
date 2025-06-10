@@ -83,7 +83,7 @@ public class DepotEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
 		DepotEntry depotEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class DepotEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
 		DepotEntry newDepotEntry = _persistence.create(pk);
 
@@ -211,7 +211,7 @@ public class DepotEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -242,7 +242,7 @@ public class DepotEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
 		DepotEntry missingDepotEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -275,9 +275,9 @@ public class DepotEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -296,7 +296,7 @@ public class DepotEntryPersistenceTest {
 
 		DepotEntry newDepotEntry = addDepotEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -389,7 +389,8 @@ public class DepotEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"depotEntryId", RandomTestUtil.nextLong()));
+				"depotEntryId",
+				RandomTestUtil.nextLong(DepotEntry.class.getName())));
 
 		List<DepotEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -432,7 +433,10 @@ public class DepotEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"depotEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"depotEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(DepotEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -509,7 +513,7 @@ public class DepotEntryPersistenceTest {
 	}
 
 	protected DepotEntry addDepotEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntry.class.getName());
 
 		DepotEntry depotEntry = _persistence.create(pk);
 

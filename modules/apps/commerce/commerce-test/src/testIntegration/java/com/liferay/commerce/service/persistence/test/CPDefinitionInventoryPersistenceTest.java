@@ -86,7 +86,8 @@ public class CPDefinitionInventoryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
 		CPDefinitionInventory cpDefinitionInventory = _persistence.create(pk);
 
@@ -116,7 +117,8 @@ public class CPDefinitionInventoryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
 		CPDefinitionInventory newCPDefinitionInventory = _persistence.create(
 			pk);
@@ -293,7 +295,8 @@ public class CPDefinitionInventoryPersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionInventoryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -332,7 +335,8 @@ public class CPDefinitionInventoryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
 		CPDefinitionInventory missingCPDefinitionInventory =
 			_persistence.fetchByPrimaryKey(pk);
@@ -372,9 +376,11 @@ public class CPDefinitionInventoryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -394,7 +400,8 @@ public class CPDefinitionInventoryPersistenceTest {
 		CPDefinitionInventory newCPDefinitionInventory =
 			addCPDefinitionInventory();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -498,7 +505,9 @@ public class CPDefinitionInventoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDefinitionInventoryId", RandomTestUtil.nextLong()));
+				"CPDefinitionInventoryId",
+				RandomTestUtil.nextLong(
+					CPDefinitionInventory.class.getName())));
 
 		List<CPDefinitionInventory> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -546,7 +555,10 @@ public class CPDefinitionInventoryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDefinitionInventoryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDefinitionInventory.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -631,7 +643,8 @@ public class CPDefinitionInventoryPersistenceTest {
 	protected CPDefinitionInventory addCPDefinitionInventory()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionInventory.class.getName());
 
 		CPDefinitionInventory cpDefinitionInventory = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class CPDefinitionLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
 		CPDefinitionLink cpDefinitionLink = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CPDefinitionLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
 		CPDefinitionLink newCPDefinitionLink = _persistence.create(pk);
 
@@ -359,7 +359,7 @@ public class CPDefinitionLinkPersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -394,7 +394,7 @@ public class CPDefinitionLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
 		CPDefinitionLink missingCPDefinitionLink =
 			_persistence.fetchByPrimaryKey(pk);
@@ -430,9 +430,9 @@ public class CPDefinitionLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -451,7 +451,7 @@ public class CPDefinitionLinkPersistenceTest {
 
 		CPDefinitionLink newCPDefinitionLink = addCPDefinitionLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -547,7 +547,8 @@ public class CPDefinitionLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDefinitionLinkId", RandomTestUtil.nextLong()));
+				"CPDefinitionLinkId",
+				RandomTestUtil.nextLong(CPDefinitionLink.class.getName())));
 
 		List<CPDefinitionLink> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -592,7 +593,9 @@ public class CPDefinitionLinkPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDefinitionLinkId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CPDefinitionLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -680,7 +683,7 @@ public class CPDefinitionLinkPersistenceTest {
 	}
 
 	protected CPDefinitionLink addCPDefinitionLink() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinitionLink.class.getName());
 
 		CPDefinitionLink cpDefinitionLink = _persistence.create(pk);
 

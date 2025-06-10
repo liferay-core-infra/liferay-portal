@@ -84,7 +84,8 @@ public class ObjectDefinitionSettingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
 		ObjectDefinitionSetting objectDefinitionSetting = _persistence.create(
 			pk);
@@ -115,7 +116,8 @@ public class ObjectDefinitionSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
 		ObjectDefinitionSetting newObjectDefinitionSetting =
 			_persistence.create(pk);
@@ -235,7 +237,8 @@ public class ObjectDefinitionSettingPersistenceTest {
 
 	@Test(expected = NoSuchObjectDefinitionSettingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -271,7 +274,8 @@ public class ObjectDefinitionSettingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
 		ObjectDefinitionSetting missingObjectDefinitionSetting =
 			_persistence.fetchByPrimaryKey(pk);
@@ -311,9 +315,11 @@ public class ObjectDefinitionSettingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -333,7 +339,8 @@ public class ObjectDefinitionSettingPersistenceTest {
 		ObjectDefinitionSetting newObjectDefinitionSetting =
 			addObjectDefinitionSetting();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -437,7 +444,9 @@ public class ObjectDefinitionSettingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectDefinitionSettingId", RandomTestUtil.nextLong()));
+				"objectDefinitionSettingId",
+				RandomTestUtil.nextLong(
+					ObjectDefinitionSetting.class.getName())));
 
 		List<ObjectDefinitionSetting> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -485,7 +494,10 @@ public class ObjectDefinitionSettingPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectDefinitionSettingId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ObjectDefinitionSetting.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -564,7 +576,8 @@ public class ObjectDefinitionSettingPersistenceTest {
 	protected ObjectDefinitionSetting addObjectDefinitionSetting()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectDefinitionSetting.class.getName());
 
 		ObjectDefinitionSetting objectDefinitionSetting = _persistence.create(
 			pk);

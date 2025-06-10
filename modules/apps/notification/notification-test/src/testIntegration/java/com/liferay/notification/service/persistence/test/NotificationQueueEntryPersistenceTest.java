@@ -83,7 +83,8 @@ public class NotificationQueueEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
 		NotificationQueueEntry notificationQueueEntry = _persistence.create(pk);
 
@@ -113,7 +114,8 @@ public class NotificationQueueEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
 		NotificationQueueEntry newNotificationQueueEntry = _persistence.create(
 			pk);
@@ -255,7 +257,8 @@ public class NotificationQueueEntryPersistenceTest {
 
 	@Test(expected = NoSuchNotificationQueueEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -291,7 +294,8 @@ public class NotificationQueueEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
 		NotificationQueueEntry missingNotificationQueueEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -331,9 +335,11 @@ public class NotificationQueueEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -353,7 +359,8 @@ public class NotificationQueueEntryPersistenceTest {
 		NotificationQueueEntry newNotificationQueueEntry =
 			addNotificationQueueEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -457,7 +464,9 @@ public class NotificationQueueEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"notificationQueueEntryId", RandomTestUtil.nextLong()));
+				"notificationQueueEntryId",
+				RandomTestUtil.nextLong(
+					NotificationQueueEntry.class.getName())));
 
 		List<NotificationQueueEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -505,7 +514,10 @@ public class NotificationQueueEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"notificationQueueEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						NotificationQueueEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -515,7 +527,8 @@ public class NotificationQueueEntryPersistenceTest {
 	protected NotificationQueueEntry addNotificationQueueEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntry.class.getName());
 
 		NotificationQueueEntry notificationQueueEntry = _persistence.create(pk);
 

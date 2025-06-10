@@ -83,7 +83,7 @@ public class WebsitePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Website.class.getName());
 
 		Website website = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class WebsitePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Website.class.getName());
 
 		Website newWebsite = _persistence.create(pk);
 
@@ -280,7 +280,7 @@ public class WebsitePersistenceTest {
 
 	@Test(expected = NoSuchWebsiteException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Website.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -312,7 +312,7 @@ public class WebsitePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Website.class.getName());
 
 		Website missingWebsite = _persistence.fetchByPrimaryKey(pk);
 
@@ -345,9 +345,9 @@ public class WebsitePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Website.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Website.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -366,7 +366,7 @@ public class WebsitePersistenceTest {
 
 		Website newWebsite = addWebsite();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Website.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -456,7 +456,8 @@ public class WebsitePersistenceTest {
 			Website.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("websiteId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"websiteId", RandomTestUtil.nextLong(Website.class.getName())));
 
 		List<Website> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -496,7 +497,10 @@ public class WebsitePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"websiteId", new Object[] {RandomTestUtil.nextLong()}));
+				"websiteId",
+				new Object[] {
+					RandomTestUtil.nextLong(Website.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -565,7 +569,7 @@ public class WebsitePersistenceTest {
 	}
 
 	protected Website addWebsite() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Website.class.getName());
 
 		Website website = _persistence.create(pk);
 

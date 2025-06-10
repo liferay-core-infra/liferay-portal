@@ -81,7 +81,7 @@ public class LocalizedEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
 		LocalizedEntry localizedEntry = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class LocalizedEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
 		LocalizedEntry newLocalizedEntry = _persistence.create(pk);
 
@@ -140,7 +140,7 @@ public class LocalizedEntryPersistenceTest {
 
 	@Test(expected = NoSuchLocalizedEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -169,7 +169,7 @@ public class LocalizedEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
 		LocalizedEntry missingLocalizedEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -205,9 +205,9 @@ public class LocalizedEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -226,7 +226,7 @@ public class LocalizedEntryPersistenceTest {
 
 		LocalizedEntry newLocalizedEntry = addLocalizedEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -321,7 +321,8 @@ public class LocalizedEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"localizedEntryId", RandomTestUtil.nextLong()));
+				"localizedEntryId",
+				RandomTestUtil.nextLong(LocalizedEntry.class.getName())));
 
 		List<LocalizedEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -364,7 +365,10 @@ public class LocalizedEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"localizedEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"localizedEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(LocalizedEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -372,7 +376,7 @@ public class LocalizedEntryPersistenceTest {
 	}
 
 	protected LocalizedEntry addLocalizedEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LocalizedEntry.class.getName());
 
 		LocalizedEntry localizedEntry = _persistence.create(pk);
 

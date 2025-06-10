@@ -84,7 +84,7 @@ public class DDMContentPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMContent.class.getName());
 
 		DDMContent ddmContent = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class DDMContentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMContent.class.getName());
 
 		DDMContent newDDMContent = _persistence.create(pk);
 
@@ -231,7 +231,7 @@ public class DDMContentPersistenceTest {
 
 	@Test(expected = NoSuchContentException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMContent.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -262,7 +262,7 @@ public class DDMContentPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMContent.class.getName());
 
 		DDMContent missingDDMContent = _persistence.fetchByPrimaryKey(pk);
 
@@ -295,9 +295,9 @@ public class DDMContentPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMContent.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMContent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -316,7 +316,7 @@ public class DDMContentPersistenceTest {
 
 		DDMContent newDDMContent = addDDMContent();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMContent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -408,7 +408,9 @@ public class DDMContentPersistenceTest {
 			DDMContent.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("contentId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"contentId",
+				RandomTestUtil.nextLong(DDMContent.class.getName())));
 
 		List<DDMContent> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -449,7 +451,10 @@ public class DDMContentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"contentId", new Object[] {RandomTestUtil.nextLong()}));
+				"contentId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMContent.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -520,7 +525,7 @@ public class DDMContentPersistenceTest {
 	}
 
 	protected DDMContent addDDMContent() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMContent.class.getName());
 
 		DDMContent ddmContent = _persistence.create(pk);
 

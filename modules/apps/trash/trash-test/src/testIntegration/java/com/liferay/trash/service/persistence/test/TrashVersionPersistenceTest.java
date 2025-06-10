@@ -82,7 +82,7 @@ public class TrashVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
 		TrashVersion trashVersion = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class TrashVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
 		TrashVersion newTrashVersion = _persistence.create(pk);
 
@@ -196,7 +196,7 @@ public class TrashVersionPersistenceTest {
 
 	@Test(expected = NoSuchVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -226,7 +226,7 @@ public class TrashVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
 		TrashVersion missingTrashVersion = _persistence.fetchByPrimaryKey(pk);
 
@@ -261,9 +261,9 @@ public class TrashVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -282,7 +282,7 @@ public class TrashVersionPersistenceTest {
 
 		TrashVersion newTrashVersion = addTrashVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -376,7 +376,9 @@ public class TrashVersionPersistenceTest {
 			TrashVersion.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("versionId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"versionId",
+				RandomTestUtil.nextLong(TrashVersion.class.getName())));
 
 		List<TrashVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -417,7 +419,10 @@ public class TrashVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"versionId", new Object[] {RandomTestUtil.nextLong()}));
+				"versionId",
+				new Object[] {
+					RandomTestUtil.nextLong(TrashVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -488,7 +493,7 @@ public class TrashVersionPersistenceTest {
 	}
 
 	protected TrashVersion addTrashVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashVersion.class.getName());
 
 		TrashVersion trashVersion = _persistence.create(pk);
 

@@ -86,7 +86,8 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
 		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = _persistence.create(
 			pk);
@@ -117,7 +118,8 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
 		CPDefinitionGroupedEntry newCPDefinitionGroupedEntry =
 			_persistence.create(pk);
@@ -264,7 +266,8 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionGroupedEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -301,7 +304,8 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
 		CPDefinitionGroupedEntry missingCPDefinitionGroupedEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -341,9 +345,11 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -363,7 +369,8 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 		CPDefinitionGroupedEntry newCPDefinitionGroupedEntry =
 			addCPDefinitionGroupedEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -469,7 +476,9 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDefinitionGroupedEntryId", RandomTestUtil.nextLong()));
+				"CPDefinitionGroupedEntryId",
+				RandomTestUtil.nextLong(
+					CPDefinitionGroupedEntry.class.getName())));
 
 		List<CPDefinitionGroupedEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -517,7 +526,10 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDefinitionGroupedEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDefinitionGroupedEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -607,7 +619,8 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 	protected CPDefinitionGroupedEntry addCPDefinitionGroupedEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionGroupedEntry.class.getName());
 
 		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = _persistence.create(
 			pk);

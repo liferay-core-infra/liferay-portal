@@ -84,7 +84,8 @@ public class RenameFinderColumnEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
 		RenameFinderColumnEntry renameFinderColumnEntry = _persistence.create(
 			pk);
@@ -115,7 +116,8 @@ public class RenameFinderColumnEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
 		RenameFinderColumnEntry newRenameFinderColumnEntry =
 			_persistence.create(pk);
@@ -167,7 +169,8 @@ public class RenameFinderColumnEntryPersistenceTest {
 
 	@Test(expected = NoSuchRenameFinderColumnEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -201,7 +204,8 @@ public class RenameFinderColumnEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
 		RenameFinderColumnEntry missingRenameFinderColumnEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -241,9 +245,11 @@ public class RenameFinderColumnEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -263,7 +269,8 @@ public class RenameFinderColumnEntryPersistenceTest {
 		RenameFinderColumnEntry newRenameFinderColumnEntry =
 			addRenameFinderColumnEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -367,7 +374,9 @@ public class RenameFinderColumnEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"renameFinderColumnEntryId", RandomTestUtil.nextLong()));
+				"renameFinderColumnEntryId",
+				RandomTestUtil.nextLong(
+					RenameFinderColumnEntry.class.getName())));
 
 		List<RenameFinderColumnEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -415,7 +424,10 @@ public class RenameFinderColumnEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"renameFinderColumnEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						RenameFinderColumnEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -489,7 +501,8 @@ public class RenameFinderColumnEntryPersistenceTest {
 	protected RenameFinderColumnEntry addRenameFinderColumnEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RenameFinderColumnEntry.class.getName());
 
 		RenameFinderColumnEntry renameFinderColumnEntry = _persistence.create(
 			pk);

@@ -80,7 +80,7 @@ public class DDMFieldAttributePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
 		DDMFieldAttribute ddmFieldAttribute = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class DDMFieldAttributePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
 		DDMFieldAttribute newDDMFieldAttribute = _persistence.create(pk);
 
@@ -234,7 +234,7 @@ public class DDMFieldAttributePersistenceTest {
 
 	@Test(expected = NoSuchFieldAttributeException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -266,7 +266,7 @@ public class DDMFieldAttributePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
 		DDMFieldAttribute missingDDMFieldAttribute =
 			_persistence.fetchByPrimaryKey(pk);
@@ -302,9 +302,9 @@ public class DDMFieldAttributePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -323,7 +323,7 @@ public class DDMFieldAttributePersistenceTest {
 
 		DDMFieldAttribute newDDMFieldAttribute = addDDMFieldAttribute();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -395,7 +395,8 @@ public class DDMFieldAttributePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fieldAttributeId", RandomTestUtil.nextLong()));
+				"fieldAttributeId",
+				RandomTestUtil.nextLong(DDMFieldAttribute.class.getName())));
 
 		List<DDMFieldAttribute> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -438,7 +439,10 @@ public class DDMFieldAttributePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"fieldAttributeId", new Object[] {RandomTestUtil.nextLong()}));
+				"fieldAttributeId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMFieldAttribute.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -516,7 +520,7 @@ public class DDMFieldAttributePersistenceTest {
 	}
 
 	protected DDMFieldAttribute addDDMFieldAttribute() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMFieldAttribute.class.getName());
 
 		DDMFieldAttribute ddmFieldAttribute = _persistence.create(pk);
 

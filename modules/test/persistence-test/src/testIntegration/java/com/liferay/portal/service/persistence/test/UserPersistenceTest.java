@@ -83,7 +83,7 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(User.class.getName());
 
 		User user = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(User.class.getName());
 
 		User newUser = _persistence.create(pk);
 
@@ -477,7 +477,7 @@ public class UserPersistenceTest {
 
 	@Test(expected = NoSuchUserException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(User.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -520,7 +520,7 @@ public class UserPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(User.class.getName());
 
 		User missingUser = _persistence.fetchByPrimaryKey(pk);
 
@@ -551,9 +551,9 @@ public class UserPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(User.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(User.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -572,7 +572,7 @@ public class UserPersistenceTest {
 
 		User newUser = addUser();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(User.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -660,7 +660,8 @@ public class UserPersistenceTest {
 			User.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("userId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"userId", RandomTestUtil.nextLong(User.class.getName())));
 
 		List<User> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -699,7 +700,8 @@ public class UserPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"userId", new Object[] {RandomTestUtil.nextLong()}));
+				"userId",
+				new Object[] {RandomTestUtil.nextLong(User.class.getName())}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -807,7 +809,7 @@ public class UserPersistenceTest {
 	}
 
 	protected User addUser() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(User.class.getName());
 
 		User user = _persistence.create(pk);
 

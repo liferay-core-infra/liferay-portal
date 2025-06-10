@@ -83,7 +83,7 @@ public class BookmarksEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
 		BookmarksEntry bookmarksEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class BookmarksEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
 		BookmarksEntry newBookmarksEntry = _persistence.create(pk);
 
@@ -374,7 +374,7 @@ public class BookmarksEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -408,7 +408,7 @@ public class BookmarksEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
 		BookmarksEntry missingBookmarksEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -444,9 +444,9 @@ public class BookmarksEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -465,7 +465,7 @@ public class BookmarksEntryPersistenceTest {
 
 		BookmarksEntry newBookmarksEntry = addBookmarksEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -559,7 +559,9 @@ public class BookmarksEntryPersistenceTest {
 			BookmarksEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("entryId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"entryId",
+				RandomTestUtil.nextLong(BookmarksEntry.class.getName())));
 
 		List<BookmarksEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -599,7 +601,10 @@ public class BookmarksEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"entryId", new Object[] {RandomTestUtil.nextLong()}));
+				"entryId",
+				new Object[] {
+					RandomTestUtil.nextLong(BookmarksEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -670,7 +675,7 @@ public class BookmarksEntryPersistenceTest {
 	}
 
 	protected BookmarksEntry addBookmarksEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BookmarksEntry.class.getName());
 
 		BookmarksEntry bookmarksEntry = _persistence.create(pk);
 

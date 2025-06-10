@@ -83,7 +83,7 @@ public class LockPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Lock.class.getName());
 
 		Lock lock = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class LockPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Lock.class.getName());
 
 		Lock newLock = _persistence.create(pk);
 
@@ -238,7 +238,7 @@ public class LockPersistenceTest {
 
 	@Test(expected = NoSuchLockException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Lock.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -269,7 +269,7 @@ public class LockPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Lock.class.getName());
 
 		Lock missingLock = _persistence.fetchByPrimaryKey(pk);
 
@@ -300,9 +300,9 @@ public class LockPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Lock.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Lock.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -321,7 +321,7 @@ public class LockPersistenceTest {
 
 		Lock newLock = addLock();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Lock.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -409,7 +409,8 @@ public class LockPersistenceTest {
 			Lock.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("lockId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"lockId", RandomTestUtil.nextLong(Lock.class.getName())));
 
 		List<Lock> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -448,7 +449,8 @@ public class LockPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"lockId", new Object[] {RandomTestUtil.nextLong()}));
+				"lockId",
+				new Object[] {RandomTestUtil.nextLong(Lock.class.getName())}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -517,7 +519,7 @@ public class LockPersistenceTest {
 	}
 
 	protected Lock addLock() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Lock.class.getName());
 
 		Lock lock = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class MBSuspiciousActivityPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBSuspiciousActivity.class.getName());
 
 		MBSuspiciousActivity mbSuspiciousActivity = _persistence.create(pk);
 
@@ -114,7 +114,7 @@ public class MBSuspiciousActivityPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBSuspiciousActivity.class.getName());
 
 		MBSuspiciousActivity newMBSuspiciousActivity = _persistence.create(pk);
 
@@ -269,7 +269,7 @@ public class MBSuspiciousActivityPersistenceTest {
 
 	@Test(expected = NoSuchSuspiciousActivityException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBSuspiciousActivity.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -304,7 +304,7 @@ public class MBSuspiciousActivityPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBSuspiciousActivity.class.getName());
 
 		MBSuspiciousActivity missingMBSuspiciousActivity =
 			_persistence.fetchByPrimaryKey(pk);
@@ -344,9 +344,11 @@ public class MBSuspiciousActivityPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			MBSuspiciousActivity.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			MBSuspiciousActivity.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -366,7 +368,7 @@ public class MBSuspiciousActivityPersistenceTest {
 		MBSuspiciousActivity newMBSuspiciousActivity =
 			addMBSuspiciousActivity();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBSuspiciousActivity.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -470,7 +472,8 @@ public class MBSuspiciousActivityPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"suspiciousActivityId", RandomTestUtil.nextLong()));
+				"suspiciousActivityId",
+				RandomTestUtil.nextLong(MBSuspiciousActivity.class.getName())));
 
 		List<MBSuspiciousActivity> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -518,7 +521,10 @@ public class MBSuspiciousActivityPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"suspiciousActivityId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						MBSuspiciousActivity.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -617,7 +623,7 @@ public class MBSuspiciousActivityPersistenceTest {
 	}
 
 	protected MBSuspiciousActivity addMBSuspiciousActivity() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBSuspiciousActivity.class.getName());
 
 		MBSuspiciousActivity mbSuspiciousActivity = _persistence.create(pk);
 

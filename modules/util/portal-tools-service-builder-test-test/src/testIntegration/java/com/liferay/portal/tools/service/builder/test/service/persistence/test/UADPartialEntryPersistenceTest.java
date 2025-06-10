@@ -81,7 +81,7 @@ public class UADPartialEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
 		UADPartialEntry uadPartialEntry = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class UADPartialEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
 		UADPartialEntry newUADPartialEntry = _persistence.create(pk);
 
@@ -150,7 +150,7 @@ public class UADPartialEntryPersistenceTest {
 
 	@Test(expected = NoSuchUADPartialEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -179,7 +179,7 @@ public class UADPartialEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
 		UADPartialEntry missingUADPartialEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -215,9 +215,9 @@ public class UADPartialEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -236,7 +236,7 @@ public class UADPartialEntryPersistenceTest {
 
 		UADPartialEntry newUADPartialEntry = addUADPartialEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -332,7 +332,8 @@ public class UADPartialEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"uadPartialEntryId", RandomTestUtil.nextLong()));
+				"uadPartialEntryId",
+				RandomTestUtil.nextLong(UADPartialEntry.class.getName())));
 
 		List<UADPartialEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -375,7 +376,10 @@ public class UADPartialEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"uadPartialEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"uadPartialEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(UADPartialEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -383,7 +387,7 @@ public class UADPartialEntryPersistenceTest {
 	}
 
 	protected UADPartialEntry addUADPartialEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UADPartialEntry.class.getName());
 
 		UADPartialEntry uadPartialEntry = _persistence.create(pk);
 

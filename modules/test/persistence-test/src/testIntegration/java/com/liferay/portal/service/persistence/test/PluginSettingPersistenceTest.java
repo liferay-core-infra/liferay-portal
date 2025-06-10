@@ -81,7 +81,7 @@ public class PluginSettingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
 		PluginSetting pluginSetting = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class PluginSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
 		PluginSetting newPluginSetting = _persistence.create(pk);
 
@@ -179,7 +179,7 @@ public class PluginSettingPersistenceTest {
 
 	@Test(expected = NoSuchPluginSettingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -209,7 +209,7 @@ public class PluginSettingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
 		PluginSetting missingPluginSetting = _persistence.fetchByPrimaryKey(pk);
 
@@ -244,9 +244,9 @@ public class PluginSettingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -265,7 +265,7 @@ public class PluginSettingPersistenceTest {
 
 		PluginSetting newPluginSetting = addPluginSetting();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -360,7 +360,8 @@ public class PluginSettingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"pluginSettingId", RandomTestUtil.nextLong()));
+				"pluginSettingId",
+				RandomTestUtil.nextLong(PluginSetting.class.getName())));
 
 		List<PluginSetting> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -403,7 +404,10 @@ public class PluginSettingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"pluginSettingId", new Object[] {RandomTestUtil.nextLong()}));
+				"pluginSettingId",
+				new Object[] {
+					RandomTestUtil.nextLong(PluginSetting.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -479,7 +483,7 @@ public class PluginSettingPersistenceTest {
 	}
 
 	protected PluginSetting addPluginSetting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PluginSetting.class.getName());
 
 		PluginSetting pluginSetting = _persistence.create(pk);
 

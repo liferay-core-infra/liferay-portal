@@ -83,7 +83,7 @@ public class RolePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Role.class.getName());
 
 		Role role = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class RolePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Role.class.getName());
 
 		Role newRole = _persistence.create(pk);
 
@@ -340,7 +340,7 @@ public class RolePersistenceTest {
 
 	@Test(expected = NoSuchRoleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Role.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -372,7 +372,7 @@ public class RolePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Role.class.getName());
 
 		Role missingRole = _persistence.fetchByPrimaryKey(pk);
 
@@ -403,9 +403,9 @@ public class RolePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Role.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Role.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -424,7 +424,7 @@ public class RolePersistenceTest {
 
 		Role newRole = addRole();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Role.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -512,7 +512,8 @@ public class RolePersistenceTest {
 			Role.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("roleId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"roleId", RandomTestUtil.nextLong(Role.class.getName())));
 
 		List<Role> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -551,7 +552,8 @@ public class RolePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"roleId", new Object[] {RandomTestUtil.nextLong()}));
+				"roleId",
+				new Object[] {RandomTestUtil.nextLong(Role.class.getName())}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -668,7 +670,7 @@ public class RolePersistenceTest {
 	}
 
 	protected Role addRole() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Role.class.getName());
 
 		Role role = _persistence.create(pk);
 

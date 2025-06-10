@@ -85,7 +85,8 @@ public class CommerceInventoryAuditPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
 		CommerceInventoryAudit commerceInventoryAudit = _persistence.create(pk);
 
@@ -115,7 +116,8 @@ public class CommerceInventoryAuditPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
 		CommerceInventoryAudit newCommerceInventoryAudit = _persistence.create(
 			pk);
@@ -224,7 +226,8 @@ public class CommerceInventoryAuditPersistenceTest {
 
 	@Test(expected = NoSuchInventoryAuditException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -258,7 +261,8 @@ public class CommerceInventoryAuditPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
 		CommerceInventoryAudit missingCommerceInventoryAudit =
 			_persistence.fetchByPrimaryKey(pk);
@@ -298,9 +302,11 @@ public class CommerceInventoryAuditPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -320,7 +326,8 @@ public class CommerceInventoryAuditPersistenceTest {
 		CommerceInventoryAudit newCommerceInventoryAudit =
 			addCommerceInventoryAudit();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -424,7 +431,9 @@ public class CommerceInventoryAuditPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceInventoryAuditId", RandomTestUtil.nextLong()));
+				"commerceInventoryAuditId",
+				RandomTestUtil.nextLong(
+					CommerceInventoryAudit.class.getName())));
 
 		List<CommerceInventoryAudit> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -472,7 +481,10 @@ public class CommerceInventoryAuditPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceInventoryAuditId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceInventoryAudit.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -482,7 +494,8 @@ public class CommerceInventoryAuditPersistenceTest {
 	protected CommerceInventoryAudit addCommerceInventoryAudit()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryAudit.class.getName());
 
 		CommerceInventoryAudit commerceInventoryAudit = _persistence.create(pk);
 

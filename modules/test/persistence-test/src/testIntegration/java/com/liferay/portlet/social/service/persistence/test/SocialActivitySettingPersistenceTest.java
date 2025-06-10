@@ -82,7 +82,8 @@ public class SocialActivitySettingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
 		SocialActivitySetting socialActivitySetting = _persistence.create(pk);
 
@@ -112,7 +113,8 @@ public class SocialActivitySettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
 		SocialActivitySetting newSocialActivitySetting = _persistence.create(
 			pk);
@@ -227,7 +229,8 @@ public class SocialActivitySettingPersistenceTest {
 
 	@Test(expected = NoSuchActivitySettingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -261,7 +264,8 @@ public class SocialActivitySettingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
 		SocialActivitySetting missingSocialActivitySetting =
 			_persistence.fetchByPrimaryKey(pk);
@@ -301,9 +305,11 @@ public class SocialActivitySettingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -323,7 +329,8 @@ public class SocialActivitySettingPersistenceTest {
 		SocialActivitySetting newSocialActivitySetting =
 			addSocialActivitySetting();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -427,7 +434,9 @@ public class SocialActivitySettingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"activitySettingId", RandomTestUtil.nextLong()));
+				"activitySettingId",
+				RandomTestUtil.nextLong(
+					SocialActivitySetting.class.getName())));
 
 		List<SocialActivitySetting> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -472,7 +481,11 @@ public class SocialActivitySettingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"activitySettingId", new Object[] {RandomTestUtil.nextLong()}));
+				"activitySettingId",
+				new Object[] {
+					RandomTestUtil.nextLong(
+						SocialActivitySetting.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -561,7 +574,8 @@ public class SocialActivitySettingPersistenceTest {
 	protected SocialActivitySetting addSocialActivitySetting()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivitySetting.class.getName());
 
 		SocialActivitySetting socialActivitySetting = _persistence.create(pk);
 

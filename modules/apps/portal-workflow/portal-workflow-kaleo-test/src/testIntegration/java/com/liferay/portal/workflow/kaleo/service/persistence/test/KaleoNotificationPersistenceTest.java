@@ -82,7 +82,7 @@ public class KaleoNotificationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
 		KaleoNotification kaleoNotification = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class KaleoNotificationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
 		KaleoNotification newKaleoNotification = _persistence.create(pk);
 
@@ -266,7 +266,7 @@ public class KaleoNotificationPersistenceTest {
 
 	@Test(expected = NoSuchNotificationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -302,7 +302,7 @@ public class KaleoNotificationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
 		KaleoNotification missingKaleoNotification =
 			_persistence.fetchByPrimaryKey(pk);
@@ -338,9 +338,9 @@ public class KaleoNotificationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -359,7 +359,7 @@ public class KaleoNotificationPersistenceTest {
 
 		KaleoNotification newKaleoNotification = addKaleoNotification();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -456,7 +456,8 @@ public class KaleoNotificationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoNotificationId", RandomTestUtil.nextLong()));
+				"kaleoNotificationId",
+				RandomTestUtil.nextLong(KaleoNotification.class.getName())));
 
 		List<KaleoNotification> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -502,7 +503,9 @@ public class KaleoNotificationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"kaleoNotificationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(KaleoNotification.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -510,7 +513,7 @@ public class KaleoNotificationPersistenceTest {
 	}
 
 	protected KaleoNotification addKaleoNotification() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoNotification.class.getName());
 
 		KaleoNotification kaleoNotification = _persistence.create(pk);
 

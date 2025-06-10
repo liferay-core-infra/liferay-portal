@@ -85,7 +85,8 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
 		DefinedDefaultOrderEntry definedDefaultOrderEntry = _persistence.create(
 			pk);
@@ -116,7 +117,8 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
 		DefinedDefaultOrderEntry newDefinedDefaultOrderEntry =
 			_persistence.create(pk);
@@ -178,7 +180,8 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 
 	@Test(expected = NoSuchDefinedDefaultOrderEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -212,7 +215,8 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
 		DefinedDefaultOrderEntry missingDefinedDefaultOrderEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -252,9 +256,11 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -274,7 +280,8 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 		DefinedDefaultOrderEntry newDefinedDefaultOrderEntry =
 			addDefinedDefaultOrderEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -380,7 +387,9 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"definedDefaultOrderEntryId", RandomTestUtil.nextLong()));
+				"definedDefaultOrderEntryId",
+				RandomTestUtil.nextLong(
+					DefinedDefaultOrderEntry.class.getName())));
 
 		List<DefinedDefaultOrderEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -428,7 +437,10 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"definedDefaultOrderEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						DefinedDefaultOrderEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -502,7 +514,8 @@ public class DefinedDefaultOrderEntryPersistenceTest {
 	protected DefinedDefaultOrderEntry addDefinedDefaultOrderEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DefinedDefaultOrderEntry.class.getName());
 
 		DefinedDefaultOrderEntry definedDefaultOrderEntry = _persistence.create(
 			pk);

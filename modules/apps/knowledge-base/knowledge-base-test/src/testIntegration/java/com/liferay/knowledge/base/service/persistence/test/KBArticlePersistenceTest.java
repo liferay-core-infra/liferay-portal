@@ -84,7 +84,7 @@ public class KBArticlePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBArticle.class.getName());
 
 		KBArticle kbArticle = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class KBArticlePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBArticle.class.getName());
 
 		KBArticle newKBArticle = _persistence.create(pk);
 
@@ -999,7 +999,7 @@ public class KBArticlePersistenceTest {
 
 	@Test(expected = NoSuchArticleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBArticle.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -1037,7 +1037,7 @@ public class KBArticlePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBArticle.class.getName());
 
 		KBArticle missingKBArticle = _persistence.fetchByPrimaryKey(pk);
 
@@ -1070,9 +1070,9 @@ public class KBArticlePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KBArticle.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KBArticle.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -1091,7 +1091,7 @@ public class KBArticlePersistenceTest {
 
 		KBArticle newKBArticle = addKBArticle();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBArticle.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -1184,7 +1184,8 @@ public class KBArticlePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kbArticleId", RandomTestUtil.nextLong()));
+				"kbArticleId",
+				RandomTestUtil.nextLong(KBArticle.class.getName())));
 
 		List<KBArticle> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -1227,7 +1228,10 @@ public class KBArticlePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kbArticleId", new Object[] {RandomTestUtil.nextLong()}));
+				"kbArticleId",
+				new Object[] {
+					RandomTestUtil.nextLong(KBArticle.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -1341,7 +1345,7 @@ public class KBArticlePersistenceTest {
 	}
 
 	protected KBArticle addKBArticle() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBArticle.class.getName());
 
 		KBArticle kbArticle = _persistence.create(pk);
 

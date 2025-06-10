@@ -85,7 +85,8 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
 		OAuthClientASLocalMetadata oAuthClientASLocalMetadata =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
 		OAuthClientASLocalMetadata newOAuthClientASLocalMetadata =
 			_persistence.create(pk);
@@ -220,7 +222,8 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 
 	@Test(expected = NoSuchOAuthClientASLocalMetadataException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -256,7 +259,8 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
 		OAuthClientASLocalMetadata missingOAuthClientASLocalMetadata =
 			_persistence.fetchByPrimaryKey(pk);
@@ -297,9 +301,11 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -320,7 +326,8 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 		OAuthClientASLocalMetadata newOAuthClientASLocalMetadata =
 			addOAuthClientASLocalMetadata();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -430,7 +437,9 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"oAuthClientASLocalMetadataId", RandomTestUtil.nextLong()));
+				"oAuthClientASLocalMetadataId",
+				RandomTestUtil.nextLong(
+					OAuthClientASLocalMetadata.class.getName())));
 
 		List<OAuthClientASLocalMetadata> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -479,7 +488,10 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"oAuthClientASLocalMetadataId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						OAuthClientASLocalMetadata.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -554,7 +566,8 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 	protected OAuthClientASLocalMetadata addOAuthClientASLocalMetadata()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			OAuthClientASLocalMetadata.class.getName());
 
 		OAuthClientASLocalMetadata oAuthClientASLocalMetadata =
 			_persistence.create(pk);

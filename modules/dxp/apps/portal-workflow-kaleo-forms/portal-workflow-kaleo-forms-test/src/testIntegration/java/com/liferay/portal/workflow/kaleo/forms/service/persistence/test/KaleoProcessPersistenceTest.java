@@ -88,7 +88,7 @@ public class KaleoProcessPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
 		KaleoProcess kaleoProcess = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class KaleoProcessPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
 		KaleoProcess newKaleoProcess = _persistence.create(pk);
 
@@ -235,7 +235,7 @@ public class KaleoProcessPersistenceTest {
 
 	@Test(expected = NoSuchKaleoProcessException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -291,7 +291,7 @@ public class KaleoProcessPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
 		KaleoProcess missingKaleoProcess = _persistence.fetchByPrimaryKey(pk);
 
@@ -326,9 +326,9 @@ public class KaleoProcessPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -347,7 +347,7 @@ public class KaleoProcessPersistenceTest {
 
 		KaleoProcess newKaleoProcess = addKaleoProcess();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -442,7 +442,8 @@ public class KaleoProcessPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoProcessId", RandomTestUtil.nextLong()));
+				"kaleoProcessId",
+				RandomTestUtil.nextLong(KaleoProcess.class.getName())));
 
 		List<KaleoProcess> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -485,7 +486,10 @@ public class KaleoProcessPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kaleoProcessId", new Object[] {RandomTestUtil.nextLong()}));
+				"kaleoProcessId",
+				new Object[] {
+					RandomTestUtil.nextLong(KaleoProcess.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -562,7 +566,7 @@ public class KaleoProcessPersistenceTest {
 	}
 
 	protected KaleoProcess addKaleoProcess() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcess.class.getName());
 
 		KaleoProcess kaleoProcess = _persistence.create(pk);
 

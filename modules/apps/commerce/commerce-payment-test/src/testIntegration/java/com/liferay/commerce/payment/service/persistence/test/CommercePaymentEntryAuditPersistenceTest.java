@@ -84,7 +84,8 @@ public class CommercePaymentEntryAuditPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
 		CommercePaymentEntryAudit commercePaymentEntryAudit =
 			_persistence.create(pk);
@@ -115,7 +116,8 @@ public class CommercePaymentEntryAuditPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
 		CommercePaymentEntryAudit newCommercePaymentEntryAudit =
 			_persistence.create(pk);
@@ -217,7 +219,8 @@ public class CommercePaymentEntryAuditPersistenceTest {
 
 	@Test(expected = NoSuchPaymentEntryAuditException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -254,7 +257,8 @@ public class CommercePaymentEntryAuditPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
 		CommercePaymentEntryAudit missingCommercePaymentEntryAudit =
 			_persistence.fetchByPrimaryKey(pk);
@@ -295,9 +299,11 @@ public class CommercePaymentEntryAuditPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -318,7 +324,8 @@ public class CommercePaymentEntryAuditPersistenceTest {
 		CommercePaymentEntryAudit newCommercePaymentEntryAudit =
 			addCommercePaymentEntryAudit();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -427,7 +434,9 @@ public class CommercePaymentEntryAuditPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commercePaymentEntryAuditId", RandomTestUtil.nextLong()));
+				"commercePaymentEntryAuditId",
+				RandomTestUtil.nextLong(
+					CommercePaymentEntryAudit.class.getName())));
 
 		List<CommercePaymentEntryAudit> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -476,7 +485,10 @@ public class CommercePaymentEntryAuditPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commercePaymentEntryAuditId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommercePaymentEntryAudit.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -486,7 +498,8 @@ public class CommercePaymentEntryAuditPersistenceTest {
 	protected CommercePaymentEntryAudit addCommercePaymentEntryAudit()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentEntryAudit.class.getName());
 
 		CommercePaymentEntryAudit commercePaymentEntryAudit =
 			_persistence.create(pk);

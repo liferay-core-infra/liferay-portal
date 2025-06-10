@@ -81,7 +81,7 @@ public class CTSchemaVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
 		CTSchemaVersion ctSchemaVersion = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class CTSchemaVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
 		CTSchemaVersion newCTSchemaVersion = _persistence.create(pk);
 
@@ -158,7 +158,7 @@ public class CTSchemaVersionPersistenceTest {
 
 	@Test(expected = NoSuchSchemaVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -187,7 +187,7 @@ public class CTSchemaVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
 		CTSchemaVersion missingCTSchemaVersion = _persistence.fetchByPrimaryKey(
 			pk);
@@ -223,9 +223,9 @@ public class CTSchemaVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -244,7 +244,7 @@ public class CTSchemaVersionPersistenceTest {
 
 		CTSchemaVersion newCTSchemaVersion = addCTSchemaVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -339,7 +339,8 @@ public class CTSchemaVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"schemaVersionId", RandomTestUtil.nextLong()));
+				"schemaVersionId",
+				RandomTestUtil.nextLong(CTSchemaVersion.class.getName())));
 
 		List<CTSchemaVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -382,7 +383,10 @@ public class CTSchemaVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"schemaVersionId", new Object[] {RandomTestUtil.nextLong()}));
+				"schemaVersionId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTSchemaVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -390,7 +394,7 @@ public class CTSchemaVersionPersistenceTest {
 	}
 
 	protected CTSchemaVersion addCTSchemaVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSchemaVersion.class.getName());
 
 		CTSchemaVersion ctSchemaVersion = _persistence.create(pk);
 

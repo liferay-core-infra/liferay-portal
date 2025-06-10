@@ -85,7 +85,8 @@ public class KaleoTaskFormInstancePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
 		KaleoTaskFormInstance kaleoTaskFormInstance = _persistence.create(pk);
 
@@ -115,7 +116,8 @@ public class KaleoTaskFormInstancePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
 		KaleoTaskFormInstance newKaleoTaskFormInstance = _persistence.create(
 			pk);
@@ -291,7 +293,8 @@ public class KaleoTaskFormInstancePersistenceTest {
 
 	@Test(expected = NoSuchTaskFormInstanceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -330,7 +333,8 @@ public class KaleoTaskFormInstancePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
 		KaleoTaskFormInstance missingKaleoTaskFormInstance =
 			_persistence.fetchByPrimaryKey(pk);
@@ -370,9 +374,11 @@ public class KaleoTaskFormInstancePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -392,7 +398,8 @@ public class KaleoTaskFormInstancePersistenceTest {
 		KaleoTaskFormInstance newKaleoTaskFormInstance =
 			addKaleoTaskFormInstance();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -496,7 +503,9 @@ public class KaleoTaskFormInstancePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoTaskFormInstanceId", RandomTestUtil.nextLong()));
+				"kaleoTaskFormInstanceId",
+				RandomTestUtil.nextLong(
+					KaleoTaskFormInstance.class.getName())));
 
 		List<KaleoTaskFormInstance> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -544,7 +553,10 @@ public class KaleoTaskFormInstancePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"kaleoTaskFormInstanceId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						KaleoTaskFormInstance.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -618,7 +630,8 @@ public class KaleoTaskFormInstancePersistenceTest {
 	protected KaleoTaskFormInstance addKaleoTaskFormInstance()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskFormInstance.class.getName());
 
 		KaleoTaskFormInstance kaleoTaskFormInstance = _persistence.create(pk);
 

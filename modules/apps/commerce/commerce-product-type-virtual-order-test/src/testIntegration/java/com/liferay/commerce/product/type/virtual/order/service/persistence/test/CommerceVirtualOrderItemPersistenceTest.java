@@ -85,7 +85,8 @@ public class CommerceVirtualOrderItemPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
 		CommerceVirtualOrderItem commerceVirtualOrderItem = _persistence.create(
 			pk);
@@ -116,7 +117,8 @@ public class CommerceVirtualOrderItemPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
 		CommerceVirtualOrderItem newCommerceVirtualOrderItem =
 			_persistence.create(pk);
@@ -265,7 +267,8 @@ public class CommerceVirtualOrderItemPersistenceTest {
 
 	@Test(expected = NoSuchVirtualOrderItemException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -303,7 +306,8 @@ public class CommerceVirtualOrderItemPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
 		CommerceVirtualOrderItem missingCommerceVirtualOrderItem =
 			_persistence.fetchByPrimaryKey(pk);
@@ -343,9 +347,11 @@ public class CommerceVirtualOrderItemPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -365,7 +371,8 @@ public class CommerceVirtualOrderItemPersistenceTest {
 		CommerceVirtualOrderItem newCommerceVirtualOrderItem =
 			addCommerceVirtualOrderItem();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -471,7 +478,9 @@ public class CommerceVirtualOrderItemPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceVirtualOrderItemId", RandomTestUtil.nextLong()));
+				"commerceVirtualOrderItemId",
+				RandomTestUtil.nextLong(
+					CommerceVirtualOrderItem.class.getName())));
 
 		List<CommerceVirtualOrderItem> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -519,7 +528,10 @@ public class CommerceVirtualOrderItemPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceVirtualOrderItemId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceVirtualOrderItem.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -604,7 +616,8 @@ public class CommerceVirtualOrderItemPersistenceTest {
 	protected CommerceVirtualOrderItem addCommerceVirtualOrderItem()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceVirtualOrderItem.class.getName());
 
 		CommerceVirtualOrderItem commerceVirtualOrderItem = _persistence.create(
 			pk);

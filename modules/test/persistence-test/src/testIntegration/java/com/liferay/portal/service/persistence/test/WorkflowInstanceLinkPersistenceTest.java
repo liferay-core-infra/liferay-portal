@@ -81,7 +81,7 @@ public class WorkflowInstanceLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WorkflowInstanceLink.class.getName());
 
 		WorkflowInstanceLink workflowInstanceLink = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class WorkflowInstanceLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WorkflowInstanceLink.class.getName());
 
 		WorkflowInstanceLink newWorkflowInstanceLink = _persistence.create(pk);
 
@@ -226,7 +226,7 @@ public class WorkflowInstanceLinkPersistenceTest {
 
 	@Test(expected = NoSuchWorkflowInstanceLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WorkflowInstanceLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -261,7 +261,7 @@ public class WorkflowInstanceLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WorkflowInstanceLink.class.getName());
 
 		WorkflowInstanceLink missingWorkflowInstanceLink =
 			_persistence.fetchByPrimaryKey(pk);
@@ -301,9 +301,11 @@ public class WorkflowInstanceLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			WorkflowInstanceLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			WorkflowInstanceLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -323,7 +325,7 @@ public class WorkflowInstanceLinkPersistenceTest {
 		WorkflowInstanceLink newWorkflowInstanceLink =
 			addWorkflowInstanceLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WorkflowInstanceLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -425,7 +427,8 @@ public class WorkflowInstanceLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"workflowInstanceLinkId", RandomTestUtil.nextLong()));
+				"workflowInstanceLinkId",
+				RandomTestUtil.nextLong(WorkflowInstanceLink.class.getName())));
 
 		List<WorkflowInstanceLink> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -473,7 +476,10 @@ public class WorkflowInstanceLinkPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"workflowInstanceLinkId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						WorkflowInstanceLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -481,7 +487,7 @@ public class WorkflowInstanceLinkPersistenceTest {
 	}
 
 	protected WorkflowInstanceLink addWorkflowInstanceLink() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WorkflowInstanceLink.class.getName());
 
 		WorkflowInstanceLink workflowInstanceLink = _persistence.create(pk);
 

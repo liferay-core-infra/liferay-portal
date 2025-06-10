@@ -82,7 +82,7 @@ public class ModulePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Module.class.getName());
 
 		Module module = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class ModulePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Module.class.getName());
 
 		Module newModule = _persistence.create(pk);
 
@@ -219,7 +219,7 @@ public class ModulePersistenceTest {
 
 	@Test(expected = NoSuchModuleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Module.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -249,7 +249,7 @@ public class ModulePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Module.class.getName());
 
 		Module missingModule = _persistence.fetchByPrimaryKey(pk);
 
@@ -282,9 +282,9 @@ public class ModulePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Module.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Module.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -303,7 +303,7 @@ public class ModulePersistenceTest {
 
 		Module newModule = addModule();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Module.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -391,7 +391,8 @@ public class ModulePersistenceTest {
 			Module.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("moduleId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"moduleId", RandomTestUtil.nextLong(Module.class.getName())));
 
 		List<Module> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -430,7 +431,10 @@ public class ModulePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"moduleId", new Object[] {RandomTestUtil.nextLong()}));
+				"moduleId",
+				new Object[] {
+					RandomTestUtil.nextLong(Module.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -515,7 +519,7 @@ public class ModulePersistenceTest {
 	}
 
 	protected Module addModule() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Module.class.getName());
 
 		Module module = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class MemberRequestPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
 		MemberRequest memberRequest = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class MemberRequestPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
 		MemberRequest newMemberRequest = _persistence.create(pk);
 
@@ -222,7 +222,7 @@ public class MemberRequestPersistenceTest {
 
 	@Test(expected = NoSuchMemberRequestException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -253,7 +253,7 @@ public class MemberRequestPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
 		MemberRequest missingMemberRequest = _persistence.fetchByPrimaryKey(pk);
 
@@ -288,9 +288,9 @@ public class MemberRequestPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -309,7 +309,7 @@ public class MemberRequestPersistenceTest {
 
 		MemberRequest newMemberRequest = addMemberRequest();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -404,7 +404,8 @@ public class MemberRequestPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"memberRequestId", RandomTestUtil.nextLong()));
+				"memberRequestId",
+				RandomTestUtil.nextLong(MemberRequest.class.getName())));
 
 		List<MemberRequest> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -447,7 +448,10 @@ public class MemberRequestPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"memberRequestId", new Object[] {RandomTestUtil.nextLong()}));
+				"memberRequestId",
+				new Object[] {
+					RandomTestUtil.nextLong(MemberRequest.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -529,7 +533,7 @@ public class MemberRequestPersistenceTest {
 	}
 
 	protected MemberRequest addMemberRequest() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MemberRequest.class.getName());
 
 		MemberRequest memberRequest = _persistence.create(pk);
 

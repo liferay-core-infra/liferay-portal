@@ -80,7 +80,8 @@ public class UserNotificationEventPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
 		UserNotificationEvent userNotificationEvent = _persistence.create(pk);
 
@@ -110,7 +111,8 @@ public class UserNotificationEventPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
 		UserNotificationEvent newUserNotificationEvent = _persistence.create(
 			pk);
@@ -406,7 +408,8 @@ public class UserNotificationEventPersistenceTest {
 
 	@Test(expected = NoSuchUserNotificationEventException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -440,7 +443,8 @@ public class UserNotificationEventPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
 		UserNotificationEvent missingUserNotificationEvent =
 			_persistence.fetchByPrimaryKey(pk);
@@ -480,9 +484,11 @@ public class UserNotificationEventPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -502,7 +508,8 @@ public class UserNotificationEventPersistenceTest {
 		UserNotificationEvent newUserNotificationEvent =
 			addUserNotificationEvent();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -606,7 +613,9 @@ public class UserNotificationEventPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"userNotificationEventId", RandomTestUtil.nextLong()));
+				"userNotificationEventId",
+				RandomTestUtil.nextLong(
+					UserNotificationEvent.class.getName())));
 
 		List<UserNotificationEvent> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -654,7 +663,10 @@ public class UserNotificationEventPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"userNotificationEventId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						UserNotificationEvent.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -664,7 +676,8 @@ public class UserNotificationEventPersistenceTest {
 	protected UserNotificationEvent addUserNotificationEvent()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationEvent.class.getName());
 
 		UserNotificationEvent userNotificationEvent = _persistence.create(pk);
 

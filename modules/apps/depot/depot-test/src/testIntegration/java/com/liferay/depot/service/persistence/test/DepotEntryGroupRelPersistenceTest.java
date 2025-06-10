@@ -83,7 +83,7 @@ public class DepotEntryGroupRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
 		DepotEntryGroupRel depotEntryGroupRel = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class DepotEntryGroupRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
 		DepotEntryGroupRel newDepotEntryGroupRel = _persistence.create(pk);
 
@@ -278,7 +278,7 @@ public class DepotEntryGroupRelPersistenceTest {
 
 	@Test(expected = NoSuchEntryGroupRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -312,7 +312,7 @@ public class DepotEntryGroupRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
 		DepotEntryGroupRel missingDepotEntryGroupRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -348,9 +348,9 @@ public class DepotEntryGroupRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -369,7 +369,7 @@ public class DepotEntryGroupRelPersistenceTest {
 
 		DepotEntryGroupRel newDepotEntryGroupRel = addDepotEntryGroupRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -468,7 +468,8 @@ public class DepotEntryGroupRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"depotEntryGroupRelId", RandomTestUtil.nextLong()));
+				"depotEntryGroupRelId",
+				RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName())));
 
 		List<DepotEntryGroupRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -515,7 +516,9 @@ public class DepotEntryGroupRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"depotEntryGroupRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -599,7 +602,7 @@ public class DepotEntryGroupRelPersistenceTest {
 	}
 
 	protected DepotEntryGroupRel addDepotEntryGroupRel() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DepotEntryGroupRel.class.getName());
 
 		DepotEntryGroupRel depotEntryGroupRel = _persistence.create(pk);
 

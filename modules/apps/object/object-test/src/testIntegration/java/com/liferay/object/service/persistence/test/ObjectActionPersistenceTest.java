@@ -83,7 +83,7 @@ public class ObjectActionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
 		ObjectAction objectAction = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ObjectActionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
 		ObjectAction newObjectAction = _persistence.create(pk);
 
@@ -321,7 +321,7 @@ public class ObjectActionPersistenceTest {
 
 	@Test(expected = NoSuchObjectActionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -355,7 +355,7 @@ public class ObjectActionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
 		ObjectAction missingObjectAction = _persistence.fetchByPrimaryKey(pk);
 
@@ -390,9 +390,9 @@ public class ObjectActionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -411,7 +411,7 @@ public class ObjectActionPersistenceTest {
 
 		ObjectAction newObjectAction = addObjectAction();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -506,7 +506,8 @@ public class ObjectActionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectActionId", RandomTestUtil.nextLong()));
+				"objectActionId",
+				RandomTestUtil.nextLong(ObjectAction.class.getName())));
 
 		List<ObjectAction> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -549,7 +550,10 @@ public class ObjectActionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectActionId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectActionId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectAction.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -657,7 +661,7 @@ public class ObjectActionPersistenceTest {
 	}
 
 	protected ObjectAction addObjectAction() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectAction.class.getName());
 
 		ObjectAction objectAction = _persistence.create(pk);
 

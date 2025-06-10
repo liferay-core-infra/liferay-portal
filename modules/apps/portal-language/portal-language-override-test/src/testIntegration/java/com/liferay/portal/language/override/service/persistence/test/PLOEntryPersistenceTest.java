@@ -84,7 +84,7 @@ public class PLOEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
 		PLOEntry ploEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class PLOEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
 		PLOEntry newPLOEntry = _persistence.create(pk);
 
@@ -204,7 +204,7 @@ public class PLOEntryPersistenceTest {
 
 	@Test(expected = NoSuchPLOEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -234,7 +234,7 @@ public class PLOEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
 		PLOEntry missingPLOEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -267,9 +267,9 @@ public class PLOEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -288,7 +288,7 @@ public class PLOEntryPersistenceTest {
 
 		PLOEntry newPLOEntry = addPLOEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -380,7 +380,8 @@ public class PLOEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ploEntryId", RandomTestUtil.nextLong()));
+				"ploEntryId",
+				RandomTestUtil.nextLong(PLOEntry.class.getName())));
 
 		List<PLOEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -422,7 +423,10 @@ public class PLOEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ploEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"ploEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(PLOEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -497,7 +501,7 @@ public class PLOEntryPersistenceTest {
 	}
 
 	protected PLOEntry addPLOEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PLOEntry.class.getName());
 
 		PLOEntry ploEntry = _persistence.create(pk);
 

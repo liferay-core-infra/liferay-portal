@@ -81,7 +81,7 @@ public class PortalPreferencesPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
 		PortalPreferences portalPreferences = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class PortalPreferencesPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
 		PortalPreferences newPortalPreferences = _persistence.create(pk);
 
@@ -171,7 +171,7 @@ public class PortalPreferencesPersistenceTest {
 
 	@Test(expected = NoSuchPreferencesException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -201,7 +201,7 @@ public class PortalPreferencesPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
 		PortalPreferences missingPortalPreferences =
 			_persistence.fetchByPrimaryKey(pk);
@@ -237,9 +237,9 @@ public class PortalPreferencesPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -258,7 +258,7 @@ public class PortalPreferencesPersistenceTest {
 
 		PortalPreferences newPortalPreferences = addPortalPreferences();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -355,7 +355,8 @@ public class PortalPreferencesPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"portalPreferencesId", RandomTestUtil.nextLong()));
+				"portalPreferencesId",
+				RandomTestUtil.nextLong(PortalPreferences.class.getName())));
 
 		List<PortalPreferences> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -401,7 +402,9 @@ public class PortalPreferencesPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"portalPreferencesId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(PortalPreferences.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -474,7 +477,7 @@ public class PortalPreferencesPersistenceTest {
 	}
 
 	protected PortalPreferences addPortalPreferences() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortalPreferences.class.getName());
 
 		PortalPreferences portalPreferences = _persistence.create(pk);
 

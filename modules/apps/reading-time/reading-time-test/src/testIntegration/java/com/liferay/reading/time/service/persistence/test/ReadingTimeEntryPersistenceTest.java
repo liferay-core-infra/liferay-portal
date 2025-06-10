@@ -83,7 +83,7 @@ public class ReadingTimeEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
 		ReadingTimeEntry readingTimeEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ReadingTimeEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
 		ReadingTimeEntry newReadingTimeEntry = _persistence.create(pk);
 
@@ -222,7 +222,7 @@ public class ReadingTimeEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -253,7 +253,7 @@ public class ReadingTimeEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
 		ReadingTimeEntry missingReadingTimeEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -289,9 +289,9 @@ public class ReadingTimeEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -310,7 +310,7 @@ public class ReadingTimeEntryPersistenceTest {
 
 		ReadingTimeEntry newReadingTimeEntry = addReadingTimeEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -406,7 +406,8 @@ public class ReadingTimeEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"readingTimeEntryId", RandomTestUtil.nextLong()));
+				"readingTimeEntryId",
+				RandomTestUtil.nextLong(ReadingTimeEntry.class.getName())));
 
 		List<ReadingTimeEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -451,7 +452,9 @@ public class ReadingTimeEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"readingTimeEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ReadingTimeEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -539,7 +542,7 @@ public class ReadingTimeEntryPersistenceTest {
 	}
 
 	protected ReadingTimeEntry addReadingTimeEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ReadingTimeEntry.class.getName());
 
 		ReadingTimeEntry readingTimeEntry = _persistence.create(pk);
 

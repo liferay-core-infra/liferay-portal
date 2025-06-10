@@ -83,7 +83,7 @@ public class DLSyncEventPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
 		DLSyncEvent dlSyncEvent = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class DLSyncEventPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
 		DLSyncEvent newDLSyncEvent = _persistence.create(pk);
 
@@ -172,7 +172,7 @@ public class DLSyncEventPersistenceTest {
 
 	@Test(expected = NoSuchEventException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -201,7 +201,7 @@ public class DLSyncEventPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
 		DLSyncEvent missingDLSyncEvent = _persistence.fetchByPrimaryKey(pk);
 
@@ -234,9 +234,9 @@ public class DLSyncEventPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -255,7 +255,7 @@ public class DLSyncEventPersistenceTest {
 
 		DLSyncEvent newDLSyncEvent = addDLSyncEvent();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -348,7 +348,8 @@ public class DLSyncEventPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"syncEventId", RandomTestUtil.nextLong()));
+				"syncEventId",
+				RandomTestUtil.nextLong(DLSyncEvent.class.getName())));
 
 		List<DLSyncEvent> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -391,7 +392,10 @@ public class DLSyncEventPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"syncEventId", new Object[] {RandomTestUtil.nextLong()}));
+				"syncEventId",
+				new Object[] {
+					RandomTestUtil.nextLong(DLSyncEvent.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -457,7 +461,7 @@ public class DLSyncEventPersistenceTest {
 	}
 
 	protected DLSyncEvent addDLSyncEvent() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLSyncEvent.class.getName());
 
 		DLSyncEvent dlSyncEvent = _persistence.create(pk);
 

@@ -83,7 +83,7 @@ public class ObjectFieldPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectField.class.getName());
 
 		ObjectField objectField = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ObjectFieldPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectField.class.getName());
 
 		ObjectField newObjectField = _persistence.create(pk);
 
@@ -383,7 +383,7 @@ public class ObjectFieldPersistenceTest {
 
 	@Test(expected = NoSuchObjectFieldException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectField.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -420,7 +420,7 @@ public class ObjectFieldPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectField.class.getName());
 
 		ObjectField missingObjectField = _persistence.fetchByPrimaryKey(pk);
 
@@ -453,9 +453,9 @@ public class ObjectFieldPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectField.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectField.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -474,7 +474,7 @@ public class ObjectFieldPersistenceTest {
 
 		ObjectField newObjectField = addObjectField();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectField.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -567,7 +567,8 @@ public class ObjectFieldPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectFieldId", RandomTestUtil.nextLong()));
+				"objectFieldId",
+				RandomTestUtil.nextLong(ObjectField.class.getName())));
 
 		List<ObjectField> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -610,7 +611,10 @@ public class ObjectFieldPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectFieldId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectFieldId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectField.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -697,7 +701,7 @@ public class ObjectFieldPersistenceTest {
 	}
 
 	protected ObjectField addObjectField() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectField.class.getName());
 
 		ObjectField objectField = _persistence.create(pk);
 

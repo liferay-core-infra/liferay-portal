@@ -81,7 +81,7 @@ public class CTCommentPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTComment.class.getName());
 
 		CTComment ctComment = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class CTCommentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTComment.class.getName());
 
 		CTComment newCTComment = _persistence.create(pk);
 
@@ -183,7 +183,7 @@ public class CTCommentPersistenceTest {
 
 	@Test(expected = NoSuchCommentException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTComment.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -213,7 +213,7 @@ public class CTCommentPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTComment.class.getName());
 
 		CTComment missingCTComment = _persistence.fetchByPrimaryKey(pk);
 
@@ -246,9 +246,9 @@ public class CTCommentPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTComment.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTComment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -267,7 +267,7 @@ public class CTCommentPersistenceTest {
 
 		CTComment newCTComment = addCTComment();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTComment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -360,7 +360,8 @@ public class CTCommentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctCommentId", RandomTestUtil.nextLong()));
+				"ctCommentId",
+				RandomTestUtil.nextLong(CTComment.class.getName())));
 
 		List<CTComment> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -403,7 +404,10 @@ public class CTCommentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctCommentId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctCommentId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTComment.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -411,7 +415,7 @@ public class CTCommentPersistenceTest {
 	}
 
 	protected CTComment addCTComment() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTComment.class.getName());
 
 		CTComment ctComment = _persistence.create(pk);
 

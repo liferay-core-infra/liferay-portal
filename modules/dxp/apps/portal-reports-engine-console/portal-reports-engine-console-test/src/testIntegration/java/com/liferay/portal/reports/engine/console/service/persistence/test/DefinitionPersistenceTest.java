@@ -88,7 +88,7 @@ public class DefinitionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Definition.class.getName());
 
 		Definition definition = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class DefinitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Definition.class.getName());
 
 		Definition newDefinition = _persistence.create(pk);
 
@@ -240,7 +240,7 @@ public class DefinitionPersistenceTest {
 
 	@Test(expected = NoSuchDefinitionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Definition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -296,7 +296,7 @@ public class DefinitionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Definition.class.getName());
 
 		Definition missingDefinition = _persistence.fetchByPrimaryKey(pk);
 
@@ -329,9 +329,9 @@ public class DefinitionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Definition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Definition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -350,7 +350,7 @@ public class DefinitionPersistenceTest {
 
 		Definition newDefinition = addDefinition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Definition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -443,7 +443,8 @@ public class DefinitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"definitionId", RandomTestUtil.nextLong()));
+				"definitionId",
+				RandomTestUtil.nextLong(Definition.class.getName())));
 
 		List<Definition> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -486,7 +487,10 @@ public class DefinitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"definitionId", new Object[] {RandomTestUtil.nextLong()}));
+				"definitionId",
+				new Object[] {
+					RandomTestUtil.nextLong(Definition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -557,7 +561,7 @@ public class DefinitionPersistenceTest {
 	}
 
 	protected Definition addDefinition() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Definition.class.getName());
 
 		Definition definition = _persistence.create(pk);
 

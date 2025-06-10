@@ -85,7 +85,7 @@ public class SXPElementPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPElement.class.getName());
 
 		SXPElement sxpElement = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class SXPElementPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPElement.class.getName());
 
 		SXPElement newSXPElement = _persistence.create(pk);
 
@@ -303,7 +303,7 @@ public class SXPElementPersistenceTest {
 
 	@Test(expected = NoSuchSXPElementException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPElement.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -337,7 +337,7 @@ public class SXPElementPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPElement.class.getName());
 
 		SXPElement missingSXPElement = _persistence.fetchByPrimaryKey(pk);
 
@@ -370,9 +370,9 @@ public class SXPElementPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SXPElement.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SXPElement.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -391,7 +391,7 @@ public class SXPElementPersistenceTest {
 
 		SXPElement newSXPElement = addSXPElement();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPElement.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -484,7 +484,8 @@ public class SXPElementPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"sxpElementId", RandomTestUtil.nextLong()));
+				"sxpElementId",
+				RandomTestUtil.nextLong(SXPElement.class.getName())));
 
 		List<SXPElement> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -527,7 +528,10 @@ public class SXPElementPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"sxpElementId", new Object[] {RandomTestUtil.nextLong()}));
+				"sxpElementId",
+				new Object[] {
+					RandomTestUtil.nextLong(SXPElement.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -598,7 +602,7 @@ public class SXPElementPersistenceTest {
 	}
 
 	protected SXPElement addSXPElement() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPElement.class.getName());
 
 		SXPElement sxpElement = _persistence.create(pk);
 

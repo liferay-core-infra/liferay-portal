@@ -80,7 +80,8 @@ public class JournalArticleLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
 		JournalArticleLocalization journalArticleLocalization =
 			_persistence.create(pk);
@@ -111,7 +112,8 @@ public class JournalArticleLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
 		JournalArticleLocalization newJournalArticleLocalization =
 			_persistence.create(pk);
@@ -199,7 +201,8 @@ public class JournalArticleLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchArticleLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -234,7 +237,8 @@ public class JournalArticleLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
 		JournalArticleLocalization missingJournalArticleLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -275,9 +279,11 @@ public class JournalArticleLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -298,7 +304,8 @@ public class JournalArticleLocalizationPersistenceTest {
 		JournalArticleLocalization newJournalArticleLocalization =
 			addJournalArticleLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -379,7 +386,9 @@ public class JournalArticleLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"articleLocalizationId", RandomTestUtil.nextLong()));
+				"articleLocalizationId",
+				RandomTestUtil.nextLong(
+					JournalArticleLocalization.class.getName())));
 
 		List<JournalArticleLocalization> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -427,7 +436,10 @@ public class JournalArticleLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"articleLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						JournalArticleLocalization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -511,7 +523,8 @@ public class JournalArticleLocalizationPersistenceTest {
 	protected JournalArticleLocalization addJournalArticleLocalization()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleLocalization.class.getName());
 
 		JournalArticleLocalization journalArticleLocalization =
 			_persistence.create(pk);

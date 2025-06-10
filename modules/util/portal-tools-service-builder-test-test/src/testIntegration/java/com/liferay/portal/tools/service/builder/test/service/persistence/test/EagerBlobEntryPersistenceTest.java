@@ -88,7 +88,7 @@ public class EagerBlobEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
 		EagerBlobEntry eagerBlobEntry = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class EagerBlobEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
 		EagerBlobEntry newEagerBlobEntry = _persistence.create(pk);
 
@@ -189,7 +189,7 @@ public class EagerBlobEntryPersistenceTest {
 
 	@Test(expected = NoSuchEagerBlobEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -218,7 +218,7 @@ public class EagerBlobEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
 		EagerBlobEntry missingEagerBlobEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -254,9 +254,9 @@ public class EagerBlobEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -275,7 +275,7 @@ public class EagerBlobEntryPersistenceTest {
 
 		EagerBlobEntry newEagerBlobEntry = addEagerBlobEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -370,7 +370,8 @@ public class EagerBlobEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"eagerBlobEntryId", RandomTestUtil.nextLong()));
+				"eagerBlobEntryId",
+				RandomTestUtil.nextLong(EagerBlobEntry.class.getName())));
 
 		List<EagerBlobEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -413,7 +414,10 @@ public class EagerBlobEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"eagerBlobEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"eagerBlobEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(EagerBlobEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -484,7 +488,7 @@ public class EagerBlobEntryPersistenceTest {
 	}
 
 	protected EagerBlobEntry addEagerBlobEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(EagerBlobEntry.class.getName());
 
 		EagerBlobEntry eagerBlobEntry = _persistence.create(pk);
 

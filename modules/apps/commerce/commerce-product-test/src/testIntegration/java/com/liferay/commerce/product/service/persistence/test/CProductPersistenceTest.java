@@ -84,7 +84,7 @@ public class CProductPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CProduct.class.getName());
 
 		CProduct cProduct = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CProductPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CProduct.class.getName());
 
 		CProduct newCProduct = _persistence.create(pk);
 
@@ -253,7 +253,7 @@ public class CProductPersistenceTest {
 
 	@Test(expected = NoSuchCProductException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CProduct.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -285,7 +285,7 @@ public class CProductPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CProduct.class.getName());
 
 		CProduct missingCProduct = _persistence.fetchByPrimaryKey(pk);
 
@@ -318,9 +318,9 @@ public class CProductPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CProduct.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CProduct.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -339,7 +339,7 @@ public class CProductPersistenceTest {
 
 		CProduct newCProduct = addCProduct();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CProduct.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -431,7 +431,8 @@ public class CProductPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CProductId", RandomTestUtil.nextLong()));
+				"CProductId",
+				RandomTestUtil.nextLong(CProduct.class.getName())));
 
 		List<CProduct> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -473,7 +474,10 @@ public class CProductPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"CProductId", new Object[] {RandomTestUtil.nextLong()}));
+				"CProductId",
+				new Object[] {
+					RandomTestUtil.nextLong(CProduct.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -554,7 +558,7 @@ public class CProductPersistenceTest {
 	}
 
 	protected CProduct addCProduct() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CProduct.class.getName());
 
 		CProduct cProduct = _persistence.create(pk);
 

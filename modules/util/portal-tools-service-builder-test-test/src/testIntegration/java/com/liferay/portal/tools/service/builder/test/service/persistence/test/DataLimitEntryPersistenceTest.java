@@ -82,7 +82,7 @@ public class DataLimitEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
 		DataLimitEntry dataLimitEntry = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class DataLimitEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
 		DataLimitEntry newDataLimitEntry = _persistence.create(pk);
 
@@ -160,7 +160,7 @@ public class DataLimitEntryPersistenceTest {
 
 	@Test(expected = NoSuchDataLimitEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -190,7 +190,7 @@ public class DataLimitEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
 		DataLimitEntry missingDataLimitEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -226,9 +226,9 @@ public class DataLimitEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -247,7 +247,7 @@ public class DataLimitEntryPersistenceTest {
 
 		DataLimitEntry newDataLimitEntry = addDataLimitEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -342,7 +342,8 @@ public class DataLimitEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"dataLimitEntryId", RandomTestUtil.nextLong()));
+				"dataLimitEntryId",
+				RandomTestUtil.nextLong(DataLimitEntry.class.getName())));
 
 		List<DataLimitEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -385,7 +386,10 @@ public class DataLimitEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"dataLimitEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"dataLimitEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(DataLimitEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -393,7 +397,7 @@ public class DataLimitEntryPersistenceTest {
 	}
 
 	protected DataLimitEntry addDataLimitEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DataLimitEntry.class.getName());
 
 		DataLimitEntry dataLimitEntry = _persistence.create(pk);
 

@@ -88,7 +88,7 @@ public class SiteNavigationMenuPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
 		SiteNavigationMenu siteNavigationMenu = _persistence.create(pk);
 
@@ -117,7 +117,7 @@ public class SiteNavigationMenuPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
 		SiteNavigationMenu newSiteNavigationMenu = _persistence.create(pk);
 
@@ -336,7 +336,7 @@ public class SiteNavigationMenuPersistenceTest {
 
 	@Test(expected = NoSuchMenuException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -393,7 +393,7 @@ public class SiteNavigationMenuPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
 		SiteNavigationMenu missingSiteNavigationMenu =
 			_persistence.fetchByPrimaryKey(pk);
@@ -429,9 +429,9 @@ public class SiteNavigationMenuPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -450,7 +450,7 @@ public class SiteNavigationMenuPersistenceTest {
 
 		SiteNavigationMenu newSiteNavigationMenu = addSiteNavigationMenu();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -549,7 +549,8 @@ public class SiteNavigationMenuPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"siteNavigationMenuId", RandomTestUtil.nextLong()));
+				"siteNavigationMenuId",
+				RandomTestUtil.nextLong(SiteNavigationMenu.class.getName())));
 
 		List<SiteNavigationMenu> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -596,7 +597,9 @@ public class SiteNavigationMenuPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"siteNavigationMenuId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(SiteNavigationMenu.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -691,7 +694,7 @@ public class SiteNavigationMenuPersistenceTest {
 	}
 
 	protected SiteNavigationMenu addSiteNavigationMenu() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteNavigationMenu.class.getName());
 
 		SiteNavigationMenu siteNavigationMenu = _persistence.create(pk);
 

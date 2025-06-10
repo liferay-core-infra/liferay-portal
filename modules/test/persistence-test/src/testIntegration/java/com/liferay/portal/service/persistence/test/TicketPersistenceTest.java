@@ -82,7 +82,7 @@ public class TicketPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Ticket.class.getName());
 
 		Ticket ticket = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class TicketPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Ticket.class.getName());
 
 		Ticket newTicket = _persistence.create(pk);
 
@@ -207,7 +207,7 @@ public class TicketPersistenceTest {
 
 	@Test(expected = NoSuchTicketException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Ticket.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -237,7 +237,7 @@ public class TicketPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Ticket.class.getName());
 
 		Ticket missingTicket = _persistence.fetchByPrimaryKey(pk);
 
@@ -270,9 +270,9 @@ public class TicketPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Ticket.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Ticket.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -291,7 +291,7 @@ public class TicketPersistenceTest {
 
 		Ticket newTicket = addTicket();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Ticket.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -379,7 +379,8 @@ public class TicketPersistenceTest {
 			Ticket.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("ticketId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"ticketId", RandomTestUtil.nextLong(Ticket.class.getName())));
 
 		List<Ticket> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -418,7 +419,10 @@ public class TicketPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ticketId", new Object[] {RandomTestUtil.nextLong()}));
+				"ticketId",
+				new Object[] {
+					RandomTestUtil.nextLong(Ticket.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -482,7 +486,7 @@ public class TicketPersistenceTest {
 	}
 
 	protected Ticket addTicket() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Ticket.class.getName());
 
 		Ticket ticket = _persistence.create(pk);
 

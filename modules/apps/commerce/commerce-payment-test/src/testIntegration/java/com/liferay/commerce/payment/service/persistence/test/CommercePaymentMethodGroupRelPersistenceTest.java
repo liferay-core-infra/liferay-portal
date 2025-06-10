@@ -89,7 +89,8 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
 		CommercePaymentMethodGroupRel commercePaymentMethodGroupRel =
 			_persistence.create(pk);
@@ -120,7 +121,8 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
 		CommercePaymentMethodGroupRel newCommercePaymentMethodGroupRel =
 			_persistence.create(pk);
@@ -263,7 +265,8 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 
 	@Test(expected = NoSuchPaymentMethodGroupRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -326,7 +329,8 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
 		CommercePaymentMethodGroupRel missingCommercePaymentMethodGroupRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -367,9 +371,11 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -390,7 +396,8 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 		CommercePaymentMethodGroupRel newCommercePaymentMethodGroupRel =
 			addCommercePaymentMethodGroupRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -502,7 +509,9 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commercePaymentMethodGroupRelId", RandomTestUtil.nextLong()));
+				"commercePaymentMethodGroupRelId",
+				RandomTestUtil.nextLong(
+					CommercePaymentMethodGroupRel.class.getName())));
 
 		List<CommercePaymentMethodGroupRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -552,7 +561,10 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commercePaymentMethodGroupRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommercePaymentMethodGroupRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -632,7 +644,8 @@ public class CommercePaymentMethodGroupRelPersistenceTest {
 	protected CommercePaymentMethodGroupRel addCommercePaymentMethodGroupRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommercePaymentMethodGroupRel.class.getName());
 
 		CommercePaymentMethodGroupRel commercePaymentMethodGroupRel =
 			_persistence.create(pk);

@@ -84,7 +84,7 @@ public class CTCollectionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTCollection.class.getName());
 
 		CTCollection ctCollection = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CTCollectionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTCollection.class.getName());
 
 		CTCollection newCTCollection = _persistence.create(pk);
 
@@ -288,7 +288,7 @@ public class CTCollectionPersistenceTest {
 
 	@Test(expected = NoSuchCollectionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTCollection.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -321,7 +321,7 @@ public class CTCollectionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTCollection.class.getName());
 
 		CTCollection missingCTCollection = _persistence.fetchByPrimaryKey(pk);
 
@@ -356,9 +356,9 @@ public class CTCollectionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTCollection.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTCollection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -377,7 +377,7 @@ public class CTCollectionPersistenceTest {
 
 		CTCollection newCTCollection = addCTCollection();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTCollection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -472,7 +472,8 @@ public class CTCollectionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctCollectionId", RandomTestUtil.nextLong()));
+				"ctCollectionId",
+				RandomTestUtil.nextLong(CTCollection.class.getName())));
 
 		List<CTCollection> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -515,7 +516,10 @@ public class CTCollectionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctCollectionId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctCollectionId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTCollection.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -586,7 +590,7 @@ public class CTCollectionPersistenceTest {
 	}
 
 	protected CTCollection addCTCollection() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTCollection.class.getName());
 
 		CTCollection ctCollection = _persistence.create(pk);
 

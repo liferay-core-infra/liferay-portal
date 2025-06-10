@@ -81,7 +81,7 @@ public class FragmentEntryVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryVersion.class.getName());
 
 		FragmentEntryVersion fragmentEntryVersion = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class FragmentEntryVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryVersion.class.getName());
 
 		FragmentEntryVersion newFragmentEntryVersion = _persistence.create(pk);
 
@@ -557,7 +557,7 @@ public class FragmentEntryVersionPersistenceTest {
 
 	@Test(expected = NoSuchEntryVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -597,7 +597,7 @@ public class FragmentEntryVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryVersion.class.getName());
 
 		FragmentEntryVersion missingFragmentEntryVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -637,9 +637,11 @@ public class FragmentEntryVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			FragmentEntryVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			FragmentEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -659,7 +661,7 @@ public class FragmentEntryVersionPersistenceTest {
 		FragmentEntryVersion newFragmentEntryVersion =
 			addFragmentEntryVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -734,7 +736,8 @@ public class FragmentEntryVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fragmentEntryVersionId", RandomTestUtil.nextLong()));
+				"fragmentEntryVersionId",
+				RandomTestUtil.nextLong(FragmentEntryVersion.class.getName())));
 
 		List<FragmentEntryVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -782,7 +785,10 @@ public class FragmentEntryVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"fragmentEntryVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						FragmentEntryVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -891,7 +897,7 @@ public class FragmentEntryVersionPersistenceTest {
 	}
 
 	protected FragmentEntryVersion addFragmentEntryVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryVersion.class.getName());
 
 		FragmentEntryVersion fragmentEntryVersion = _persistence.create(pk);
 

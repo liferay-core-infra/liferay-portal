@@ -83,7 +83,7 @@ public class CSDiagramPinPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
 		CSDiagramPin csDiagramPin = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class CSDiagramPinPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
 		CSDiagramPin newCSDiagramPin = _persistence.create(pk);
 
@@ -196,7 +196,7 @@ public class CSDiagramPinPersistenceTest {
 
 	@Test(expected = NoSuchCSDiagramPinException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -228,7 +228,7 @@ public class CSDiagramPinPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
 		CSDiagramPin missingCSDiagramPin = _persistence.fetchByPrimaryKey(pk);
 
@@ -263,9 +263,9 @@ public class CSDiagramPinPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -284,7 +284,7 @@ public class CSDiagramPinPersistenceTest {
 
 		CSDiagramPin newCSDiagramPin = addCSDiagramPin();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -379,7 +379,8 @@ public class CSDiagramPinPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CSDiagramPinId", RandomTestUtil.nextLong()));
+				"CSDiagramPinId",
+				RandomTestUtil.nextLong(CSDiagramPin.class.getName())));
 
 		List<CSDiagramPin> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -422,7 +423,10 @@ public class CSDiagramPinPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"CSDiagramPinId", new Object[] {RandomTestUtil.nextLong()}));
+				"CSDiagramPinId",
+				new Object[] {
+					RandomTestUtil.nextLong(CSDiagramPin.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -430,7 +434,7 @@ public class CSDiagramPinPersistenceTest {
 	}
 
 	protected CSDiagramPin addCSDiagramPin() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramPin.class.getName());
 
 		CSDiagramPin csDiagramPin = _persistence.create(pk);
 

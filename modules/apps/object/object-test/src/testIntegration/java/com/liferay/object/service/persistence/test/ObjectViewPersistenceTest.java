@@ -81,7 +81,7 @@ public class ObjectViewPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectView.class.getName());
 
 		ObjectView objectView = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ObjectViewPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectView.class.getName());
 
 		ObjectView newObjectView = _persistence.create(pk);
 
@@ -213,7 +213,7 @@ public class ObjectViewPersistenceTest {
 
 	@Test(expected = NoSuchObjectViewException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectView.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -244,7 +244,7 @@ public class ObjectViewPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectView.class.getName());
 
 		ObjectView missingObjectView = _persistence.fetchByPrimaryKey(pk);
 
@@ -277,9 +277,9 @@ public class ObjectViewPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectView.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectView.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -298,7 +298,7 @@ public class ObjectViewPersistenceTest {
 
 		ObjectView newObjectView = addObjectView();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectView.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -391,7 +391,8 @@ public class ObjectViewPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectViewId", RandomTestUtil.nextLong()));
+				"objectViewId",
+				RandomTestUtil.nextLong(ObjectView.class.getName())));
 
 		List<ObjectView> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -434,7 +435,10 @@ public class ObjectViewPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectViewId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectViewId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectView.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -442,7 +446,7 @@ public class ObjectViewPersistenceTest {
 	}
 
 	protected ObjectView addObjectView() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectView.class.getName());
 
 		ObjectView objectView = _persistence.create(pk);
 

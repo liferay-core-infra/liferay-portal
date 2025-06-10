@@ -83,7 +83,7 @@ public class SiteFriendlyURLPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
 		SiteFriendlyURL siteFriendlyURL = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class SiteFriendlyURLPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
 		SiteFriendlyURL newSiteFriendlyURL = _persistence.create(pk);
 
@@ -255,7 +255,7 @@ public class SiteFriendlyURLPersistenceTest {
 
 	@Test(expected = NoSuchFriendlyURLException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -287,7 +287,7 @@ public class SiteFriendlyURLPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
 		SiteFriendlyURL missingSiteFriendlyURL = _persistence.fetchByPrimaryKey(
 			pk);
@@ -323,9 +323,9 @@ public class SiteFriendlyURLPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -344,7 +344,7 @@ public class SiteFriendlyURLPersistenceTest {
 
 		SiteFriendlyURL newSiteFriendlyURL = addSiteFriendlyURL();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -440,7 +440,8 @@ public class SiteFriendlyURLPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"siteFriendlyURLId", RandomTestUtil.nextLong()));
+				"siteFriendlyURLId",
+				RandomTestUtil.nextLong(SiteFriendlyURL.class.getName())));
 
 		List<SiteFriendlyURL> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -483,7 +484,10 @@ public class SiteFriendlyURLPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"siteFriendlyURLId", new Object[] {RandomTestUtil.nextLong()}));
+				"siteFriendlyURLId",
+				new Object[] {
+					RandomTestUtil.nextLong(SiteFriendlyURL.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -598,7 +602,7 @@ public class SiteFriendlyURLPersistenceTest {
 	}
 
 	protected SiteFriendlyURL addSiteFriendlyURL() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SiteFriendlyURL.class.getName());
 
 		SiteFriendlyURL siteFriendlyURL = _persistence.create(pk);
 

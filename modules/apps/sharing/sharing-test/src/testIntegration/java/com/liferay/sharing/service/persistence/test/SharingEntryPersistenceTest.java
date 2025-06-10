@@ -84,7 +84,7 @@ public class SharingEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
 		SharingEntry sharingEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class SharingEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
 		SharingEntry newSharingEntry = _persistence.create(pk);
 
@@ -331,7 +331,7 @@ public class SharingEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -364,7 +364,7 @@ public class SharingEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
 		SharingEntry missingSharingEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -399,9 +399,9 @@ public class SharingEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -420,7 +420,7 @@ public class SharingEntryPersistenceTest {
 
 		SharingEntry newSharingEntry = addSharingEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -515,7 +515,8 @@ public class SharingEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"sharingEntryId", RandomTestUtil.nextLong()));
+				"sharingEntryId",
+				RandomTestUtil.nextLong(SharingEntry.class.getName())));
 
 		List<SharingEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -558,7 +559,10 @@ public class SharingEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"sharingEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"sharingEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(SharingEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -661,7 +665,7 @@ public class SharingEntryPersistenceTest {
 	}
 
 	protected SharingEntry addSharingEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SharingEntry.class.getName());
 
 		SharingEntry sharingEntry = _persistence.create(pk);
 

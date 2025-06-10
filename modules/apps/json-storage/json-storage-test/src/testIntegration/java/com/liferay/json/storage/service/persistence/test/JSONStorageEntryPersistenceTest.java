@@ -82,7 +82,7 @@ public class JSONStorageEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
 		JSONStorageEntry jsonStorageEntry = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class JSONStorageEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
 		JSONStorageEntry newJSONStorageEntry = _persistence.create(pk);
 
@@ -230,7 +230,7 @@ public class JSONStorageEntryPersistenceTest {
 
 	@Test(expected = NoSuchJSONStorageEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -261,7 +261,7 @@ public class JSONStorageEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
 		JSONStorageEntry missingJSONStorageEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -297,9 +297,9 @@ public class JSONStorageEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -318,7 +318,7 @@ public class JSONStorageEntryPersistenceTest {
 
 		JSONStorageEntry newJSONStorageEntry = addJSONStorageEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +414,8 @@ public class JSONStorageEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"jsonStorageEntryId", RandomTestUtil.nextLong()));
+				"jsonStorageEntryId",
+				RandomTestUtil.nextLong(JSONStorageEntry.class.getName())));
 
 		List<JSONStorageEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -459,7 +460,9 @@ public class JSONStorageEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"jsonStorageEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(JSONStorageEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -546,7 +549,7 @@ public class JSONStorageEntryPersistenceTest {
 	}
 
 	protected JSONStorageEntry addJSONStorageEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JSONStorageEntry.class.getName());
 
 		JSONStorageEntry jsonStorageEntry = _persistence.create(pk);
 

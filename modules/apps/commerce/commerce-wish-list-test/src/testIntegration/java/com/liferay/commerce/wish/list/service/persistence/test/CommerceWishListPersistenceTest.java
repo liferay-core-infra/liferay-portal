@@ -84,7 +84,7 @@ public class CommerceWishListPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
 		CommerceWishList commerceWishList = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CommerceWishListPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
 		CommerceWishList newCommerceWishList = _persistence.create(pk);
 
@@ -252,7 +252,7 @@ public class CommerceWishListPersistenceTest {
 
 	@Test(expected = NoSuchWishListException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -283,7 +283,7 @@ public class CommerceWishListPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
 		CommerceWishList missingCommerceWishList =
 			_persistence.fetchByPrimaryKey(pk);
@@ -319,9 +319,9 @@ public class CommerceWishListPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -340,7 +340,7 @@ public class CommerceWishListPersistenceTest {
 
 		CommerceWishList newCommerceWishList = addCommerceWishList();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -436,7 +436,8 @@ public class CommerceWishListPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceWishListId", RandomTestUtil.nextLong()));
+				"commerceWishListId",
+				RandomTestUtil.nextLong(CommerceWishList.class.getName())));
 
 		List<CommerceWishList> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -481,7 +482,9 @@ public class CommerceWishListPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceWishListId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CommerceWishList.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -553,7 +556,7 @@ public class CommerceWishListPersistenceTest {
 	}
 
 	protected CommerceWishList addCommerceWishList() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceWishList.class.getName());
 
 		CommerceWishList commerceWishList = _persistence.create(pk);
 

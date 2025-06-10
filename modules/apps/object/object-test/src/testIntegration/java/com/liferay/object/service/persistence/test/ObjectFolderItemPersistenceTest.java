@@ -83,7 +83,7 @@ public class ObjectFolderItemPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
 		ObjectFolderItem objectFolderItem = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ObjectFolderItemPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
 		ObjectFolderItem newObjectFolderItem = _persistence.create(pk);
 
@@ -231,7 +231,7 @@ public class ObjectFolderItemPersistenceTest {
 
 	@Test(expected = NoSuchObjectFolderItemException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -263,7 +263,7 @@ public class ObjectFolderItemPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
 		ObjectFolderItem missingObjectFolderItem =
 			_persistence.fetchByPrimaryKey(pk);
@@ -299,9 +299,9 @@ public class ObjectFolderItemPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -320,7 +320,7 @@ public class ObjectFolderItemPersistenceTest {
 
 		ObjectFolderItem newObjectFolderItem = addObjectFolderItem();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -416,7 +416,8 @@ public class ObjectFolderItemPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectFolderItemId", RandomTestUtil.nextLong()));
+				"objectFolderItemId",
+				RandomTestUtil.nextLong(ObjectFolderItem.class.getName())));
 
 		List<ObjectFolderItem> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -461,7 +462,9 @@ public class ObjectFolderItemPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectFolderItemId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectFolderItem.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -533,7 +536,7 @@ public class ObjectFolderItemPersistenceTest {
 	}
 
 	protected ObjectFolderItem addObjectFolderItem() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFolderItem.class.getName());
 
 		ObjectFolderItem objectFolderItem = _persistence.create(pk);
 

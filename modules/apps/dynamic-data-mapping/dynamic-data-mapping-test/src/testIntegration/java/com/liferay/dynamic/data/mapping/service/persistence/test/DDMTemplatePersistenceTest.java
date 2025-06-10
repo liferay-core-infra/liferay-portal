@@ -89,7 +89,7 @@ public class DDMTemplatePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
 		DDMTemplate ddmTemplate = _persistence.create(pk);
 
@@ -117,7 +117,7 @@ public class DDMTemplatePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
 		DDMTemplate newDDMTemplate = _persistence.create(pk);
 
@@ -454,7 +454,7 @@ public class DDMTemplatePersistenceTest {
 
 	@Test(expected = NoSuchTemplateException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -514,7 +514,7 @@ public class DDMTemplatePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
 		DDMTemplate missingDDMTemplate = _persistence.fetchByPrimaryKey(pk);
 
@@ -547,9 +547,9 @@ public class DDMTemplatePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -568,7 +568,7 @@ public class DDMTemplatePersistenceTest {
 
 		DDMTemplate newDDMTemplate = addDDMTemplate();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -661,7 +661,8 @@ public class DDMTemplatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"templateId", RandomTestUtil.nextLong()));
+				"templateId",
+				RandomTestUtil.nextLong(DDMTemplate.class.getName())));
 
 		List<DDMTemplate> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -704,7 +705,10 @@ public class DDMTemplatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"templateId", new Object[] {RandomTestUtil.nextLong()}));
+				"templateId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMTemplate.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -808,7 +812,7 @@ public class DDMTemplatePersistenceTest {
 	}
 
 	protected DDMTemplate addDDMTemplate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMTemplate.class.getName());
 
 		DDMTemplate ddmTemplate = _persistence.create(pk);
 

@@ -83,7 +83,7 @@ public class RepositoryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Repository.class.getName());
 
 		Repository repository = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class RepositoryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Repository.class.getName());
 
 		Repository newRepository = _persistence.create(pk);
 
@@ -286,7 +286,7 @@ public class RepositoryPersistenceTest {
 
 	@Test(expected = NoSuchRepositoryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Repository.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -319,7 +319,7 @@ public class RepositoryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Repository.class.getName());
 
 		Repository missingRepository = _persistence.fetchByPrimaryKey(pk);
 
@@ -352,9 +352,9 @@ public class RepositoryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Repository.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Repository.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -373,7 +373,7 @@ public class RepositoryPersistenceTest {
 
 		Repository newRepository = addRepository();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Repository.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -466,7 +466,8 @@ public class RepositoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"repositoryId", RandomTestUtil.nextLong()));
+				"repositoryId",
+				RandomTestUtil.nextLong(Repository.class.getName())));
 
 		List<Repository> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -509,7 +510,10 @@ public class RepositoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"repositoryId", new Object[] {RandomTestUtil.nextLong()}));
+				"repositoryId",
+				new Object[] {
+					RandomTestUtil.nextLong(Repository.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -607,7 +611,7 @@ public class RepositoryPersistenceTest {
 	}
 
 	protected Repository addRepository() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Repository.class.getName());
 
 		Repository repository = _persistence.create(pk);
 

@@ -84,7 +84,7 @@ public class NullConvertibleEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NullConvertibleEntry.class.getName());
 
 		NullConvertibleEntry nullConvertibleEntry = _persistence.create(pk);
 
@@ -114,7 +114,7 @@ public class NullConvertibleEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NullConvertibleEntry.class.getName());
 
 		NullConvertibleEntry newNullConvertibleEntry = _persistence.create(pk);
 
@@ -159,7 +159,7 @@ public class NullConvertibleEntryPersistenceTest {
 
 	@Test(expected = NoSuchNullConvertibleEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NullConvertibleEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -191,7 +191,7 @@ public class NullConvertibleEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NullConvertibleEntry.class.getName());
 
 		NullConvertibleEntry missingNullConvertibleEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -231,9 +231,11 @@ public class NullConvertibleEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			NullConvertibleEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			NullConvertibleEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -253,7 +255,7 @@ public class NullConvertibleEntryPersistenceTest {
 		NullConvertibleEntry newNullConvertibleEntry =
 			addNullConvertibleEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NullConvertibleEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -357,7 +359,8 @@ public class NullConvertibleEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"nullConvertibleEntryId", RandomTestUtil.nextLong()));
+				"nullConvertibleEntryId",
+				RandomTestUtil.nextLong(NullConvertibleEntry.class.getName())));
 
 		List<NullConvertibleEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -405,7 +408,10 @@ public class NullConvertibleEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"nullConvertibleEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						NullConvertibleEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -477,7 +483,7 @@ public class NullConvertibleEntryPersistenceTest {
 	}
 
 	protected NullConvertibleEntry addNullConvertibleEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NullConvertibleEntry.class.getName());
 
 		NullConvertibleEntry nullConvertibleEntry = _persistence.create(pk);
 

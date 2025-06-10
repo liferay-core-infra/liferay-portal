@@ -81,7 +81,7 @@ public class ObjectFilterPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
 		ObjectFilter objectFilter = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ObjectFilterPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
 		ObjectFilter newObjectFilter = _persistence.create(pk);
 
@@ -210,7 +210,7 @@ public class ObjectFilterPersistenceTest {
 
 	@Test(expected = NoSuchObjectFilterException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -241,7 +241,7 @@ public class ObjectFilterPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
 		ObjectFilter missingObjectFilter = _persistence.fetchByPrimaryKey(pk);
 
@@ -276,9 +276,9 @@ public class ObjectFilterPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -297,7 +297,7 @@ public class ObjectFilterPersistenceTest {
 
 		ObjectFilter newObjectFilter = addObjectFilter();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -392,7 +392,8 @@ public class ObjectFilterPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectFilterId", RandomTestUtil.nextLong()));
+				"objectFilterId",
+				RandomTestUtil.nextLong(ObjectFilter.class.getName())));
 
 		List<ObjectFilter> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -435,7 +436,10 @@ public class ObjectFilterPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectFilterId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectFilterId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectFilter.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -443,7 +447,7 @@ public class ObjectFilterPersistenceTest {
 	}
 
 	protected ObjectFilter addObjectFilter() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectFilter.class.getName());
 
 		ObjectFilter objectFilter = _persistence.create(pk);
 

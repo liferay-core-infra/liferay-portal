@@ -84,7 +84,7 @@ public class KaleoTransitionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
 		KaleoTransition kaleoTransition = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class KaleoTransitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
 		KaleoTransition newKaleoTransition = _persistence.create(pk);
 
@@ -272,7 +272,7 @@ public class KaleoTransitionPersistenceTest {
 
 	@Test(expected = NoSuchTransitionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -307,7 +307,7 @@ public class KaleoTransitionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
 		KaleoTransition missingKaleoTransition = _persistence.fetchByPrimaryKey(
 			pk);
@@ -343,9 +343,9 @@ public class KaleoTransitionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -364,7 +364,7 @@ public class KaleoTransitionPersistenceTest {
 
 		KaleoTransition newKaleoTransition = addKaleoTransition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -460,7 +460,8 @@ public class KaleoTransitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoTransitionId", RandomTestUtil.nextLong()));
+				"kaleoTransitionId",
+				RandomTestUtil.nextLong(KaleoTransition.class.getName())));
 
 		List<KaleoTransition> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -503,7 +504,10 @@ public class KaleoTransitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kaleoTransitionId", new Object[] {RandomTestUtil.nextLong()}));
+				"kaleoTransitionId",
+				new Object[] {
+					RandomTestUtil.nextLong(KaleoTransition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -586,7 +590,7 @@ public class KaleoTransitionPersistenceTest {
 	}
 
 	protected KaleoTransition addKaleoTransition() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTransition.class.getName());
 
 		KaleoTransition kaleoTransition = _persistence.create(pk);
 

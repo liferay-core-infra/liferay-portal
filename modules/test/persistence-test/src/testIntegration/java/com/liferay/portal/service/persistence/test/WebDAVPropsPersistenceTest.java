@@ -82,7 +82,7 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
 		WebDAVProps webDAVProps = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
 		WebDAVProps newWebDAVProps = _persistence.create(pk);
 
@@ -176,7 +176,7 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test(expected = NoSuchWebDAVPropsException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -206,7 +206,7 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
 		WebDAVProps missingWebDAVProps = _persistence.fetchByPrimaryKey(pk);
 
@@ -241,9 +241,9 @@ public class WebDAVPropsPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -262,7 +262,7 @@ public class WebDAVPropsPersistenceTest {
 
 		WebDAVProps newWebDAVProps = addWebDAVProps();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -355,7 +355,8 @@ public class WebDAVPropsPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"webDavPropsId", RandomTestUtil.nextLong()));
+				"webDavPropsId",
+				RandomTestUtil.nextLong(WebDAVProps.class.getName())));
 
 		List<WebDAVProps> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -398,7 +399,10 @@ public class WebDAVPropsPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"webDavPropsId", new Object[] {RandomTestUtil.nextLong()}));
+				"webDavPropsId",
+				new Object[] {
+					RandomTestUtil.nextLong(WebDAVProps.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -469,7 +473,7 @@ public class WebDAVPropsPersistenceTest {
 	}
 
 	protected WebDAVProps addWebDAVProps() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WebDAVProps.class.getName());
 
 		WebDAVProps webDAVProps = _persistence.create(pk);
 

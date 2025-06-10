@@ -88,7 +88,7 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
 		DDMStructure ddmStructure = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
 		DDMStructure newDDMStructure = _persistence.create(pk);
 
@@ -378,7 +378,7 @@ public class DDMStructurePersistenceTest {
 
 	@Test(expected = NoSuchStructureException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -436,7 +436,7 @@ public class DDMStructurePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
 		DDMStructure missingDDMStructure = _persistence.fetchByPrimaryKey(pk);
 
@@ -471,9 +471,9 @@ public class DDMStructurePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -492,7 +492,7 @@ public class DDMStructurePersistenceTest {
 
 		DDMStructure newDDMStructure = addDDMStructure();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -587,7 +587,8 @@ public class DDMStructurePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"structureId", RandomTestUtil.nextLong()));
+				"structureId",
+				RandomTestUtil.nextLong(DDMStructure.class.getName())));
 
 		List<DDMStructure> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -630,7 +631,10 @@ public class DDMStructurePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"structureId", new Object[] {RandomTestUtil.nextLong()}));
+				"structureId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDMStructure.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -733,7 +737,7 @@ public class DDMStructurePersistenceTest {
 	}
 
 	protected DDMStructure addDDMStructure() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructure.class.getName());
 
 		DDMStructure ddmStructure = _persistence.create(pk);
 

@@ -88,7 +88,8 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
 		CommerceInventoryReplenishmentItem commerceInventoryReplenishmentItem =
 			_persistence.create(pk);
@@ -122,7 +123,8 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
 		CommerceInventoryReplenishmentItem
 			newCommerceInventoryReplenishmentItem = _persistence.create(pk);
@@ -345,7 +347,8 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 
 	@Test(expected = NoSuchInventoryReplenishmentItemException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -387,7 +390,8 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
 		CommerceInventoryReplenishmentItem
 			missingCommerceInventoryReplenishmentItem =
@@ -431,9 +435,11 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -455,7 +461,8 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 			newCommerceInventoryReplenishmentItem =
 				addCommerceInventoryReplenishmentItem();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -570,7 +577,8 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
 				"commerceInventoryReplenishmentItemId",
-				RandomTestUtil.nextLong()));
+				RandomTestUtil.nextLong(
+					CommerceInventoryReplenishmentItem.class.getName())));
 
 		List<CommerceInventoryReplenishmentItem> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -623,7 +631,10 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceInventoryReplenishmentItemId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceInventoryReplenishmentItem.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -706,7 +717,8 @@ public class CommerceInventoryReplenishmentItemPersistenceTest {
 			addCommerceInventoryReplenishmentItem()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryReplenishmentItem.class.getName());
 
 		CommerceInventoryReplenishmentItem commerceInventoryReplenishmentItem =
 			_persistence.create(pk);

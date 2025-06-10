@@ -88,7 +88,7 @@ public class CTSContentPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSContent.class.getName());
 
 		CTSContent ctsContent = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class CTSContentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSContent.class.getName());
 
 		CTSContent newCTSContent = _persistence.create(pk);
 
@@ -232,7 +232,7 @@ public class CTSContentPersistenceTest {
 
 	@Test(expected = NoSuchContentException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSContent.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -262,7 +262,7 @@ public class CTSContentPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSContent.class.getName());
 
 		CTSContent missingCTSContent = _persistence.fetchByPrimaryKey(pk);
 
@@ -295,9 +295,9 @@ public class CTSContentPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTSContent.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTSContent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -316,7 +316,7 @@ public class CTSContentPersistenceTest {
 
 		CTSContent newCTSContent = addCTSContent();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSContent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -409,7 +409,8 @@ public class CTSContentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctsContentId", RandomTestUtil.nextLong()));
+				"ctsContentId",
+				RandomTestUtil.nextLong(CTSContent.class.getName())));
 
 		List<CTSContent> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -452,7 +453,10 @@ public class CTSContentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctsContentId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctsContentId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTSContent.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -538,7 +542,7 @@ public class CTSContentPersistenceTest {
 	}
 
 	protected CTSContent addCTSContent() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTSContent.class.getName());
 
 		CTSContent ctsContent = _persistence.create(pk);
 

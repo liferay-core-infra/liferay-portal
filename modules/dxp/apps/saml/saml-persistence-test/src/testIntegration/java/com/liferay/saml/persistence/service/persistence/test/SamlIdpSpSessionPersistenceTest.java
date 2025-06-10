@@ -81,7 +81,7 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
 		SamlIdpSpSession samlIdpSpSession = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
 		SamlIdpSpSession newSamlIdpSpSession = _persistence.create(pk);
 
@@ -184,7 +184,7 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test(expected = NoSuchIdpSpSessionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -215,7 +215,7 @@ public class SamlIdpSpSessionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
 		SamlIdpSpSession missingSamlIdpSpSession =
 			_persistence.fetchByPrimaryKey(pk);
@@ -251,9 +251,9 @@ public class SamlIdpSpSessionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -272,7 +272,7 @@ public class SamlIdpSpSessionPersistenceTest {
 
 		SamlIdpSpSession newSamlIdpSpSession = addSamlIdpSpSession();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -368,7 +368,8 @@ public class SamlIdpSpSessionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"samlIdpSpSessionId", RandomTestUtil.nextLong()));
+				"samlIdpSpSessionId",
+				RandomTestUtil.nextLong(SamlIdpSpSession.class.getName())));
 
 		List<SamlIdpSpSession> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -413,7 +414,9 @@ public class SamlIdpSpSessionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"samlIdpSpSessionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(SamlIdpSpSession.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -421,7 +424,7 @@ public class SamlIdpSpSessionPersistenceTest {
 	}
 
 	protected SamlIdpSpSession addSamlIdpSpSession() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlIdpSpSession.class.getName());
 
 		SamlIdpSpSession samlIdpSpSession = _persistence.create(pk);
 

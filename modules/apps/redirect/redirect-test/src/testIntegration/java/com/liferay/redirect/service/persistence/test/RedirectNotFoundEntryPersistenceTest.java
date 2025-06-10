@@ -84,7 +84,8 @@ public class RedirectNotFoundEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
 		RedirectNotFoundEntry redirectNotFoundEntry = _persistence.create(pk);
 
@@ -114,7 +115,8 @@ public class RedirectNotFoundEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
 		RedirectNotFoundEntry newRedirectNotFoundEntry = _persistence.create(
 			pk);
@@ -209,7 +211,8 @@ public class RedirectNotFoundEntryPersistenceTest {
 
 	@Test(expected = NoSuchNotFoundEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -243,7 +246,8 @@ public class RedirectNotFoundEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
 		RedirectNotFoundEntry missingRedirectNotFoundEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -283,9 +287,11 @@ public class RedirectNotFoundEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -305,7 +311,8 @@ public class RedirectNotFoundEntryPersistenceTest {
 		RedirectNotFoundEntry newRedirectNotFoundEntry =
 			addRedirectNotFoundEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -409,7 +416,9 @@ public class RedirectNotFoundEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"redirectNotFoundEntryId", RandomTestUtil.nextLong()));
+				"redirectNotFoundEntryId",
+				RandomTestUtil.nextLong(
+					RedirectNotFoundEntry.class.getName())));
 
 		List<RedirectNotFoundEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -457,7 +466,10 @@ public class RedirectNotFoundEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"redirectNotFoundEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						RedirectNotFoundEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -536,7 +548,8 @@ public class RedirectNotFoundEntryPersistenceTest {
 	protected RedirectNotFoundEntry addRedirectNotFoundEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			RedirectNotFoundEntry.class.getName());
 
 		RedirectNotFoundEntry redirectNotFoundEntry = _persistence.create(pk);
 

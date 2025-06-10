@@ -84,7 +84,8 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
 		CPSpecificationOptionListTypeDefinitionRel
 			cpSpecificationOptionListTypeDefinitionRel = _persistence.create(
@@ -120,7 +121,8 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
 		CPSpecificationOptionListTypeDefinitionRel
 			newCPSpecificationOptionListTypeDefinitionRel = _persistence.create(
@@ -220,7 +222,8 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 		expected = NoSuchCPSpecificationOptionListTypeDefinitionRelException.class
 	)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -260,7 +263,8 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
 		CPSpecificationOptionListTypeDefinitionRel
 			missingCPSpecificationOptionListTypeDefinitionRel =
@@ -309,9 +313,11 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -334,7 +340,8 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 			newCPSpecificationOptionListTypeDefinitionRel =
 				addCPSpecificationOptionListTypeDefinitionRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -457,7 +464,9 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
 				"CPSpecificationOptionListTypeDefinitionRelId",
-				RandomTestUtil.nextLong()));
+				RandomTestUtil.nextLong(
+					CPSpecificationOptionListTypeDefinitionRel.class.
+						getName())));
 
 		List<CPSpecificationOptionListTypeDefinitionRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -515,7 +524,11 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPSpecificationOptionListTypeDefinitionRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPSpecificationOptionListTypeDefinitionRel.class.
+							getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -606,7 +619,8 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 			addCPSpecificationOptionListTypeDefinitionRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPSpecificationOptionListTypeDefinitionRel.class.getName());
 
 		CPSpecificationOptionListTypeDefinitionRel
 			cpSpecificationOptionListTypeDefinitionRel = _persistence.create(

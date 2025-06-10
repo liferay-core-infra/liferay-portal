@@ -82,7 +82,7 @@ public class ExpandoColumnPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
 		ExpandoColumn expandoColumn = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class ExpandoColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
 		ExpandoColumn newExpandoColumn = _persistence.create(pk);
 
@@ -203,7 +203,7 @@ public class ExpandoColumnPersistenceTest {
 
 	@Test(expected = NoSuchColumnException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -233,7 +233,7 @@ public class ExpandoColumnPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
 		ExpandoColumn missingExpandoColumn = _persistence.fetchByPrimaryKey(pk);
 
@@ -268,9 +268,9 @@ public class ExpandoColumnPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -289,7 +289,7 @@ public class ExpandoColumnPersistenceTest {
 
 		ExpandoColumn newExpandoColumn = addExpandoColumn();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -383,7 +383,9 @@ public class ExpandoColumnPersistenceTest {
 			ExpandoColumn.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("columnId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"columnId",
+				RandomTestUtil.nextLong(ExpandoColumn.class.getName())));
 
 		List<ExpandoColumn> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -423,7 +425,10 @@ public class ExpandoColumnPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"columnId", new Object[] {RandomTestUtil.nextLong()}));
+				"columnId",
+				new Object[] {
+					RandomTestUtil.nextLong(ExpandoColumn.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -494,7 +499,7 @@ public class ExpandoColumnPersistenceTest {
 	}
 
 	protected ExpandoColumn addExpandoColumn() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoColumn.class.getName());
 
 		ExpandoColumn expandoColumn = _persistence.create(pk);
 

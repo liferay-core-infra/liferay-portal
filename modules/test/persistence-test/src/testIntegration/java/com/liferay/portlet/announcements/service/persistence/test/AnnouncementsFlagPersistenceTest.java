@@ -82,7 +82,7 @@ public class AnnouncementsFlagPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
 		AnnouncementsFlag announcementsFlag = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class AnnouncementsFlagPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
 		AnnouncementsFlag newAnnouncementsFlag = _persistence.create(pk);
 
@@ -195,7 +195,7 @@ public class AnnouncementsFlagPersistenceTest {
 
 	@Test(expected = NoSuchFlagException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -226,7 +226,7 @@ public class AnnouncementsFlagPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
 		AnnouncementsFlag missingAnnouncementsFlag =
 			_persistence.fetchByPrimaryKey(pk);
@@ -262,9 +262,9 @@ public class AnnouncementsFlagPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -283,7 +283,7 @@ public class AnnouncementsFlagPersistenceTest {
 
 		AnnouncementsFlag newAnnouncementsFlag = addAnnouncementsFlag();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -378,7 +378,9 @@ public class AnnouncementsFlagPersistenceTest {
 			AnnouncementsFlag.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("flagId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"flagId",
+				RandomTestUtil.nextLong(AnnouncementsFlag.class.getName())));
 
 		List<AnnouncementsFlag> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -418,7 +420,10 @@ public class AnnouncementsFlagPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"flagId", new Object[] {RandomTestUtil.nextLong()}));
+				"flagId",
+				new Object[] {
+					RandomTestUtil.nextLong(AnnouncementsFlag.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -495,7 +500,7 @@ public class AnnouncementsFlagPersistenceTest {
 	}
 
 	protected AnnouncementsFlag addAnnouncementsFlag() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AnnouncementsFlag.class.getName());
 
 		AnnouncementsFlag announcementsFlag = _persistence.create(pk);
 

@@ -88,7 +88,7 @@ public class JournalFolderPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
 		JournalFolder journalFolder = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class JournalFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
 		JournalFolder newJournalFolder = _persistence.create(pk);
 
@@ -370,7 +370,7 @@ public class JournalFolderPersistenceTest {
 
 	@Test(expected = NoSuchFolderException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -429,7 +429,7 @@ public class JournalFolderPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
 		JournalFolder missingJournalFolder = _persistence.fetchByPrimaryKey(pk);
 
@@ -464,9 +464,9 @@ public class JournalFolderPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -485,7 +485,7 @@ public class JournalFolderPersistenceTest {
 
 		JournalFolder newJournalFolder = addJournalFolder();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -579,7 +579,9 @@ public class JournalFolderPersistenceTest {
 			JournalFolder.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("folderId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"folderId",
+				RandomTestUtil.nextLong(JournalFolder.class.getName())));
 
 		List<JournalFolder> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -619,7 +621,10 @@ public class JournalFolderPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"folderId", new Object[] {RandomTestUtil.nextLong()}));
+				"folderId",
+				new Object[] {
+					RandomTestUtil.nextLong(JournalFolder.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -728,7 +733,7 @@ public class JournalFolderPersistenceTest {
 	}
 
 	protected JournalFolder addJournalFolder() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalFolder.class.getName());
 
 		JournalFolder journalFolder = _persistence.create(pk);
 

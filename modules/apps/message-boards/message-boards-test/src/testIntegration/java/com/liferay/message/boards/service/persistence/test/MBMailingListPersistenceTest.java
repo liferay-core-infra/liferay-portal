@@ -83,7 +83,7 @@ public class MBMailingListPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
 		MBMailingList mbMailingList = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class MBMailingListPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
 		MBMailingList newMBMailingList = _persistence.create(pk);
 
@@ -309,7 +309,7 @@ public class MBMailingListPersistenceTest {
 
 	@Test(expected = NoSuchMailingListException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -346,7 +346,7 @@ public class MBMailingListPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
 		MBMailingList missingMBMailingList = _persistence.fetchByPrimaryKey(pk);
 
@@ -381,9 +381,9 @@ public class MBMailingListPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -402,7 +402,7 @@ public class MBMailingListPersistenceTest {
 
 		MBMailingList newMBMailingList = addMBMailingList();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -497,7 +497,8 @@ public class MBMailingListPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"mailingListId", RandomTestUtil.nextLong()));
+				"mailingListId",
+				RandomTestUtil.nextLong(MBMailingList.class.getName())));
 
 		List<MBMailingList> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -540,7 +541,10 @@ public class MBMailingListPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"mailingListId", new Object[] {RandomTestUtil.nextLong()}));
+				"mailingListId",
+				new Object[] {
+					RandomTestUtil.nextLong(MBMailingList.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -622,7 +626,7 @@ public class MBMailingListPersistenceTest {
 	}
 
 	protected MBMailingList addMBMailingList() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMailingList.class.getName());
 
 		MBMailingList mbMailingList = _persistence.create(pk);
 

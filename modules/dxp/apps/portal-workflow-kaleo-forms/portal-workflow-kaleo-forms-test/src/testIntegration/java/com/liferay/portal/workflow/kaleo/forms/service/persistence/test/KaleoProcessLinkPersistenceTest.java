@@ -83,7 +83,7 @@ public class KaleoProcessLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
 		KaleoProcessLink kaleoProcessLink = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class KaleoProcessLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
 		KaleoProcessLink newKaleoProcessLink = _persistence.create(pk);
 
@@ -173,7 +173,7 @@ public class KaleoProcessLinkPersistenceTest {
 
 	@Test(expected = NoSuchKaleoProcessLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -203,7 +203,7 @@ public class KaleoProcessLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
 		KaleoProcessLink missingKaleoProcessLink =
 			_persistence.fetchByPrimaryKey(pk);
@@ -239,9 +239,9 @@ public class KaleoProcessLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -260,7 +260,7 @@ public class KaleoProcessLinkPersistenceTest {
 
 		KaleoProcessLink newKaleoProcessLink = addKaleoProcessLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -356,7 +356,8 @@ public class KaleoProcessLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoProcessLinkId", RandomTestUtil.nextLong()));
+				"kaleoProcessLinkId",
+				RandomTestUtil.nextLong(KaleoProcessLink.class.getName())));
 
 		List<KaleoProcessLink> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -401,7 +402,9 @@ public class KaleoProcessLinkPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"kaleoProcessLinkId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(KaleoProcessLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -473,7 +476,7 @@ public class KaleoProcessLinkPersistenceTest {
 	}
 
 	protected KaleoProcessLink addKaleoProcessLink() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoProcessLink.class.getName());
 
 		KaleoProcessLink kaleoProcessLink = _persistence.create(pk);
 

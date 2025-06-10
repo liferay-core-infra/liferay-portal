@@ -84,7 +84,8 @@ public class CalendarNotificationTemplatePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
 		CalendarNotificationTemplate calendarNotificationTemplate =
 			_persistence.create(pk);
@@ -115,7 +116,8 @@ public class CalendarNotificationTemplatePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
 		CalendarNotificationTemplate newCalendarNotificationTemplate =
 			_persistence.create(pk);
@@ -290,7 +292,8 @@ public class CalendarNotificationTemplatePersistenceTest {
 
 	@Test(expected = NoSuchNotificationTemplateException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -330,7 +333,8 @@ public class CalendarNotificationTemplatePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
 		CalendarNotificationTemplate missingCalendarNotificationTemplate =
 			_persistence.fetchByPrimaryKey(pk);
@@ -371,9 +375,11 @@ public class CalendarNotificationTemplatePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -394,7 +400,8 @@ public class CalendarNotificationTemplatePersistenceTest {
 		CalendarNotificationTemplate newCalendarNotificationTemplate =
 			addCalendarNotificationTemplate();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -505,7 +512,9 @@ public class CalendarNotificationTemplatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"calendarNotificationTemplateId", RandomTestUtil.nextLong()));
+				"calendarNotificationTemplateId",
+				RandomTestUtil.nextLong(
+					CalendarNotificationTemplate.class.getName())));
 
 		List<CalendarNotificationTemplate> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -554,7 +563,10 @@ public class CalendarNotificationTemplatePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"calendarNotificationTemplateId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CalendarNotificationTemplate.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -650,7 +662,8 @@ public class CalendarNotificationTemplatePersistenceTest {
 	protected CalendarNotificationTemplate addCalendarNotificationTemplate()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CalendarNotificationTemplate.class.getName());
 
 		CalendarNotificationTemplate calendarNotificationTemplate =
 			_persistence.create(pk);

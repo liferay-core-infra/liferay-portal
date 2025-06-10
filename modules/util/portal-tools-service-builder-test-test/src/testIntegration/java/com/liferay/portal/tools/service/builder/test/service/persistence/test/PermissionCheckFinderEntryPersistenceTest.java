@@ -86,7 +86,8 @@ public class PermissionCheckFinderEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
 		PermissionCheckFinderEntry permissionCheckFinderEntry =
 			_persistence.create(pk);
@@ -117,7 +118,8 @@ public class PermissionCheckFinderEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
 		PermissionCheckFinderEntry newPermissionCheckFinderEntry =
 			_persistence.create(pk);
@@ -177,7 +179,8 @@ public class PermissionCheckFinderEntryPersistenceTest {
 
 	@Test(expected = NoSuchPermissionCheckFinderEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -235,7 +238,8 @@ public class PermissionCheckFinderEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
 		PermissionCheckFinderEntry missingPermissionCheckFinderEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -276,9 +280,11 @@ public class PermissionCheckFinderEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -299,7 +305,8 @@ public class PermissionCheckFinderEntryPersistenceTest {
 		PermissionCheckFinderEntry newPermissionCheckFinderEntry =
 			addPermissionCheckFinderEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -409,7 +416,9 @@ public class PermissionCheckFinderEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"permissionCheckFinderEntryId", RandomTestUtil.nextLong()));
+				"permissionCheckFinderEntryId",
+				RandomTestUtil.nextLong(
+					PermissionCheckFinderEntry.class.getName())));
 
 		List<PermissionCheckFinderEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -458,7 +467,10 @@ public class PermissionCheckFinderEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"permissionCheckFinderEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						PermissionCheckFinderEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -468,7 +480,8 @@ public class PermissionCheckFinderEntryPersistenceTest {
 	protected PermissionCheckFinderEntry addPermissionCheckFinderEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PermissionCheckFinderEntry.class.getName());
 
 		PermissionCheckFinderEntry permissionCheckFinderEntry =
 			_persistence.create(pk);

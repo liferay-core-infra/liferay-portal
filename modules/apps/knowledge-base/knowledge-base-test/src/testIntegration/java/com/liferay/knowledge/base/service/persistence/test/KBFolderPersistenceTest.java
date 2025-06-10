@@ -84,7 +84,7 @@ public class KBFolderPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBFolder.class.getName());
 
 		KBFolder kbFolder = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class KBFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBFolder.class.getName());
 
 		KBFolder newKBFolder = _persistence.create(pk);
 
@@ -320,7 +320,7 @@ public class KBFolderPersistenceTest {
 
 	@Test(expected = NoSuchFolderException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBFolder.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -354,7 +354,7 @@ public class KBFolderPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBFolder.class.getName());
 
 		KBFolder missingKBFolder = _persistence.fetchByPrimaryKey(pk);
 
@@ -387,9 +387,9 @@ public class KBFolderPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KBFolder.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KBFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -408,7 +408,7 @@ public class KBFolderPersistenceTest {
 
 		KBFolder newKBFolder = addKBFolder();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -500,7 +500,8 @@ public class KBFolderPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kbFolderId", RandomTestUtil.nextLong()));
+				"kbFolderId",
+				RandomTestUtil.nextLong(KBFolder.class.getName())));
 
 		List<KBFolder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -542,7 +543,10 @@ public class KBFolderPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kbFolderId", new Object[] {RandomTestUtil.nextLong()}));
+				"kbFolderId",
+				new Object[] {
+					RandomTestUtil.nextLong(KBFolder.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -655,7 +659,7 @@ public class KBFolderPersistenceTest {
 	}
 
 	protected KBFolder addKBFolder() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBFolder.class.getName());
 
 		KBFolder kbFolder = _persistence.create(pk);
 

@@ -83,7 +83,7 @@ public class SamlSpMessagePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
 		SamlSpMessage samlSpMessage = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class SamlSpMessagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
 		SamlSpMessage newSamlSpMessage = _persistence.create(pk);
 
@@ -178,7 +178,7 @@ public class SamlSpMessagePersistenceTest {
 
 	@Test(expected = NoSuchSpMessageException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -208,7 +208,7 @@ public class SamlSpMessagePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
 		SamlSpMessage missingSamlSpMessage = _persistence.fetchByPrimaryKey(pk);
 
@@ -243,9 +243,9 @@ public class SamlSpMessagePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -264,7 +264,7 @@ public class SamlSpMessagePersistenceTest {
 
 		SamlSpMessage newSamlSpMessage = addSamlSpMessage();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -359,7 +359,8 @@ public class SamlSpMessagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"samlSpMessageId", RandomTestUtil.nextLong()));
+				"samlSpMessageId",
+				RandomTestUtil.nextLong(SamlSpMessage.class.getName())));
 
 		List<SamlSpMessage> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -402,7 +403,10 @@ public class SamlSpMessagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"samlSpMessageId", new Object[] {RandomTestUtil.nextLong()}));
+				"samlSpMessageId",
+				new Object[] {
+					RandomTestUtil.nextLong(SamlSpMessage.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -473,7 +477,7 @@ public class SamlSpMessagePersistenceTest {
 	}
 
 	protected SamlSpMessage addSamlSpMessage() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpMessage.class.getName());
 
 		SamlSpMessage samlSpMessage = _persistence.create(pk);
 

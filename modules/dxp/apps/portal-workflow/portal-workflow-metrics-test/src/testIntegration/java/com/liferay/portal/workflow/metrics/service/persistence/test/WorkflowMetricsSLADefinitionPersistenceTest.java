@@ -85,7 +85,8 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
 		WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
 		WorkflowMetricsSLADefinition newWorkflowMetricsSLADefinition =
 			_persistence.create(pk);
@@ -374,7 +376,8 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 
 	@Test(expected = NoSuchSLADefinitionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -415,7 +418,8 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
 		WorkflowMetricsSLADefinition missingWorkflowMetricsSLADefinition =
 			_persistence.fetchByPrimaryKey(pk);
@@ -456,9 +460,11 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -479,7 +485,8 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 		WorkflowMetricsSLADefinition newWorkflowMetricsSLADefinition =
 			addWorkflowMetricsSLADefinition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -590,7 +597,9 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"workflowMetricsSLADefinitionId", RandomTestUtil.nextLong()));
+				"workflowMetricsSLADefinitionId",
+				RandomTestUtil.nextLong(
+					WorkflowMetricsSLADefinition.class.getName())));
 
 		List<WorkflowMetricsSLADefinition> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -639,7 +648,10 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"workflowMetricsSLADefinitionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						WorkflowMetricsSLADefinition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -732,7 +744,8 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 	protected WorkflowMetricsSLADefinition addWorkflowMetricsSLADefinition()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			WorkflowMetricsSLADefinition.class.getName());
 
 		WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
 			_persistence.create(pk);

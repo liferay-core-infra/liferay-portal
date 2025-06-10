@@ -84,7 +84,7 @@ public class AssetAutoTaggerEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetAutoTaggerEntry.class.getName());
 
 		AssetAutoTaggerEntry assetAutoTaggerEntry = _persistence.create(pk);
 
@@ -114,7 +114,7 @@ public class AssetAutoTaggerEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetAutoTaggerEntry.class.getName());
 
 		AssetAutoTaggerEntry newAssetAutoTaggerEntry = _persistence.create(pk);
 
@@ -209,7 +209,7 @@ public class AssetAutoTaggerEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetAutoTaggerEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -243,7 +243,7 @@ public class AssetAutoTaggerEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetAutoTaggerEntry.class.getName());
 
 		AssetAutoTaggerEntry missingAssetAutoTaggerEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -283,9 +283,11 @@ public class AssetAutoTaggerEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			AssetAutoTaggerEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			AssetAutoTaggerEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -305,7 +307,7 @@ public class AssetAutoTaggerEntryPersistenceTest {
 		AssetAutoTaggerEntry newAssetAutoTaggerEntry =
 			addAssetAutoTaggerEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetAutoTaggerEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -409,7 +411,8 @@ public class AssetAutoTaggerEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"assetAutoTaggerEntryId", RandomTestUtil.nextLong()));
+				"assetAutoTaggerEntryId",
+				RandomTestUtil.nextLong(AssetAutoTaggerEntry.class.getName())));
 
 		List<AssetAutoTaggerEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -457,7 +460,10 @@ public class AssetAutoTaggerEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"assetAutoTaggerEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						AssetAutoTaggerEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -534,7 +540,7 @@ public class AssetAutoTaggerEntryPersistenceTest {
 	}
 
 	protected AssetAutoTaggerEntry addAssetAutoTaggerEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetAutoTaggerEntry.class.getName());
 
 		AssetAutoTaggerEntry assetAutoTaggerEntry = _persistence.create(pk);
 

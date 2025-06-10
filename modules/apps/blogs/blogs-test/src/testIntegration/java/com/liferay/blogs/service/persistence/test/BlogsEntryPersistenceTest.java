@@ -88,7 +88,7 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
 		BlogsEntry blogsEntry = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
 		BlogsEntry newBlogsEntry = _persistence.create(pk);
 
@@ -551,7 +551,7 @@ public class BlogsEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -613,7 +613,7 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
 		BlogsEntry missingBlogsEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -646,9 +646,9 @@ public class BlogsEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -667,7 +667,7 @@ public class BlogsEntryPersistenceTest {
 
 		BlogsEntry newBlogsEntry = addBlogsEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -758,7 +758,9 @@ public class BlogsEntryPersistenceTest {
 			BlogsEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("entryId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"entryId",
+				RandomTestUtil.nextLong(BlogsEntry.class.getName())));
 
 		List<BlogsEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -798,7 +800,10 @@ public class BlogsEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"entryId", new Object[] {RandomTestUtil.nextLong()}));
+				"entryId",
+				new Object[] {
+					RandomTestUtil.nextLong(BlogsEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -890,7 +895,7 @@ public class BlogsEntryPersistenceTest {
 	}
 
 	protected BlogsEntry addBlogsEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BlogsEntry.class.getName());
 
 		BlogsEntry blogsEntry = _persistence.create(pk);
 

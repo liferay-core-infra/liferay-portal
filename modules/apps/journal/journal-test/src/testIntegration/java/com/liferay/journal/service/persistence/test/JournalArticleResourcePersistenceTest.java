@@ -83,7 +83,8 @@ public class JournalArticleResourcePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
 		JournalArticleResource journalArticleResource = _persistence.create(pk);
 
@@ -113,7 +114,8 @@ public class JournalArticleResourcePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
 		JournalArticleResource newJournalArticleResource = _persistence.create(
 			pk);
@@ -218,7 +220,8 @@ public class JournalArticleResourcePersistenceTest {
 
 	@Test(expected = NoSuchArticleResourceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -251,7 +254,8 @@ public class JournalArticleResourcePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
 		JournalArticleResource missingJournalArticleResource =
 			_persistence.fetchByPrimaryKey(pk);
@@ -291,9 +295,11 @@ public class JournalArticleResourcePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -313,7 +319,8 @@ public class JournalArticleResourcePersistenceTest {
 		JournalArticleResource newJournalArticleResource =
 			addJournalArticleResource();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -417,7 +424,9 @@ public class JournalArticleResourcePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"resourcePrimKey", RandomTestUtil.nextLong()));
+				"resourcePrimKey",
+				RandomTestUtil.nextLong(
+					JournalArticleResource.class.getName())));
 
 		List<JournalArticleResource> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -462,7 +471,11 @@ public class JournalArticleResourcePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"resourcePrimKey", new Object[] {RandomTestUtil.nextLong()}));
+				"resourcePrimKey",
+				new Object[] {
+					RandomTestUtil.nextLong(
+						JournalArticleResource.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -552,7 +565,8 @@ public class JournalArticleResourcePersistenceTest {
 	protected JournalArticleResource addJournalArticleResource()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			JournalArticleResource.class.getName());
 
 		JournalArticleResource journalArticleResource = _persistence.create(pk);
 

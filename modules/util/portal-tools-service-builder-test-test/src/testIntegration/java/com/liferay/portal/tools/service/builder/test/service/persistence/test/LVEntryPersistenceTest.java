@@ -83,7 +83,7 @@ public class LVEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntry.class.getName());
 
 		LVEntry lvEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class LVEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntry.class.getName());
 
 		LVEntry newLVEntry = _persistence.create(pk);
 
@@ -281,7 +281,7 @@ public class LVEntryPersistenceTest {
 
 	@Test(expected = NoSuchLVEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -311,7 +311,7 @@ public class LVEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntry.class.getName());
 
 		LVEntry missingLVEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -344,9 +344,9 @@ public class LVEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LVEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LVEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -365,7 +365,7 @@ public class LVEntryPersistenceTest {
 
 		LVEntry newLVEntry = addLVEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -455,7 +455,8 @@ public class LVEntryPersistenceTest {
 			LVEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("lvEntryId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"lvEntryId", RandomTestUtil.nextLong(LVEntry.class.getName())));
 
 		List<LVEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -495,7 +496,10 @@ public class LVEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"lvEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"lvEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(LVEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -581,7 +585,7 @@ public class LVEntryPersistenceTest {
 	}
 
 	protected LVEntry addLVEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntry.class.getName());
 
 		LVEntry lvEntry = _persistence.create(pk);
 

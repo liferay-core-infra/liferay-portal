@@ -84,7 +84,7 @@ public class ChangesetCollectionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
 		ChangesetCollection changesetCollection = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class ChangesetCollectionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
 		ChangesetCollection newChangesetCollection = _persistence.create(pk);
 
@@ -223,7 +223,7 @@ public class ChangesetCollectionPersistenceTest {
 
 	@Test(expected = NoSuchCollectionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -256,7 +256,7 @@ public class ChangesetCollectionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
 		ChangesetCollection missingChangesetCollection =
 			_persistence.fetchByPrimaryKey(pk);
@@ -292,9 +292,9 @@ public class ChangesetCollectionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -313,7 +313,7 @@ public class ChangesetCollectionPersistenceTest {
 
 		ChangesetCollection newChangesetCollection = addChangesetCollection();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -413,7 +413,8 @@ public class ChangesetCollectionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"changesetCollectionId", RandomTestUtil.nextLong()));
+				"changesetCollectionId",
+				RandomTestUtil.nextLong(ChangesetCollection.class.getName())));
 
 		List<ChangesetCollection> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -460,7 +461,9 @@ public class ChangesetCollectionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"changesetCollectionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ChangesetCollection.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -535,7 +538,7 @@ public class ChangesetCollectionPersistenceTest {
 	}
 
 	protected ChangesetCollection addChangesetCollection() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetCollection.class.getName());
 
 		ChangesetCollection changesetCollection = _persistence.create(pk);
 

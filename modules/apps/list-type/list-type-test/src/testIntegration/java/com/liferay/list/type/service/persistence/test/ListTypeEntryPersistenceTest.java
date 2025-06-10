@@ -83,7 +83,7 @@ public class ListTypeEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
 		ListTypeEntry listTypeEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ListTypeEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
 		ListTypeEntry newListTypeEntry = _persistence.create(pk);
 
@@ -272,7 +272,7 @@ public class ListTypeEntryPersistenceTest {
 
 	@Test(expected = NoSuchListTypeEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -304,7 +304,7 @@ public class ListTypeEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
 		ListTypeEntry missingListTypeEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -339,9 +339,9 @@ public class ListTypeEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -360,7 +360,7 @@ public class ListTypeEntryPersistenceTest {
 
 		ListTypeEntry newListTypeEntry = addListTypeEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -455,7 +455,8 @@ public class ListTypeEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"listTypeEntryId", RandomTestUtil.nextLong()));
+				"listTypeEntryId",
+				RandomTestUtil.nextLong(ListTypeEntry.class.getName())));
 
 		List<ListTypeEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -498,7 +499,10 @@ public class ListTypeEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"listTypeEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"listTypeEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(ListTypeEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -585,7 +589,7 @@ public class ListTypeEntryPersistenceTest {
 	}
 
 	protected ListTypeEntry addListTypeEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeEntry.class.getName());
 
 		ListTypeEntry listTypeEntry = _persistence.create(pk);
 

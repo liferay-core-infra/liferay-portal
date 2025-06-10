@@ -85,7 +85,7 @@ public class CommerceOrderTypeRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceOrderTypeRel.class.getName());
 
 		CommerceOrderTypeRel commerceOrderTypeRel = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class CommerceOrderTypeRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceOrderTypeRel.class.getName());
 
 		CommerceOrderTypeRel newCommerceOrderTypeRel = _persistence.create(pk);
 
@@ -280,7 +280,7 @@ public class CommerceOrderTypeRelPersistenceTest {
 
 	@Test(expected = NoSuchOrderTypeRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceOrderTypeRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -315,7 +315,7 @@ public class CommerceOrderTypeRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceOrderTypeRel.class.getName());
 
 		CommerceOrderTypeRel missingCommerceOrderTypeRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -355,9 +355,11 @@ public class CommerceOrderTypeRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceOrderTypeRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceOrderTypeRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -377,7 +379,7 @@ public class CommerceOrderTypeRelPersistenceTest {
 		CommerceOrderTypeRel newCommerceOrderTypeRel =
 			addCommerceOrderTypeRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceOrderTypeRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -479,7 +481,8 @@ public class CommerceOrderTypeRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceOrderTypeRelId", RandomTestUtil.nextLong()));
+				"commerceOrderTypeRelId",
+				RandomTestUtil.nextLong(CommerceOrderTypeRel.class.getName())));
 
 		List<CommerceOrderTypeRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -527,7 +530,10 @@ public class CommerceOrderTypeRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceOrderTypeRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceOrderTypeRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -620,7 +626,7 @@ public class CommerceOrderTypeRelPersistenceTest {
 	}
 
 	protected CommerceOrderTypeRel addCommerceOrderTypeRel() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceOrderTypeRel.class.getName());
 
 		CommerceOrderTypeRel commerceOrderTypeRel = _persistence.create(pk);
 

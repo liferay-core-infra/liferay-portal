@@ -83,7 +83,7 @@ public class ObjectStateFlowPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
 		ObjectStateFlow objectStateFlow = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ObjectStateFlowPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
 		ObjectStateFlow newObjectStateFlow = _persistence.create(pk);
 
@@ -201,7 +201,7 @@ public class ObjectStateFlowPersistenceTest {
 
 	@Test(expected = NoSuchObjectStateFlowException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -232,7 +232,7 @@ public class ObjectStateFlowPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
 		ObjectStateFlow missingObjectStateFlow = _persistence.fetchByPrimaryKey(
 			pk);
@@ -268,9 +268,9 @@ public class ObjectStateFlowPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -289,7 +289,7 @@ public class ObjectStateFlowPersistenceTest {
 
 		ObjectStateFlow newObjectStateFlow = addObjectStateFlow();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -385,7 +385,8 @@ public class ObjectStateFlowPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectStateFlowId", RandomTestUtil.nextLong()));
+				"objectStateFlowId",
+				RandomTestUtil.nextLong(ObjectStateFlow.class.getName())));
 
 		List<ObjectStateFlow> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -428,7 +429,10 @@ public class ObjectStateFlowPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectStateFlowId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectStateFlowId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectStateFlow.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -495,7 +499,7 @@ public class ObjectStateFlowPersistenceTest {
 	}
 
 	protected ObjectStateFlow addObjectStateFlow() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectStateFlow.class.getName());
 
 		ObjectStateFlow objectStateFlow = _persistence.create(pk);
 

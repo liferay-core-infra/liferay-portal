@@ -82,7 +82,7 @@ public class ReleasePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Release.class.getName());
 
 		Release release = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class ReleasePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Release.class.getName());
 
 		Release newRelease = _persistence.create(pk);
 
@@ -187,7 +187,7 @@ public class ReleasePersistenceTest {
 
 	@Test(expected = NoSuchReleaseException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Release.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -218,7 +218,7 @@ public class ReleasePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Release.class.getName());
 
 		Release missingRelease = _persistence.fetchByPrimaryKey(pk);
 
@@ -251,9 +251,9 @@ public class ReleasePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Release.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Release.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -272,7 +272,7 @@ public class ReleasePersistenceTest {
 
 		Release newRelease = addRelease();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Release.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -362,7 +362,8 @@ public class ReleasePersistenceTest {
 			Release.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("releaseId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"releaseId", RandomTestUtil.nextLong(Release.class.getName())));
 
 		List<Release> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -402,7 +403,10 @@ public class ReleasePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"releaseId", new Object[] {RandomTestUtil.nextLong()}));
+				"releaseId",
+				new Object[] {
+					RandomTestUtil.nextLong(Release.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -466,7 +470,7 @@ public class ReleasePersistenceTest {
 	}
 
 	protected Release addRelease() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Release.class.getName());
 
 		Release release = _persistence.create(pk);
 

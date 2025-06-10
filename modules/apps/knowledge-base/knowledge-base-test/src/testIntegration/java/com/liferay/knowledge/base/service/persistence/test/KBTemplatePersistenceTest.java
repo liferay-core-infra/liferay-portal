@@ -87,7 +87,7 @@ public class KBTemplatePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
 		KBTemplate kbTemplate = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class KBTemplatePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
 		KBTemplate newKBTemplate = _persistence.create(pk);
 
@@ -228,7 +228,7 @@ public class KBTemplatePersistenceTest {
 
 	@Test(expected = NoSuchTemplateException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -283,7 +283,7 @@ public class KBTemplatePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
 		KBTemplate missingKBTemplate = _persistence.fetchByPrimaryKey(pk);
 
@@ -316,9 +316,9 @@ public class KBTemplatePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -337,7 +337,7 @@ public class KBTemplatePersistenceTest {
 
 		KBTemplate newKBTemplate = addKBTemplate();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -430,7 +430,8 @@ public class KBTemplatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kbTemplateId", RandomTestUtil.nextLong()));
+				"kbTemplateId",
+				RandomTestUtil.nextLong(KBTemplate.class.getName())));
 
 		List<KBTemplate> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -473,7 +474,10 @@ public class KBTemplatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kbTemplateId", new Object[] {RandomTestUtil.nextLong()}));
+				"kbTemplateId",
+				new Object[] {
+					RandomTestUtil.nextLong(KBTemplate.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -544,7 +548,7 @@ public class KBTemplatePersistenceTest {
 	}
 
 	protected KBTemplate addKBTemplate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KBTemplate.class.getName());
 
 		KBTemplate kbTemplate = _persistence.create(pk);
 

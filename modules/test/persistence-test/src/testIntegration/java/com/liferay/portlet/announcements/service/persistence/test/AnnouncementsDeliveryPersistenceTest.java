@@ -82,7 +82,8 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
 		AnnouncementsDelivery announcementsDelivery = _persistence.create(pk);
 
@@ -112,7 +113,8 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
 		AnnouncementsDelivery newAnnouncementsDelivery = _persistence.create(
 			pk);
@@ -207,7 +209,8 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 	@Test(expected = NoSuchDeliveryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -240,7 +243,8 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
 		AnnouncementsDelivery missingAnnouncementsDelivery =
 			_persistence.fetchByPrimaryKey(pk);
@@ -280,9 +284,11 @@ public class AnnouncementsDeliveryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -302,7 +308,8 @@ public class AnnouncementsDeliveryPersistenceTest {
 		AnnouncementsDelivery newAnnouncementsDelivery =
 			addAnnouncementsDelivery();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -405,7 +412,9 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"deliveryId", RandomTestUtil.nextLong()));
+				"deliveryId",
+				RandomTestUtil.nextLong(
+					AnnouncementsDelivery.class.getName())));
 
 		List<AnnouncementsDelivery> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -449,7 +458,11 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"deliveryId", new Object[] {RandomTestUtil.nextLong()}));
+				"deliveryId",
+				new Object[] {
+					RandomTestUtil.nextLong(
+						AnnouncementsDelivery.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -527,7 +540,8 @@ public class AnnouncementsDeliveryPersistenceTest {
 	protected AnnouncementsDelivery addAnnouncementsDelivery()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AnnouncementsDelivery.class.getName());
 
 		AnnouncementsDelivery announcementsDelivery = _persistence.create(pk);
 

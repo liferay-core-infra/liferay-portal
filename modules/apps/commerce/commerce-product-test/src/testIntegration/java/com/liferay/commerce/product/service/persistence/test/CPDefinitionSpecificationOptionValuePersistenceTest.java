@@ -87,7 +87,8 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
 		CPDefinitionSpecificationOptionValue
 			cpDefinitionSpecificationOptionValue = _persistence.create(pk);
@@ -121,7 +122,8 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
 		CPDefinitionSpecificationOptionValue
 			newCPDefinitionSpecificationOptionValue = _persistence.create(pk);
@@ -403,7 +405,8 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionSpecificationOptionValueException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -446,7 +449,8 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
 		CPDefinitionSpecificationOptionValue
 			missingCPDefinitionSpecificationOptionValue =
@@ -492,9 +496,11 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -516,7 +522,8 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 			newCPDefinitionSpecificationOptionValue =
 				addCPDefinitionSpecificationOptionValue();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -635,7 +642,8 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
 				"CPDefinitionSpecificationOptionValueId",
-				RandomTestUtil.nextLong()));
+				RandomTestUtil.nextLong(
+					CPDefinitionSpecificationOptionValue.class.getName())));
 
 		List<CPDefinitionSpecificationOptionValue> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -690,7 +698,10 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDefinitionSpecificationOptionValueId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDefinitionSpecificationOptionValue.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -813,7 +824,8 @@ public class CPDefinitionSpecificationOptionValuePersistenceTest {
 			addCPDefinitionSpecificationOptionValue()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionSpecificationOptionValue.class.getName());
 
 		CPDefinitionSpecificationOptionValue
 			cpDefinitionSpecificationOptionValue = _persistence.create(pk);

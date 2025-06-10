@@ -78,7 +78,8 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
 		LayoutSEOEntryCustomMetaTag layoutSEOEntryCustomMetaTag =
 			_persistence.create(pk);
@@ -109,7 +110,8 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
 		LayoutSEOEntryCustomMetaTag newLayoutSEOEntryCustomMetaTag =
 			_persistence.create(pk);
@@ -191,7 +193,8 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 
 	@Test(expected = NoSuchEntryCustomMetaTagException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -228,7 +231,8 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
 		LayoutSEOEntryCustomMetaTag missingLayoutSEOEntryCustomMetaTag =
 			_persistence.fetchByPrimaryKey(pk);
@@ -269,9 +273,11 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -292,7 +298,8 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 		LayoutSEOEntryCustomMetaTag newLayoutSEOEntryCustomMetaTag =
 			addLayoutSEOEntryCustomMetaTag();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -375,7 +382,9 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutSEOEntryCustomMetaTagId", RandomTestUtil.nextLong()));
+				"layoutSEOEntryCustomMetaTagId",
+				RandomTestUtil.nextLong(
+					LayoutSEOEntryCustomMetaTag.class.getName())));
 
 		List<LayoutSEOEntryCustomMetaTag> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -424,7 +433,10 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"layoutSEOEntryCustomMetaTagId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						LayoutSEOEntryCustomMetaTag.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -434,7 +446,8 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 	protected LayoutSEOEntryCustomMetaTag addLayoutSEOEntryCustomMetaTag()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutSEOEntryCustomMetaTag.class.getName());
 
 		LayoutSEOEntryCustomMetaTag layoutSEOEntryCustomMetaTag =
 			_persistence.create(pk);

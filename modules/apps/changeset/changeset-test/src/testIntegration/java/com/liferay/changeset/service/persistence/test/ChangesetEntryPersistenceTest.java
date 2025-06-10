@@ -83,7 +83,7 @@ public class ChangesetEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
 		ChangesetEntry changesetEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ChangesetEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
 		ChangesetEntry newChangesetEntry = _persistence.create(pk);
 
@@ -227,7 +227,7 @@ public class ChangesetEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -258,7 +258,7 @@ public class ChangesetEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
 		ChangesetEntry missingChangesetEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -294,9 +294,9 @@ public class ChangesetEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -315,7 +315,7 @@ public class ChangesetEntryPersistenceTest {
 
 		ChangesetEntry newChangesetEntry = addChangesetEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -410,7 +410,8 @@ public class ChangesetEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"changesetEntryId", RandomTestUtil.nextLong()));
+				"changesetEntryId",
+				RandomTestUtil.nextLong(ChangesetEntry.class.getName())));
 
 		List<ChangesetEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -453,7 +454,10 @@ public class ChangesetEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"changesetEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"changesetEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(ChangesetEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -529,7 +533,7 @@ public class ChangesetEntryPersistenceTest {
 	}
 
 	protected ChangesetEntry addChangesetEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ChangesetEntry.class.getName());
 
 		ChangesetEntry changesetEntry = _persistence.create(pk);
 

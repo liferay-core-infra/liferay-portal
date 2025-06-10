@@ -81,7 +81,7 @@ public class UserIdMapperPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
 		UserIdMapper userIdMapper = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class UserIdMapperPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
 		UserIdMapper newUserIdMapper = _persistence.create(pk);
 
@@ -188,7 +188,7 @@ public class UserIdMapperPersistenceTest {
 
 	@Test(expected = NoSuchUserIdMapperException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -218,7 +218,7 @@ public class UserIdMapperPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
 		UserIdMapper missingUserIdMapper = _persistence.fetchByPrimaryKey(pk);
 
@@ -253,9 +253,9 @@ public class UserIdMapperPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -274,7 +274,7 @@ public class UserIdMapperPersistenceTest {
 
 		UserIdMapper newUserIdMapper = addUserIdMapper();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -369,7 +369,8 @@ public class UserIdMapperPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"userIdMapperId", RandomTestUtil.nextLong()));
+				"userIdMapperId",
+				RandomTestUtil.nextLong(UserIdMapper.class.getName())));
 
 		List<UserIdMapper> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -412,7 +413,10 @@ public class UserIdMapperPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"userIdMapperId", new Object[] {RandomTestUtil.nextLong()}));
+				"userIdMapperId",
+				new Object[] {
+					RandomTestUtil.nextLong(UserIdMapper.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -494,7 +498,7 @@ public class UserIdMapperPersistenceTest {
 	}
 
 	protected UserIdMapper addUserIdMapper() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserIdMapper.class.getName());
 
 		UserIdMapper userIdMapper = _persistence.create(pk);
 

@@ -80,7 +80,7 @@ public class ImagePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Image.class.getName());
 
 		Image image = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class ImagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Image.class.getName());
 
 		Image newImage = _persistence.create(pk);
 
@@ -168,7 +168,7 @@ public class ImagePersistenceTest {
 
 	@Test(expected = NoSuchImageException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Image.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -198,7 +198,7 @@ public class ImagePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Image.class.getName());
 
 		Image missingImage = _persistence.fetchByPrimaryKey(pk);
 
@@ -229,9 +229,9 @@ public class ImagePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Image.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Image.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -250,7 +250,7 @@ public class ImagePersistenceTest {
 
 		Image newImage = addImage();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Image.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -338,7 +338,8 @@ public class ImagePersistenceTest {
 			Image.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("imageId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"imageId", RandomTestUtil.nextLong(Image.class.getName())));
 
 		List<Image> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -377,7 +378,8 @@ public class ImagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"imageId", new Object[] {RandomTestUtil.nextLong()}));
+				"imageId",
+				new Object[] {RandomTestUtil.nextLong(Image.class.getName())}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -385,7 +387,7 @@ public class ImagePersistenceTest {
 	}
 
 	protected Image addImage() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Image.class.getName());
 
 		Image image = _persistence.create(pk);
 

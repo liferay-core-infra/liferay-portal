@@ -81,7 +81,7 @@ public class ObjectLayoutPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
 		ObjectLayout objectLayout = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ObjectLayoutPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
 		ObjectLayout newObjectLayout = _persistence.create(pk);
 
@@ -222,7 +222,7 @@ public class ObjectLayoutPersistenceTest {
 
 	@Test(expected = NoSuchObjectLayoutException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -253,7 +253,7 @@ public class ObjectLayoutPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
 		ObjectLayout missingObjectLayout = _persistence.fetchByPrimaryKey(pk);
 
@@ -288,9 +288,9 @@ public class ObjectLayoutPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -309,7 +309,7 @@ public class ObjectLayoutPersistenceTest {
 
 		ObjectLayout newObjectLayout = addObjectLayout();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -404,7 +404,8 @@ public class ObjectLayoutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectLayoutId", RandomTestUtil.nextLong()));
+				"objectLayoutId",
+				RandomTestUtil.nextLong(ObjectLayout.class.getName())));
 
 		List<ObjectLayout> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -447,7 +448,10 @@ public class ObjectLayoutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectLayoutId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectLayoutId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectLayout.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -455,7 +459,7 @@ public class ObjectLayoutPersistenceTest {
 	}
 
 	protected ObjectLayout addObjectLayout() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayout.class.getName());
 
 		ObjectLayout objectLayout = _persistence.create(pk);
 

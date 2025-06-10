@@ -81,7 +81,7 @@ public class LVEntryLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
 		LVEntryLocalization lvEntryLocalization = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class LVEntryLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
 		LVEntryLocalization newLVEntryLocalization = _persistence.create(pk);
 
@@ -197,7 +197,7 @@ public class LVEntryLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchLVEntryLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -229,7 +229,7 @@ public class LVEntryLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
 		LVEntryLocalization missingLVEntryLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -265,9 +265,9 @@ public class LVEntryLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -286,7 +286,7 @@ public class LVEntryLocalizationPersistenceTest {
 
 		LVEntryLocalization newLVEntryLocalization = addLVEntryLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -359,7 +359,8 @@ public class LVEntryLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"lvEntryLocalizationId", RandomTestUtil.nextLong()));
+				"lvEntryLocalizationId",
+				RandomTestUtil.nextLong(LVEntryLocalization.class.getName())));
 
 		List<LVEntryLocalization> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -406,7 +407,9 @@ public class LVEntryLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"lvEntryLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(LVEntryLocalization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -487,7 +490,7 @@ public class LVEntryLocalizationPersistenceTest {
 	}
 
 	protected LVEntryLocalization addLVEntryLocalization() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryLocalization.class.getName());
 
 		LVEntryLocalization lvEntryLocalization = _persistence.create(pk);
 

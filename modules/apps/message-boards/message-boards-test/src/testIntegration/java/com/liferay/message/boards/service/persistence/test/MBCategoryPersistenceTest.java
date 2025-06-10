@@ -88,7 +88,7 @@ public class MBCategoryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBCategory.class.getName());
 
 		MBCategory mbCategory = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class MBCategoryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBCategory.class.getName());
 
 		MBCategory newMBCategory = _persistence.create(pk);
 
@@ -413,7 +413,7 @@ public class MBCategoryPersistenceTest {
 
 	@Test(expected = NoSuchCategoryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBCategory.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -472,7 +472,7 @@ public class MBCategoryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBCategory.class.getName());
 
 		MBCategory missingMBCategory = _persistence.fetchByPrimaryKey(pk);
 
@@ -505,9 +505,9 @@ public class MBCategoryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MBCategory.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MBCategory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -526,7 +526,7 @@ public class MBCategoryPersistenceTest {
 
 		MBCategory newMBCategory = addMBCategory();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBCategory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -619,7 +619,8 @@ public class MBCategoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"categoryId", RandomTestUtil.nextLong()));
+				"categoryId",
+				RandomTestUtil.nextLong(MBCategory.class.getName())));
 
 		List<MBCategory> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -662,7 +663,10 @@ public class MBCategoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"categoryId", new Object[] {RandomTestUtil.nextLong()}));
+				"categoryId",
+				new Object[] {
+					RandomTestUtil.nextLong(MBCategory.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -755,7 +759,7 @@ public class MBCategoryPersistenceTest {
 	}
 
 	protected MBCategory addMBCategory() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBCategory.class.getName());
 
 		MBCategory mbCategory = _persistence.create(pk);
 

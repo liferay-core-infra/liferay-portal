@@ -87,7 +87,7 @@ public class SavedContentEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
 		SavedContentEntry savedContentEntry = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class SavedContentEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
 		SavedContentEntry newSavedContentEntry = _persistence.create(pk);
 
@@ -306,7 +306,7 @@ public class SavedContentEntryPersistenceTest {
 
 	@Test(expected = NoSuchSavedContentEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -362,7 +362,7 @@ public class SavedContentEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
 		SavedContentEntry missingSavedContentEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -398,9 +398,9 @@ public class SavedContentEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -419,7 +419,7 @@ public class SavedContentEntryPersistenceTest {
 
 		SavedContentEntry newSavedContentEntry = addSavedContentEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -516,7 +516,8 @@ public class SavedContentEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"savedContentEntryId", RandomTestUtil.nextLong()));
+				"savedContentEntryId",
+				RandomTestUtil.nextLong(SavedContentEntry.class.getName())));
 
 		List<SavedContentEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -562,7 +563,9 @@ public class SavedContentEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"savedContentEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(SavedContentEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -677,7 +680,7 @@ public class SavedContentEntryPersistenceTest {
 	}
 
 	protected SavedContentEntry addSavedContentEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SavedContentEntry.class.getName());
 
 		SavedContentEntry savedContentEntry = _persistence.create(pk);
 

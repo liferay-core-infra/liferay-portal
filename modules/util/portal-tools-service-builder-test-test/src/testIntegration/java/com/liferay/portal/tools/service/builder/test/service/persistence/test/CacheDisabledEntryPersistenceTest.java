@@ -84,7 +84,7 @@ public class CacheDisabledEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
 		CacheDisabledEntry cacheDisabledEntry = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class CacheDisabledEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
 		CacheDisabledEntry newCacheDisabledEntry = _persistence.create(pk);
 
@@ -155,7 +155,7 @@ public class CacheDisabledEntryPersistenceTest {
 
 	@Test(expected = NoSuchCacheDisabledEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -184,7 +184,7 @@ public class CacheDisabledEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
 		CacheDisabledEntry missingCacheDisabledEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -220,9 +220,9 @@ public class CacheDisabledEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -241,7 +241,7 @@ public class CacheDisabledEntryPersistenceTest {
 
 		CacheDisabledEntry newCacheDisabledEntry = addCacheDisabledEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -340,7 +340,8 @@ public class CacheDisabledEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"cacheDisabledEntryId", RandomTestUtil.nextLong()));
+				"cacheDisabledEntryId",
+				RandomTestUtil.nextLong(CacheDisabledEntry.class.getName())));
 
 		List<CacheDisabledEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -387,7 +388,9 @@ public class CacheDisabledEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"cacheDisabledEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CacheDisabledEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -455,7 +458,7 @@ public class CacheDisabledEntryPersistenceTest {
 	}
 
 	protected CacheDisabledEntry addCacheDisabledEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheDisabledEntry.class.getName());
 
 		CacheDisabledEntry cacheDisabledEntry = _persistence.create(pk);
 

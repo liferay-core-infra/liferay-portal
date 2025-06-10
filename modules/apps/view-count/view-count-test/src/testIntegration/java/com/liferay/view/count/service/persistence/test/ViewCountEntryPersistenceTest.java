@@ -80,8 +80,9 @@ public class ViewCountEntryPersistenceTest {
 	@Test
 	public void testCreate() throws Exception {
 		ViewCountEntryPK pk = new ViewCountEntryPK(
-			CompanyThreadLocal.getCompanyId(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			CompanyThreadLocal.getCompanyId(),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		ViewCountEntry viewCountEntry = _persistence.create(pk);
 
@@ -110,8 +111,9 @@ public class ViewCountEntryPersistenceTest {
 	@Test
 	public void testUpdateExisting() throws Exception {
 		ViewCountEntryPK pk = new ViewCountEntryPK(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		ViewCountEntry newViewCountEntry = _persistence.create(pk);
 
@@ -157,8 +159,9 @@ public class ViewCountEntryPersistenceTest {
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
 		ViewCountEntryPK pk = new ViewCountEntryPK(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -176,8 +179,9 @@ public class ViewCountEntryPersistenceTest {
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
 		ViewCountEntryPK pk = new ViewCountEntryPK(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		ViewCountEntry missingViewCountEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -214,12 +218,14 @@ public class ViewCountEntryPersistenceTest {
 		throws Exception {
 
 		ViewCountEntryPK pk1 = new ViewCountEntryPK(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		ViewCountEntryPK pk2 = new ViewCountEntryPK(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -239,8 +245,9 @@ public class ViewCountEntryPersistenceTest {
 		ViewCountEntry newViewCountEntry = addViewCountEntry();
 
 		ViewCountEntryPK pk = new ViewCountEntryPK(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -341,13 +348,16 @@ public class ViewCountEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.companyId", RandomTestUtil.nextLong()));
+				"id.companyId",
+				RandomTestUtil.nextLong(ViewCountEntry.class.getName())));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classNameId", RandomTestUtil.nextLong()));
+				"id.classNameId",
+				RandomTestUtil.nextLong(ViewCountEntry.class.getName())));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classPK", RandomTestUtil.nextLong()));
+				"id.classPK",
+				RandomTestUtil.nextLong(ViewCountEntry.class.getName())));
 
 		List<ViewCountEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -390,7 +400,10 @@ public class ViewCountEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"id.companyId", new Object[] {RandomTestUtil.nextLong()}));
+				"id.companyId",
+				new Object[] {
+					RandomTestUtil.nextLong(ViewCountEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -399,8 +412,9 @@ public class ViewCountEntryPersistenceTest {
 
 	protected ViewCountEntry addViewCountEntry() throws Exception {
 		ViewCountEntryPK pk = new ViewCountEntryPK(
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong());
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()),
+			RandomTestUtil.nextLong(ViewCountEntry.class.getName()));
 
 		ViewCountEntry viewCountEntry = _persistence.create(pk);
 

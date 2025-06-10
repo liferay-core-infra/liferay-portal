@@ -83,7 +83,8 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
 		AssetEntryAssetCategoryRel assetEntryAssetCategoryRel =
 			_persistence.create(pk);
@@ -114,7 +115,8 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
 		AssetEntryAssetCategoryRel newAssetEntryAssetCategoryRel =
 			_persistence.create(pk);
@@ -202,7 +204,8 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 
 	@Test(expected = NoSuchEntryAssetCategoryRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -237,7 +240,8 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
 		AssetEntryAssetCategoryRel missingAssetEntryAssetCategoryRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -278,9 +282,11 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -301,7 +307,8 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 		AssetEntryAssetCategoryRel newAssetEntryAssetCategoryRel =
 			addAssetEntryAssetCategoryRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -411,7 +418,9 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"assetEntryAssetCategoryRelId", RandomTestUtil.nextLong()));
+				"assetEntryAssetCategoryRelId",
+				RandomTestUtil.nextLong(
+					AssetEntryAssetCategoryRel.class.getName())));
 
 		List<AssetEntryAssetCategoryRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -460,7 +469,10 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"assetEntryAssetCategoryRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						AssetEntryAssetCategoryRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -540,7 +552,8 @@ public class AssetEntryAssetCategoryRelPersistenceTest {
 	protected AssetEntryAssetCategoryRel addAssetEntryAssetCategoryRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetEntryAssetCategoryRel.class.getName());
 
 		AssetEntryAssetCategoryRel assetEntryAssetCategoryRel =
 			_persistence.create(pk);

@@ -83,7 +83,7 @@ public class OrganizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Organization.class.getName());
 
 		Organization organization = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class OrganizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Organization.class.getName());
 
 		Organization newOrganization = _persistence.create(pk);
 
@@ -342,7 +342,7 @@ public class OrganizationPersistenceTest {
 
 	@Test(expected = NoSuchOrganizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Organization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -376,7 +376,7 @@ public class OrganizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Organization.class.getName());
 
 		Organization missingOrganization = _persistence.fetchByPrimaryKey(pk);
 
@@ -411,9 +411,9 @@ public class OrganizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Organization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Organization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -432,7 +432,7 @@ public class OrganizationPersistenceTest {
 
 		Organization newOrganization = addOrganization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Organization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -527,7 +527,8 @@ public class OrganizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"organizationId", RandomTestUtil.nextLong()));
+				"organizationId",
+				RandomTestUtil.nextLong(Organization.class.getName())));
 
 		List<Organization> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -570,7 +571,10 @@ public class OrganizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"organizationId", new Object[] {RandomTestUtil.nextLong()}));
+				"organizationId",
+				new Object[] {
+					RandomTestUtil.nextLong(Organization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -652,7 +656,7 @@ public class OrganizationPersistenceTest {
 	}
 
 	protected Organization addOrganization() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Organization.class.getName());
 
 		Organization organization = _persistence.create(pk);
 

@@ -82,7 +82,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		NestedSetsTreeEntry nestedSetsTreeEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		NestedSetsTreeEntry newNestedSetsTreeEntry = _persistence.create(pk);
 
@@ -160,7 +160,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 
 	@Test(expected = NoSuchNestedSetsTreeEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -193,7 +193,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		NestedSetsTreeEntry missingNestedSetsTreeEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -229,9 +229,9 @@ public class NestedSetsTreeEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -250,7 +250,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 
 		NestedSetsTreeEntry newNestedSetsTreeEntry = addNestedSetsTreeEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -350,7 +350,8 @@ public class NestedSetsTreeEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"nestedSetsTreeEntryId", RandomTestUtil.nextLong()));
+				"nestedSetsTreeEntryId",
+				RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName())));
 
 		List<NestedSetsTreeEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -397,7 +398,9 @@ public class NestedSetsTreeEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"nestedSetsTreeEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -405,7 +408,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 	}
 
 	protected NestedSetsTreeEntry addNestedSetsTreeEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		NestedSetsTreeEntry nestedSetsTreeEntry = _persistence.create(pk);
 
@@ -727,7 +730,7 @@ public class NestedSetsTreeEntryPersistenceTest {
 			long groupId, Long parentNestedSetsTreeEntryId)
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(NestedSetsTreeEntry.class.getName());
 
 		NestedSetsTreeEntry nestedSetsTreeEntry = _persistence.create(pk);
 

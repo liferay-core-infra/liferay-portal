@@ -83,7 +83,7 @@ public class ObjectEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
 		ObjectEntry objectEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class ObjectEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
 		ObjectEntry newObjectEntry = _persistence.create(pk);
 
@@ -356,7 +356,7 @@ public class ObjectEntryPersistenceTest {
 
 	@Test(expected = NoSuchObjectEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -392,7 +392,7 @@ public class ObjectEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
 		ObjectEntry missingObjectEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -427,9 +427,9 @@ public class ObjectEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -448,7 +448,7 @@ public class ObjectEntryPersistenceTest {
 
 		ObjectEntry newObjectEntry = addObjectEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -541,7 +541,8 @@ public class ObjectEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectEntryId", RandomTestUtil.nextLong()));
+				"objectEntryId",
+				RandomTestUtil.nextLong(ObjectEntry.class.getName())));
 
 		List<ObjectEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -584,7 +585,10 @@ public class ObjectEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"objectEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"objectEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -687,7 +691,7 @@ public class ObjectEntryPersistenceTest {
 	}
 
 	protected ObjectEntry addObjectEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntry.class.getName());
 
 		ObjectEntry objectEntry = _persistence.create(pk);
 

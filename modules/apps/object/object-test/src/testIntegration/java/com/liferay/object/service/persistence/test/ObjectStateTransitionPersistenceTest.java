@@ -82,7 +82,8 @@ public class ObjectStateTransitionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
 		ObjectStateTransition objectStateTransition = _persistence.create(pk);
 
@@ -112,7 +113,8 @@ public class ObjectStateTransitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
 		ObjectStateTransition newObjectStateTransition = _persistence.create(
 			pk);
@@ -238,7 +240,8 @@ public class ObjectStateTransitionPersistenceTest {
 
 	@Test(expected = NoSuchObjectStateTransitionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -273,7 +276,8 @@ public class ObjectStateTransitionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
 		ObjectStateTransition missingObjectStateTransition =
 			_persistence.fetchByPrimaryKey(pk);
@@ -313,9 +317,11 @@ public class ObjectStateTransitionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -335,7 +341,8 @@ public class ObjectStateTransitionPersistenceTest {
 		ObjectStateTransition newObjectStateTransition =
 			addObjectStateTransition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -439,7 +446,9 @@ public class ObjectStateTransitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectStateTransitionId", RandomTestUtil.nextLong()));
+				"objectStateTransitionId",
+				RandomTestUtil.nextLong(
+					ObjectStateTransition.class.getName())));
 
 		List<ObjectStateTransition> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -487,7 +496,10 @@ public class ObjectStateTransitionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectStateTransitionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ObjectStateTransition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -497,7 +509,8 @@ public class ObjectStateTransitionPersistenceTest {
 	protected ObjectStateTransition addObjectStateTransition()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectStateTransition.class.getName());
 
 		ObjectStateTransition objectStateTransition = _persistence.create(pk);
 

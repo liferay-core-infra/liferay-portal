@@ -83,7 +83,7 @@ public class CPDisplayLayoutPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
 		CPDisplayLayout cpDisplayLayout = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class CPDisplayLayoutPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
 		CPDisplayLayout newCPDisplayLayout = _persistence.create(pk);
 
@@ -295,7 +295,7 @@ public class CPDisplayLayoutPersistenceTest {
 
 	@Test(expected = NoSuchCPDisplayLayoutException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -327,7 +327,7 @@ public class CPDisplayLayoutPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
 		CPDisplayLayout missingCPDisplayLayout = _persistence.fetchByPrimaryKey(
 			pk);
@@ -363,9 +363,9 @@ public class CPDisplayLayoutPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -384,7 +384,7 @@ public class CPDisplayLayoutPersistenceTest {
 
 		CPDisplayLayout newCPDisplayLayout = addCPDisplayLayout();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -480,7 +480,8 @@ public class CPDisplayLayoutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDisplayLayoutId", RandomTestUtil.nextLong()));
+				"CPDisplayLayoutId",
+				RandomTestUtil.nextLong(CPDisplayLayout.class.getName())));
 
 		List<CPDisplayLayout> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -523,7 +524,10 @@ public class CPDisplayLayoutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"CPDisplayLayoutId", new Object[] {RandomTestUtil.nextLong()}));
+				"CPDisplayLayoutId",
+				new Object[] {
+					RandomTestUtil.nextLong(CPDisplayLayout.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -611,7 +615,7 @@ public class CPDisplayLayoutPersistenceTest {
 	}
 
 	protected CPDisplayLayout addCPDisplayLayout() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDisplayLayout.class.getName());
 
 		CPDisplayLayout cpDisplayLayout = _persistence.create(pk);
 

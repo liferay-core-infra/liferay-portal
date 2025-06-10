@@ -80,7 +80,7 @@ public class CTMessagePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTMessage.class.getName());
 
 		CTMessage ctMessage = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class CTMessagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTMessage.class.getName());
 
 		CTMessage newCTMessage = _persistence.create(pk);
 
@@ -158,7 +158,7 @@ public class CTMessagePersistenceTest {
 
 	@Test(expected = NoSuchMessageException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTMessage.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -187,7 +187,7 @@ public class CTMessagePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTMessage.class.getName());
 
 		CTMessage missingCTMessage = _persistence.fetchByPrimaryKey(pk);
 
@@ -220,9 +220,9 @@ public class CTMessagePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTMessage.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTMessage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -241,7 +241,7 @@ public class CTMessagePersistenceTest {
 
 		CTMessage newCTMessage = addCTMessage();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTMessage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -334,7 +334,8 @@ public class CTMessagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctMessageId", RandomTestUtil.nextLong()));
+				"ctMessageId",
+				RandomTestUtil.nextLong(CTMessage.class.getName())));
 
 		List<CTMessage> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -377,7 +378,10 @@ public class CTMessagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctMessageId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctMessageId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTMessage.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -385,7 +389,7 @@ public class CTMessagePersistenceTest {
 	}
 
 	protected CTMessage addCTMessage() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTMessage.class.getName());
 
 		CTMessage ctMessage = _persistence.create(pk);
 

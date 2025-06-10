@@ -85,7 +85,7 @@ public class ClientExtensionEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClientExtensionEntry.class.getName());
 
 		ClientExtensionEntry clientExtensionEntry = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class ClientExtensionEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClientExtensionEntry.class.getName());
 
 		ClientExtensionEntry newClientExtensionEntry = _persistence.create(pk);
 
@@ -313,7 +313,7 @@ public class ClientExtensionEntryPersistenceTest {
 
 	@Test(expected = NoSuchClientExtensionEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClientExtensionEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -350,7 +350,7 @@ public class ClientExtensionEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClientExtensionEntry.class.getName());
 
 		ClientExtensionEntry missingClientExtensionEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -390,9 +390,11 @@ public class ClientExtensionEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ClientExtensionEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ClientExtensionEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -412,7 +414,7 @@ public class ClientExtensionEntryPersistenceTest {
 		ClientExtensionEntry newClientExtensionEntry =
 			addClientExtensionEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClientExtensionEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -516,7 +518,8 @@ public class ClientExtensionEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"clientExtensionEntryId", RandomTestUtil.nextLong()));
+				"clientExtensionEntryId",
+				RandomTestUtil.nextLong(ClientExtensionEntry.class.getName())));
 
 		List<ClientExtensionEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -564,7 +567,10 @@ public class ClientExtensionEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"clientExtensionEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ClientExtensionEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -641,7 +647,7 @@ public class ClientExtensionEntryPersistenceTest {
 	}
 
 	protected ClientExtensionEntry addClientExtensionEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ClientExtensionEntry.class.getName());
 
 		ClientExtensionEntry clientExtensionEntry = _persistence.create(pk);
 

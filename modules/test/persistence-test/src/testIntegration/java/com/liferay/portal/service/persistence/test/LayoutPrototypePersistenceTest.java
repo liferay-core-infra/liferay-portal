@@ -80,7 +80,7 @@ public class LayoutPrototypePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
 		LayoutPrototype layoutPrototype = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class LayoutPrototypePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
 		LayoutPrototype newLayoutPrototype = _persistence.create(pk);
 
@@ -224,7 +224,7 @@ public class LayoutPrototypePersistenceTest {
 
 	@Test(expected = NoSuchLayoutPrototypeException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -255,7 +255,7 @@ public class LayoutPrototypePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
 		LayoutPrototype missingLayoutPrototype = _persistence.fetchByPrimaryKey(
 			pk);
@@ -291,9 +291,9 @@ public class LayoutPrototypePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -312,7 +312,7 @@ public class LayoutPrototypePersistenceTest {
 
 		LayoutPrototype newLayoutPrototype = addLayoutPrototype();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -408,7 +408,8 @@ public class LayoutPrototypePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutPrototypeId", RandomTestUtil.nextLong()));
+				"layoutPrototypeId",
+				RandomTestUtil.nextLong(LayoutPrototype.class.getName())));
 
 		List<LayoutPrototype> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -451,7 +452,10 @@ public class LayoutPrototypePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"layoutPrototypeId", new Object[] {RandomTestUtil.nextLong()}));
+				"layoutPrototypeId",
+				new Object[] {
+					RandomTestUtil.nextLong(LayoutPrototype.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -459,7 +463,7 @@ public class LayoutPrototypePersistenceTest {
 	}
 
 	protected LayoutPrototype addLayoutPrototype() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutPrototype.class.getName());
 
 		LayoutPrototype layoutPrototype = _persistence.create(pk);
 

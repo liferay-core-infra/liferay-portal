@@ -84,7 +84,8 @@ public class CommerceSubscriptionEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
 		CommerceSubscriptionEntry commerceSubscriptionEntry =
 			_persistence.create(pk);
@@ -115,7 +116,8 @@ public class CommerceSubscriptionEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
 		CommerceSubscriptionEntry newCommerceSubscriptionEntry =
 			_persistence.create(pk);
@@ -412,7 +414,8 @@ public class CommerceSubscriptionEntryPersistenceTest {
 
 	@Test(expected = NoSuchSubscriptionEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -458,7 +461,8 @@ public class CommerceSubscriptionEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
 		CommerceSubscriptionEntry missingCommerceSubscriptionEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -499,9 +503,11 @@ public class CommerceSubscriptionEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -522,7 +528,8 @@ public class CommerceSubscriptionEntryPersistenceTest {
 		CommerceSubscriptionEntry newCommerceSubscriptionEntry =
 			addCommerceSubscriptionEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -631,7 +638,9 @@ public class CommerceSubscriptionEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceSubscriptionEntryId", RandomTestUtil.nextLong()));
+				"commerceSubscriptionEntryId",
+				RandomTestUtil.nextLong(
+					CommerceSubscriptionEntry.class.getName())));
 
 		List<CommerceSubscriptionEntry> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -680,7 +689,10 @@ public class CommerceSubscriptionEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceSubscriptionEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceSubscriptionEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -781,7 +793,8 @@ public class CommerceSubscriptionEntryPersistenceTest {
 	protected CommerceSubscriptionEntry addCommerceSubscriptionEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceSubscriptionEntry.class.getName());
 
 		CommerceSubscriptionEntry commerceSubscriptionEntry =
 			_persistence.create(pk);

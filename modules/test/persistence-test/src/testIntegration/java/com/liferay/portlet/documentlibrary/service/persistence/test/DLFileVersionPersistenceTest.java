@@ -82,7 +82,7 @@ public class DLFileVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
 		DLFileVersion dlFileVersion = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class DLFileVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
 		DLFileVersion newDLFileVersion = _persistence.create(pk);
 
@@ -427,7 +427,7 @@ public class DLFileVersionPersistenceTest {
 
 	@Test(expected = NoSuchFileVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -465,7 +465,7 @@ public class DLFileVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
 		DLFileVersion missingDLFileVersion = _persistence.fetchByPrimaryKey(pk);
 
@@ -500,9 +500,9 @@ public class DLFileVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -521,7 +521,7 @@ public class DLFileVersionPersistenceTest {
 
 		DLFileVersion newDLFileVersion = addDLFileVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -616,7 +616,8 @@ public class DLFileVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fileVersionId", RandomTestUtil.nextLong()));
+				"fileVersionId",
+				RandomTestUtil.nextLong(DLFileVersion.class.getName())));
 
 		List<DLFileVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -659,7 +660,10 @@ public class DLFileVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"fileVersionId", new Object[] {RandomTestUtil.nextLong()}));
+				"fileVersionId",
+				new Object[] {
+					RandomTestUtil.nextLong(DLFileVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -741,7 +745,7 @@ public class DLFileVersionPersistenceTest {
 	}
 
 	protected DLFileVersion addDLFileVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileVersion.class.getName());
 
 		DLFileVersion dlFileVersion = _persistence.create(pk);
 

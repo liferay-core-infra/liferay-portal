@@ -85,7 +85,7 @@ public class CPOptionCategoryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
 		CPOptionCategory cpOptionCategory = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class CPOptionCategoryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
 		CPOptionCategory newCPOptionCategory = _persistence.create(pk);
 
@@ -274,7 +274,7 @@ public class CPOptionCategoryPersistenceTest {
 
 	@Test(expected = NoSuchCPOptionCategoryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -307,7 +307,7 @@ public class CPOptionCategoryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
 		CPOptionCategory missingCPOptionCategory =
 			_persistence.fetchByPrimaryKey(pk);
@@ -343,9 +343,9 @@ public class CPOptionCategoryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -364,7 +364,7 @@ public class CPOptionCategoryPersistenceTest {
 
 		CPOptionCategory newCPOptionCategory = addCPOptionCategory();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -460,7 +460,8 @@ public class CPOptionCategoryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPOptionCategoryId", RandomTestUtil.nextLong()));
+				"CPOptionCategoryId",
+				RandomTestUtil.nextLong(CPOptionCategory.class.getName())));
 
 		List<CPOptionCategory> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -505,7 +506,9 @@ public class CPOptionCategoryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPOptionCategoryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CPOptionCategory.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -588,7 +591,7 @@ public class CPOptionCategoryPersistenceTest {
 	}
 
 	protected CPOptionCategory addCPOptionCategory() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPOptionCategory.class.getName());
 
 		CPOptionCategory cpOptionCategory = _persistence.create(pk);
 

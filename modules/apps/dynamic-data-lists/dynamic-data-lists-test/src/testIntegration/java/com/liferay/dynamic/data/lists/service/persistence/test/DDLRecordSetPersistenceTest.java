@@ -88,7 +88,7 @@ public class DDLRecordSetPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
 		DDLRecordSet ddlRecordSet = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class DDLRecordSetPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
 		DDLRecordSet newDDLRecordSet = _persistence.create(pk);
 
@@ -295,7 +295,7 @@ public class DDLRecordSetPersistenceTest {
 
 	@Test(expected = NoSuchRecordSetException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -353,7 +353,7 @@ public class DDLRecordSetPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
 		DDLRecordSet missingDDLRecordSet = _persistence.fetchByPrimaryKey(pk);
 
@@ -388,9 +388,9 @@ public class DDLRecordSetPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -409,7 +409,7 @@ public class DDLRecordSetPersistenceTest {
 
 		DDLRecordSet newDDLRecordSet = addDDLRecordSet();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -504,7 +504,8 @@ public class DDLRecordSetPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"recordSetId", RandomTestUtil.nextLong()));
+				"recordSetId",
+				RandomTestUtil.nextLong(DDLRecordSet.class.getName())));
 
 		List<DDLRecordSet> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -547,7 +548,10 @@ public class DDLRecordSetPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"recordSetId", new Object[] {RandomTestUtil.nextLong()}));
+				"recordSetId",
+				new Object[] {
+					RandomTestUtil.nextLong(DDLRecordSet.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -629,7 +633,7 @@ public class DDLRecordSetPersistenceTest {
 	}
 
 	protected DDLRecordSet addDDLRecordSet() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDLRecordSet.class.getName());
 
 		DDLRecordSet ddlRecordSet = _persistence.create(pk);
 

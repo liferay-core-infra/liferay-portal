@@ -89,7 +89,7 @@ public class MBMessagePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMessage.class.getName());
 
 		MBMessage mbMessage = _persistence.create(pk);
 
@@ -117,7 +117,7 @@ public class MBMessagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMessage.class.getName());
 
 		MBMessage newMBMessage = _persistence.create(pk);
 
@@ -572,7 +572,7 @@ public class MBMessagePersistenceTest {
 
 	@Test(expected = NoSuchMessageException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMessage.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -633,7 +633,7 @@ public class MBMessagePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMessage.class.getName());
 
 		MBMessage missingMBMessage = _persistence.fetchByPrimaryKey(pk);
 
@@ -666,9 +666,9 @@ public class MBMessagePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MBMessage.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MBMessage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -687,7 +687,7 @@ public class MBMessagePersistenceTest {
 
 		MBMessage newMBMessage = addMBMessage();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMessage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -779,7 +779,9 @@ public class MBMessagePersistenceTest {
 			MBMessage.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("messageId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"messageId",
+				RandomTestUtil.nextLong(MBMessage.class.getName())));
 
 		List<MBMessage> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -820,7 +822,10 @@ public class MBMessagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"messageId", new Object[] {RandomTestUtil.nextLong()}));
+				"messageId",
+				new Object[] {
+					RandomTestUtil.nextLong(MBMessage.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -913,7 +918,7 @@ public class MBMessagePersistenceTest {
 	}
 
 	protected MBMessage addMBMessage() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBMessage.class.getName());
 
 		MBMessage mbMessage = _persistence.create(pk);
 

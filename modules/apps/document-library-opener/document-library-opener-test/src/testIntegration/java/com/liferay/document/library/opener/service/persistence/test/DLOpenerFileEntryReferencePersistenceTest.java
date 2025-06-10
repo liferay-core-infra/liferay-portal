@@ -85,7 +85,8 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
 		DLOpenerFileEntryReference dlOpenerFileEntryReference =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
 		DLOpenerFileEntryReference newDLOpenerFileEntryReference =
 			_persistence.create(pk);
@@ -223,7 +225,8 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 
 	@Test(expected = NoSuchFileEntryReferenceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -259,7 +262,8 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
 		DLOpenerFileEntryReference missingDLOpenerFileEntryReference =
 			_persistence.fetchByPrimaryKey(pk);
@@ -300,9 +304,11 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -323,7 +329,8 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 		DLOpenerFileEntryReference newDLOpenerFileEntryReference =
 			addDLOpenerFileEntryReference();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -433,7 +440,9 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"dlOpenerFileEntryReferenceId", RandomTestUtil.nextLong()));
+				"dlOpenerFileEntryReferenceId",
+				RandomTestUtil.nextLong(
+					DLOpenerFileEntryReference.class.getName())));
 
 		List<DLOpenerFileEntryReference> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -482,7 +491,10 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"dlOpenerFileEntryReferenceId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						DLOpenerFileEntryReference.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -568,7 +580,8 @@ public class DLOpenerFileEntryReferencePersistenceTest {
 	protected DLOpenerFileEntryReference addDLOpenerFileEntryReference()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DLOpenerFileEntryReference.class.getName());
 
 		DLOpenerFileEntryReference dlOpenerFileEntryReference =
 			_persistence.create(pk);

@@ -81,7 +81,7 @@ public class ExpandoTablePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
 		ExpandoTable expandoTable = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ExpandoTablePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
 		ExpandoTable newExpandoTable = _persistence.create(pk);
 
@@ -176,7 +176,7 @@ public class ExpandoTablePersistenceTest {
 
 	@Test(expected = NoSuchTableException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -206,7 +206,7 @@ public class ExpandoTablePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
 		ExpandoTable missingExpandoTable = _persistence.fetchByPrimaryKey(pk);
 
@@ -241,9 +241,9 @@ public class ExpandoTablePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -262,7 +262,7 @@ public class ExpandoTablePersistenceTest {
 
 		ExpandoTable newExpandoTable = addExpandoTable();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -356,7 +356,9 @@ public class ExpandoTablePersistenceTest {
 			ExpandoTable.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("tableId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"tableId",
+				RandomTestUtil.nextLong(ExpandoTable.class.getName())));
 
 		List<ExpandoTable> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -396,7 +398,10 @@ public class ExpandoTablePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"tableId", new Object[] {RandomTestUtil.nextLong()}));
+				"tableId",
+				new Object[] {
+					RandomTestUtil.nextLong(ExpandoTable.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -472,7 +477,7 @@ public class ExpandoTablePersistenceTest {
 	}
 
 	protected ExpandoTable addExpandoTable() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ExpandoTable.class.getName());
 
 		ExpandoTable expandoTable = _persistence.create(pk);
 

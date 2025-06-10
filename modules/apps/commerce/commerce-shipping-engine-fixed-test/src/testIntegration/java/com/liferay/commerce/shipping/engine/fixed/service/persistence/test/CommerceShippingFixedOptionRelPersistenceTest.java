@@ -86,7 +86,8 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
 		CommerceShippingFixedOptionRel commerceShippingFixedOptionRel =
 			_persistence.create(pk);
@@ -117,7 +118,8 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
 		CommerceShippingFixedOptionRel newCommerceShippingFixedOptionRel =
 			_persistence.create(pk);
@@ -281,7 +283,8 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 
 	@Test(expected = NoSuchShippingFixedOptionRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -323,7 +326,8 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
 		CommerceShippingFixedOptionRel missingCommerceShippingFixedOptionRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -364,9 +368,11 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -387,7 +393,8 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 		CommerceShippingFixedOptionRel newCommerceShippingFixedOptionRel =
 			addCommerceShippingFixedOptionRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -499,7 +506,9 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceShippingFixedOptionRelId", RandomTestUtil.nextLong()));
+				"commerceShippingFixedOptionRelId",
+				RandomTestUtil.nextLong(
+					CommerceShippingFixedOptionRel.class.getName())));
 
 		List<CommerceShippingFixedOptionRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -549,7 +558,10 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceShippingFixedOptionRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceShippingFixedOptionRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -559,7 +571,8 @@ public class CommerceShippingFixedOptionRelPersistenceTest {
 	protected CommerceShippingFixedOptionRel addCommerceShippingFixedOptionRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceShippingFixedOptionRel.class.getName());
 
 		CommerceShippingFixedOptionRel commerceShippingFixedOptionRel =
 			_persistence.create(pk);

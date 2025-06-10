@@ -83,7 +83,7 @@ public class LayoutSEOSitePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
 		LayoutSEOSite layoutSEOSite = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class LayoutSEOSitePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
 		LayoutSEOSite newLayoutSEOSite = _persistence.create(pk);
 
@@ -229,7 +229,7 @@ public class LayoutSEOSitePersistenceTest {
 
 	@Test(expected = NoSuchSiteException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -261,7 +261,7 @@ public class LayoutSEOSitePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
 		LayoutSEOSite missingLayoutSEOSite = _persistence.fetchByPrimaryKey(pk);
 
@@ -296,9 +296,9 @@ public class LayoutSEOSitePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -317,7 +317,7 @@ public class LayoutSEOSitePersistenceTest {
 
 		LayoutSEOSite newLayoutSEOSite = addLayoutSEOSite();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -412,7 +412,8 @@ public class LayoutSEOSitePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutSEOSiteId", RandomTestUtil.nextLong()));
+				"layoutSEOSiteId",
+				RandomTestUtil.nextLong(LayoutSEOSite.class.getName())));
 
 		List<LayoutSEOSite> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -455,7 +456,10 @@ public class LayoutSEOSitePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"layoutSEOSiteId", new Object[] {RandomTestUtil.nextLong()}));
+				"layoutSEOSiteId",
+				new Object[] {
+					RandomTestUtil.nextLong(LayoutSEOSite.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -532,7 +536,7 @@ public class LayoutSEOSitePersistenceTest {
 	}
 
 	protected LayoutSEOSite addLayoutSEOSite() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSEOSite.class.getName());
 
 		LayoutSEOSite layoutSEOSite = _persistence.create(pk);
 

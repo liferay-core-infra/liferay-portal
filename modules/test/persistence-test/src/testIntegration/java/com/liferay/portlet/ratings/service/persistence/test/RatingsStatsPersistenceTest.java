@@ -83,7 +83,7 @@ public class RatingsStatsPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
 		RatingsStats ratingsStats = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class RatingsStatsPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
 		RatingsStats newRatingsStats = _persistence.create(pk);
 
@@ -200,7 +200,7 @@ public class RatingsStatsPersistenceTest {
 
 	@Test(expected = NoSuchStatsException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -231,7 +231,7 @@ public class RatingsStatsPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
 		RatingsStats missingRatingsStats = _persistence.fetchByPrimaryKey(pk);
 
@@ -266,9 +266,9 @@ public class RatingsStatsPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -287,7 +287,7 @@ public class RatingsStatsPersistenceTest {
 
 		RatingsStats newRatingsStats = addRatingsStats();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -381,7 +381,9 @@ public class RatingsStatsPersistenceTest {
 			RatingsStats.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("statsId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"statsId",
+				RandomTestUtil.nextLong(RatingsStats.class.getName())));
 
 		List<RatingsStats> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -421,7 +423,10 @@ public class RatingsStatsPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"statsId", new Object[] {RandomTestUtil.nextLong()}));
+				"statsId",
+				new Object[] {
+					RandomTestUtil.nextLong(RatingsStats.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -492,7 +497,7 @@ public class RatingsStatsPersistenceTest {
 	}
 
 	protected RatingsStats addRatingsStats() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RatingsStats.class.getName());
 
 		RatingsStats ratingsStats = _persistence.create(pk);
 

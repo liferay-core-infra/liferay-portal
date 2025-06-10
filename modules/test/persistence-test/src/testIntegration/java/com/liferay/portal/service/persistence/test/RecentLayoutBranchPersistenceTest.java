@@ -81,7 +81,7 @@ public class RecentLayoutBranchPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
 		RecentLayoutBranch recentLayoutBranch = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class RecentLayoutBranchPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
 		RecentLayoutBranch newRecentLayoutBranch = _persistence.create(pk);
 
@@ -203,7 +203,7 @@ public class RecentLayoutBranchPersistenceTest {
 
 	@Test(expected = NoSuchRecentLayoutBranchException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -234,7 +234,7 @@ public class RecentLayoutBranchPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
 		RecentLayoutBranch missingRecentLayoutBranch =
 			_persistence.fetchByPrimaryKey(pk);
@@ -270,9 +270,9 @@ public class RecentLayoutBranchPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -291,7 +291,7 @@ public class RecentLayoutBranchPersistenceTest {
 
 		RecentLayoutBranch newRecentLayoutBranch = addRecentLayoutBranch();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -390,7 +390,8 @@ public class RecentLayoutBranchPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"recentLayoutBranchId", RandomTestUtil.nextLong()));
+				"recentLayoutBranchId",
+				RandomTestUtil.nextLong(RecentLayoutBranch.class.getName())));
 
 		List<RecentLayoutBranch> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -437,7 +438,9 @@ public class RecentLayoutBranchPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"recentLayoutBranchId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(RecentLayoutBranch.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -515,7 +518,7 @@ public class RecentLayoutBranchPersistenceTest {
 	}
 
 	protected RecentLayoutBranch addRecentLayoutBranch() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RecentLayoutBranch.class.getName());
 
 		RecentLayoutBranch recentLayoutBranch = _persistence.create(pk);
 

@@ -81,7 +81,8 @@ public class ExportImportConfigurationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
 		ExportImportConfiguration exportImportConfiguration =
 			_persistence.create(pk);
@@ -112,7 +113,8 @@ public class ExportImportConfigurationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
 		ExportImportConfiguration newExportImportConfiguration =
 			_persistence.create(pk);
@@ -267,7 +269,8 @@ public class ExportImportConfigurationPersistenceTest {
 
 	@Test(expected = NoSuchConfigurationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -305,7 +308,8 @@ public class ExportImportConfigurationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
 		ExportImportConfiguration missingExportImportConfiguration =
 			_persistence.fetchByPrimaryKey(pk);
@@ -346,9 +350,11 @@ public class ExportImportConfigurationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -369,7 +375,8 @@ public class ExportImportConfigurationPersistenceTest {
 		ExportImportConfiguration newExportImportConfiguration =
 			addExportImportConfiguration();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -478,7 +485,9 @@ public class ExportImportConfigurationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"exportImportConfigurationId", RandomTestUtil.nextLong()));
+				"exportImportConfigurationId",
+				RandomTestUtil.nextLong(
+					ExportImportConfiguration.class.getName())));
 
 		List<ExportImportConfiguration> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -527,7 +536,10 @@ public class ExportImportConfigurationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"exportImportConfigurationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ExportImportConfiguration.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -537,7 +549,8 @@ public class ExportImportConfigurationPersistenceTest {
 	protected ExportImportConfiguration addExportImportConfiguration()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ExportImportConfiguration.class.getName());
 
 		ExportImportConfiguration exportImportConfiguration =
 			_persistence.create(pk);

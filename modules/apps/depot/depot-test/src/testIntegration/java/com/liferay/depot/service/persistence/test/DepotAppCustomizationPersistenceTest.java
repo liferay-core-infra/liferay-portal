@@ -83,7 +83,8 @@ public class DepotAppCustomizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
 		DepotAppCustomization depotAppCustomization = _persistence.create(pk);
 
@@ -113,7 +114,8 @@ public class DepotAppCustomizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
 		DepotAppCustomization newDepotAppCustomization = _persistence.create(
 			pk);
@@ -199,7 +201,8 @@ public class DepotAppCustomizationPersistenceTest {
 
 	@Test(expected = NoSuchAppCustomizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -232,7 +235,8 @@ public class DepotAppCustomizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
 		DepotAppCustomization missingDepotAppCustomization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -272,9 +276,11 @@ public class DepotAppCustomizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -294,7 +300,8 @@ public class DepotAppCustomizationPersistenceTest {
 		DepotAppCustomization newDepotAppCustomization =
 			addDepotAppCustomization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -398,7 +405,9 @@ public class DepotAppCustomizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"depotAppCustomizationId", RandomTestUtil.nextLong()));
+				"depotAppCustomizationId",
+				RandomTestUtil.nextLong(
+					DepotAppCustomization.class.getName())));
 
 		List<DepotAppCustomization> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -446,7 +455,10 @@ public class DepotAppCustomizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"depotAppCustomizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						DepotAppCustomization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -536,7 +548,8 @@ public class DepotAppCustomizationPersistenceTest {
 	protected DepotAppCustomization addDepotAppCustomization()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DepotAppCustomization.class.getName());
 
 		DepotAppCustomization depotAppCustomization = _persistence.create(pk);
 

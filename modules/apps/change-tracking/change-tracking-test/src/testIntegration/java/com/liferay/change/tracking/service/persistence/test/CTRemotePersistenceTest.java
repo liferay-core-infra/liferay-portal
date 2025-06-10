@@ -81,7 +81,7 @@ public class CTRemotePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTRemote.class.getName());
 
 		CTRemote ctRemote = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class CTRemotePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTRemote.class.getName());
 
 		CTRemote newCTRemote = _persistence.create(pk);
 
@@ -181,7 +181,7 @@ public class CTRemotePersistenceTest {
 
 	@Test(expected = NoSuchRemoteException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTRemote.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -212,7 +212,7 @@ public class CTRemotePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTRemote.class.getName());
 
 		CTRemote missingCTRemote = _persistence.fetchByPrimaryKey(pk);
 
@@ -245,9 +245,9 @@ public class CTRemotePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTRemote.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTRemote.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -266,7 +266,7 @@ public class CTRemotePersistenceTest {
 
 		CTRemote newCTRemote = addCTRemote();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTRemote.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -358,7 +358,8 @@ public class CTRemotePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctRemoteId", RandomTestUtil.nextLong()));
+				"ctRemoteId",
+				RandomTestUtil.nextLong(CTRemote.class.getName())));
 
 		List<CTRemote> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -400,7 +401,10 @@ public class CTRemotePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctRemoteId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctRemoteId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTRemote.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -408,7 +412,7 @@ public class CTRemotePersistenceTest {
 	}
 
 	protected CTRemote addCTRemote() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTRemote.class.getName());
 
 		CTRemote ctRemote = _persistence.create(pk);
 

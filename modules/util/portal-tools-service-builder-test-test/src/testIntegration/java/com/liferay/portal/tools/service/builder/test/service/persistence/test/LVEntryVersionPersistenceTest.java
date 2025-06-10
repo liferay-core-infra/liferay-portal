@@ -80,7 +80,7 @@ public class LVEntryVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
 		LVEntryVersion lvEntryVersion = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class LVEntryVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
 		LVEntryVersion newLVEntryVersion = _persistence.create(pk);
 
@@ -273,7 +273,7 @@ public class LVEntryVersionPersistenceTest {
 
 	@Test(expected = NoSuchLVEntryVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -303,7 +303,7 @@ public class LVEntryVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
 		LVEntryVersion missingLVEntryVersion = _persistence.fetchByPrimaryKey(
 			pk);
@@ -339,9 +339,9 @@ public class LVEntryVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -360,7 +360,7 @@ public class LVEntryVersionPersistenceTest {
 
 		LVEntryVersion newLVEntryVersion = addLVEntryVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -431,7 +431,8 @@ public class LVEntryVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"lvEntryVersionId", RandomTestUtil.nextLong()));
+				"lvEntryVersionId",
+				RandomTestUtil.nextLong(LVEntryVersion.class.getName())));
 
 		List<LVEntryVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -474,7 +475,10 @@ public class LVEntryVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"lvEntryVersionId", new Object[] {RandomTestUtil.nextLong()}));
+				"lvEntryVersionId",
+				new Object[] {
+					RandomTestUtil.nextLong(LVEntryVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -577,7 +581,7 @@ public class LVEntryVersionPersistenceTest {
 	}
 
 	protected LVEntryVersion addLVEntryVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LVEntryVersion.class.getName());
 
 		LVEntryVersion lvEntryVersion = _persistence.create(pk);
 

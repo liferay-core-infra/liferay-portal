@@ -79,7 +79,7 @@ public class CTAutoResolutionInfoPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTAutoResolutionInfo.class.getName());
 
 		CTAutoResolutionInfo ctAutoResolutionInfo = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class CTAutoResolutionInfoPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTAutoResolutionInfo.class.getName());
 
 		CTAutoResolutionInfo newCTAutoResolutionInfo = _persistence.create(pk);
 
@@ -207,7 +207,7 @@ public class CTAutoResolutionInfoPersistenceTest {
 
 	@Test(expected = NoSuchAutoResolutionInfoException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTAutoResolutionInfo.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -242,7 +242,7 @@ public class CTAutoResolutionInfoPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTAutoResolutionInfo.class.getName());
 
 		CTAutoResolutionInfo missingCTAutoResolutionInfo =
 			_persistence.fetchByPrimaryKey(pk);
@@ -282,9 +282,11 @@ public class CTAutoResolutionInfoPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CTAutoResolutionInfo.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CTAutoResolutionInfo.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -304,7 +306,7 @@ public class CTAutoResolutionInfoPersistenceTest {
 		CTAutoResolutionInfo newCTAutoResolutionInfo =
 			addCTAutoResolutionInfo();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTAutoResolutionInfo.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -379,7 +381,8 @@ public class CTAutoResolutionInfoPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctAutoResolutionInfoId", RandomTestUtil.nextLong()));
+				"ctAutoResolutionInfoId",
+				RandomTestUtil.nextLong(CTAutoResolutionInfo.class.getName())));
 
 		List<CTAutoResolutionInfo> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -427,7 +430,10 @@ public class CTAutoResolutionInfoPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"ctAutoResolutionInfoId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CTAutoResolutionInfo.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -435,7 +441,7 @@ public class CTAutoResolutionInfoPersistenceTest {
 	}
 
 	protected CTAutoResolutionInfo addCTAutoResolutionInfo() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTAutoResolutionInfo.class.getName());
 
 		CTAutoResolutionInfo ctAutoResolutionInfo = _persistence.create(pk);
 

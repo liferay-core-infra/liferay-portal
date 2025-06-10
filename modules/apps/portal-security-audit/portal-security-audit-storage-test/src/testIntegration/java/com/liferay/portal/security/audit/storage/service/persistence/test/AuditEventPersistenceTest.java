@@ -82,7 +82,7 @@ public class AuditEventPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
 		AuditEvent auditEvent = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class AuditEventPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
 		AuditEvent newAuditEvent = _persistence.create(pk);
 
@@ -205,7 +205,7 @@ public class AuditEventPersistenceTest {
 
 	@Test(expected = NoSuchEventException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -237,7 +237,7 @@ public class AuditEventPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
 		AuditEvent missingAuditEvent = _persistence.fetchByPrimaryKey(pk);
 
@@ -270,9 +270,9 @@ public class AuditEventPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -291,7 +291,7 @@ public class AuditEventPersistenceTest {
 
 		AuditEvent newAuditEvent = addAuditEvent();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -384,7 +384,8 @@ public class AuditEventPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"auditEventId", RandomTestUtil.nextLong()));
+				"auditEventId",
+				RandomTestUtil.nextLong(AuditEvent.class.getName())));
 
 		List<AuditEvent> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -427,7 +428,10 @@ public class AuditEventPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"auditEventId", new Object[] {RandomTestUtil.nextLong()}));
+				"auditEventId",
+				new Object[] {
+					RandomTestUtil.nextLong(AuditEvent.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -435,7 +439,7 @@ public class AuditEventPersistenceTest {
 	}
 
 	protected AuditEvent addAuditEvent() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AuditEvent.class.getName());
 
 		AuditEvent auditEvent = _persistence.create(pk);
 

@@ -80,7 +80,8 @@ public class FriendlyURLEntryMappingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
 		FriendlyURLEntryMapping friendlyURLEntryMapping = _persistence.create(
 			pk);
@@ -111,7 +112,8 @@ public class FriendlyURLEntryMappingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
 		FriendlyURLEntryMapping newFriendlyURLEntryMapping =
 			_persistence.create(pk);
@@ -182,7 +184,8 @@ public class FriendlyURLEntryMappingPersistenceTest {
 
 	@Test(expected = NoSuchFriendlyURLEntryMappingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -217,7 +220,8 @@ public class FriendlyURLEntryMappingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
 		FriendlyURLEntryMapping missingFriendlyURLEntryMapping =
 			_persistence.fetchByPrimaryKey(pk);
@@ -257,9 +261,11 @@ public class FriendlyURLEntryMappingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -279,7 +285,8 @@ public class FriendlyURLEntryMappingPersistenceTest {
 		FriendlyURLEntryMapping newFriendlyURLEntryMapping =
 			addFriendlyURLEntryMapping();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -356,7 +363,9 @@ public class FriendlyURLEntryMappingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"friendlyURLEntryMappingId", RandomTestUtil.nextLong()));
+				"friendlyURLEntryMappingId",
+				RandomTestUtil.nextLong(
+					FriendlyURLEntryMapping.class.getName())));
 
 		List<FriendlyURLEntryMapping> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -404,7 +413,10 @@ public class FriendlyURLEntryMappingPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"friendlyURLEntryMappingId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						FriendlyURLEntryMapping.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -483,7 +495,8 @@ public class FriendlyURLEntryMappingPersistenceTest {
 	protected FriendlyURLEntryMapping addFriendlyURLEntryMapping()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryMapping.class.getName());
 
 		FriendlyURLEntryMapping friendlyURLEntryMapping = _persistence.create(
 			pk);

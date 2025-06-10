@@ -83,7 +83,7 @@ public class MBDiscussionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
 		MBDiscussion mbDiscussion = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class MBDiscussionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
 		MBDiscussion newMBDiscussion = _persistence.create(pk);
 
@@ -238,7 +238,7 @@ public class MBDiscussionPersistenceTest {
 
 	@Test(expected = NoSuchDiscussionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -270,7 +270,7 @@ public class MBDiscussionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
 		MBDiscussion missingMBDiscussion = _persistence.fetchByPrimaryKey(pk);
 
@@ -305,9 +305,9 @@ public class MBDiscussionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -326,7 +326,7 @@ public class MBDiscussionPersistenceTest {
 
 		MBDiscussion newMBDiscussion = addMBDiscussion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -421,7 +421,8 @@ public class MBDiscussionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"discussionId", RandomTestUtil.nextLong()));
+				"discussionId",
+				RandomTestUtil.nextLong(MBDiscussion.class.getName())));
 
 		List<MBDiscussion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -464,7 +465,10 @@ public class MBDiscussionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"discussionId", new Object[] {RandomTestUtil.nextLong()}));
+				"discussionId",
+				new Object[] {
+					RandomTestUtil.nextLong(MBDiscussion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -552,7 +556,7 @@ public class MBDiscussionPersistenceTest {
 	}
 
 	protected MBDiscussion addMBDiscussion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBDiscussion.class.getName());
 
 		MBDiscussion mbDiscussion = _persistence.create(pk);
 

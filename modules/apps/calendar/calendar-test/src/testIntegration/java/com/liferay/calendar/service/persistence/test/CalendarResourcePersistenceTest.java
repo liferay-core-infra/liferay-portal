@@ -87,7 +87,7 @@ public class CalendarResourcePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
 		CalendarResource calendarResource = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class CalendarResourcePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
 		CalendarResource newCalendarResource = _persistence.create(pk);
 
@@ -309,7 +309,7 @@ public class CalendarResourcePersistenceTest {
 
 	@Test(expected = NoSuchResourceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -366,7 +366,7 @@ public class CalendarResourcePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
 		CalendarResource missingCalendarResource =
 			_persistence.fetchByPrimaryKey(pk);
@@ -402,9 +402,9 @@ public class CalendarResourcePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -423,7 +423,7 @@ public class CalendarResourcePersistenceTest {
 
 		CalendarResource newCalendarResource = addCalendarResource();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -519,7 +519,8 @@ public class CalendarResourcePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"calendarResourceId", RandomTestUtil.nextLong()));
+				"calendarResourceId",
+				RandomTestUtil.nextLong(CalendarResource.class.getName())));
 
 		List<CalendarResource> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -564,7 +565,9 @@ public class CalendarResourcePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"calendarResourceId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CalendarResource.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -647,7 +650,7 @@ public class CalendarResourcePersistenceTest {
 	}
 
 	protected CalendarResource addCalendarResource() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CalendarResource.class.getName());
 
 		CalendarResource calendarResource = _persistence.create(pk);
 

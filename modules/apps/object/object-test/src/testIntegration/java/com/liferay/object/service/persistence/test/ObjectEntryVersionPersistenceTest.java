@@ -83,7 +83,7 @@ public class ObjectEntryVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
 		ObjectEntryVersion objectEntryVersion = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class ObjectEntryVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
 		ObjectEntryVersion newObjectEntryVersion = _persistence.create(pk);
 
@@ -273,7 +273,7 @@ public class ObjectEntryVersionPersistenceTest {
 
 	@Test(expected = NoSuchObjectEntryVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -308,7 +308,7 @@ public class ObjectEntryVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
 		ObjectEntryVersion missingObjectEntryVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -344,9 +344,9 @@ public class ObjectEntryVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -365,7 +365,7 @@ public class ObjectEntryVersionPersistenceTest {
 
 		ObjectEntryVersion newObjectEntryVersion = addObjectEntryVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -464,7 +464,8 @@ public class ObjectEntryVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectEntryVersionId", RandomTestUtil.nextLong()));
+				"objectEntryVersionId",
+				RandomTestUtil.nextLong(ObjectEntryVersion.class.getName())));
 
 		List<ObjectEntryVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -511,7 +512,9 @@ public class ObjectEntryVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectEntryVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectEntryVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -584,7 +587,7 @@ public class ObjectEntryVersionPersistenceTest {
 	}
 
 	protected ObjectEntryVersion addObjectEntryVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectEntryVersion.class.getName());
 
 		ObjectEntryVersion objectEntryVersion = _persistence.create(pk);
 

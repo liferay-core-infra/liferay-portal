@@ -85,7 +85,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
 		AssetDisplayPageEntry assetDisplayPageEntry = _persistence.create(pk);
 
@@ -115,7 +116,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
 		AssetDisplayPageEntry newAssetDisplayPageEntry = _persistence.create(
 			pk);
@@ -279,7 +281,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 	@Test(expected = NoSuchDisplayPageEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -315,7 +318,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
 		AssetDisplayPageEntry missingAssetDisplayPageEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -355,9 +359,11 @@ public class AssetDisplayPageEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -377,7 +383,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 		AssetDisplayPageEntry newAssetDisplayPageEntry =
 			addAssetDisplayPageEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -481,7 +488,9 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"assetDisplayPageEntryId", RandomTestUtil.nextLong()));
+				"assetDisplayPageEntryId",
+				RandomTestUtil.nextLong(
+					AssetDisplayPageEntry.class.getName())));
 
 		List<AssetDisplayPageEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -529,7 +538,10 @@ public class AssetDisplayPageEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"assetDisplayPageEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						AssetDisplayPageEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -624,7 +636,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 	protected AssetDisplayPageEntry addAssetDisplayPageEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetDisplayPageEntry.class.getName());
 
 		AssetDisplayPageEntry assetDisplayPageEntry = _persistence.create(pk);
 

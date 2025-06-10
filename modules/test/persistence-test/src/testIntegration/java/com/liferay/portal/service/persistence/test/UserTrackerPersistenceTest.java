@@ -80,7 +80,7 @@ public class UserTrackerPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTracker.class.getName());
 
 		UserTracker userTracker = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class UserTrackerPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTracker.class.getName());
 
 		UserTracker newUserTracker = _persistence.create(pk);
 
@@ -193,7 +193,7 @@ public class UserTrackerPersistenceTest {
 
 	@Test(expected = NoSuchUserTrackerException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTracker.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -224,7 +224,7 @@ public class UserTrackerPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTracker.class.getName());
 
 		UserTracker missingUserTracker = _persistence.fetchByPrimaryKey(pk);
 
@@ -257,9 +257,9 @@ public class UserTrackerPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(UserTracker.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(UserTracker.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -278,7 +278,7 @@ public class UserTrackerPersistenceTest {
 
 		UserTracker newUserTracker = addUserTracker();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTracker.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -371,7 +371,8 @@ public class UserTrackerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"userTrackerId", RandomTestUtil.nextLong()));
+				"userTrackerId",
+				RandomTestUtil.nextLong(UserTracker.class.getName())));
 
 		List<UserTracker> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -414,7 +415,10 @@ public class UserTrackerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"userTrackerId", new Object[] {RandomTestUtil.nextLong()}));
+				"userTrackerId",
+				new Object[] {
+					RandomTestUtil.nextLong(UserTracker.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -422,7 +426,7 @@ public class UserTrackerPersistenceTest {
 	}
 
 	protected UserTracker addUserTracker() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(UserTracker.class.getName());
 
 		UserTracker userTracker = _persistence.create(pk);
 

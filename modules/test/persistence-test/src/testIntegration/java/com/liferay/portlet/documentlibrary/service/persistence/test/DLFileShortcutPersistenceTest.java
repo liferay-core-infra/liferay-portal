@@ -87,7 +87,7 @@ public class DLFileShortcutPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
 		DLFileShortcut dlFileShortcut = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class DLFileShortcutPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
 		DLFileShortcut newDLFileShortcut = _persistence.create(pk);
 
@@ -351,7 +351,7 @@ public class DLFileShortcutPersistenceTest {
 
 	@Test(expected = NoSuchFileShortcutException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -410,7 +410,7 @@ public class DLFileShortcutPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
 		DLFileShortcut missingDLFileShortcut = _persistence.fetchByPrimaryKey(
 			pk);
@@ -446,9 +446,9 @@ public class DLFileShortcutPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -467,7 +467,7 @@ public class DLFileShortcutPersistenceTest {
 
 		DLFileShortcut newDLFileShortcut = addDLFileShortcut();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -562,7 +562,8 @@ public class DLFileShortcutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fileShortcutId", RandomTestUtil.nextLong()));
+				"fileShortcutId",
+				RandomTestUtil.nextLong(DLFileShortcut.class.getName())));
 
 		List<DLFileShortcut> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -605,7 +606,10 @@ public class DLFileShortcutPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"fileShortcutId", new Object[] {RandomTestUtil.nextLong()}));
+				"fileShortcutId",
+				new Object[] {
+					RandomTestUtil.nextLong(DLFileShortcut.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -687,7 +691,7 @@ public class DLFileShortcutPersistenceTest {
 	}
 
 	protected DLFileShortcut addDLFileShortcut() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileShortcut.class.getName());
 
 		DLFileShortcut dlFileShortcut = _persistence.create(pk);
 

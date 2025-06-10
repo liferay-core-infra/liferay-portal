@@ -81,7 +81,7 @@ public class LayoutBranchPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
 		LayoutBranch layoutBranch = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class LayoutBranchPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
 		LayoutBranch newLayoutBranch = _persistence.create(pk);
 
@@ -220,7 +220,7 @@ public class LayoutBranchPersistenceTest {
 
 	@Test(expected = NoSuchLayoutBranchException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -251,7 +251,7 @@ public class LayoutBranchPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
 		LayoutBranch missingLayoutBranch = _persistence.fetchByPrimaryKey(pk);
 
@@ -286,9 +286,9 @@ public class LayoutBranchPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -307,7 +307,7 @@ public class LayoutBranchPersistenceTest {
 
 		LayoutBranch newLayoutBranch = addLayoutBranch();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -402,7 +402,8 @@ public class LayoutBranchPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutBranchId", RandomTestUtil.nextLong()));
+				"layoutBranchId",
+				RandomTestUtil.nextLong(LayoutBranch.class.getName())));
 
 		List<LayoutBranch> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -445,7 +446,10 @@ public class LayoutBranchPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"layoutBranchId", new Object[] {RandomTestUtil.nextLong()}));
+				"layoutBranchId",
+				new Object[] {
+					RandomTestUtil.nextLong(LayoutBranch.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -521,7 +525,7 @@ public class LayoutBranchPersistenceTest {
 	}
 
 	protected LayoutBranch addLayoutBranch() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutBranch.class.getName());
 
 		LayoutBranch layoutBranch = _persistence.create(pk);
 

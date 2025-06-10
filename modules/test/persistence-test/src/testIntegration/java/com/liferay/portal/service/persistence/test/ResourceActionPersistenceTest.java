@@ -81,7 +81,7 @@ public class ResourceActionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
 		ResourceAction resourceAction = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ResourceActionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
 		ResourceAction newResourceAction = _persistence.create(pk);
 
@@ -172,7 +172,7 @@ public class ResourceActionPersistenceTest {
 
 	@Test(expected = NoSuchResourceActionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -201,7 +201,7 @@ public class ResourceActionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
 		ResourceAction missingResourceAction = _persistence.fetchByPrimaryKey(
 			pk);
@@ -237,9 +237,9 @@ public class ResourceActionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -258,7 +258,7 @@ public class ResourceActionPersistenceTest {
 
 		ResourceAction newResourceAction = addResourceAction();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -353,7 +353,8 @@ public class ResourceActionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"resourceActionId", RandomTestUtil.nextLong()));
+				"resourceActionId",
+				RandomTestUtil.nextLong(ResourceAction.class.getName())));
 
 		List<ResourceAction> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -396,7 +397,10 @@ public class ResourceActionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"resourceActionId", new Object[] {RandomTestUtil.nextLong()}));
+				"resourceActionId",
+				new Object[] {
+					RandomTestUtil.nextLong(ResourceAction.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -467,7 +471,7 @@ public class ResourceActionPersistenceTest {
 	}
 
 	protected ResourceAction addResourceAction() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ResourceAction.class.getName());
 
 		ResourceAction resourceAction = _persistence.create(pk);
 

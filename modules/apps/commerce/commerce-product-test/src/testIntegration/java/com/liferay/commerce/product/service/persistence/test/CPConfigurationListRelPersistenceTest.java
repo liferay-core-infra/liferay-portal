@@ -84,7 +84,8 @@ public class CPConfigurationListRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
 		CPConfigurationListRel cpConfigurationListRel = _persistence.create(pk);
 
@@ -114,7 +115,8 @@ public class CPConfigurationListRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
 		CPConfigurationListRel newCPConfigurationListRel = _persistence.create(
 			pk);
@@ -224,7 +226,8 @@ public class CPConfigurationListRelPersistenceTest {
 
 	@Test(expected = NoSuchCPConfigurationListRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -259,7 +262,8 @@ public class CPConfigurationListRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
 		CPConfigurationListRel missingCPConfigurationListRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -299,9 +303,11 @@ public class CPConfigurationListRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -321,7 +327,8 @@ public class CPConfigurationListRelPersistenceTest {
 		CPConfigurationListRel newCPConfigurationListRel =
 			addCPConfigurationListRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -425,7 +432,9 @@ public class CPConfigurationListRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPConfigurationListRelId", RandomTestUtil.nextLong()));
+				"CPConfigurationListRelId",
+				RandomTestUtil.nextLong(
+					CPConfigurationListRel.class.getName())));
 
 		List<CPConfigurationListRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -473,7 +482,10 @@ public class CPConfigurationListRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPConfigurationListRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPConfigurationListRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -557,7 +569,8 @@ public class CPConfigurationListRelPersistenceTest {
 	protected CPConfigurationListRel addCPConfigurationListRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPConfigurationListRel.class.getName());
 
 		CPConfigurationListRel cpConfigurationListRel = _persistence.create(pk);
 

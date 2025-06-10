@@ -85,7 +85,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
 		CommerceInventoryBookedQuantity commerceInventoryBookedQuantity =
 			_persistence.create(pk);
@@ -118,7 +119,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
 		CommerceInventoryBookedQuantity newCommerceInventoryBookedQuantity =
 			_persistence.create(pk);
@@ -251,7 +253,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 
 	@Test(expected = NoSuchInventoryBookedQuantityException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -290,7 +293,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
 		CommerceInventoryBookedQuantity missingCommerceInventoryBookedQuantity =
 			_persistence.fetchByPrimaryKey(pk);
@@ -331,9 +335,11 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -354,7 +360,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 		CommerceInventoryBookedQuantity newCommerceInventoryBookedQuantity =
 			addCommerceInventoryBookedQuantity();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -467,7 +474,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
 				"commerceInventoryBookedQuantityId",
-				RandomTestUtil.nextLong()));
+				RandomTestUtil.nextLong(
+					CommerceInventoryBookedQuantity.class.getName())));
 
 		List<CommerceInventoryBookedQuantity> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -519,7 +527,10 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceInventoryBookedQuantityId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceInventoryBookedQuantity.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -530,7 +541,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 			addCommerceInventoryBookedQuantity()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryBookedQuantity.class.getName());
 
 		CommerceInventoryBookedQuantity commerceInventoryBookedQuantity =
 			_persistence.create(pk);

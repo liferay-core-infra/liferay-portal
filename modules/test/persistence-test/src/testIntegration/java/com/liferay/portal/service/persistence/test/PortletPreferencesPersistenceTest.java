@@ -82,7 +82,7 @@ public class PortletPreferencesPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
 		PortletPreferences portletPreferences = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class PortletPreferencesPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
 		PortletPreferences newPortletPreferences = _persistence.create(pk);
 
@@ -266,7 +266,7 @@ public class PortletPreferencesPersistenceTest {
 
 	@Test(expected = NoSuchPortletPreferencesException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -297,7 +297,7 @@ public class PortletPreferencesPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
 		PortletPreferences missingPortletPreferences =
 			_persistence.fetchByPrimaryKey(pk);
@@ -333,9 +333,9 @@ public class PortletPreferencesPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -354,7 +354,7 @@ public class PortletPreferencesPersistenceTest {
 
 		PortletPreferences newPortletPreferences = addPortletPreferences();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -453,7 +453,8 @@ public class PortletPreferencesPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"portletPreferencesId", RandomTestUtil.nextLong()));
+				"portletPreferencesId",
+				RandomTestUtil.nextLong(PortletPreferences.class.getName())));
 
 		List<PortletPreferences> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -500,7 +501,9 @@ public class PortletPreferencesPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"portletPreferencesId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(PortletPreferences.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -583,7 +586,7 @@ public class PortletPreferencesPersistenceTest {
 	}
 
 	protected PortletPreferences addPortletPreferences() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletPreferences.class.getName());
 
 		PortletPreferences portletPreferences = _persistence.create(pk);
 

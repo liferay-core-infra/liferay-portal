@@ -84,7 +84,7 @@ public class FragmentEntryLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
 		FragmentEntryLink fragmentEntryLink = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class FragmentEntryLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
 		FragmentEntryLink newFragmentEntryLink = _persistence.create(pk);
 
@@ -535,7 +535,7 @@ public class FragmentEntryLinkPersistenceTest {
 
 	@Test(expected = NoSuchEntryLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -572,7 +572,7 @@ public class FragmentEntryLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
 		FragmentEntryLink missingFragmentEntryLink =
 			_persistence.fetchByPrimaryKey(pk);
@@ -608,9 +608,9 @@ public class FragmentEntryLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -629,7 +629,7 @@ public class FragmentEntryLinkPersistenceTest {
 
 		FragmentEntryLink newFragmentEntryLink = addFragmentEntryLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -726,7 +726,8 @@ public class FragmentEntryLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fragmentEntryLinkId", RandomTestUtil.nextLong()));
+				"fragmentEntryLinkId",
+				RandomTestUtil.nextLong(FragmentEntryLink.class.getName())));
 
 		List<FragmentEntryLink> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -772,7 +773,9 @@ public class FragmentEntryLinkPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"fragmentEntryLinkId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(FragmentEntryLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -856,7 +859,7 @@ public class FragmentEntryLinkPersistenceTest {
 	}
 
 	protected FragmentEntryLink addFragmentEntryLink() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(FragmentEntryLink.class.getName());
 
 		FragmentEntryLink fragmentEntryLink = _persistence.create(pk);
 

@@ -81,7 +81,8 @@ public class StyleBookEntryVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
 		StyleBookEntryVersion styleBookEntryVersion = _persistence.create(pk);
 
@@ -111,7 +112,8 @@ public class StyleBookEntryVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
 		StyleBookEntryVersion newStyleBookEntryVersion = _persistence.create(
 			pk);
@@ -424,7 +426,8 @@ public class StyleBookEntryVersionPersistenceTest {
 
 	@Test(expected = NoSuchEntryVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -461,7 +464,8 @@ public class StyleBookEntryVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
 		StyleBookEntryVersion missingStyleBookEntryVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -501,9 +505,11 @@ public class StyleBookEntryVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -523,7 +529,8 @@ public class StyleBookEntryVersionPersistenceTest {
 		StyleBookEntryVersion newStyleBookEntryVersion =
 			addStyleBookEntryVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -600,7 +607,9 @@ public class StyleBookEntryVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"styleBookEntryVersionId", RandomTestUtil.nextLong()));
+				"styleBookEntryVersionId",
+				RandomTestUtil.nextLong(
+					StyleBookEntryVersion.class.getName())));
 
 		List<StyleBookEntryVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -648,7 +657,10 @@ public class StyleBookEntryVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"styleBookEntryVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						StyleBookEntryVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -759,7 +771,8 @@ public class StyleBookEntryVersionPersistenceTest {
 	protected StyleBookEntryVersion addStyleBookEntryVersion()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			StyleBookEntryVersion.class.getName());
 
 		StyleBookEntryVersion styleBookEntryVersion = _persistence.create(pk);
 

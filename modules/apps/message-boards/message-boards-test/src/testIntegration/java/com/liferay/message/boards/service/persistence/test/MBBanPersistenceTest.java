@@ -83,7 +83,7 @@ public class MBBanPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBBan.class.getName());
 
 		MBBan mbBan = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class MBBanPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBBan.class.getName());
 
 		MBBan newMBBan = _persistence.create(pk);
 
@@ -235,7 +235,7 @@ public class MBBanPersistenceTest {
 
 	@Test(expected = NoSuchBanException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBBan.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -266,7 +266,7 @@ public class MBBanPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBBan.class.getName());
 
 		MBBan missingMBBan = _persistence.fetchByPrimaryKey(pk);
 
@@ -297,9 +297,9 @@ public class MBBanPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MBBan.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MBBan.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -318,7 +318,7 @@ public class MBBanPersistenceTest {
 
 		MBBan newMBBan = addMBBan();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBBan.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -406,7 +406,8 @@ public class MBBanPersistenceTest {
 			MBBan.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("banId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"banId", RandomTestUtil.nextLong(MBBan.class.getName())));
 
 		List<MBBan> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -445,7 +446,8 @@ public class MBBanPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"banId", new Object[] {RandomTestUtil.nextLong()}));
+				"banId",
+				new Object[] {RandomTestUtil.nextLong(MBBan.class.getName())}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -525,7 +527,7 @@ public class MBBanPersistenceTest {
 	}
 
 	protected MBBan addMBBan() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBBan.class.getName());
 
 		MBBan mbBan = _persistence.create(pk);
 

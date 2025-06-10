@@ -79,7 +79,7 @@ public class CountryLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
 		CountryLocalization countryLocalization = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class CountryLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
 		CountryLocalization newCountryLocalization = _persistence.create(pk);
 
@@ -183,7 +183,7 @@ public class CountryLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchCountryLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -215,7 +215,7 @@ public class CountryLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
 		CountryLocalization missingCountryLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -251,9 +251,9 @@ public class CountryLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -272,7 +272,7 @@ public class CountryLocalizationPersistenceTest {
 
 		CountryLocalization newCountryLocalization = addCountryLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -345,7 +345,8 @@ public class CountryLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"countryLocalizationId", RandomTestUtil.nextLong()));
+				"countryLocalizationId",
+				RandomTestUtil.nextLong(CountryLocalization.class.getName())));
 
 		List<CountryLocalization> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -392,7 +393,9 @@ public class CountryLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"countryLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CountryLocalization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -467,7 +470,7 @@ public class CountryLocalizationPersistenceTest {
 	}
 
 	protected CountryLocalization addCountryLocalization() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CountryLocalization.class.getName());
 
 		CountryLocalization countryLocalization = _persistence.create(pk);
 

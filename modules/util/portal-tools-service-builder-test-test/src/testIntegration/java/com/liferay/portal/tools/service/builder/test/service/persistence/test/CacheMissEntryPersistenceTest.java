@@ -81,7 +81,7 @@ public class CacheMissEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
 		CacheMissEntry cacheMissEntry = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class CacheMissEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
 		CacheMissEntry newCacheMissEntry = _persistence.create(pk);
 
@@ -145,7 +145,7 @@ public class CacheMissEntryPersistenceTest {
 
 	@Test(expected = NoSuchCacheMissEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -174,7 +174,7 @@ public class CacheMissEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
 		CacheMissEntry missingCacheMissEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -210,9 +210,9 @@ public class CacheMissEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -231,7 +231,7 @@ public class CacheMissEntryPersistenceTest {
 
 		CacheMissEntry newCacheMissEntry = addCacheMissEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -326,7 +326,8 @@ public class CacheMissEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"cacheMissEntryId", RandomTestUtil.nextLong()));
+				"cacheMissEntryId",
+				RandomTestUtil.nextLong(CacheMissEntry.class.getName())));
 
 		List<CacheMissEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -369,7 +370,10 @@ public class CacheMissEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"cacheMissEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"cacheMissEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(CacheMissEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -377,7 +381,7 @@ public class CacheMissEntryPersistenceTest {
 	}
 
 	protected CacheMissEntry addCacheMissEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CacheMissEntry.class.getName());
 
 		CacheMissEntry cacheMissEntry = _persistence.create(pk);
 

@@ -81,7 +81,7 @@ public class CTProcessPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTProcess.class.getName());
 
 		CTProcess ctProcess = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class CTProcessPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTProcess.class.getName());
 
 		CTProcess newCTProcess = _persistence.create(pk);
 
@@ -187,7 +187,7 @@ public class CTProcessPersistenceTest {
 
 	@Test(expected = NoSuchProcessException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTProcess.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -217,7 +217,7 @@ public class CTProcessPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTProcess.class.getName());
 
 		CTProcess missingCTProcess = _persistence.fetchByPrimaryKey(pk);
 
@@ -250,9 +250,9 @@ public class CTProcessPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTProcess.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTProcess.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -271,7 +271,7 @@ public class CTProcessPersistenceTest {
 
 		CTProcess newCTProcess = addCTProcess();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTProcess.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -364,7 +364,8 @@ public class CTProcessPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ctProcessId", RandomTestUtil.nextLong()));
+				"ctProcessId",
+				RandomTestUtil.nextLong(CTProcess.class.getName())));
 
 		List<CTProcess> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -407,7 +408,10 @@ public class CTProcessPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctProcessId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctProcessId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTProcess.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -415,7 +419,7 @@ public class CTProcessPersistenceTest {
 	}
 
 	protected CTProcess addCTProcess() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTProcess.class.getName());
 
 		CTProcess ctProcess = _persistence.create(pk);
 

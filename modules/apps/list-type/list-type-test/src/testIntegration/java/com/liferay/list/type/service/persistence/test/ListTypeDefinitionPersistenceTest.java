@@ -84,7 +84,7 @@ public class ListTypeDefinitionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
 		ListTypeDefinition listTypeDefinition = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class ListTypeDefinitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
 		ListTypeDefinition newListTypeDefinition = _persistence.create(pk);
 
@@ -250,7 +250,7 @@ public class ListTypeDefinitionPersistenceTest {
 
 	@Test(expected = NoSuchListTypeDefinitionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -282,7 +282,7 @@ public class ListTypeDefinitionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
 		ListTypeDefinition missingListTypeDefinition =
 			_persistence.fetchByPrimaryKey(pk);
@@ -318,9 +318,9 @@ public class ListTypeDefinitionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -339,7 +339,7 @@ public class ListTypeDefinitionPersistenceTest {
 
 		ListTypeDefinition newListTypeDefinition = addListTypeDefinition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -438,7 +438,8 @@ public class ListTypeDefinitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"listTypeDefinitionId", RandomTestUtil.nextLong()));
+				"listTypeDefinitionId",
+				RandomTestUtil.nextLong(ListTypeDefinition.class.getName())));
 
 		List<ListTypeDefinition> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -485,7 +486,9 @@ public class ListTypeDefinitionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"listTypeDefinitionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ListTypeDefinition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -558,7 +561,7 @@ public class ListTypeDefinitionPersistenceTest {
 	}
 
 	protected ListTypeDefinition addListTypeDefinition() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ListTypeDefinition.class.getName());
 
 		ListTypeDefinition listTypeDefinition = _persistence.create(pk);
 

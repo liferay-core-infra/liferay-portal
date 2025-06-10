@@ -87,7 +87,7 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFolder.class.getName());
 
 		DLFolder dlFolder = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFolder.class.getName());
 
 		DLFolder newDLFolder = _persistence.create(pk);
 
@@ -467,7 +467,7 @@ public class DLFolderPersistenceTest {
 
 	@Test(expected = NoSuchFolderException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFolder.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -527,7 +527,7 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFolder.class.getName());
 
 		DLFolder missingDLFolder = _persistence.fetchByPrimaryKey(pk);
 
@@ -560,9 +560,9 @@ public class DLFolderPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DLFolder.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DLFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -581,7 +581,7 @@ public class DLFolderPersistenceTest {
 
 		DLFolder newDLFolder = addDLFolder();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFolder.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -671,7 +671,8 @@ public class DLFolderPersistenceTest {
 			DLFolder.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("folderId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"folderId", RandomTestUtil.nextLong(DLFolder.class.getName())));
 
 		List<DLFolder> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -710,7 +711,10 @@ public class DLFolderPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"folderId", new Object[] {RandomTestUtil.nextLong()}));
+				"folderId",
+				new Object[] {
+					RandomTestUtil.nextLong(DLFolder.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -817,7 +821,7 @@ public class DLFolderPersistenceTest {
 	}
 
 	protected DLFolder addDLFolder() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFolder.class.getName());
 
 		DLFolder dlFolder = _persistence.create(pk);
 

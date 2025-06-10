@@ -81,7 +81,7 @@ public class ServiceComponentPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
 		ServiceComponent serviceComponent = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ServiceComponentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
 		ServiceComponent newServiceComponent = _persistence.create(pk);
 
@@ -177,7 +177,7 @@ public class ServiceComponentPersistenceTest {
 
 	@Test(expected = NoSuchServiceComponentException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -206,7 +206,7 @@ public class ServiceComponentPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
 		ServiceComponent missingServiceComponent =
 			_persistence.fetchByPrimaryKey(pk);
@@ -242,9 +242,9 @@ public class ServiceComponentPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -263,7 +263,7 @@ public class ServiceComponentPersistenceTest {
 
 		ServiceComponent newServiceComponent = addServiceComponent();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -359,7 +359,8 @@ public class ServiceComponentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"serviceComponentId", RandomTestUtil.nextLong()));
+				"serviceComponentId",
+				RandomTestUtil.nextLong(ServiceComponent.class.getName())));
 
 		List<ServiceComponent> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -404,7 +405,9 @@ public class ServiceComponentPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"serviceComponentId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ServiceComponent.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -476,7 +479,7 @@ public class ServiceComponentPersistenceTest {
 	}
 
 	protected ServiceComponent addServiceComponent() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ServiceComponent.class.getName());
 
 		ServiceComponent serviceComponent = _persistence.create(pk);
 

@@ -80,7 +80,8 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
 		FriendlyURLEntryLocalization friendlyURLEntryLocalization =
 			_persistence.create(pk);
@@ -111,7 +112,8 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
 		FriendlyURLEntryLocalization newFriendlyURLEntryLocalization =
 			_persistence.create(pk);
@@ -266,7 +268,8 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 
 	@Test(expected = NoSuchFriendlyURLEntryLocalizationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -304,7 +307,8 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
 		FriendlyURLEntryLocalization missingFriendlyURLEntryLocalization =
 			_persistence.fetchByPrimaryKey(pk);
@@ -345,9 +349,11 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -368,7 +374,8 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 		FriendlyURLEntryLocalization newFriendlyURLEntryLocalization =
 			addFriendlyURLEntryLocalization();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -451,7 +458,9 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"friendlyURLEntryLocalizationId", RandomTestUtil.nextLong()));
+				"friendlyURLEntryLocalizationId",
+				RandomTestUtil.nextLong(
+					FriendlyURLEntryLocalization.class.getName())));
 
 		List<FriendlyURLEntryLocalization> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -500,7 +509,10 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"friendlyURLEntryLocalizationId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						FriendlyURLEntryLocalization.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -601,7 +613,8 @@ public class FriendlyURLEntryLocalizationPersistenceTest {
 	protected FriendlyURLEntryLocalization addFriendlyURLEntryLocalization()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FriendlyURLEntryLocalization.class.getName());
 
 		FriendlyURLEntryLocalization friendlyURLEntryLocalization =
 			_persistence.create(pk);

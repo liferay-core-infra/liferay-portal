@@ -83,7 +83,7 @@ public class AccountGroupRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
 		AccountGroupRel accountGroupRel = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class AccountGroupRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
 		AccountGroupRel newAccountGroupRel = _persistence.create(pk);
 
@@ -214,7 +214,7 @@ public class AccountGroupRelPersistenceTest {
 
 	@Test(expected = NoSuchGroupRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -245,7 +245,7 @@ public class AccountGroupRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
 		AccountGroupRel missingAccountGroupRel = _persistence.fetchByPrimaryKey(
 			pk);
@@ -281,9 +281,9 @@ public class AccountGroupRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -302,7 +302,7 @@ public class AccountGroupRelPersistenceTest {
 
 		AccountGroupRel newAccountGroupRel = addAccountGroupRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -398,7 +398,8 @@ public class AccountGroupRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"accountGroupRelId", RandomTestUtil.nextLong()));
+				"accountGroupRelId",
+				RandomTestUtil.nextLong(AccountGroupRel.class.getName())));
 
 		List<AccountGroupRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -441,7 +442,10 @@ public class AccountGroupRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"accountGroupRelId", new Object[] {RandomTestUtil.nextLong()}));
+				"accountGroupRelId",
+				new Object[] {
+					RandomTestUtil.nextLong(AccountGroupRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -518,7 +522,7 @@ public class AccountGroupRelPersistenceTest {
 	}
 
 	protected AccountGroupRel addAccountGroupRel() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AccountGroupRel.class.getName());
 
 		AccountGroupRel accountGroupRel = _persistence.create(pk);
 

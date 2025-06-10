@@ -82,7 +82,8 @@ public class FinderWhereClauseEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
 		FinderWhereClauseEntry finderWhereClauseEntry = _persistence.create(pk);
 
@@ -112,7 +113,8 @@ public class FinderWhereClauseEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
 		FinderWhereClauseEntry newFinderWhereClauseEntry = _persistence.create(
 			pk);
@@ -163,7 +165,8 @@ public class FinderWhereClauseEntryPersistenceTest {
 
 	@Test(expected = NoSuchFinderWhereClauseEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -195,7 +198,8 @@ public class FinderWhereClauseEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
 		FinderWhereClauseEntry missingFinderWhereClauseEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -235,9 +239,11 @@ public class FinderWhereClauseEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -257,7 +263,8 @@ public class FinderWhereClauseEntryPersistenceTest {
 		FinderWhereClauseEntry newFinderWhereClauseEntry =
 			addFinderWhereClauseEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -361,7 +368,9 @@ public class FinderWhereClauseEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"finderWhereClauseEntryId", RandomTestUtil.nextLong()));
+				"finderWhereClauseEntryId",
+				RandomTestUtil.nextLong(
+					FinderWhereClauseEntry.class.getName())));
 
 		List<FinderWhereClauseEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -409,7 +418,10 @@ public class FinderWhereClauseEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"finderWhereClauseEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						FinderWhereClauseEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -419,7 +431,8 @@ public class FinderWhereClauseEntryPersistenceTest {
 	protected FinderWhereClauseEntry addFinderWhereClauseEntry()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			FinderWhereClauseEntry.class.getName());
 
 		FinderWhereClauseEntry finderWhereClauseEntry = _persistence.create(pk);
 

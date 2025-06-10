@@ -82,7 +82,8 @@ public class SocialActivityAchievementPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
 		SocialActivityAchievement socialActivityAchievement =
 			_persistence.create(pk);
@@ -113,7 +114,8 @@ public class SocialActivityAchievementPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
 		SocialActivityAchievement newSocialActivityAchievement =
 			_persistence.create(pk);
@@ -238,7 +240,8 @@ public class SocialActivityAchievementPersistenceTest {
 
 	@Test(expected = NoSuchActivityAchievementException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -274,7 +277,8 @@ public class SocialActivityAchievementPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
 		SocialActivityAchievement missingSocialActivityAchievement =
 			_persistence.fetchByPrimaryKey(pk);
@@ -315,9 +319,11 @@ public class SocialActivityAchievementPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -338,7 +344,8 @@ public class SocialActivityAchievementPersistenceTest {
 		SocialActivityAchievement newSocialActivityAchievement =
 			addSocialActivityAchievement();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -447,7 +454,9 @@ public class SocialActivityAchievementPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"activityAchievementId", RandomTestUtil.nextLong()));
+				"activityAchievementId",
+				RandomTestUtil.nextLong(
+					SocialActivityAchievement.class.getName())));
 
 		List<SocialActivityAchievement> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -495,7 +504,10 @@ public class SocialActivityAchievementPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"activityAchievementId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						SocialActivityAchievement.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -579,7 +591,8 @@ public class SocialActivityAchievementPersistenceTest {
 	protected SocialActivityAchievement addSocialActivityAchievement()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			SocialActivityAchievement.class.getName());
 
 		SocialActivityAchievement socialActivityAchievement =
 			_persistence.create(pk);

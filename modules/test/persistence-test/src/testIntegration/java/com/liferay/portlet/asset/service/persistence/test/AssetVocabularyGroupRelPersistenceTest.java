@@ -82,7 +82,8 @@ public class AssetVocabularyGroupRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
 		AssetVocabularyGroupRel assetVocabularyGroupRel = _persistence.create(
 			pk);
@@ -113,7 +114,8 @@ public class AssetVocabularyGroupRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
 		AssetVocabularyGroupRel newAssetVocabularyGroupRel =
 			_persistence.create(pk);
@@ -224,7 +226,8 @@ public class AssetVocabularyGroupRelPersistenceTest {
 
 	@Test(expected = NoSuchVocabularyGroupRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -259,7 +262,8 @@ public class AssetVocabularyGroupRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
 		AssetVocabularyGroupRel missingAssetVocabularyGroupRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -299,9 +303,11 @@ public class AssetVocabularyGroupRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -321,7 +327,8 @@ public class AssetVocabularyGroupRelPersistenceTest {
 		AssetVocabularyGroupRel newAssetVocabularyGroupRel =
 			addAssetVocabularyGroupRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -425,7 +432,9 @@ public class AssetVocabularyGroupRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"assetVocabularyGroupRelId", RandomTestUtil.nextLong()));
+				"assetVocabularyGroupRelId",
+				RandomTestUtil.nextLong(
+					AssetVocabularyGroupRel.class.getName())));
 
 		List<AssetVocabularyGroupRel> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -473,7 +482,10 @@ public class AssetVocabularyGroupRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"assetVocabularyGroupRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						AssetVocabularyGroupRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -563,7 +575,8 @@ public class AssetVocabularyGroupRelPersistenceTest {
 	protected AssetVocabularyGroupRel addAssetVocabularyGroupRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			AssetVocabularyGroupRel.class.getName());
 
 		AssetVocabularyGroupRel assetVocabularyGroupRel = _persistence.create(
 			pk);

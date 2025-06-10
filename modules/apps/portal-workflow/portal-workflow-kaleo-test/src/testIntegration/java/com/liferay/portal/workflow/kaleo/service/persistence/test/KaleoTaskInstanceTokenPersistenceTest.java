@@ -85,7 +85,8 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
 		KaleoTaskInstanceToken kaleoTaskInstanceToken = _persistence.create(pk);
 
@@ -115,7 +116,8 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
 		KaleoTaskInstanceToken newKaleoTaskInstanceToken = _persistence.create(
 			pk);
@@ -318,7 +320,8 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 
 	@Test(expected = NoSuchTaskInstanceTokenException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -356,7 +359,8 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
 		KaleoTaskInstanceToken missingKaleoTaskInstanceToken =
 			_persistence.fetchByPrimaryKey(pk);
@@ -396,9 +400,11 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -418,7 +424,8 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 		KaleoTaskInstanceToken newKaleoTaskInstanceToken =
 			addKaleoTaskInstanceToken();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -522,7 +529,9 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoTaskInstanceTokenId", RandomTestUtil.nextLong()));
+				"kaleoTaskInstanceTokenId",
+				RandomTestUtil.nextLong(
+					KaleoTaskInstanceToken.class.getName())));
 
 		List<KaleoTaskInstanceToken> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -570,7 +579,10 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"kaleoTaskInstanceTokenId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						KaleoTaskInstanceToken.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -649,7 +661,8 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 	protected KaleoTaskInstanceToken addKaleoTaskInstanceToken()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoTaskInstanceToken.class.getName());
 
 		KaleoTaskInstanceToken kaleoTaskInstanceToken = _persistence.create(pk);
 

@@ -83,7 +83,7 @@ public class JournalContentSearchPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalContentSearch.class.getName());
 
 		JournalContentSearch journalContentSearch = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class JournalContentSearchPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalContentSearch.class.getName());
 
 		JournalContentSearch newJournalContentSearch = _persistence.create(pk);
 
@@ -273,7 +273,7 @@ public class JournalContentSearchPersistenceTest {
 
 	@Test(expected = NoSuchContentSearchException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalContentSearch.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -307,7 +307,7 @@ public class JournalContentSearchPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalContentSearch.class.getName());
 
 		JournalContentSearch missingJournalContentSearch =
 			_persistence.fetchByPrimaryKey(pk);
@@ -347,9 +347,11 @@ public class JournalContentSearchPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			JournalContentSearch.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			JournalContentSearch.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -369,7 +371,7 @@ public class JournalContentSearchPersistenceTest {
 		JournalContentSearch newJournalContentSearch =
 			addJournalContentSearch();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalContentSearch.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -471,7 +473,8 @@ public class JournalContentSearchPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"contentSearchId", RandomTestUtil.nextLong()));
+				"contentSearchId",
+				RandomTestUtil.nextLong(JournalContentSearch.class.getName())));
 
 		List<JournalContentSearch> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -516,7 +519,11 @@ public class JournalContentSearchPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"contentSearchId", new Object[] {RandomTestUtil.nextLong()}));
+				"contentSearchId",
+				new Object[] {
+					RandomTestUtil.nextLong(
+						JournalContentSearch.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -608,7 +615,7 @@ public class JournalContentSearchPersistenceTest {
 	}
 
 	protected JournalContentSearch addJournalContentSearch() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(JournalContentSearch.class.getName());
 
 		JournalContentSearch journalContentSearch = _persistence.create(pk);
 

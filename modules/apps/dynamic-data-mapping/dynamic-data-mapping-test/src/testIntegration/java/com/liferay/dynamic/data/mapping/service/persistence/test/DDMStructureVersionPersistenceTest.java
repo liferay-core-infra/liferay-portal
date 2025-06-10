@@ -85,7 +85,7 @@ public class DDMStructureVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
 		DDMStructureVersion ddmStructureVersion = _persistence.create(pk);
 
@@ -114,7 +114,7 @@ public class DDMStructureVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
 		DDMStructureVersion newDDMStructureVersion = _persistence.create(pk);
 
@@ -263,7 +263,7 @@ public class DDMStructureVersionPersistenceTest {
 
 	@Test(expected = NoSuchStructureVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -298,7 +298,7 @@ public class DDMStructureVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
 		DDMStructureVersion missingDDMStructureVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -334,9 +334,9 @@ public class DDMStructureVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -355,7 +355,7 @@ public class DDMStructureVersionPersistenceTest {
 
 		DDMStructureVersion newDDMStructureVersion = addDDMStructureVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -455,7 +455,8 @@ public class DDMStructureVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"structureVersionId", RandomTestUtil.nextLong()));
+				"structureVersionId",
+				RandomTestUtil.nextLong(DDMStructureVersion.class.getName())));
 
 		List<DDMStructureVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -500,7 +501,9 @@ public class DDMStructureVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"structureVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(DDMStructureVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -575,7 +578,7 @@ public class DDMStructureVersionPersistenceTest {
 	}
 
 	protected DDMStructureVersion addDDMStructureVersion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DDMStructureVersion.class.getName());
 
 		DDMStructureVersion ddmStructureVersion = _persistence.create(pk);
 

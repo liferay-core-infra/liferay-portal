@@ -82,7 +82,8 @@ public class ObjectViewFilterColumnPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
 		ObjectViewFilterColumn objectViewFilterColumn = _persistence.create(pk);
 
@@ -112,7 +113,8 @@ public class ObjectViewFilterColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
 		ObjectViewFilterColumn newObjectViewFilterColumn = _persistence.create(
 			pk);
@@ -237,7 +239,8 @@ public class ObjectViewFilterColumnPersistenceTest {
 
 	@Test(expected = NoSuchObjectViewFilterColumnException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -271,7 +274,8 @@ public class ObjectViewFilterColumnPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
 		ObjectViewFilterColumn missingObjectViewFilterColumn =
 			_persistence.fetchByPrimaryKey(pk);
@@ -311,9 +315,11 @@ public class ObjectViewFilterColumnPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -333,7 +339,8 @@ public class ObjectViewFilterColumnPersistenceTest {
 		ObjectViewFilterColumn newObjectViewFilterColumn =
 			addObjectViewFilterColumn();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -437,7 +444,9 @@ public class ObjectViewFilterColumnPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectViewFilterColumnId", RandomTestUtil.nextLong()));
+				"objectViewFilterColumnId",
+				RandomTestUtil.nextLong(
+					ObjectViewFilterColumn.class.getName())));
 
 		List<ObjectViewFilterColumn> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -485,7 +494,10 @@ public class ObjectViewFilterColumnPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectViewFilterColumnId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ObjectViewFilterColumn.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -495,7 +507,8 @@ public class ObjectViewFilterColumnPersistenceTest {
 	protected ObjectViewFilterColumn addObjectViewFilterColumn()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ObjectViewFilterColumn.class.getName());
 
 		ObjectViewFilterColumn objectViewFilterColumn = _persistence.create(pk);
 

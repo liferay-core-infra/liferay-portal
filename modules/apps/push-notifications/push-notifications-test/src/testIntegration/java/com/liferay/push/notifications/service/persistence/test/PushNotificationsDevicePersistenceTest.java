@@ -85,7 +85,8 @@ public class PushNotificationsDevicePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
 		PushNotificationsDevice pushNotificationsDevice = _persistence.create(
 			pk);
@@ -116,7 +117,8 @@ public class PushNotificationsDevicePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
 		PushNotificationsDevice newPushNotificationsDevice =
 			_persistence.create(pk);
@@ -199,7 +201,8 @@ public class PushNotificationsDevicePersistenceTest {
 
 	@Test(expected = NoSuchDeviceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -234,7 +237,8 @@ public class PushNotificationsDevicePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
 		PushNotificationsDevice missingPushNotificationsDevice =
 			_persistence.fetchByPrimaryKey(pk);
@@ -274,9 +278,11 @@ public class PushNotificationsDevicePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -296,7 +302,8 @@ public class PushNotificationsDevicePersistenceTest {
 		PushNotificationsDevice newPushNotificationsDevice =
 			addPushNotificationsDevice();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -400,7 +407,9 @@ public class PushNotificationsDevicePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"pushNotificationsDeviceId", RandomTestUtil.nextLong()));
+				"pushNotificationsDeviceId",
+				RandomTestUtil.nextLong(
+					PushNotificationsDevice.class.getName())));
 
 		List<PushNotificationsDevice> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -448,7 +457,10 @@ public class PushNotificationsDevicePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"pushNotificationsDeviceId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						PushNotificationsDevice.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -522,7 +534,8 @@ public class PushNotificationsDevicePersistenceTest {
 	protected PushNotificationsDevice addPushNotificationsDevice()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			PushNotificationsDevice.class.getName());
 
 		PushNotificationsDevice pushNotificationsDevice = _persistence.create(
 			pk);

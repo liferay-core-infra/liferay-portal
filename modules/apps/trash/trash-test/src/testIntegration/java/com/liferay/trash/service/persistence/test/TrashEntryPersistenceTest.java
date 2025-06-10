@@ -83,7 +83,7 @@ public class TrashEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
 		TrashEntry trashEntry = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class TrashEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
 		TrashEntry newTrashEntry = _persistence.create(pk);
 
@@ -228,7 +228,7 @@ public class TrashEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -259,7 +259,7 @@ public class TrashEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
 		TrashEntry missingTrashEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -292,9 +292,9 @@ public class TrashEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -313,7 +313,7 @@ public class TrashEntryPersistenceTest {
 
 		TrashEntry newTrashEntry = addTrashEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -404,7 +404,9 @@ public class TrashEntryPersistenceTest {
 			TrashEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("entryId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"entryId",
+				RandomTestUtil.nextLong(TrashEntry.class.getName())));
 
 		List<TrashEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -444,7 +446,10 @@ public class TrashEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"entryId", new Object[] {RandomTestUtil.nextLong()}));
+				"entryId",
+				new Object[] {
+					RandomTestUtil.nextLong(TrashEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -514,7 +519,7 @@ public class TrashEntryPersistenceTest {
 	}
 
 	protected TrashEntry addTrashEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(TrashEntry.class.getName());
 
 		TrashEntry trashEntry = _persistence.create(pk);
 

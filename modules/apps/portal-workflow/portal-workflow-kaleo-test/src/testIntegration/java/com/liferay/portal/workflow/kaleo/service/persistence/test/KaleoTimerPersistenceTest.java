@@ -83,7 +83,7 @@ public class KaleoTimerPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
 		KaleoTimer kaleoTimer = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class KaleoTimerPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
 		KaleoTimer newKaleoTimer = _persistence.create(pk);
 
@@ -245,7 +245,7 @@ public class KaleoTimerPersistenceTest {
 
 	@Test(expected = NoSuchTimerException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -279,7 +279,7 @@ public class KaleoTimerPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
 		KaleoTimer missingKaleoTimer = _persistence.fetchByPrimaryKey(pk);
 
@@ -312,9 +312,9 @@ public class KaleoTimerPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -333,7 +333,7 @@ public class KaleoTimerPersistenceTest {
 
 		KaleoTimer newKaleoTimer = addKaleoTimer();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -426,7 +426,8 @@ public class KaleoTimerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoTimerId", RandomTestUtil.nextLong()));
+				"kaleoTimerId",
+				RandomTestUtil.nextLong(KaleoTimer.class.getName())));
 
 		List<KaleoTimer> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -469,7 +470,10 @@ public class KaleoTimerPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kaleoTimerId", new Object[] {RandomTestUtil.nextLong()}));
+				"kaleoTimerId",
+				new Object[] {
+					RandomTestUtil.nextLong(KaleoTimer.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -477,7 +481,7 @@ public class KaleoTimerPersistenceTest {
 	}
 
 	protected KaleoTimer addKaleoTimer() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoTimer.class.getName());
 
 		KaleoTimer kaleoTimer = _persistence.create(pk);
 

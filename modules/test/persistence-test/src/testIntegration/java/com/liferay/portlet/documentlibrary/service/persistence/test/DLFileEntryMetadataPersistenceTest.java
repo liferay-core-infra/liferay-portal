@@ -83,7 +83,7 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
 		DLFileEntryMetadata dlFileEntryMetadata = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
 		DLFileEntryMetadata newDLFileEntryMetadata = _persistence.create(pk);
 
@@ -258,7 +258,7 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test(expected = NoSuchFileEntryMetadataException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -291,7 +291,7 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
 		DLFileEntryMetadata missingDLFileEntryMetadata =
 			_persistence.fetchByPrimaryKey(pk);
@@ -327,9 +327,9 @@ public class DLFileEntryMetadataPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -348,7 +348,7 @@ public class DLFileEntryMetadataPersistenceTest {
 
 		DLFileEntryMetadata newDLFileEntryMetadata = addDLFileEntryMetadata();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -448,7 +448,8 @@ public class DLFileEntryMetadataPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fileEntryMetadataId", RandomTestUtil.nextLong()));
+				"fileEntryMetadataId",
+				RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName())));
 
 		List<DLFileEntryMetadata> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -494,7 +495,9 @@ public class DLFileEntryMetadataPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"fileEntryMetadataId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -580,7 +583,7 @@ public class DLFileEntryMetadataPersistenceTest {
 	}
 
 	protected DLFileEntryMetadata addDLFileEntryMetadata() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryMetadata.class.getName());
 
 		DLFileEntryMetadata dlFileEntryMetadata = _persistence.create(pk);
 

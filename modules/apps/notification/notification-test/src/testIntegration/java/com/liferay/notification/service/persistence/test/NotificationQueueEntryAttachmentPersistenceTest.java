@@ -81,7 +81,8 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
 		NotificationQueueEntryAttachment notificationQueueEntryAttachment =
 			_persistence.create(pk);
@@ -114,7 +115,8 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
 		NotificationQueueEntryAttachment newNotificationQueueEntryAttachment =
 			_persistence.create(pk);
@@ -183,7 +185,8 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 
 	@Test(expected = NoSuchNotificationQueueEntryAttachmentException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -220,7 +223,8 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
 		NotificationQueueEntryAttachment
 			missingNotificationQueueEntryAttachment =
@@ -262,9 +266,11 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -285,7 +291,8 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 		NotificationQueueEntryAttachment newNotificationQueueEntryAttachment =
 			addNotificationQueueEntryAttachment();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -398,7 +405,8 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
 				"notificationQueueEntryAttachmentId",
-				RandomTestUtil.nextLong()));
+				RandomTestUtil.nextLong(
+					NotificationQueueEntryAttachment.class.getName())));
 
 		List<NotificationQueueEntryAttachment> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -450,7 +458,10 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"notificationQueueEntryAttachmentId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						NotificationQueueEntryAttachment.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -461,7 +472,8 @@ public class NotificationQueueEntryAttachmentPersistenceTest {
 			addNotificationQueueEntryAttachment()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationQueueEntryAttachment.class.getName());
 
 		NotificationQueueEntryAttachment notificationQueueEntryAttachment =
 			_persistence.create(pk);

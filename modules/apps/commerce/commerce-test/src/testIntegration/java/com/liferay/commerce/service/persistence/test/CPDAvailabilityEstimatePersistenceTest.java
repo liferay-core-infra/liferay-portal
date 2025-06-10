@@ -84,7 +84,8 @@ public class CPDAvailabilityEstimatePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
 		CPDAvailabilityEstimate cpdAvailabilityEstimate = _persistence.create(
 			pk);
@@ -115,7 +116,8 @@ public class CPDAvailabilityEstimatePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
 		CPDAvailabilityEstimate newCPDAvailabilityEstimate =
 			_persistence.create(pk);
@@ -237,7 +239,8 @@ public class CPDAvailabilityEstimatePersistenceTest {
 
 	@Test(expected = NoSuchCPDAvailabilityEstimateException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -274,7 +277,8 @@ public class CPDAvailabilityEstimatePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
 		CPDAvailabilityEstimate missingCPDAvailabilityEstimate =
 			_persistence.fetchByPrimaryKey(pk);
@@ -314,9 +318,11 @@ public class CPDAvailabilityEstimatePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -336,7 +342,8 @@ public class CPDAvailabilityEstimatePersistenceTest {
 		CPDAvailabilityEstimate newCPDAvailabilityEstimate =
 			addCPDAvailabilityEstimate();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -440,7 +447,9 @@ public class CPDAvailabilityEstimatePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDAvailabilityEstimateId", RandomTestUtil.nextLong()));
+				"CPDAvailabilityEstimateId",
+				RandomTestUtil.nextLong(
+					CPDAvailabilityEstimate.class.getName())));
 
 		List<CPDAvailabilityEstimate> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -488,7 +497,10 @@ public class CPDAvailabilityEstimatePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDAvailabilityEstimateId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDAvailabilityEstimate.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -562,7 +574,8 @@ public class CPDAvailabilityEstimatePersistenceTest {
 	protected CPDAvailabilityEstimate addCPDAvailabilityEstimate()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDAvailabilityEstimate.class.getName());
 
 		CPDAvailabilityEstimate cpdAvailabilityEstimate = _persistence.create(
 			pk);

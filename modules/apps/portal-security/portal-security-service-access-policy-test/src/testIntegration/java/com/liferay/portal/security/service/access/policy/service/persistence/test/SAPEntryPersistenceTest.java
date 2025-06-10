@@ -84,7 +84,7 @@ public class SAPEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
 		SAPEntry sapEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class SAPEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
 		SAPEntry newSAPEntry = _persistence.create(pk);
 
@@ -225,7 +225,7 @@ public class SAPEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -257,7 +257,7 @@ public class SAPEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
 		SAPEntry missingSAPEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -290,9 +290,9 @@ public class SAPEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -311,7 +311,7 @@ public class SAPEntryPersistenceTest {
 
 		SAPEntry newSAPEntry = addSAPEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -403,7 +403,8 @@ public class SAPEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"sapEntryId", RandomTestUtil.nextLong()));
+				"sapEntryId",
+				RandomTestUtil.nextLong(SAPEntry.class.getName())));
 
 		List<SAPEntry> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -445,7 +446,10 @@ public class SAPEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"sapEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"sapEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(SAPEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -515,7 +519,7 @@ public class SAPEntryPersistenceTest {
 	}
 
 	protected SAPEntry addSAPEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SAPEntry.class.getName());
 
 		SAPEntry sapEntry = _persistence.create(pk);
 

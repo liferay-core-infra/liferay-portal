@@ -88,7 +88,7 @@ public class CPConfigurationEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPConfigurationEntry.class.getName());
 
 		CPConfigurationEntry cpConfigurationEntry = _persistence.create(pk);
 
@@ -118,7 +118,7 @@ public class CPConfigurationEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPConfigurationEntry.class.getName());
 
 		CPConfigurationEntry newCPConfigurationEntry = _persistence.create(pk);
 
@@ -445,7 +445,7 @@ public class CPConfigurationEntryPersistenceTest {
 
 	@Test(expected = NoSuchCPConfigurationEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPConfigurationEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -491,7 +491,7 @@ public class CPConfigurationEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPConfigurationEntry.class.getName());
 
 		CPConfigurationEntry missingCPConfigurationEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -531,9 +531,11 @@ public class CPConfigurationEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPConfigurationEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPConfigurationEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -553,7 +555,7 @@ public class CPConfigurationEntryPersistenceTest {
 		CPConfigurationEntry newCPConfigurationEntry =
 			addCPConfigurationEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPConfigurationEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -657,7 +659,8 @@ public class CPConfigurationEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPConfigurationEntryId", RandomTestUtil.nextLong()));
+				"CPConfigurationEntryId",
+				RandomTestUtil.nextLong(CPConfigurationEntry.class.getName())));
 
 		List<CPConfigurationEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -705,7 +708,10 @@ public class CPConfigurationEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPConfigurationEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPConfigurationEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -809,7 +815,7 @@ public class CPConfigurationEntryPersistenceTest {
 	}
 
 	protected CPConfigurationEntry addCPConfigurationEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPConfigurationEntry.class.getName());
 
 		CPConfigurationEntry cpConfigurationEntry = _persistence.create(pk);
 

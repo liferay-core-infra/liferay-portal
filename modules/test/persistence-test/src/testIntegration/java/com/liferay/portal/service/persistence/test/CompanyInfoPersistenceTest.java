@@ -81,7 +81,7 @@ public class CompanyInfoPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
 		CompanyInfo companyInfo = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class CompanyInfoPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
 		CompanyInfo newCompanyInfo = _persistence.create(pk);
 
@@ -155,7 +155,7 @@ public class CompanyInfoPersistenceTest {
 
 	@Test(expected = NoSuchCompanyInfoException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -184,7 +184,7 @@ public class CompanyInfoPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
 		CompanyInfo missingCompanyInfo = _persistence.fetchByPrimaryKey(pk);
 
@@ -217,9 +217,9 @@ public class CompanyInfoPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -238,7 +238,7 @@ public class CompanyInfoPersistenceTest {
 
 		CompanyInfo newCompanyInfo = addCompanyInfo();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -331,7 +331,8 @@ public class CompanyInfoPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"companyInfoId", RandomTestUtil.nextLong()));
+				"companyInfoId",
+				RandomTestUtil.nextLong(CompanyInfo.class.getName())));
 
 		List<CompanyInfo> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -374,7 +375,10 @@ public class CompanyInfoPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"companyInfoId", new Object[] {RandomTestUtil.nextLong()}));
+				"companyInfoId",
+				new Object[] {
+					RandomTestUtil.nextLong(CompanyInfo.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -440,7 +444,7 @@ public class CompanyInfoPersistenceTest {
 	}
 
 	protected CompanyInfo addCompanyInfo() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CompanyInfo.class.getName());
 
 		CompanyInfo companyInfo = _persistence.create(pk);
 

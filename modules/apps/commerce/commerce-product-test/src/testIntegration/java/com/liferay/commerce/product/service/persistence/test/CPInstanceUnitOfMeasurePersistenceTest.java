@@ -87,7 +87,8 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
 		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure = _persistence.create(
 			pk);
@@ -118,7 +119,8 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
 		CPInstanceUnitOfMeasure newCPInstanceUnitOfMeasure =
 			_persistence.create(pk);
@@ -319,7 +321,8 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 
 	@Test(expected = NoSuchCPInstanceUnitOfMeasureException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -358,7 +361,8 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
 		CPInstanceUnitOfMeasure missingCPInstanceUnitOfMeasure =
 			_persistence.fetchByPrimaryKey(pk);
@@ -398,9 +402,11 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -420,7 +426,8 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 		CPInstanceUnitOfMeasure newCPInstanceUnitOfMeasure =
 			addCPInstanceUnitOfMeasure();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -524,7 +531,9 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPInstanceUnitOfMeasureId", RandomTestUtil.nextLong()));
+				"CPInstanceUnitOfMeasureId",
+				RandomTestUtil.nextLong(
+					CPInstanceUnitOfMeasure.class.getName())));
 
 		List<CPInstanceUnitOfMeasure> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -572,7 +581,10 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPInstanceUnitOfMeasureId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPInstanceUnitOfMeasure.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -651,7 +663,8 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 	protected CPInstanceUnitOfMeasure addCPInstanceUnitOfMeasure()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPInstanceUnitOfMeasure.class.getName());
 
 		CPInstanceUnitOfMeasure cpInstanceUnitOfMeasure = _persistence.create(
 			pk);

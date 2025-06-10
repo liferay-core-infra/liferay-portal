@@ -82,7 +82,7 @@ public class PortletItemPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletItem.class.getName());
 
 		PortletItem portletItem = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class PortletItemPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletItem.class.getName());
 
 		PortletItem newPortletItem = _persistence.create(pk);
 
@@ -208,7 +208,7 @@ public class PortletItemPersistenceTest {
 
 	@Test(expected = NoSuchPortletItemException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletItem.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -239,7 +239,7 @@ public class PortletItemPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletItem.class.getName());
 
 		PortletItem missingPortletItem = _persistence.fetchByPrimaryKey(pk);
 
@@ -272,9 +272,9 @@ public class PortletItemPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(PortletItem.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(PortletItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -293,7 +293,7 @@ public class PortletItemPersistenceTest {
 
 		PortletItem newPortletItem = addPortletItem();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletItem.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -386,7 +386,8 @@ public class PortletItemPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"portletItemId", RandomTestUtil.nextLong()));
+				"portletItemId",
+				RandomTestUtil.nextLong(PortletItem.class.getName())));
 
 		List<PortletItem> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -429,7 +430,10 @@ public class PortletItemPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"portletItemId", new Object[] {RandomTestUtil.nextLong()}));
+				"portletItemId",
+				new Object[] {
+					RandomTestUtil.nextLong(PortletItem.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -510,7 +514,7 @@ public class PortletItemPersistenceTest {
 	}
 
 	protected PortletItem addPortletItem() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(PortletItem.class.getName());
 
 		PortletItem portletItem = _persistence.create(pk);
 

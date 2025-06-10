@@ -83,7 +83,7 @@ public class AssetLinkPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetLink.class.getName());
 
 		AssetLink assetLink = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class AssetLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetLink.class.getName());
 
 		AssetLink newAssetLink = _persistence.create(pk);
 
@@ -225,7 +225,7 @@ public class AssetLinkPersistenceTest {
 
 	@Test(expected = NoSuchLinkException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetLink.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -256,7 +256,7 @@ public class AssetLinkPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetLink.class.getName());
 
 		AssetLink missingAssetLink = _persistence.fetchByPrimaryKey(pk);
 
@@ -289,9 +289,9 @@ public class AssetLinkPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AssetLink.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AssetLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -310,7 +310,7 @@ public class AssetLinkPersistenceTest {
 
 		AssetLink newAssetLink = addAssetLink();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetLink.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -401,7 +401,8 @@ public class AssetLinkPersistenceTest {
 			AssetLink.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("linkId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"linkId", RandomTestUtil.nextLong(AssetLink.class.getName())));
 
 		List<AssetLink> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -441,7 +442,10 @@ public class AssetLinkPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"linkId", new Object[] {RandomTestUtil.nextLong()}));
+				"linkId",
+				new Object[] {
+					RandomTestUtil.nextLong(AssetLink.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -516,7 +520,7 @@ public class AssetLinkPersistenceTest {
 	}
 
 	protected AssetLink addAssetLink() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetLink.class.getName());
 
 		AssetLink assetLink = _persistence.create(pk);
 

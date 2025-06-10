@@ -82,7 +82,7 @@ public class CommerceDiscountRulePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceDiscountRule.class.getName());
 
 		CommerceDiscountRule commerceDiscountRule = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class CommerceDiscountRulePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceDiscountRule.class.getName());
 
 		CommerceDiscountRule newCommerceDiscountRule = _persistence.create(pk);
 
@@ -203,7 +203,7 @@ public class CommerceDiscountRulePersistenceTest {
 
 	@Test(expected = NoSuchDiscountRuleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceDiscountRule.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -237,7 +237,7 @@ public class CommerceDiscountRulePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceDiscountRule.class.getName());
 
 		CommerceDiscountRule missingCommerceDiscountRule =
 			_persistence.fetchByPrimaryKey(pk);
@@ -277,9 +277,11 @@ public class CommerceDiscountRulePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceDiscountRule.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceDiscountRule.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -299,7 +301,7 @@ public class CommerceDiscountRulePersistenceTest {
 		CommerceDiscountRule newCommerceDiscountRule =
 			addCommerceDiscountRule();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceDiscountRule.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -401,7 +403,8 @@ public class CommerceDiscountRulePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceDiscountRuleId", RandomTestUtil.nextLong()));
+				"commerceDiscountRuleId",
+				RandomTestUtil.nextLong(CommerceDiscountRule.class.getName())));
 
 		List<CommerceDiscountRule> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -449,7 +452,10 @@ public class CommerceDiscountRulePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceDiscountRuleId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceDiscountRule.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -457,7 +463,7 @@ public class CommerceDiscountRulePersistenceTest {
 	}
 
 	protected CommerceDiscountRule addCommerceDiscountRule() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CommerceDiscountRule.class.getName());
 
 		CommerceDiscountRule commerceDiscountRule = _persistence.create(pk);
 

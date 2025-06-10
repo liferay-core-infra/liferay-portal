@@ -82,7 +82,7 @@ public class SocialActivityLimitPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
 		SocialActivityLimit socialActivityLimit = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class SocialActivityLimitPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
 		SocialActivityLimit newSocialActivityLimit = _persistence.create(pk);
 
@@ -225,7 +225,7 @@ public class SocialActivityLimitPersistenceTest {
 
 	@Test(expected = NoSuchActivityLimitException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -258,7 +258,7 @@ public class SocialActivityLimitPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
 		SocialActivityLimit missingSocialActivityLimit =
 			_persistence.fetchByPrimaryKey(pk);
@@ -294,9 +294,9 @@ public class SocialActivityLimitPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -315,7 +315,7 @@ public class SocialActivityLimitPersistenceTest {
 
 		SocialActivityLimit newSocialActivityLimit = addSocialActivityLimit();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -415,7 +415,8 @@ public class SocialActivityLimitPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"activityLimitId", RandomTestUtil.nextLong()));
+				"activityLimitId",
+				RandomTestUtil.nextLong(SocialActivityLimit.class.getName())));
 
 		List<SocialActivityLimit> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -458,7 +459,10 @@ public class SocialActivityLimitPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"activityLimitId", new Object[] {RandomTestUtil.nextLong()}));
+				"activityLimitId",
+				new Object[] {
+					RandomTestUtil.nextLong(SocialActivityLimit.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -553,7 +557,7 @@ public class SocialActivityLimitPersistenceTest {
 	}
 
 	protected SocialActivityLimit addSocialActivityLimit() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialActivityLimit.class.getName());
 
 		SocialActivityLimit socialActivityLimit = _persistence.create(pk);
 

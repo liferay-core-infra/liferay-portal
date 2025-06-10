@@ -81,7 +81,7 @@ public class BatchPlannerPlanPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
 		BatchPlannerPlan batchPlannerPlan = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class BatchPlannerPlanPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
 		BatchPlannerPlan newBatchPlannerPlan = _persistence.create(pk);
 
@@ -269,7 +269,7 @@ public class BatchPlannerPlanPersistenceTest {
 
 	@Test(expected = NoSuchPlanException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -302,7 +302,7 @@ public class BatchPlannerPlanPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
 		BatchPlannerPlan missingBatchPlannerPlan =
 			_persistence.fetchByPrimaryKey(pk);
@@ -338,9 +338,9 @@ public class BatchPlannerPlanPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -359,7 +359,7 @@ public class BatchPlannerPlanPersistenceTest {
 
 		BatchPlannerPlan newBatchPlannerPlan = addBatchPlannerPlan();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -455,7 +455,8 @@ public class BatchPlannerPlanPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"batchPlannerPlanId", RandomTestUtil.nextLong()));
+				"batchPlannerPlanId",
+				RandomTestUtil.nextLong(BatchPlannerPlan.class.getName())));
 
 		List<BatchPlannerPlan> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -500,7 +501,9 @@ public class BatchPlannerPlanPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"batchPlannerPlanId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(BatchPlannerPlan.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -508,7 +511,7 @@ public class BatchPlannerPlanPersistenceTest {
 	}
 
 	protected BatchPlannerPlan addBatchPlannerPlan() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(BatchPlannerPlan.class.getName());
 
 		BatchPlannerPlan batchPlannerPlan = _persistence.create(pk);
 

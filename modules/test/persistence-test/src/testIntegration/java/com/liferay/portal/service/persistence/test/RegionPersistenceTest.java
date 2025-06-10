@@ -83,7 +83,7 @@ public class RegionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Region.class.getName());
 
 		Region region = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class RegionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Region.class.getName());
 
 		Region newRegion = _persistence.create(pk);
 
@@ -245,7 +245,7 @@ public class RegionPersistenceTest {
 
 	@Test(expected = NoSuchRegionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Region.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -278,7 +278,7 @@ public class RegionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Region.class.getName());
 
 		Region missingRegion = _persistence.fetchByPrimaryKey(pk);
 
@@ -311,9 +311,9 @@ public class RegionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(Region.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(Region.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -332,7 +332,7 @@ public class RegionPersistenceTest {
 
 		Region newRegion = addRegion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Region.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -420,7 +420,8 @@ public class RegionPersistenceTest {
 			Region.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("regionId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"regionId", RandomTestUtil.nextLong(Region.class.getName())));
 
 		List<Region> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -459,7 +460,10 @@ public class RegionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"regionId", new Object[] {RandomTestUtil.nextLong()}));
+				"regionId",
+				new Object[] {
+					RandomTestUtil.nextLong(Region.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -528,7 +532,7 @@ public class RegionPersistenceTest {
 	}
 
 	protected Region addRegion() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(Region.class.getName());
 
 		Region region = _persistence.create(pk);
 

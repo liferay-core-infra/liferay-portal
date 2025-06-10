@@ -88,7 +88,7 @@ public class CPDefinitionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
 		CPDefinition cpDefinition = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class CPDefinitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
 		CPDefinition newCPDefinition = _persistence.create(pk);
 
@@ -467,7 +467,7 @@ public class CPDefinitionPersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -538,7 +538,7 @@ public class CPDefinitionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
 		CPDefinition missingCPDefinition = _persistence.fetchByPrimaryKey(pk);
 
@@ -573,9 +573,9 @@ public class CPDefinitionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -594,7 +594,7 @@ public class CPDefinitionPersistenceTest {
 
 		CPDefinition newCPDefinition = addCPDefinition();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -689,7 +689,8 @@ public class CPDefinitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDefinitionId", RandomTestUtil.nextLong()));
+				"CPDefinitionId",
+				RandomTestUtil.nextLong(CPDefinition.class.getName())));
 
 		List<CPDefinition> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -732,7 +733,10 @@ public class CPDefinitionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"CPDefinitionId", new Object[] {RandomTestUtil.nextLong()}));
+				"CPDefinitionId",
+				new Object[] {
+					RandomTestUtil.nextLong(CPDefinition.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -814,7 +818,7 @@ public class CPDefinitionPersistenceTest {
 	}
 
 	protected CPDefinition addCPDefinition() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPDefinition.class.getName());
 
 		CPDefinition cpDefinition = _persistence.create(pk);
 

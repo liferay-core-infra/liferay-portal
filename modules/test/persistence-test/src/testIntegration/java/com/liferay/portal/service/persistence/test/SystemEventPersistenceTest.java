@@ -80,7 +80,7 @@ public class SystemEventPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
 		SystemEvent systemEvent = _persistence.create(pk);
 
@@ -108,7 +108,7 @@ public class SystemEventPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
 		SystemEvent newSystemEvent = _persistence.create(pk);
 
@@ -240,7 +240,7 @@ public class SystemEventPersistenceTest {
 
 	@Test(expected = NoSuchSystemEventException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -274,7 +274,7 @@ public class SystemEventPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
 		SystemEvent missingSystemEvent = _persistence.fetchByPrimaryKey(pk);
 
@@ -307,9 +307,9 @@ public class SystemEventPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -328,7 +328,7 @@ public class SystemEventPersistenceTest {
 
 		SystemEvent newSystemEvent = addSystemEvent();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -421,7 +421,8 @@ public class SystemEventPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"systemEventId", RandomTestUtil.nextLong()));
+				"systemEventId",
+				RandomTestUtil.nextLong(SystemEvent.class.getName())));
 
 		List<SystemEvent> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -464,7 +465,10 @@ public class SystemEventPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"systemEventId", new Object[] {RandomTestUtil.nextLong()}));
+				"systemEventId",
+				new Object[] {
+					RandomTestUtil.nextLong(SystemEvent.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -472,7 +476,7 @@ public class SystemEventPersistenceTest {
 	}
 
 	protected SystemEvent addSystemEvent() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SystemEvent.class.getName());
 
 		SystemEvent systemEvent = _persistence.create(pk);
 

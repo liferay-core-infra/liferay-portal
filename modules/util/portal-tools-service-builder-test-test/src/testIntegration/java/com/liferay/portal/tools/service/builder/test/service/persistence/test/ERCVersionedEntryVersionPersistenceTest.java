@@ -81,7 +81,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
 		ERCVersionedEntryVersion ercVersionedEntryVersion = _persistence.create(
 			pk);
@@ -112,7 +113,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
 		ERCVersionedEntryVersion newERCVersionedEntryVersion =
 			_persistence.create(pk);
@@ -247,7 +249,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 	@Test(expected = NoSuchERCVersionedEntryVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -282,7 +285,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
 		ERCVersionedEntryVersion missingERCVersionedEntryVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -322,9 +326,11 @@ public class ERCVersionedEntryVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -344,7 +350,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 		ERCVersionedEntryVersion newERCVersionedEntryVersion =
 			addERCVersionedEntryVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -422,7 +429,9 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"ercVersionedEntryVersionId", RandomTestUtil.nextLong()));
+				"ercVersionedEntryVersionId",
+				RandomTestUtil.nextLong(
+					ERCVersionedEntryVersion.class.getName())));
 
 		List<ERCVersionedEntryVersion> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -470,7 +479,10 @@ public class ERCVersionedEntryVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"ercVersionedEntryVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ERCVersionedEntryVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -565,7 +577,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 	protected ERCVersionedEntryVersion addERCVersionedEntryVersion()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			ERCVersionedEntryVersion.class.getName());
 
 		ERCVersionedEntryVersion ercVersionedEntryVersion = _persistence.create(
 			pk);

@@ -91,7 +91,7 @@ public class CPInstancePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPInstance.class.getName());
 
 		CPInstance cpInstance = _persistence.create(pk);
 
@@ -119,7 +119,7 @@ public class CPInstancePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPInstance.class.getName());
 
 		CPInstance newCPInstance = _persistence.create(pk);
 
@@ -526,7 +526,7 @@ public class CPInstancePersistenceTest {
 
 	@Test(expected = NoSuchCPInstanceException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPInstance.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -596,7 +596,7 @@ public class CPInstancePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPInstance.class.getName());
 
 		CPInstance missingCPInstance = _persistence.fetchByPrimaryKey(pk);
 
@@ -629,9 +629,9 @@ public class CPInstancePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CPInstance.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CPInstance.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -650,7 +650,7 @@ public class CPInstancePersistenceTest {
 
 		CPInstance newCPInstance = addCPInstance();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPInstance.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -743,7 +743,8 @@ public class CPInstancePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPInstanceId", RandomTestUtil.nextLong()));
+				"CPInstanceId",
+				RandomTestUtil.nextLong(CPInstance.class.getName())));
 
 		List<CPInstance> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -786,7 +787,10 @@ public class CPInstancePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"CPInstanceId", new Object[] {RandomTestUtil.nextLong()}));
+				"CPInstanceId",
+				new Object[] {
+					RandomTestUtil.nextLong(CPInstance.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -890,7 +894,7 @@ public class CPInstancePersistenceTest {
 	}
 
 	protected CPInstance addCPInstance() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CPInstance.class.getName());
 
 		CPInstance cpInstance = _persistence.create(pk);
 

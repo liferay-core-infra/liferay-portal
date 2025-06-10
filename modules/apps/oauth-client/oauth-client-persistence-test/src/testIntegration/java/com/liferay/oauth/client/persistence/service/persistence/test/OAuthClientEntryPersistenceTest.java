@@ -84,7 +84,7 @@ public class OAuthClientEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
 		OAuthClientEntry oAuthClientEntry = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class OAuthClientEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
 		OAuthClientEntry newOAuthClientEntry = _persistence.create(pk);
 
@@ -239,7 +239,7 @@ public class OAuthClientEntryPersistenceTest {
 
 	@Test(expected = NoSuchOAuthClientEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -272,7 +272,7 @@ public class OAuthClientEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
 		OAuthClientEntry missingOAuthClientEntry =
 			_persistence.fetchByPrimaryKey(pk);
@@ -308,9 +308,9 @@ public class OAuthClientEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -329,7 +329,7 @@ public class OAuthClientEntryPersistenceTest {
 
 		OAuthClientEntry newOAuthClientEntry = addOAuthClientEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -425,7 +425,8 @@ public class OAuthClientEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"oAuthClientEntryId", RandomTestUtil.nextLong()));
+				"oAuthClientEntryId",
+				RandomTestUtil.nextLong(OAuthClientEntry.class.getName())));
 
 		List<OAuthClientEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -470,7 +471,9 @@ public class OAuthClientEntryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"oAuthClientEntryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(OAuthClientEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -547,7 +550,7 @@ public class OAuthClientEntryPersistenceTest {
 	}
 
 	protected OAuthClientEntry addOAuthClientEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(OAuthClientEntry.class.getName());
 
 		OAuthClientEntry oAuthClientEntry = _persistence.create(pk);
 

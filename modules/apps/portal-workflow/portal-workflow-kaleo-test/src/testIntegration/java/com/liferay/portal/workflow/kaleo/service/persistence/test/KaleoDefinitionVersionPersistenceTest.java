@@ -85,7 +85,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
 		KaleoDefinitionVersion kaleoDefinitionVersion = _persistence.create(pk);
 
@@ -115,7 +116,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
 		KaleoDefinitionVersion newKaleoDefinitionVersion = _persistence.create(
 			pk);
@@ -274,7 +276,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 	@Test(expected = NoSuchDefinitionVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -311,7 +314,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
 		KaleoDefinitionVersion missingKaleoDefinitionVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -351,9 +355,11 @@ public class KaleoDefinitionVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -373,7 +379,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 		KaleoDefinitionVersion newKaleoDefinitionVersion =
 			addKaleoDefinitionVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -477,7 +484,9 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoDefinitionVersionId", RandomTestUtil.nextLong()));
+				"kaleoDefinitionVersionId",
+				RandomTestUtil.nextLong(
+					KaleoDefinitionVersion.class.getName())));
 
 		List<KaleoDefinitionVersion> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -525,7 +534,10 @@ public class KaleoDefinitionVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"kaleoDefinitionVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						KaleoDefinitionVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -609,7 +621,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 	protected KaleoDefinitionVersion addKaleoDefinitionVersion()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			KaleoDefinitionVersion.class.getName());
 
 		KaleoDefinitionVersion kaleoDefinitionVersion = _persistence.create(pk);
 

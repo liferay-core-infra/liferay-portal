@@ -78,7 +78,7 @@ public class ObjectViewColumnPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
 		ObjectViewColumn objectViewColumn = _persistence.create(pk);
 
@@ -106,7 +106,7 @@ public class ObjectViewColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
 		ObjectViewColumn newObjectViewColumn = _persistence.create(pk);
 
@@ -220,7 +220,7 @@ public class ObjectViewColumnPersistenceTest {
 
 	@Test(expected = NoSuchObjectViewColumnException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -252,7 +252,7 @@ public class ObjectViewColumnPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
 		ObjectViewColumn missingObjectViewColumn =
 			_persistence.fetchByPrimaryKey(pk);
@@ -288,9 +288,9 @@ public class ObjectViewColumnPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -309,7 +309,7 @@ public class ObjectViewColumnPersistenceTest {
 
 		ObjectViewColumn newObjectViewColumn = addObjectViewColumn();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -381,7 +381,8 @@ public class ObjectViewColumnPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectViewColumnId", RandomTestUtil.nextLong()));
+				"objectViewColumnId",
+				RandomTestUtil.nextLong(ObjectViewColumn.class.getName())));
 
 		List<ObjectViewColumn> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -426,7 +427,9 @@ public class ObjectViewColumnPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectViewColumnId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectViewColumn.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -434,7 +437,7 @@ public class ObjectViewColumnPersistenceTest {
 	}
 
 	protected ObjectViewColumn addObjectViewColumn() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewColumn.class.getName());
 
 		ObjectViewColumn objectViewColumn = _persistence.create(pk);
 

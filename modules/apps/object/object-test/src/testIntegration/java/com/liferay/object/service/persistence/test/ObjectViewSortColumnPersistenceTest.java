@@ -79,7 +79,7 @@ public class ObjectViewSortColumnPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewSortColumn.class.getName());
 
 		ObjectViewSortColumn objectViewSortColumn = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class ObjectViewSortColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewSortColumn.class.getName());
 
 		ObjectViewSortColumn newObjectViewSortColumn = _persistence.create(pk);
 
@@ -232,7 +232,7 @@ public class ObjectViewSortColumnPersistenceTest {
 
 	@Test(expected = NoSuchObjectViewSortColumnException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewSortColumn.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -267,7 +267,7 @@ public class ObjectViewSortColumnPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewSortColumn.class.getName());
 
 		ObjectViewSortColumn missingObjectViewSortColumn =
 			_persistence.fetchByPrimaryKey(pk);
@@ -307,9 +307,11 @@ public class ObjectViewSortColumnPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			ObjectViewSortColumn.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			ObjectViewSortColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -329,7 +331,7 @@ public class ObjectViewSortColumnPersistenceTest {
 		ObjectViewSortColumn newObjectViewSortColumn =
 			addObjectViewSortColumn();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewSortColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -404,7 +406,8 @@ public class ObjectViewSortColumnPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectViewSortColumnId", RandomTestUtil.nextLong()));
+				"objectViewSortColumnId",
+				RandomTestUtil.nextLong(ObjectViewSortColumn.class.getName())));
 
 		List<ObjectViewSortColumn> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -452,7 +455,10 @@ public class ObjectViewSortColumnPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectViewSortColumnId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						ObjectViewSortColumn.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -460,7 +466,7 @@ public class ObjectViewSortColumnPersistenceTest {
 	}
 
 	protected ObjectViewSortColumn addObjectViewSortColumn() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectViewSortColumn.class.getName());
 
 		ObjectViewSortColumn objectViewSortColumn = _persistence.create(pk);
 

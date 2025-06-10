@@ -82,7 +82,7 @@ public class RepositoryEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
 		RepositoryEntry repositoryEntry = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class RepositoryEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
 		RepositoryEntry newRepositoryEntry = _persistence.create(pk);
 
@@ -245,7 +245,7 @@ public class RepositoryEntryPersistenceTest {
 
 	@Test(expected = NoSuchRepositoryEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -277,7 +277,7 @@ public class RepositoryEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
 		RepositoryEntry missingRepositoryEntry = _persistence.fetchByPrimaryKey(
 			pk);
@@ -313,9 +313,9 @@ public class RepositoryEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -334,7 +334,7 @@ public class RepositoryEntryPersistenceTest {
 
 		RepositoryEntry newRepositoryEntry = addRepositoryEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -430,7 +430,8 @@ public class RepositoryEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"repositoryEntryId", RandomTestUtil.nextLong()));
+				"repositoryEntryId",
+				RandomTestUtil.nextLong(RepositoryEntry.class.getName())));
 
 		List<RepositoryEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -473,7 +474,10 @@ public class RepositoryEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"repositoryEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"repositoryEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(RepositoryEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -556,7 +560,7 @@ public class RepositoryEntryPersistenceTest {
 	}
 
 	protected RepositoryEntry addRepositoryEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RepositoryEntry.class.getName());
 
 		RepositoryEntry repositoryEntry = _persistence.create(pk);
 

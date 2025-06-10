@@ -88,7 +88,7 @@ public class MBThreadPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThread.class.getName());
 
 		MBThread mbThread = _persistence.create(pk);
 
@@ -116,7 +116,7 @@ public class MBThreadPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThread.class.getName());
 
 		MBThread newMBThread = _persistence.create(pk);
 
@@ -388,7 +388,7 @@ public class MBThreadPersistenceTest {
 
 	@Test(expected = NoSuchThreadException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThread.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -447,7 +447,7 @@ public class MBThreadPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThread.class.getName());
 
 		MBThread missingMBThread = _persistence.fetchByPrimaryKey(pk);
 
@@ -480,9 +480,9 @@ public class MBThreadPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(MBThread.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(MBThread.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -501,7 +501,7 @@ public class MBThreadPersistenceTest {
 
 		MBThread newMBThread = addMBThread();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThread.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -591,7 +591,8 @@ public class MBThreadPersistenceTest {
 			MBThread.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("threadId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"threadId", RandomTestUtil.nextLong(MBThread.class.getName())));
 
 		List<MBThread> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -630,7 +631,10 @@ public class MBThreadPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"threadId", new Object[] {RandomTestUtil.nextLong()}));
+				"threadId",
+				new Object[] {
+					RandomTestUtil.nextLong(MBThread.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -705,7 +709,7 @@ public class MBThreadPersistenceTest {
 	}
 
 	protected MBThread addMBThread() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(MBThread.class.getName());
 
 		MBThread mbThread = _persistence.create(pk);
 

@@ -81,7 +81,7 @@ public class IndexEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
 		IndexEntry indexEntry = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class IndexEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
 		IndexEntry newIndexEntry = _persistence.create(pk);
 
@@ -291,7 +291,7 @@ public class IndexEntryPersistenceTest {
 
 	@Test(expected = NoSuchIndexEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -322,7 +322,7 @@ public class IndexEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
 		IndexEntry missingIndexEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -355,9 +355,9 @@ public class IndexEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -376,7 +376,7 @@ public class IndexEntryPersistenceTest {
 
 		IndexEntry newIndexEntry = addIndexEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -445,7 +445,8 @@ public class IndexEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"indexEntryId", RandomTestUtil.nextLong()));
+				"indexEntryId",
+				RandomTestUtil.nextLong(IndexEntry.class.getName())));
 
 		List<IndexEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -488,7 +489,10 @@ public class IndexEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"indexEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"indexEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(IndexEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -580,7 +584,7 @@ public class IndexEntryPersistenceTest {
 	}
 
 	protected IndexEntry addIndexEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(IndexEntry.class.getName());
 
 		IndexEntry indexEntry = _persistence.create(pk);
 

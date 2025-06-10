@@ -81,7 +81,7 @@ public class SocialRelationPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
 		SocialRelation socialRelation = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class SocialRelationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
 		SocialRelation newSocialRelation = _persistence.create(pk);
 
@@ -260,7 +260,7 @@ public class SocialRelationPersistenceTest {
 
 	@Test(expected = NoSuchRelationException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -290,7 +290,7 @@ public class SocialRelationPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
 		SocialRelation missingSocialRelation = _persistence.fetchByPrimaryKey(
 			pk);
@@ -326,9 +326,9 @@ public class SocialRelationPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -347,7 +347,7 @@ public class SocialRelationPersistenceTest {
 
 		SocialRelation newSocialRelation = addSocialRelation();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -442,7 +442,8 @@ public class SocialRelationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"relationId", RandomTestUtil.nextLong()));
+				"relationId",
+				RandomTestUtil.nextLong(SocialRelation.class.getName())));
 
 		List<SocialRelation> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -485,7 +486,10 @@ public class SocialRelationPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"relationId", new Object[] {RandomTestUtil.nextLong()}));
+				"relationId",
+				new Object[] {
+					RandomTestUtil.nextLong(SocialRelation.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -561,7 +565,7 @@ public class SocialRelationPersistenceTest {
 	}
 
 	protected SocialRelation addSocialRelation() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SocialRelation.class.getName());
 
 		SocialRelation socialRelation = _persistence.create(pk);
 

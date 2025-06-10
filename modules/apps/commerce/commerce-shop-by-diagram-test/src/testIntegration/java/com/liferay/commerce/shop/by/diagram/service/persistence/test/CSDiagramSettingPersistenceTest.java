@@ -85,7 +85,7 @@ public class CSDiagramSettingPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
 		CSDiagramSetting csDiagramSetting = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class CSDiagramSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
 		CSDiagramSetting newCSDiagramSetting = _persistence.create(pk);
 
@@ -228,7 +228,7 @@ public class CSDiagramSettingPersistenceTest {
 
 	@Test(expected = NoSuchCSDiagramSettingException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -261,7 +261,7 @@ public class CSDiagramSettingPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
 		CSDiagramSetting missingCSDiagramSetting =
 			_persistence.fetchByPrimaryKey(pk);
@@ -297,9 +297,9 @@ public class CSDiagramSettingPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -318,7 +318,7 @@ public class CSDiagramSettingPersistenceTest {
 
 		CSDiagramSetting newCSDiagramSetting = addCSDiagramSetting();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +414,8 @@ public class CSDiagramSettingPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CSDiagramSettingId", RandomTestUtil.nextLong()));
+				"CSDiagramSettingId",
+				RandomTestUtil.nextLong(CSDiagramSetting.class.getName())));
 
 		List<CSDiagramSetting> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -459,7 +460,9 @@ public class CSDiagramSettingPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CSDiagramSettingId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(CSDiagramSetting.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -526,7 +529,7 @@ public class CSDiagramSettingPersistenceTest {
 	}
 
 	protected CSDiagramSetting addCSDiagramSetting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CSDiagramSetting.class.getName());
 
 		CSDiagramSetting csDiagramSetting = _persistence.create(pk);
 

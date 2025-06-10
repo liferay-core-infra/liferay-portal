@@ -87,7 +87,7 @@ public class RedirectEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
 		RedirectEntry redirectEntry = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class RedirectEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
 		RedirectEntry newRedirectEntry = _persistence.create(pk);
 
@@ -256,7 +256,7 @@ public class RedirectEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -313,7 +313,7 @@ public class RedirectEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
 		RedirectEntry missingRedirectEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -348,9 +348,9 @@ public class RedirectEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -369,7 +369,7 @@ public class RedirectEntryPersistenceTest {
 
 		RedirectEntry newRedirectEntry = addRedirectEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -464,7 +464,8 @@ public class RedirectEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"redirectEntryId", RandomTestUtil.nextLong()));
+				"redirectEntryId",
+				RandomTestUtil.nextLong(RedirectEntry.class.getName())));
 
 		List<RedirectEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -507,7 +508,10 @@ public class RedirectEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"redirectEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"redirectEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(RedirectEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -589,7 +593,7 @@ public class RedirectEntryPersistenceTest {
 	}
 
 	protected RedirectEntry addRedirectEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(RedirectEntry.class.getName());
 
 		RedirectEntry redirectEntry = _persistence.create(pk);
 

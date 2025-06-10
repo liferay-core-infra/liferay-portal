@@ -83,7 +83,7 @@ public class AppPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(App.class.getName());
 
 		App app = _persistence.create(pk);
 
@@ -111,7 +111,7 @@ public class AppPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(App.class.getName());
 
 		App newApp = _persistence.create(pk);
 
@@ -219,7 +219,7 @@ public class AppPersistenceTest {
 
 	@Test(expected = NoSuchAppException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(App.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -251,7 +251,7 @@ public class AppPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(App.class.getName());
 
 		App missingApp = _persistence.fetchByPrimaryKey(pk);
 
@@ -282,9 +282,9 @@ public class AppPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(App.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(App.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -303,7 +303,7 @@ public class AppPersistenceTest {
 
 		App newApp = addApp();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(App.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -391,7 +391,8 @@ public class AppPersistenceTest {
 			App.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("appId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"appId", RandomTestUtil.nextLong(App.class.getName())));
 
 		List<App> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -430,7 +431,8 @@ public class AppPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"appId", new Object[] {RandomTestUtil.nextLong()}));
+				"appId",
+				new Object[] {RandomTestUtil.nextLong(App.class.getName())}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -494,7 +496,7 @@ public class AppPersistenceTest {
 	}
 
 	protected App addApp() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(App.class.getName());
 
 		App app = _persistence.create(pk);
 

@@ -81,7 +81,7 @@ public class VirtualHostPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
 		VirtualHost virtualHost = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class VirtualHostPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
 		VirtualHost newVirtualHost = _persistence.create(pk);
 
@@ -210,7 +210,7 @@ public class VirtualHostPersistenceTest {
 
 	@Test(expected = NoSuchVirtualHostException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -240,7 +240,7 @@ public class VirtualHostPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
 		VirtualHost missingVirtualHost = _persistence.fetchByPrimaryKey(pk);
 
@@ -273,9 +273,9 @@ public class VirtualHostPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -294,7 +294,7 @@ public class VirtualHostPersistenceTest {
 
 		VirtualHost newVirtualHost = addVirtualHost();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -387,7 +387,8 @@ public class VirtualHostPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"virtualHostId", RandomTestUtil.nextLong()));
+				"virtualHostId",
+				RandomTestUtil.nextLong(VirtualHost.class.getName())));
 
 		List<VirtualHost> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -430,7 +431,10 @@ public class VirtualHostPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"virtualHostId", new Object[] {RandomTestUtil.nextLong()}));
+				"virtualHostId",
+				new Object[] {
+					RandomTestUtil.nextLong(VirtualHost.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -496,7 +500,7 @@ public class VirtualHostPersistenceTest {
 	}
 
 	protected VirtualHost addVirtualHost() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(VirtualHost.class.getName());
 
 		VirtualHost virtualHost = _persistence.create(pk);
 

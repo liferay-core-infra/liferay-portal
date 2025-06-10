@@ -85,7 +85,8 @@ public class CPDefinitionOptionRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
 		CPDefinitionOptionRel cpDefinitionOptionRel = _persistence.create(pk);
 
@@ -115,7 +116,8 @@ public class CPDefinitionOptionRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
 		CPDefinitionOptionRel newCPDefinitionOptionRel = _persistence.create(
 			pk);
@@ -356,7 +358,8 @@ public class CPDefinitionOptionRelPersistenceTest {
 
 	@Test(expected = NoSuchCPDefinitionOptionRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -395,7 +398,8 @@ public class CPDefinitionOptionRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
 		CPDefinitionOptionRel missingCPDefinitionOptionRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -435,9 +439,11 @@ public class CPDefinitionOptionRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -457,7 +463,8 @@ public class CPDefinitionOptionRelPersistenceTest {
 		CPDefinitionOptionRel newCPDefinitionOptionRel =
 			addCPDefinitionOptionRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -561,7 +568,9 @@ public class CPDefinitionOptionRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"CPDefinitionOptionRelId", RandomTestUtil.nextLong()));
+				"CPDefinitionOptionRelId",
+				RandomTestUtil.nextLong(
+					CPDefinitionOptionRel.class.getName())));
 
 		List<CPDefinitionOptionRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -609,7 +618,10 @@ public class CPDefinitionOptionRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"CPDefinitionOptionRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CPDefinitionOptionRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -710,7 +722,8 @@ public class CPDefinitionOptionRelPersistenceTest {
 	protected CPDefinitionOptionRel addCPDefinitionOptionRel()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CPDefinitionOptionRel.class.getName());
 
 		CPDefinitionOptionRel cpDefinitionOptionRel = _persistence.create(pk);
 

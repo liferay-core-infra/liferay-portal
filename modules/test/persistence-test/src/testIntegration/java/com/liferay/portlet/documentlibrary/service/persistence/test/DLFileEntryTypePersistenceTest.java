@@ -87,7 +87,7 @@ public class DLFileEntryTypePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
 		DLFileEntryType dlFileEntryType = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class DLFileEntryTypePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
 		DLFileEntryType newDLFileEntryType = _persistence.create(pk);
 
@@ -314,7 +314,7 @@ public class DLFileEntryTypePersistenceTest {
 
 	@Test(expected = NoSuchFileEntryTypeException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -371,7 +371,7 @@ public class DLFileEntryTypePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
 		DLFileEntryType missingDLFileEntryType = _persistence.fetchByPrimaryKey(
 			pk);
@@ -407,9 +407,9 @@ public class DLFileEntryTypePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -428,7 +428,7 @@ public class DLFileEntryTypePersistenceTest {
 
 		DLFileEntryType newDLFileEntryType = addDLFileEntryType();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -523,7 +523,8 @@ public class DLFileEntryTypePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"fileEntryTypeId", RandomTestUtil.nextLong()));
+				"fileEntryTypeId",
+				RandomTestUtil.nextLong(DLFileEntryType.class.getName())));
 
 		List<DLFileEntryType> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -566,7 +567,10 @@ public class DLFileEntryTypePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"fileEntryTypeId", new Object[] {RandomTestUtil.nextLong()}));
+				"fileEntryTypeId",
+				new Object[] {
+					RandomTestUtil.nextLong(DLFileEntryType.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -670,7 +674,7 @@ public class DLFileEntryTypePersistenceTest {
 	}
 
 	protected DLFileEntryType addDLFileEntryType() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(DLFileEntryType.class.getName());
 
 		DLFileEntryType dlFileEntryType = _persistence.create(pk);
 

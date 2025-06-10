@@ -87,7 +87,8 @@ public class CommerceInventoryWarehousePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
 		CommerceInventoryWarehouse commerceInventoryWarehouse =
 			_persistence.create(pk);
@@ -118,7 +119,8 @@ public class CommerceInventoryWarehousePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
 		CommerceInventoryWarehouse newCommerceInventoryWarehouse =
 			_persistence.create(pk);
@@ -354,7 +356,8 @@ public class CommerceInventoryWarehousePersistenceTest {
 
 	@Test(expected = NoSuchInventoryWarehouseException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -394,7 +397,8 @@ public class CommerceInventoryWarehousePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
 		CommerceInventoryWarehouse missingCommerceInventoryWarehouse =
 			_persistence.fetchByPrimaryKey(pk);
@@ -435,9 +439,11 @@ public class CommerceInventoryWarehousePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -458,7 +464,8 @@ public class CommerceInventoryWarehousePersistenceTest {
 		CommerceInventoryWarehouse newCommerceInventoryWarehouse =
 			addCommerceInventoryWarehouse();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -568,7 +575,9 @@ public class CommerceInventoryWarehousePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceInventoryWarehouseId", RandomTestUtil.nextLong()));
+				"commerceInventoryWarehouseId",
+				RandomTestUtil.nextLong(
+					CommerceInventoryWarehouse.class.getName())));
 
 		List<CommerceInventoryWarehouse> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -617,7 +626,10 @@ public class CommerceInventoryWarehousePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceInventoryWarehouseId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceInventoryWarehouse.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -697,7 +709,8 @@ public class CommerceInventoryWarehousePersistenceTest {
 	protected CommerceInventoryWarehouse addCommerceInventoryWarehouse()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceInventoryWarehouse.class.getName());
 
 		CommerceInventoryWarehouse commerceInventoryWarehouse =
 			_persistence.create(pk);

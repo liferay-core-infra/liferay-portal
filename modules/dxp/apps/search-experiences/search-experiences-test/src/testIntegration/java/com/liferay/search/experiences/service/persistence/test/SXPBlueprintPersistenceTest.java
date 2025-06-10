@@ -85,7 +85,7 @@ public class SXPBlueprintPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
 		SXPBlueprint sxpBlueprint = _persistence.create(pk);
 
@@ -113,7 +113,7 @@ public class SXPBlueprintPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
 		SXPBlueprint newSXPBlueprint = _persistence.create(pk);
 
@@ -277,7 +277,7 @@ public class SXPBlueprintPersistenceTest {
 
 	@Test(expected = NoSuchSXPBlueprintException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -310,7 +310,7 @@ public class SXPBlueprintPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
 		SXPBlueprint missingSXPBlueprint = _persistence.fetchByPrimaryKey(pk);
 
@@ -345,9 +345,9 @@ public class SXPBlueprintPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -366,7 +366,7 @@ public class SXPBlueprintPersistenceTest {
 
 		SXPBlueprint newSXPBlueprint = addSXPBlueprint();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -461,7 +461,8 @@ public class SXPBlueprintPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"sxpBlueprintId", RandomTestUtil.nextLong()));
+				"sxpBlueprintId",
+				RandomTestUtil.nextLong(SXPBlueprint.class.getName())));
 
 		List<SXPBlueprint> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -504,7 +505,10 @@ public class SXPBlueprintPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"sxpBlueprintId", new Object[] {RandomTestUtil.nextLong()}));
+				"sxpBlueprintId",
+				new Object[] {
+					RandomTestUtil.nextLong(SXPBlueprint.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -575,7 +579,7 @@ public class SXPBlueprintPersistenceTest {
 	}
 
 	protected SXPBlueprint addSXPBlueprint() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SXPBlueprint.class.getName());
 
 		SXPBlueprint sxpBlueprint = _persistence.create(pk);
 

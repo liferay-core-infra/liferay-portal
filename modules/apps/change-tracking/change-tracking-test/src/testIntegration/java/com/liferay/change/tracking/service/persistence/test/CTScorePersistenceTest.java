@@ -82,7 +82,7 @@ public class CTScorePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTScore.class.getName());
 
 		CTScore ctScore = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class CTScorePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTScore.class.getName());
 
 		CTScore newCTScore = _persistence.create(pk);
 
@@ -158,7 +158,7 @@ public class CTScorePersistenceTest {
 
 	@Test(expected = NoSuchScoreException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTScore.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -187,7 +187,7 @@ public class CTScorePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTScore.class.getName());
 
 		CTScore missingCTScore = _persistence.fetchByPrimaryKey(pk);
 
@@ -220,9 +220,9 @@ public class CTScorePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(CTScore.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(CTScore.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -241,7 +241,7 @@ public class CTScorePersistenceTest {
 
 		CTScore newCTScore = addCTScore();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTScore.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -331,7 +331,8 @@ public class CTScorePersistenceTest {
 			CTScore.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("ctScoreId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"ctScoreId", RandomTestUtil.nextLong(CTScore.class.getName())));
 
 		List<CTScore> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -371,7 +372,10 @@ public class CTScorePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"ctScoreId", new Object[] {RandomTestUtil.nextLong()}));
+				"ctScoreId",
+				new Object[] {
+					RandomTestUtil.nextLong(CTScore.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -435,7 +439,7 @@ public class CTScorePersistenceTest {
 	}
 
 	protected CTScore addCTScore() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(CTScore.class.getName());
 
 		CTScore ctScore = _persistence.create(pk);
 

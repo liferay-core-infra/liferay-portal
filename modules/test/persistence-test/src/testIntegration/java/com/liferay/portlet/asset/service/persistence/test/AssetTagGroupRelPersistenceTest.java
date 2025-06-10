@@ -81,7 +81,7 @@ public class AssetTagGroupRelPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
 		AssetTagGroupRel assetTagGroupRel = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class AssetTagGroupRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
 		AssetTagGroupRel newAssetTagGroupRel = _persistence.create(pk);
 
@@ -213,7 +213,7 @@ public class AssetTagGroupRelPersistenceTest {
 
 	@Test(expected = NoSuchTagGroupRelException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -243,7 +243,7 @@ public class AssetTagGroupRelPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
 		AssetTagGroupRel missingAssetTagGroupRel =
 			_persistence.fetchByPrimaryKey(pk);
@@ -279,9 +279,9 @@ public class AssetTagGroupRelPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -300,7 +300,7 @@ public class AssetTagGroupRelPersistenceTest {
 
 		AssetTagGroupRel newAssetTagGroupRel = addAssetTagGroupRel();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -396,7 +396,8 @@ public class AssetTagGroupRelPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"assetTagGroupRelId", RandomTestUtil.nextLong()));
+				"assetTagGroupRelId",
+				RandomTestUtil.nextLong(AssetTagGroupRel.class.getName())));
 
 		List<AssetTagGroupRel> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -441,7 +442,9 @@ public class AssetTagGroupRelPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"assetTagGroupRelId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(AssetTagGroupRel.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -524,7 +527,7 @@ public class AssetTagGroupRelPersistenceTest {
 	}
 
 	protected AssetTagGroupRel addAssetTagGroupRel() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(AssetTagGroupRel.class.getName());
 
 		AssetTagGroupRel assetTagGroupRel = _persistence.create(pk);
 

@@ -83,7 +83,8 @@ public class NotificationTemplateAttachmentPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
 		NotificationTemplateAttachment notificationTemplateAttachment =
 			_persistence.create(pk);
@@ -114,7 +115,8 @@ public class NotificationTemplateAttachmentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
 		NotificationTemplateAttachment newNotificationTemplateAttachment =
 			_persistence.create(pk);
@@ -188,7 +190,8 @@ public class NotificationTemplateAttachmentPersistenceTest {
 
 	@Test(expected = NoSuchNotificationTemplateAttachmentException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -224,7 +227,8 @@ public class NotificationTemplateAttachmentPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
 		NotificationTemplateAttachment missingNotificationTemplateAttachment =
 			_persistence.fetchByPrimaryKey(pk);
@@ -265,9 +269,11 @@ public class NotificationTemplateAttachmentPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -288,7 +294,8 @@ public class NotificationTemplateAttachmentPersistenceTest {
 		NotificationTemplateAttachment newNotificationTemplateAttachment =
 			addNotificationTemplateAttachment();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -400,7 +407,9 @@ public class NotificationTemplateAttachmentPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"notificationTemplateAttachmentId", RandomTestUtil.nextLong()));
+				"notificationTemplateAttachmentId",
+				RandomTestUtil.nextLong(
+					NotificationTemplateAttachment.class.getName())));
 
 		List<NotificationTemplateAttachment> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -450,7 +459,10 @@ public class NotificationTemplateAttachmentPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"notificationTemplateAttachmentId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						NotificationTemplateAttachment.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -531,7 +543,8 @@ public class NotificationTemplateAttachmentPersistenceTest {
 	protected NotificationTemplateAttachment addNotificationTemplateAttachment()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			NotificationTemplateAttachment.class.getName());
 
 		NotificationTemplateAttachment notificationTemplateAttachment =
 			_persistence.create(pk);

@@ -80,7 +80,7 @@ public class LayoutSetPrototypePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
 		LayoutSetPrototype layoutSetPrototype = _persistence.create(pk);
 
@@ -109,7 +109,7 @@ public class LayoutSetPrototypePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
 		LayoutSetPrototype newLayoutSetPrototype = _persistence.create(pk);
 
@@ -226,7 +226,7 @@ public class LayoutSetPrototypePersistenceTest {
 
 	@Test(expected = NoSuchLayoutSetPrototypeException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -258,7 +258,7 @@ public class LayoutSetPrototypePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
 		LayoutSetPrototype missingLayoutSetPrototype =
 			_persistence.fetchByPrimaryKey(pk);
@@ -294,9 +294,9 @@ public class LayoutSetPrototypePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -315,7 +315,7 @@ public class LayoutSetPrototypePersistenceTest {
 
 		LayoutSetPrototype newLayoutSetPrototype = addLayoutSetPrototype();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -414,7 +414,8 @@ public class LayoutSetPrototypePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutSetPrototypeId", RandomTestUtil.nextLong()));
+				"layoutSetPrototypeId",
+				RandomTestUtil.nextLong(LayoutSetPrototype.class.getName())));
 
 		List<LayoutSetPrototype> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -461,7 +462,9 @@ public class LayoutSetPrototypePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"layoutSetPrototypeId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(LayoutSetPrototype.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -469,7 +472,7 @@ public class LayoutSetPrototypePersistenceTest {
 	}
 
 	protected LayoutSetPrototype addLayoutSetPrototype() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(LayoutSetPrototype.class.getName());
 
 		LayoutSetPrototype layoutSetPrototype = _persistence.create(pk);
 

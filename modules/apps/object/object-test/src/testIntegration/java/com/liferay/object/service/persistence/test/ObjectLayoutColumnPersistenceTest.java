@@ -78,7 +78,7 @@ public class ObjectLayoutColumnPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
 		ObjectLayoutColumn objectLayoutColumn = _persistence.create(pk);
 
@@ -107,7 +107,7 @@ public class ObjectLayoutColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
 		ObjectLayoutColumn newObjectLayoutColumn = _persistence.create(pk);
 
@@ -223,7 +223,7 @@ public class ObjectLayoutColumnPersistenceTest {
 
 	@Test(expected = NoSuchObjectLayoutColumnException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -256,7 +256,7 @@ public class ObjectLayoutColumnPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
 		ObjectLayoutColumn missingObjectLayoutColumn =
 			_persistence.fetchByPrimaryKey(pk);
@@ -292,9 +292,9 @@ public class ObjectLayoutColumnPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -313,7 +313,7 @@ public class ObjectLayoutColumnPersistenceTest {
 
 		ObjectLayoutColumn newObjectLayoutColumn = addObjectLayoutColumn();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -385,7 +385,8 @@ public class ObjectLayoutColumnPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"objectLayoutColumnId", RandomTestUtil.nextLong()));
+				"objectLayoutColumnId",
+				RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName())));
 
 		List<ObjectLayoutColumn> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -432,7 +433,9 @@ public class ObjectLayoutColumnPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"objectLayoutColumnId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -440,7 +443,7 @@ public class ObjectLayoutColumnPersistenceTest {
 	}
 
 	protected ObjectLayoutColumn addObjectLayoutColumn() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(ObjectLayoutColumn.class.getName());
 
 		ObjectLayoutColumn objectLayoutColumn = _persistence.create(pk);
 

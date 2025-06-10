@@ -83,7 +83,7 @@ public class SamlSpAuthRequestPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
 		SamlSpAuthRequest samlSpAuthRequest = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class SamlSpAuthRequestPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
 		SamlSpAuthRequest newSamlSpAuthRequest = _persistence.create(pk);
 
@@ -180,7 +180,7 @@ public class SamlSpAuthRequestPersistenceTest {
 
 	@Test(expected = NoSuchSpAuthRequestException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -211,7 +211,7 @@ public class SamlSpAuthRequestPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
 		SamlSpAuthRequest missingSamlSpAuthRequest =
 			_persistence.fetchByPrimaryKey(pk);
@@ -247,9 +247,9 @@ public class SamlSpAuthRequestPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -268,7 +268,7 @@ public class SamlSpAuthRequestPersistenceTest {
 
 		SamlSpAuthRequest newSamlSpAuthRequest = addSamlSpAuthRequest();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -365,7 +365,8 @@ public class SamlSpAuthRequestPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"samlSpAuthnRequestId", RandomTestUtil.nextLong()));
+				"samlSpAuthnRequestId",
+				RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName())));
 
 		List<SamlSpAuthRequest> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -412,7 +413,9 @@ public class SamlSpAuthRequestPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"samlSpAuthnRequestId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -485,7 +488,7 @@ public class SamlSpAuthRequestPersistenceTest {
 	}
 
 	protected SamlSpAuthRequest addSamlSpAuthRequest() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SamlSpAuthRequest.class.getName());
 
 		SamlSpAuthRequest samlSpAuthRequest = _persistence.create(pk);
 

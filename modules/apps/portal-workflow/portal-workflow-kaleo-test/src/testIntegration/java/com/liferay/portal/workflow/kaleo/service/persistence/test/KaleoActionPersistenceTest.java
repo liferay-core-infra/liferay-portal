@@ -82,7 +82,7 @@ public class KaleoActionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
 		KaleoAction kaleoAction = _persistence.create(pk);
 
@@ -110,7 +110,7 @@ public class KaleoActionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
 		KaleoAction newKaleoAction = _persistence.create(pk);
 
@@ -289,7 +289,7 @@ public class KaleoActionPersistenceTest {
 
 	@Test(expected = NoSuchActionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -324,7 +324,7 @@ public class KaleoActionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
 		KaleoAction missingKaleoAction = _persistence.fetchByPrimaryKey(pk);
 
@@ -357,9 +357,9 @@ public class KaleoActionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -378,7 +378,7 @@ public class KaleoActionPersistenceTest {
 
 		KaleoAction newKaleoAction = addKaleoAction();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -471,7 +471,8 @@ public class KaleoActionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"kaleoActionId", RandomTestUtil.nextLong()));
+				"kaleoActionId",
+				RandomTestUtil.nextLong(KaleoAction.class.getName())));
 
 		List<KaleoAction> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -514,7 +515,10 @@ public class KaleoActionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"kaleoActionId", new Object[] {RandomTestUtil.nextLong()}));
+				"kaleoActionId",
+				new Object[] {
+					RandomTestUtil.nextLong(KaleoAction.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -522,7 +526,7 @@ public class KaleoActionPersistenceTest {
 	}
 
 	protected KaleoAction addKaleoAction() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(KaleoAction.class.getName());
 
 		KaleoAction kaleoAction = _persistence.create(pk);
 

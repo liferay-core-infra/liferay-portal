@@ -87,7 +87,7 @@ public class SegmentsEntryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
 		SegmentsEntry segmentsEntry = _persistence.create(pk);
 
@@ -115,7 +115,7 @@ public class SegmentsEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
 		SegmentsEntry newSegmentsEntry = _persistence.create(pk);
 
@@ -336,7 +336,7 @@ public class SegmentsEntryPersistenceTest {
 
 	@Test(expected = NoSuchEntryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -393,7 +393,7 @@ public class SegmentsEntryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
 		SegmentsEntry missingSegmentsEntry = _persistence.fetchByPrimaryKey(pk);
 
@@ -428,9 +428,9 @@ public class SegmentsEntryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -449,7 +449,7 @@ public class SegmentsEntryPersistenceTest {
 
 		SegmentsEntry newSegmentsEntry = addSegmentsEntry();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -544,7 +544,8 @@ public class SegmentsEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"segmentsEntryId", RandomTestUtil.nextLong()));
+				"segmentsEntryId",
+				RandomTestUtil.nextLong(SegmentsEntry.class.getName())));
 
 		List<SegmentsEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -587,7 +588,10 @@ public class SegmentsEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"segmentsEntryId", new Object[] {RandomTestUtil.nextLong()}));
+				"segmentsEntryId",
+				new Object[] {
+					RandomTestUtil.nextLong(SegmentsEntry.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -669,7 +673,7 @@ public class SegmentsEntryPersistenceTest {
 	}
 
 	protected SegmentsEntry addSegmentsEntry() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(SegmentsEntry.class.getName());
 
 		SegmentsEntry segmentsEntry = _persistence.create(pk);
 

@@ -85,7 +85,8 @@ public class LayoutPageTemplateStructurePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
 		LayoutPageTemplateStructure layoutPageTemplateStructure =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class LayoutPageTemplateStructurePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
 		LayoutPageTemplateStructure newLayoutPageTemplateStructure =
 			_persistence.create(pk);
@@ -250,7 +252,8 @@ public class LayoutPageTemplateStructurePersistenceTest {
 
 	@Test(expected = NoSuchPageTemplateStructureException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -288,7 +291,8 @@ public class LayoutPageTemplateStructurePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
 		LayoutPageTemplateStructure missingLayoutPageTemplateStructure =
 			_persistence.fetchByPrimaryKey(pk);
@@ -329,9 +333,11 @@ public class LayoutPageTemplateStructurePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -352,7 +358,8 @@ public class LayoutPageTemplateStructurePersistenceTest {
 		LayoutPageTemplateStructure newLayoutPageTemplateStructure =
 			addLayoutPageTemplateStructure();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -463,7 +470,9 @@ public class LayoutPageTemplateStructurePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"layoutPageTemplateStructureId", RandomTestUtil.nextLong()));
+				"layoutPageTemplateStructureId",
+				RandomTestUtil.nextLong(
+					LayoutPageTemplateStructure.class.getName())));
 
 		List<LayoutPageTemplateStructure> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -512,7 +521,10 @@ public class LayoutPageTemplateStructurePersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"layoutPageTemplateStructureId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						LayoutPageTemplateStructure.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -603,7 +615,8 @@ public class LayoutPageTemplateStructurePersistenceTest {
 	protected LayoutPageTemplateStructure addLayoutPageTemplateStructure()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			LayoutPageTemplateStructure.class.getName());
 
 		LayoutPageTemplateStructure layoutPageTemplateStructure =
 			_persistence.create(pk);

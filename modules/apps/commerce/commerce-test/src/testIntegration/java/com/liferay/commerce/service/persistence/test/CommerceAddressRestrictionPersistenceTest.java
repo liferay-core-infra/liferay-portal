@@ -84,7 +84,8 @@ public class CommerceAddressRestrictionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
 		CommerceAddressRestriction commerceAddressRestriction =
 			_persistence.create(pk);
@@ -115,7 +116,8 @@ public class CommerceAddressRestrictionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
 		CommerceAddressRestriction newCommerceAddressRestriction =
 			_persistence.create(pk);
@@ -228,7 +230,8 @@ public class CommerceAddressRestrictionPersistenceTest {
 
 	@Test(expected = NoSuchAddressRestrictionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -265,7 +268,8 @@ public class CommerceAddressRestrictionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
 		CommerceAddressRestriction missingCommerceAddressRestriction =
 			_persistence.fetchByPrimaryKey(pk);
@@ -306,9 +310,11 @@ public class CommerceAddressRestrictionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -329,7 +335,8 @@ public class CommerceAddressRestrictionPersistenceTest {
 		CommerceAddressRestriction newCommerceAddressRestriction =
 			addCommerceAddressRestriction();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -439,7 +446,9 @@ public class CommerceAddressRestrictionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"commerceAddressRestrictionId", RandomTestUtil.nextLong()));
+				"commerceAddressRestrictionId",
+				RandomTestUtil.nextLong(
+					CommerceAddressRestriction.class.getName())));
 
 		List<CommerceAddressRestriction> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -488,7 +497,10 @@ public class CommerceAddressRestrictionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"commerceAddressRestrictionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						CommerceAddressRestriction.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -573,7 +585,8 @@ public class CommerceAddressRestrictionPersistenceTest {
 	protected CommerceAddressRestriction addCommerceAddressRestriction()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			CommerceAddressRestriction.class.getName());
 
 		CommerceAddressRestriction commerceAddressRestriction =
 			_persistence.create(pk);

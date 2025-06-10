@@ -82,7 +82,8 @@ public class UserNotificationDeliveryPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
 		UserNotificationDelivery userNotificationDelivery = _persistence.create(
 			pk);
@@ -113,7 +114,8 @@ public class UserNotificationDeliveryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
 		UserNotificationDelivery newUserNotificationDelivery =
 			_persistence.create(pk);
@@ -204,7 +206,8 @@ public class UserNotificationDeliveryPersistenceTest {
 
 	@Test(expected = NoSuchUserNotificationDeliveryException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -240,7 +243,8 @@ public class UserNotificationDeliveryPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
 		UserNotificationDelivery missingUserNotificationDelivery =
 			_persistence.fetchByPrimaryKey(pk);
@@ -280,9 +284,11 @@ public class UserNotificationDeliveryPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -302,7 +308,8 @@ public class UserNotificationDeliveryPersistenceTest {
 		UserNotificationDelivery newUserNotificationDelivery =
 			addUserNotificationDelivery();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -408,7 +415,9 @@ public class UserNotificationDeliveryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"userNotificationDeliveryId", RandomTestUtil.nextLong()));
+				"userNotificationDeliveryId",
+				RandomTestUtil.nextLong(
+					UserNotificationDelivery.class.getName())));
 
 		List<UserNotificationDelivery> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -456,7 +465,10 @@ public class UserNotificationDeliveryPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"userNotificationDeliveryId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						UserNotificationDelivery.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -550,7 +562,8 @@ public class UserNotificationDeliveryPersistenceTest {
 	protected UserNotificationDelivery addUserNotificationDelivery()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			UserNotificationDelivery.class.getName());
 
 		UserNotificationDelivery userNotificationDelivery = _persistence.create(
 			pk);

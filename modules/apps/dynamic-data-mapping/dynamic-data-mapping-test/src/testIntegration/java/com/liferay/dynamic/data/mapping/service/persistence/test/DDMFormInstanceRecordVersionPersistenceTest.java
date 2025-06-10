@@ -85,7 +85,8 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
 		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion =
 			_persistence.create(pk);
@@ -116,7 +117,8 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
 		DDMFormInstanceRecordVersion newDDMFormInstanceRecordVersion =
 			_persistence.create(pk);
@@ -297,7 +299,8 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 
 	@Test(expected = NoSuchFormInstanceRecordVersionException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -338,7 +341,8 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
 		DDMFormInstanceRecordVersion missingDDMFormInstanceRecordVersion =
 			_persistence.fetchByPrimaryKey(pk);
@@ -379,9 +383,11 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -402,7 +408,8 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 		DDMFormInstanceRecordVersion newDDMFormInstanceRecordVersion =
 			addDDMFormInstanceRecordVersion();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -513,7 +520,9 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"formInstanceRecordVersionId", RandomTestUtil.nextLong()));
+				"formInstanceRecordVersionId",
+				RandomTestUtil.nextLong(
+					DDMFormInstanceRecordVersion.class.getName())));
 
 		List<DDMFormInstanceRecordVersion> result =
 			_persistence.findWithDynamicQuery(dynamicQuery);
@@ -562,7 +571,10 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
 				"formInstanceRecordVersionId",
-				new Object[] {RandomTestUtil.nextLong()}));
+				new Object[] {
+					RandomTestUtil.nextLong(
+						DDMFormInstanceRecordVersion.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -643,7 +655,8 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 	protected DDMFormInstanceRecordVersion addDDMFormInstanceRecordVersion()
 		throws Exception {
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(
+			DDMFormInstanceRecordVersion.class.getName());
 
 		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion =
 			_persistence.create(pk);

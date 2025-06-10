@@ -84,7 +84,7 @@ public class WikiPagePersistenceTest {
 
 	@Test
 	public void testCreate() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPage.class.getName());
 
 		WikiPage wikiPage = _persistence.create(pk);
 
@@ -112,7 +112,7 @@ public class WikiPagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPage.class.getName());
 
 		WikiPage newWikiPage = _persistence.create(pk);
 
@@ -605,7 +605,7 @@ public class WikiPagePersistenceTest {
 
 	@Test(expected = NoSuchPageException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPage.class.getName());
 
 		_persistence.findByPrimaryKey(pk);
 	}
@@ -641,7 +641,7 @@ public class WikiPagePersistenceTest {
 
 	@Test
 	public void testFetchByPrimaryKeyMissing() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPage.class.getName());
 
 		WikiPage missingWikiPage = _persistence.fetchByPrimaryKey(pk);
 
@@ -674,9 +674,9 @@ public class WikiPagePersistenceTest {
 	public void testFetchByPrimaryKeysWithMultiplePrimaryKeysWhereNoPrimaryKeysExist()
 		throws Exception {
 
-		long pk1 = RandomTestUtil.nextLong();
+		long pk1 = RandomTestUtil.nextLong(WikiPage.class.getName());
 
-		long pk2 = RandomTestUtil.nextLong();
+		long pk2 = RandomTestUtil.nextLong(WikiPage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -695,7 +695,7 @@ public class WikiPagePersistenceTest {
 
 		WikiPage newWikiPage = addWikiPage();
 
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPage.class.getName());
 
 		Set<Serializable> primaryKeys = new HashSet<Serializable>();
 
@@ -785,7 +785,8 @@ public class WikiPagePersistenceTest {
 			WikiPage.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.add(
-			RestrictionsFactoryUtil.eq("pageId", RandomTestUtil.nextLong()));
+			RestrictionsFactoryUtil.eq(
+				"pageId", RandomTestUtil.nextLong(WikiPage.class.getName())));
 
 		List<WikiPage> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -824,7 +825,10 @@ public class WikiPagePersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"pageId", new Object[] {RandomTestUtil.nextLong()}));
+				"pageId",
+				new Object[] {
+					RandomTestUtil.nextLong(WikiPage.class.getName())
+				}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -941,7 +945,7 @@ public class WikiPagePersistenceTest {
 	}
 
 	protected WikiPage addWikiPage() throws Exception {
-		long pk = RandomTestUtil.nextLong();
+		long pk = RandomTestUtil.nextLong(WikiPage.class.getName());
 
 		WikiPage wikiPage = _persistence.create(pk);
 

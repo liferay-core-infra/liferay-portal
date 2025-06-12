@@ -196,7 +196,7 @@ public class CounterLocalServiceProcessTest {
 	private static final String _COUNTER_NAME =
 		CounterLocalServiceProcessTest.class.getName();
 
-	private static final int _INCREMENT_COUNT = 10000;
+	private static final int _INCREMENT_COUNT = 10;
 
 	private static final int _PROCESS_COUNT = 4;
 

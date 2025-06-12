@@ -101,7 +101,6 @@ public class CounterLocalServiceProcessTest {
 			},
 			HypersonicServerClassTestRule.INSTANCE);
 
-	@Ignore
 	@Test
 	public void testConcurrentIncrement() throws Exception {
 		List<String> arguments = new ArrayList<>();

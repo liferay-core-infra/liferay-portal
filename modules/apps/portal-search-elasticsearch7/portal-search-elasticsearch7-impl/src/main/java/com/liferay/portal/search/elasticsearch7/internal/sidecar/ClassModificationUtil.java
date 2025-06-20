@@ -74,7 +74,8 @@ public class ClassModificationUtil {
 						}
 
 						if (visitLdcInsnMethodVisitorConsumer != null) {
-							return new MethodVisitor(Opcodes.ASM7, methodVisitor) {
+							return new MethodVisitor(
+								Opcodes.ASM7, methodVisitor) {
 
 								@Override
 								public void visitLdcInsn(Object value) {

@@ -38,10 +38,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
@@ -49,12 +52,15 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.elasticsearch.common.settings.Settings;
@@ -495,12 +501,74 @@ public class Sidecar {
 			_sidecarHomePath
 		).build(
 		).install();
+
+		Path modulesPath = _sidecarHomePath.resolve(
+			_SIDECAR_MODULES_FOLDER_NAME);
+
+		if (Files.exists(modulesPath)) {
+			return;
+		}
+
+		Path defaultModulesPath = _sidecarHomePath.resolve(
+			_DEFAULT_MODULES_FOLDER_NAME);
+
+		Set<Path> excludedPaths = new HashSet<>();
+
+		try {
+			Files.walkFileTree(
+				defaultModulesPath,
+				new SimpleFileVisitor<>() {
+
+					@Override
+					public FileVisitResult preVisitDirectory(
+						Path dir, BasicFileAttributes basicFileAttributes) {
+
+						String absolutePath = String.valueOf(
+							dir.toAbsolutePath());
+
+						if (absolutePath.contains("x-pack-") &&
+							!absolutePath.contains("x-pack-core")) {
+
+							excludedPaths.add(dir);
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+
+					@Override
+					public FileVisitResult visitFile(
+						Path file, BasicFileAttributes basicFileAttributes) {
+
+						Path dir = file.getParent();
+
+						String absolutePath = String.valueOf(
+							dir.toAbsolutePath());
+
+						if (absolutePath.contains("x-pack-") &&
+							!absolutePath.contains("x-pack-core")) {
+
+							excludedPaths.add(dir);
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+
+				});
+
+			PathUtil.copyDirectory(
+				defaultModulesPath, modulesPath,
+				excludedPaths.toArray(new Path[0]));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
 	}
 
 	private void _patchModuleClass(
 			Map<String, Path> patchModulePaths, String moduleName,
 			String className, String methodName,
 			Consumer<MethodVisitor> methodVisitorConsumer,
+			BiConsumer<MethodVisitor, Object> visitLdcInsnMethodVisitorConsumer,
 			ClassLoader classLoader)
 		throws Exception {
 
@@ -517,10 +585,23 @@ public class Sidecar {
 		Files.write(
 			classPackagePath.resolve(parts[parts.length - 1] + ".class"),
 			ClassModificationUtil.getModifiedClassBytes(
-				className, methodName, methodVisitorConsumer, classLoader),
+				className, methodName, methodVisitorConsumer,
+				visitLdcInsnMethodVisitorConsumer, classLoader),
 			StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
 		patchModulePaths.putIfAbsent(moduleName, patchModulePath);
+	}
+
+	private void _patchModuleClass(
+			Map<String, Path> patchModulePaths, String moduleName,
+			String className, String methodName,
+			Consumer<MethodVisitor> methodVisitorConsumer,
+			ClassLoader classLoader)
+		throws Exception {
+
+		_patchModuleClass(
+			patchModulePaths, moduleName, className, methodName,
+			methodVisitorConsumer, null, classLoader);
 	}
 
 	private Map<String, Path> _patchModuleClasses(String sidecarLibClassPath) {
@@ -578,6 +659,22 @@ public class Sidecar {
 				patchModulePaths, "org.elasticsearch.server",
 				"org.elasticsearch.bootstrap.Spawner", "spawnNativeControllers",
 				_wipingLogicMethodVisitorConsumer, classLoader);
+
+			_patchModuleClass(
+				patchModulePaths, "org.elasticsearch.server",
+				"org.elasticsearch.env.Environment", "<init>", null,
+				(methodVisitor, value) -> {
+					if ((value instanceof String) &&
+						value.equals(_DEFAULT_MODULES_FOLDER_NAME)) {
+
+						methodVisitor.visitLdcInsn(
+							_SIDECAR_MODULES_FOLDER_NAME);
+					}
+					else {
+						methodVisitor.visitLdcInsn(value);
+					}
+				},
+				classLoader);
 		}
 		catch (Exception exception) {
 			_log.error("Unable to modify classes", exception);
@@ -635,6 +732,11 @@ public class Sidecar {
 			throw new RuntimeException(interruptedException);
 		}
 	}
+
+	private static final String _DEFAULT_MODULES_FOLDER_NAME = "modules";
+
+	private static final String _SIDECAR_MODULES_FOLDER_NAME =
+		"liferay-sidecar-modules";
 
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);
 

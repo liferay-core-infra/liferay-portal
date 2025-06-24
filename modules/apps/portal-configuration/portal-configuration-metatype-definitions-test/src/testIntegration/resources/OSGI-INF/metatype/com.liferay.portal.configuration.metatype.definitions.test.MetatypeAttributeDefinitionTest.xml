@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.4.0">
+	<OCD id="com.liferay.portal.configuration.metatype.definitions.test.MetatypeAttributeDefinitionTest" name="MetatypeAttributeDefinitionTest">
+		<AD cardinality="2147483647" default="a=b,c=d\,e=f" id="testStringEscapeMultiValuedAttribute" required="false" type="String" />
+		<AD cardinality="0" default="a=b,c=d\,e=f" id="testStringEscapeSingleValuedAttribute" required="false" type="String" />
+	</OCD>
+	<Designate pid="com.liferay.portal.configuration.metatype.definitions.test.MetatypeAttributeDefinitionTest">
+		<Object ocdref="com.liferay.portal.configuration.metatype.definitions.test.MetatypeAttributeDefinitionTest" />
+	</Designate>
+</metatype:MetaData>

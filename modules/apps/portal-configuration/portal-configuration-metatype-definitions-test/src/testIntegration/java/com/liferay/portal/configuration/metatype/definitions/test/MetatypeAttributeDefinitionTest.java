@@ -5,8 +5,6 @@
 
 package com.liferay.portal.configuration.metatype.definitions.test;
 
-import aQute.bnd.annotation.metatype.Meta;
-
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeInformation;
 import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeService;
@@ -82,18 +80,5 @@ public class MetatypeAttributeDefinitionTest {
 
 	@Inject
 	private ExtendedMetaTypeService _extendedMetaTypeService;
-
-	@Meta.OCD(
-		id = "com.liferay.portal.configuration.metatype.definitions.test.MetatypeAttributeDefinitionTest"
-	)
-	private interface TestConfiguration {
-
-		@Meta.AD(deflt = "a=b,c=d\\,e=f", required = false)
-		public String[] testStringEscapeMultiValuedAttribute();
-
-		@Meta.AD(deflt = "a=b,c=d\\,e=f", required = false)
-		public String testStringEscapeSingleValuedAttribute();
-
-	}
 
 }

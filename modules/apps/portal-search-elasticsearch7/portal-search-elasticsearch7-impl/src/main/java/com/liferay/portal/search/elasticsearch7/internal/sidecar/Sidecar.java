@@ -53,7 +53,15 @@ public class Sidecar {
 		return _address;
 	}
 
+	public boolean isStopped() {
+		return _stopped;
+	}
+
 	public void start() {
+		if (isStopped()) {
+			throw new IllegalStateException();
+		}
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Sidecar Elasticsearch starting");
 		}
@@ -124,6 +132,8 @@ public class Sidecar {
 		}
 
 		PathUtil.deleteDir(_sidecarRuntimeConfiguration.getTempDirPath());
+
+		_stopped = true;
 	}
 
 	private ProcessChannel<Serializable> _executeSidecarMainProcess() {
@@ -224,5 +234,6 @@ public class Sidecar {
 	private final FutureListener<Serializable> _restartFutureListener;
 	private final Path _sidecarHomePath;
 	private final SidecarRuntimeConfiguration _sidecarRuntimeConfiguration;
+	private volatile boolean _stopped;
 
 }

@@ -103,47 +103,51 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 		checksum.update(bytes);
 
-		try {
-			Sidecar sidecar =
-				SearchElasticsearch7ImplBundleActivator.getSidecar();
+		if (_sidecar == null) {
+			try {
+				Sidecar sidecar =
+					SearchElasticsearch7ImplBundleActivator.getSidecar();
 
-			if (sidecar != null) {
-				_sidecar = sidecar;
+				if (sidecar != null) {
+					_sidecar = sidecar;
+				}
+
+				if ((sidecar != null) &&
+					(checksum.getValue() ==
+						SearchElasticsearch7ImplBundleActivator.
+							getChecksum())) {
+
+					ElasticsearchConnectionBuilder
+						elasticsearchConnectionBuilder =
+							new ElasticsearchConnectionBuilder();
+
+					elasticsearchConnectionManager.addElasticsearchConnection(
+						elasticsearchConnectionBuilder.active(
+							true
+						).connectionId(
+							ConnectionConstants.SIDECAR_CONNECTION_ID
+						).maxConnections(
+							elasticsearchConfigurationWrapper.maxConnections()
+						).maxConnectionsPerRoute(
+							elasticsearchConfigurationWrapper.
+								maxConnectionsPerRoute()
+						).networkHostAddresses(
+							new String[] {_sidecar.getNetworkHostAddress()}
+						).postCloseRunnable(
+							_sidecar::stop
+						).build());
+
+					_startupSuccessful = true;
+
+					return;
+				}
 			}
-
-			if ((sidecar != null) &&
-				(checksum.getValue() ==
-					SearchElasticsearch7ImplBundleActivator.getChecksum())) {
-
-				ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
-					new ElasticsearchConnectionBuilder();
-
-				elasticsearchConnectionManager.addElasticsearchConnection(
-					elasticsearchConnectionBuilder.active(
-						true
-					).connectionId(
-						ConnectionConstants.SIDECAR_CONNECTION_ID
-					).maxConnections(
-						elasticsearchConfigurationWrapper.maxConnections()
-					).maxConnectionsPerRoute(
-						elasticsearchConfigurationWrapper.
-							maxConnectionsPerRoute()
-					).networkHostAddresses(
-						new String[] {_sidecar.getNetworkHostAddress()}
-					).postCloseRunnable(
-						_sidecar::stop
-					).build());
-
-				_startupSuccessful = true;
-
-				return;
-			}
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Failed to start Sidecar with persisted configuration",
-					exception);
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Failed to start Sidecar with persisted configuration",
+						exception);
+				}
 			}
 		}
 
@@ -278,7 +282,7 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
 
 	private BundleContext _bundleContext;
-	private Sidecar _sidecar;
+	private volatile Sidecar _sidecar;
 	private boolean _startupSuccessful;
 
 	private static class RestartFutureListener

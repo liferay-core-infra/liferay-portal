@@ -101,7 +101,7 @@ public class SearchElasticsearch7ImplBundleActivator
 	public void stop(BundleContext bundleContext) throws Exception {
 		Sidecar sidecar = getSidecar();
 
-		if (sidecar == null) {
+		if ((sidecar == null) || sidecar.isStopped()) {
 			return;
 		}
 

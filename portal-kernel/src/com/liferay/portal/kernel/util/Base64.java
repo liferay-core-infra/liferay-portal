@@ -93,9 +93,17 @@ public class Base64 {
 		for (int i = 0; i < base64.length(); i += 4) {
 			int block = _getValue(base64.charAt(i), url) << 18;
 
-			block += _getValue(base64.charAt(i + 1), url) << 12;
-			block += _getValue(base64.charAt(i + 2), url) << 6;
-			block += _getValue(base64.charAt(i + 3), url);
+			if (i < (base64.length() - 1)) {
+				block += _getValue(base64.charAt(i + 1), url) << 12;
+			}
+
+			if (i < (base64.length() - 2)) {
+				block += _getValue(base64.charAt(i + 2), url) << 6;
+			}
+
+			if (i < (base64.length() - 3)) {
+				block += _getValue(base64.charAt(i + 3), url);
+			}
 
 			for (int j = 0; (j < 3) && ((rawindex + j) < raw.length); j++) {
 				raw[rawindex + j] = (byte)((block >> (8 * (2 - j))) & 0xff);

@@ -8,13 +8,13 @@ package com.liferay.portal.spring.aop;
 import com.liferay.petra.reflect.AnnotationLocator;
 import com.liferay.portal.kernel.aop.AopMethodInvocation;
 import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
+import com.liferay.portal.kernel.proxy.TargetObjectInvocationHandler;
 import com.liferay.portal.spring.transaction.TransactionAttributeAdapter;
 import com.liferay.portal.spring.transaction.TransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionInterceptor;
 import com.liferay.portal.transaction.TransactionsUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import java.util.Map;
@@ -24,8 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Shuyang Zhou
  * @author Preston Crary
  */
-public class AopInvocationHandler implements InvocationHandler {
+public class AopInvocationHandler implements TargetObjectInvocationHandler {
 
+	@Override
 	public Object getTarget() {
 		return _target;
 	}

@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.proxy.TargetObjectInvocationHandler;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
@@ -24,7 +25,6 @@ import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 import java.io.Closeable;
 import java.io.IOException;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -107,7 +107,12 @@ public class LayoutSetLocalServiceStagingAdvice {
 	private LayoutSetLocalService _layoutSetLocalService;
 
 	private class LayoutSetLocalServiceStagingInvocationHandler
-		implements InvocationHandler {
+		implements TargetObjectInvocationHandler {
+
+		@Override
+		public Object getTarget() {
+			return _targetObject;
+		}
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] arguments)

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.model.LayoutStagingHandler;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.proxy.TargetObjectInvocationHandler;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
@@ -731,7 +732,12 @@ public class LayoutLocalServiceStagingAdvice {
 	private UserLocalService _userLocalService;
 
 	private class LayoutLocalServiceStagingInvocationHandler
-		implements InvocationHandler {
+		implements TargetObjectInvocationHandler {
+
+		@Override
+		public Object getTarget() {
+			return _targetObject;
+		}
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] arguments)

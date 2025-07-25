@@ -7,15 +7,15 @@ package com.liferay.portal.kernel.bean;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
+import com.liferay.portal.kernel.proxy.TargetObjectInvocationHandler;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class ClassLoaderBeanHandler implements InvocationHandler {
+public class ClassLoaderBeanHandler implements TargetObjectInvocationHandler {
 
 	public ClassLoaderBeanHandler(Object bean, ClassLoader classLoader) {
 		_bean = bean;
@@ -28,6 +28,11 @@ public class ClassLoaderBeanHandler implements InvocationHandler {
 
 	public ClassLoader getClassLoader() {
 		return _classLoader;
+	}
+
+	@Override
+	public Object getTarget() {
+		return _bean;
 	}
 
 	@Override

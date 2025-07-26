@@ -13,8 +13,6 @@ import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
 
-import java.lang.reflect.InvocationHandler;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
@@ -92,18 +90,12 @@ public class ServiceBag<V> {
 					// portal class loader bean handler and change the target
 					// source
 
-					if (!(wrappedService instanceof ServiceWrapper) &&
-						ProxyUtil.isProxyClass(wrappedService.getClass())) {
+					if (!(wrappedService instanceof ServiceWrapper)) {
+						ClassLoaderBeanHandler classLoaderBeanHandler =
+							ProxyUtil.fetchInvocationHandler(
+								wrappedService, ClassLoaderBeanHandler.class);
 
-						InvocationHandler invocationHandler =
-							ProxyUtil.getInvocationHandler(wrappedService);
-
-						if (invocationHandler instanceof
-								ClassLoaderBeanHandler) {
-
-							ClassLoaderBeanHandler classLoaderBeanHandler =
-								(ClassLoaderBeanHandler)invocationHandler;
-
+						if (classLoaderBeanHandler != null) {
 							wrappedService = classLoaderBeanHandler.getBean();
 						}
 					}

@@ -7,6 +7,7 @@ package com.liferay.portal.deploy.hot;
 
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.proxy.TargetInvocationHandler;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -71,13 +72,14 @@ public class ServiceBag<V> {
 
 	@SuppressWarnings("unchecked")
 	public <T> void replace() {
-		Object currentService = _aopInvocationHandler.getTarget();
+		ServiceWrapper<T> currentService = _fetchServiceWrapper(
+			_aopInvocationHandler.getTarget());
 
 		ServiceWrapper<T> previousService = null;
 
 		// Loop through services
 
-		while (true) {
+		while (currentService != null) {
 
 			// A matching service was found
 
@@ -120,23 +122,38 @@ public class ServiceBag<V> {
 				break;
 			}
 
-			// Every item in the chain is a ServiceWrapper except the original
-			// service
-
-			if (!(currentService instanceof ServiceWrapper)) {
-				break;
-			}
-
 			// Check the next service because no matching service was found
 
-			previousService = (ServiceWrapper<T>)currentService;
+			previousService = currentService;
 
-			currentService = previousService.getWrappedService();
+			currentService = _fetchServiceWrapper(
+				previousService.getWrappedService());
 		}
 
 		if (_serviceReference != null) {
 			_bundleContext.ungetService(_serviceReference);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> ServiceWrapper<T> _fetchServiceWrapper(Object service) {
+		while (!(service instanceof ServiceWrapper)) {
+			TargetInvocationHandler targetInvocationHandler =
+				ProxyUtil.fetchInvocationHandler(
+					service, TargetInvocationHandler.class);
+
+			if (targetInvocationHandler == null) {
+				break;
+			}
+
+			service = targetInvocationHandler.getTarget();
+		}
+
+		if (service instanceof ServiceWrapper) {
+			return (ServiceWrapper<T>)service;
+		}
+
+		return null;
 	}
 
 	private final AopInvocationHandler _aopInvocationHandler;

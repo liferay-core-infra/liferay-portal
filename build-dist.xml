@@ -1946,6 +1946,121 @@ plugins.includes=</echo>
 		</xmltask>
 	</target>
 
+	<target name="upgrade-tomcat-version">
+		<fail message="Please set the property ${version}." unless="version" />
+
+		<property name="new.version" value="${version}" />
+		<property name="old.version" value="${app.server.tomcat.version}" />
+
+		<propertyregex
+			input="${new.version}"
+			property="new.major.version"
+			regexp="(\d+)\..*"
+			select="\1"
+		/>
+		<propertyregex
+			input="${old.version}"
+			property="old.major.version"
+			regexp="(\d+)\..*"
+			select="\1"
+		/>
+
+		<replaceregexp
+			file="${project.dir}/app.server.properties"
+			match="app.server.tomcat.version=${old.version}"
+			replace="app.server.tomcat.version=${new.version}"
+		/>
+
+		<replaceregexp
+			file="${project.dir}/build-test.xml"
+			match="&lt;var name=&quot;app.server.tomcat.version&quot; value=&quot;${old.version}&quot;"
+			replace="&lt;var name=&quot;app.server.tomcat.version&quot; value=&quot;${new.version}&quot;"
+		/>
+
+		<replaceregexp
+			byline="true"
+			file="${project.dir}/lib/development/dependencies.properties"
+			match="org.apache.tomcat:(.+):${old.version}"
+			replace="org.apache.tomcat:\1:${new.version}"
+		/>
+
+		<replaceregexp
+			byline="true"
+		>
+			<fileset
+				dir="${project.dir}/modules"
+				excludes="node_modules/,node_modules_cache/"
+				includes="**/build.gradle"
+			>
+			</fileset>
+			<regexp pattern="group: &quot;org.apache.tomcat&quot;(.+)version: &quot;${old.version}&quot;" />
+			<substitution expression="group: &quot;org.apache.tomcat&quot;\1version: &quot;${new.version}&quot;" />
+		</replaceregexp>
+
+		<replaceregexp
+			byline="true"
+			file="${project.dir}/modules/sdk/gradle-plugins/src/gradleTest/appServer/build.gradle"
+			match="String tomcatVersion = &quot;${old.version}&quot;"
+			replace="String tomcatVersion = &quot;${new.version}&quot;"
+		/>
+
+		<replaceregexp
+			file="${project.dir}/modules/sdk/gradle-plugins/src/main/resources/com/liferay/gradle/plugins/dependencies/config-liferay.gradle"
+			match="project.properties\[&quot;app.server.tomcat.version&quot;\] \?: &quot;${old.version}&quot;"
+			replace="project.properties\[&quot;app.server.tomcat.version&quot;\] \?: &quot;${new.version}&quot;"
+		/>
+
+		<replaceregexp
+			file="${project.dir}/modules/sdk/gradle-plugins/src/main/resources/com/liferay/gradle/plugins/dependencies/config-liferay.gradle"
+			match="http://archive.apache.org/dist/tomcat/tomcat-${old.major.version}/"
+			replace="http://archive.apache.org/dist/tomcat/tomcat-${new.major.version}/"
+		/>
+
+		<replaceregexp
+			file="${project.dir}/modules/sdk/gradle-plugins-jasper-jspc/src/main/java/com/liferay/gradle/plugins/jasper/jspc/JspCPlugin.java"
+			flags="g"
+			match="GradleUtil.addDependency\(([^\)]+)&quot;org.apache.tomcat&quot;([^\)]+)&quot;${old.version}&quot;([^\)]*)\)"
+			replace="GradleUtil.addDependency\(\1&quot;org.apache.tomcat&quot;\2&quot;${new.version}&quot;\3\)"
+		/>
+
+		<replaceregexp
+			file="${project.dir}/modules/sdk/gradle-plugins-test-integration/src/gradleTest/executable/build.gradle"
+			flags="g"
+			match="http://archive.apache.org/dist/tomcat/tomcat-${old.major.version}/v${old.version}/bin/apache-tomcat-${old.version}.zip"
+			replace="http://archive.apache.org/dist/tomcat/tomcat-${new.major.version}/v${new.version}/bin/apache-tomcat-${new.version}.zip"
+		/>
+
+		<replaceregexp
+			byline="true"
+			file="${project.dir}/modules/util/portal-tools-db-upgrade-client/properties/app-server.properties"
+			match="tomcat-${old.version}"
+			replace="tomcat-${new.version}"
+		/>
+
+		<replaceregexp
+			byline="true"
+			file="${project.dir}/modules/util/source-formatter/src/main/resources/dependencies/jakarta-transform-dependencies.txt"
+			match="org.apache.tomcat:(.+):${old.version}"
+			replace="org.apache.tomcat:\1:${new.version}"
+		/>
+
+		<replaceregexp
+			byline="true"
+			file="portal-web/test/functional/com/liferay/portalweb/tests/enduser/documentmanagement/documentsadministration/DMFileEntry.testcase"
+			match="tomcat-${old.version}"
+			replace="tomcat-${new.version}"
+		/>
+
+		<replaceregexp
+			file="${project.dir}/lib/versions-ext.xml"
+			flags="g"
+			match="&lt;version&gt;${old.version}&lt;/version&gt;([\s\n]+)&lt;project-name&gt;Tomcat&lt;/project-name&gt;"
+			replace="&lt;version&gt;${new.version}&lt;/version&gt;\1&lt;project-name&gt;Tomcat&lt;/project-name&gt;"
+		/>
+
+		<ant dir="portal-impl" inheritAll="false" target="build-lib-versions" />
+	</target>
+
 	<target name="zip-executable">
 		<delete failonerror="false" file="dist/${zip.executable.file}-${lp.version}.7z" />
 

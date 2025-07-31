@@ -4,7 +4,11 @@ Bundle-Version: 1.0.9
 Import-Package:\
 	!com.aayushatharva.brotli4j.*,\
 	\
+	!com.github.luben.zstd,\
 	!com.github.luben.zstd.util.*,\
+	\
+	!com.google.crypto.tink.subtle.*,\
+	!com.google.errorprone.annotations.*,\
 	\
 	!com.nimbusds.common.contenttype.*,\
 	!com.nimbusds.langtag.*,\

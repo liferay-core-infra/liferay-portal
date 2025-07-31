@@ -176,8 +176,8 @@ public class ObjectEntryMtoMObjectRelatedModelsProviderImpl
 		throws PortalException {
 
 		List<ObjectEntry> relatedModels = getRelatedModels(
-			groupId, objectRelationshipId, primaryKey, null, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS);
+			groupId, objectRelationshipId, new Long[] {primaryKey}, null,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		if (relatedModels.isEmpty()) {
 			return;

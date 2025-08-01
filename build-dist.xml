@@ -2053,6 +2053,22 @@ plugins.includes=</echo>
 		/>
 
 		<ant dir="portal-impl" inheritAll="false" target="build-lib-versions" />
+
+		<if>
+			<isset property="git.commit.ticket" />
+			<then>
+				<exec dir="${project.dir}" executable="git">
+					<arg value="add" />
+					<arg value="-u" />
+				</exec>
+
+				<exec dir="${project.dir}" executable="git">
+					<arg value="commit" />
+					<arg value="-m" />
+					<arg value="${git.commit.ticket} Upgrade Tomcat to ${new.version}" />
+				</exec>
+			</then>
+		</if>
 	</target>
 
 	<target name="zip-executable">

@@ -45,7 +45,20 @@ public class ServerScriptingUtil {
 		stopWatch.start();
 
 		try {
-			_executeGroovyScript(inputObjects, script);
+			Class<?> clazz = ServerScriptingUtil.class;
+
+			Thread currentThread = Thread.currentThread();
+
+			GroovyShell groovyShell = new GroovyShell(
+				AggregateClassLoader.getAggregateClassLoader(
+					clazz.getClassLoader(),
+					currentThread.getContextClassLoader()));
+
+			Script compiledScript = groovyShell.parse(script);
+
+			compiledScript.setBinding(new Binding(inputObjects));
+
+			compiledScript.run();
 		}
 		catch (Exception exception) {
 			throw new ScriptingException(
@@ -57,25 +70,6 @@ public class ServerScriptingUtil {
 					"Evaluated script in " + stopWatch.getTime() + " ms");
 			}
 		}
-	}
-
-	private static void _executeGroovyScript(
-			Map<String, Object> inputObjects, String script)
-		throws Exception {
-
-		Class<?> clazz = ServerScriptingUtil.class;
-
-		Thread currentThread = Thread.currentThread();
-
-		GroovyShell groovyShell = new GroovyShell(
-			AggregateClassLoader.getAggregateClassLoader(
-				clazz.getClassLoader(), currentThread.getContextClassLoader()));
-
-		Script compiledScript = groovyShell.parse(script);
-
-		compiledScript.setBinding(new Binding(inputObjects));
-
-		compiledScript.run();
 	}
 
 	private static String _getErrorMessage(Exception exception, String script) {

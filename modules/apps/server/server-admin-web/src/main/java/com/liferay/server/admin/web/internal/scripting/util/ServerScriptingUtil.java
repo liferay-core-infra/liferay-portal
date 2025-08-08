@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.scripting.ScriptingException;
 import com.liferay.portal.kernel.scripting.UnsupportedLanguageException;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
-import com.liferay.portal.kernel.util.SetUtil;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -38,9 +36,7 @@ public class ServerScriptingUtil {
 			Map<String, Object> inputObjects, String language, String script)
 		throws ScriptingException {
 
-		Set<String> supportedLanguages = getSupportedLanguages();
-
-		if (!supportedLanguages.contains(language)) {
+		if (!language.equals("groovy")) {
 			throw new UnsupportedLanguageException(language);
 		}
 
@@ -49,9 +45,7 @@ public class ServerScriptingUtil {
 		stopWatch.start();
 
 		try {
-			if (language.equals("groovy")) {
-				_executeGroovyScript(inputObjects, script);
-			}
+			_executeGroovyScript(inputObjects, script);
 		}
 		catch (Exception exception) {
 			throw new ScriptingException(
@@ -63,10 +57,6 @@ public class ServerScriptingUtil {
 					"Evaluated script in " + stopWatch.getTime() + " ms");
 			}
 		}
-	}
-
-	public static Set<String> getSupportedLanguages() {
-		return SetUtil.fromArray(new String[] {"groovy"});
 	}
 
 	private static void _executeGroovyScript(

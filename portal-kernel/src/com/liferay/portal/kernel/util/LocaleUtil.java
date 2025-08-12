@@ -470,15 +470,13 @@ public class LocaleUtil {
 				languageId, CharPool.MINUS, CharPool.UNDERLINE);
 		}
 
-		int pos = languageId.indexOf(CharPool.UNDERLINE);
+		String[] languageIdParts = StringUtil.split(
+			languageId, CharPool.UNDERLINE);
 
-		if (pos == -1) {
-			locale = new Locale(languageId);
+		if (languageIdParts.length < 2) {
+			locale = new Locale(languageIdParts[0]);
 		}
 		else {
-			String[] languageIdParts = StringUtil.split(
-				languageId, CharPool.UNDERLINE);
-
 			String languageCode = languageIdParts[0];
 			String countryCode = languageIdParts[1];
 

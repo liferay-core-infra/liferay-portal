@@ -6942,7 +6942,8 @@ public class ServiceBuilder {
 
 			if (GetterUtil.get(
 					finderElement.attributeValue("skip-generate-code"),
-					false)) {
+					false) &&
+				entityName.equals("ResourcePermission")) {
 
 				indexOnlyEntityFinders.add(entityFinder);
 			}

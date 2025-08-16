@@ -859,6 +859,15 @@ this finder returns at most one entity.
 >
 
 <!--
+The skip-generate-code value specifies whether to skip generating API and
+persistence layer code for the finder. When set to true, only the database
+index will be created. The default value is false.
+-->
+<!ATTLIST finder
+	skip-generate-code #IMPLIED
+>
+
+<!--
 If the unique value is true, then the finder must return a unique entity.
 -->
 <!ATTLIST finder

@@ -195,7 +195,7 @@
 			<finder-column name="userId" />
 			<finder-column name="recordSetId" />
 			<finder-column name="recordSetVersion" />
-			<finder-column name="status" type="int" />
+			<finder-column name="status" />
 		</finder>
 	</entity>
 	<exceptions>

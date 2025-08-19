@@ -126,6 +126,11 @@ public class MailServiceImpl
 	}
 
 	@Override
+	public String getPOPServerSubdomain() {
+		return PropsValues.POP_SERVER_SUBDOMAIN;
+	}
+
+	@Override
 	public Session getSession() {
 		return getSession(CompanyThreadLocal.getCompanyId());
 	}

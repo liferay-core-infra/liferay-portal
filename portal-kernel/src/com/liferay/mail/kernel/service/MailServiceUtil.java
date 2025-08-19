@@ -24,6 +24,12 @@ public class MailServiceUtil {
 		return _mailServiceSnapshot.get();
 	}
 
+	public static String getMailId(
+		String mx, String popPortletPrefix, Object... ids) {
+
+		return getService().getMailId(mx, popPortletPrefix, ids);
+	}
+
 	public static Session getSession() {
 		return getService().getSession();
 	}

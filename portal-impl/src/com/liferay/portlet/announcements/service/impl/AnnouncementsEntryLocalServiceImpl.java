@@ -712,7 +712,7 @@ public class AnnouncementsEntryLocalServiceImpl
 				bodyTemplate.renderAsString(locale, mailTemplateContext), true);
 
 			mailMessage.setMessageId(
-				PortalUtil.getMailId(
+				MailServiceUtil.getMailId(
 					company.getMx(), "announcements_entry",
 					entry.getEntryId()));
 

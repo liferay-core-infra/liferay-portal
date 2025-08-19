@@ -462,7 +462,7 @@ public class MembershipRequestLocalServiceImpl
 				toUser.getCompanyId());
 
 			mailMessage.setMessageId(
-				PortalUtil.getMailId(
+				MailServiceUtil.getMailId(
 					company.getMx(), "membership_request",
 					membershipRequest.getMembershipRequestId()));
 

@@ -98,6 +98,7 @@ public class SampleSQLBuilderTest {
 			BenchmarksPropsKeys.COMMERCE_LAYOUT_EXCLUDED_PORTLETS,
 			StringPool.BLANK);
 		properties.put(BenchmarksPropsKeys.DB_TYPE, "hypersonic");
+		properties.put(BenchmarksPropsKeys.GROUP_USAGE_ENABLE, "true");
 		properties.put(
 			BenchmarksPropsKeys.MAX_ACCOUNT_ENTRY_COMMERCE_ORDER_COUNT, "1");
 		properties.put(BenchmarksPropsKeys.MAX_ACCOUNT_ENTRY_COUNT, "1");
@@ -179,7 +180,7 @@ public class SampleSQLBuilderTest {
 				"commerceInventoryWarehouseItem,commerceOrder,commerceProduct,",
 				"company,cpDefinition,documentLibrary,dynamicDataList,",
 				"fragment,layout,mbCategory,mbThread,objectDefinition,",
-				"repository,user"));
+				"portalPreferenceValue,repository,user"));
 		properties.put(BenchmarksPropsKeys.OUTPUT_MERGE, "true");
 		properties.put(
 			BenchmarksPropsKeys.SCRIPT,

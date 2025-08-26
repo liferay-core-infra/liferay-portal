@@ -898,6 +898,19 @@ public class DataFactory {
 		return random.nextInt(count);
 	}
 
+	public String getRecentGroupIds() {
+		StringBundler sb = new StringBundler((_customGroupIds.size() * 2) + 1);
+
+		for (Long customGroupId : _customGroupIds) {
+			sb.append(customGroupId);
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.append(_guestGroupId);
+
+		return sb.toString();
+	}
+
 	public List<Integer> getSequence(int size) {
 		List<Integer> sequence = new ArrayList<>(size);
 

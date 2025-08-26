@@ -1,0 +1,1 @@
+${csvFileWriter.write("portalPreferenceValue", dataFactory.recentGroupIds + "\n")}

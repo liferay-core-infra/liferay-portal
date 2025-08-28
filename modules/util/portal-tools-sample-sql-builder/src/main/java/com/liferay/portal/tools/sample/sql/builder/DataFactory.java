@@ -4614,6 +4614,10 @@ public class DataFactory {
 		for (int i = 1; i <= BenchmarksPropsValues.MAX_GROUP_COUNT; i++) {
 			long groupId = _groupCounter.get();
 
+			if (BenchmarksPropsValues.GROUP_USAGE_ENABLED) {
+				_customGroupIds.add(groupId);
+			}
+
 			groupModels.add(
 				newGroupModel(
 					getClassNameId(Group.class), groupId, groupId, "Site " + i,
@@ -9188,6 +9192,7 @@ public class DataFactory {
 	private final SimpleCounter _counter;
 	private final Map<Long, CPInstanceModel> _cpInstanceModels =
 		new HashMap<>();
+	private final List<Long> _customGroupIds = new ArrayList<>();
 	private final PortletPreferencesImpl
 		_defaultAssetPublisherPortletPreferencesImpl;
 	private long _defaultDLDDMStructureId;

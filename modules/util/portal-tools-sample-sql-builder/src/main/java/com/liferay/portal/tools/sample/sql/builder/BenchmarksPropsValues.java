@@ -31,6 +31,9 @@ public class BenchmarksPropsValues {
 		StringUtil.toUpperCase(
 			PropertiesHolder._get(BenchmarksPropsKeys.DB_TYPE)));
 
+	public static final boolean GROUP_USAGE_ENABLED = GetterUtil.getBoolean(
+		PropertiesHolder._get(BenchmarksPropsKeys.GROUP_USAGE_ENABLED));
+
 	public static final int MAX_ACCOUNT_ENTRY_COMMERCE_ORDER_COUNT =
 		GetterUtil.getInteger(
 			PropertiesHolder._get(

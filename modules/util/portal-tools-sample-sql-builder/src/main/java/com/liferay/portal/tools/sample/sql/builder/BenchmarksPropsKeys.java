@@ -15,6 +15,9 @@ public interface BenchmarksPropsKeys {
 
 	public static final String DB_TYPE = "sample.sql.db.type";
 
+	public static final String GROUP_USAGE_ENABLED =
+		"sample.sql.group.usage.enabled";
+
 	public static final String MAX_ACCOUNT_ENTRY_COMMERCE_ORDER_COUNT =
 		"sample.sql.max.account.entry.commerce.order.count";
 

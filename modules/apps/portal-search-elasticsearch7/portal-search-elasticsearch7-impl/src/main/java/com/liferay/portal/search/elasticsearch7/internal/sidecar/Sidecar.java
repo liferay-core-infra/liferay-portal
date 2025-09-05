@@ -361,7 +361,7 @@ public class Sidecar {
 				streamOutput.writeString(KeyStoreWrapper.SEED_SETTING.getKey());
 
 				ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(
-					ElasticsearchServerUtil.class.getSimpleName());
+					Sidecar.class.getSimpleName());
 
 				byte[] bytes = byteBuffer.array();
 

@@ -73,6 +73,8 @@ public class Sidecar {
 		_sidecarManager = sidecarManager;
 
 		_sidecarHomePath = elasticsearchInstancePaths.getHomePath();
+
+		_sidecarHttpPort = _getAvailableSidecarHttpPort();
 	}
 
 	public String getNetworkHostAddress() {
@@ -469,7 +471,7 @@ public class Sidecar {
 		).elasticsearchInstancePaths(
 			_elasticsearchInstancePaths
 		).httpPort(
-			String.valueOf(_getAvailableSidecarHttpPort())
+			String.valueOf(_sidecarHttpPort)
 		).nodeName(
 			_getNodeName()
 		).build();
@@ -626,7 +628,9 @@ public class Sidecar {
 		throws Exception {
 
 		try {
-			return noticeableFuture.get();
+			noticeableFuture.get();
+
+			return "localhost:" + _sidecarHttpPort;
 		}
 		catch (ExecutionException executionException) {
 			throw new Exception(executionException.getCause());
@@ -651,6 +655,7 @@ public class Sidecar {
 	private final ProcessExecutor _processExecutor;
 	private FutureListener<Serializable> _restartFutureListener;
 	private final Path _sidecarHomePath;
+	private final int _sidecarHttpPort;
 	private SidecarManager _sidecarManager;
 	private Path _sidecarTempDirPath;
 

@@ -110,19 +110,29 @@ public class Sidecar {
 
 		Path configFolder = _sidecarTempDirPath.resolve("config");
 
+		Path log4j2PropertiesPath = configFolder.resolve("log4j2.properties");
+
+		SidecarProcessBag sidecarProcessBag = new SidecarProcessBag(
+			_elasticsearchConfigurationWrapper.sidecarHeartbeatInterval(),
+			_getJVMArguments(configFolder),
+			Arrays.asList(
+				"logger.bootstrapchecks.name=org.elasticsearch.bootstrap." +
+					"BootstrapChecks",
+				"logger.bootstrapchecks.level=error",
+				"logger.deprecation.name=org.elasticsearch.deprecation",
+				"logger.deprecation.level=error",
+				ResourceUtil.getResourceAsString(
+					Sidecar.class, "/log4j2.properties")),
+			log4j2PropertiesPath.toString(),
+			_elasticsearchConfigurationWrapper.sidecarShutdownTimeout(),
+			_getSidecarServerArgs(), _getEnvironment());
+
 		try {
 			Files.createDirectories(configFolder);
 
 			Files.write(
-				configFolder.resolve("log4j2.properties"),
-				Arrays.asList(
-					"logger.bootstrapchecks.name=org.elasticsearch.bootstrap." +
-						"BootstrapChecks",
-					"logger.bootstrapchecks.level=error",
-					"logger.deprecation.name=org.elasticsearch.deprecation",
-					"logger.deprecation.level=error",
-					ResourceUtil.getResourceAsString(
-						Sidecar.class, "/log4j2.properties")));
+				Path.of(sidecarProcessBag.getLog4j2PropertiesFile()),
+				sidecarProcessBag.getLog4j2Properties());
 		}
 		catch (IOException ioException) {
 			_log.error(
@@ -137,11 +147,11 @@ public class Sidecar {
 		String bootstrapClassPath = _getBootstrapClassPath();
 
 		ProcessConfig processConfig = builder.setArguments(
-			_getJVMArguments(configFolder)
+			sidecarProcessBag.getJvmArguments()
 		).setBootstrapClassPath(
 			bootstrapClassPath
 		).setEnvironment(
-			_getEnvironment()
+			sidecarProcessBag.getSystemEnvironments()
 		).setJavaExecutable(
 			System.getProperty("java.home") + "/bin/java"
 		).setProcessLogConsumer(
@@ -159,8 +169,7 @@ public class Sidecar {
 			processChannel = _processExecutor.execute(
 				processConfig,
 				new SidecarMainProcessCallable(
-					_elasticsearchConfigurationWrapper.
-						sidecarHeartbeatInterval()));
+					sidecarProcessBag.getHeartbeatInterval()));
 		}
 		catch (ProcessException processException) {
 			throw new RuntimeException(
@@ -169,7 +178,8 @@ public class Sidecar {
 		}
 
 		NoticeableFuture<String> noticeableFuture = processChannel.write(
-			new StartSidecarProcessCallable(_getSidecarServerArgs()));
+			new StartSidecarProcessCallable(
+				sidecarProcessBag.getSidecarServerBytes()));
 
 		try {
 			noticeableFuture.get();

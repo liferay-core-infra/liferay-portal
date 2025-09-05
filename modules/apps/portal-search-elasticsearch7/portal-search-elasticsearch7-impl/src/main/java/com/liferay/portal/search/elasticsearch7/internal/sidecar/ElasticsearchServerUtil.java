@@ -6,7 +6,6 @@
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
-import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.process.ProcessException;
 import com.liferay.petra.reflect.ReflectionUtil;
 
@@ -24,8 +23,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.elasticsearch.cli.ExitCodes;
-import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
-import org.elasticsearch.common.io.stream.StreamOutput;
 
 /**
  * @author Tina Tian
@@ -47,29 +44,15 @@ public class ElasticsearchServerUtil {
 		_shutdownCountDownLatch.countDown();
 	}
 
-	public static String start(SidecarServerArgs sidecarServerArgs)
-		throws ProcessException {
+	public static String start(byte[] bytes) throws ProcessException {
+		InputStream originalSystemInInputStream = System.in;
 
-		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-				new UnsyncByteArrayOutputStream();
-			StreamOutput streamOutput = new OutputStreamStreamOutput(
-				unsyncByteArrayOutputStream)) {
+		try (UnsyncByteArrayInputStream unsyncByteArrayInputStream =
+				new UnsyncByteArrayInputStream(bytes)) {
 
-			sidecarServerArgs.writeTo(streamOutput);
+			System.setIn(unsyncByteArrayInputStream);
 
-			InputStream originalSystemInInputStream = System.in;
-
-			try (UnsyncByteArrayInputStream unsyncByteArrayInputStream =
-					new UnsyncByteArrayInputStream(
-						unsyncByteArrayOutputStream.toByteArray())) {
-
-				System.setIn(unsyncByteArrayInputStream);
-
-				_mainMethod.invoke(null, (Object)null);
-			}
-			finally {
-				System.setIn(originalSystemInInputStream);
-			}
+			_mainMethod.invoke(null, (Object)null);
 
 			System.setSecurityManager(null);
 
@@ -80,6 +63,9 @@ public class ElasticsearchServerUtil {
 		catch (Exception exception) {
 			throw new ProcessException(
 				"Unable to start elasticsearch server", exception);
+		}
+		finally {
+			System.setIn(originalSystemInInputStream);
 		}
 	}
 

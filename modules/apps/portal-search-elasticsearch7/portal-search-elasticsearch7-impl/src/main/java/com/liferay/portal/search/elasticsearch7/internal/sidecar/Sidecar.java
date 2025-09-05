@@ -7,6 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
 import com.liferay.petra.concurrent.FutureListener;
 import com.liferay.petra.concurrent.NoticeableFuture;
+import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.process.ProcessChannel;
 import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.process.ProcessException;
@@ -37,12 +38,15 @@ import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.security.CodeSource;
+import java.security.MessageDigest;
 import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
@@ -54,6 +58,10 @@ import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.elasticsearch.common.hash.MessageDigests;
+import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
+import org.elasticsearch.common.io.stream.StreamOutput;
+import org.elasticsearch.common.settings.KeyStoreWrapper;
 import org.elasticsearch.common.settings.Settings;
 
 /**
@@ -491,7 +499,7 @@ public class Sidecar {
 		).build();
 	}
 
-	private SidecarServerArgs _getSidecarServerArgs() {
+	private byte[] _getSidecarServerArgs() {
 		Settings settings = _getSettings();
 
 		StringBundler sb = new StringBundler((2 * settings.size()) + 1);
@@ -528,10 +536,57 @@ public class Sidecar {
 			_log.debug(sb.toString());
 		}
 
-		return new SidecarServerArgs(
-			String.valueOf(_sidecarTempDirPath.resolve("config")), false,
-			String.valueOf(_sidecarHomePath.resolve("logs")), null, false,
-			settingsMap);
+		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+				new UnsyncByteArrayOutputStream();
+			StreamOutput streamOutput = new OutputStreamStreamOutput(
+				unsyncByteArrayOutputStream)) {
+
+			streamOutput.writeBoolean(false);
+			streamOutput.writeBoolean(false);
+			streamOutput.writeOptionalString(null);
+			streamOutput.writeString(KeyStoreWrapper.class.getName());
+
+			try (KeyStoreWrapper keyStoreWrapper = KeyStoreWrapper.create()) {
+				streamOutput.writeInt(keyStoreWrapper.getFormatVersion());
+				streamOutput.writeBoolean(keyStoreWrapper.hasPassword());
+				streamOutput.writeBoolean(false);
+				streamOutput.writeVInt(1);
+				streamOutput.writeString(KeyStoreWrapper.SEED_SETTING.getKey());
+
+				ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(
+					ElasticsearchServerUtil.class.getSimpleName());
+
+				byte[] bytes = byteBuffer.array();
+
+				MessageDigest messageDigest = MessageDigests.sha256();
+
+				streamOutput.writeByteArray(bytes);
+				streamOutput.writeByteArray(messageDigest.digest(bytes));
+				streamOutput.writeBoolean(false);
+			}
+
+			streamOutput.writeVInt(settingsMap.size());
+
+			for (Map.Entry<String, Serializable> entry :
+					settingsMap.entrySet()) {
+
+				streamOutput.writeString(entry.getKey());
+				streamOutput.writeGenericValue(entry.getValue());
+			}
+
+			streamOutput.writeString(
+				String.valueOf(_sidecarTempDirPath.resolve("config")));
+			streamOutput.writeString(
+				String.valueOf(_sidecarHomePath.resolve("logs")));
+
+			streamOutput.flush();
+
+			return unsyncByteArrayOutputStream.toByteArray();
+		}
+		catch (Exception exception) {
+			throw new IllegalStateException(
+				"Unable to prepare sidecar server arguments", exception);
+		}
 	}
 
 	private String _getSidecarVersion() {

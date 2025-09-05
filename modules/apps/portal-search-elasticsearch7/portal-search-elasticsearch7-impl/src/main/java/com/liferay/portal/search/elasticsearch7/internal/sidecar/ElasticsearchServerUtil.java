@@ -47,7 +47,7 @@ public class ElasticsearchServerUtil {
 		_shutdownCountDownLatch.countDown();
 	}
 
-	public static Object start(SidecarServerArgs sidecarServerArgs)
+	public static String start(SidecarServerArgs sidecarServerArgs)
 		throws ProcessException {
 
 		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
@@ -75,7 +75,7 @@ public class ElasticsearchServerUtil {
 
 			_addShutdownHook();
 
-			return _nodeField.get(_instanceField.get(null));
+			return null;
 		}
 		catch (Exception exception) {
 			throw new ProcessException(
@@ -142,9 +142,7 @@ public class ElasticsearchServerUtil {
 		ElasticsearchServerUtil.class);
 
 	private static final Field _hooksField;
-	private static final Field _instanceField;
 	private static final Method _mainMethod;
-	private static final Field _nodeField;
 	private static final CountDownLatch _shutdownCountDownLatch =
 		new CountDownLatch(1);
 	private static final Method _stopMethod;
@@ -161,12 +159,8 @@ public class ElasticsearchServerUtil {
 			Class<?> elasticsearchClass = classLoader.loadClass(
 				"org.elasticsearch.bootstrap.Elasticsearch");
 
-			_instanceField = ReflectionUtil.getDeclaredField(
-				elasticsearchClass, "INSTANCE");
 			_mainMethod = ReflectionUtil.getDeclaredMethod(
 				elasticsearchClass, "main", String[].class);
-			_nodeField = ReflectionUtil.getDeclaredField(
-				elasticsearchClass, "node");
 			_stopMethod = ReflectionUtil.getDeclaredMethod(
 				elasticsearchClass, "shutdown");
 		}

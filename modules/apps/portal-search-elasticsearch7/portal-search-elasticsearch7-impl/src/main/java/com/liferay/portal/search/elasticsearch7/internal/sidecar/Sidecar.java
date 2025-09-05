@@ -94,8 +94,49 @@ public class Sidecar {
 
 		_installElasticsearchIfNeeded(sidecarVersion);
 
-		ProcessChannel<Serializable> processChannel =
-			_executeSidecarMainProcess();
+		if (!Files.isDirectory(_sidecarHomePath)) {
+			throw new IllegalArgumentException(
+				"Sidecar Elasticsearch home does not exist: " +
+					_sidecarHomePath);
+		}
+
+		ProcessConfig.Builder builder = new ProcessConfig.Builder();
+
+		URL bundleURL = _getBundleURL(Sidecar.class);
+
+		String bootstrapClassPath = _getBootstrapClassPath();
+
+		ProcessConfig processConfig = builder.setArguments(
+			_getJVMArguments()
+		).setBootstrapClassPath(
+			bootstrapClassPath
+		).setEnvironment(
+			_getEnvironment()
+		).setJavaExecutable(
+			System.getProperty("java.home") + "/bin/java"
+		).setProcessLogConsumer(
+			this::_consumeProcessLog
+		).setReactClassLoader(
+			Sidecar.class.getClassLoader()
+		).setRuntimeClassPath(
+			StringBundler.concat(
+				bundleURL.getPath(), File.pathSeparator, bootstrapClassPath)
+		).build();
+
+		ProcessChannel<Serializable> processChannel = null;
+
+		try {
+			processChannel = _processExecutor.execute(
+				processConfig,
+				new SidecarMainProcessCallable(
+					_elasticsearchConfigurationWrapper.
+						sidecarHeartbeatInterval()));
+		}
+		catch (ProcessException processException) {
+			throw new RuntimeException(
+				"Unable to start sidecar Elasticsearch process",
+				processException);
+		}
 
 		NoticeableFuture<String> noticeableFuture = processChannel.write(
 			new StartSidecarProcessCallable(_getSidecarServerArgs()));
@@ -208,52 +249,6 @@ public class Sidecar {
 		catch (IOException ioException) {
 			throw new RuntimeException(
 				"Unable to iterate " + dirPath, ioException);
-		}
-	}
-
-	private ProcessConfig _createProcessConfig() {
-		ProcessConfig.Builder builder = new ProcessConfig.Builder();
-
-		URL bundleURL = _getBundleURL(Sidecar.class);
-
-		String bootstrapClassPath = _getBootstrapClassPath();
-
-		return builder.setArguments(
-			_getJVMArguments()
-		).setBootstrapClassPath(
-			bootstrapClassPath
-		).setEnvironment(
-			_getEnvironment()
-		).setJavaExecutable(
-			System.getProperty("java.home") + "/bin/java"
-		).setProcessLogConsumer(
-			this::_consumeProcessLog
-		).setReactClassLoader(
-			Sidecar.class.getClassLoader()
-		).setRuntimeClassPath(
-			StringBundler.concat(
-				bundleURL.getPath(), File.pathSeparator, bootstrapClassPath)
-		).build();
-	}
-
-	private ProcessChannel<Serializable> _executeSidecarMainProcess() {
-		if (!Files.isDirectory(_sidecarHomePath)) {
-			throw new IllegalArgumentException(
-				"Sidecar Elasticsearch home does not exist: " +
-					_sidecarHomePath);
-		}
-
-		try {
-			return _processExecutor.execute(
-				_createProcessConfig(),
-				new SidecarMainProcessCallable(
-					_elasticsearchConfigurationWrapper.
-						sidecarHeartbeatInterval()));
-		}
-		catch (ProcessException processException) {
-			throw new RuntimeException(
-				"Unable to start sidecar Elasticsearch process",
-				processException);
 		}
 	}
 

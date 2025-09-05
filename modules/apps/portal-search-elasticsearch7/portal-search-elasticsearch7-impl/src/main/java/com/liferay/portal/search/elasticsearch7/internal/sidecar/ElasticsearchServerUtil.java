@@ -22,8 +22,6 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.elasticsearch.cli.ExitCodes;
-
 /**
  * @author Tina Tian
  */
@@ -38,7 +36,7 @@ public class ElasticsearchServerUtil {
 				_logger.warn("Unable to invoke stop method", exception);
 			}
 
-			System.exit(ExitCodes.CODE_ERROR);
+			System.exit(70);
 		}
 
 		_shutdownCountDownLatch.countDown();

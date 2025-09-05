@@ -64,8 +64,6 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 				ConnectionConstants.SIDECAR_CONNECTION_ID);
 		}
 		else {
-			_startupSuccessful = false;
-
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
@@ -84,7 +82,7 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 			_sidecar = new Sidecar(
 				elasticsearchConfigurationWrapper,
-				_getElasticsearchInstancePaths(), processExecutor, this);
+				_getElasticsearchInstancePaths(), processExecutor);
 
 			ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
 				new ElasticsearchConnectionBuilder();
@@ -110,18 +108,12 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 			elasticsearchConnectionManager.addElasticsearchConnection(
 				elasticsearchConnectionBuilder.build());
-
-			_startupSuccessful = true;
 		}
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		elasticsearchConfigurationWrapper.unregister(this);
-	}
-
-	protected boolean isStartupSuccessful() {
-		return _startupSuccessful;
 	}
 
 	@Reference
@@ -177,6 +169,5 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 	private static final Log _log = LogFactoryUtil.getLog(SidecarManager.class);
 
 	private Sidecar _sidecar;
-	private boolean _startupSuccessful;
 
 }

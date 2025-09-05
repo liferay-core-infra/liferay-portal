@@ -47,6 +47,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import com.liferay.portal.sidecar.process.SidecarProcess;
+import com.liferay.portal.sidecar.process.SidecarProcessBag;
 import org.elasticsearch.common.hash.MessageDigests;
 import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
 import org.elasticsearch.common.io.stream.StreamOutput;

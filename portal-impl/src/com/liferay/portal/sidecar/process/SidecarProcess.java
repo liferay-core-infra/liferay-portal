@@ -25,16 +25,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import java.net.URL;
-
 import java.nio.ByteBuffer;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 
 import java.util.List;
 import java.util.Objects;
@@ -122,15 +117,9 @@ public class SidecarProcess {
 	private String _getBootstrapClassPath() {
 		return _createClasspath(
 			Paths.get(PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR),
-			path -> _fileNameContains(path, "petra"));
-	}
-
-	private URL _getBundleURL(Class<?> clazz) {
-		ProtectionDomain protectionDomain = clazz.getProtectionDomain();
-
-		CodeSource codeSource = protectionDomain.getCodeSource();
-
-		return codeSource.getLocation();
+			path ->
+				_fileNameContains(path, "petra") ||
+				_fileNameContains(path, "portal"));
 	}
 
 	private synchronized void _init(SidecarProcessBag sidecarProcessBag) {
@@ -199,8 +188,6 @@ public class SidecarProcess {
 
 			ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
-			URL bundleURL = _getBundleURL(SidecarProcess.class);
-
 			String bootstrapClassPath = _getBootstrapClassPath();
 
 			ProcessConfig processConfig = builder.setArguments(
@@ -216,8 +203,7 @@ public class SidecarProcess {
 			).setReactClassLoader(
 				SidecarProcess.class.getClassLoader()
 			).setRuntimeClassPath(
-				StringBundler.concat(
-					bundleURL.getPath(), File.pathSeparator, bootstrapClassPath)
+				bootstrapClassPath
 			).build();
 
 			_processChannel = _processExecutor.execute(

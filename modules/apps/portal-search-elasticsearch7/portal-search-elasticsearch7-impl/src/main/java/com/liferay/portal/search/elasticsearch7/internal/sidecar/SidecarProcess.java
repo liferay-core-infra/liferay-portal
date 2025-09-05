@@ -199,7 +199,7 @@ public class SidecarProcess {
 
 			ProcessConfig.Builder builder = new ProcessConfig.Builder();
 
-			URL bundleURL = _getBundleURL(Sidecar.class);
+			URL bundleURL = _getBundleURL(SidecarProcess.class);
 
 			String bootstrapClassPath = _getBootstrapClassPath();
 
@@ -214,7 +214,7 @@ public class SidecarProcess {
 			).setProcessLogConsumer(
 				this::_consumeProcessLog
 			).setReactClassLoader(
-				Sidecar.class.getClassLoader()
+				SidecarProcess.class.getClassLoader()
 			).setRuntimeClassPath(
 				StringBundler.concat(
 					bundleURL.getPath(), File.pathSeparator, bootstrapClassPath)

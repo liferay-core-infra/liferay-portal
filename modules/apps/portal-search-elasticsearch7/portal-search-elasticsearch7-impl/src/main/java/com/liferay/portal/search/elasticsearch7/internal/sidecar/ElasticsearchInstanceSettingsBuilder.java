@@ -88,10 +88,8 @@ public class ElasticsearchInstanceSettingsBuilder {
 		return this;
 	}
 
-	public ElasticsearchInstanceSettingsBuilder httpPortRange(
-		HttpPortRange httpPortRange) {
-
-		_httpPortRange = httpPortRange;
+	public ElasticsearchInstanceSettingsBuilder httpPort(String httpPort) {
+		_httpPort = httpPort;
 
 		return this;
 	}
@@ -164,7 +162,7 @@ public class ElasticsearchInstanceSettingsBuilder {
 	}
 
 	private void _configureHttp() {
-		put("http.port", _httpPortRange.toSettingsString());
+		put("http.port", _httpPort);
 
 		put(
 			"http.cors.enabled",
@@ -282,7 +280,7 @@ public class ElasticsearchInstanceSettingsBuilder {
 	private ElasticsearchConfigurationWrapper
 		_elasticsearchConfigurationWrapper;
 	private ElasticsearchInstancePaths _elasticsearchInstancePaths;
-	private HttpPortRange _httpPortRange;
+	private String _httpPort;
 	private String _networkHost;
 	private String _nodeName;
 	private final SettingsHelperImpl _settingsHelperImpl =

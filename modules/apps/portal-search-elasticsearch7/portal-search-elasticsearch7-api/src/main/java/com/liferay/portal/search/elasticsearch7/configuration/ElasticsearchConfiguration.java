@@ -185,8 +185,8 @@ public interface ElasticsearchConfiguration {
 	public int embeddedHttpPort();
 
 	@Meta.AD(
-		description = "sidecar-http-port-help", name = "sidecar-http-port",
-		required = false
+		deflt = "9201-9300", description = "sidecar-http-port-help",
+		name = "sidecar-http-port", required = false
 	)
 	public String sidecarHttpPort();
 

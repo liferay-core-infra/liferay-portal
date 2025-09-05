@@ -5,7 +5,6 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
-import com.liferay.petra.process.ProcessExecutor;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -82,7 +81,7 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 			_sidecar = new Sidecar(
 				elasticsearchConfigurationWrapper,
-				_getElasticsearchInstancePaths(), processExecutor);
+				_getElasticsearchInstancePaths());
 
 			ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
 				new ElasticsearchConnectionBuilder();
@@ -122,9 +121,6 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 	@Reference
 	protected ElasticsearchConnectionManager elasticsearchConnectionManager;
-
-	@Reference
-	protected ProcessExecutor processExecutor;
 
 	private ElasticsearchInstancePaths _getElasticsearchInstancePaths() {
 		ElasticsearchInstancePathsBuilder elasticsearchInstancePathsBuilder =

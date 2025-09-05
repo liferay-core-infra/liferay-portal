@@ -8,6 +8,7 @@ package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationObserver;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionBuilder;
@@ -15,6 +16,7 @@ import com.liferay.portal.search.elasticsearch7.internal.connection.Elasticsearc
 import com.liferay.portal.search.elasticsearch7.internal.connection.constants.ConnectionConstants;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.constants.SidecarConstants;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
+import com.liferay.portal.sidecar.process.SidecarProcess;
 import com.liferay.portal.util.PropsValues;
 
 import java.nio.file.Files;
@@ -61,6 +63,10 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 		if (elasticsearchConfigurationWrapper.isProductionModeEnabled()) {
 			elasticsearchConnectionManager.removeElasticsearchConnection(
 				ConnectionConstants.SIDECAR_CONNECTION_ID);
+
+			SidecarProcess.stop();
+
+			FileUtil.deltree(SidecarProcess.TEMP_DIR);
 		}
 		else {
 			if (_log.isWarnEnabled()) {

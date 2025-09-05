@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.module.framework.ModuleFrameworkUtil;
+import com.liferay.portal.sidecar.process.SidecarProcess;
 import com.liferay.portal.spring.aop.AopConfigurableApplicationContextConfigurator;
 import com.liferay.portal.spring.aop.DynamicProxyCreator;
 import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
@@ -354,10 +355,12 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 			}
 		}
 
-		ModuleFrameworkUtil.createFramework();
-
 		ExecutorService executorService =
 			SystemExecutorServiceUtil.getExecutorService();
+
+		executorService.submit(SidecarProcess::start);
+
+		ModuleFrameworkUtil.createFramework();
 
 		Future<Future<?>> future1 = executorService.submit(
 			() -> {

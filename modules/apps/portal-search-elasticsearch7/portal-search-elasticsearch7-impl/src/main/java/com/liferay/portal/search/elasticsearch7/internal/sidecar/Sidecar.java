@@ -97,16 +97,31 @@ public class Sidecar {
 
 		_addFutureListener(processChannel, futureListener);
 
-		String address = _startElasticsearch(processChannel);
+		NoticeableFuture<String> noticeableFuture = processChannel.write(
+			new StartSidecarProcessCallable(_getSidecarServerArgs()));
+
+		try {
+			noticeableFuture.get();
+		}
+		catch (Exception exception) {
+			processChannel.write(new StopSidecarProcessCallable());
+
+			if (exception instanceof RuntimeException) {
+				throw (RuntimeException)exception;
+			}
+
+			throw new RuntimeException(exception);
+		}
+
+		_address = "localhost:" + _sidecarHttpPort;
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				StringBundler.concat(
 					"Sidecar Elasticsearch ", sidecarVersion, StringPool.SPACE,
-					_getNodeName(), " started at ", address));
+					_getNodeName(), " started at ", _address));
 		}
 
-		_address = address;
 		_processChannel = processChannel;
 		_restartFutureListener = futureListener;
 	}
@@ -585,28 +600,6 @@ public class Sidecar {
 		}
 
 		return true;
-	}
-
-	private String _startElasticsearch(
-		ProcessChannel<Serializable> processChannel) {
-
-		NoticeableFuture<String> noticeableFuture = processChannel.write(
-			new StartSidecarProcessCallable(_getSidecarServerArgs()));
-
-		try {
-			noticeableFuture.get();
-
-			return "localhost:" + _sidecarHttpPort;
-		}
-		catch (Exception exception) {
-			processChannel.write(new StopSidecarProcessCallable());
-
-			if (exception instanceof RuntimeException) {
-				throw (RuntimeException)exception;
-			}
-
-			throw new RuntimeException(exception);
-		}
 	}
 
 	private static final String _DEFAULT_MODULES_FOLDER_NAME = "modules";

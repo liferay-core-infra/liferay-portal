@@ -18,7 +18,6 @@ import com.liferay.portal.search.elasticsearch7.internal.connection.constants.Co
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.ElasticsearchInstancePaths;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.PathUtil;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.Sidecar;
-import com.liferay.portal.search.elasticsearch7.internal.sidecar.SidecarManager;
 
 import java.io.IOException;
 
@@ -72,8 +71,7 @@ public class ElasticsearchConnectionFixture
 
 		Sidecar sidecar = new Sidecar(
 			elasticsearchConfigurationWrapper,
-			_createElasticsearchInstancePaths(), new LocalProcessExecutor(),
-			Mockito.mock(SidecarManager.class));
+			_createElasticsearchInstancePaths(), new LocalProcessExecutor());
 
 		ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
 			new ElasticsearchConnectionBuilder();

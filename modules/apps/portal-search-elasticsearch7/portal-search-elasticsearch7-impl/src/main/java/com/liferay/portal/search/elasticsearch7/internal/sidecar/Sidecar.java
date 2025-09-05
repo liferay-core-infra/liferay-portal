@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import org.elasticsearch.common.hash.MessageDigests;
 import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
@@ -312,7 +313,7 @@ public class Sidecar {
 
 		sb.append("Sidecar Elasticsearch properties : {");
 
-		Map<String, Serializable> settingsMap = new HashMap<>();
+		Map<String, Serializable> settingsMap = new TreeMap<>();
 
 		for (String key : settings.keySet()) {
 			List<String> list = settings.getAsList(key);

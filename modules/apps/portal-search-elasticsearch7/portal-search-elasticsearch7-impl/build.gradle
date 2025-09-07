@@ -179,6 +179,7 @@ test {
 
 		project.copy {
 			include "com.liferay.petra.*.jar"
+			include "com.liferay.portal.impl.*.jar"
 
 			configurations.compileOnly.allDependencies.each {
 				rename "-${it.version}", ""

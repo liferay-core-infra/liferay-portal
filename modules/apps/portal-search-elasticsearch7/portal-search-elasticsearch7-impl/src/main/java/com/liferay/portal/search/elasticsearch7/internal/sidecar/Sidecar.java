@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -452,18 +453,15 @@ public class Sidecar {
 		}
 	}
 
-	private boolean _isHttpPortAvailable(int httpPort) {
-		try (Socket socket = new Socket("localhost", httpPort)) {
+	private boolean isHttpPortAvailable(int httpPort) {
+		try (ServerSocket serverSocket = new ServerSocket(httpPort)) {
+
+			serverSocket.setReuseAddress(true);
+
+			return true;
+		} catch (IOException e) {
 			return false;
 		}
-		catch (IOException ioException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Unable to connect to port " + httpPort, ioException);
-			}
-		}
-
-		return true;
 	}
 
 	private static final String _DEFAULT_MODULES_FOLDER_NAME = "modules";

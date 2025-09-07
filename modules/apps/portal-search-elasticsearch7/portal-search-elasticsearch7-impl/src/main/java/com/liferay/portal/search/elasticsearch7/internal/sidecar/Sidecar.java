@@ -21,6 +21,8 @@ import com.liferay.portal.search.elasticsearch7.internal.configuration.Elasticse
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.constants.SidecarConstants;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.elasticsearch7.sidecar.agent.SidecarAgent;
+import com.liferay.portal.sidecar.process.SidecarProcess;
+import com.liferay.portal.sidecar.process.SidecarProcessBag;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,8 +49,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import com.liferay.portal.sidecar.process.SidecarProcess;
-import com.liferay.portal.sidecar.process.SidecarProcessBag;
 import org.elasticsearch.common.hash.MessageDigests;
 import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
 import org.elasticsearch.common.io.stream.StreamOutput;

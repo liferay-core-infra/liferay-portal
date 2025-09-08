@@ -7,6 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.connection;
 
 import java.io.IOException;
 
+import java.net.Socket;
 import java.util.Map;
 
 import org.elasticsearch.client.IndicesClient;
@@ -141,6 +142,15 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 	private static class ElasticsearchConnectionFixtureSingleton {
 
 		public void start() {
+			if (_connected) {
+				try (Socket socket = new Socket("localhost", 9301)) {
+					_connected = true;
+				}
+				catch (IOException ioException) {
+					_connected = false;
+				}
+			}
+
 			if (!_connected) {
 				_elasticsearchConnectionFixture.createNode();
 
@@ -159,6 +169,8 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 				ElasticsearchConnectionFixture.builder(
 				).clusterName(
 					ElasticsearchFixture.class.getSimpleName()
+				).elasticsearchConfigurationProperties(
+					Map.of("sidecarHttpPort", "9301")
 				).build();
 		}
 

@@ -117,6 +117,8 @@ public class Sidecar {
 
 		_address = "localhost:" + _sidecarHttpPort;
 
+		System.out.println("############# Started " + _address);
+
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				StringBundler.concat(
@@ -126,6 +128,8 @@ public class Sidecar {
 	}
 
 	public void stop() {
+		System.out.println("############# Stopping " + _address);
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Stopping sidecar Elasticsearch");
 		}

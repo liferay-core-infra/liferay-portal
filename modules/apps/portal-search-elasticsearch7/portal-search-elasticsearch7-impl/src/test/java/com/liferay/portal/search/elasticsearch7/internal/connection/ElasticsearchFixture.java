@@ -106,6 +106,8 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 			return;
 		}
 
+		_elasticsearchConnectionFixtureSingleton.stop();
+
 		_elasticsearchConnectionFixture.createNode();
 	}
 
@@ -145,6 +147,14 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 				_elasticsearchConnectionFixture.createNode();
 
 				_connected = true;
+			}
+		}
+
+		public void stop() {
+			if (_connected) {
+				_elasticsearchConnectionFixture.destroyNode();
+
+				_connected = false;
 			}
 		}
 

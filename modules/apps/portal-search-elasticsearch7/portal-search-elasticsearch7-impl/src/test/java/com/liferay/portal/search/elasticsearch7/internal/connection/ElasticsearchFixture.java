@@ -23,9 +23,10 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 
 	public ElasticsearchFixture() {
 		this(
-			_elasticsearchConnectionFixtureSingleton.
-				getElasticsearchConnectionFixture(),
-			true);
+			ElasticsearchConnectionFixture.builder(
+			).clusterName(
+				ElasticsearchFixture.class.getSimpleName()
+			).build());
 	}
 
 	/**
@@ -39,15 +40,7 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 	public ElasticsearchFixture(
 		ElasticsearchConnectionFixture elasticsearchConnectionFixture) {
 
-		this(elasticsearchConnectionFixture, false);
-	}
-
-	public ElasticsearchFixture(
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture,
-		boolean singleton) {
-
 		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
-		_singleton = singleton;
 	}
 
 	/**
@@ -100,21 +93,11 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 	}
 
 	public void setUp() throws Exception {
-		if (_singleton) {
-			_elasticsearchConnectionFixtureSingleton.start();
-
-			return;
-		}
-
-		_elasticsearchConnectionFixtureSingleton.stop();
-
 		_elasticsearchConnectionFixture.createNode();
 	}
 
 	public void tearDown() throws Exception {
-		if (!_singleton) {
-			_elasticsearchConnectionFixture.destroyNode();
-		}
+		_elasticsearchConnectionFixture.destroyNode();
 	}
 
 	public void waitForElasticsearchToStart() {
@@ -132,50 +115,7 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 			});
 	}
 
-	private static final ElasticsearchConnectionFixtureSingleton
-		_elasticsearchConnectionFixtureSingleton =
-			new ElasticsearchConnectionFixtureSingleton();
-
 	private final ElasticsearchConnectionFixture
 		_elasticsearchConnectionFixture;
-	private final boolean _singleton;
-
-	private static class ElasticsearchConnectionFixtureSingleton {
-
-		public void start() {
-			if (!_connected) {
-				_elasticsearchConnectionFixture.createNode();
-
-				_connected = true;
-			}
-		}
-
-		public void stop() {
-			if (_connected) {
-				_elasticsearchConnectionFixture.destroyNode();
-
-				_connected = false;
-			}
-		}
-
-		protected ElasticsearchConnectionFixture
-			getElasticsearchConnectionFixture() {
-
-			return _elasticsearchConnectionFixture;
-		}
-
-		private ElasticsearchConnectionFixtureSingleton() {
-			_elasticsearchConnectionFixture =
-				ElasticsearchConnectionFixture.builder(
-				).clusterName(
-					ElasticsearchFixture.class.getSimpleName()
-				).build();
-		}
-
-		private boolean _connected;
-		private final ElasticsearchConnectionFixture
-			_elasticsearchConnectionFixture;
-
-	}
 
 }

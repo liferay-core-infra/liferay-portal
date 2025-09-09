@@ -7,6 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.connection;
 
 import java.io.IOException;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.elasticsearch.client.IndicesClient;
@@ -22,10 +23,11 @@ import org.elasticsearch.cluster.health.ClusterHealthStatus;
 public class ElasticsearchFixture implements ElasticsearchClientResolver {
 
 	public ElasticsearchFixture() {
-		this(
+		_elasticsearchConnectionFixture =
 			_elasticsearchConnectionFixtureSingleton.
-				getElasticsearchConnectionFixture(),
-			true);
+				getElasticsearchConnectionFixture();
+
+		_singleton = true;
 	}
 
 	/**
@@ -34,20 +36,6 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 	@Deprecated
 	public ElasticsearchFixture(Class<?> clazz) {
 		this();
-	}
-
-	public ElasticsearchFixture(
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture) {
-
-		this(elasticsearchConnectionFixture, false);
-	}
-
-	public ElasticsearchFixture(
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture,
-		boolean singleton) {
-
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
-		_singleton = singleton;
 	}
 
 	/**
@@ -62,13 +50,8 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		String clusterName,
 		Map<String, Object> elasticsearchConfigurationProperties) {
 
-		_elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				clusterName
-			).elasticsearchConfigurationProperties(
-				elasticsearchConfigurationProperties
-			).build();
+		_elasticsearchConnectionFixture = new ElasticsearchConnectionFixture(
+			clusterName, elasticsearchConfigurationProperties);
 
 		_singleton = false;
 	}
@@ -187,10 +170,9 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 
 		private ElasticsearchConnectionFixtureSingleton() {
 			_elasticsearchConnectionFixture =
-				ElasticsearchConnectionFixture.builder(
-				).clusterName(
-					ElasticsearchFixture.class.getSimpleName()
-				).build();
+				new ElasticsearchConnectionFixture(
+					ElasticsearchFixture.class.getSimpleName(),
+					Collections.emptyMap());
 		}
 
 		private boolean _connected;

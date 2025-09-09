@@ -7,12 +7,16 @@ package com.liferay.portal.template.freemarker.internal;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.test.AssertUtils;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -226,7 +230,8 @@ public class RestrictedLiferayObjectWrapperTest
 				null, null,
 				new String[] {
 					TestLiferayMethodObject.class.getName() + "#getName",
-					TestLiferayMethodObject.class.getName() + "#toString"
+					TestLiferayMethodObject.class.getName() + "#toString",
+					TestLiferayMethodObject.class.getName() + "#dslQuery"
 				});
 
 		TemplateModel templateModel = restrictedLiferayObjectWrapper.wrap(
@@ -257,6 +262,17 @@ public class RestrictedLiferayObjectWrapperTest
 				Collections.singletonList(new SimpleScalar("generate")));
 
 		Assert.assertEquals("test-generate", resultTemplateModel.toString());
+
+		LiferayFreeMarkerStringModel interfaceModel =
+			new LiferayFreeMarkerStringModel(
+				new TestPersistedModelLocalService(),
+				restrictedLiferayObjectWrapper);
+
+		AssertUtils.assertFailure(
+			InvalidPropertyException.class,
+			"Denied access to method or field dslQuery of " +
+				TestPersistedModelLocalService.class,
+			() -> interfaceModel.get("dslQuery"));
 	}
 
 	@Test
@@ -657,6 +673,33 @@ public class RestrictedLiferayObjectWrapperTest
 		}
 
 		private final String _name;
+
+	}
+
+	private static class TestPersistedModelLocalService
+		implements PersistedModelLocalService {
+
+		@Override
+		public PersistedModel deletePersistedModel(
+			PersistedModel persistedModel) {
+
+			return null;
+		}
+
+		@Override
+		public <T> T dslQuery(DSLQuery dslQuery) {
+			return null;
+		}
+
+		@Override
+		public int dslQueryCount(DSLQuery dslQuery) {
+			return 0;
+		}
+
+		@Override
+		public PersistedModel getPersistedModel(Serializable primaryKeyObj) {
+			return null;
+		}
 
 	}
 

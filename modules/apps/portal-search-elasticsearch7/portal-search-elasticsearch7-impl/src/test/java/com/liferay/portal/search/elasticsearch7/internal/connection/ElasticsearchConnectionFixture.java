@@ -27,7 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.elasticsearch.action.ingest.PutPipelineRequest;
@@ -45,8 +44,34 @@ import org.mockito.Mockito;
 public class ElasticsearchConnectionFixture
 	implements ElasticsearchClientResolver {
 
-	public static Builder builder() {
-		return new Builder();
+	public ElasticsearchConnectionFixture(
+		String clusterName,
+		Map<String, Object> elasticsearchConfigurationProperties) {
+
+		String sidecarJVMOptions = "-Xmx256m";
+
+		if (!JavaDetector.isJDK8()) {
+			sidecarJVMOptions =
+				"-Xmx256m|--add-opens=java.base/java.lang=ALL-UNNAMED|--add-" +
+					"opens=java.base/java.lang.invoke=ALL-UNNAMED";
+		}
+
+		_elasticsearchConfigurationProperties =
+			HashMapBuilder.<String, Object>put(
+				"clusterName", clusterName
+			).put(
+				"configurationPid", ElasticsearchConfiguration.class.getName()
+			).put(
+				"httpCORSAllowOrigin", "*"
+			).put(
+				"logExceptionsOnly", false
+			).put(
+				"sidecarJVMOptions", sidecarJVMOptions
+			).putAll(
+				elasticsearchConfigurationProperties
+			).build();
+
+		_workPath = _TMP_PATH.resolve(clusterName);
 	}
 
 	public ElasticsearchConnection createElasticsearchConnection() {
@@ -143,80 +168,6 @@ public class ElasticsearchConnectionFixture
 		return getRestHighLevelClient();
 	}
 
-	public static class Builder {
-
-		public ElasticsearchConnectionFixture build() {
-			ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-				new ElasticsearchConnectionFixture();
-
-			elasticsearchConnectionFixture.
-				_elasticsearchConfigurationProperties =
-					createElasticsearchConfigurationProperties(
-						_elasticsearchConfigurationProperties, _clusterName);
-			elasticsearchConnectionFixture._workPath = _TMP_PATH.resolve(
-				_clusterName);
-
-			return elasticsearchConnectionFixture;
-		}
-
-		public ElasticsearchConnectionFixture.Builder clusterName(
-			String clusterName) {
-
-			_clusterName = clusterName;
-
-			return this;
-		}
-
-		public Builder elasticsearchConfigurationProperties(
-			Map<String, Object> elasticsearchConfigurationProperties) {
-
-			if (elasticsearchConfigurationProperties == null) {
-				elasticsearchConfigurationProperties =
-					Collections.<String, Object>emptyMap();
-			}
-
-			_elasticsearchConfigurationProperties =
-				elasticsearchConfigurationProperties;
-
-			return this;
-		}
-
-		protected static Map<String, Object>
-			createElasticsearchConfigurationProperties(
-				Map<String, Object> elasticsearchConfigurationProperties,
-				String clusterName) {
-
-			String sidecarJVMOptions = "-Xmx256m";
-
-			if (!JavaDetector.isJDK8()) {
-				sidecarJVMOptions =
-					"-Xmx256m|--add-opens=java.base/java.lang=ALL-UNNAMED|--" +
-						"add-opens=java.base/java.lang.invoke=ALL-UNNAMED";
-			}
-
-			return HashMapBuilder.<String, Object>put(
-				"clusterName", clusterName
-			).put(
-				"configurationPid", ElasticsearchConfiguration.class.getName()
-			).put(
-				"httpCORSAllowOrigin", "*"
-			).put(
-				"logExceptionsOnly", false
-			).put(
-				"sidecarHttpPort", HttpPortRange.AUTO
-			).put(
-				"sidecarJVMOptions", sidecarJVMOptions
-			).putAll(
-				elasticsearchConfigurationProperties
-			).build();
-		}
-
-		private String _clusterName;
-		private Map<String, Object> _elasticsearchConfigurationProperties =
-			Collections.<String, Object>emptyMap();
-
-	}
-
 	private void _deleteTmpDir() {
 		PathUtil.deleteDir(_workPath);
 	}
@@ -255,9 +206,8 @@ public class ElasticsearchConnectionFixture
 
 	private static final Path _TMP_PATH = Paths.get("tmp");
 
-	private Map<String, Object> _elasticsearchConfigurationProperties =
-		Collections.<String, Object>emptyMap();
+	private final Map<String, Object> _elasticsearchConfigurationProperties;
 	private ElasticsearchConnection _elasticsearchConnection;
-	private Path _workPath;
+	private final Path _workPath;
 
 }

@@ -16,6 +16,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -32,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
+import java.net.ServerSocket;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -258,6 +260,36 @@ public class Sidecar {
 		return name.contains(s);
 	}
 
+	private int _getAvailableSidecarHttpPort() {
+		String sidecarHttpPort =
+			_elasticsearchConfigurationWrapper.sidecarHttpPort();
+
+		int httpPort = GetterUtil.getInteger(sidecarHttpPort);
+
+		if ((httpPort > 0) && _isHttpPortAvailable(httpPort)) {
+			return httpPort;
+		}
+
+		String[] ports = sidecarHttpPort.split(StringPool.DASH);
+
+		if (ports.length == 2) {
+			int startHttpPort = GetterUtil.getInteger(ports[0]);
+			int endHttpPort = GetterUtil.getInteger(ports[1]);
+
+			if ((startHttpPort > 0) && (endHttpPort > startHttpPort)) {
+				for (int i = startHttpPort; i <= endHttpPort; i++) {
+					if (_isHttpPortAvailable(i)) {
+						return i;
+					}
+				}
+			}
+		}
+
+		throw new IllegalArgumentException(
+			"Unable to find available http port for sidecar by parsing " +
+				sidecarHttpPort);
+	}
+
 	private String _getBootstrapClassPath() {
 		return _createClasspath(
 			Paths.get(PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR),
@@ -433,8 +465,8 @@ public class Sidecar {
 			_elasticsearchConfigurationWrapper
 		).elasticsearchInstancePaths(
 			_elasticsearchInstancePaths
-		).httpPortRange(
-			new HttpPortRange(_elasticsearchConfigurationWrapper)
+		).httpPort(
+			String.valueOf(_getAvailableSidecarHttpPort())
 		).nodeName(
 			_getNodeName()
 		).build();
@@ -535,6 +567,21 @@ public class Sidecar {
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
 		}
+	}
+
+	private boolean _isHttpPortAvailable(int httpPort) {
+		try (ServerSocket serverSocket = new ServerSocket(httpPort)) {
+			serverSocket.setReuseAddress(true);
+
+			return true;
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
+		return false;
 	}
 
 	private String _startElasticsearch(

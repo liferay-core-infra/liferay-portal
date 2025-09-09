@@ -8,8 +8,8 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchSearchEngine;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.elasticsearch.client.RestHighLevelClient;
@@ -31,19 +31,13 @@ public class ElasticsearchSearchEngineReconnectTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				ElasticsearchSearchEngineReconnectTest.class.getSimpleName()
-			).build();
+		_elasticsearchFixture = new ElasticsearchFixture(
+			ElasticsearchSearchEngineReconnectTest.class.getSimpleName(), null);
 
 		ElasticsearchSearchEngineFixture elasticsearchSearchEngineFixture =
-			new ElasticsearchSearchEngineFixture(
-				elasticsearchConnectionFixture);
+			new ElasticsearchSearchEngineFixture(_elasticsearchFixture);
 
 		elasticsearchSearchEngineFixture.setUp();
-
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
 
 		_elasticsearchSearchEngineFixture = elasticsearchSearchEngineFixture;
 	}
@@ -55,7 +49,7 @@ public class ElasticsearchSearchEngineReconnectTest {
 
 	public SnapshotClient getSnapshotClient() {
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionFixture.getRestHighLevelClient();
+			_elasticsearchFixture.getRestHighLevelClient();
 
 		return restHighLevelClient.snapshot();
 	}
@@ -87,8 +81,7 @@ public class ElasticsearchSearchEngineReconnectTest {
 		elasticsearchConnection.connect();
 	}
 
-	private static ElasticsearchConnectionFixture
-		_elasticsearchConnectionFixture;
+	private static ElasticsearchFixture _elasticsearchFixture;
 	private static ElasticsearchSearchEngineFixture
 		_elasticsearchSearchEngineFixture;
 

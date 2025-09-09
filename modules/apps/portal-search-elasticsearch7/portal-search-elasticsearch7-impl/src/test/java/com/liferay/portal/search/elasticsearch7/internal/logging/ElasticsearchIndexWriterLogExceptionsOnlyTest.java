@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchIndexWriter;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.indexing.LiferayElasticsearchIndexingFixtureFactory;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.document.BulkDocumentRequestExecutorImpl;
@@ -395,22 +394,14 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		}
 	}
 
-	protected ElasticsearchConnectionFixture
-		createElasticsearchConnectionFixture() {
-
-		return ElasticsearchConnectionFixture.builder(
-		).clusterName(
-			ElasticsearchIndexWriterLogExceptionsOnlyTest.class.getSimpleName()
-		).elasticsearchConfigurationProperties(
-			Collections.singletonMap("logExceptionsOnly", true)
-		).build();
-	}
-
 	@Override
 	protected IndexingFixture createIndexingFixture() {
 		return LiferayElasticsearchIndexingFixtureFactory.builder(
 		).elasticsearchFixture(
-			new ElasticsearchFixture(createElasticsearchConnectionFixture())
+			new ElasticsearchFixture(
+				ElasticsearchIndexWriterLogExceptionsOnlyTest.class.
+					getSimpleName(),
+				Collections.singletonMap("logExceptionsOnly", true))
 		).build();
 	}
 

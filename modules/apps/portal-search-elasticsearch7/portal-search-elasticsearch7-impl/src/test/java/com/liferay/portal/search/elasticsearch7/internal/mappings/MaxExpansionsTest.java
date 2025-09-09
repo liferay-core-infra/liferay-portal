@@ -82,7 +82,10 @@ public class MaxExpansionsTest extends BaseMaxExpansionsTestCase {
 						getElasticsearchConfigurationProperties();
 
 				elasticsearchConfigurationProperties.put(
-					"sidecarJVMOptions", "-Xms512m|-Xmx512m");
+					"sidecarJVMOptions",
+					"-Xms512m|-Xmx512m|--add-opens=java.base/java.lang=ALL-" +
+						"UNNAMED|--add-opens=java.base/java.lang.invoke=ALL-" +
+							"UNNAMED");
 
 				setElasticsearchFixture(elasticsearchFixture);
 

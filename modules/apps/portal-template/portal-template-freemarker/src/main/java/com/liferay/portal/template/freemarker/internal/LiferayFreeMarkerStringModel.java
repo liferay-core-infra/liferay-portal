@@ -46,6 +46,21 @@ public class LiferayFreeMarkerStringModel extends StringModel {
 			}
 		}
 
+		if (_deniedAccessToInterfaceMethods) {
+			Class<?>[] interfaces = object.getClass(
+			).getInterfaces();
+			for (Class<?> interfaceClass : interfaces) {
+				String name = interfaceClass.getName();
+				if (name.equals(_CT_SERVICE_NAME) ||
+					name.equals(_PERSISTED_MODEL_LOCAL_SERVICE_NAME)) {
+					throw new InvalidPropertyException(
+						StringBundler.concat(
+							"Denied access to interface method ", key, " of ",
+							object.getClass()));
+				}
+			}
+		}
+
 		return super.get(key);
 	}
 
@@ -59,6 +74,10 @@ public class LiferayFreeMarkerStringModel extends StringModel {
 		return object.toString();
 	}
 
+	public void setDeniedAccessToInterfaceMethods(boolean deniedAccessToMethod) {
+		_deniedAccessToInterfaceMethods = deniedAccessToMethod;
+	}
+
 	public void setDeniedAccessToString(boolean deniedAccessToString) {
 		_deniedAccessToString = deniedAccessToString;
 	}
@@ -67,6 +86,13 @@ public class LiferayFreeMarkerStringModel extends StringModel {
 		_restrictedMethodNames = restrictedMethodNames;
 	}
 
+	private static final String _CT_SERVICE_NAME =
+		"com.liferay.portal.kernel.service.CTService";
+
+	private static final String _PERSISTED_MODEL_LOCAL_SERVICE_NAME =
+		"com.liferay.portal.kernel.service.PersistedModelLocalService";
+
+	private boolean _deniedAccessToInterfaceMethods;
 	private boolean _deniedAccessToString;
 	private Set<String> _restrictedMethodNames;
 

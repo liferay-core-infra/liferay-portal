@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.DeepPaginationConfiguration;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.indexing.ElasticsearchIndexingFixture;
 import com.liferay.portal.search.internal.sort.FieldSortImpl;
@@ -200,19 +199,14 @@ public class ElasticsearchIndexSearcherSearchAfterTest {
 	protected static final long GROUP_ID = RandomTestUtil.randomLong();
 
 	private static IndexingFixture _createIndexingFixture() {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				ElasticsearchIndexSearcherSearchAfterTest.class.getSimpleName()
-			).elasticsearchConfigurationProperties(
-				Collections.singletonMap(
-					"indexMaxResultWindow", _INDEX_MAX_RESULT_WINDOW)
-			).build();
-
 		return new ElasticsearchIndexingFixture() {
 			{
 				setElasticsearchFixture(
-					new ElasticsearchFixture(elasticsearchConnectionFixture));
+					new ElasticsearchFixture(
+						ElasticsearchIndexSearcherSearchAfterTest.class.
+							getSimpleName(),
+						Collections.singletonMap(
+							"indexMaxResultWindow", _INDEX_MAX_RESULT_WINDOW)));
 				setLiferayMappingsAddedToIndex(true);
 			}
 		};

@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.index.IndexNameBuilder;
 import com.liferay.portal.search.test.util.AssertUtils;
@@ -42,31 +42,26 @@ public class ElasticsearchIndexInformationTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				ElasticsearchIndexInformationTest.class.getSimpleName()
-			).build();
+		_elasticsearchFixture = new ElasticsearchFixture(
+			ElasticsearchIndexInformationTest.class.getSimpleName(), null);
 
-		elasticsearchConnectionFixture.createNode();
-
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
+		_elasticsearchFixture.setUp();
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		_elasticsearchConnectionFixture.destroyNode();
+		_elasticsearchFixture.tearDown();
 	}
 
 	@Before
 	public void setUp() throws Exception {
 		_indexFactoryFixture = _createIndexFactoryFixture(
-			_elasticsearchConnectionFixture);
+			_elasticsearchFixture);
 
 		_indexNameBuilder = _createIndexNameBuilder();
 
 		_elasticsearchIndexInformation = _createElasticsearchIndexInformation(
-			_elasticsearchConnectionFixture, _indexNameBuilder);
+			_elasticsearchFixture, _indexNameBuilder);
 	}
 
 	@After
@@ -156,8 +151,7 @@ public class ElasticsearchIndexInformationTest {
 		return _jsonFactory.createJSONObject(json);
 	}
 
-	private static ElasticsearchConnectionFixture
-		_elasticsearchConnectionFixture;
+	private static ElasticsearchFixture _elasticsearchFixture;
 
 	private ElasticsearchIndexInformation _elasticsearchIndexInformation;
 	private IndexFactoryFixture _indexFactoryFixture;

@@ -11,7 +11,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchSearchEngine;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.elasticsearch.action.admin.cluster.settings.ClusterGetSettingsRequest;
@@ -48,24 +48,17 @@ public class ElasticsearchSearchEngineAutoCreateIndexTest {
 		_enableAutoCreateLiferayIndexPattern = StringBundler.concat(
 			StringPool.PLUS, _indexNamePrefix, StringPool.STAR);
 
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				ElasticsearchSearchEngineAutoCreateIndexTest.class.
-					getSimpleName()
-			).elasticsearchConfigurationProperties(
-				HashMapBuilder.<String, Object>put(
-					"indexNamePrefix", _indexNamePrefix
-				).build()
-			).build();
+		_elasticsearchFixture = new ElasticsearchFixture(
+			ElasticsearchSearchEngineAutoCreateIndexTest.class.getSimpleName(),
+			HashMapBuilder.<String, Object>put(
+				"indexNamePrefix", _indexNamePrefix
+			).build());
 
 		ElasticsearchSearchEngineFixture elasticsearchSearchEngineFixture =
-			new ElasticsearchSearchEngineFixture(
-				elasticsearchConnectionFixture);
+			new ElasticsearchSearchEngineFixture(_elasticsearchFixture);
 
 		elasticsearchSearchEngineFixture.setUp();
 
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
 		_elasticsearchSearchEngineFixture = elasticsearchSearchEngineFixture;
 	}
 
@@ -263,7 +256,7 @@ public class ElasticsearchSearchEngineAutoCreateIndexTest {
 
 	private String _getAutoCreateIndexSetting() throws Exception {
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionFixture.getRestHighLevelClient();
+			_elasticsearchFixture.getRestHighLevelClient();
 
 		ClusterClient clusterClient = restHighLevelClient.cluster();
 
@@ -278,7 +271,7 @@ public class ElasticsearchSearchEngineAutoCreateIndexTest {
 
 	private void _setAutoCreateIndexSetting(String value) throws Exception {
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionFixture.getRestHighLevelClient();
+			_elasticsearchFixture.getRestHighLevelClient();
 
 		ClusterClient clusterClient = restHighLevelClient.cluster();
 
@@ -298,8 +291,7 @@ public class ElasticsearchSearchEngineAutoCreateIndexTest {
 	private static final String _COMMA_AND_SPACE_AND_STAR = ", *";
 
 	private static String _disableAutoCreateLiferayIndexPattern;
-	private static ElasticsearchConnectionFixture
-		_elasticsearchConnectionFixture;
+	private static ElasticsearchFixture _elasticsearchFixture;
 	private static ElasticsearchSearchEngineFixture
 		_elasticsearchSearchEngineFixture;
 	private static String _enableAutoCreateLiferayIndexPattern;

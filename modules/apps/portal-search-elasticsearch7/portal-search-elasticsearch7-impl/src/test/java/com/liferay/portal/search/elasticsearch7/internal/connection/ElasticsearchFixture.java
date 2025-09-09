@@ -58,6 +58,21 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		this();
 	}
 
+	public ElasticsearchFixture(
+		String clusterName,
+		Map<String, Object> elasticsearchConfigurationProperties) {
+
+		_elasticsearchConnectionFixture =
+			ElasticsearchConnectionFixture.builder(
+			).clusterName(
+				clusterName
+			).elasticsearchConfigurationProperties(
+				elasticsearchConfigurationProperties
+			).build();
+
+		_singleton = false;
+	}
+
 	public Map<String, Object> getElasticsearchConfigurationProperties() {
 		return _elasticsearchConnectionFixture.
 			getElasticsearchConfigurationProperties();

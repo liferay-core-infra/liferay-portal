@@ -79,6 +79,17 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 	}
 
 	public ElasticsearchConnection getElasticsearchConnection() {
+		ElasticsearchConnection elasticsearchConnection =
+			_elasticsearchConnectionFixture.getElasticsearchConnection();
+
+		if (elasticsearchConnection != null) {
+			return elasticsearchConnection;
+		}
+
+		_elasticsearchConnectionFixtureSingleton.stop();
+
+		_elasticsearchConnectionFixture.createElasticsearchConnection();
+
 		return _elasticsearchConnectionFixture.getElasticsearchConnection();
 	}
 

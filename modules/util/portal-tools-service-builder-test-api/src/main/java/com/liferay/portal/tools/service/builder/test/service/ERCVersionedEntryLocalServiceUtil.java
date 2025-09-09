@@ -247,6 +247,14 @@ public class ERCVersionedEntryLocalServiceUtil {
 		return getService().fetchERCVersionedEntry(ercVersionedEntryId);
 	}
 
+	public static ERCVersionedEntry
+		fetchERCVersionedEntryByExternalReferenceCode(
+			String externalReferenceCode, long groupId, boolean head) {
+
+		return getService().fetchERCVersionedEntryByExternalReferenceCode(
+			externalReferenceCode, groupId, head);
+	}
+
 	public static
 		com.liferay.portal.tools.service.builder.test.model.
 			ERCVersionedEntryVersion fetchLatestVersion(
@@ -322,6 +330,14 @@ public class ERCVersionedEntryLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getERCVersionedEntry(ercVersionedEntryId);
+	}
+
+	public static ERCVersionedEntry getERCVersionedEntryByExternalReferenceCode(
+			String externalReferenceCode, long groupId, boolean head)
+		throws PortalException {
+
+		return getService().getERCVersionedEntryByExternalReferenceCode(
+			externalReferenceCode, groupId, head);
 	}
 
 	public static

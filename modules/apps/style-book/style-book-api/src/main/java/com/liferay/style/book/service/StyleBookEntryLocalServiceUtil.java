@@ -303,6 +303,13 @@ public class StyleBookEntryLocalServiceUtil {
 		return getService().fetchStyleBookEntry(groupId, styleBookEntryKey);
 	}
 
+	public static StyleBookEntry fetchStyleBookEntryByExternalReferenceCode(
+		String externalReferenceCode, long groupId, boolean head) {
+
+		return getService().fetchStyleBookEntryByExternalReferenceCode(
+			externalReferenceCode, groupId, head);
+	}
+
 	public static StyleBookEntry fetchStyleBookEntryByUuidAndGroupId(
 		String uuid, long groupId) {
 
@@ -436,6 +443,14 @@ public class StyleBookEntryLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getStyleBookEntry(styleBookEntryId);
+	}
+
+	public static StyleBookEntry getStyleBookEntryByExternalReferenceCode(
+			String externalReferenceCode, long groupId, boolean head)
+		throws PortalException {
+
+		return getService().getStyleBookEntryByExternalReferenceCode(
+			externalReferenceCode, groupId, head);
 	}
 
 	public static com.liferay.style.book.model.StyleBookEntryVersion getVersion(

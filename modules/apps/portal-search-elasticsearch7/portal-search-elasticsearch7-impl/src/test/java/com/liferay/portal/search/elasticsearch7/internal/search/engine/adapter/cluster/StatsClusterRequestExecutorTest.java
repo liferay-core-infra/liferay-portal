@@ -6,7 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.cluster;
 
 import com.liferay.portal.json.JSONFactoryImpl;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.engine.adapter.cluster.StatsClusterRequest;
 import com.liferay.portal.search.engine.adapter.cluster.StatsClusterResponse;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -28,20 +28,15 @@ public class StatsClusterRequestExecutorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				StatsClusterRequestExecutorTest.class.getSimpleName()
-			).build();
+		_elasticsearchFixture = new ElasticsearchFixture(
+			StatsClusterRequestExecutorTest.class.getSimpleName(), null);
 
-		elasticsearchConnectionFixture.createNode();
-
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
+		_elasticsearchFixture.setUp();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		_elasticsearchConnectionFixture.destroyNode();
+		_elasticsearchFixture.tearDown();
 	}
 
 	@Test
@@ -51,7 +46,7 @@ public class StatsClusterRequestExecutorTest {
 
 		StatsClusterRequestExecutor statsClusterRequestExecutor =
 			new StatsClusterRequestExecutor(
-				_elasticsearchConnectionFixture, new JSONFactoryImpl());
+				_elasticsearchFixture, new JSONFactoryImpl());
 
 		StatsClusterResponse statsClusterResponse =
 			statsClusterRequestExecutor.execute(statsClusterRequest);
@@ -65,6 +60,6 @@ public class StatsClusterRequestExecutorTest {
 
 	private static final String _NODE_ID = "liferay_sidecar";
 
-	private ElasticsearchConnectionFixture _elasticsearchConnectionFixture;
+	private ElasticsearchFixture _elasticsearchFixture;
 
 }

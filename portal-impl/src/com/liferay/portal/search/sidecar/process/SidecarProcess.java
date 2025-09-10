@@ -135,6 +135,8 @@ public class SidecarProcess {
 
 	private synchronized void _init(SidecarProcessBag sidecarProcessBag) {
 		if (Objects.equals(sidecarProcessBag, _sidecarProcessBag)) {
+			System.out.println("############# Skip sidecar start");
+
 			return;
 		}
 

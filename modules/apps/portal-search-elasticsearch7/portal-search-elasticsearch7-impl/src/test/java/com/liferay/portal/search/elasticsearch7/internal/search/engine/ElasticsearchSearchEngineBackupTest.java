@@ -8,7 +8,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchSearchEngine;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.IOException;
@@ -41,19 +41,13 @@ public class ElasticsearchSearchEngineBackupTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				ElasticsearchSearchEngineBackupTest.class.getSimpleName()
-			).build();
+		_elasticsearchFixture = new ElasticsearchFixture(
+			ElasticsearchSearchEngineBackupTest.class.getSimpleName(), null);
 
 		ElasticsearchSearchEngineFixture elasticsearchSearchEngineFixture =
-			new ElasticsearchSearchEngineFixture(
-				elasticsearchConnectionFixture);
+			new ElasticsearchSearchEngineFixture(_elasticsearchFixture);
 
 		elasticsearchSearchEngineFixture.setUp();
-
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
 
 		_elasticsearchSearchEngineFixture = elasticsearchSearchEngineFixture;
 	}
@@ -105,7 +99,7 @@ public class ElasticsearchSearchEngineBackupTest {
 
 	protected SnapshotClient getSnapshotClient() {
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionFixture.getRestHighLevelClient();
+			_elasticsearchFixture.getRestHighLevelClient();
 
 		return restHighLevelClient.snapshot();
 	}
@@ -166,8 +160,7 @@ public class ElasticsearchSearchEngineBackupTest {
 		}
 	}
 
-	private static ElasticsearchConnectionFixture
-		_elasticsearchConnectionFixture;
+	private static ElasticsearchFixture _elasticsearchFixture;
 	private static ElasticsearchSearchEngineFixture
 		_elasticsearchSearchEngineFixture;
 

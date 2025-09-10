@@ -73,6 +73,12 @@ public class ElasticsearchFixture implements ElasticsearchClientResolver {
 		_singleton = false;
 	}
 
+	public ElasticsearchConnection createElasticsearchConnection() {
+		_elasticsearchConnectionFixtureSingleton.stop();
+
+		return _elasticsearchConnectionFixture.createElasticsearchConnection();
+	}
+
 	public Map<String, Object> getElasticsearchConfigurationProperties() {
 		return _elasticsearchConnectionFixture.
 			getElasticsearchConfigurationProperties();

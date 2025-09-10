@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OSDetector;
+import com.liferay.portal.kernel.util.SortedArrayList;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
@@ -45,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import org.elasticsearch.common.hash.MessageDigests;
 import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
@@ -307,7 +309,7 @@ public class Sidecar {
 
 		sb.append("Sidecar Elasticsearch properties : {");
 
-		Map<String, Serializable> settingsMap = new HashMap<>();
+		Map<String, Serializable> settingsMap = new TreeMap<>();
 
 		for (String key : settings.keySet()) {
 			List<String> list = settings.getAsList(key);
@@ -327,7 +329,7 @@ public class Sidecar {
 				settingsMap.put(key, list.get(0));
 			}
 			else {
-				settingsMap.put(key, new ArrayList<>(list));
+				settingsMap.put(key, new SortedArrayList<>(list));
 			}
 		}
 

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -46,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 public class SidecarProcess {
 
 	public static final String TEMP_DIR =
-		PropsValues.LIFERAY_HOME + "/data/elasticsearch7/sidecar";
+		SystemProperties.get(SystemProperties.TMP_DIR) + "/sidecar";
 
 	public static void init(SidecarProcessBag sidecarProcessBag) {
 		SidecarProcess sidecarProcess =

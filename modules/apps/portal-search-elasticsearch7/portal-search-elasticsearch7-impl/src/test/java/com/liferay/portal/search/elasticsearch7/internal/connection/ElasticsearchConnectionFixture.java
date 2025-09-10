@@ -5,7 +5,6 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
-import com.liferay.petra.process.local.LocalProcessExecutor;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -71,7 +70,7 @@ public class ElasticsearchConnectionFixture
 
 		Sidecar sidecar = new Sidecar(
 			elasticsearchConfigurationWrapper,
-			_createElasticsearchInstancePaths(), new LocalProcessExecutor());
+			_createElasticsearchInstancePaths());
 
 		ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
 			new ElasticsearchConnectionBuilder();

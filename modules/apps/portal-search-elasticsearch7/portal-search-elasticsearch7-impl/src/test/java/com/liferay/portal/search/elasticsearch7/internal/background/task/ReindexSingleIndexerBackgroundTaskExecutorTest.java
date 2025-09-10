@@ -5,7 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.background.task;
 
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.index.FieldMappingAssert;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.ElasticsearchSearchEngineFixture;
 import com.liferay.portal.search.test.util.background.task.BaseReindexSingleIndexerBackgroundTaskExecutorTestCase;
@@ -28,18 +28,13 @@ public class ReindexSingleIndexerBackgroundTaskExecutorTest
 		LiferayUnitTestRule.INSTANCE;
 
 	public ReindexSingleIndexerBackgroundTaskExecutorTest() {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				ReindexSingleIndexerBackgroundTaskExecutorTest.class.
-					getSimpleName()
-			).build();
+		_elasticsearchFixture = new ElasticsearchFixture(
+			ReindexSingleIndexerBackgroundTaskExecutorTest.class.
+				getSimpleName(),
+			null);
 
 		ElasticsearchSearchEngineFixture elasticsearchSearchEngineFixture =
-			new ElasticsearchSearchEngineFixture(
-				elasticsearchConnectionFixture);
-
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
+			new ElasticsearchSearchEngineFixture(_elasticsearchFixture);
 
 		_elasticsearchSearchEngineFixture = elasticsearchSearchEngineFixture;
 	}
@@ -49,7 +44,7 @@ public class ReindexSingleIndexerBackgroundTaskExecutorTest
 		throws Exception {
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionFixture.getRestHighLevelClient();
+			_elasticsearchFixture.getRestHighLevelClient();
 
 		FieldMappingAssert.assertType(
 			fieldType, fieldName, getIndexName(),
@@ -61,8 +56,7 @@ public class ReindexSingleIndexerBackgroundTaskExecutorTest
 		return _elasticsearchSearchEngineFixture;
 	}
 
-	private final ElasticsearchConnectionFixture
-		_elasticsearchConnectionFixture;
+	private final ElasticsearchFixture _elasticsearchFixture;
 	private final ElasticsearchSearchEngineFixture
 		_elasticsearchSearchEngineFixture;
 

@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
+import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.cluster.ClusterRequestExecutorFixture;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.cluster.ClusterHealthStatus;
@@ -49,30 +49,23 @@ public class ElasticsearchSearchEngineAdapterClusterRequestTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
-	public static void setUpClass() {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				_CLUSTER_NAME
-			).build();
+	public static void setUpClass() throws Exception {
+		_elasticsearchFixture = new ElasticsearchFixture(_CLUSTER_NAME, null);
 
-		elasticsearchConnectionFixture.createNode();
-
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
+		_elasticsearchFixture.setUp();
 	}
 
 	@AfterClass
-	public static void tearDownClass() {
-		_elasticsearchConnectionFixture.destroyNode();
+	public static void tearDownClass() throws Exception {
+		_elasticsearchFixture.tearDown();
 	}
 
 	@Before
 	public void setUp() {
-		_searchEngineAdapter = createSearchEngineAdapter(
-			_elasticsearchConnectionFixture);
+		_searchEngineAdapter = createSearchEngineAdapter(_elasticsearchFixture);
 
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionFixture.getRestHighLevelClient();
+			_elasticsearchFixture.getRestHighLevelClient();
 
 		_indicesClient = restHighLevelClient.indices();
 
@@ -233,8 +226,7 @@ public class ElasticsearchSearchEngineAdapterClusterRequestTest {
 
 	private static final String _INDEX_NAME = "test_request_index";
 
-	private static ElasticsearchConnectionFixture
-		_elasticsearchConnectionFixture;
+	private static ElasticsearchFixture _elasticsearchFixture;
 
 	private IndicesClient _indicesClient;
 	private SearchEngineAdapter _searchEngineAdapter;

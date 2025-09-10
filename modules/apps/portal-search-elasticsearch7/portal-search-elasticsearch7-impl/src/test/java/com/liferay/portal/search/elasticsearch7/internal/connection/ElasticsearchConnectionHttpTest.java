@@ -38,30 +38,25 @@ public class ElasticsearchConnectionHttpTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
-	public static void setUpClass() {
+	public static void setUpClass() throws Exception {
 		String clusterName = RandomTestUtil.randomString();
 
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				ElasticsearchConnectionHttpTest.class.getSimpleName()
-			).elasticsearchConfigurationProperties(
-				HashMapBuilder.<String, Object>put(
-					"clusterName", clusterName
-				).put(
-					"networkHost", "_site_"
-				).build()
-			).build();
+		_elasticsearchFixture = new ElasticsearchFixture(
+			ElasticsearchConnectionHttpTest.class.getSimpleName(),
+			HashMapBuilder.<String, Object>put(
+				"clusterName", clusterName
+			).put(
+				"networkHost", "_site_"
+			).build());
 
-		elasticsearchConnectionFixture.createNode();
+		_elasticsearchFixture.setUp();
 
 		_clusterName = clusterName;
-		_elasticsearchConnectionFixture = elasticsearchConnectionFixture;
 	}
 
 	@AfterClass
-	public static void tearDownClass() {
-		_elasticsearchConnectionFixture.destroyNode();
+	public static void tearDownClass() throws Exception {
+		_elasticsearchFixture.tearDown();
 	}
 
 	@Test
@@ -78,7 +73,7 @@ public class ElasticsearchConnectionHttpTest {
 
 	protected int getHttpPort() {
 		RestHighLevelClient restHighLevelClient =
-			_elasticsearchConnectionFixture.getRestHighLevelClient();
+			_elasticsearchFixture.getRestHighLevelClient();
 
 		RestClient restClient = restHighLevelClient.getLowLevelClient();
 
@@ -96,7 +91,6 @@ public class ElasticsearchConnectionHttpTest {
 	}
 
 	private static String _clusterName;
-	private static ElasticsearchConnectionFixture
-		_elasticsearchConnectionFixture;
+	private static ElasticsearchFixture _elasticsearchFixture;
 
 }

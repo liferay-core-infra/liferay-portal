@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
-import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.engine.SearchEngineInformation;
@@ -68,14 +67,8 @@ public class CompanyIdIndexNameBuilderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ElasticsearchConnectionFixture elasticsearchConnectionFixture =
-			ElasticsearchConnectionFixture.builder(
-			).clusterName(
-				CompanyIdIndexNameBuilderTest.class.getSimpleName()
-			).build();
-
 		_elasticsearchFixture = new ElasticsearchFixture(
-			elasticsearchConnectionFixture);
+			CompanyIdIndexNameBuilderTest.class.getSimpleName(), null);
 
 		_elasticsearchFixture.setUp();
 	}

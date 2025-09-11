@@ -7,6 +7,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -32,6 +33,7 @@ import org.junit.Test;
 /**
  * @author Petteri Karttunen
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchSearchEngineAutoCreateIndexTest {
 
 	@ClassRule

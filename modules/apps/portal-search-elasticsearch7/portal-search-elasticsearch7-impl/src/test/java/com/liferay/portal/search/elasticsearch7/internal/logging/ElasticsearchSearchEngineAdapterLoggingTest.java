@@ -6,6 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.logging;
 
 import com.liferay.portal.kernel.search.generic.MatchAllQuery;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ClusterHealthResponseUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
@@ -35,6 +36,7 @@ import org.junit.Test;
  * @author Bryan Engler
  * @author André de Oliveira
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchSearchEngineAdapterLoggingTest {
 
 	@ClassRule

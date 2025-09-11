@@ -9,6 +9,7 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
@@ -34,6 +35,7 @@ import org.mockito.Mockito;
 /**
  * @author Adam Brandizzi
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchIndexInformationTest {
 
 	@ClassRule

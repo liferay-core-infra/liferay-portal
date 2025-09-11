@@ -11,6 +11,7 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
@@ -44,6 +45,7 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * @author André de Oliveira
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class CompanyIdIndexNameBuilderTest {
 
 	@ClassRule

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.generic.MatchAllQuery;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -58,6 +59,7 @@ import org.mockito.Mockito;
  * @author Joshua Cords
  */
 @FeatureFlag("LPS-172416")
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchIndexSearcherSearchAfterTest {
 
 	@ClassRule

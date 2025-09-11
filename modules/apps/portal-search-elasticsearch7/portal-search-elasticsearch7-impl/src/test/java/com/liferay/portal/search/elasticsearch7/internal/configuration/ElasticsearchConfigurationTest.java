@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.configuration;
 
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -18,6 +19,7 @@ import org.junit.Test;
 /**
  * @author André de Oliveira
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchConfigurationTest {
 
 	@ClassRule

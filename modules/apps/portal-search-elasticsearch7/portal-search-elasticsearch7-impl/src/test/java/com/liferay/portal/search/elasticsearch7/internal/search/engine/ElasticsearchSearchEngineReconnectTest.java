@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.search.engine;
 
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchSearchEngine;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
@@ -23,6 +24,7 @@ import org.junit.Test;
 /**
  * @author André de Oliveira
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchSearchEngineReconnectTest {
 
 	@ClassRule

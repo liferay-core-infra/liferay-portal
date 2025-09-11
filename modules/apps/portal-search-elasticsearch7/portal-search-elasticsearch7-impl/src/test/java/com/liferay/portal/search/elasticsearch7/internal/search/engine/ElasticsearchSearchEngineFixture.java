@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.SearchEngine;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.elasticsearch7.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchSearchEngine;
@@ -39,6 +40,7 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * @author Adam Brandizzi
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchSearchEngineFixture implements SearchEngineFixture {
 
 	public ElasticsearchSearchEngineFixture(

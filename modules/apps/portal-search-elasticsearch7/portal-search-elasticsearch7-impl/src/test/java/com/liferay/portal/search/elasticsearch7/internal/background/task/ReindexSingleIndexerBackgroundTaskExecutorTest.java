@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.background.task;
 
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.elasticsearch7.internal.index.FieldMappingAssert;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.ElasticsearchSearchEngineFixture;
@@ -19,6 +20,7 @@ import org.junit.Rule;
 /**
  * @author Adam Brandizzi
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ReindexSingleIndexerBackgroundTaskExecutorTest
 	extends BaseReindexSingleIndexerBackgroundTaskExecutorTestCase {
 

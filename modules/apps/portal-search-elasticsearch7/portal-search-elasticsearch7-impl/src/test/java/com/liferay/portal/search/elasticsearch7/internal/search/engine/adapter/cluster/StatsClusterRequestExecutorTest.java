@@ -6,6 +6,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.cluster;
 
 import com.liferay.portal.json.JSONFactoryImpl;
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionFixture;
 import com.liferay.portal.search.engine.adapter.cluster.StatsClusterRequest;
 import com.liferay.portal.search.engine.adapter.cluster.StatsClusterResponse;
@@ -20,6 +21,7 @@ import org.junit.Test;
 /**
  * @author Dylan Rebelak
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class StatsClusterRequestExecutorTest {
 
 	@ClassRule

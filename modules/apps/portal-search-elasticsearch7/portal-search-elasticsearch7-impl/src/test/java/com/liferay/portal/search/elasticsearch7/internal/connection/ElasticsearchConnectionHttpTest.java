@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
+import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.URLUtil;
@@ -31,6 +32,7 @@ import org.junit.Test;
 /**
  * @author André de Oliveira
  */
+@NewEnv(type = NewEnv.Type.JVM)
 public class ElasticsearchConnectionHttpTest {
 
 	@ClassRule

@@ -7,6 +7,8 @@ package com.liferay.portal.search.elasticsearch7.internal.connection;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -67,6 +69,21 @@ public class ElasticsearchConnectionFixture
 				}
 
 			};
+
+		Thread thread = Thread.currentThread();
+
+		ClassLoader classLoader = thread.getContextClassLoader();
+
+		FileUtil fileUtil = new FileUtil();
+
+		try {
+			fileUtil.setFile(
+				ReflectionTestUtil.getFieldValue(
+					classLoader.loadClass("com.liferay.portal.util.FileImpl"),
+					"_fileImpl"));
+		}
+		catch (Exception exception) {
+		}
 
 		Sidecar sidecar = new Sidecar(
 			elasticsearchConfigurationWrapper,

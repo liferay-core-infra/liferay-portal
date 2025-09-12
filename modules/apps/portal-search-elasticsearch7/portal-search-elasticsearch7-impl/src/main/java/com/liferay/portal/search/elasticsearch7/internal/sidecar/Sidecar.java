@@ -271,7 +271,7 @@ public class Sidecar {
 						"BootstrapChecks",
 					"logger.bootstrapchecks.level=error",
 					"logger.deprecation.name=org.elasticsearch.deprecation",
-					"logger.deprecation.level=error", _getLogProperties(),
+					"logger.deprecation.level=error",
 					ResourceUtil.getResourceAsString(
 						Sidecar.class, "/log4j2.properties")));
 		}
@@ -408,21 +408,13 @@ public class Sidecar {
 		return arguments;
 	}
 
-	private String _getLogProperties() {
-		return StringPool.BLANK;
-	}
-
-	private Settings _getSettings() {
-		return ElasticsearchInstanceSettingsBuilder.builder(
+	private byte[] _getSidecarServerArgs() {
+		Settings settings = ElasticsearchInstanceSettingsBuilder.builder(
 		).elasticsearchConfigurationWrapper(
 			_elasticsearchConfigurationWrapper
 		).elasticsearchInstancePaths(
 			_elasticsearchInstancePaths
 		).build();
-	}
-
-	private byte[] _getSidecarServerArgs() {
-		Settings settings = _getSettings();
 
 		StringBundler sb = new StringBundler((2 * settings.size()) + 1);
 

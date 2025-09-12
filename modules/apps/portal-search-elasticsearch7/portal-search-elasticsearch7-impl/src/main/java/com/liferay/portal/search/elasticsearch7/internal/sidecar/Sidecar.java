@@ -48,10 +48,10 @@ import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -420,7 +420,7 @@ public class Sidecar {
 
 		sb.append("Sidecar Elasticsearch properties : {");
 
-		Map<String, Serializable> settingsMap = new HashMap<>();
+		Map<String, Serializable> settingsMap = new TreeMap<>();
 
 		for (String key : settings.keySet()) {
 			List<String> list = settings.getAsList(key);
@@ -440,6 +440,8 @@ public class Sidecar {
 				settingsMap.put(key, list.get(0));
 			}
 			else {
+				list.sort(null);
+
 				settingsMap.put(key, new ArrayList<>(list));
 			}
 		}

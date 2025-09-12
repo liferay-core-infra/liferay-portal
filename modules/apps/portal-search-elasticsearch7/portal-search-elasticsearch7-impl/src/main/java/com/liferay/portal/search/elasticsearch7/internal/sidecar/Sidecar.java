@@ -93,26 +93,73 @@ public class Sidecar {
 
 		_installElasticsearchIfNeeded(sidecarVersion);
 
-		ProcessChannel<Serializable> processChannel =
-			_executeSidecarMainProcess();
-
-		FutureListener<Serializable> futureListener = new RestartFutureListener(
-			_sidecarManager);
-
-		_addFutureListener(processChannel, futureListener);
-
-		String address = _startElasticsearch(processChannel);
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Sidecar Elasticsearch ", sidecarVersion, " started at ",
-					address));
+		if (!Files.isDirectory(_sidecarHomePath)) {
+			throw new IllegalArgumentException(
+				"Sidecar Elasticsearch home does not exist: " +
+					_sidecarHomePath);
 		}
 
-		_address = address;
-		_processChannel = processChannel;
-		_restartFutureListener = futureListener;
+		try {
+			_sidecarTempDirPath = Files.createTempDirectory("sidecar");
+		}
+		catch (IOException ioException) {
+			throw new IllegalStateException(
+				"Unable to create temp folder", ioException);
+		}
+
+		Path configFolder = _sidecarTempDirPath.resolve("config");
+
+		try {
+			Files.createDirectories(configFolder);
+
+			Files.write(
+				configFolder.resolve("log4j2.properties"),
+				Arrays.asList(
+					"logger.bootstrapchecks.name=org.elasticsearch.bootstrap." +
+						"BootstrapChecks",
+					"logger.bootstrapchecks.level=error",
+					"logger.deprecation.name=org.elasticsearch.deprecation",
+					"logger.deprecation.level=error",
+					ResourceUtil.getResourceAsString(
+						Sidecar.class, "/log4j2.properties")));
+		}
+		catch (IOException ioException) {
+			_log.error(
+				"Unable to copy log4j2.properties to " + configFolder,
+				ioException);
+		}
+
+		try {
+			ProcessChannel<Serializable> processChannel =
+				_processExecutor.execute(
+					_createProcessConfig(configFolder),
+					new SidecarMainProcessCallable(
+						_elasticsearchConfigurationWrapper.
+							sidecarHeartbeatInterval()));
+
+			FutureListener<Serializable> futureListener =
+				new RestartFutureListener(_sidecarManager);
+
+			_addFutureListener(processChannel, futureListener);
+
+			String address = _startElasticsearch(processChannel);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					StringBundler.concat(
+						"Sidecar Elasticsearch ", sidecarVersion,
+						" started at ", address));
+			}
+
+			_address = address;
+			_processChannel = processChannel;
+			_restartFutureListener = futureListener;
+		}
+		catch (ProcessException processException) {
+			throw new RuntimeException(
+				"Unable to start sidecar Elasticsearch process",
+				processException);
+		}
 	}
 
 	public void stop() {
@@ -242,57 +289,6 @@ public class Sidecar {
 			StringBundler.concat(
 				bundleURL.getPath(), File.pathSeparator, bootstrapClassPath)
 		).build();
-	}
-
-	private ProcessChannel<Serializable> _executeSidecarMainProcess() {
-		if (!Files.isDirectory(_sidecarHomePath)) {
-			throw new IllegalArgumentException(
-				"Sidecar Elasticsearch home does not exist: " +
-					_sidecarHomePath);
-		}
-
-		try {
-			_sidecarTempDirPath = Files.createTempDirectory("sidecar");
-		}
-		catch (IOException ioException) {
-			throw new IllegalStateException(
-				"Unable to create temp folder", ioException);
-		}
-
-		Path configFolder = _sidecarTempDirPath.resolve("config");
-
-		try {
-			Files.createDirectories(configFolder);
-
-			Files.write(
-				configFolder.resolve("log4j2.properties"),
-				Arrays.asList(
-					"logger.bootstrapchecks.name=org.elasticsearch.bootstrap." +
-						"BootstrapChecks",
-					"logger.bootstrapchecks.level=error",
-					"logger.deprecation.name=org.elasticsearch.deprecation",
-					"logger.deprecation.level=error",
-					ResourceUtil.getResourceAsString(
-						Sidecar.class, "/log4j2.properties")));
-		}
-		catch (IOException ioException) {
-			_log.error(
-				"Unable to copy log4j2.properties to " + configFolder,
-				ioException);
-		}
-
-		try {
-			return _processExecutor.execute(
-				_createProcessConfig(configFolder),
-				new SidecarMainProcessCallable(
-					_elasticsearchConfigurationWrapper.
-						sidecarHeartbeatInterval()));
-		}
-		catch (ProcessException processException) {
-			throw new RuntimeException(
-				"Unable to start sidecar Elasticsearch process",
-				processException);
-		}
 	}
 
 	private boolean _fileNameContains(Path path, String s) {

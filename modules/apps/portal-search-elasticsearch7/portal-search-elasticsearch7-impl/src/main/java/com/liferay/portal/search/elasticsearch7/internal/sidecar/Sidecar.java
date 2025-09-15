@@ -52,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -467,42 +466,6 @@ public class Sidecar {
 	}
 
 	private byte[] _getSidecarServerArgs() {
-		Settings settings = _getSettings();
-
-		StringBundler sb = new StringBundler((2 * settings.size()) + 1);
-
-		sb.append("Sidecar Elasticsearch properties : {");
-
-		Map<String, Serializable> settingsMap = new HashMap<>();
-
-		for (String key : settings.keySet()) {
-			List<String> list = settings.getAsList(key);
-
-			if (ListUtil.isEmpty(list)) {
-				continue;
-			}
-
-			String keyValue = StringBundler.concat(
-				key, StringPool.EQUAL, StringUtil.merge(list));
-
-			sb.append(keyValue);
-
-			sb.append(StringPool.COMMA);
-
-			if (list.size() == 1) {
-				settingsMap.put(key, list.get(0));
-			}
-			else {
-				settingsMap.put(key, new ArrayList<>(list));
-			}
-		}
-
-		sb.setStringAt(StringPool.CLOSE_CURLY_BRACE, sb.index() - 1);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(sb.toString());
-		}
-
 		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 				new UnsyncByteArrayOutputStream();
 			StreamOutput streamOutput = new OutputStreamStreamOutput(
@@ -532,14 +495,7 @@ public class Sidecar {
 				streamOutput.writeBoolean(false);
 			}
 
-			streamOutput.writeVInt(settingsMap.size());
-
-			for (Map.Entry<String, Serializable> entry :
-					settingsMap.entrySet()) {
-
-				streamOutput.writeString(entry.getKey());
-				streamOutput.writeGenericValue(entry.getValue());
-			}
+			Settings.writeSettingsToStream(_getSettings(), streamOutput);
 
 			streamOutput.writeString(
 				String.valueOf(_elasticsearchInstancePaths.getConfigPath()));

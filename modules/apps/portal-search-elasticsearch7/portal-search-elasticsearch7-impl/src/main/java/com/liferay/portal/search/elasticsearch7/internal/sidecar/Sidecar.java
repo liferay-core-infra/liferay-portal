@@ -251,7 +251,11 @@ public class Sidecar {
 		).setBootstrapClassPath(
 			bootstrapClassPath
 		).setEnvironment(
-			_getEnvironment()
+			HashMapBuilder.putAll(
+				System.getenv()
+			).putAll(
+				_getEnvironment()
+			).build()
 		).setJavaExecutable(
 			System.getProperty("java.home") + "/bin/java"
 		).setProcessLogConsumer(
@@ -319,9 +323,7 @@ public class Sidecar {
 	}
 
 	private HashMap<String, String> _getEnvironment() {
-		return HashMapBuilder.putAll(
-			System.getenv()
-		).put(
+		return HashMapBuilder.put(
 			"HOSTNAME", "localhost"
 		).put(
 			"LIBFFI_TMPDIR", _sidecarHomePath.toString()

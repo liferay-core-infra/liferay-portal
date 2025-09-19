@@ -122,8 +122,6 @@ public class BatchEnginePortletDataHandlerRegistrarTest {
 			FeatureFlagTestUtil.invokeFeatureFlagListeners(
 				TestPropsValues.getCompanyId(), true, "LPD-35914");
 
-			Thread.sleep(1000);
-
 			Assert.assertEquals(
 				1, _getRegisteredPortletDataHandlersCount(portletId));
 

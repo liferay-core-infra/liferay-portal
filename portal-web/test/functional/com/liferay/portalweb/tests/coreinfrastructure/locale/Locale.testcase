@@ -630,7 +630,14 @@ definition {
 
 		AssertLocation.assertPartialLocation(value1 = "en/group/guest");
 
-		PagesAdmin.movePageItemUp(
+		DragAndDrop.javaScriptDragAndDropToBottom(
+			locator1 = "PagesAdmin#LIST_GROUP_ITEM_DROP_TARGET",
+			locator2 = "PagesAdmin#LIST_GROUP_ITEM_DRAG_HANDLER",
+			pageName = "Test Page 2",
+			pageNameTo = "Test Page 1",
+			value1 = "");
+
+		PagesAdmin.movePageItemDown(
 			pageName = "Test Page 2",
 			pageNameTo = "Test Page 1");
 

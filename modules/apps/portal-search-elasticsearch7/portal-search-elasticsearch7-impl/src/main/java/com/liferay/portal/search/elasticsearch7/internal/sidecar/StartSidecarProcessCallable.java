@@ -11,25 +11,26 @@ import com.liferay.petra.process.ProcessException;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import java.security.MessageDigest;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import org.elasticsearch.common.hash.MessageDigests;
 import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
 import org.elasticsearch.common.io.stream.StreamOutput;
+import org.elasticsearch.common.logging.LogConfigurator;
 import org.elasticsearch.common.settings.KeyStoreWrapper;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.xcontent.XContentType;
 
 /**
  * @author Tina Tian
  */
 public class StartSidecarProcessCallable
 	implements ProcessCallable<Serializable> {
-
-	public StartSidecarProcessCallable(byte[] settings) {
-		_settings = settings;
-	}
 
 	@Override
 	public Serializable call() throws ProcessException {
@@ -84,10 +85,25 @@ public class StartSidecarProcessCallable
 				streamOutput.writeBoolean(false);
 			}
 
-			streamOutput.writeBytes(_settings);
+			Method method = ReflectionUtil.getDeclaredMethod(
+				LogConfigurator.class, "configureESLogging");
+
+			method.invoke(null);
+
+			Settings.Builder builder = Settings.builder();
+
+			builder.loadFromSource(
+				System.getProperty("sidecar.settings"), XContentType.YAML);
+
+			Settings settings = builder.build();
+
+			method = ReflectionUtil.getDeclaredMethod(
+				Settings.class, "writeTo", new Class<?>[]{StreamOutput.class});
+
+			method.invoke(settings, streamOutput);
 
 			streamOutput.writeString(System.getProperty("es.path.conf"));
-			streamOutput.writeString(System.getProperty("es.path.log"));
+			streamOutput.writeString(settings.get("path.logs"));
 
 			streamOutput.flush();
 
@@ -100,7 +116,5 @@ public class StartSidecarProcessCallable
 	}
 
 	private static final long serialVersionUID = 1L;
-
-	private final byte[] _settings;
 
 }

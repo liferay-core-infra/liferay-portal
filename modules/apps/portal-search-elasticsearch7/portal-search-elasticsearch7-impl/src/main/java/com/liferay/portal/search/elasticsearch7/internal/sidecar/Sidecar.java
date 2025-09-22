@@ -99,9 +99,7 @@ public class Sidecar {
 					StringBundler.concat(
 						bundleURL.getPath(), File.pathSeparator,
 						bootstrapClassPath)),
-				new SidecarMainProcessCallable(
-					_elasticsearchConfigurationWrapper.
-						sidecarHeartbeatInterval()));
+				new SidecarMainProcessCallable());
 		}
 		catch (ProcessException processException) {
 			throw new RuntimeException(
@@ -350,6 +348,9 @@ public class Sidecar {
 		arguments.add(
 			"-Dsidecar.bundle.data.path=" +
 				_elasticsearchInstancePaths.getBundleDataPath());
+		arguments.add(
+			"-Dsidecar.heart.beat.interval=" +
+				_elasticsearchConfigurationWrapper.sidecarHeartbeatInterval());
 		arguments.add("-Dsidecar.settings=" + _getSettings());
 		arguments.add(
 			"-Djava.io.tmpdir=" + System.getProperty("java.io.tmpdir"));

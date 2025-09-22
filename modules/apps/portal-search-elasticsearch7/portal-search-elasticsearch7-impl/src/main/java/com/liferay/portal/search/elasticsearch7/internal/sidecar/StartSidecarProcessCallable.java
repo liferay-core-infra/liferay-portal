@@ -5,19 +5,30 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
+import com.liferay.petra.io.OutputStreamWriter;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessException;
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import java.lang.reflect.Method;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import java.security.MessageDigest;
 
-import com.liferay.petra.reflect.ReflectionUtil;
+import java.util.Arrays;
+
 import org.elasticsearch.common.hash.MessageDigests;
 import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
 import org.elasticsearch.common.io.stream.StreamOutput;
@@ -50,12 +61,68 @@ public class StartSidecarProcessCallable
 			"org.apache.lucene.vectorization.upperJavaFeatureVersion", "21");
 		System.setProperty("jdk.module.main", "org.elasticsearch.server");
 
-		ElasticsearchServerUtil.start(_getSidecarServerArgs());
+		Path bundleDataPath = Path.of(
+			System.getProperty("sidecar.bundle.data.path"));
+
+		Path configFolder = bundleDataPath.resolve("config");
+
+		Path log4jPropertiesPath = configFolder.resolve("log4j2.properties");
+
+		try {
+			byte[] log4jProperties = _getLog4jProperties();
+
+			File log4jPropertiesFile = log4jPropertiesPath.toFile();
+
+			if (log4jPropertiesFile.exists() &&
+				!Arrays.equals(
+					log4jProperties, Files.readAllBytes(log4jPropertiesPath))) {
+
+				log4jPropertiesFile.delete();
+			}
+
+			if (!log4jPropertiesFile.exists()) {
+				Files.createDirectories(configFolder);
+
+				Files.write(log4jPropertiesPath, log4jProperties);
+			}
+		}
+		catch (IOException ioException) {
+			throw new ProcessException(
+				"Unable to create log4j2.properties", ioException);
+		}
+
+		ElasticsearchServerUtil.start(_getSidecarServerArgs(configFolder));
 
 		return null;
 	}
 
-	private byte[] _getSidecarServerArgs() {
+	private byte[] _getLog4jProperties() throws IOException {
+		ClassLoader classLoader =
+			StartSidecarProcessCallable.class.getClassLoader();
+
+		try (InputStream inputStream = classLoader.getResourceAsStream(
+				"log4j2.properties");
+			UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+				new UnsyncByteArrayOutputStream();
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+				unsyncByteArrayOutputStream)) {
+
+			outputStreamWriter.write(
+				StringBundler.concat(
+					"logger.bootstrapchecks.name=org.elasticsearch.bootstrap.",
+					"BootstrapChecks\n", "logger.bootstrapchecks.level=error\n",
+					"logger.deprecation.name=org.elasticsearch.deprecation\n",
+					"logger.deprecation.level=error\n"));
+
+			outputStreamWriter.write(StringUtil.read(inputStream));
+
+			outputStreamWriter.flush();
+
+			return unsyncByteArrayOutputStream.toByteArray();
+		}
+	}
+
+	private byte[] _getSidecarServerArgs(Path configFolder) {
 		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 				new UnsyncByteArrayOutputStream();
 			StreamOutput streamOutput = new OutputStreamStreamOutput(
@@ -98,11 +165,12 @@ public class StartSidecarProcessCallable
 			Settings settings = builder.build();
 
 			method = ReflectionUtil.getDeclaredMethod(
-				Settings.class, "writeTo", new Class<?>[]{StreamOutput.class});
+				Settings.class, "writeTo", new Class<?>[] {StreamOutput.class});
 
 			method.invoke(settings, streamOutput);
 
-			streamOutput.writeString(System.getProperty("es.path.conf"));
+			streamOutput.writeString(
+				String.valueOf(configFolder.toAbsolutePath()));
 			streamOutput.writeString(settings.get("path.logs"));
 
 			streamOutput.flush();

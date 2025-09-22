@@ -146,14 +146,12 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 		File bundleDataFile = _bundleContext.getDataFile(
 			SidecarManager.class.getName());
 
-		Path bundleDataPath = bundleDataFile.toPath();
-
 		Path workPath = Paths.get(PropsValues.LIFERAY_HOME);
 
 		Path dataPath = workPath.resolve("data/elasticsearch7");
 
-		return elasticsearchInstancePathsBuilder.configPath(
-			bundleDataPath.resolve("config")
+		return elasticsearchInstancePathsBuilder.bundleDataPath(
+			bundleDataFile.toPath()
 		).dataPath(
 			dataPath
 		).homePath(

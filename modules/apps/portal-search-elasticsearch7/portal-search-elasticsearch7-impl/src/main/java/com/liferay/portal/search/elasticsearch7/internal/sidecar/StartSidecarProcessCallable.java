@@ -5,10 +5,22 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
+import com.liferay.petra.io.OutputStreamWriter;
+import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.process.ProcessCallable;
 import com.liferay.petra.process.ProcessException;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import java.util.Arrays;
 
 /**
  * @author Tina Tian
@@ -34,9 +46,68 @@ public class StartSidecarProcessCallable
 			"org.apache.lucene.vectorization.upperJavaFeatureVersion", "21");
 		System.setProperty("jdk.module.main", "org.elasticsearch.server");
 
+		Path bundleDataPath = Path.of(
+			System.getProperty("sidecar.bundle.data.path"));
+
+		Path configFolder = bundleDataPath.resolve("config");
+
+		System.setProperty(
+			"es.path.conf", String.valueOf(configFolder.toAbsolutePath()));
+
+		Path log4jPropertiesPath = configFolder.resolve("log4j2.properties");
+
+		try {
+			byte[] log4jProperties = _getLog4jProperties();
+
+			File log4jPropertiesFile = log4jPropertiesPath.toFile();
+
+			if (log4jPropertiesFile.exists() &&
+				!Arrays.equals(
+					log4jProperties, Files.readAllBytes(log4jPropertiesPath))) {
+
+				log4jPropertiesFile.delete();
+			}
+
+			if (!log4jPropertiesFile.exists()) {
+				Files.createDirectories(configFolder);
+
+				Files.write(log4jPropertiesPath, log4jProperties);
+			}
+		}
+		catch (IOException ioException) {
+			throw new ProcessException(
+				"Unable to create log4j2.properties", ioException);
+		}
+
 		ElasticsearchServerUtil.start();
 
 		return null;
+	}
+
+	private byte[] _getLog4jProperties() throws IOException {
+		ClassLoader classLoader =
+			StartSidecarProcessCallable.class.getClassLoader();
+
+		try (InputStream inputStream = classLoader.getResourceAsStream(
+				"log4j2.properties");
+			UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+				new UnsyncByteArrayOutputStream();
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+				unsyncByteArrayOutputStream)) {
+
+			outputStreamWriter.write(
+				StringBundler.concat(
+					"logger.bootstrapchecks.name=org.elasticsearch.bootstrap.",
+					"BootstrapChecks\n", "logger.bootstrapchecks.level=error\n",
+					"logger.deprecation.name=org.elasticsearch.deprecation\n",
+					"logger.deprecation.level=error\n"));
+
+			outputStreamWriter.write(StringUtil.read(inputStream));
+
+			outputStreamWriter.flush();
+
+			return unsyncByteArrayOutputStream.toByteArray();
+		}
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
-import com.liferay.portal.search.elasticsearch7.internal.settings.SettingsHelperImpl;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.constants.SidecarConstants;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.elasticsearch7.sidecar.agent.SidecarAgent;
@@ -52,10 +51,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-
-import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
-import org.elasticsearch.common.io.stream.StreamOutput;
-import org.elasticsearch.common.settings.Settings;
 
 /**
  * @author Tina Tian
@@ -150,7 +145,7 @@ public class Sidecar {
 		_addFutureListener(processChannel, futureListener);
 
 		NoticeableFuture<Serializable> noticeableFuture = processChannel.write(
-			new StartSidecarProcessCallable(_getSettings()));
+			new StartSidecarProcessCallable());
 
 		try {
 			noticeableFuture.get();
@@ -384,7 +379,7 @@ public class Sidecar {
 
 		arguments.add(
 			"-Des.path.conf=" + _elasticsearchInstancePaths.getConfigPath());
-		arguments.add("-Des.path.log=" + _sidecarHomePath.resolve("logs"));
+		arguments.add("-Dsidecar.settings=" + _getSettings());
 		arguments.add(
 			"-Djava.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
 		arguments.add("--enable-native-access=ALL-UNNAMED");
@@ -464,46 +459,48 @@ public class Sidecar {
 		return "liferay_sidecar";
 	}
 
-	private byte[] _getSettings() {
-		SettingsHelperImpl settingsHelperImpl = new SettingsHelperImpl(
-			Settings.builder());
+	private String _getSettings() {
+		StringBundler sb = new StringBundler(38);
 
-		String defaultConfigurations = ResourceUtil.getResourceAsString(
-			getClass(),
-			SidecarConstants.ELASTICSEARCH_OPTIONAL_DEFAULTS_FILE_NAME);
+		sb.append(
+			ResourceUtil.getResourceAsString(
+				getClass(),
+				SidecarConstants.ELASTICSEARCH_OPTIONAL_DEFAULTS_FILE_NAME));
 
-		settingsHelperImpl.loadFromSource(defaultConfigurations);
+		sb.append("\naction.auto_create_index: false");
 
-		settingsHelperImpl.put("action.auto_create_index", false);
-		settingsHelperImpl.put(
-			"bootstrap.memory_lock",
-			_elasticsearchConfigurationWrapper.bootstrapMlockAll());
+		sb.append("\nbootstrap.memory_lock: ");
+		sb.append(_elasticsearchConfigurationWrapper.bootstrapMlockAll());
 
 		// config clustering
 
-		settingsHelperImpl.put("cluster.name", _getClusterName());
-		settingsHelperImpl.put(
-			"cluster.routing.allocation.disk.threshold_enabled", false);
-		settingsHelperImpl.put("discovery.type", "single-node");
+		sb.append("\ncluster.name: ");
+		sb.append(_getClusterName());
+		sb.append("\ncluster.routing.allocation.disk.threshold_enabled: false");
+
+		sb.append("\ndiscovery.type: single-node");
 
 		// config http
 
 		HttpPortRange httpPortRange = new HttpPortRange(
 			_elasticsearchConfigurationWrapper);
 
-		settingsHelperImpl.put("http.port", httpPortRange.toSettingsString());
+		sb.append("\nhttp.port: ");
+		sb.append(httpPortRange.toSettingsString());
 
-		settingsHelperImpl.put(
-			"http.cors.enabled",
-			_elasticsearchConfigurationWrapper.httpCORSEnabled());
+		sb.append("\nhttp.cors.enabled: ");
+		sb.append(_elasticsearchConfigurationWrapper.httpCORSEnabled());
 
 		if (_elasticsearchConfigurationWrapper.httpCORSEnabled()) {
-			settingsHelperImpl.put(
-				"http.cors.allow-origin",
-				_elasticsearchConfigurationWrapper.httpCORSAllowOrigin());
+			sb.append("\nhttp.cors.allow-origin: ");
+			sb.append(_elasticsearchConfigurationWrapper.httpCORSAllowOrigin());
 
-			settingsHelperImpl.loadFromSource(
-				_elasticsearchConfigurationWrapper.httpCORSConfigurations());
+			String httpCORSConfiguration =
+				_elasticsearchConfigurationWrapper.httpCORSConfigurations();
+
+			if (Validator.isNotNull(httpCORSConfiguration)) {
+				sb.append(httpCORSConfiguration);
+			}
 		}
 
 		// config networking
@@ -515,27 +512,31 @@ public class Sidecar {
 			_elasticsearchConfigurationWrapper.networkPublishHost();
 
 		if (Validator.isNotNull(networkBindHost)) {
-			settingsHelperImpl.put("network.bind_host", networkBindHost);
+			sb.append("\nnetwork.bind_host: ");
+			sb.append(networkBindHost);
 		}
 
 		if (Validator.isNotNull(networkHost)) {
-			settingsHelperImpl.put("network.host", networkHost);
+			sb.append("\nnetwork.host: ");
+			sb.append(networkHost);
 		}
 
 		if (Validator.isNotNull(networkPublishHost)) {
-			settingsHelperImpl.put("network.publish_host", networkPublishHost);
+			sb.append("\nnetwork.publish_host: ");
+			sb.append(networkPublishHost);
 		}
 
 		String transportTcpPort =
 			_elasticsearchConfigurationWrapper.transportTcpPort();
 
 		if (Validator.isNotNull(transportTcpPort)) {
-			settingsHelperImpl.put("transport.port", transportTcpPort);
+			sb.append("\ntransport.port: ");
+			sb.append(transportTcpPort);
 		}
 
-		settingsHelperImpl.put("node.name", _getNodeName());
-		settingsHelperImpl.put(
-			"node.roles", List.of("master", "ingest", "data"));
+		sb.append("\nnode.name: ");
+		sb.append(_getNodeName());
+		sb.append("\nnode.roles: [master, ingest, data]");
 
 		// config paths
 
@@ -549,43 +550,30 @@ public class Sidecar {
 			homePath = workPath.resolve("data/elasticsearch7");
 		}
 
-		settingsHelperImpl.put(
-			"path.data", String.valueOf(dataParentPath.resolve("indices")));
-
-		settingsHelperImpl.put(
-			"path.home", String.valueOf(homePath.toAbsolutePath()));
-
-		settingsHelperImpl.put(
-			"path.logs", String.valueOf(workPath.resolve("logs")));
-
-		settingsHelperImpl.put(
-			"path.repo", String.valueOf(dataParentPath.resolve("repo")));
+		sb.append("\npath.data: ");
+		sb.append(dataParentPath.resolve("indices"));
+		sb.append("\npath.home: ");
+		sb.append(homePath.toAbsolutePath());
+		sb.append("\npath.logs: ");
+		sb.append(workPath.resolve("logs"));
+		sb.append("\npath.repo: ");
+		sb.append(dataParentPath.resolve("repo"));
 
 		if (JavaDetector.isJDK21()) {
-			settingsHelperImpl.put("thread_pool.warmer.max", "20");
+			sb.append("\nthread_pool.warmer.max: 20");
 		}
 
-		settingsHelperImpl.put("node.store.allow_mmap", false);
+		sb.append("\nnode.store.allow_mmap: false");
 
-		settingsHelperImpl.loadFromSource(
-			_elasticsearchConfigurationWrapper.additionalConfigurations());
+		String additionalConfigurations =
+			_elasticsearchConfigurationWrapper.additionalConfigurations();
 
-		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-				new UnsyncByteArrayOutputStream();
-			StreamOutput streamOutput = new OutputStreamStreamOutput(
-				unsyncByteArrayOutputStream)) {
-
-			Settings.writeSettingsToStream(
-				settingsHelperImpl.build(), streamOutput);
-
-			streamOutput.flush();
-
-			return unsyncByteArrayOutputStream.toByteArray();
+		if (Validator.isNotNull(additionalConfigurations)) {
+			sb.append(StringPool.NEW_LINE);
+			sb.append(additionalConfigurations);
 		}
-		catch (Exception exception) {
-			throw new IllegalStateException(
-				"Unable to prepare sidecar server arguments", exception);
-		}
+
+		return sb.toString();
 	}
 
 	private String _getSidecarVersion() {

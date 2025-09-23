@@ -16,10 +16,6 @@ import java.io.Serializable;
 public class StartSidecarProcessCallable
 	implements ProcessCallable<Serializable> {
 
-	public StartSidecarProcessCallable(byte[] settings) {
-		_settings = settings;
-	}
-
 	@Override
 	public Serializable call() throws ProcessException {
 		System.setProperty("es.distribution.type", "tar");
@@ -38,13 +34,11 @@ public class StartSidecarProcessCallable
 			"org.apache.lucene.vectorization.upperJavaFeatureVersion", "21");
 		System.setProperty("jdk.module.main", "org.elasticsearch.server");
 
-		ElasticsearchServerUtil.start(_settings);
+		ElasticsearchServerUtil.start();
 
 		return null;
 	}
 
 	private static final long serialVersionUID = 1L;
-
-	private final byte[] _settings;
 
 }

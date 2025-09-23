@@ -378,15 +378,11 @@ public class Sidecar {
 		arguments.add(
 			"-Des.path.conf=" + _elasticsearchInstancePaths.getConfigPath());
 		arguments.add(
+			"-Djava.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
+		arguments.add(
 			"-Dsidecar.heart.beat.interval=" +
 				_elasticsearchConfigurationWrapper.sidecarHeartbeatInterval());
 		arguments.add("-Dsidecar.settings=" + _getSettings());
-		arguments.add(
-			"-Djava.io.tmpdir=" + System.getProperty("java.io.tmpdir"));
-		arguments.add("--enable-native-access=ALL-UNNAMED");
-		arguments.add(
-			"--enable-native-access=org.elasticsearch.nativeaccess," +
-				"org.apache.lucene.core");
 
 		if (JavaDetector.isJDK21() && OSDetector.isLinux()) {
 			arguments.add("-XX:-UseContainerSupport");
@@ -401,6 +397,10 @@ public class Sidecar {
 		arguments.add(
 			"--add-opens=org.elasticsearch.server/org.elasticsearch." +
 				"bootstrap=ALL-UNNAMED");
+		arguments.add("--enable-native-access=ALL-UNNAMED");
+		arguments.add(
+			"--enable-native-access=org.elasticsearch.nativeaccess," +
+				"org.apache.lucene.core");
 		arguments.add("--module-path=" + _sidecarHomePath.resolve("lib"));
 
 		// Apply agent to load modified classes

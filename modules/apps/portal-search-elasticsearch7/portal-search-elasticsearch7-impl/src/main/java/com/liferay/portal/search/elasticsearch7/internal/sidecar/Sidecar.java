@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.settings.SettingsHelperImpl;
+import com.liferay.portal.search.elasticsearch7.internal.sidecar.activator.SearchElasticsearch7ImplBundleActivator;
 import com.liferay.portal.search.elasticsearch7.internal.sidecar.constants.SidecarConstants;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.elasticsearch7.sidecar.agent.SidecarAgent;
@@ -120,32 +121,60 @@ public class Sidecar {
 
 		byte[] bytes = byteBuffer.array();
 
-		try {
-			if (_sidecarProcessFile.exists() &&
-				!Arrays.equals(
-					bytes, Files.readAllBytes(_sidecarProcessFile.toPath()))) {
+		ProcessChannel<Serializable> processChannel = null;
+		Future<ProcessChannel<Serializable>> processChannelFuture =
+			SearchElasticsearch7ImplBundleActivator.getProcessChannelFuture();
 
-				_sidecarProcessFile.delete();
+		if (processChannelFuture != null) {
+			try {
+				processChannel = processChannelFuture.get();
+
+				if (!Arrays.equals(
+						bytes,
+						SearchElasticsearch7ImplBundleActivator.
+							getProcessFileContent())) {
+
+					NoticeableFuture<Serializable> noticeableFuture =
+						processChannel.getProcessNoticeableFuture();
+
+					processChannel.write(new StopSidecarProcessCallable());
+
+					noticeableFuture.get(
+						_elasticsearchConfigurationWrapper.
+							sidecarShutdownTimeout(),
+						TimeUnit.MILLISECONDS);
+
+					processChannel = null;
+
+					_sidecarProcessFile.delete();
+				}
 			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
+				}
+			}
+		}
 
-			if (!_sidecarProcessFile.exists()) {
+		if (!_sidecarProcessFile.exists()) {
+			try {
 				Files.write(_sidecarProcessFile.toPath(), bytes);
 			}
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(
-				"Unable to persist process", ioException);
+			catch (IOException ioException) {
+				throw new RuntimeException(
+					"Unable to persist process", ioException);
+			}
 		}
 
-		ProcessChannel<Serializable> processChannel = null;
-
-		try {
-			processChannel = PersistedProcessUtil.start(
-				_processExecutor, bytes);
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(
-				"Unable to start sidecar Elasticsearch process", exception);
+		if (processChannel == null) {
+			try {
+				processChannel = PersistedProcessUtil.start(
+					_processExecutor, bytes);
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(
+					"Unable to start sidecar Elasticsearch process", exception);
+			}
 		}
 
 		FutureListener<Serializable> futureListener = new RestartFutureListener(

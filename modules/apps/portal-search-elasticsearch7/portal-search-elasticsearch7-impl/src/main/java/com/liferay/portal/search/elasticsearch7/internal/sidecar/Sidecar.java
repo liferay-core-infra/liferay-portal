@@ -7,11 +7,10 @@ package com.liferay.portal.search.elasticsearch7.internal.sidecar;
 
 import com.liferay.petra.concurrent.FutureListener;
 import com.liferay.petra.concurrent.NoticeableFuture;
+import com.liferay.petra.io.Serializer;
 import com.liferay.petra.process.ProcessChannel;
 import com.liferay.petra.process.ProcessConfig;
-import com.liferay.petra.process.ProcessException;
 import com.liferay.petra.process.ProcessExecutor;
-import com.liferay.petra.process.ProcessLog;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
@@ -35,6 +34,7 @@ import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import java.nio.ByteBuffer;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +44,7 @@ import java.security.CodeSource;
 import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,12 +64,13 @@ public class Sidecar {
 	public Sidecar(
 		ElasticsearchConfigurationWrapper elasticsearchConfigurationWrapper,
 		ProcessExecutor processExecutor, SidecarManager sidecarManager,
-		Path sidecarHomePath, Path sidecarWorkPath) {
+		Path sidecarHomePath, File sidecarProcessFile, Path sidecarWorkPath) {
 
 		_elasticsearchConfigurationWrapper = elasticsearchConfigurationWrapper;
 		_processExecutor = processExecutor;
 		_sidecarManager = sidecarManager;
 		_sidecarHomePath = sidecarHomePath;
+		_sidecarProcessFile = sidecarProcessFile;
 		_sidecarWorkPath = sidecarWorkPath;
 
 		_sidecarTempPath = Path.of(
@@ -97,43 +99,59 @@ public class Sidecar {
 		String bootstrapClassPath = _getBootstrapClassPath();
 		URL bundleURL = _getBundleURL(Sidecar.class);
 
+		PersistedProcess persistedProcessBag = new PersistedProcess(
+			bundleURL,
+			_createProcessConfig(
+				_getJVMArguments(), bootstrapClassPath, _getEnvironment(),
+				StringBundler.concat(
+					bundleURL.getPath(), File.pathSeparator,
+					bootstrapClassPath)),
+			"sidecar",
+			new String[] {
+				SidecarMainProcessCallable.class.getName(),
+				StartSidecarProcessCallable.class.getName()
+			});
+
+		Serializer serializer = new Serializer();
+
+		serializer.writeObject(persistedProcessBag);
+
+		ByteBuffer byteBuffer = serializer.toByteBuffer();
+
+		byte[] bytes = byteBuffer.array();
+
+		try {
+			if (_sidecarProcessFile.exists() &&
+				!Arrays.equals(
+					bytes, Files.readAllBytes(_sidecarProcessFile.toPath()))) {
+
+				_sidecarProcessFile.delete();
+			}
+
+			if (!_sidecarProcessFile.exists()) {
+				Files.write(_sidecarProcessFile.toPath(), bytes);
+			}
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to persist process", ioException);
+		}
+
 		ProcessChannel<Serializable> processChannel = null;
 
 		try {
-			processChannel = _processExecutor.execute(
-				_createProcessConfig(
-					_getJVMArguments(), bootstrapClassPath, _getEnvironment(),
-					StringBundler.concat(
-						bundleURL.getPath(), File.pathSeparator,
-						bootstrapClassPath)),
-				new SidecarMainProcessCallable());
+			processChannel = PersistedProcessUtil.start(
+				_processExecutor, bytes);
 		}
-		catch (ProcessException processException) {
+		catch (Exception exception) {
 			throw new RuntimeException(
-				"Unable to start sidecar Elasticsearch process",
-				processException);
+				"Unable to start sidecar Elasticsearch process", exception);
 		}
 
 		FutureListener<Serializable> futureListener = new RestartFutureListener(
 			_sidecarManager);
 
 		_addFutureListener(processChannel, futureListener);
-
-		NoticeableFuture<Serializable> noticeableFuture = processChannel.write(
-			new StartSidecarProcessCallable());
-
-		try {
-			noticeableFuture.get();
-		}
-		catch (Exception exception) {
-			processChannel.write(new StopSidecarProcessCallable());
-
-			if (exception instanceof RuntimeException) {
-				throw (RuntimeException)exception;
-			}
-
-			throw new RuntimeException(exception);
-		}
 
 		NoticeableFuture<String> getAddressNoticeableFuture =
 			processChannel.write(new GetSidecarAddressProcessCallable());
@@ -216,27 +234,6 @@ public class Sidecar {
 		noticeableFuture.addFutureListener(futureListener);
 	}
 
-	private void _consumeProcessLog(ProcessLog processLog) {
-		if (ProcessLog.Level.DEBUG == processLog.getLevel()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(processLog.getMessage(), processLog.getThrowable());
-			}
-		}
-		else if (ProcessLog.Level.INFO == processLog.getLevel()) {
-			if (_log.isInfoEnabled()) {
-				_log.info(processLog.getMessage(), processLog.getThrowable());
-			}
-		}
-		else if (ProcessLog.Level.WARN == processLog.getLevel()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(processLog.getMessage(), processLog.getThrowable());
-			}
-		}
-		else {
-			_log.error(processLog.getMessage(), processLog.getThrowable());
-		}
-	}
-
 	private String _createClasspath(
 		Path dirPath, DirectoryStream.Filter<Path> filter) {
 
@@ -274,17 +271,9 @@ public class Sidecar {
 		).setBootstrapClassPath(
 			bootstrapClassPath
 		).setEnvironment(
-			HashMapBuilder.putAll(
-				System.getenv()
-			).putAll(
-				environment
-			).build()
+			environment
 		).setJavaExecutable(
 			System.getProperty("java.home") + "/bin/java"
-		).setProcessLogConsumer(
-			this::_consumeProcessLog
-		).setReactClassLoader(
-			Sidecar.class.getClassLoader()
 		).setRuntimeClassPath(
 			runtimeClassPath
 		).build();
@@ -605,6 +594,7 @@ public class Sidecar {
 	private FutureListener<Serializable> _restartFutureListener;
 	private final Path _sidecarHomePath;
 	private SidecarManager _sidecarManager;
+	private final File _sidecarProcessFile;
 	private final Path _sidecarTempPath;
 	private final Path _sidecarWorkPath;
 

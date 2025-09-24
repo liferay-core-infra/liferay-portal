@@ -89,7 +89,8 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 
 			_sidecar = new Sidecar(
 				elasticsearchConfigurationWrapper, processExecutor, this,
-				_resolveHomePath(workPath), workPath);
+				_resolveHomePath(workPath),
+				_bundleContext.getDataFile("sidecar.process"), workPath);
 
 			ElasticsearchConnectionBuilder elasticsearchConnectionBuilder =
 				new ElasticsearchConnectionBuilder();

@@ -58,7 +58,7 @@ public class LiferayFreeMarkerStringModel extends StringModel {
 
 		return object.toString();
 	}
-    
+
 	public String getDeniedInterfaceMethods() {
 		if ((_restrictedMethodNames == null) ||
 			!_deniedAccessToInterfaceMethods) {

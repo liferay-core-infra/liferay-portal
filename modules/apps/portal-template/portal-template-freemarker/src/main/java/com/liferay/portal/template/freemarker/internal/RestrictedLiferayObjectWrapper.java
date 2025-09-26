@@ -15,13 +15,12 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.BaseService;
-import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -115,7 +114,9 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 				methodNames.add(lowerCaseMethodName);
 
-				if (_INTERFACE_RESTRICTED_METHOD_NAMES.contains(lowerCaseMethodName)) {
+				if (_interfaceRestrictedMethodNames.contains(
+						lowerCaseMethodName)) {
+
 					_deniedAccessToInterfaceMethods.add(className);
 				}
 			}
@@ -296,25 +297,6 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 			});
 	}
 
-	private static final Set<String> _INTERFACE_RESTRICTED_METHOD_NAMES;
-	static {
-		Method[] ctServiceMethods = CTService.class.getMethods();
-		Method[] persistedModelMethods = PersistedModelLocalService.class.getMethods();
-
-		Set<String> methodNames = new HashSet<>(
-				ctServiceMethods.length + persistedModelMethods.length);
-
-		for (Method method : ctServiceMethods) {
-			methodNames.add(StringUtil.toLowerCase(method.getName()));
-		}
-
-		for (Method method : persistedModelMethods) {
-			methodNames.add(StringUtil.toLowerCase(method.getName()));
-		}
-
-		_INTERFACE_RESTRICTED_METHOD_NAMES = Collections.unmodifiableSet(methodNames);
-	}
-
 	private static final ModelFactory _RESTRICTED_STRING_MODEL_FACTORY =
 		new ModelFactory() {
 
@@ -351,9 +333,28 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 	private static final Log _log = LogFactoryUtil.getLog(
 		RestrictedLiferayObjectWrapper.class);
 
+	private static final Set<String> _interfaceRestrictedMethodNames;
 	private static final TransactionConfig _transactionConfig;
 
 	static {
+		Method[] ctServiceMethods = CTService.class.getMethods();
+		Method[] persistedModelMethods =
+			PersistedModelLocalService.class.getMethods();
+
+		Set<String> methodNames = new HashSet<>(
+			ctServiceMethods.length + persistedModelMethods.length);
+
+		for (Method method : ctServiceMethods) {
+			methodNames.add(StringUtil.toLowerCase(method.getName()));
+		}
+
+		for (Method method : persistedModelMethods) {
+			methodNames.add(StringUtil.toLowerCase(method.getName()));
+		}
+
+		_interfaceRestrictedMethodNames = Collections.unmodifiableSet(
+			methodNames);
+
 		TransactionConfig.Builder builder = new TransactionConfig.Builder();
 
 		builder.setPropagation(Propagation.REQUIRES_NEW);

@@ -58,6 +58,23 @@ public class LiferayFreeMarkerStringModel extends StringModel {
 
 		return object.toString();
 	}
+    
+	public String getDeniedInterfaceMethods() {
+		if ((_restrictedMethodNames == null) ||
+			!_deniedAccessToInterfaceMethods) {
+
+			return null;
+		}
+
+		return "Denied access to the interface methods in class " +
+			object.getClass();
+	}
+
+	public void setDeniedAccessToInterfaceMethods(
+		boolean deniedAccessToInterfaceMethods) {
+
+		_deniedAccessToInterfaceMethods = deniedAccessToInterfaceMethods;
+	}
 
 	public void setDeniedAccessToString(boolean deniedAccessToString) {
 		_deniedAccessToString = deniedAccessToString;
@@ -67,6 +84,7 @@ public class LiferayFreeMarkerStringModel extends StringModel {
 		_restrictedMethodNames = restrictedMethodNames;
 	}
 
+	private boolean _deniedAccessToInterfaceMethods;
 	private boolean _deniedAccessToString;
 	private Set<String> _restrictedMethodNames;
 

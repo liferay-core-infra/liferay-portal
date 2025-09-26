@@ -15,10 +15,13 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.change.tracking.CTService;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -33,6 +36,8 @@ import freemarker.ext.util.ModelFactory;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+
+import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,10 +77,12 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 		if (restrictedMethodNames == null) {
 			_deniedAccessToStringClasses = Collections.emptySet();
+			_deniedAccessToInterfaceMethods = Collections.emptySet();
 			_restrictedMethodNames = Collections.emptyMap();
 		}
 		else {
 			_deniedAccessToStringClasses = new HashSet<>();
+			_deniedAccessToInterfaceMethods = new HashSet<>();
 			_restrictedMethodNames = new HashMap<>();
 
 			for (String restrictedMethodName : restrictedMethodNames) {
@@ -104,7 +111,13 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 					_restrictedMethodNames.computeIfAbsent(
 						className, key -> new HashSet<>());
 
-				methodNames.add(StringUtil.toLowerCase(methodName));
+				String lowerCaseMethodName = StringUtil.toLowerCase(methodName);
+
+				methodNames.add(lowerCaseMethodName);
+
+				if (_INTERFACE_RESTRICTED_METHOD_NAMES.contains(lowerCaseMethodName)) {
+					_deniedAccessToInterfaceMethods.add(className);
+				}
 			}
 		}
 
@@ -216,6 +229,8 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 			liferayFreeMarkerStringModel.setDeniedAccessToString(
 				_deniedAccessToStringClasses.contains(className));
+			liferayFreeMarkerStringModel.setDeniedAccessToInterfaceMethods(
+				_deniedAccessToInterfaceMethods.contains(className));
 			liferayFreeMarkerStringModel.setRestrictedMethodNames(
 				_restrictedMethodNames.get(className));
 
@@ -281,6 +296,25 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 			});
 	}
 
+	private static final Set<String> _INTERFACE_RESTRICTED_METHOD_NAMES;
+	static {
+		Method[] ctServiceMethods = CTService.class.getMethods();
+		Method[] persistedModelMethods = PersistedModelLocalService.class.getMethods();
+
+		Set<String> methodNames = new HashSet<>(
+				ctServiceMethods.length + persistedModelMethods.length);
+
+		for (Method method : ctServiceMethods) {
+			methodNames.add(StringUtil.toLowerCase(method.getName()));
+		}
+
+		for (Method method : persistedModelMethods) {
+			methodNames.add(StringUtil.toLowerCase(method.getName()));
+		}
+
+		_INTERFACE_RESTRICTED_METHOD_NAMES = Collections.unmodifiableSet(methodNames);
+	}
+
 	private static final ModelFactory _RESTRICTED_STRING_MODEL_FACTORY =
 		new ModelFactory() {
 
@@ -332,6 +366,7 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 	private final boolean _allowAllClasses;
 	private final List<String> _allowedClassNames;
+	private final Set<String> _deniedAccessToInterfaceMethods;
 	private final Set<String> _deniedAccessToStringClasses;
 	private final List<Class<?>> _restrictedClasses;
 	private final Map<String, Boolean> _restrictedClassMap =

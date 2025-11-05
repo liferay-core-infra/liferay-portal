@@ -6,10 +6,12 @@
 package com.liferay.portlet;
 
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.log4j.Log4JUtil;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
@@ -36,7 +38,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.Level;
+
 import org.hibernate.StaleStateException;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -491,44 +496,51 @@ public class PortalPreferencesImpl
 
 		String[] originalValues = _getValues(portalPreferenceKey, null);
 
-		while (true) {
-			try {
-				runnable.run();
+		try (SafeCloseable safeCloseable = Log4JUtil.setLevelWithSafeCloseable(
+				SqlExceptionHelper.class.getName(),
+				String.valueOf(Level.OFF))) {
 
-				store();
+			while (true) {
+				try {
+					runnable.run();
 
-				return;
-			}
-			catch (Exception exception) {
-				if (_isCausedByConcurrentModification(exception)) {
-					Map<PortalPreferenceKey, String[]> preferenceMap =
-						TransactionInvokerUtil.invoke(
-							SUPPORTS_TRANSACTION_CONFIG,
-							this::_reloadPreferenceMap);
+					store();
 
-					if (preferenceMap == null) {
-						continue;
-					}
+					return;
+				}
+				catch (Exception exception) {
+					if (_isCausedByConcurrentModification(exception)) {
+						Map<PortalPreferenceKey, String[]> preferenceMap =
+							TransactionInvokerUtil.invoke(
+								SUPPORTS_TRANSACTION_CONFIG,
+								this::_reloadPreferenceMap);
 
-					String[] values = preferenceMap.get(portalPreferenceKey);
+						if (preferenceMap == null) {
+							continue;
+						}
 
-					if (PreferencesValueUtil.isNull(values)) {
-						values = null;
+						String[] values = preferenceMap.get(
+							portalPreferenceKey);
+
+						if (PreferencesValueUtil.isNull(values)) {
+							values = null;
+						}
+						else {
+							values = PreferencesValueUtil.getActualValues(
+								values);
+						}
+
+						if (!Arrays.equals(originalValues, values)) {
+							throw new ConcurrentModificationException();
+						}
+
+						_modifiedPreferences = null;
+
+						_originalPreferences = preferenceMap;
 					}
 					else {
-						values = PreferencesValueUtil.getActualValues(values);
+						throw exception;
 					}
-
-					if (!Arrays.equals(originalValues, values)) {
-						throw new ConcurrentModificationException();
-					}
-
-					_modifiedPreferences = null;
-
-					_originalPreferences = preferenceMap;
-				}
-				else {
-					throw exception;
 				}
 			}
 		}

@@ -26,8 +26,6 @@ import com.liferay.portal.spring.transaction.DefaultTransactionExecutor;
 import com.liferay.portal.spring.transaction.TransactionAttributeAdapter;
 import com.liferay.portal.spring.transaction.TransactionInterceptor;
 import com.liferay.portal.spring.transaction.TransactionStatusAdapter;
-import com.liferay.portal.test.log.LogCapture;
-import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -37,8 +35,6 @@ import java.util.ConcurrentModificationException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.FutureTask;
-
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -172,9 +168,7 @@ public class PortalPreferencesImplTest {
 				return null;
 			});
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF)) {
-
+		try {
 			updateSynchronously(futureTask1, futureTask2);
 
 			Assert.fail();
@@ -246,9 +240,7 @@ public class PortalPreferencesImplTest {
 				return null;
 			});
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF)) {
-
+		try {
 			updateSynchronously(futureTask1, futureTask2);
 
 			Assert.fail();
@@ -320,9 +312,7 @@ public class PortalPreferencesImplTest {
 				return null;
 			});
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF)) {
-
+		try {
 			updateSynchronously(futureTask1, futureTask2);
 
 			Assert.fail();

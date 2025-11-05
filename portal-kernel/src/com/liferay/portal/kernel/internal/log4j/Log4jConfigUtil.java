@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.internal.log4j;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
@@ -157,6 +158,44 @@ public class Log4jConfigUtil {
 		}
 
 		_loggerContext.updateLoggers();
+	}
+
+	public static SafeCloseable setLevelWithSafeCloseable(
+		String name, String priority) {
+
+		Level level = Level.toLevel(priority);
+
+		LoggerConfig loggerConfig = _centralizedConfiguration.getLogger(name);
+
+		if (loggerConfig == null) {
+			_centralizedConfiguration.addLogger(
+				name, new LoggerConfig(name, level, true));
+
+			_loggerContext.updateLoggers();
+
+			return () -> {
+				_centralizedConfiguration.removeLogger(name);
+
+				_loggerContext.updateLoggers();
+			};
+		}
+
+		Level originalLevel = loggerConfig.getLevel();
+
+		if (Objects.equals(level, originalLevel)) {
+			return () -> {
+			};
+		}
+
+		loggerConfig.setLevel(level);
+
+		_loggerContext.updateLoggers();
+
+		return () -> {
+			loggerConfig.setLevel(originalLevel);
+
+			_loggerContext.updateLoggers();
+		};
 	}
 
 	public static void shutdownLog4J() {

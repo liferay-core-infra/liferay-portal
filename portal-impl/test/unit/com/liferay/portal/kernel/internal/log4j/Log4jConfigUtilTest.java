@@ -6,6 +6,7 @@
 package com.liferay.portal.kernel.internal.log4j;
 
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -352,6 +353,60 @@ public class Log4jConfigUtilTest {
 
 		_assertPriority(logger, _PRIORITY_DEBUG);
 		_assertPriority(childLogger, _PRIORITY_ERROR);
+	}
+
+	@Test
+	public void testSetLevelWithSafeCloseable() {
+		String loggerName = StringUtil.randomString();
+
+		Logger logger = (Logger)LogManager.getLogger(loggerName);
+
+		_assertPriority(logger, _PRIORITY_ERROR);
+
+		String childLoggerName = loggerName + ".child";
+
+		Logger childLogger = (Logger)LogManager.getLogger(childLoggerName);
+
+		_assertPriority(childLogger, _PRIORITY_ERROR);
+
+		Log4jConfigUtil.configureLog4J(
+			_generateXMLConfigurationContent(loggerName, _PRIORITY_WARN));
+
+		_assertPriority(logger, _PRIORITY_WARN);
+		_assertPriority(childLogger, _PRIORITY_WARN);
+
+		try (SafeCloseable safeCloseable =
+				Log4jConfigUtil.setLevelWithSafeCloseable(
+					loggerName, _PRIORITY_DEBUG)) {
+
+			_assertPriority(logger, _PRIORITY_DEBUG);
+			_assertPriority(childLogger, _PRIORITY_DEBUG);
+		}
+
+		_assertPriority(logger, _PRIORITY_WARN);
+		_assertPriority(childLogger, _PRIORITY_WARN);
+
+		try (SafeCloseable safeCloseable =
+				Log4jConfigUtil.setLevelWithSafeCloseable(
+					childLoggerName, _PRIORITY_ERROR)) {
+
+			_assertPriority(logger, _PRIORITY_WARN);
+			_assertPriority(childLogger, _PRIORITY_ERROR);
+		}
+
+		_assertPriority(logger, _PRIORITY_WARN);
+		_assertPriority(childLogger, _PRIORITY_WARN);
+
+		try (SafeCloseable safeCloseable =
+				Log4jConfigUtil.setLevelWithSafeCloseable(
+					loggerName, _PRIORITY_WARN)) {
+
+			_assertPriority(logger, _PRIORITY_WARN);
+			_assertPriority(childLogger, _PRIORITY_WARN);
+		}
+
+		_assertPriority(logger, _PRIORITY_WARN);
+		_assertPriority(childLogger, _PRIORITY_WARN);
 	}
 
 	@NewEnv(type = NewEnv.Type.JVM)

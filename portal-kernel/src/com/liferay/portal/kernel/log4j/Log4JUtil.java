@@ -5,6 +5,7 @@
 
 package com.liferay.portal.kernel.log4j;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.internal.log4j.Log4jConfigUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -23,7 +24,9 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -108,6 +111,31 @@ public class Log4JUtil {
 		if (custom) {
 			_customLogSettings.put(name, priority);
 		}
+	}
+
+	public static SafeCloseable setLevelWithSafeCloseable(
+		String name, String priority) {
+
+		SafeCloseable safeCloseable = Log4jConfigUtil.setLevelWithSafeCloseable(
+			name, priority);
+
+		Logger jdkLogger = Logger.getLogger(name);
+
+		Level originalLevel = jdkLogger.getLevel();
+
+		Level level = Log4jConfigUtil.getJDKLevel(priority);
+
+		if (Objects.equals(originalLevel, level)) {
+			return safeCloseable::close;
+		}
+
+		jdkLogger.setLevel(level);
+
+		return () -> {
+			safeCloseable.close();
+
+			jdkLogger.setLevel(originalLevel);
+		};
 	}
 
 	public static void shutdownLog4J() {

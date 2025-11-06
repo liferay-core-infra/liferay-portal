@@ -7,8 +7,11 @@ package com.liferay.portal.store.test.util;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.petra.io.DummyOutputStream;
+import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -50,6 +53,29 @@ public abstract class BaseStoreTestCase {
 		Assert.assertTrue(
 			_store.hasFile(
 				_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT));
+	}
+
+	@Test
+	@TestInfo("LPS-127589")
+	public void testConnectionDoesNotLeakWhenServingFileAsStream()
+		throws Exception {
+
+		String fileName = RandomTestUtil.randomString();
+
+		_store.addFile(
+			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(_DATA_VERSION_1));
+
+		for (int i = 0; i < 60; i++) {
+			StreamUtil.transfer(
+				_store.getFileAsStream(
+					_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT),
+				new DummyOutputStream());
+		}
+
+		_store.addFile(
+			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(_DATA_VERSION_1));
 	}
 
 	@Test

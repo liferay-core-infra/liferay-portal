@@ -36,6 +36,7 @@ import org.apache.tika.detect.DefaultEncodingDetector;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.detect.EncodingDetector;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.exception.WriteLimitReachedException;
 import org.apache.tika.extractor.EmbeddedDocumentExtractor;
 import org.apache.tika.extractor.ParsingEmbeddedDocumentExtractor;
 import org.apache.tika.metadata.Metadata;
@@ -183,7 +184,7 @@ public class TextExtractorImpl implements TextExtractor {
 				metadata, parseContext);
 		}
 		catch (SAXException saxException) {
-			if (!writeOutContentHandler.isWriteLimitReached(saxException)) {
+			if (!(saxException instanceof WriteLimitReachedException)) {
 				throw new TikaException(
 					saxException.getMessage(), saxException);
 			}

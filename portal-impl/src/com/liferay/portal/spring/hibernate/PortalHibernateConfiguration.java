@@ -99,13 +99,28 @@ public class PortalHibernateConfiguration
 
 		Properties properties = PropsUtil.getProperties();
 
-		properties.remove("hibernate.cache.region.factory_class");
+		properties.setProperty("jakarta.persistence.validation.mode", "none");
 
 		properties.setProperty(
 			"hibernate.allow_update_outside_transaction", "true");
+
+		properties.remove("hibernate.cache.region.factory_class");
 		properties.setProperty("hibernate.cache.use_query_cache", "false");
 		properties.setProperty(
 			"hibernate.cache.use_second_level_cache", "false");
+
+		properties.put(
+			"hibernate.classLoaders",
+			Collections.singleton(ClassUtils.getDefaultClassLoader()));
+
+		if (_dataSource != null) {
+			properties.put("hibernate.connection.datasource", _dataSource);
+		}
+
+		properties.put(
+			"hibernate.connection.handling_mode",
+			PhysicalConnectionHandlingMode.DELAYED_ACQUISITION_AND_HOLD);
+
 		properties.setProperty(
 			"hibernate.current_session_context_class",
 			PortalCurrentSessionContext.class.getName());
@@ -118,19 +133,6 @@ public class PortalHibernateConfiguration
 
 		properties.setProperty(
 			"hibernate.query.sql.jdbc_style_params_base", "true");
-		properties.setProperty("jakarta.persistence.validation.mode", "none");
-
-		if (_dataSource != null) {
-			properties.put("hibernate.connection.datasource", _dataSource);
-		}
-
-		properties.put(
-			"hibernate.connection.handling_mode",
-			PhysicalConnectionHandlingMode.DELAYED_ACQUISITION_AND_HOLD);
-
-		properties.put(
-			"hibernate.classLoaders",
-			Collections.singleton(ClassUtils.getDefaultClassLoader()));
 
 		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
 			new BootstrapServiceRegistryBuilder();

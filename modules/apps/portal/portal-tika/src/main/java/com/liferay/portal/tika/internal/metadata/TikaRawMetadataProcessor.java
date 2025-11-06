@@ -60,7 +60,7 @@ import org.apache.tika.metadata.Office;
 import org.apache.tika.metadata.OfficeOpenXMLCore;
 import org.apache.tika.metadata.Property;
 import org.apache.tika.metadata.TIFF;
-import org.apache.tika.metadata.TikaMetadataKeys;
+import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.metadata.TikaMimeKeys;
 import org.apache.tika.metadata.XMPDM;
 import org.apache.tika.parser.AutoDetectParser;
@@ -330,7 +330,7 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 			_addFields(Office.class, fields);
 			_addFields(OfficeOpenXMLCore.class, fields);
 			_addFields(TIFF.class, fields);
-			_addFields(TikaMetadataKeys.class, fields);
+			_addFields(TikaCoreProperties.class, fields);
 			_addFields(TikaMimeKeys.class, fields);
 			_addFields(XMPDM.class, fields);
 		}

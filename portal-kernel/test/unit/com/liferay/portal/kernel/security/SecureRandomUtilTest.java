@@ -14,23 +14,30 @@ import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 
 import java.security.SecureRandom;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 /**
  * @author Shuyang Zhou
@@ -43,6 +50,11 @@ public class SecureRandomUtilTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			CodeCoverageAssertor.INSTANCE, NewEnvTestRule.INSTANCE);
+
+	@AfterClass
+	public static void tearDownClass() {
+		_threadLocalRandomMockedStatic.close();
+	}
 
 	@Before
 	public void setUp() {
@@ -63,7 +75,31 @@ public class SecureRandomUtilTest {
 
 				@Override
 				public Long call() {
-					return reload();
+					MockedStatic<ThreadLocalRandom>
+						threadLocalRandomMockedStatic = Mockito.mockStatic(
+							ThreadLocalRandom.class);
+
+					try {
+						ThreadLocalRandom threadLocalRandom = Mockito.mock(
+							ThreadLocalRandom.class);
+
+						Mockito.when(
+							threadLocalRandom.nextLong()
+						).thenAnswer(
+							invocation -> _counter.getAndIncrement()
+						);
+
+						threadLocalRandomMockedStatic.when(
+							ThreadLocalRandom::current
+						).thenReturn(
+							threadLocalRandom
+						);
+
+						return reload();
+					}
+					finally {
+						threadLocalRandomMockedStatic.close();
+					}
 				}
 
 			});
@@ -171,7 +207,7 @@ public class SecureRandomUtilTest {
 
 		// Second load
 
-		for (int i = 0; i < 2048; i++) {
+		for (int i = _getIndexOffset(2048); i < 2048; i++) {
 			byte b = (byte)i;
 
 			if (b < 0) {
@@ -209,7 +245,7 @@ public class SecureRandomUtilTest {
 
 		// Second load
 
-		for (int i = 0; i < 2048; i++) {
+		for (int i = _getIndexOffset(2048); i < 2048; i++) {
 			Assert.assertEquals((byte)i, SecureRandomUtil.nextByte());
 		}
 
@@ -248,8 +284,10 @@ public class SecureRandomUtilTest {
 
 		// Second load
 
-		for (int i = 0; i < 256; i++) {
+		for (int i = 0; i < 255; i++) {
 			byte b = (byte)(i * 8);
+
+			b += _getIndexOffset(2048);
 
 			byte[] bytes = new byte[8];
 
@@ -265,7 +303,7 @@ public class SecureRandomUtilTest {
 		// Gap number
 
 		Assert.assertEquals(
-			Double.longBitsToDouble(getLong(7) ^ 1),
+			Double.longBitsToDouble(getLong(4) ^ 1),
 			SecureRandomUtil.nextDouble(), 0);
 	}
 
@@ -298,8 +336,10 @@ public class SecureRandomUtilTest {
 
 		// Second load
 
-		for (int i = 0; i < 512; i++) {
+		for (int i = 0; i < 510; i++) {
 			byte b = (byte)(i * 4);
+
+			b += _getIndexOffset(2048);
 
 			byte[] bytes = new byte[4];
 
@@ -315,7 +355,7 @@ public class SecureRandomUtilTest {
 		// Gap number
 
 		Assert.assertEquals(
-			Float.intBitsToFloat((int)getLong(7) ^ 1),
+			Float.intBitsToFloat((int)getLong(4) ^ 1),
 			SecureRandomUtil.nextFloat(), 0);
 	}
 
@@ -345,8 +385,10 @@ public class SecureRandomUtilTest {
 
 		// Second load
 
-		for (int i = 0; i < 512; i++) {
+		for (int i = 0; i < 510; i++) {
 			byte b = (byte)(i * 4);
+
+			b += _getIndexOffset(2048);
 
 			byte[] bytes = new byte[4];
 
@@ -360,7 +402,7 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		Assert.assertEquals((int)(getLong(7) ^ 1L), SecureRandomUtil.nextInt());
+		Assert.assertEquals((int)(getLong(4) ^ 1L), SecureRandomUtil.nextInt());
 	}
 
 	@Test
@@ -389,8 +431,10 @@ public class SecureRandomUtilTest {
 
 		// Second load
 
-		for (int i = 0; i < 256; i++) {
+		for (int i = 0; i < 255; i++) {
 			byte b = (byte)(i * 8);
+
+			b += _getIndexOffset(2048);
 
 			byte[] bytes = new byte[8];
 
@@ -404,31 +448,33 @@ public class SecureRandomUtilTest {
 
 		// Gap number
 
-		Assert.assertEquals(getLong(7) ^ 1, SecureRandomUtil.nextLong());
+		Assert.assertEquals(getLong(4) ^ 1, SecureRandomUtil.nextLong());
 	}
 
 	protected long getLong(int offset) {
 		byte[] bytes = ReflectionTestUtil.getFieldValue(
-			SecureRandomUtil.class, "_BYTES");
+			SecureRandomUtil.class, "_bytes");
 
 		return BigEndianCodec.getLong(bytes, offset);
 	}
 
 	protected SecureRandom installPredictableRandom() {
-		ReflectionTestUtil.setFieldValue(
-			SecureRandomUtil.class, "_gapRandom",
-			new Random() {
+		_counter = new AtomicLong();
 
-				@Override
-				public long nextLong() {
-					return _counter.getAndIncrement();
-				}
+		ThreadLocalRandom threadLocalRandom = Mockito.mock(
+			ThreadLocalRandom.class);
 
-				private static final long serialVersionUID = 1L;
+		Mockito.when(
+			threadLocalRandom.nextLong()
+		).thenAnswer(
+			invocation -> _counter.getAndIncrement()
+		);
 
-				private final AtomicLong _counter = new AtomicLong();
-
-			});
+		_threadLocalRandomMockedStatic.when(
+			ThreadLocalRandom::current
+		).thenReturn(
+			threadLocalRandom
+		);
 
 		SecureRandom predictableRandom = new PredictableRandom();
 
@@ -436,7 +482,7 @@ public class SecureRandomUtilTest {
 			SecureRandomUtil.class, "_random", predictableRandom);
 
 		byte[] bytes = ReflectionTestUtil.getFieldValue(
-			SecureRandomUtil.class, "_BYTES");
+			SecureRandomUtil.class, "_bytes");
 
 		predictableRandom.nextBytes(bytes);
 
@@ -448,8 +494,18 @@ public class SecureRandomUtilTest {
 			SecureRandomUtil.class, "_reload", new Class<?>[] {int.class}, 0);
 	}
 
+	private int _getIndexOffset(int bufferSize) {
+		return (bufferSize + 1) % 7;
+	}
+
 	private static final String _KEY_BUFFER_SIZE =
 		SecureRandomUtil.class.getName() + ".buffer.size";
+
+	private static final MockedStatic<ThreadLocalRandom>
+		_threadLocalRandomMockedStatic = Mockito.mockStatic(
+			ThreadLocalRandom.class);
+
+	private AtomicLong _counter;
 
 	private static class PredictableRandom extends SecureRandom {
 

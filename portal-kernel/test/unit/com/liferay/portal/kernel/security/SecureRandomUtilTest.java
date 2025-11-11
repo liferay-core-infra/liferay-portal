@@ -17,6 +17,10 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -86,6 +90,44 @@ public class SecureRandomUtilTest {
 	}
 
 	@Test
+	public void testHighConcurrency() throws Exception {
+		Set<String> next = ConcurrentHashMap.newKeySet();
+
+		Runtime runtime = Runtime.getRuntime();
+
+		ExecutorService executorService = Executors.newFixedThreadPool(
+			runtime.availableProcessors());
+
+		List<Future<Void>> list = new ArrayList<>();
+
+		AtomicInteger duplicates = new AtomicInteger();
+
+		for (int i = 0; i < 250000; i++) {
+			list.add(
+				executorService.submit(
+					() -> {
+						String generate =
+							SecureRandomUtil.nextLong() + "-" +
+								SecureRandomUtil.nextLong();
+
+						boolean added = next.add(generate);
+
+						if (!added) {
+							duplicates.incrementAndGet();
+						}
+
+						return null;
+					}));
+		}
+
+		for (Future<Void> future : list) {
+			future.get();
+		}
+
+		Assert.assertEquals(0, duplicates.get());
+	}
+
+	@Test
 	public void testInitialization() {
 		System.setProperty(_KEY_BUFFER_SIZE, "10");
 
@@ -95,7 +137,7 @@ public class SecureRandomUtilTest {
 				SecureRandomUtil.class, "_BUFFER_SIZE"));
 
 		byte[] bytes = ReflectionTestUtil.getFieldValue(
-			SecureRandomUtil.class, "_BYTES");
+			SecureRandomUtil.class, "_bytes");
 
 		Assert.assertEquals(Arrays.toString(bytes), 1024, bytes.length);
 	}

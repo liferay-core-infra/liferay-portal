@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.util.SystemProperties;
 import java.security.SecureRandom;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -84,14 +85,14 @@ public class SecureRandomUtil {
 		if (_reloadingFlag.compareAndSet(false, true)) {
 			_random.nextBytes(_BYTES);
 
-			_gapRandom.setSeed(_random.nextLong());
 
 			_index.set(0);
 
 			_reloadingFlag.set(false);
 		}
 
-		return _gapRandom.nextLong() ^
+		return ThreadLocalRandom.current(
+		).nextLong() ^
 			   BigEndianCodec.getLong(
 				   _BYTES, Math.abs(index % (_BUFFER_SIZE - 7)));
 	}
@@ -102,7 +103,6 @@ public class SecureRandomUtil {
 
 	private static final int _MIN_BUFFER_SIZE = 1024;
 
-	private static final Random _gapRandom = new Random();
 	private static final AtomicInteger _index = new AtomicInteger();
 	private static final Random _random = new SecureRandom();
 	private static final AtomicBoolean _reloadingFlag = new AtomicBoolean();
@@ -122,7 +122,6 @@ public class SecureRandomUtil {
 
 		_random.nextBytes(_BYTES);
 
-		_gapRandom.setSeed(_random.nextLong());
 	}
 
 }

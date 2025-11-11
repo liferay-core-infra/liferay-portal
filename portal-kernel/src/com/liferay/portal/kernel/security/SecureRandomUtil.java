@@ -87,7 +87,7 @@ public class SecureRandomUtil {
 
 			_random.nextBytes(bytes);
 
-			_index.set(0);
+			_index.set((index + 1) % 7);
 
 			_bytes = bytes;
 

@@ -1,12 +1,12 @@
 /**
- * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2025 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.liferay.headless.admin.site.client.dto.v1_0;
 
 import com.liferay.headless.admin.site.client.function.UnsafeSupplier;
-import com.liferay.headless.admin.site.client.serdes.v1_0.FragmentFieldBackgroundImageSerDes;
+import com.liferay.headless.admin.site.client.serdes.v1_0.BackgroundImageFragmentEditableElementValueSerDes;
 
 import jakarta.annotation.Generated;
 
@@ -19,10 +19,13 @@ import java.util.Objects;
  * @generated
  */
 @Generated("")
-public class FragmentFieldBackgroundImage implements Cloneable, Serializable {
+public class BackgroundImageFragmentEditableElementValue
+	extends FragmentEditableElementValue implements Cloneable, Serializable {
 
-	public static FragmentFieldBackgroundImage toDTO(String json) {
-		return FragmentFieldBackgroundImageSerDes.toDTO(json);
+	public static BackgroundImageFragmentEditableElementValue toDTO(
+		String json) {
+
+		return BackgroundImageFragmentEditableElementValueSerDes.toDTO(json);
 	}
 
 	public FragmentImage getBackgroundFragmentImage() {
@@ -51,10 +54,10 @@ public class FragmentFieldBackgroundImage implements Cloneable, Serializable {
 	protected FragmentImage backgroundFragmentImage;
 
 	@Override
-	public FragmentFieldBackgroundImage clone()
+	public BackgroundImageFragmentEditableElementValue clone()
 		throws CloneNotSupportedException {
 
-		return (FragmentFieldBackgroundImage)super.clone();
+		return (BackgroundImageFragmentEditableElementValue)super.clone();
 	}
 
 	@Override
@@ -63,15 +66,16 @@ public class FragmentFieldBackgroundImage implements Cloneable, Serializable {
 			return true;
 		}
 
-		if (!(object instanceof FragmentFieldBackgroundImage)) {
+		if (!(object instanceof BackgroundImageFragmentEditableElementValue)) {
 			return false;
 		}
 
-		FragmentFieldBackgroundImage fragmentFieldBackgroundImage =
-			(FragmentFieldBackgroundImage)object;
+		BackgroundImageFragmentEditableElementValue
+			backgroundImageFragmentEditableElementValue =
+				(BackgroundImageFragmentEditableElementValue)object;
 
 		return Objects.equals(
-			toString(), fragmentFieldBackgroundImage.toString());
+			toString(), backgroundImageFragmentEditableElementValue.toString());
 	}
 
 	@Override
@@ -82,7 +86,7 @@ public class FragmentFieldBackgroundImage implements Cloneable, Serializable {
 	}
 
 	public String toString() {
-		return FragmentFieldBackgroundImageSerDes.toJSON(this);
+		return BackgroundImageFragmentEditableElementValueSerDes.toJSON(this);
 	}
 
 }

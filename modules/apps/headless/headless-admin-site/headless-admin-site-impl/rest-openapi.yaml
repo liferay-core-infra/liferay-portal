@@ -20,6 +20,50 @@ components:
                         -   $ref: "#/components/schemas/SitePageActionExecutionResult"
                         -   $ref: "#/components/schemas/URLActionExecutionResult"
             type: object
+        ActionFragmentEditableElementValue:
+            allOf:
+                -   $ref: "#/components/schemas/FragmentEditableElementValue"
+                -   properties:
+                        action:
+                            # @review
+                            description:
+                                The fragment editable element's action. Must be mapped to an external value.
+                            oneOf:
+                                -   $ref: "#/components/schemas/FragmentMappedValue"
+                        onError:
+                            $ref: "#/components/schemas/ActionExecutionResult"
+                            # @review
+                            description:
+                                The action execution result in case the action fails.
+                        onSuccess:
+                            $ref: "#/components/schemas/ActionExecutionResult"
+                            # @review
+                            description:
+                                The action execution result in case the action succeeds.
+                        text:
+                            # @review
+                            description:
+                                The fragment editable element's text.
+                            oneOf:
+                                -   $ref: "#/components/schemas/FragmentInlineValue"
+                                -   $ref: "#/components/schemas/FragmentMappedValue"
+            # @review
+            description:
+                A fragment editable element value of type action.
+            type: object
+        BackgroundImageFragmentEditableElementValue:
+            allOf:
+                -   $ref: "#/components/schemas/FragmentEditableElementValue"
+                -   properties:
+                        backgroundFragmentImage:
+                            $ref: "#/components/schemas/FragmentImage"
+                            # @review
+                            description:
+                                The fragment editable element's background image.
+            # @review
+            description:
+                A fragment editable element value of type background image.
+            type: object
         BasicLayout:
             properties:
                 align:
@@ -1175,113 +1219,43 @@ components:
             # @review
             description:
                 The page element definition of a fragment drop zone.
-        FragmentField:
+        FragmentEditableElement:
             # @review
             description:
-                A fragment field.
+                A fragment editable element.
             properties:
+                fragmentEditableElementValue:
+                    $ref: "#/components/schemas/FragmentEditableElementValue"
                 id:
                     # @review
                     description:
-                        The fragment field's ID.
+                        The fragment element's ID.
                     type: string
-                value:
-                    anyOf:
-                        -   $ref: "#/components/schemas/FragmentFieldAction"
-                        -   $ref: "#/components/schemas/FragmentFieldBackgroundImage"
-                        -   $ref: "#/components/schemas/FragmentFieldHTML"
-                        -   $ref: "#/components/schemas/FragmentFieldImage"
-                        -   $ref: "#/components/schemas/FragmentFieldText"
-                    # @review
-                    description:
-                        The fragment field's value.
             type: object
-        FragmentFieldAction:
+        FragmentEditableElementValue:
             # @review
             description:
-                A fragment field with an action.
+                The fragment editable element value.
+            discriminator:
+                mapping:
+                    Action: "#/components/schemas/ActionFragmentEditableElementValue"
+                    BackgroundImage: "#/components/schemas/BackgroundImageFragmentEditableElementValue"
+                    HTML: "#/components/schemas/HTMLFragmentEditableElementValue"
+                    Image: "#/components/schemas/ImageFragmentEditableElementValue"
+                    Text: "#/components/schemas/TextFragmentEditableElementValue"
+                propertyName: type
             properties:
-                action:
+                type:
                     # @review
                     description:
-                        The fragment field's action. Must be mapped to an external value.
-                    oneOf:
-                        -   $ref: "#/components/schemas/FragmentMappedValue"
-                onError:
-                    $ref: "#/components/schemas/ActionExecutionResult"
-                    # @review
-                    description:
-                        The action execution result in case the action fails.
-                onSuccess:
-                    $ref: "#/components/schemas/ActionExecutionResult"
-                    # @review
-                    description:
-                        The action execution result in case the action succeeds.
-                text:
-                    # @review
-                    description:
-                        The fragment field's text.
-                    oneOf:
-                        -   $ref: "#/components/schemas/FragmentInlineValue"
-                        -   $ref: "#/components/schemas/FragmentMappedValue"
-            type: object
-        FragmentFieldBackgroundImage:
-            # @review
-            description:
-                A fragment field with a background image.
-            properties:
-                backgroundFragmentImage:
-                    $ref: "#/components/schemas/FragmentImage"
-                    # @review
-                    description:
-                        The fragment field's background image.
-            type: object
-        FragmentFieldHTML:
-            # @review
-            description:
-                A fragment field with HTML.
-            properties:
-                html:
-                    # @review
-                    description:
-                        The fragment field's HTML. Can be inline or mapped to an external value.
-                    oneOf:
-                        -   $ref: "#/components/schemas/FragmentInlineValue"
-                        -   $ref: "#/components/schemas/FragmentMappedValue"
-            type: object
-        FragmentFieldImage:
-            # @review
-            description:
-                A fragment field with an image.
-            properties:
-                fragmentImage:
-                    $ref: "#/components/schemas/FragmentImage"
-                    # @review
-                    description:
-                        The fragment field's image.
-                fragmentLink:
-                    $ref: "#/components/schemas/FragmentLink"
-                    # @review
-                    description:
-                        A link to a fragment.
-            type: object
-        FragmentFieldText:
-            # @review
-            description:
-                A fragment field with text.
-            properties:
-                fragmentLink:
-                    $ref: "#/components/schemas/FragmentLink"
-                    # @review
-                    description:
-                        A link to a fragment.
-                text:
-                    # @review
-                    description:
-                        The fragment field's text.
-                    oneOf:
-                        -   $ref: "#/components/schemas/FragmentInlineValue"
-                        -   $ref: "#/components/schemas/FragmentMappedValue"
+                        The fragment editable element's type.
+                    enum:
+                        -   Action
+                        -   BackgroundImage
+                        -   HTML
+                        -   Image
+                        -   Text
+                    type: string
             type: object
         FragmentImage:
             # @review
@@ -1395,12 +1369,12 @@ components:
                             description:
                                 The fragment configuration field values of the fragment instance.
                             type: object
-                        fragmentFields:
+                        fragmentEditableElements:
                             # @review
                             description:
-                                The fragment field values of the the fragment instance.
+                                The fragment editable elements of the the fragment instance.
                             items:
-                                $ref: "#/components/schemas/FragmentField"
+                                $ref: "#/components/schemas/FragmentEditableElement"
                             type: array
                         fragmentInstanceExternalReferenceCode:
                             # @review
@@ -2057,6 +2031,21 @@ components:
                 -   gridViewportDefinition
                 -   id
             type: object
+        HTMLFragmentEditableElementValue:
+            allOf:
+                -   $ref: "#/components/schemas/FragmentEditableElementValue"
+                -   properties:
+                        html:
+                            # @review
+                            description:
+                                The fragment editable element's HTML. Can be inline or mapped to an external value.
+                            oneOf:
+                                -   $ref: "#/components/schemas/FragmentInlineValue"
+                                -   $ref: "#/components/schemas/FragmentMappedValue"
+            # @review
+            description:
+                A fragment editable element value of type HTML.
+            type: object
         HrefURLValue:
             allOf:
                 -   $ref: "#/components/schemas/URLValue"
@@ -2069,6 +2058,24 @@ components:
                 htmlTag:
                     enum: [Article, Aside, Div, Footer, Header, Nav, Section]
                     type: string
+            type: object
+        ImageFragmentEditableElementValue:
+            allOf:
+                -   $ref: "#/components/schemas/FragmentEditableElementValue"
+                -   properties:
+                        fragmentImage:
+                            $ref: "#/components/schemas/FragmentImage"
+                            # @review
+                            description:
+                                The fragment editable element's image.
+                        fragmentLink:
+                            $ref: "#/components/schemas/FragmentLink"
+                            # @review
+                            description:
+                                A link to a fragment.
+            # @review
+            description:
+                A fragment editable element value of type image.
             type: object
         ItemExternalReference:
             # @review
@@ -3601,6 +3608,69 @@ components:
             # @review
             description:
                 The value of a fragment configuration field of type text.
+            type: object
+        TextFragmentEditableElementValue:
+            allOf:
+                -   $ref: "#/components/schemas/FragmentEditableElementValue"
+                -   properties:
+                        fragmentLink:
+                            $ref: "#/components/schemas/FragmentLink"
+                            # @review
+                            description:
+                                The fragment link of a text fragment editable element.
+                        textFragmentValue:
+                            $ref: "#/components/schemas/TextFragmentValue"
+                            # @review
+                            description:
+                                The fragment editable element's text.
+            # @review
+            description:
+                A fragment editable element of type text.
+            type: object
+        TextFragmentValue:
+            # @review
+            description:
+                The value of a fragment text element.
+            discriminator:
+                mapping:
+                    Inline: "#/components/schemas/TextInlineFragmentValue"
+                    Mapped: "#/components/schemas/TextMappedFragmentValue"
+                propertyName: type
+            properties:
+                type:
+                    # @review
+                    description:
+                        Whether the value is set inline or mapped.
+                    enum: [Inline, Mapped]
+                    type: string
+            type: object
+        TextInlineFragmentValue:
+            # @review
+            allOf:
+                -   properties:
+                        fragmentInlineValue:
+                            $ref: "#/components/schemas/FragmentInlineValue"
+                            # @review
+                            description:
+                                The fragment inline value.
+                -   $ref: "#/components/schemas/TextFragmentValue"
+            # @review
+            description:
+                An inline value of a fragment text element.
+            type: object
+        TextMappedFragmentValue:
+            # @review
+            allOf:
+                -   properties:
+                        fragmentMappedValue:
+                            $ref: "#/components/schemas/FragmentMappedValue"
+                            # @review
+                            description:
+                                The fragment mapped value.
+                -   $ref: "#/components/schemas/TextFragmentValue"
+            # @review
+            description:
+                A mapped value of a fragment text element.
             type: object
         URLActionExecutionResult:
             # @review

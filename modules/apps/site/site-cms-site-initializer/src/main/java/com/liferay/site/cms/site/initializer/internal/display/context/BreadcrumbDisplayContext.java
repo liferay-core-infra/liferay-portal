@@ -6,6 +6,7 @@
 package com.liferay.site.cms.site.initializer.internal.display.context;
 
 import com.liferay.depot.model.DepotEntry;
+import com.liferay.exportimport.constants.ExportImportPortletKeys;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -23,12 +24,16 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.cms.site.initializer.internal.constants.CMSSpaceConstants;
 import com.liferay.site.cms.site.initializer.internal.util.ActionUtil;
 import com.liferay.site.cms.site.initializer.internal.util.PermissionUtil;
 import com.liferay.taglib.security.PermissionsURLTag;
+
+import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -87,6 +92,29 @@ public class BreadcrumbDisplayContext {
 								"symbolLeft", "cog"
 							));
 					}
+
+					unsafeConsumer.accept(
+						JSONUtil.put(
+							"href",
+							_getControlPanelPortletURL(
+								ExportImportPortletKeys.EXPORT)
+						).put(
+							"label",
+							LanguageUtil.get(_httpServletRequest, "export")
+						).put(
+							"symbolLeft", "export"
+						));
+					unsafeConsumer.accept(
+						JSONUtil.put(
+							"href",
+							_getControlPanelPortletURL(
+								ExportImportPortletKeys.IMPORT)
+						).put(
+							"label",
+							LanguageUtil.get(_httpServletRequest, "import")
+						).put(
+							"symbolLeft", "import"
+						));
 
 					if (permissionChecker.hasPermission(
 							group, DepotEntry.class.getName(),
@@ -203,6 +231,16 @@ public class BreadcrumbDisplayContext {
 		).put(
 			"size", _size
 		).build();
+	}
+
+	private String _getControlPanelPortletURL(String portletId)
+		throws Exception {
+
+		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+			_httpServletRequest, _getGroup(), portletId, 0, 0,
+			PortletRequest.RENDER_PHASE);
+
+		return portletURL.toString();
 	}
 
 	private Group _getGroup() throws Exception {

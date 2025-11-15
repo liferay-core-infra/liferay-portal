@@ -7,7 +7,6 @@ package com.liferay.headless.admin.site.internal.resource.v1_0.layout.structure.
 
 import com.liferay.fragment.constants.FragmentConstants;
 import com.liferay.fragment.contributor.util.FragmentCollectionContributorRegistryUtil;
-import com.liferay.fragment.entry.processor.constants.FragmentEntryProcessorConstants;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.renderer.FragmentRenderer;
@@ -19,6 +18,7 @@ import com.liferay.headless.admin.site.dto.v1_0.FragmentInstancePageElementDefin
 import com.liferay.headless.admin.site.dto.v1_0.FragmentItemExternalReference;
 import com.liferay.headless.admin.site.dto.v1_0.FragmentReference;
 import com.liferay.headless.admin.site.dto.v1_0.PageElement;
+import com.liferay.headless.admin.site.internal.dto.v1_0.util.FragmentEditableElementUtil;
 import com.liferay.headless.admin.site.internal.dto.v1_0.util.ItemScopeUtil;
 import com.liferay.headless.admin.site.internal.resource.v1_0.layout.structure.item.importer.context.LayoutStructureItemImporterContext;
 import com.liferay.headless.admin.site.internal.resource.v1_0.layout.structure.item.importer.util.FragmentConfigurationFieldValuesUtil;
@@ -174,15 +174,21 @@ public class FragmentLayoutStructureItemImporter
 				layoutStructureItemImporterContext)
 		throws Exception {
 
-		return JSONUtil.put(
-			FragmentEntryProcessorConstants.
-				KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR,
+		return JSONUtil.merge(
 			FragmentConfigurationFieldValuesUtil.
-				getFreeMarkerFragmentEntryProcessorJSONObject(
+				getFragmentConfigurationFieldValuesEditableValuesJSONObject(
 					fragmentInstancePageElementDefinition.getConfiguration(),
 					fragmentInstancePageElementDefinition.
 						getFragmentConfigurationFieldValues(),
-					layoutStructureItemImporterContext)
+					layoutStructureItemImporterContext),
+			FragmentEditableElementUtil.
+				getFragmentEditableElementsEditableValuesJSONObject(
+					layoutStructureItemImporterContext.getCompanyId(),
+					fragmentInstancePageElementDefinition.
+						getFragmentEditableElements(),
+					layoutStructureItemImporterContext.
+						getInfoItemServiceRegistry(),
+					layoutStructureItemImporterContext.getGroupId())
 		).toString();
 	}
 

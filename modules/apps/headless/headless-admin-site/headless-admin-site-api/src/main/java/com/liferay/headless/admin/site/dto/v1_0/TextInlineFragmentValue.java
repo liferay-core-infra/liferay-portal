@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2025 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
@@ -36,87 +35,54 @@ import java.util.function.Supplier;
  * @generated
  */
 @Generated("")
-@GraphQLName(description = "A fragment field.", value = "FragmentField")
+@GraphQLName(
+	description = "An inline value of a fragment text element.",
+	value = "TextInlineFragmentValue"
+)
 @JsonFilter("Liferay.Vulcan")
-@XmlRootElement(name = "FragmentField")
-public class FragmentField implements Serializable {
+@XmlRootElement(name = "TextInlineFragmentValue")
+public class TextInlineFragmentValue
+	extends TextFragmentValue implements Serializable {
 
-	public static FragmentField toDTO(String json) {
-		return ObjectMapperUtil.readValue(FragmentField.class, json);
+	public static TextInlineFragmentValue toDTO(String json) {
+		return ObjectMapperUtil.readValue(TextInlineFragmentValue.class, json);
 	}
 
-	public static FragmentField unsafeToDTO(String json) {
-		return ObjectMapperUtil.unsafeReadValue(FragmentField.class, json);
+	public static TextInlineFragmentValue unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(
+			TextInlineFragmentValue.class, json);
 	}
 
 	@io.swagger.v3.oas.annotations.media.Schema(
-		description = "The fragment field's ID."
-	)
-	public String getId() {
-		if (_idSupplier != null) {
-			id = _idSupplier.get();
-
-			_idSupplier = null;
-		}
-
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-
-		_idSupplier = null;
-	}
-
-	@JsonIgnore
-	public void setId(UnsafeSupplier<String, Exception> idUnsafeSupplier) {
-		_idSupplier = () -> {
-			try {
-				return idUnsafeSupplier.get();
-			}
-			catch (RuntimeException runtimeException) {
-				throw runtimeException;
-			}
-			catch (Exception exception) {
-				throw new RuntimeException(exception);
-			}
-		};
-	}
-
-	@GraphQLField(description = "The fragment field's ID.")
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String id;
-
-	@JsonIgnore
-	private Supplier<String> _idSupplier;
-
-	@io.swagger.v3.oas.annotations.media.Schema(
-		description = "The fragment field's value."
+		description = "The fragment inline value."
 	)
 	@Valid
-	public Object getValue() {
-		if (_valueSupplier != null) {
-			value = _valueSupplier.get();
+	public FragmentInlineValue getFragmentInlineValue() {
+		if (_fragmentInlineValueSupplier != null) {
+			fragmentInlineValue = _fragmentInlineValueSupplier.get();
 
-			_valueSupplier = null;
+			_fragmentInlineValueSupplier = null;
 		}
 
-		return value;
+		return fragmentInlineValue;
 	}
 
-	public void setValue(Object value) {
-		this.value = value;
+	public void setFragmentInlineValue(
+		FragmentInlineValue fragmentInlineValue) {
 
-		_valueSupplier = null;
+		this.fragmentInlineValue = fragmentInlineValue;
+
+		_fragmentInlineValueSupplier = null;
 	}
 
 	@JsonIgnore
-	public void setValue(
-		UnsafeSupplier<Object, Exception> valueUnsafeSupplier) {
+	public void setFragmentInlineValue(
+		UnsafeSupplier<FragmentInlineValue, Exception>
+			fragmentInlineValueUnsafeSupplier) {
 
-		_valueSupplier = () -> {
+		_fragmentInlineValueSupplier = () -> {
 			try {
-				return valueUnsafeSupplier.get();
+				return fragmentInlineValueUnsafeSupplier.get();
 			}
 			catch (RuntimeException runtimeException) {
 				throw runtimeException;
@@ -127,12 +93,12 @@ public class FragmentField implements Serializable {
 		};
 	}
 
-	@GraphQLField(description = "The fragment field's value.")
+	@GraphQLField(description = "The fragment inline value.")
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Object value;
+	protected FragmentInlineValue fragmentInlineValue;
 
 	@JsonIgnore
-	private Supplier<Object> _valueSupplier;
+	private Supplier<FragmentInlineValue> _fragmentInlineValueSupplier;
 
 	@Override
 	public boolean equals(Object object) {
@@ -140,13 +106,14 @@ public class FragmentField implements Serializable {
 			return true;
 		}
 
-		if (!(object instanceof FragmentField)) {
+		if (!(object instanceof TextInlineFragmentValue)) {
 			return false;
 		}
 
-		FragmentField fragmentField = (FragmentField)object;
+		TextInlineFragmentValue textInlineFragmentValue =
+			(TextInlineFragmentValue)object;
 
-		return Objects.equals(toString(), fragmentField.toString());
+		return Objects.equals(toString(), textInlineFragmentValue.toString());
 	}
 
 	@Override
@@ -161,42 +128,30 @@ public class FragmentField implements Serializable {
 
 		sb.append("{");
 
-		String id = getId();
+		FragmentInlineValue fragmentInlineValue = getFragmentInlineValue();
 
-		if (id != null) {
+		if (fragmentInlineValue != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"id\": ");
+			sb.append("\"fragmentInlineValue\": ");
 
-			sb.append("\"");
-
-			sb.append(_escape(id));
-
-			sb.append("\"");
+			sb.append(String.valueOf(fragmentInlineValue));
 		}
 
-		Object value = getValue();
+		Type type = getType();
 
-		if (value != null) {
+		if (type != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"value\": ");
+			sb.append("\"type\": ");
 
-			if (value instanceof Map) {
-				sb.append(JSONFactoryUtil.createJSONObject((Map<?, ?>)value));
-			}
-			else if (value instanceof String) {
-				sb.append("\"");
-				sb.append(_escape((String)value));
-				sb.append("\"");
-			}
-			else {
-				sb.append(value);
-			}
+			sb.append("\"");
+			sb.append(type);
+			sb.append("\"");
 		}
 
 		sb.append("}");
@@ -206,7 +161,7 @@ public class FragmentField implements Serializable {
 
 	@io.swagger.v3.oas.annotations.media.Schema(
 		accessMode = io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY,
-		defaultValue = "com.liferay.headless.admin.site.dto.v1_0.FragmentField",
+		defaultValue = "com.liferay.headless.admin.site.dto.v1_0.TextInlineFragmentValue",
 		name = "x-class-name"
 	)
 	public String xClassName;

@@ -25,6 +25,7 @@ import com.liferay.headless.admin.site.client.dto.v1_0.FormContainerPageElementD
 import com.liferay.headless.admin.site.client.dto.v1_0.FormStepContainerPageElementDefinition;
 import com.liferay.headless.admin.site.client.dto.v1_0.FormStepPageElementDefinition;
 import com.liferay.headless.admin.site.client.dto.v1_0.FragmentDropZonePageElementDefinition;
+import com.liferay.headless.admin.site.client.dto.v1_0.FragmentEditableElement;
 import com.liferay.headless.admin.site.client.dto.v1_0.FragmentInstancePageElementDefinition;
 import com.liferay.headless.admin.site.client.dto.v1_0.FragmentItemExternalReference;
 import com.liferay.headless.admin.site.client.dto.v1_0.GridPageElementDefinition;
@@ -61,6 +62,7 @@ public class PageElementsTestUtil {
 	public static FragmentInstancePageElementDefinition
 		getFragmentInstancePageElementDefinition(
 			Map<String, Object> configurationValuesMap,
+			FragmentEditableElement[] curFragmentEditableElements,
 			FragmentEntry fragmentEntry, long scopeGroupId) {
 
 		return new FragmentInstancePageElementDefinition() {
@@ -78,6 +80,7 @@ public class PageElementsTestUtil {
 								JSONFactoryUtil.createJSONObject(
 									fragmentEntry.getConfiguration()),
 								configurationValuesMap, scopeGroupId));
+				setFragmentEditableElements(() -> curFragmentEditableElements);
 				setFragmentInstanceExternalReferenceCode(
 					RandomTestUtil::randomString);
 				setFragmentReference(
@@ -125,6 +128,7 @@ public class PageElementsTestUtil {
 	public static FragmentInstancePageElementDefinition
 		getFragmentInstancePageElementDefinition(
 			Map<String, Object> configurationValuesMap,
+			FragmentEditableElement[] curFragmentEditableElements,
 			FragmentRenderer fragmentRenderer, long scopeGroupId) {
 
 		JSONObject configurationJSONObject =
@@ -147,6 +151,7 @@ public class PageElementsTestUtil {
 							getFragmentConfigurationFieldValuesMap(
 								configurationJSONObject, configurationValuesMap,
 								scopeGroupId));
+				setFragmentEditableElements(() -> curFragmentEditableElements);
 				setFragmentInstanceExternalReferenceCode(
 					RandomTestUtil::randomString);
 				setFragmentReference(
@@ -181,7 +186,8 @@ public class PageElementsTestUtil {
 
 		if (fragmentEntry != null) {
 			return getFragmentInstancePageElementDefinition(
-				configurationValuesMap, fragmentEntry, scopeGroupId);
+				configurationValuesMap, new FragmentEditableElement[0],
+				fragmentEntry, scopeGroupId);
 		}
 
 		FragmentRenderer fragmentRenderer =
@@ -189,7 +195,8 @@ public class PageElementsTestUtil {
 
 		if (fragmentRenderer != null) {
 			return getFragmentInstancePageElementDefinition(
-				configurationValuesMap, fragmentRenderer, scopeGroupId);
+				configurationValuesMap, new FragmentEditableElement[0],
+				fragmentRenderer, scopeGroupId);
 		}
 
 		return null;

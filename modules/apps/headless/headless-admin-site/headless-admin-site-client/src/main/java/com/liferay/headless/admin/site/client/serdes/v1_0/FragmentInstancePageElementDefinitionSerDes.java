@@ -7,7 +7,7 @@ package com.liferay.headless.admin.site.client.serdes.v1_0;
 
 import com.liferay.headless.admin.site.client.dto.v1_0.CustomCSSViewport;
 import com.liferay.headless.admin.site.client.dto.v1_0.FragmentConfigurationFieldValue;
-import com.liferay.headless.admin.site.client.dto.v1_0.FragmentField;
+import com.liferay.headless.admin.site.client.dto.v1_0.FragmentEditableElement;
 import com.liferay.headless.admin.site.client.dto.v1_0.FragmentInstancePageElementDefinition;
 import com.liferay.headless.admin.site.client.dto.v1_0.FragmentViewport;
 import com.liferay.headless.admin.site.client.dto.v1_0.WidgetInstance;
@@ -219,27 +219,29 @@ public class FragmentInstancePageElementDefinitionSerDes {
 						getFragmentConfigurationFieldValues()));
 		}
 
-		if (fragmentInstancePageElementDefinition.getFragmentFields() != null) {
+		if (fragmentInstancePageElementDefinition.
+				getFragmentEditableElements() != null) {
+
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"fragmentFields\": ");
+			sb.append("\"fragmentEditableElements\": ");
 
 			sb.append("[");
 
 			for (int i = 0;
 				 i < fragmentInstancePageElementDefinition.
-					 getFragmentFields().length;
+					 getFragmentEditableElements().length;
 				 i++) {
 
 				sb.append(
 					String.valueOf(
 						fragmentInstancePageElementDefinition.
-							getFragmentFields()[i]));
+							getFragmentEditableElements()[i]));
 
 				if ((i + 1) < fragmentInstancePageElementDefinition.
-						getFragmentFields().length) {
+						getFragmentEditableElements().length) {
 
 					sb.append(", ");
 				}
@@ -575,14 +577,17 @@ public class FragmentInstancePageElementDefinitionSerDes {
 						getFragmentConfigurationFieldValues()));
 		}
 
-		if (fragmentInstancePageElementDefinition.getFragmentFields() == null) {
-			map.put("fragmentFields", null);
+		if (fragmentInstancePageElementDefinition.
+				getFragmentEditableElements() == null) {
+
+			map.put("fragmentEditableElements", null);
 		}
 		else {
 			map.put(
-				"fragmentFields",
+				"fragmentEditableElements",
 				String.valueOf(
-					fragmentInstancePageElementDefinition.getFragmentFields()));
+					fragmentInstancePageElementDefinition.
+						getFragmentEditableElements()));
 		}
 
 		if (fragmentInstancePageElementDefinition.
@@ -778,7 +783,9 @@ public class FragmentInstancePageElementDefinitionSerDes {
 
 				return true;
 			}
-			else if (Objects.equals(jsonParserFieldName, "fragmentFields")) {
+			else if (Objects.equals(
+						jsonParserFieldName, "fragmentEditableElements")) {
+
 				return false;
 			}
 			else if (Objects.equals(
@@ -904,21 +911,28 @@ public class FragmentInstancePageElementDefinitionSerDes {
 								jsonParserFieldValue);
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "fragmentFields")) {
+			else if (Objects.equals(
+						jsonParserFieldName, "fragmentEditableElements")) {
+
 				if (jsonParserFieldValue != null) {
 					Object[] jsonParserFieldValues =
 						(Object[])jsonParserFieldValue;
 
-					FragmentField[] fragmentFieldsArray =
-						new FragmentField[jsonParserFieldValues.length];
+					FragmentEditableElement[] fragmentEditableElementsArray =
+						new FragmentEditableElement
+							[jsonParserFieldValues.length];
 
-					for (int i = 0; i < fragmentFieldsArray.length; i++) {
-						fragmentFieldsArray[i] = FragmentFieldSerDes.toDTO(
-							(String)jsonParserFieldValues[i]);
+					for (int i = 0; i < fragmentEditableElementsArray.length;
+						 i++) {
+
+						fragmentEditableElementsArray[i] =
+							FragmentEditableElementSerDes.toDTO(
+								(String)jsonParserFieldValues[i]);
 					}
 
-					fragmentInstancePageElementDefinition.setFragmentFields(
-						fragmentFieldsArray);
+					fragmentInstancePageElementDefinition.
+						setFragmentEditableElements(
+							fragmentEditableElementsArray);
 				}
 			}
 			else if (Objects.equals(

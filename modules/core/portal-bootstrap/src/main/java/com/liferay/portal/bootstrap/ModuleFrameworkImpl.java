@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.module.framework.ModuleFramework;
@@ -88,6 +89,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.jar.Attributes;
+import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.zip.CRC32;
@@ -935,7 +937,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private void _installBundlesFromDir(
 			String dirPath, Map<Long, Long> checksums,
-			Set<String> fragmentHosts)
+			Set<String> blacklistBundleSymbolicNames, Set<String> fragmentHosts)
 		throws Exception {
 
 		BundleContext bundleContext = _framework.getBundleContext();
@@ -957,7 +959,40 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				continue;
 			}
 
-			try (InputStream inputStream = new FileInputStream(file)) {
+			try (InputStream inputStream = new FileInputStream(file);
+				JarFile jarFile = new JarFile(file)) {
+
+				if (!blacklistBundleSymbolicNames.isEmpty()) {
+					Manifest manifest = jarFile.getManifest();
+
+					Attributes attributes = manifest.getMainAttributes();
+
+					String bundleSymbolicName = attributes.getValue(
+						"Bundle-SymbolicName");
+
+					if (bundleSymbolicName != null) {
+						int index = bundleSymbolicName.indexOf(
+							CharPool.SEMICOLON);
+
+						if (index != -1) {
+							bundleSymbolicName = bundleSymbolicName.substring(
+								0, index);
+						}
+
+						if (blacklistBundleSymbolicNames.contains(
+								bundleSymbolicName)) {
+
+							if (_log.isInfoEnabled()) {
+								_log.info(
+									"Skipping blacklisted bundle " +
+										bundleSymbolicName);
+							}
+
+							continue;
+						}
+					}
+				}
+
 				Bundle bundle = bundleContext.installBundle(
 					location, inputStream);
 
@@ -1056,15 +1091,45 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		Set<String> fragmentHosts = new HashSet<>();
 
+		BundleContext bundleContext = _framework.getBundleContext();
+
+		Object configurationAdmin = bundleContext.getService(
+			bundleContext.getServiceReference(
+				"org.osgi.service.cm.ConfigurationAdmin"));
+
+		Method getConfigurationMethod = ReflectionUtil.getDeclaredMethod(
+			configurationAdmin.getClass(), "getConfiguration", String.class,
+			String.class);
+
+		Object configuration = getConfigurationMethod.invoke(
+			configurationAdmin,
+			"com.liferay.portal.bundle.blacklist.internal.configuration." +
+				"BundleBlacklistConfiguration",
+			StringPool.QUESTION);
+
+		Method getPropertiesMethod = ReflectionUtil.getDeclaredMethod(
+			configuration.getClass(), "getProperties");
+
+		Dictionary<String, Object> dictionary =
+			(Dictionary<String, Object>)getPropertiesMethod.invoke(
+				configuration);
+
+		Set<String> blacklistBundleSymbolicNames = Collections.emptySet();
+
+		if (dictionary != null) {
+			blacklistBundleSymbolicNames = SetUtil.fromArray(
+				(String[])dictionary.get("blacklistBundleSymbolicNames"));
+		}
+
 		_installBundlesFromDir(
-			PropsValues.MODULE_FRAMEWORK_PORTAL_DIR, checksums, fragmentHosts);
+			PropsValues.MODULE_FRAMEWORK_PORTAL_DIR, checksums,
+			blacklistBundleSymbolicNames, fragmentHosts);
 		_installBundlesFromDir(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, checksums, fragmentHosts);
+			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, checksums,
+			blacklistBundleSymbolicNames, fragmentHosts);
 
 		if (!fragmentHosts.isEmpty()) {
 			List<Bundle> refreshBundles = new ArrayList<>();
-
-			BundleContext bundleContext = _framework.getBundleContext();
 
 			for (Bundle bundle : bundleContext.getBundles()) {
 				if (fragmentHosts.remove(bundle.getSymbolicName())) {

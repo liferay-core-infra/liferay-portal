@@ -164,7 +164,7 @@ definition {
 		property test.run.type = "single";
 
 		task ("Given a portlet's jar is blacklisted") {
-			AssertConsoleTextPresent(value1 = "Stopping blacklisted bundle com.liferay.frontend.taglib.clay.sample.web");
+			AssertConsoleTextPresent(value1 = "Skipping blacklisted bundle com.liferay.frontend.taglib.clay.sample.web");
 		}
 
 		task ("When the jar is removed from the blacklist after shutdown") {
@@ -444,7 +444,7 @@ definition {
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
-		AssertConsoleTextPresent(value1 = "Stopping blacklisted bundle com.liferay.gogo.shell.web");
+		AssertConsoleTextPresent(value1 = "Skipping blacklisted bundle com.liferay.gogo.shell.web");
 
 		SystemSettings.openSystemSettingsAdmin();
 
@@ -487,7 +487,7 @@ definition {
 
 		BundleBlacklist.viewProductMenuBlacklistedModule(
 			category = "System",
-			consoleText = "Stopping blacklisted bundle com.liferay.gogo.shell.web",
+			consoleText = "Skipping blacklisted bundle com.liferay.gogo.shell.web",
 			panel = "Control Panel",
 			portlet = "Gogo Shell");
 

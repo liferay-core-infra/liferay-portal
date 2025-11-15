@@ -36,9 +36,6 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
 
-		_jarFileInstallerServiceRegistration = _bundleContext.registerService(
-			FileInstaller.class, new DefaultJarInstaller(), null);
-
 		_serviceTracker = new ServiceTracker<>(
 			bundleContext, ConfigurationAdmin.class.getName(),
 			new ServiceTrackerCustomizer
@@ -52,6 +49,9 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 						bundleContext.getService(serviceReference);
 
 					return Arrays.asList(
+						_bundleContext.registerService(
+							FileInstaller.class,
+							new DefaultJarInstaller(configurationAdmin), null),
 						_bundleContext.registerService(
 							FileInstaller.class.getName(),
 							new ConfigurationFileInstaller(
@@ -103,8 +103,6 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 		_directoryWatcher.close();
 
 		_serviceTracker.close();
-
-		_jarFileInstallerServiceRegistration.unregister();
 	}
 
 	public void updateChecksum(File file) {
@@ -115,8 +113,6 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 
 	private BundleContext _bundleContext;
 	private DirectoryWatcher _directoryWatcher;
-	private ServiceRegistration<FileInstaller>
-		_jarFileInstallerServiceRegistration;
 	private ServiceTracker<ConfigurationAdmin, List<ServiceRegistration<?>>>
 		_serviceTracker;
 

@@ -5,9 +5,12 @@
 
 package com.liferay.data.cleanup.internal.upgrade;
 
+import com.liferay.change.tracking.model.CTCollection;
+import com.liferay.change.tracking.service.CTCollectionLocalService;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.layout.manager.ContentManager;
+import com.liferay.layout.model.LayoutClassedModelUsage;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
@@ -30,6 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author Georgel Pop
@@ -40,6 +45,7 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 	public LayoutClassedModelUsageOrphanDataUpgradeProcess(
 		ClassNameLocalService classNameLocalService,
 		ContentManager contentManager,
+		CTCollectionLocalService ctCollectionLocalService,
 		FragmentEntryLinkLocalService fragmentEntryLinkLocalService,
 		LayoutClassedModelUsageLocalService layoutClassedModelUsageLocalService,
 		LayoutPageTemplateStructureLocalService
@@ -49,6 +55,7 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 
 		_classNameLocalService = classNameLocalService;
 		_contentManager = contentManager;
+		_ctCollectionLocalService = ctCollectionLocalService;
 		_fragmentEntryLinkLocalService = fragmentEntryLinkLocalService;
 		_layoutClassedModelUsageLocalService =
 			layoutClassedModelUsageLocalService;
@@ -64,24 +71,89 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 	}
 
 	private void _cleanUpdateLayoutClassedModelUsages() throws Exception {
-		_processLayoutClassedModelUsage(
+		_processLayoutClassedModelUsages(
 			_classNameLocalService.getClassNameId(
 				FragmentEntryLink.class.getName()),
 			"fragmentEntryLinkId", "FragmentEntryLink",
-			this::_updateFragmentEntryLayoutClassedModelUsage);
-		_processLayoutClassedModelUsage(
+			this::_updateLayoutClassedModelUsagesForFragmentEntryLinks);
+		_processLayoutClassedModelUsages(
 			_classNameLocalService.getClassNameId(
 				LayoutPageTemplateStructure.class.getName()),
 			"layoutPageTemplateStructureId", "LayoutPageTemplateStructure",
-			this::_updateLayoutPageTemplateStructureClassedModelUsage);
+			this::
+				_updateLayoutClassedModelUsagesForLayoutPageTemplateStructure);
 	}
 
-	private void _processLayoutClassedModelUsage(
+	private void _deleteOrphanLayoutClassedModelUsage(
+		CTCollection ctCollection, long ctCollectionId,
+		long layoutClassedModelUsageId) {
+
+		try {
+			LayoutClassedModelUsage layoutClassedModelUsage =
+				_layoutClassedModelUsageLocalService.
+					fetchLayoutClassedModelUsage(layoutClassedModelUsageId);
+
+			if ((layoutClassedModelUsage == null) ||
+				_isCTCollectionReadOnly(ctCollection)) {
+
+				try (PreparedStatement preparedStatement =
+						connection.prepareStatement(
+							"delete from LayoutClassedModelUsage where " +
+								"ctCollectionId = ? and " +
+									"layoutClassedModelUsageId = ?")) {
+
+					preparedStatement.setLong(1, ctCollectionId);
+					preparedStatement.setLong(2, layoutClassedModelUsageId);
+
+					preparedStatement.executeUpdate();
+				}
+			}
+			else {
+				try (SafeCloseable safeCloseable =
+						CTCollectionThreadLocal.
+							setCTCollectionIdWithSafeCloseable(
+								ctCollectionId)) {
+
+					_layoutClassedModelUsageLocalService.
+						deleteLayoutClassedModelUsage(layoutClassedModelUsage);
+				}
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					StringBundler.concat(
+						"Deleted orphaned layout classed model usage ",
+						layoutClassedModelUsageId,
+						" with change tracking collection ID ",
+						ctCollectionId));
+			}
+		}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"Unable to delete orphaned layout classed model usage ",
+						layoutClassedModelUsageId,
+						" with change tracking collection ID ", ctCollectionId),
+					exception);
+			}
+		}
+	}
+
+	private boolean _isCTCollectionReadOnly(CTCollection ctCollection) {
+		if ((ctCollection != null) && ctCollection.isReadOnly()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private void _processLayoutClassedModelUsages(
 			long classNameId, String keyColumnName, String tableName,
 			UnsafeBiConsumer<Long, Long, Exception> unsafeBiConsumer)
 		throws Exception {
 
-		Map<Long, Map<Long, Set<Long>>> groupIdMap = new HashMap<>();
+		Map<Long, Map<Long, Set<Long>>> ctCollectionIdsMaps = new HashMap<>();
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				SQLTransformer.transform(
@@ -105,55 +177,52 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 					long ctCollectionId = resultSet.getLong("ctCollectionId");
 					long layoutClassedModelUsageId = resultSet.getLong(
 						"layoutClassedModelUsageId");
+
+					CTCollection ctCollection =
+						_ctCollectionLocalService.fetchCTCollection(
+							ctCollectionId);
+
+					_deleteOrphanLayoutClassedModelUsage(
+						ctCollection, ctCollectionId,
+						layoutClassedModelUsageId);
+
+					if (_isCTCollectionReadOnly(ctCollection)) {
+						continue;
+					}
+
 					long groupId = resultSet.getLong("groupId");
 					long plid = resultSet.getLong("plid");
 
-					try {
-						Map<Long, Set<Long>> ctCollectionIdMap =
-							groupIdMap.computeIfAbsent(
-								groupId, key -> new HashMap<>());
+					Map<Long, Set<Long>> ctCollectionIdsMap =
+						ctCollectionIdsMaps.computeIfAbsent(
+							groupId, key -> new HashMap<>());
 
-						Set<Long> plids = ctCollectionIdMap.computeIfAbsent(
-							ctCollectionId, key -> new HashSet<>());
+					Set<Long> plids = ctCollectionIdsMap.computeIfAbsent(
+						ctCollectionId, key -> new HashSet<>());
 
-						plids.add(plid);
-
-						_layoutClassedModelUsageLocalService.
-							deleteLayoutClassedModelUsage(
-								layoutClassedModelUsageId);
-					}
-					catch (Exception exception) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								StringBundler.concat(
-									"Unable to delete orphaned layout classed ",
-									"model usage with ID ",
-									layoutClassedModelUsageId),
-								exception);
-						}
-					}
+					plids.add(plid);
 				}
 			}
 		}
 
-		_processLayoutClassedModelUsage(groupIdMap, unsafeBiConsumer);
+		_processLayoutClassedModelUsages(ctCollectionIdsMaps, unsafeBiConsumer);
 	}
 
-	private void _processLayoutClassedModelUsage(
-		Map<Long, Map<Long, Set<Long>>> plidMap,
+	private void _processLayoutClassedModelUsages(
+		Map<Long, Map<Long, Set<Long>>> ctCollectionIdsMaps,
 		UnsafeBiConsumer<Long, Long, Exception> unsafeBiConsumer) {
 
-		for (Map.Entry<Long, Map<Long, Set<Long>>> groupIdEntry :
-				plidMap.entrySet()) {
+		for (Map.Entry<Long, Map<Long, Set<Long>>> entry1 :
+				ctCollectionIdsMaps.entrySet()) {
 
-			long groupId = groupIdEntry.getKey();
-			Map<Long, Set<Long>> ctCollectionIdMap = groupIdEntry.getValue();
+			long groupId = entry1.getKey();
+			Map<Long, Set<Long>> ctCollectionIdsMap = entry1.getValue();
 
-			for (Map.Entry<Long, Set<Long>> ctCollectionIdEntry :
-					ctCollectionIdMap.entrySet()) {
+			for (Map.Entry<Long, Set<Long>> entry2 :
+					ctCollectionIdsMap.entrySet()) {
 
-				long ctCollectionId = ctCollectionIdEntry.getKey();
-				Set<Long> plids = ctCollectionIdEntry.getValue();
+				long ctCollectionId = entry2.getKey();
+				Set<Long> plids = entry2.getValue();
 
 				for (long plid : plids) {
 					try (SafeCloseable safeCloseable =
@@ -162,10 +231,23 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 									ctCollectionId)) {
 
 						unsafeBiConsumer.accept(groupId, plid);
+
+						if (_log.isDebugEnabled()) {
+							_log.debug(
+								StringBundler.concat(
+									"Updated layout classed model usage with ",
+									"change tracking collection ID ",
+									ctCollectionId, " and PLID ", plid));
+						}
 					}
 					catch (Exception exception) {
 						if (_log.isWarnEnabled()) {
-							_log.warn(exception);
+							_log.warn(
+								StringBundler.concat(
+									"Unable to update layout classed model ",
+									"usage with change tracking collection ID ",
+									ctCollectionId, " and PLID ", plid),
+								exception);
 						}
 					}
 				}
@@ -173,35 +255,39 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 		}
 	}
 
-	private void _updateFragmentEntryLayoutClassedModelUsage(
-		long groupId, long plid) {
+	private <T> void _updateLayoutClassedModelUsages(
+		Consumer<T> consumer, Function<T, ?> function, List<T> items,
+		String logPrefix) {
 
-		List<FragmentEntryLink> fragmentEntryLinks =
-			_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
-				groupId, plid);
-
-		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
-			if (fragmentEntryLink == null) {
+		for (T item : items) {
+			if (item == null) {
 				continue;
 			}
 
 			try {
-				_contentManager.updateLayoutClassedModelUsage(
-					fragmentEntryLink);
+				consumer.accept(item);
 			}
 			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Unable to update usages for fragment entry link ",
-							"ID ", fragmentEntryLink.getFragmentEntryLinkId()),
-						exception);
+					_log.warn(logPrefix + function.apply(item), exception);
 				}
 			}
 		}
 	}
 
-	private void _updateLayoutPageTemplateStructureClassedModelUsage(
+	private void _updateLayoutClassedModelUsagesForFragmentEntryLinks(
+		long groupId, long plid) {
+
+		_updateLayoutClassedModelUsages(
+			_contentManager::updateLayoutClassedModelUsage,
+			FragmentEntryLink::getFragmentEntryLinkId,
+			_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
+				groupId, plid),
+			"Unable to update layout classed model usages for fragment entry " +
+				"link ");
+	}
+
+	private void _updateLayoutClassedModelUsagesForLayoutPageTemplateStructure(
 		long groupId, long plid) {
 
 		LayoutPageTemplateStructure layoutPageTemplateStructure =
@@ -212,35 +298,15 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 			return;
 		}
 
-		List<LayoutPageTemplateStructureRel> layoutPageTemplateStructureRels =
+		_updateLayoutClassedModelUsages(
+			_contentManager::updateLayoutClassedModelUsage,
+			LayoutPageTemplateStructureRel::getLayoutPageTemplateStructureRelId,
 			_layoutPageTemplateStructureRelLocalService.
 				getLayoutPageTemplateStructureRels(
 					layoutPageTemplateStructure.
-						getLayoutPageTemplateStructureId());
-
-		for (LayoutPageTemplateStructureRel layoutPageTemplateStructureRel :
-				layoutPageTemplateStructureRels) {
-
-			if (layoutPageTemplateStructureRel == null) {
-				continue;
-			}
-
-			try {
-				_contentManager.updateLayoutClassedModelUsage(
-					layoutPageTemplateStructureRel);
-			}
-			catch (Exception exception) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Unable to update usages for layout page template ",
-							"structure rel ID ",
-							layoutPageTemplateStructureRel.
-								getLayoutPageTemplateStructureRelId()),
-						exception);
-				}
-			}
-		}
+						getLayoutPageTemplateStructureId()),
+			"Unable to update layout classed model usages for layout page " +
+				"template structure relationship ");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -248,6 +314,7 @@ public class LayoutClassedModelUsageOrphanDataUpgradeProcess
 
 	private final ClassNameLocalService _classNameLocalService;
 	private final ContentManager _contentManager;
+	private final CTCollectionLocalService _ctCollectionLocalService;
 	private final FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
 	private final LayoutClassedModelUsageLocalService
 		_layoutClassedModelUsageLocalService;

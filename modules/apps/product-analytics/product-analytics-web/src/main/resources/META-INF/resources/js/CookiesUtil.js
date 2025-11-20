@@ -7,36 +7,41 @@ import {
 	COOKIE_TYPES,
 	getCookie as getCookieUtil,
 	getOpener,
+	removeCookie as removeCookieUtil,
 	setCookie as setCookieUtil,
 } from 'frontend-js-web';
 
 export const productAnalyticsConfiguredCookieName =
 	'PRODUCT_ANALYTICS_CONFIGURED';
+export const productAnalyticsConfiguredDateCookieName =
+	'PRODUCT_ANALYTICS_CONFIGURED_DATE';
 export const userConfigCookieName = 'USER_CONSENT_CONFIGURED';
 
 export function acceptAllCookies(
+	consentRenewalPeriod,
 	optionalConsentCookieTypeNames,
 	requiredConsentCookieTypeNames
 ) {
 	optionalConsentCookieTypeNames.forEach((optionalConsentCookieTypeName) => {
-		setCookie(optionalConsentCookieTypeName, 'true');
+		setCookie(consentRenewalPeriod, optionalConsentCookieTypeName, 'true');
 	});
 
 	requiredConsentCookieTypeNames.forEach((requiredConsentCookieTypeName) => {
-		setCookie(requiredConsentCookieTypeName, 'true');
+		setCookie(consentRenewalPeriod, requiredConsentCookieTypeName, 'true');
 	});
 }
 
 export function declineAllCookies(
+	consentRenewalPeriod,
 	optionalConsentCookieTypeNames,
 	requiredConsentCookieTypeNames
 ) {
 	optionalConsentCookieTypeNames.forEach((optionalConsentCookieTypeName) => {
-		setCookie(optionalConsentCookieTypeName, 'false');
+		setCookie(consentRenewalPeriod, optionalConsentCookieTypeName, 'false');
 	});
 
 	requiredConsentCookieTypeNames.forEach((requiredConsentCookieTypeName) => {
-		setCookie(requiredConsentCookieTypeName, 'true');
+		setCookie(consentRenewalPeriod, requiredConsentCookieTypeName, 'true');
 	});
 }
 
@@ -44,20 +49,59 @@ export function getCookie(name) {
 	return getCookieUtil(name, COOKIE_TYPES.NECESSARY);
 }
 
-export function setCookie(name, value) {
-	setCookieUtil(name, value, COOKIE_TYPES.NECESSARY, {
-		path: themeDisplay.getPathContext() || '/',
-	});
+export function setCookie(consentRenewalPeriod, name, value) {
+	if (!Liferay.FeatureFlags['LPD-65277']) {
+		setCookieUtil(name, value, COOKIE_TYPES.NECESSARY, {
+			path: themeDisplay.getPathContext() || '/',
+		});
+	}
+	else {
+		setCookieUtil(name, value, COOKIE_TYPES.NECESSARY, {
+			'max-age': 60 * 60 * 24 * 365 * (consentRenewalPeriod / 12),
+			'path': themeDisplay.getPathContext() || '/',
+		});
+	}
 }
 
-export function setProductAnalyticsConfigCookie() {
-	setCookie(productAnalyticsConfiguredCookieName, 'true');
+export function removeAllCookies(
+	optionalConsentCookieTypeNames,
+	requiredConsentCookieTypeNames
+) {
+	optionalConsentCookieTypeNames.forEach((optionalConsentCookieTypeName) => {
+		removeCookieUtil(optionalConsentCookieTypeName);
+	});
+
+	requiredConsentCookieTypeNames.forEach((requiredConsentCookieTypeName) => {
+		removeCookieUtil(requiredConsentCookieTypeName);
+	});
+
+	removeCookieUtil(productAnalyticsConfiguredCookieName);
+	removeCookieUtil(productAnalyticsConfiguredDateCookieName);
+}
+
+export function setProductAnalyticsConfigCookie(
+	consentRenewalPeriod,
+	lastModified
+) {
+	setCookie(
+		consentRenewalPeriod,
+		productAnalyticsConfiguredCookieName,
+		'true'
+	);
+
+	if (Liferay.FeatureFlags['LPD-65277']) {
+		setCookie(
+			consentRenewalPeriod,
+			productAnalyticsConfiguredDateCookieName,
+			lastModified
+		);
+	}
 
 	getOpener()?.Liferay.fire('productAnalyticsBannerSetCookie');
 }
 
-export function setUserConfigCookie() {
-	setCookie(userConfigCookieName, 'true');
+export function setUserConfigCookie(consentRenewalPeriod) {
+	setCookie(consentRenewalPeriod, userConfigCookieName, 'true');
 
 	getOpener()?.Liferay.fire('cookieBannerSetCookie');
 }

@@ -1198,10 +1198,14 @@ public class ObjectEntryLocalServiceImpl
 
 	@Override
 	public long getObjectEntriesCount(
-			long groupId, ObjectDefinition objectDefinition,
+			long groupId, String languageId, ObjectDefinition objectDefinition,
 			Predicate predicate)
 		throws PortalException {
 
+		DynamicObjectDefinitionLocalizationTable
+			dynamicObjectDefinitionLocalizationTable =
+				DynamicObjectDefinitionLocalizationTableFactory.create(
+					objectDefinition, _objectFieldLocalService);
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
 			_getDynamicObjectDefinitionTable(
 				objectDefinition.getObjectDefinitionId());
@@ -1223,6 +1227,12 @@ public class ObjectEntryLocalServiceImpl
 			ObjectEntryTable.INSTANCE,
 			ObjectEntryTable.INSTANCE.objectEntryId.eq(
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn())
+		).leftJoinOn(
+			dynamicObjectDefinitionLocalizationTable,
+			ObjectEntrySearchUtil.getLeftJoinLocalizationTablePredicate(
+				dynamicObjectDefinitionLocalizationTable,
+				dynamicObjectDefinitionTable,
+				_getDefaultLanguageId(languageId, groupId))
 		);
 
 		ObjectScopeProvider objectScopeProvider =
@@ -1621,7 +1631,7 @@ public class ObjectEntryLocalServiceImpl
 				dynamicObjectDefinitionLocalizationTable,
 				ObjectEntrySearchUtil.getLeftJoinLocalizationTablePredicate(
 					dynamicObjectDefinitionLocalizationTable,
-					dynamicObjectDefinitionTable)
+					dynamicObjectDefinitionTable, null)
 			).where(
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn(
 				).eq(
@@ -3812,7 +3822,7 @@ public class ObjectEntryLocalServiceImpl
 				dynamicObjectDefinitionLocalizationTable,
 				ObjectEntrySearchUtil.getLeftJoinLocalizationTablePredicate(
 					dynamicObjectDefinitionLocalizationTable,
-					extensionDynamicObjectDefinitionTable)
+					extensionDynamicObjectDefinitionTable, null)
 			).where(
 				systemObjectDefinitionManager.getPrimaryKeyColumn(
 				).eq(
@@ -3829,7 +3839,7 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionLocalizationTable,
 			ObjectEntrySearchUtil.getLeftJoinLocalizationTablePredicate(
 				dynamicObjectDefinitionLocalizationTable,
-				extensionDynamicObjectDefinitionTable)
+				extensionDynamicObjectDefinitionTable, null)
 		).where(
 			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
 			).eq(
@@ -4033,7 +4043,7 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionLocalizationTable,
 			ObjectEntrySearchUtil.getLeftJoinLocalizationTablePredicate(
 				dynamicObjectDefinitionLocalizationTable,
-				dynamicObjectDefinitionTable)
+				dynamicObjectDefinitionTable, null)
 		).leftJoinOn(
 			dynamicObjectRelationshipMappingTable,
 			primaryKeyColumn2.eq(dynamicObjectDefinitionTablePrimaryKeyColumn)
@@ -4136,7 +4146,7 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionLocalizationTable,
 			ObjectEntrySearchUtil.getLeftJoinLocalizationTablePredicate(
 				dynamicObjectDefinitionLocalizationTable,
-				dynamicObjectDefinitionTable)
+				dynamicObjectDefinitionTable, null)
 		).where(
 			ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
 				objectDefinitionId
@@ -4235,7 +4245,7 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionLocalizationTable,
 			ObjectEntrySearchUtil.getLeftJoinLocalizationTablePredicate(
 				dynamicObjectDefinitionLocalizationTable,
-				dynamicObjectDefinitionTable)
+				dynamicObjectDefinitionTable, null)
 		).where(
 			ObjectEntryTable.INSTANCE.companyId.eq(
 				objectRelationship.getCompanyId()
@@ -7224,35 +7234,9 @@ public class ObjectEntryLocalServiceImpl
 			Column<?, Object> column = (Column<?, Object>)table.getColumn(
 				objectField.getDBColumnName());
 
-			Predicate predicate = null;
-
-			if (objectField.isLocalized()) {
-				DynamicObjectDefinitionLocalizationTable
-					dynamicObjectDefinitionLocalizationTable =
-						(DynamicObjectDefinitionLocalizationTable)table;
-
-				predicate = ObjectEntryTable.INSTANCE.objectEntryId.in(
-					DSLQueryFactoryUtil.select(
-						dynamicObjectDefinitionLocalizationTable.
-							getForeignKeyColumn()
-					).from(
-						dynamicObjectDefinitionLocalizationTable
-					).where(
-						dynamicObjectDefinitionLocalizationTable.
-							getLanguageIdColumn(
-							).eq(
-								valueLanguageId
-							).and(
-								column.eq(value)
-							)
-					));
-			}
-			else {
-				predicate =
-					ObjectEntrySearchUtil.
-						getUniqueCompositeKeyObjectFieldPredicate(
-							column, objectField.getDBType(), value);
-			}
+			Predicate predicate =
+				ObjectEntrySearchUtil.getUniqueCompositeKeyObjectFieldPredicate(
+					column, objectField.getDBType(), value);
 
 			if (objectEntryId != null) {
 				predicate = predicate.and(
@@ -7260,7 +7244,7 @@ public class ObjectEntryLocalServiceImpl
 			}
 
 			objectEntriesCount = getObjectEntriesCount(
-				groupId, objectDefinition, predicate);
+				groupId, valueLanguageId, objectDefinition, predicate);
 		}
 		catch (PortalException portalException) {
 			throw new RuntimeException(portalException);

@@ -7,6 +7,7 @@ package com.liferay.product.analytics.web.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
+import com.liferay.portal.configuration.metatype.annotations.ExtendedAttributeDefinition;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
@@ -24,11 +25,27 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface ProductAnalyticsConfiguration {
 
+	@ExtendedAttributeDefinition(featureFlagKey = "LPD-65277")
+	@Meta.AD(
+		deflt = "12",
+		description = "product-analytics-cookie-consent-renewal-period-help",
+		max = "12", min = "1", name = "cookie-consent-renewal-period",
+		required = false
+	)
+	public int consentRenewalPeriod();
+
 	@Meta.AD(
 		deflt = "true",
 		description = "product-analytics-enable-user-preference-handling-help",
 		name = "enabled", required = false
 	)
 	public boolean enabled();
+
+	@ExtendedAttributeDefinition(
+		featureFlagKey = "LPD-65277",
+		visibilityControllerKey = "com.liferay.product.analytics.web.internal.configuration.admin.display.ProductAnalyticsConfigurationVisibilityController"
+	)
+	@Meta.AD(deflt = "0", name = "last-modified", required = false)
+	public long lastModified();
 
 }

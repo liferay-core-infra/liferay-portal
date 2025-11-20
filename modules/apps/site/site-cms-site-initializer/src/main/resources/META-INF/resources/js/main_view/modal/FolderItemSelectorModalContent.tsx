@@ -287,7 +287,7 @@ function FolderItemSelectorModalContent({
 	return (
 		<>
 			{open && (
-				<ItemSelectorModal
+				<ItemSelectorModal<Folder>
 					apiURL={url}
 					breadcrumbs={
 						objectEntryFolderExternalReferenceCode
@@ -296,6 +296,7 @@ function FolderItemSelectorModalContent({
 									{
 										label: Liferay.Language.get('spaces'),
 										onClick: () => {
+											setSchemaKey((prev) => prev + 1);
 											setSelectedItemType('space');
 											setURL(SPACES_URL);
 										},
@@ -358,7 +359,6 @@ function FolderItemSelectorModalContent({
 							},
 						] as IView[],
 					}}
-					itemTypeLabel={Liferay.Language.get('folders')}
 					items={[]}
 					key={schemaKey}
 					locator={
@@ -397,6 +397,17 @@ function FolderItemSelectorModalContent({
 					}}
 					onOpenChange={onOpenChange}
 					open={open}
+					title={
+						action === 'copy'
+							? sub(
+									Liferay.Language.get('copy-x-to'),
+									itemData.title
+								)
+							: sub(
+									Liferay.Language.get('move-x-to'),
+									itemData.title
+								)
+					}
 				/>
 			)}
 		</>

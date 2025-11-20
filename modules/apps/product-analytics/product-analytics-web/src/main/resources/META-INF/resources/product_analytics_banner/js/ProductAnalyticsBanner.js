@@ -11,6 +11,8 @@ import {
 	declineAllCookies,
 	getCookie,
 	productAnalyticsConfiguredCookieName,
+	productAnalyticsConfiguredDateCookieName,
+	removeAllCookies,
 	setCookie,
 	setProductAnalyticsConfigCookie,
 	userConfigCookieName,
@@ -25,6 +27,8 @@ let openProductAnalyticsConsentModal = () => {
 export default function ({
 	configurationNamespace,
 	configurationURL,
+	consentRenewalPeriod = 12,
+	lastModified = 0,
 	namespace,
 	optionalConsentCookieTypeNames,
 	requiredConsentCookieTypeNames,
@@ -45,7 +49,14 @@ export default function ({
 	const editMode = document.body.classList.contains('has-edit-mode-menu');
 
 	if (!editMode) {
-		setBannerVisibility(productAnalyticsBanner);
+		if (isProductAnalyticsConfigurationModified(lastModified)) {
+			removeAllCookies(
+				optionalConsentCookieTypeNames,
+				requiredConsentCookieTypeNames
+			);
+		}
+
+		setBannerVisibility(lastModified, productAnalyticsBanner);
 
 		const cookiePreferences = {};
 
@@ -64,12 +75,13 @@ export default function ({
 			productAnalyticsBanner.style.display = 'none';
 
 			acceptAllCookies(
+				consentRenewalPeriod,
 				optionalConsentCookieTypeNames,
 				requiredConsentCookieTypeNames
 			);
 
-			setProductAnalyticsConfigCookie();
-			setBannerVisibility(productAnalyticsBanner);
+			setProductAnalyticsConfigCookie(consentRenewalPeriod, lastModified);
+			setBannerVisibility(lastModified, productAnalyticsBanner);
 		});
 
 		openProductAnalyticsConsentModal = ({
@@ -97,13 +109,20 @@ export default function ({
 						),
 						onClick() {
 							declineAllCookies(
+								consentRenewalPeriod,
 								optionalConsentCookieTypeNames,
 								requiredConsentCookieTypeNames
 							);
 
-							setProductAnalyticsConfigCookie();
+							setProductAnalyticsConfigCookie(
+								consentRenewalPeriod,
+								lastModified
+							);
 
-							setBannerVisibility(productAnalyticsBanner);
+							setBannerVisibility(
+								lastModified,
+								productAnalyticsBanner
+							);
 
 							getOpener().Liferay.fire('closeModal');
 						},
@@ -114,22 +133,29 @@ export default function ({
 						onClick() {
 							Object.entries(cookiePreferences).forEach(
 								([key, value]) => {
-									setCookie(key, value);
+									setCookie(consentRenewalPeriod, key, value);
 								}
 							);
 
 							requiredConsentCookieTypeNames.forEach(
 								(requiredConsentCookieTypeName) => {
 									setCookie(
+										consentRenewalPeriod,
 										requiredConsentCookieTypeName,
 										'true'
 									);
 								}
 							);
 
-							setProductAnalyticsConfigCookie();
+							setProductAnalyticsConfigCookie(
+								consentRenewalPeriod,
+								lastModified
+							);
 
-							setBannerVisibility(productAnalyticsBanner);
+							setBannerVisibility(
+								lastModified,
+								productAnalyticsBanner
+							);
 
 							getOpener().Liferay.fire('closeModal');
 						},
@@ -139,13 +165,20 @@ export default function ({
 						label: Liferay.Language.get('accept-all'),
 						onClick() {
 							acceptAllCookies(
+								consentRenewalPeriod,
 								optionalConsentCookieTypeNames,
 								requiredConsentCookieTypeNames
 							);
 
-							setProductAnalyticsConfigCookie();
+							setProductAnalyticsConfigCookie(
+								consentRenewalPeriod,
+								lastModified
+							);
 
-							setBannerVisibility(productAnalyticsBanner);
+							setBannerVisibility(
+								lastModified,
+								productAnalyticsBanner
+							);
 
 							getOpener().Liferay.fire('closeModal');
 						},
@@ -171,12 +204,16 @@ export default function ({
 				productAnalyticsBanner.style.display = 'none';
 
 				declineAllCookies(
+					consentRenewalPeriod,
 					optionalConsentCookieTypeNames,
 					requiredConsentCookieTypeNames
 				);
 
-				setProductAnalyticsConfigCookie();
-				setBannerVisibility(productAnalyticsBanner);
+				setProductAnalyticsConfigCookie(
+					consentRenewalPeriod,
+					lastModified
+				);
+				setBannerVisibility(lastModified, productAnalyticsBanner);
 			});
 		}
 	}
@@ -199,6 +236,26 @@ function checkProductAnalyticsConsentForTypes(cookieTypes, modalOptions) {
 	});
 }
 
+function isProductAnalyticsConfigurationModified(lastModified) {
+	if (!Liferay.FeatureFlags['LPD-65277']) {
+		return false;
+	}
+
+	const productAnalyticsConfiguredDateCookie = getCookie(
+		productAnalyticsConfiguredDateCookieName
+	);
+
+	if (
+		productAnalyticsConfiguredDateCookie === undefined ||
+		(lastModified === '0' && productAnalyticsConfiguredDateCookie > 0) ||
+		productAnalyticsConfiguredDateCookie < lastModified
+	) {
+		return true;
+	}
+
+	return false;
+}
+
 function isCookieTypesAccepted(cookieTypes) {
 	if (!Array.isArray(cookieTypes)) {
 		cookieTypes = [cookieTypes];
@@ -207,13 +264,17 @@ function isCookieTypesAccepted(cookieTypes) {
 	return cookieTypes.every((cookieType) => checkConsent(cookieType));
 }
 
-function setBannerVisibility(productAnalyticsBanner) {
+function setBannerVisibility(lastModified, productAnalyticsBanner) {
 	const cookieBanner = document.querySelector('.cookies-banner');
 	const productAnalytics = document.getElementById(
 		'_com_liferay_my_account_web_portlet_MyAccountPortlet_productAnalyticsConsentPanelForm'
 	);
 
-	if (getCookie(productAnalyticsConfiguredCookieName) || productAnalytics) {
+	if (
+		(!isProductAnalyticsConfigurationModified(lastModified) &&
+			getCookie(productAnalyticsConfiguredCookieName)) ||
+		productAnalytics
+	) {
 		productAnalyticsBanner.style.display = 'none';
 
 		if (cookieBanner) {

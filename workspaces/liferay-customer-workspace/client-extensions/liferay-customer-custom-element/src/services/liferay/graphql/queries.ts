@@ -753,6 +753,53 @@ export const notificationQueueEntry = gql`
 	}
 `;
 
+export const patchBusinessEvent = gql`
+	mutation patchBusinessEvent(
+		$businessEvent: InputC_BusinessEvent!
+		$businessEventId: Long!
+	) {
+		patchBusinessEvent(
+			businessEventId: $businessEventId
+			input: $businessEvent
+		)
+			@rest(
+				method: "PATCH"
+				type: "C_BusinessEvent"
+				path: "/c/businessevents/{args.businessEventId}"
+			) {
+			actualGoLiveDateTime
+			associatedTickets
+			currentLiferayVersion
+			description
+			eventType
+			lastComment
+			name
+			newLiferayVersion
+			targetGoLiveDateTime
+			timeZone
+		}
+	}
+`;
+
+export const patchDXPCloudEnvironment = gql`
+	mutation patchDXPCloudProjectId(
+		$dxpCloudEnvironmentId: Long!
+		$DXPCloudEnvironment: InputC_DXPCloudEnvironment!
+	) {
+		patchDXPCloudEnvironment(
+			dxpCloudEnvironmentId: $dxpCloudEnvironmentId
+			input: $DXPCloudEnvironment
+		)
+			@rest(
+				method: "PATCH"
+				type: "C_DXPCloudEnvironment"
+				path: "/c/dxpcloudenvironments/{args.dxpCloudEnvironmentId}"
+			) {
+			dxpCloudEnvironmentId
+		}
+	}
+`;
+
 export const patchOrderItemByExternalReferenceCode = gql`
 	mutation patchOrderItemByExternalReferenceCode(
 		$externalReferenceCode: String
@@ -780,76 +827,6 @@ export const patchUserAccount = gql`
 			familyName
 			givenName
 			id
-		}
-	}
-`;
-
-export const updateAccountSubscriptionGroups = gql`
-	mutation putAccountSubscriptionGroups(
-		$id: Long!
-		$accountSubscriptionGroup: InputC_AccountSubscriptionGroup!
-	) {
-		updateAccountSubscriptionGroup(
-			accountSubscriptionGroupId: $id
-			input: $accountSubscriptionGroup
-		)
-			@rest(
-				method: "PUT"
-				type: "C_AccountSubscriptionGroup"
-				path: "/c/accountsubscriptiongroups/{args.accountSubscriptionGroupId}"
-			) {
-			accountSubscriptionGroupId
-			accountKey
-			activationStatus
-			externalReferenceCode
-			name
-		}
-	}
-`;
-
-export const updateBusinessEvent = gql`
-	mutation updateBusinessEvent(
-		$businessEvent: InputC_BusinessEvent!
-		$businessEventId: Long!
-	) {
-		updateBusinessEvent(
-			businessEventId: $businessEventId
-			input: $businessEvent
-		)
-			@rest(
-				method: "PUT"
-				type: "C_BusinessEvent"
-				path: "/c/businessevents/{args.businessEventId}"
-			) {
-			actualGoLiveDateTime
-			associatedTickets
-			currentLiferayVersion
-			description
-			eventType
-			lastComment
-			name
-			newLiferayVersion
-			targetGoLiveDateTime
-			timeZone
-		}
-	}
-`;
-
-export const updateDXPCloudEnvironment = gql`
-	mutation updateDXPCloudProjectId(
-		$dxpCloudEnvironmentId: Long!
-		$DXPCloudEnvironment: InputC_DXPCloudEnvironment!
-	) {
-		updateDXPCloudEnvironment(
-			dxpCloudEnvironmentId: $dxpCloudEnvironmentId
-			input: $DXPCloudEnvironment
-		)
-			@rest(
-				method: "PUT"
-				type: "C_DXPCloudEnvironment"
-				path: "/c/dxpcloudenvironments/{args.dxpCloudEnvironmentId}"
-			) {
-			dxpCloudEnvironmentId
 		}
 	}
 `;

@@ -5,20 +5,17 @@
 
 package com.liferay.ai.hub.site.initializer.internal.workflow.kaleo.runtime.node;
 
+import com.liferay.ai.hub.site.initializer.internal.workflow.kaleo.runtime.node.util.InputVariablesUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManager;
+import com.liferay.portal.kernel.workflow.WorkflowNodeManager;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.workflow.kaleo.definition.NodeType;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 import com.liferay.portal.workflow.kaleo.model.KaleoNodeSetting;
-import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;
+import com.liferay.portal.workflow.kaleo.model.KaleoTransition;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.graph.PathElement;
 import com.liferay.portal.workflow.kaleo.runtime.node.BaseNodeExecutor;
@@ -34,7 +31,6 @@ import dev.langchain4j.service.TokenStream;
 import java.io.Serializable;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -81,29 +77,29 @@ public class LLMNodeExecutor extends BaseNodeExecutor {
 				"gemini-2.5-flash-lite"
 			).build();
 
-		Map<String, String> kaleoNodeSettingsMap = new HashMap<>();
+		Map<String, String> kaleoNodeSettingValues = new HashMap<>();
 
 		List<KaleoNodeSetting> kaleoNodeSettings =
 			_kaleoNodeSettingLocalService.getKaleoNodeSettings(
 				currentKaleoNode.getKaleoNodeId());
 
 		for (KaleoNodeSetting kaleoNodeSetting : kaleoNodeSettings) {
-			kaleoNodeSettingsMap.put(
+			kaleoNodeSettingValues.put(
 				kaleoNodeSetting.getName(), kaleoNodeSetting.getValue());
 		}
 
 		WritingAssistant writingAssistant = AiServices.builder(
 			WritingAssistant.class
 		).systemMessageProvider(
-			object -> _applyVariables(
-				kaleoNodeSettingsMap, "prompt", executionContext)
+			object -> InputVariablesUtil.applyInputVariables(
+				executionContext, "prompt", kaleoNodeSettingValues)
 		).streamingChatModel(
 			vertexAiGeminiStreamingChatModel
 		).build();
 
 		writingAssistant.rewrite(
-			_applyVariables(
-				kaleoNodeSettingsMap, "userMessage", executionContext)
+			InputVariablesUtil.applyInputVariables(
+				executionContext, "userMessage", kaleoNodeSettingValues)
 		).onCompleteResponse(
 			response -> _completeResponse(
 				response, executionContext, vertexAiGeminiStreamingChatModel)
@@ -114,8 +110,27 @@ public class LLMNodeExecutor extends BaseNodeExecutor {
 
 	@Override
 	protected void doExit(
-		KaleoNode currentKaleoNode, ExecutionContext executionContext,
-		List<PathElement> remainingPathElements) {
+			KaleoNode currentKaleoNode, ExecutionContext executionContext,
+			List<PathElement> remainingPathElements)
+		throws PortalException {
+
+		KaleoTransition kaleoTransition = null;
+
+		if (Validator.isNull(executionContext.getTransitionName())) {
+			kaleoTransition = currentKaleoNode.getDefaultKaleoTransition();
+		}
+		else {
+			kaleoTransition = currentKaleoNode.getKaleoTransition(
+				executionContext.getTransitionName());
+		}
+
+		remainingPathElements.add(
+			new PathElement(
+				null, kaleoTransition.getTargetKaleoNode(),
+				new ExecutionContext(
+					executionContext.getKaleoInstanceToken(),
+					executionContext.getWorkflowContext(),
+					executionContext.getServiceContext())));
 	}
 
 	@Reference
@@ -123,23 +138,6 @@ public class LLMNodeExecutor extends BaseNodeExecutor {
 
 	@Reference
 	protected WorkflowTaskManager workflowTaskManager;
-
-	private String _applyVariables(
-		Map<String, String> kaleoNodeSettingsMap, String kaleoNodeSettingName,
-		ExecutionContext executionContext) {
-
-		Map<String, String> inputVariables = _getInputVariables(
-			kaleoNodeSettingsMap, executionContext.getWorkflowContext());
-
-		String message = kaleoNodeSettingsMap.get(kaleoNodeSettingName);
-
-		for (Map.Entry<String, String> entry : inputVariables.entrySet()) {
-			message = StringUtil.replace(
-				message, "{{" + entry.getKey() + "}}", entry.getValue());
-		}
-
-		return message;
-	}
 
 	private void _completeResponse(
 		ChatResponse chatResponse, ExecutionContext executionContext,
@@ -167,14 +165,11 @@ public class LLMNodeExecutor extends BaseNodeExecutor {
 				kaleoInstanceToken.getCompanyId(),
 				kaleoInstanceToken.getKaleoInstanceId(), workflowContext);
 
-			KaleoTaskInstanceToken kaleoTaskInstanceToken =
-				executionContext.getKaleoTaskInstanceToken();
-
-			workflowTaskManager.completeWorkflowTask(
-				kaleoTaskInstanceToken.getCompanyId(),
-				kaleoTaskInstanceToken.getUserId(),
-				kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId(), "end", "",
-				executionContext.getWorkflowContext());
+			_workflowNodeManager.completeWorkflowNode(
+				kaleoInstanceToken.getCompanyId(),
+				kaleoInstanceToken.getUserId(),
+				kaleoInstanceToken.getKaleoInstanceTokenId(), "end",
+				workflowContext, false);
 		}
 		catch (PortalException portalException) {
 			throw new RuntimeException(portalException);
@@ -184,44 +179,10 @@ public class LLMNodeExecutor extends BaseNodeExecutor {
 		}
 	}
 
-	private Map<String, String> _getInputVariables(
-		Map<String, String> kaleoNodeSettingsMap,
-		Map<String, Serializable> workflowContext) {
-
-		String inputVariablesString = kaleoNodeSettingsMap.get(
-			"inputVariables");
-
-		if (inputVariablesString == null) {
-			return Map.of();
-		}
-
-		Map<String, String> inputVariables = new HashMap<>();
-
-		try {
-			JSONArray jsonArray = _jsonFactory.createJSONArray(
-				inputVariablesString);
-
-			Iterator<JSONObject> iterator = jsonArray.iterator();
-
-			iterator.forEachRemaining(
-				jsonObject -> {
-					String name = jsonObject.getString("name");
-
-					inputVariables.put(
-						name, GetterUtil.getString(workflowContext.get(name)));
-				});
-		}
-		catch (JSONException jsonException) {
-			throw new RuntimeException(jsonException);
-		}
-
-		return inputVariables;
-	}
-
-	@Reference
-	private JSONFactory _jsonFactory;
-
 	@Reference
 	private KaleoNodeSettingLocalService _kaleoNodeSettingLocalService;
+
+	@Reference
+	private WorkflowNodeManager _workflowNodeManager;
 
 }

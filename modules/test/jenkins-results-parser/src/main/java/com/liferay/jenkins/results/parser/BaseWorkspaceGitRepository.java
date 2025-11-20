@@ -162,7 +162,7 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public GitWorkingDirectory getGitWorkingDirectory() {
-		if (_snapshot) {
+		if (_snapshot && !_isDotGitDirArchiveRequired()) {
 			throw new RuntimeException(
 				"Using Git archive, unable to get Git working directory");
 		}
@@ -228,44 +228,6 @@ public abstract class BaseWorkspaceGitRepository
 	@Override
 	public String getSenderBranchUsername() {
 		return getString("sender_branch_username");
-	}
-
-	public boolean isSnapshot() {
-		String directoryName = getDirectoryName();
-
-		String jobVariant = System.getenv("JOB_VARIANT");
-
-		if (directoryName.contains("liferay-portal")) {
-			String jobName = System.getenv("JOB_NAME");
-
-			if (jobName.equals("forward-pullrequest") ||
-				jobName.equals("publish-testray-report") ||
-				jobName.equals("test-portal-source-format") ||
-				jobName.contains("validation")) {
-
-				return false;
-			}
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(jobVariant)) {
-				return getBoolean("snapshot");
-			}
-
-			if ((jobName.contains("master") &&
-				 jobVariant.contains("modules-unit")) ||
-				jobVariant.contains("service-builder")) {
-
-				return false;
-			}
-		}
-
-		if (directoryName.equals("liferay-release-tool-ee") &&
-			!JenkinsResultsParserUtil.isNullOrEmpty(jobVariant) &&
-			jobVariant.startsWith("portal-license")) {
-
-			return false;
-		}
-
-		return getBoolean("snapshot");
 	}
 
 	@Override
@@ -557,7 +519,7 @@ public abstract class BaseWorkspaceGitRepository
 		validateKeys(_REQUIRED_KEYS);
 
 		if (JenkinsResultsParserUtil.isCloudCINode()) {
-			_snapshot = isSnapshot();
+			_snapshot = getBoolean("snapshot");
 		}
 	}
 
@@ -661,6 +623,92 @@ public abstract class BaseWorkspaceGitRepository
 
 	protected Set<String> getPropertyOptions() {
 		return _propertyOptions;
+	}
+
+	private File _archiveDotGitDir() {
+		List<String> commands = new ArrayList<>();
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.setLength(0);
+
+		sb.append("rm -rf ");
+
+		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
+
+		File workingDirectory = gitWorkingDirectory.getWorkingDirectory();
+
+		File clonedWorkingDirectory = new File(
+			workingDirectory.getParent(), getDirectoryName() + "-git");
+
+		sb.append(clonedWorkingDirectory);
+
+		commands.add(sb.toString());
+
+		sb.setLength(0);
+
+		sb.append("git clone --depth ");
+
+		LocalGitBranch localGitBranch = getLocalGitBranch();
+
+		int commitCount = gitWorkingDirectory.getCommitCountBetweenBranches(
+			localGitBranch.getUpstreamBranchName(), localGitBranch.getName());
+
+		sb.append(commitCount + 1);
+
+		sb.append(" --no-checkout file://");
+		sb.append(workingDirectory);
+		sb.append(" ");
+		sb.append(clonedWorkingDirectory);
+
+		commands.add(sb.toString());
+
+		sb.setLength(0);
+
+		sb.append("cp ");
+		sb.append(new File(workingDirectory, ".git/config"));
+		sb.append(" ");
+		sb.append(new File(clonedWorkingDirectory, ".git/config"));
+
+		commands.add(sb.toString());
+
+		sb.setLength(0);
+
+		sb.append("cd ");
+		sb.append(clonedWorkingDirectory);
+
+		commands.add(sb.toString());
+
+		sb.setLength(0);
+
+		sb.append("zip -r ");
+
+		File archiveFile = new File(
+			workingDirectory.getParent(), _getDotGitArchiveName());
+
+		sb.append(archiveFile);
+
+		sb.append(" .git");
+
+		commands.add(sb.toString());
+
+		sb.setLength(0);
+
+		sb.append("rm -rf ");
+		sb.append(clonedWorkingDirectory);
+
+		commands.add(sb.toString());
+
+		try {
+			JenkinsResultsParserUtil.executeBashCommands(
+				commands.toArray(new String[0]));
+		}
+		catch (IOException | TimeoutException exception) {
+			throw new RuntimeException(
+				"Unable to archive " + workingDirectory + "/.git", exception);
+		}
+
+		return archiveFile;
 	}
 
 	private LocalGitBranch _createPullRequestLocalGitBranch() {
@@ -849,16 +897,26 @@ public abstract class BaseWorkspaceGitRepository
 		return getString("base_branch_username");
 	}
 
+	private String _getDotGitArchiveName() {
+		return getDirectoryName() + "-git.zip";
+	}
+
 	private String _getGitArchiveName() {
 		return getDirectoryName() + ".zip";
 	}
 
 	private String _getGitArchiveS3BucketPath() throws IOException {
+		return _getGitArchiveS3BucketPath(_getGitArchiveName());
+	}
+
+	private String _getGitArchiveS3BucketPath(String archiveName)
+		throws IOException {
+
 		return JenkinsResultsParserUtil.combine(
 			JenkinsResultsParserUtil.getBuildProperty(
 				"cloud.ci.s3.bucket.dist.path"),
 			"/git-archives/", getDirectoryName(), "/", getBaseBranchSHA(), "/",
-			getSenderBranchSHA(), "/", _getGitArchiveName());
+			getSenderBranchSHA(), "/", archiveName);
 	}
 
 	private String _getSenderBranchHeadSHA() {
@@ -896,6 +954,48 @@ public abstract class BaseWorkspaceGitRepository
 		return _upstreamRemoteGitRef;
 	}
 
+	private boolean _isDotGitDirArchiveRequired() {
+		String directoryName = getDirectoryName();
+
+		String jobVariant = System.getenv("JOB_VARIANT");
+
+		if (directoryName.contains("liferay-portal")) {
+			if (!_snapshot) {
+				return true;
+			}
+
+			String jobName = System.getenv("JOB_NAME");
+
+			if (jobName.equals("app-server-bundle-builder") ||
+				jobName.equals("forward-pullrequest") ||
+				jobName.equals("publish-testray-report") ||
+				jobName.equals("test-portal-source-format") ||
+				jobName.contains("validation")) {
+
+				return true;
+			}
+
+			if ((jobName.contains("master") &&
+				 !JenkinsResultsParserUtil.isNullOrEmpty(jobVariant) &&
+				 jobVariant.contains("modules-unit")) ||
+				jobVariant.contains("rest-builder") ||
+				jobVariant.contains("service-builder")) {
+
+				return true;
+			}
+		}
+
+		if (directoryName.equals("liferay-release-tool-ee") &&
+			(!_snapshot ||
+			 (!JenkinsResultsParserUtil.isNullOrEmpty(jobVariant) &&
+			  jobVariant.startsWith("portal-license")))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isPullRequest() {
 		return PullRequest.isValidGitHubPullRequestURL(getGitHubURL());
 	}
@@ -924,28 +1024,35 @@ public abstract class BaseWorkspaceGitRepository
 
 			JenkinsResultsParserUtil.unzip(gitArchiveFile, directory);
 
-			String jobVariant = System.getenv("JOB_VARIANT");
+			if (_isDotGitDirArchiveRequired()) {
+				File dotGitArchiveFile = new File(
+					baseRepositoryDir, _getDotGitArchiveName());
 
-			String directoryPath = directory.getPath();
+				CloudBucketUtil.downloadS3File(
+					dotGitArchiveFile,
+					_getGitArchiveS3BucketPath(_getDotGitArchiveName()));
 
-			if ((jobVariant.contains("app-server-bundle-builder") ||
-				 jobVariant.contains("rest-builder") ||
-				 jobVariant.contains("service-builder")) &&
-				directoryPath.contains("liferay-portal")) {
-
-				String commitCommand =
-					"git init; git add .; git commit -m \"LRCI-XXXX Temp\"";
+				JenkinsResultsParserUtil.unzip(dotGitArchiveFile, directory);
 
 				GitUtil.ExecutionResult executionResult =
 					GitUtil.executeBashCommands(
 						GitUtil.RETRIES_SIZE_MAX, GitUtil.MILLIS_RETRY_DELAY,
-						GitUtil.MILLIS_TIMEOUT, directory, commitCommand);
+						GitUtil.MILLIS_TIMEOUT, directory, "git reset");
 
 				if (executionResult.getExitValue() != 0) {
 					throw new RuntimeException(
 						JenkinsResultsParserUtil.combine(
-							"Unable to commit temp file",
+							"Unable to reset Git directory: " + directory,
 							executionResult.getStandardError()));
+				}
+
+				String jobVariant = System.getenv("JOB_VARIANT");
+
+				if (jobVariant.contains("service-builder")) {
+					GitWorkingDirectory gitWorkingDirectory =
+						getGitWorkingDirectory();
+
+					gitWorkingDirectory.clean();
 				}
 			}
 
@@ -962,6 +1069,16 @@ public abstract class BaseWorkspaceGitRepository
 
 			CloudBucketUtil.uploadS3File(
 				_getGitArchiveS3BucketPath(), archiveFile);
+
+			if (_isDotGitDirArchiveRequired()) {
+				File dotGitDirArchiveFile = _archiveDotGitDir();
+
+				CloudBucketUtil.uploadS3File(
+					_getGitArchiveS3BucketPath(dotGitDirArchiveFile.getName()),
+					dotGitDirArchiveFile);
+
+				dotGitDirArchiveFile.delete();
+			}
 		}
 
 		_setSnapshot(true);

@@ -1063,6 +1063,12 @@ public class FragmentLinkUtilTest {
 			type
 		);
 
+		Mockito.when(
+			group.isDepot()
+		).thenReturn(
+			GroupConstants.TYPE_DEPOT == type
+		);
+
 		_groupLocalServiceUtilMockedStatic.when(
 			() -> GroupLocalServiceUtil.fetchGroup(groupId)
 		).thenReturn(

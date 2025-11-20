@@ -21,10 +21,13 @@ import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.ContactLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.search.spi.model.permission.contributor.SearchPermissionFilterContributor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -61,6 +64,8 @@ public class UserSearchPermissionFilterContributor
 		try {
 			TermsFilter termsFilter = new TermsFilter("organizationIds");
 
+			Set<Long> organizationIds = new HashSet<>();
+
 			UserBag userBag = permissionChecker.getUserBag();
 
 			long[] userOrgIds = userBag.getUserOrgIds();
@@ -70,21 +75,28 @@ public class UserSearchPermissionFilterContributor
 						permissionChecker, userOrgId,
 						ActionKeys.MANAGE_USERS)) {
 
-					termsFilter.addValue(String.valueOf(userOrgId));
+					organizationIds.add(userOrgId);
 				}
 
 				if (OrganizationPermissionUtil.contains(
 						permissionChecker, userOrgId,
 						ActionKeys.MANAGE_SUBORGANIZATIONS_USERS)) {
 
-					for (Organization organization :
-							_organizationLocalService.getSuborganizations(
-								companyId, userOrgId)) {
+					Organization organization =
+						_organizationLocalService.getOrganization(userOrgId);
 
-						termsFilter.addValue(
-							String.valueOf(organization.getOrganizationId()));
+					for (Organization suborganization :
+							_organizationLocalService.getOrganizations(
+								companyId, organization.getTreePath() + "%/")) {
+
+						organizationIds.add(
+							suborganization.getOrganizationId());
 					}
 				}
+			}
+
+			if (!organizationIds.isEmpty()) {
+				termsFilter.addValues(ArrayUtil.toStringArray(organizationIds));
 			}
 
 			if (!termsFilter.isEmpty()) {

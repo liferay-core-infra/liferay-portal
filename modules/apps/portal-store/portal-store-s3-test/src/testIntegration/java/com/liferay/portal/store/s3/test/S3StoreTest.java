@@ -87,23 +87,23 @@ public class S3StoreTest extends BaseStoreTestCase {
 		String fileName = RandomTestUtil.randomString();
 
 		_store.addFile(
-			companyId, repositoryId, fileName, Store.VERSION_DEFAULT,
+			COMPANY_ID, REPOSITORY_ID, fileName, Store.VERSION_DEFAULT,
 			new UnsyncByteArrayInputStream(DATA_VERSION));
 
 		for (int i = 0; i <= httpClientMaxConnections; i++) {
 			StreamUtil.transfer(
 				_store.getFileAsStream(
-					companyId, repositoryId, fileName, Store.VERSION_DEFAULT),
+					COMPANY_ID, REPOSITORY_ID, fileName, Store.VERSION_DEFAULT),
 				new DummyOutputStream());
 		}
 
 		_store.addFile(
-			companyId, repositoryId, fileName, Store.VERSION_DEFAULT,
+			COMPANY_ID, REPOSITORY_ID, fileName, Store.VERSION_DEFAULT,
 			new UnsyncByteArrayInputStream(DATA_VERSION));
 
 		Assert.assertTrue(
 			_store.hasFile(
-				companyId, repositoryId, fileName, Store.VERSION_DEFAULT));
+				COMPANY_ID, REPOSITORY_ID, fileName, Store.VERSION_DEFAULT));
 	}
 
 	@Test

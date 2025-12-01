@@ -8,8 +8,6 @@ package com.liferay.portal.spring.hibernate;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import jakarta.persistence.PersistenceException;
-
 import java.sql.Connection;
 
 import java.util.Map;
@@ -282,20 +280,6 @@ public class PortalTransactionManager
 			throw new TransactionSystemException(
 				"Unable to commit Hibernate transaction", transactionException);
 		}
-		catch (HibernateException hibernateException) {
-			throw SessionFactoryUtils.convertHibernateAccessException(
-				hibernateException);
-		}
-		catch (PersistenceException persistenceException) {
-			Throwable throwable = persistenceException.getCause();
-
-			if (throwable instanceof HibernateException) {
-				throw SessionFactoryUtils.convertHibernateAccessException(
-					(HibernateException)throwable);
-			}
-
-			throw persistenceException;
-		}
 	}
 
 	@Override
@@ -363,20 +347,6 @@ public class PortalTransactionManager
 			throw new TransactionSystemException(
 				"Unable to roll back Hibernate transaction",
 				transactionException);
-		}
-		catch (HibernateException hibernateException) {
-			throw SessionFactoryUtils.convertHibernateAccessException(
-				hibernateException);
-		}
-		catch (PersistenceException persistenceException) {
-			Throwable throwable = persistenceException.getCause();
-
-			if (throwable instanceof HibernateException) {
-				throw SessionFactoryUtils.convertHibernateAccessException(
-					(HibernateException)throwable);
-			}
-
-			throw persistenceException;
 		}
 		finally {
 			if (!hibernateTransactionObject.isNewSession()) {

@@ -8,19 +8,15 @@ package com.liferay.portal.spring.hibernate;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import jakarta.persistence.PersistenceException;
-
 import java.util.Objects;
 
 import org.hibernate.FlushMode;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.jdbc.spi.JdbcCoordinator;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.resource.jdbc.spi.LogicalConnectionImplementor;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -63,7 +59,7 @@ public class SpringSessionSynchronization
 	}
 
 	@Override
-	public void beforeCommit(boolean readOnly) throws DataAccessException {
+	public void beforeCommit(boolean readOnly) {
 		if (!readOnly) {
 			Session session = _sessionHolder.getSession();
 
@@ -143,9 +139,7 @@ public class SpringSessionSynchronization
 		}
 	}
 
-	private void _flush(Session session, boolean synch)
-		throws DataAccessException {
-
+	private void _flush(Session session, boolean synch) {
 		if (synch) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -159,23 +153,7 @@ public class SpringSessionSynchronization
 			}
 		}
 
-		try {
-			session.flush();
-		}
-		catch (HibernateException hibernateException) {
-			throw SessionFactoryUtils.convertHibernateAccessException(
-				hibernateException);
-		}
-		catch (PersistenceException persistenceException) {
-			Throwable throwable = persistenceException.getCause();
-
-			if (throwable instanceof HibernateException hibernateException) {
-				throw SessionFactoryUtils.convertHibernateAccessException(
-					hibernateException);
-			}
-
-			throw persistenceException;
-		}
+		session.flush();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

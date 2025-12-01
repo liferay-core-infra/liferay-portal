@@ -26,8 +26,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import jakarta.persistence.PersistenceException;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -71,8 +69,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -82,7 +78,7 @@ import org.springframework.util.ClassUtils;
  * @author Tomas Polesovsky
  */
 public class PortalHibernateConfiguration
-	implements FactoryBean<SessionFactory>, PersistenceExceptionTranslator {
+	implements FactoryBean<SessionFactory> {
 
 	public void afterPropertiesSet() throws IOException {
 		Dialect dialect = DialectDetector.getDialect(_dataSource);
@@ -197,29 +193,6 @@ public class PortalHibernateConfiguration
 
 	public void setMvccEnabled(boolean mvccEnabled) {
 		_mvccEnabled = mvccEnabled;
-	}
-
-	@Override
-	public DataAccessException translateExceptionIfPossible(
-		RuntimeException runtimeException) {
-
-		if (runtimeException instanceof HibernateException hibernateException) {
-			return SessionFactoryUtils.convertHibernateAccessException(
-				hibernateException);
-		}
-		else if (runtimeException instanceof PersistenceException) {
-			Throwable throwable = runtimeException.getCause();
-
-			if (throwable instanceof HibernateException) {
-				HibernateException hibernateException =
-					(HibernateException)throwable;
-
-				return SessionFactoryUtils.convertHibernateAccessException(
-					hibernateException);
-			}
-		}
-
-		return null;
 	}
 
 	protected ClassLoader getConfigurationClassLoader() {

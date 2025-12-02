@@ -355,18 +355,6 @@ public class S3Store implements Store {
 		}
 	}
 
-	protected void configureSignerOverride(
-		ClientConfiguration clientConfiguration) {
-
-		String signerOverride = _s3StoreConfiguration.signerOverride();
-
-		if (Validator.isNull(signerOverride)) {
-			return;
-		}
-
-		clientConfiguration.setSignerOverride(signerOverride);
-	}
-
 	@Deactivate
 	protected void deactivate() {
 		_amazonS3 = null;
@@ -473,7 +461,6 @@ public class S3Store implements Store {
 			_s3StoreConfiguration.httpClientMaxErrorRetry());
 
 		configureProxySettings(clientConfiguration);
-		configureSignerOverride(clientConfiguration);
 
 		return clientConfiguration;
 	}

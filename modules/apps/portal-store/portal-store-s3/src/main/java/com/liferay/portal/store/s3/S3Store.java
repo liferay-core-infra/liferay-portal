@@ -16,8 +16,6 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.StorageClass;
 import com.amazonaws.services.s3.transfer.TransferManager;
@@ -67,6 +65,7 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectsResponse;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
 import software.amazon.awssdk.services.s3.model.S3Object;
@@ -295,17 +294,28 @@ public class S3Store implements Store {
 		String key = S3KeyTransformerUtil.getFileVersionKey(
 			companyId, repositoryId, fileName, versionLabel);
 
-		GetObjectMetadataRequest getObjectMetadataRequest =
-			new GetObjectMetadataRequest(_bucketName, key);
+		CompletableFuture<HeadObjectResponse> completableFuture =
+			_s3AsyncClient.headObject(
+				builder -> {
+					builder.bucket(_bucketName);
+					builder.key(key);
+				});
 
-		ObjectMetadata objectMetadata = _amazonS3.getObjectMetadata(
-			getObjectMetadataRequest);
+		try {
+			HeadObjectResponse headObjectResponse = completableFuture.join();
 
-		if (objectMetadata == null) {
-			throw new NoSuchFileException(companyId, repositoryId, fileName);
+			return headObjectResponse.contentLength();
 		}
+		catch (CompletionException completionException) {
+			Throwable throwable = completionException.getCause();
 
-		return objectMetadata.getContentLength();
+			if (throwable instanceof NoSuchKeyException) {
+				throw new NoSuchFileException(
+					companyId, repositoryId, fileName);
+			}
+
+			throw _transform(throwable);
+		}
 	}
 
 	@Override

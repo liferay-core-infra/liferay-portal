@@ -111,7 +111,7 @@ public class S3Store implements Store {
 				upload.waitForCompletion();
 			}
 			catch (AmazonClientException amazonClientException) {
-				throw transform(amazonClientException);
+				throw _transform(amazonClientException);
 			}
 			catch (InterruptedException interruptedException) {
 				if (_log.isDebugEnabled()) {
@@ -143,7 +143,7 @@ public class S3Store implements Store {
 		try {
 			String[] keys = new String[_DELETE_MAX];
 
-			List<S3ObjectSummary> s3ObjectSummaries = getS3ObjectSummaries(
+			List<S3ObjectSummary> s3ObjectSummaries = _getS3ObjectSummaries(
 				key);
 
 			Iterator<S3ObjectSummary> iterator = s3ObjectSummaries.iterator();
@@ -171,7 +171,7 @@ public class S3Store implements Store {
 			}
 		}
 		catch (AmazonClientException amazonClientException) {
-			throw transform(amazonClientException);
+			throw _transform(amazonClientException);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class S3Store implements Store {
 			_amazonS3.deleteObject(deleteObjectRequest);
 		}
 		catch (AmazonClientException amazonClientException) {
-			throw transform(amazonClientException);
+			throw _transform(amazonClientException);
 		}
 	}
 
@@ -206,7 +206,7 @@ public class S3Store implements Store {
 
 		try {
 			if (Validator.isNull(versionLabel)) {
-				versionLabel = getHeadVersionLabel(
+				versionLabel = _getHeadVersionLabel(
 					companyId, repositoryId, fileName);
 			}
 
@@ -241,12 +241,12 @@ public class S3Store implements Store {
 			};
 		}
 		catch (AmazonClientException amazonClientException) {
-			if (isFileNotFound(amazonClientException)) {
+			if (_isFileNotFound(amazonClientException)) {
 				throw new NoSuchFileException(
 					companyId, repositoryId, fileName, versionLabel);
 			}
 
-			throw transform(amazonClientException);
+			throw _transform(amazonClientException);
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -268,7 +268,7 @@ public class S3Store implements Store {
 				companyId, repositoryId, dirName);
 		}
 
-		List<S3ObjectSummary> s3ObjectSummaries = getS3ObjectSummaries(key);
+		List<S3ObjectSummary> s3ObjectSummaries = _getS3ObjectSummaries(key);
 
 		Iterator<S3ObjectSummary> iterator = s3ObjectSummaries.iterator();
 
@@ -291,7 +291,7 @@ public class S3Store implements Store {
 		throws PortalException {
 
 		if (Validator.isNull(versionLabel)) {
-			versionLabel = getHeadVersionLabel(
+			versionLabel = _getHeadVersionLabel(
 				companyId, repositoryId, fileName);
 		}
 
@@ -318,7 +318,7 @@ public class S3Store implements Store {
 		String key = S3KeyTransformerUtil.getFileKey(
 			companyId, repositoryId, fileName);
 
-		List<S3ObjectSummary> s3ObjectSummaries = getS3ObjectSummaries(key);
+		List<S3ObjectSummary> s3ObjectSummaries = _getS3ObjectSummaries(key);
 
 		if (s3ObjectSummaries.isEmpty()) {
 			return StringPool.EMPTY_ARRAY;
@@ -351,7 +351,7 @@ public class S3Store implements Store {
 
 		try {
 			if (Validator.isNull(versionLabel)) {
-				versionLabel = getHeadVersionLabel(
+				versionLabel = _getHeadVersionLabel(
 					companyId, repositoryId, fileName);
 			}
 
@@ -361,11 +361,11 @@ public class S3Store implements Store {
 			return _amazonS3.doesObjectExist(_bucketName, key);
 		}
 		catch (AmazonClientException amazonClientException) {
-			if (isFileNotFound(amazonClientException)) {
+			if (_isFileNotFound(amazonClientException)) {
 				return false;
 			}
 
-			throw transform(amazonClientException);
+			throw _transform(amazonClientException);
 		}
 		catch (NoSuchFileException noSuchFileException) {
 
@@ -384,9 +384,9 @@ public class S3Store implements Store {
 		_s3StoreConfiguration = ConfigurableUtil.createConfigurable(
 			S3StoreConfiguration.class, properties);
 
-		_amazonS3 = getAmazonS3(getAWSCredentialsProvider());
+		_amazonS3 = _getAmazonS3(_getAWSCredentialsProvider());
 		_bucketName = _s3StoreConfiguration.bucketName();
-		_transferManager = getTransferManager(_amazonS3);
+		_transferManager = _getTransferManager(_amazonS3);
 
 		try {
 			_storageClass = StorageClass.fromValue(
@@ -404,7 +404,7 @@ public class S3Store implements Store {
 		}
 	}
 
-	protected void configureProxySettings(
+	private void _configureProxySettings(
 		ClientConfiguration clientConfiguration) {
 
 		String proxyHost = _s3StoreConfiguration.proxyHost();
@@ -433,7 +433,7 @@ public class S3Store implements Store {
 		_s3StoreConfiguration = null;
 	}
 
-	protected AmazonS3 getAmazonS3(
+	private AmazonS3 _getAmazonS3(
 		AWSCredentialsProvider awsCredentialsProvider) {
 
 		if (Validator.isNotNull(_s3StoreConfiguration.s3Endpoint()) &&
@@ -443,7 +443,7 @@ public class S3Store implements Store {
 			).withCredentials(
 				awsCredentialsProvider
 			).withClientConfiguration(
-				getClientConfiguration()
+				_getClientConfiguration()
 			).withEndpointConfiguration(
 				new AwsClientBuilder.EndpointConfiguration(
 					_s3StoreConfiguration.s3Endpoint(),
@@ -458,7 +458,7 @@ public class S3Store implements Store {
 			).withCredentials(
 				awsCredentialsProvider
 			).withClientConfiguration(
-				getClientConfiguration()
+				_getClientConfiguration()
 			).withPathStyleAccessEnabled(
 				_s3StoreConfiguration.s3PathStyle()
 			);
@@ -470,7 +470,7 @@ public class S3Store implements Store {
 		return amazonS3ClientBuilder.build();
 	}
 
-	protected AWSCredentialsProvider getAWSCredentialsProvider() {
+	private AWSCredentialsProvider _getAWSCredentialsProvider() {
 		if (Validator.isNotNull(_s3StoreConfiguration.accessKey()) &&
 			Validator.isNotNull(_s3StoreConfiguration.secretKey())) {
 
@@ -484,7 +484,7 @@ public class S3Store implements Store {
 		return new DefaultAWSCredentialsProviderChain();
 	}
 
-	protected ClientConfiguration getClientConfiguration() {
+	private ClientConfiguration _getClientConfiguration() {
 		ClientConfiguration clientConfiguration = new ClientConfiguration();
 
 		clientConfiguration.setConnectionTimeout(
@@ -494,19 +494,19 @@ public class S3Store implements Store {
 		clientConfiguration.setMaxErrorRetry(
 			_s3StoreConfiguration.httpClientMaxErrorRetry());
 
-		configureProxySettings(clientConfiguration);
+		_configureProxySettings(clientConfiguration);
 
 		return clientConfiguration;
 	}
 
-	protected String getHeadVersionLabel(
+	private String _getHeadVersionLabel(
 			long companyId, long repositoryId, String fileName)
 		throws NoSuchFileException {
 
 		String key = S3KeyTransformerUtil.getFileKey(
 			companyId, repositoryId, fileName);
 
-		List<S3ObjectSummary> s3ObjectSummaries = getS3ObjectSummaries(key);
+		List<S3ObjectSummary> s3ObjectSummaries = _getS3ObjectSummaries(key);
 
 		Iterator<S3ObjectSummary> iterator = s3ObjectSummaries.iterator();
 
@@ -531,7 +531,7 @@ public class S3Store implements Store {
 		throw new NoSuchFileException(companyId, repositoryId, fileName);
 	}
 
-	protected List<S3ObjectSummary> getS3ObjectSummaries(String prefix) {
+	private List<S3ObjectSummary> _getS3ObjectSummaries(String prefix) {
 		try {
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
 
@@ -559,11 +559,11 @@ public class S3Store implements Store {
 			return s3ObjectSummaries;
 		}
 		catch (AmazonClientException amazonClientException) {
-			throw transform(amazonClientException);
+			throw _transform(amazonClientException);
 		}
 	}
 
-	protected TransferManager getTransferManager(AmazonS3 amazonS3) {
+	private TransferManager _getTransferManager(AmazonS3 amazonS3) {
 		return TransferManagerBuilder.standard(
 		).withS3Client(
 			amazonS3
@@ -580,7 +580,7 @@ public class S3Store implements Store {
 		).build();
 	}
 
-	protected boolean isFileNotFound(
+	private boolean _isFileNotFound(
 		AmazonClientException amazonClientException) {
 
 		if (amazonClientException instanceof AmazonServiceException) {
@@ -600,7 +600,7 @@ public class S3Store implements Store {
 		return false;
 	}
 
-	protected SystemException transform(
+	private SystemException _transform(
 		AmazonClientException amazonClientException) {
 
 		if (amazonClientException instanceof AmazonServiceException) {

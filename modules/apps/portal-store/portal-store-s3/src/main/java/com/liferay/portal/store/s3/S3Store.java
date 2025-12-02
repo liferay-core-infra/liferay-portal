@@ -5,8 +5,6 @@
 
 package com.liferay.portal.store.s3;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -586,26 +584,6 @@ public class S3Store implements Store {
 		).build();
 	}
 
-	private boolean _isFileNotFound(
-		AmazonClientException amazonClientException) {
-
-		if (amazonClientException instanceof AmazonServiceException) {
-			AmazonServiceException amazonServiceException =
-				(AmazonServiceException)amazonClientException;
-
-			String errorCode = amazonServiceException.getErrorCode();
-
-			if (errorCode.equals(_ERROR_CODE_FILE_NOT_FOUND) &&
-				(amazonServiceException.getStatusCode() ==
-					_STATUS_CODE_FILE_NOT_FOUND)) {
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private SystemException _transform(Throwable throwable) {
 		if (throwable instanceof AwsServiceException) {
 			AwsServiceException awsServiceException =
@@ -639,10 +617,6 @@ public class S3Store implements Store {
 	}
 
 	private static final int _DELETE_MAX = 1000;
-
-	private static final String _ERROR_CODE_FILE_NOT_FOUND = "NoSuchKey";
-
-	private static final int _STATUS_CODE_FILE_NOT_FOUND = 404;
 
 	private static final Log _log = LogFactoryUtil.getLog(S3Store.class);
 

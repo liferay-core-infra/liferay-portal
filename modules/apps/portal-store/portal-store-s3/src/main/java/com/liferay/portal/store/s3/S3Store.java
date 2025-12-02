@@ -41,6 +41,7 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,10 @@ import software.amazon.awssdk.transfer.s3.model.FileUpload;
 	service = Store.class
 )
 public class S3Store implements Store {
+
+	public void abortMultipartUploads(Date startDate) {
+		_transferManager.abortMultipartUploads(_bucketName, startDate);
+	}
 
 	@Override
 	public void addFile(
@@ -203,10 +208,6 @@ public class S3Store implements Store {
 		catch (CompletionException completionException) {
 			throw _transform(completionException.getCause());
 		}
-	}
-
-	public String getBucketName() {
-		return _bucketName;
 	}
 
 	@Override
@@ -341,10 +342,6 @@ public class S3Store implements Store {
 		Arrays.sort(versions, DLUtil::compareVersions);
 
 		return versions;
-	}
-
-	public TransferManager getTransferManager() {
-		return _transferManager;
 	}
 
 	@Override

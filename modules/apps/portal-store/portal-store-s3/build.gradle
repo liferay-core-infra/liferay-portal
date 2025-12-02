@@ -1,8 +1,4 @@
 dependencies {
-	compileInclude group: "com.amazonaws", name: "aws-java-sdk-core", version: "1.12.719"
-	compileInclude group: "com.amazonaws", name: "aws-java-sdk-kms", version: "1.12.719"
-	compileInclude group: "com.amazonaws", name: "aws-java-sdk-s3", version: "1.12.719"
-	compileInclude group: "com.amazonaws", name: "aws-java-sdk-sts", version: "1.12.719"
 	compileInclude group: "com.ibm.cos", name: "ibm-cos-java-sdk-core", version: "2.14.0"
 	compileInclude group: "com.ibm.cos", name: "ibm-cos-java-sdk-kms", version: "2.14.0"
 	compileInclude group: "com.ibm.cos", name: "ibm-cos-java-sdk-s3", version: "2.14.0"

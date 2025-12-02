@@ -63,6 +63,9 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
+
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.transfer.s3.S3TransferManager;
 
@@ -607,29 +610,26 @@ public class S3Store implements Store {
 		return false;
 	}
 
-	private SystemException _transform(
-		AmazonClientException amazonClientException) {
+	private SystemException _transform(Throwable throwable) {
+		if (throwable instanceof AwsServiceException) {
+			AwsServiceException awsServiceException =
+				(AwsServiceException)throwable;
 
-		if (amazonClientException instanceof AmazonServiceException) {
-			AmazonServiceException amazonServiceException =
-				(AmazonServiceException)amazonClientException;
+			AwsErrorDetails awsErrorDetails =
+				awsServiceException.awsErrorDetails();
 
-			StringBundler sb = new StringBundler(11);
+			String errorCode = awsErrorDetails.errorCode();
+
+			StringBundler sb = new StringBundler(9);
 
 			sb.append("{errorCode=");
-
-			String errorCode = amazonServiceException.getErrorCode();
-
 			sb.append(errorCode);
-
-			sb.append(", errorType=");
-			sb.append(amazonServiceException.getErrorType());
 			sb.append(", message=");
-			sb.append(amazonServiceException.getMessage());
+			sb.append(awsServiceException.getMessage());
 			sb.append(", requestId=");
-			sb.append(amazonServiceException.getRequestId());
+			sb.append(awsServiceException.requestId());
 			sb.append(", statusCode=");
-			sb.append(amazonServiceException.getStatusCode());
+			sb.append(awsServiceException.statusCode());
 			sb.append("}");
 
 			if (errorCode.equals("AccessDenied")) {
@@ -639,8 +639,7 @@ public class S3Store implements Store {
 			return new SystemException(sb.toString());
 		}
 
-		return new SystemException(
-			amazonClientException.getMessage(), amazonClientException);
+		return new SystemException(throwable.getMessage(), throwable);
 	}
 
 	private static final int _DELETE_MAX = 1000;

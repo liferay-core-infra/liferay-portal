@@ -363,14 +363,25 @@ public class S3Store implements Store {
 			String key = S3KeyTransformerUtil.getFileVersionKey(
 				companyId, repositoryId, fileName, versionLabel);
 
-			return _amazonS3.doesObjectExist(_bucketName, key);
+			CompletableFuture<HeadObjectResponse> completableFuture =
+				_s3AsyncClient.headObject(
+					builder -> {
+						builder.bucket(_bucketName);
+						builder.key(key);
+					});
+
+			completableFuture.join();
+
+			return true;
 		}
-		catch (AmazonClientException amazonClientException) {
-			if (_isFileNotFound(amazonClientException)) {
+		catch (CompletionException completionException) {
+			Throwable throwable = completionException.getCause();
+
+			if (throwable instanceof NoSuchKeyException) {
 				return false;
 			}
 
-			throw _transform(amazonClientException);
+			throw _transform(throwable);
 		}
 		catch (NoSuchFileException noSuchFileException) {
 

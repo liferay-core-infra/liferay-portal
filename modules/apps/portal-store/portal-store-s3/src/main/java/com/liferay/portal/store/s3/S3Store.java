@@ -301,10 +301,7 @@ public class S3Store implements Store {
 		_s3StoreConfiguration = ConfigurableUtil.createConfigurable(
 			S3StoreConfiguration.class, properties);
 
-		_awsCredentialsProvider = getAWSCredentialsProvider();
-
-		_amazonS3 = getAmazonS3(_awsCredentialsProvider);
-
+		_amazonS3 = getAmazonS3(getAWSCredentialsProvider());
 		_bucketName = _s3StoreConfiguration.bucketName();
 		_transferManager = getTransferManager(_amazonS3);
 
@@ -349,7 +346,6 @@ public class S3Store implements Store {
 	@Deactivate
 	protected void deactivate() {
 		_amazonS3 = null;
-		_awsCredentialsProvider = null;
 		_bucketName = null;
 		_s3StoreConfiguration = null;
 	}
@@ -675,7 +671,6 @@ public class S3Store implements Store {
 	private static volatile S3StoreConfiguration _s3StoreConfiguration;
 
 	private AmazonS3 _amazonS3;
-	private AWSCredentialsProvider _awsCredentialsProvider;
 	private String _bucketName;
 	private StorageClass _storageClass;
 	private TransferManager _transferManager;

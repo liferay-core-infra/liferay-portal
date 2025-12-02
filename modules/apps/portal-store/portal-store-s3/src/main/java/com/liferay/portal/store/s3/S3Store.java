@@ -16,7 +16,6 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
@@ -58,6 +57,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -67,6 +68,7 @@ import org.osgi.service.component.annotations.Deactivate;
 import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.transfer.s3.S3TransferManager;
 
 /**
@@ -186,16 +188,20 @@ public class S3Store implements Store {
 		String versionLabel) {
 
 		try {
-			String key = S3KeyTransformerUtil.getFileVersionKey(
-				companyId, repositoryId, fileName, versionLabel);
+			CompletableFuture<DeleteObjectResponse> completableFuture =
+				_s3AsyncClient.deleteObject(
+					builder -> {
+						builder.bucket(_bucketName);
+						builder.key(
+							S3KeyTransformerUtil.getFileVersionKey(
+								companyId, repositoryId, fileName,
+								versionLabel));
+					});
 
-			DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(
-				_bucketName, key);
-
-			_amazonS3.deleteObject(deleteObjectRequest);
+			completableFuture.join();
 		}
-		catch (AmazonClientException amazonClientException) {
-			throw _transform(amazonClientException);
+		catch (CompletionException completionException) {
+			throw _transform(completionException.getCause());
 		}
 	}
 

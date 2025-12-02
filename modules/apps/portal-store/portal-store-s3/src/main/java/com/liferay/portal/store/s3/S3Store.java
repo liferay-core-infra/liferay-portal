@@ -404,6 +404,13 @@ public class S3Store implements Store {
 		}
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_amazonS3 = null;
+		_bucketName = null;
+		_s3StoreConfiguration = null;
+	}
+
 	private void _configureProxySettings(
 		ClientConfiguration clientConfiguration) {
 
@@ -424,13 +431,6 @@ public class S3Store implements Store {
 			clientConfiguration.setProxyUsername(
 				_s3StoreConfiguration.proxyUsername());
 		}
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_amazonS3 = null;
-		_bucketName = null;
-		_s3StoreConfiguration = null;
 	}
 
 	private AmazonS3 _getAmazonS3(

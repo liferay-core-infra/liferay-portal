@@ -95,7 +95,35 @@ public class S3Store implements Store {
 		try {
 			file = FileUtil.createTempFile(inputStream);
 
-			putObject(companyId, repositoryId, fileName, versionLabel, file);
+			Upload upload = null;
+
+			try {
+				String key = S3KeyTransformerUtil.getFileVersionKey(
+					companyId, repositoryId, fileName, versionLabel);
+
+				PutObjectRequest putObjectRequest = new PutObjectRequest(
+					_bucketName, key, file);
+
+				putObjectRequest.withStorageClass(_storageClass);
+
+				upload = _transferManager.upload(putObjectRequest);
+
+				upload.waitForCompletion();
+			}
+			catch (AmazonClientException amazonClientException) {
+				throw transform(amazonClientException);
+			}
+			catch (InterruptedException interruptedException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(interruptedException);
+				}
+
+				upload.abort();
+
+				Thread thread = Thread.currentThread();
+
+				thread.interrupt();
+			}
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -112,7 +140,39 @@ public class S3Store implements Store {
 		String key = S3KeyTransformerUtil.getDirectoryKey(
 			companyId, repositoryId, dirName);
 
-		deleteObjects(key);
+		try {
+			String[] keys = new String[_DELETE_MAX];
+
+			List<S3ObjectSummary> s3ObjectSummaries = getS3ObjectSummaries(
+				key);
+
+			Iterator<S3ObjectSummary> iterator = s3ObjectSummaries.iterator();
+
+			while (iterator.hasNext()) {
+				DeleteObjectsRequest deleteObjectsRequest =
+					new DeleteObjectsRequest(_bucketName);
+
+				for (int i = 0; i < keys.length; i++) {
+					if (iterator.hasNext()) {
+						S3ObjectSummary s3ObjectSummary = iterator.next();
+
+						keys[i] = s3ObjectSummary.getKey();
+					}
+					else {
+						keys = Arrays.copyOfRange(keys, 0, i);
+
+						break;
+					}
+				}
+
+				deleteObjectsRequest.withKeys(keys);
+
+				_amazonS3.deleteObjects(deleteObjectsRequest);
+			}
+		}
+		catch (AmazonClientException amazonClientException) {
+			throw transform(amazonClientException);
+		}
 	}
 
 	@Override
@@ -145,8 +205,23 @@ public class S3Store implements Store {
 		throws PortalException {
 
 		try {
-			S3Object s3Object = getS3Object(
+			if (Validator.isNull(versionLabel)) {
+				versionLabel = getHeadVersionLabel(
+					companyId, repositoryId, fileName);
+			}
+
+			String key = S3KeyTransformerUtil.getFileVersionKey(
 				companyId, repositoryId, fileName, versionLabel);
+
+			GetObjectRequest getObjectRequest = new GetObjectRequest(
+				_bucketName, key);
+
+			S3Object s3Object = _amazonS3.getObject(getObjectRequest);
+
+			if (s3Object == null) {
+				throw new NoSuchFileException(
+					companyId, repositoryId, fileName, versionLabel);
+			}
 
 			InputStream s3InputStream = s3Object.getObjectContent();
 
@@ -164,6 +239,14 @@ public class S3Store implements Store {
 				}
 
 			};
+		}
+		catch (AmazonClientException amazonClientException) {
+			if (isFileNotFound(amazonClientException)) {
+				throw new NoSuchFileException(
+					companyId, repositoryId, fileName, versionLabel);
+			}
+
+			throw transform(amazonClientException);
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -350,42 +433,6 @@ public class S3Store implements Store {
 		_s3StoreConfiguration = null;
 	}
 
-	protected void deleteObjects(String prefix) {
-		try {
-			String[] keys = new String[_DELETE_MAX];
-
-			List<S3ObjectSummary> s3ObjectSummaries = getS3ObjectSummaries(
-				prefix);
-
-			Iterator<S3ObjectSummary> iterator = s3ObjectSummaries.iterator();
-
-			while (iterator.hasNext()) {
-				DeleteObjectsRequest deleteObjectsRequest =
-					new DeleteObjectsRequest(_bucketName);
-
-				for (int i = 0; i < keys.length; i++) {
-					if (iterator.hasNext()) {
-						S3ObjectSummary s3ObjectSummary = iterator.next();
-
-						keys[i] = s3ObjectSummary.getKey();
-					}
-					else {
-						keys = Arrays.copyOfRange(keys, 0, i);
-
-						break;
-					}
-				}
-
-				deleteObjectsRequest.withKeys(keys);
-
-				_amazonS3.deleteObjects(deleteObjectsRequest);
-			}
-		}
-		catch (AmazonClientException amazonClientException) {
-			throw transform(amazonClientException);
-		}
-	}
-
 	protected AmazonS3 getAmazonS3(
 		AWSCredentialsProvider awsCredentialsProvider) {
 
@@ -484,42 +531,6 @@ public class S3Store implements Store {
 		throw new NoSuchFileException(companyId, repositoryId, fileName);
 	}
 
-	protected S3Object getS3Object(
-			long companyId, long repositoryId, String fileName,
-			String versionLabel)
-		throws NoSuchFileException {
-
-		try {
-			if (Validator.isNull(versionLabel)) {
-				versionLabel = getHeadVersionLabel(
-					companyId, repositoryId, fileName);
-			}
-
-			String key = S3KeyTransformerUtil.getFileVersionKey(
-				companyId, repositoryId, fileName, versionLabel);
-
-			GetObjectRequest getObjectRequest = new GetObjectRequest(
-				_bucketName, key);
-
-			S3Object s3Object = _amazonS3.getObject(getObjectRequest);
-
-			if (s3Object == null) {
-				throw new NoSuchFileException(
-					companyId, repositoryId, fileName, versionLabel);
-			}
-
-			return s3Object;
-		}
-		catch (AmazonClientException amazonClientException) {
-			if (isFileNotFound(amazonClientException)) {
-				throw new NoSuchFileException(
-					companyId, repositoryId, fileName, versionLabel);
-			}
-
-			throw transform(amazonClientException);
-		}
-	}
-
 	protected List<S3ObjectSummary> getS3ObjectSummaries(String prefix) {
 		try {
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
@@ -587,41 +598,6 @@ public class S3Store implements Store {
 		}
 
 		return false;
-	}
-
-	protected void putObject(
-		long companyId, long repositoryId, String fileName, String versionLabel,
-		File file) {
-
-		Upload upload = null;
-
-		try {
-			String key = S3KeyTransformerUtil.getFileVersionKey(
-				companyId, repositoryId, fileName, versionLabel);
-
-			PutObjectRequest putObjectRequest = new PutObjectRequest(
-				_bucketName, key, file);
-
-			putObjectRequest.withStorageClass(_storageClass);
-
-			upload = _transferManager.upload(putObjectRequest);
-
-			upload.waitForCompletion();
-		}
-		catch (AmazonClientException amazonClientException) {
-			throw transform(amazonClientException);
-		}
-		catch (InterruptedException interruptedException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(interruptedException);
-			}
-
-			upload.abort();
-
-			Thread thread = Thread.currentThread();
-
-			thread.interrupt();
-		}
 	}
 
 	protected SystemException transform(

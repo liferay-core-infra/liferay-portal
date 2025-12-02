@@ -63,6 +63,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.transfer.s3.S3TransferManager;
 
 /**
  * @author Brian Wing Shun Chan
@@ -406,9 +408,14 @@ public class S3Store implements Store {
 
 	@Deactivate
 	protected void deactivate() {
+		_s3TransferManager.close();
+		_s3AsyncClient.close();
+
 		_amazonS3 = null;
 		_bucketName = null;
+		_s3AsyncClient = null;
 		_s3StoreConfiguration = null;
+		_s3TransferManager = null;
 	}
 
 	private void _configureProxySettings(
@@ -648,6 +655,8 @@ public class S3Store implements Store {
 
 	private AmazonS3 _amazonS3;
 	private String _bucketName;
+	private S3AsyncClient _s3AsyncClient;
+	private S3TransferManager _s3TransferManager;
 	private StorageClass _storageClass;
 	private TransferManager _transferManager;
 

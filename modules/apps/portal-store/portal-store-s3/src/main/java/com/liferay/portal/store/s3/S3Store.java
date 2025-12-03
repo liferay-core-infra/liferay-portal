@@ -474,6 +474,19 @@ public class S3Store implements Store {
 	protected AmazonS3 getAmazonS3(
 		AWSCredentialsProvider awsCredentialsProvider) {
 
+		ClientConfiguration clientConfiguration = new ClientConfiguration();
+
+		clientConfiguration.setConnectionTimeout(
+			_s3StoreConfiguration.connectionTimeout());
+		clientConfiguration.setMaxConnections(
+			_s3StoreConfiguration.httpClientMaxConnections());
+		clientConfiguration.setMaxErrorRetry(
+			_s3StoreConfiguration.httpClientMaxErrorRetry());
+
+		configureConnectionProtocol(clientConfiguration);
+		configureProxySettings(clientConfiguration);
+		configureSignerOverride(clientConfiguration);
+
 		if (Validator.isNotNull(_s3StoreConfiguration.s3Endpoint()) &&
 			Validator.isNotNull(_s3StoreConfiguration.s3Region())) {
 
@@ -481,7 +494,7 @@ public class S3Store implements Store {
 			).withCredentials(
 				awsCredentialsProvider
 			).withClientConfiguration(
-				getClientConfiguration()
+				clientConfiguration
 			).withEndpointConfiguration(
 				new AwsClientBuilder.EndpointConfiguration(
 					_s3StoreConfiguration.s3Endpoint(),
@@ -496,7 +509,7 @@ public class S3Store implements Store {
 			).withCredentials(
 				awsCredentialsProvider
 			).withClientConfiguration(
-				getClientConfiguration()
+				clientConfiguration
 			).withPathStyleAccessEnabled(
 				_s3StoreConfiguration.s3PathStyle()
 			);
@@ -506,23 +519,6 @@ public class S3Store implements Store {
 		}
 
 		return amazonS3ClientBuilder.build();
-	}
-
-	protected ClientConfiguration getClientConfiguration() {
-		ClientConfiguration clientConfiguration = new ClientConfiguration();
-
-		clientConfiguration.setConnectionTimeout(
-			_s3StoreConfiguration.connectionTimeout());
-		clientConfiguration.setMaxConnections(
-			_s3StoreConfiguration.httpClientMaxConnections());
-		clientConfiguration.setMaxErrorRetry(
-			_s3StoreConfiguration.httpClientMaxErrorRetry());
-
-		configureConnectionProtocol(clientConfiguration);
-		configureProxySettings(clientConfiguration);
-		configureSignerOverride(clientConfiguration);
-
-		return clientConfiguration;
 	}
 
 	protected String getHeadVersionLabel(

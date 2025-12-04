@@ -348,8 +348,9 @@ public class S3Store implements Store {
 
 		try {
 			if (Validator.isNull(versionLabel)) {
-				versionLabel = _getHeadVersionLabel(
-					companyId, repositoryId, fileName);
+				_getHeadVersionLabel(companyId, repositoryId, fileName);
+
+				return true;
 			}
 
 			String key = S3KeyTransformerUtil.getFileVersionKey(

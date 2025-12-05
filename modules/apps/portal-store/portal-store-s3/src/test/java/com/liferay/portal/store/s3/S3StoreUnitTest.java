@@ -8,6 +8,7 @@ package com.liferay.portal.store.s3;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.s3.configuration.S3StoreConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -28,6 +29,8 @@ import org.junit.Test;
 import org.littleshoot.proxy.HttpFilters;
 import org.littleshoot.proxy.HttpFiltersSourceAdapter;
 import org.littleshoot.proxy.HttpProxyServer;
+import org.littleshoot.proxy.HttpProxyServerBootstrap;
+import org.littleshoot.proxy.ProxyAuthenticator;
 import org.littleshoot.proxy.impl.DefaultHttpProxyServer;
 
 import org.mockito.MockedStatic;
@@ -106,17 +109,67 @@ public class S3StoreUnitTest {
 	public void testProxy() {
 		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
 
-		_mockProxy(inetSocketAddress);
+		_mockProxy(inetSocketAddress, null, null);
 
-		Assert.assertTrue(_testProxy(inetSocketAddress));
+		Assert.assertTrue(_testProxy(inetSocketAddress, null, null));
 	}
 
-	private void _mockProxy(InetSocketAddress inetSocketAddress) {
-		Mockito.when(
-			_s3StoreConfiguration.proxyAuthType()
-		).thenReturn(
-			"none"
-		);
+	@Test
+	public void testProxyAuthentication() {
+		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
+
+		String proxyPassword = RandomTestUtil.randomString();
+		String proxyUserName = RandomTestUtil.randomString();
+
+		_mockProxy(inetSocketAddress, proxyUserName, proxyPassword);
+
+		Assert.assertTrue(
+			_testProxy(inetSocketAddress, proxyUserName, proxyPassword));
+	}
+
+	@Test
+	public void testProxyAuthenticationFailed() {
+		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
+
+		String proxyPassword = RandomTestUtil.randomString();
+		String proxyUserName = RandomTestUtil.randomString();
+
+		_mockProxy(inetSocketAddress, proxyUserName, proxyPassword);
+
+		Assert.assertFalse(
+			_testProxy(inetSocketAddress, proxyUserName, proxyPassword + "1"));
+	}
+
+	private void _mockProxy(
+		InetSocketAddress inetSocketAddress, String proxyUserName,
+		String proxyPassword) {
+
+		if (Validator.isNotNull(proxyUserName)) {
+			Mockito.when(
+				_s3StoreConfiguration.proxyAuthType()
+			).thenReturn(
+				"username-password"
+			);
+
+			Mockito.when(
+				_s3StoreConfiguration.proxyPassword()
+			).thenReturn(
+				proxyPassword
+			);
+
+			Mockito.when(
+				_s3StoreConfiguration.proxyUsername()
+			).thenReturn(
+				proxyUserName
+			);
+		}
+		else {
+			Mockito.when(
+				_s3StoreConfiguration.proxyAuthType()
+			).thenReturn(
+				"none"
+			);
+		}
 
 		Mockito.when(
 			_s3StoreConfiguration.proxyHost()
@@ -131,24 +184,55 @@ public class S3StoreUnitTest {
 		);
 	}
 
-	private boolean _testProxy(InetSocketAddress inetSocketAddress) {
+	private boolean _testProxy(
+		InetSocketAddress inetSocketAddress, String proxyUserName,
+		String proxyPassword) {
+
 		AtomicBoolean proxyHit = new AtomicBoolean(false);
 
-		HttpProxyServer httpProxyServer = DefaultHttpProxyServer.bootstrap(
-		).withAddress(
-			inetSocketAddress
-		).withFiltersSource(
-			new HttpFiltersSourceAdapter() {
+		HttpProxyServerBootstrap httpProxyServerBootstrap =
+			DefaultHttpProxyServer.bootstrap(
+			).withAddress(
+				inetSocketAddress
+			).withFiltersSource(
+				new HttpFiltersSourceAdapter() {
 
-				@Override
-				public HttpFilters filterRequest(HttpRequest httpRequest) {
-					proxyHit.set(true);
+					@Override
+					public HttpFilters filterRequest(HttpRequest httpRequest) {
+						proxyHit.set(true);
 
-					return super.filterRequest(httpRequest);
+						return super.filterRequest(httpRequest);
+					}
+
 				}
+			);
 
-			}
-		).start();
+		if (Validator.isNotNull(proxyUserName)) {
+			httpProxyServerBootstrap.withProxyAuthenticator(
+				new ProxyAuthenticator() {
+
+					@Override
+					public boolean authenticate(
+						String userName, String password) {
+
+						if (userName.equals(proxyUserName) &&
+							password.equals(proxyPassword)) {
+
+							return true;
+						}
+
+						return false;
+					}
+
+					@Override
+					public String getRealm() {
+						return null;
+					}
+
+				});
+		}
+
+		HttpProxyServer httpProxyServer = httpProxyServerBootstrap.start();
 
 		try {
 			S3Store s3Store = new S3Store();

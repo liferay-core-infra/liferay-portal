@@ -102,15 +102,12 @@ public class S3StoreUnitTest {
 		_configurableUtilMockedStatic.close();
 	}
 
-	@Test
-	public void testProxy() {
+	private void _mockProxy(InetSocketAddress inetSocketAddress) {
 		Mockito.when(
 			_s3StoreConfiguration.proxyAuthType()
 		).thenReturn(
 			"none"
 		);
-
-		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
 
 		Mockito.when(
 			_s3StoreConfiguration.proxyHost()
@@ -123,6 +120,13 @@ public class S3StoreUnitTest {
 		).thenReturn(
 			inetSocketAddress.getPort()
 		);
+	}
+
+	@Test
+	public void testProxy() {
+		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
+
+		_mockProxy(inetSocketAddress);
 
 		AtomicBoolean proxyHit = new AtomicBoolean(false);
 

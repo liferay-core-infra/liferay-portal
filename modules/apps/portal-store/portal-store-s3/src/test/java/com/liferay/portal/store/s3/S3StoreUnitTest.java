@@ -102,6 +102,15 @@ public class S3StoreUnitTest {
 		_configurableUtilMockedStatic.close();
 	}
 
+	@Test
+	public void testProxy() {
+		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
+
+		_mockProxy(inetSocketAddress);
+
+		Assert.assertTrue(_testProxy(inetSocketAddress));
+	}
+
 	private void _mockProxy(InetSocketAddress inetSocketAddress) {
 		Mockito.when(
 			_s3StoreConfiguration.proxyAuthType()
@@ -122,12 +131,7 @@ public class S3StoreUnitTest {
 		);
 	}
 
-	@Test
-	public void testProxy() {
-		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
-
-		_mockProxy(inetSocketAddress);
-
+	private boolean _testProxy(InetSocketAddress inetSocketAddress) {
 		AtomicBoolean proxyHit = new AtomicBoolean(false);
 
 		HttpProxyServer httpProxyServer = DefaultHttpProxyServer.bootstrap(
@@ -163,11 +167,13 @@ public class S3StoreUnitTest {
 			}
 		}
 		catch (Exception exception) {
-			Assert.assertTrue(proxyHit.get());
+			return proxyHit.get();
 		}
 		finally {
 			httpProxyServer.stop();
 		}
+
+		return proxyHit.get();
 	}
 
 	private final MockedStatic<ConfigurableUtil> _configurableUtilMockedStatic =

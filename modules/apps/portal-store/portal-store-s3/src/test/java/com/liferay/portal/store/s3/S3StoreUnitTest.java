@@ -107,43 +107,32 @@ public class S3StoreUnitTest {
 
 	@Test
 	public void testProxy() {
-		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
+		_mockProxy(null, null);
 
-		_mockProxy(inetSocketAddress, null, null);
-
-		Assert.assertTrue(_testProxy(inetSocketAddress, null, null));
+		Assert.assertTrue(_testProxy(null, null));
 	}
 
 	@Test
 	public void testProxyAuthentication() {
-		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
-
 		String proxyPassword = RandomTestUtil.randomString();
 		String proxyUserName = RandomTestUtil.randomString();
 
-		_mockProxy(inetSocketAddress, proxyUserName, proxyPassword);
+		_mockProxy(proxyUserName, proxyPassword);
 
-		Assert.assertTrue(
-			_testProxy(inetSocketAddress, proxyUserName, proxyPassword));
+		Assert.assertTrue(_testProxy(proxyUserName, proxyPassword));
 	}
 
 	@Test
 	public void testProxyAuthenticationFailed() {
-		InetSocketAddress inetSocketAddress = new InetSocketAddress(1234);
-
 		String proxyPassword = RandomTestUtil.randomString();
 		String proxyUserName = RandomTestUtil.randomString();
 
-		_mockProxy(inetSocketAddress, proxyUserName, proxyPassword);
+		_mockProxy(proxyUserName, proxyPassword);
 
-		Assert.assertFalse(
-			_testProxy(inetSocketAddress, proxyUserName, proxyPassword + "1"));
+		Assert.assertFalse(_testProxy(proxyUserName, proxyPassword + "1"));
 	}
 
-	private void _mockProxy(
-		InetSocketAddress inetSocketAddress, String proxyUserName,
-		String proxyPassword) {
-
+	private void _mockProxy(String proxyUserName, String proxyPassword) {
 		if (Validator.isNotNull(proxyUserName)) {
 			Mockito.when(
 				_s3StoreConfiguration.proxyAuthType()
@@ -174,26 +163,23 @@ public class S3StoreUnitTest {
 		Mockito.when(
 			_s3StoreConfiguration.proxyHost()
 		).thenReturn(
-			inetSocketAddress.getHostString()
+			_INET_SOCKET_ADDRESS.getHostString()
 		);
 
 		Mockito.when(
 			_s3StoreConfiguration.proxyPort()
 		).thenReturn(
-			inetSocketAddress.getPort()
+			_INET_SOCKET_ADDRESS.getPort()
 		);
 	}
 
-	private boolean _testProxy(
-		InetSocketAddress inetSocketAddress, String proxyUserName,
-		String proxyPassword) {
-
+	private boolean _testProxy(String proxyUserName, String proxyPassword) {
 		AtomicBoolean proxyHit = new AtomicBoolean(false);
 
 		HttpProxyServerBootstrap httpProxyServerBootstrap =
 			DefaultHttpProxyServer.bootstrap(
 			).withAddress(
-				inetSocketAddress
+				_INET_SOCKET_ADDRESS
 			).withFiltersSource(
 				new HttpFiltersSourceAdapter() {
 
@@ -259,6 +245,9 @@ public class S3StoreUnitTest {
 
 		return proxyHit.get();
 	}
+
+	private static final InetSocketAddress _INET_SOCKET_ADDRESS =
+		new InetSocketAddress(1234);
 
 	private final MockedStatic<ConfigurableUtil> _configurableUtilMockedStatic =
 		Mockito.mockStatic(ConfigurableUtil.class);

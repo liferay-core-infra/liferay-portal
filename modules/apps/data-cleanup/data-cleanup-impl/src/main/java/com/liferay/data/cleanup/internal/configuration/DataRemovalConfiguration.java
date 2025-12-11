@@ -77,12 +77,6 @@ public interface DataRemovalConfiguration {
 	public boolean removeJournalOrphanData();
 
 	@Meta.AD(
-		deflt = "false", name = "remove-layout-classed-model-usage-orphan-data",
-		required = false
-	)
-	public boolean removeLayoutClassedModelUsageOrphanData();
-
-	@Meta.AD(
 		deflt = "false", name = "remove-null-unicode-content-data",
 		required = false
 	)
@@ -128,5 +122,11 @@ public interface DataRemovalConfiguration {
 		required = false
 	)
 	public boolean removeWidgetLayoutTypeSettings();
+
+	@Meta.AD(
+		deflt = "false", name = "remove-layout-classed-model-usage-orphan-data",
+		required = false
+	)
+	public boolean removeLayoutClassedModelUsageOrphanData();
 
 }

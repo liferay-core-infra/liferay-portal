@@ -484,7 +484,7 @@ public class DataCleanupRegistrator {
 			DDMDataCleanupPreupgradeProcess.class, "remove-ddm-orphan-data"
 		).put(
 			DDMStorageLinkDataCleanupPreupgradeProcess.class,
-			"remove-ddm-storage-link-orphan-data"
+			"remove-ddm-orphan-data"
 		).put(
 			DLFileEntryDataCleanupPreupgradeProcess.class,
 			"remove-dl-file-entry-orphan-data"

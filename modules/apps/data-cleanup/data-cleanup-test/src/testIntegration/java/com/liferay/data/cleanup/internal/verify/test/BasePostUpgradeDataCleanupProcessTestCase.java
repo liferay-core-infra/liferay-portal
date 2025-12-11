@@ -119,8 +119,7 @@ public abstract class BasePostUpgradeDataCleanupProcessTestCase {
 
 	private void _runPostUpgradeDataCleanUpVerifyProcess() throws Exception {
 		Bundle bundle = BundleUtil.getBundle(
-			SystemBundleUtil.getBundleContext(),
-			"com.liferay.data.cleanup.impl");
+			SystemBundleUtil.getBundleContext(), "com.liferay.data.cleanup");
 
 		Class<?> postUpgradeDataCleanupProcessClass = bundle.loadClass(
 			getPostUpgradeDataCleanupProcessClassName());

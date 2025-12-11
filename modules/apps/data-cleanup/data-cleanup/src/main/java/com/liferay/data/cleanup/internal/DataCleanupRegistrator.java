@@ -274,7 +274,7 @@ public class DataCleanupRegistrator {
 
 		_registerDataCleanup(
 			DataCleanupAdapter.create(
-				"clean-up-recent-documents-module-data",
+				"clean-up-rencet-documents-module-data",
 				DataCleanup.MODULE_DATA_CLEANUP,
 				new RecentDocumentsUpgradeProcess()),
 			"com.liferay.recent.documents.web");

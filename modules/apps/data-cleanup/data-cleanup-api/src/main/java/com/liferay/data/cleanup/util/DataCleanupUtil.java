@@ -51,7 +51,8 @@ public class DataCleanupUtil {
 			return _systemDataCleanups;
 		}
 
-		throw new IllegalArgumentException("Invalid type: " + type);
+		throw new IllegalArgumentException(
+			"Type : " + type + " is not allowed");
 	}
 
 	private static final List<DataCleanup> _moduleDataCleanups =

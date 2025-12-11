@@ -122,6 +122,7 @@ import jakarta.portlet.WindowState;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -286,8 +287,16 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			_verifyMembershipPolicies();
 		}
 		else {
-			_executeCleanup(cmd, DataCleanupUtil.getModuleDataCleanups());
-			_executeCleanup(cmd, DataCleanupUtil.getSystemDataCleanups());
+			List<DataCleanup> dataCleanups = new ArrayList<>();
+
+			dataCleanups.addAll(DataCleanupUtil.getSystemDataCleanups());
+			dataCleanups.addAll(DataCleanupUtil.getModuleDataCleanups());
+
+			for (DataCleanup dataCleanup : dataCleanups) {
+				if (cmd.equals(dataCleanup.getLabel())) {
+					dataCleanup.cleanup();
+				}
+			}
 		}
 
 		sendRedirect(actionRequest, actionResponse, redirect);
@@ -612,16 +621,6 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 					companyId, BasePreviewableDLProcessor.REPOSITORY_ID,
 					BasePreviewableDLProcessor.THUMBNAIL_PATH);
 			});
-	}
-
-	private void _executeCleanup(String cmd, List<DataCleanup> dataCleanups)
-		throws Exception {
-
-		for (DataCleanup dataCleanup : dataCleanups) {
-			if (cmd.equals(dataCleanup.getLabel())) {
-				dataCleanup.cleanup();
-			}
-		}
 	}
 
 	private void _gc() throws Exception {

@@ -109,7 +109,7 @@ public class DataCleanupExecutor {
 			dataCleanupConfiguration::cleanUpDirectoryModuleData,
 			"com.liferay.directory.web", DirectoryUpgradeProcess::new);
 		_cleanUpModuleData(
-			dataCleanupConfiguration::cleanUpFrontendImageEditorModuleData,
+			dataCleanupConfiguration::cleanUpImageEditorModuleData,
 			"com.liferay.frontend.image.editor.web",
 			FrontendImageEditorUpgradeProcess::new);
 		_cleanUpModuleData(
@@ -170,12 +170,12 @@ public class DataCleanupExecutor {
 			"com.liferay.social.group.statistics.web",
 			SocialGroupStatisticsUpgradeProcess::new);
 		_cleanUpModuleData(
-			dataCleanupConfiguration::cleanUpSocialPrivateMessagingModuleData,
+			dataCleanupConfiguration::cleanUpPrivateMessagingModuleData,
 			"com.liferay.social.privatemessaging.service",
 			() -> new SocialPrivateMessagingUpgradeProcess(
 				_mbThreadLocalService));
 		_cleanUpModuleData(
-			dataCleanupConfiguration::cleanUpSocialRequestsModuleData,
+			dataCleanupConfiguration::cleanUpSocialRequestModuleData,
 			"com.liferay.social.requests.web",
 			SocialRequestsUpgradeProcess::new);
 		_cleanUpModuleData(

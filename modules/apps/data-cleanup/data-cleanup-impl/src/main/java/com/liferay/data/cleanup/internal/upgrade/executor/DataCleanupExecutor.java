@@ -138,6 +138,10 @@ public class DataCleanupExecutor {
 			dataCleanupConfiguration::cleanUpOAuthModuleData,
 			"com.liferay.oauth.service", OAuthUpgradeProcess::new);
 		_cleanUpModuleData(
+			dataCleanupConfiguration::cleanUpOpenSocialModuleData,
+			"opensocial-portlet",
+			() -> new OpenSocialUpgradeProcess(_expandoTableLocalService));
+		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpPasswordGeneratorModuleData,
 			"com.liferay.password.generator.web",
 			PasswordGeneratorUpgradeProcess::new);
@@ -214,10 +218,6 @@ public class DataCleanupExecutor {
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpYoutubeModuleData,
 			"com.liferay.youtube.web", YoutubeUpgradeProcess::new);
-		_cleanUpModuleData(
-			dataCleanupConfiguration::cleanUpOpenSocialModuleData,
-			"opensocial-portlet",
-			() -> new OpenSocialUpgradeProcess(_expandoTableLocalService));
 	}
 
 	private void _cleanUpModuleData(

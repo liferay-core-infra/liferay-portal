@@ -296,7 +296,7 @@ public class DataCleanupTest {
 		_testDeprecatedModulesUpgrade(
 			"cleanUpSocialPrivateMessagingModuleData",
 			"com.liferay.social.privatemessaging.service",
-			"dependencies/social-private-messaging-tables.sql",
+			"dependencies/private-messaging-tables.sql",
 			"com_liferay_social_privatemessaging_web_portlet_" +
 				"PrivateMessagingPortlet",
 			null);

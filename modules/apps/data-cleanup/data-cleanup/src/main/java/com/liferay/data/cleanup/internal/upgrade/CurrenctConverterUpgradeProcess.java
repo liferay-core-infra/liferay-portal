@@ -8,7 +8,7 @@ package com.liferay.data.cleanup.internal.upgrade;
 /**
  * @author Eudaldo Alonso
  */
-public class CurrencyConverterUpgradeProcess extends BaseUpgradeProcess {
+public class CurrenctConverterUpgradeProcess extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {

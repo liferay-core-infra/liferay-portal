@@ -40,12 +40,6 @@ public interface DataCleanupConfiguration {
 	public boolean cleanUpCurrencyConverterModuleData();
 
 	@Meta.AD(
-		deflt = "false", name = "clean-up-dictionary-module-data",
-		required = false
-	)
-	public boolean cleanUpDictionaryModuleData();
-
-	@Meta.AD(
 		deflt = "false", name = "clean-up-directory-module-data",
 		required = false
 	)

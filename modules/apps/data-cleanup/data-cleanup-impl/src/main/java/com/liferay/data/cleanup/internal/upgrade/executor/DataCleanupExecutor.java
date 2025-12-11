@@ -12,10 +12,10 @@ import com.liferay.data.cleanup.internal.upgrade.CurrencyConverterUpgradeProcess
 import com.liferay.data.cleanup.internal.upgrade.DictionaryUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.DirectoryUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.DocumentLibraryFileRankServiceUpgradeProcess;
-import com.liferay.data.cleanup.internal.upgrade.FrontendImageEditorUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.GoogleMapsUpgradeProcess;
-import com.liferay.data.cleanup.internal.upgrade.HTMLPreviewUpgradeProcess;
+import com.liferay.data.cleanup.internal.upgrade.HTMLPreviewServiceUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.HelloVelocityUpgradeProcess;
+import com.liferay.data.cleanup.internal.upgrade.ImageEditorUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.InvitationUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.LoanCalculatorUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.MailReaderUpgradeProcess;
@@ -24,13 +24,13 @@ import com.liferay.data.cleanup.internal.upgrade.OAuthUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.OpenSocialUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.PasswordGeneratorUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.PortalSecurityWedeployAuthUpgradeProcess;
+import com.liferay.data.cleanup.internal.upgrade.PrivateMessagingUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.QuickNoteUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.RecentDocumentsUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.ShoppingUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.SocialActivityUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.SocialGroupStatisticsUpgradeProcess;
-import com.liferay.data.cleanup.internal.upgrade.SocialPrivateMessagingUpgradeProcess;
-import com.liferay.data.cleanup.internal.upgrade.SocialRequestsUpgradeProcess;
+import com.liferay.data.cleanup.internal.upgrade.SocialRequestUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.SocialUserStatisticsUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.SoftwareCatalogUpgradeProcess;
 import com.liferay.data.cleanup.internal.upgrade.SyncUpgradeProcess;
@@ -111,7 +111,7 @@ public class DataCleanupExecutor {
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpImageEditorModuleData,
 			"com.liferay.frontend.image.editor.web",
-			FrontendImageEditorUpgradeProcess::new);
+			ImageEditorUpgradeProcess::new);
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpGoogleMapsModuleData,
 			"com.liferay.google.maps.web", GoogleMapsUpgradeProcess::new);
@@ -123,7 +123,8 @@ public class DataCleanupExecutor {
 			"com.liferay.hello.world.web", UpgradeHelloWorld::new);
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpHTMLPreviewModuleData,
-			"com.liferay.html.preview.service", HTMLPreviewUpgradeProcess::new);
+			"com.liferay.html.preview.service",
+			HTMLPreviewServiceUpgradeProcess::new);
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpInvitationModuleData,
 			"com.liferay.invitation.web", InvitationUpgradeProcess::new);
@@ -172,12 +173,11 @@ public class DataCleanupExecutor {
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpPrivateMessagingModuleData,
 			"com.liferay.social.privatemessaging.service",
-			() -> new SocialPrivateMessagingUpgradeProcess(
-				_mbThreadLocalService));
+			() -> new PrivateMessagingUpgradeProcess(_mbThreadLocalService));
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpSocialRequestModuleData,
 			"com.liferay.social.requests.web",
-			SocialRequestsUpgradeProcess::new);
+			SocialRequestUpgradeProcess::new);
 		_cleanUpModuleData(
 			dataCleanupConfiguration::cleanUpSocialUserStatisticsModuleData,
 			"com.liferay.social.user.statistics.web",

@@ -8,7 +8,7 @@ package com.liferay.data.cleanup.internal.upgrade;
 /**
  * @author Eudaldo Alonso
  */
-public class HTMLPreviewUpgradeProcess extends BaseUpgradeProcess {
+public class HTMLPreviewServiceUpgradeProcess extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {

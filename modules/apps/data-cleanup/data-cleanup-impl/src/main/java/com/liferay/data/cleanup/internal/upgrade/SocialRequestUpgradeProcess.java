@@ -8,7 +8,7 @@ package com.liferay.data.cleanup.internal.upgrade;
 /**
  * @author Eudaldo Alonso
  */
-public class SocialRequestsUpgradeProcess extends BaseUpgradeProcess {
+public class SocialRequestUpgradeProcess extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {

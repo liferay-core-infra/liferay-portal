@@ -186,7 +186,7 @@ public class DataCleanupRegistrator {
 
 		_registerDataCleanup(
 			DataCleanupAdapter.create(
-				"clean-up-frontend-image-editor-module-data",
+				"clean-up-image-editor-module-data",
 				DataCleanup.MODULE_DATA_CLEANUP,
 				new FrontendImageEditorUpgradeProcess()),
 			"com.liferay.frontend.image.editor.web");
@@ -302,7 +302,7 @@ public class DataCleanupRegistrator {
 
 		_registerDataCleanup(
 			DataCleanupAdapter.create(
-				"clean-up-social-private-messaging-module-data",
+				"clean-up-private-messaging-module-data",
 				DataCleanup.MODULE_DATA_CLEANUP,
 				new SocialPrivateMessagingUpgradeProcess(
 					_mbThreadLocalService)),
@@ -310,7 +310,7 @@ public class DataCleanupRegistrator {
 
 		_registerDataCleanup(
 			DataCleanupAdapter.create(
-				"clean-up-social-requests-module-data",
+				"clean-up-social-request-module-data",
 				DataCleanup.MODULE_DATA_CLEANUP,
 				new SocialRequestsUpgradeProcess()),
 			"com.liferay.social.requests.web");

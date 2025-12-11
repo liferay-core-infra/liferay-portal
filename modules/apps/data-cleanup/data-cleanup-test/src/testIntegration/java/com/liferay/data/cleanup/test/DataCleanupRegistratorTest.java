@@ -318,7 +318,7 @@ public class DataCleanupRegistratorTest {
 	}
 
 	@Test
-	public void testDataCleanupUpgradeWeather() throws Exception {
+	public void testDataCleanupUpgradeWeatherModule() throws Exception {
 		_testModuleDataCleanup(
 			"com.liferay.weather.web", null,
 			"com_liferay_weather_web_portlet_WeatherPortlet", null);

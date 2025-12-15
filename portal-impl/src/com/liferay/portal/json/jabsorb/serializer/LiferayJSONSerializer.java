@@ -12,11 +12,15 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import org.jabsorb.JSONSerializer;
 import org.jabsorb.serializer.Serializer;
 import org.jabsorb.serializer.UnmarshallException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -103,6 +107,52 @@ public class LiferayJSONSerializer extends JSONSerializer {
 			catch (Exception exception) {
 				throw new UnmarshallException(
 					"Unable to get class " + className, exception);
+			}
+		}
+		else if (object instanceof JSONArray) {
+			JSONArray jsonArray = (JSONArray)object;
+
+			if (jsonArray.length() == 0) {
+				return Object[].class;
+			}
+
+			Class<?> compClazz;
+
+			try {
+				Object jsonArrayFirstItem = jsonArray.get(0);
+
+				compClazz = getClassFromHint(jsonArrayFirstItem);
+
+				if (!Objects.equals(compClazz, Integer.class)) {
+					return super.getClassFromHint(object);
+				}
+
+				for (int i = 1; i < jsonArray.length(); i++) {
+					Class<?> clazz = getClassFromHint(jsonArray.get(i));
+
+					if (Objects.equals(clazz, Long.class)) {
+						compClazz = clazz;
+
+						break;
+					}
+				}
+
+				if (compClazz.isArray()) {
+					return Class.forName("[" + compClazz.getName());
+				}
+
+				return Class.forName("[L" + compClazz.getName() + ";");
+			}
+			catch (JSONException jsonException) {
+				throw (NoSuchElementException)new NoSuchElementException(
+					jsonException.getMessage()
+				).initCause(
+					jsonException
+				);
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				throw new UnmarshallException(
+					"problem getting array type", classNotFoundException);
 			}
 		}
 

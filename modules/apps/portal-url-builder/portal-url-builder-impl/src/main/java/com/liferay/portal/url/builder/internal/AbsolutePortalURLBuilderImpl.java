@@ -96,8 +96,8 @@ public class AbsolutePortalURLBuilderImpl implements AbsolutePortalURLBuilder {
 		String webContextPath, String esModulePath) {
 
 		return new ESModuleAbsolutePortalURLBuilderImpl(
-			_getCDNHost(_httpServletRequest), esModulePath,
-			_hashedFilesRegistry, _pathModule, _pathProxy, webContextPath);
+			esModulePath, _getCDNHost(_httpServletRequest), _pathModule,
+			_pathProxy, webContextPath);
 	}
 
 	@Override

@@ -8,9 +8,6 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String ckEditorServletContextName = PortalWebResourcesUtil.getServletContext(
-	PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR
-).getServletContextName();
 String editorName = (String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":editorName");
 boolean inlineEdit = GetterUtil.getBoolean((String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":inlineEdit"));
 String inlineEditSaveURL = GetterUtil.getString((String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":inlineEditSaveURL"));
@@ -33,10 +30,14 @@ String inlineEditSaveURL = GetterUtil.getString((String)request.getAttribute(CKE
 		);
 	</aui:script>
 
-	<aui:script hashedFile="<%= true %>" senna="temporary" src='<%= ckEditorServletContextName + "/ckeditor/ckeditor.js" %>' type="text/javascript"></aui:script>
+	<%
+	long javaScriptLastModified = PortalWebResourcesUtil.getLastModified(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR);
+	%>
+
+	<aui:script senna="temporary" src='<%= HtmlUtil.escapeAttribute(PortalUtil.getStaticResourceURL(request, themeDisplay.getCDNHost() + PortalWebResourcesUtil.getContextPath(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR) + "/ckeditor/ckeditor.js", javaScriptLastModified)) %>' type="text/javascript"></aui:script>
 
 	<c:if test="<%= inlineEdit && Validator.isNotNull(inlineEditSaveURL) %>">
-		<aui:script hashedFile="<%= true %>" senna="temporary" src='<%= ckEditorServletContextName + "/js/legacy/main.js" %>' type="text/javascript"></aui:script>
+			<aui:script senna="temporary" src='<%= HtmlUtil.escapeAttribute(PortalUtil.getStaticResourceURL(request, themeDisplay.getCDNHost() + PortalWebResourcesUtil.getContextPath(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR) + "/js/legacy/main.js", javaScriptLastModified)) %>' type="text/javascript"></aui:script>
 	</c:if>
 
 	<liferay-util:dynamic-include key='<%= "com.liferay.frontend.editor.ckeditor.web#" + editorName + "#additionalResources" %>' />

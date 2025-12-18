@@ -8,8 +8,12 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String alloyEditorServletContextName = PortalWebResourcesUtil.getServletContextName(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_ALLOYEDITOR);
-String ckEditorServletContextName = PortalWebResourcesUtil.getServletContextName(PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR);
+String alloyEditorServletContextName = PortalWebResourcesUtil.getServletContext(
+	PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_ALLOYEDITOR
+).getServletContextName();
+String ckEditorServletContextName = PortalWebResourcesUtil.getServletContext(
+	PortalWebResourceConstants.RESOURCE_TYPE_EDITOR_CKEDITOR
+).getServletContextName();
 String editorName = (String)request.getAttribute(AlloyEditorConstants.ATTRIBUTE_NAMESPACE + ":editorName");
 %>
 

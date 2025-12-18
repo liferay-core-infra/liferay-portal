@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.aui.base.BaseScriptTag;
-import com.liferay.taglib.util.HashedFileUtil;
 import com.liferay.taglib.util.PortalIncludeUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -266,14 +265,7 @@ public class ScriptTag extends BaseScriptTag {
 		_write(jspWriter, "id", getId());
 		_write(jspWriter, "integrity", getIntegrity());
 		_write(jspWriter, "referrerpolicy", getReferrerPolicy());
-
-		String src = getSrc();
-
-		if (getHashedFile()) {
-			src = HashedFileUtil.getURL(getRequest(), src);
-		}
-
-		_write(jspWriter, "src", src);
+		_write(jspWriter, "src", getSrc());
 		_write(jspWriter, "type", getType());
 
 		String senna = getSenna();

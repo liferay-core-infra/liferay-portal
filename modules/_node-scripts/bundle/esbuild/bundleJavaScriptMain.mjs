@@ -41,7 +41,6 @@ export default async function bundleJavaScriptMain(
 	const esbuildConfig = {
 		alias: projectAlias,
 		bundle: true,
-		entryNames: '[dir]/[name].([hash])',
 		entryPoints: [
 			...Object.keys(submodules).map((submoduleName) => ({
 				in: path.resolve(submodules[submoduleName]),
@@ -98,18 +97,19 @@ export default async function bundleJavaScriptMain(
 		);
 	}
 
-	const {metafile} = await runEsbuild(esbuildConfig, 'main');
-	const {outputs} = metafile;
+	await runEsbuild(esbuildConfig, 'main');
 
 	await Promise.all([
-		...Object.keys(outputs).map(async (output) => {
-			if (output.endsWith('.map')) {
-				return relocateSourcemap(
-					path.join(output),
-					projectWebContextPath
-				);
-			}
-		}),
+		relocateSourcemap(
+			path.join(BUILD_MAIN_EXPORTS_PATH, 'index.js.map'),
+			projectWebContextPath
+		),
+		...Object.keys(submodules).map((submodule) =>
+			relocateSourcemap(
+				path.join(BUILD_MAIN_EXPORTS_PATH, `${submodule}.js.map`),
+				projectWebContextPath
+			)
+		),
 		writeLanguageJSON(languageJSON),
 	]);
 }

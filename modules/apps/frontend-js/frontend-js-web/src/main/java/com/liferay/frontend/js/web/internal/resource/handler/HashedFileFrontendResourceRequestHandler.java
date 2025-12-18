@@ -7,7 +7,6 @@ package com.liferay.frontend.js.web.internal.resource.handler;
 
 import com.liferay.frontend.js.web.internal.resource.FrontendResource;
 import com.liferay.frontend.js.web.internal.resource.HashedFileFrontendResource;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.frontend.hashed.files.HashedFilesRegistry;
 import com.liferay.portal.kernel.frontend.hashed.files.HashedFilesUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -82,10 +81,6 @@ public class HashedFileFrontendResourceRequestHandler
 		String requestHash = HashedFilesUtil.getHash(requestURI);
 
 		if (requestHash != null) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Handling request " + requestURI);
-			}
-
 			return _createFrontendResource(
 				_portal.getCompanyId(httpServletRequest), requestHash, true,
 				requestURI);
@@ -95,20 +90,9 @@ public class HashedFileFrontendResourceRequestHandler
 			requestURI);
 
 		if (hashedFileURI == null) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Handling request " + requestURI);
-			}
-
 			return _createFrontendResource(
 				_portal.getCompanyId(httpServletRequest), null, false,
 				requestURI);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				StringBundler.concat(
-					"Handling request ", requestURI, " [static file: ",
-					hashedFileURI, StringPool.CLOSE_BRACKET));
 		}
 
 		return _createFrontendResource(

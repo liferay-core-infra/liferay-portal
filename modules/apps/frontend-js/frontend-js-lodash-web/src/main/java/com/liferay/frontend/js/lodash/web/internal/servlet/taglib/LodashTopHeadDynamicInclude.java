@@ -61,8 +61,8 @@ public class LodashTopHeadDynamicInclude extends BaseDynamicInclude {
 			printWriter.print(" data-senna-track=\"permanent\" src=\"");
 
 			printWriter.print(
-				absolutePortalURLBuilder.forWebContextScript(
-					"frontend-js-lodash-web", fileName
+				absolutePortalURLBuilder.forBundleScript(
+					_bundleContext.getBundle(), fileName
 				).build());
 
 			printWriter.println("\" type=\"text/javascript\"></script>");

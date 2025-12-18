@@ -9,7 +9,7 @@ module.exports = {
 	customBuild: {
 		esbuild: {
 			bundle: true,
-			entryNames: 'index.([hash])',
+			entryNames: 'index',
 			entryPoints: [
 				path.resolve(
 					'src',

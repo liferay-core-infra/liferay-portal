@@ -6,20 +6,29 @@
 package com.liferay.dynamic.data.mapping.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.dynamic.data.lists.model.DDLRecordSet;
+import com.liferay.dynamic.data.mapping.constants.DDMStructureConstants;
+import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
+import com.liferay.dynamic.data.mapping.model.DDMField;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMStructureVersionLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.StorageType;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestHelper;
+import com.liferay.dynamic.data.mapping.util.DDM;
 import com.liferay.dynamic.data.mapping.util.DDMFormFieldUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -29,8 +38,13 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -72,6 +86,19 @@ public class DDMFieldLocalServiceTest {
 	@After
 	public void tearDown() throws Exception {
 		_ddmFieldLocalService.deleteDDMFormValues(_STORAGE_ID);
+	}
+
+	@Test
+	public void testDeleteDDMFormValues() throws Exception {
+		int count = _ddmFieldLocalService.getDDMFieldsCount();
+
+		_createDDMFields(
+			GetterUtil.getInteger(
+				TestPropsUtil.get("ddm.form.values.total"), 100000));
+
+		_ddmFieldLocalService.deleteDDMFormValues(_STORAGE_ID);
+
+		Assert.assertEquals(count, _ddmFieldLocalService.getDDMFieldsCount());
 	}
 
 	@Test
@@ -460,6 +487,42 @@ public class DDMFieldLocalServiceTest {
 		Assert.assertEquals(ddmFormValues, deserializedDDMFormValues);
 	}
 
+	private void _createDDMFields(int total) throws Exception {
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			RandomTestUtil.randomString());
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.addStructure(
+			null, _group.getCreatorUserId(), _group.getGroupId(), 0,
+			PortalUtil.getClassNameId(DDLRecordSet.class.getName()),
+			"CUSTOM-META-TAGS", RandomTestUtil.randomLocaleStringMap(), null,
+			ddmForm, _ddm.getDefaultDDMFormLayout(ddmForm),
+			StorageType.DEFAULT.toString(), DDMStructureConstants.TYPE_DEFAULT,
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		List<DDMStructureVersion> ddmStructureVersions =
+			_ddmStructureVersionLocalService.getStructureVersions(
+				ddmStructure.getStructureId());
+
+		DDMStructureVersion ddmStructureVersion = ddmStructureVersions.get(0);
+
+		for (int i = 0; i < total; i++) {
+			DDMField ddmField = _ddmFieldLocalService.createDDMField(
+				_counterLocalService.increment());
+
+			ddmField.setParentFieldId(0);
+			ddmField.setStorageId(_STORAGE_ID);
+			ddmField.setStructureVersionId(
+				ddmStructureVersion.getStructureVersionId());
+			ddmField.setFieldName(RandomTestUtil.randomString());
+			ddmField.setFieldType(DDMFormFieldTypeConstants.TEXT);
+			ddmField.setInstanceId(RandomTestUtil.randomString(8));
+			ddmField.setLocalizable(false);
+			ddmField.setPriority(RandomTestUtil.randomInt());
+
+			_ddmFieldLocalService.addDDMField(ddmField);
+		}
+	}
+
 	private DDMFormField _createDDMFormField(
 		Locale locale, DDMForm ddmForm, String name, String type,
 		String dataType, String fieldNamespace,
@@ -521,7 +584,19 @@ public class DDMFieldLocalServiceTest {
 	@Inject
 	private static JSONFactory _jsonFactory;
 
+	@Inject
+	private CounterLocalService _counterLocalService;
+
+	@Inject
+	private DDM _ddm;
+
+	@Inject
+	private DDMStructureLocalService _ddmStructureLocalService;
+
 	private DDMStructureTestHelper _ddmStructureTestHelper;
+
+	@Inject
+	private DDMStructureVersionLocalService _ddmStructureVersionLocalService;
 
 	@DeleteAfterTestRun
 	private Group _group;

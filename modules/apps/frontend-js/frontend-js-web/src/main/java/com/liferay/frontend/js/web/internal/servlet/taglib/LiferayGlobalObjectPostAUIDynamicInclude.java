@@ -5,7 +5,6 @@
 
 package com.liferay.frontend.js.web.internal.servlet.taglib;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.content.security.policy.ContentSecurityPolicyNonceProviderUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -64,16 +63,9 @@ public class LiferayGlobalObjectPostAUIDynamicInclude
 						"frontend-js-web", "/Liferay.js");
 
 			_renderScript(
-				null, httpServletRequest, httpServletResponse.getWriter(),
+				httpServletRequest, httpServletResponse.getWriter(),
 				webContextScriptAbsolutePortalURLBuilder.build(),
 				"text/javascript");
-
-			_renderScript(
-				"await import(`@liferay/language" +
-					"/${Liferay.ThemeDisplay.getLanguageId()}/frontend-js-web" +
-						"/all.js`);",
-				httpServletRequest, httpServletResponse.getWriter(), null,
-				"module");
 		}
 		catch (Exception exception) {
 			_log.error(exception);
@@ -98,8 +90,8 @@ public class LiferayGlobalObjectPostAUIDynamicInclude
 	}
 
 	private void _renderScript(
-		String content, HttpServletRequest httpServletRequest,
-		PrintWriter printWriter, String src, String type) {
+		HttpServletRequest httpServletRequest, PrintWriter printWriter,
+		String src, String type) {
 
 		printWriter.print("<script");
 		printWriter.print(
@@ -117,23 +109,11 @@ public class LiferayGlobalObjectPostAUIDynamicInclude
 			_log.error(exception);
 		}
 
-		printWriter.print(" data-senna-track=\"permanent\"");
-
-		if (Validator.isNotNull(src)) {
-			printWriter.print(" src=\"");
-			printWriter.print(src);
-			printWriter.print(StringPool.QUOTE);
-		}
-
-		printWriter.print(" type=\"");
+		printWriter.print(" data-senna-track=\"permanent\" src=\"");
+		printWriter.print(src);
+		printWriter.print("\" type=\"");
 		printWriter.print(type);
-		printWriter.print("\">");
-
-		if (Validator.isNotNull(content)) {
-			printWriter.print(content);
-		}
-
-		printWriter.println("</script>");
+		printWriter.println("\"></script>");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

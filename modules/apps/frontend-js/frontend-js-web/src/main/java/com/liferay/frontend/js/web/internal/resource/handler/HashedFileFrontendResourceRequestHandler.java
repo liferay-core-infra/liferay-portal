@@ -107,8 +107,8 @@ public class HashedFileFrontendResourceRequestHandler
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
-					"Handling request ", requestURI, " with static file ",
-					hashedFileURI));
+					"Handling request ", requestURI, " [static file: ",
+					hashedFileURI, StringPool.CLOSE_BRACKET));
 		}
 
 		return _createFrontendResource(

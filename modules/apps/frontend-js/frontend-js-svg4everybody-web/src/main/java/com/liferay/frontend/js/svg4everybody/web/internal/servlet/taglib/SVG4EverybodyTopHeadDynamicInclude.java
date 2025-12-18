@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.url.builder.AbsolutePortalURLBuilder;
 import com.liferay.portal.url.builder.AbsolutePortalURLBuilderFactory;
-import com.liferay.portal.url.builder.WebContextScriptAbsolutePortalURLBuilder;
+import com.liferay.portal.url.builder.BundleScriptAbsolutePortalURLBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -109,16 +109,16 @@ public class SVG4EverybodyTopHeadDynamicInclude extends BaseDynamicInclude {
 					httpServletRequest));
 			printWriter.print(" data-senna-track=\"permanent\" src=\"");
 
-			WebContextScriptAbsolutePortalURLBuilder
-				webContextScriptAbsolutePortalURLBuilder =
-					absolutePortalURLBuilder.forWebContextScript(
-						"frontend-js-svg4everybody-web", jsFileName);
+			BundleScriptAbsolutePortalURLBuilder
+				bundleScriptAbsolutePortalURLBuilder =
+					absolutePortalURLBuilder.forBundleScript(
+						_bundleContext.getBundle(), jsFileName);
 
 			if (!cdnDynamicResourcesEnabled) {
-				webContextScriptAbsolutePortalURLBuilder.ignoreCDNHost();
+				bundleScriptAbsolutePortalURLBuilder.ignoreCDNHost();
 			}
 
-			printWriter.print(webContextScriptAbsolutePortalURLBuilder.build());
+			printWriter.print(bundleScriptAbsolutePortalURLBuilder.build());
 
 			printWriter.println("\" type=\"text/javascript\"></script>");
 		}

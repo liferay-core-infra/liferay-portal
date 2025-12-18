@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.url.builder.AbsolutePortalURLBuilder;
 import com.liferay.portal.url.builder.AbsolutePortalURLBuilderFactory;
-import com.liferay.portal.url.builder.WebContextScriptAbsolutePortalURLBuilder;
+import com.liferay.portal.url.builder.BundleScriptAbsolutePortalURLBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,14 +57,14 @@ public class LiferayGlobalObjectPostAUIDynamicInclude
 				_absolutePortalURLBuilderFactory.getAbsolutePortalURLBuilder(
 					httpServletRequest);
 
-			WebContextScriptAbsolutePortalURLBuilder
-				webContextScriptAbsolutePortalURLBuilder =
-					absolutePortalURLBuilder.forWebContextScript(
-						"frontend-js-web", "/Liferay.js");
+			BundleScriptAbsolutePortalURLBuilder
+				bundleScriptAbsolutePortalURLBuilder =
+					absolutePortalURLBuilder.forBundleScript(
+						_bundle, "/Liferay.js");
 
 			_renderScript(
 				httpServletRequest, httpServletResponse.getWriter(),
-				webContextScriptAbsolutePortalURLBuilder.build(),
+				bundleScriptAbsolutePortalURLBuilder.build(),
 				"text/javascript");
 		}
 		catch (Exception exception) {

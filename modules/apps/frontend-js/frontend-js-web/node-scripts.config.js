@@ -9,7 +9,7 @@ module.exports = {
 	customBuild: {
 		esbuild: {
 			bundle: true,
-			entryNames: 'Liferay.([hash])',
+			entryNames: 'Liferay',
 			entryPoints: [
 				path.resolve(
 					'src',

@@ -8,6 +8,8 @@ package com.liferay.portal.kernel.frontend.esm;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * @author Iván Zaera Avellón
  */
@@ -36,5 +38,16 @@ public class FrontendESMUtil {
 			themeDisplay.getPathContext(), "/o/", contextPath, "/__liferay__/",
 			submodule, ".js");
 	}
+
+	public static String getScriptType() {
+		return _scriptType.get();
+	}
+
+	public static void setScriptType(String scriptType) {
+		_scriptType.set(scriptType);
+	}
+
+	private static final AtomicReference<String> _scriptType =
+		new AtomicReference<>("module");
 
 }

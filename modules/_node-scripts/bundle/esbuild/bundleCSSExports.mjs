@@ -30,7 +30,6 @@ async function bundle(moduleName) {
 	const entryPoint = getEntryPoint(moduleName);
 
 	const esbuildConfig = {
-		entryNames: '[dir]/[name].([hash])',
 		entryPoints: [entryPoint],
 		loader: {
 			'.png': 'empty',

@@ -274,7 +274,6 @@ public class ScriptTag extends BaseScriptTag {
 		}
 
 		_write(jspWriter, "src", src);
-
 		_write(jspWriter, "type", getType());
 
 		String senna = getSenna();

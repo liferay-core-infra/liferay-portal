@@ -7,6 +7,7 @@ package com.liferay.portal.json.jabsorb.serializer;
 
 import org.jabsorb.serializer.MarshallException;
 import org.jabsorb.serializer.SerializerState;
+import org.jabsorb.serializer.UnmarshallException;
 import org.jabsorb.serializer.impl.ArraySerializer;
 
 import org.json.JSONArray;
@@ -60,6 +61,29 @@ public class LiferayArraySerializer extends ArraySerializer {
 				jsonException.getMessage() + " threw json exception",
 				jsonException);
 		}
+	}
+
+	@Override
+	public Object unmarshall(SerializerState state, Class clazz, Object object)
+		throws UnmarshallException {
+
+		JSONArray jsonArray = (JSONArray)object;
+
+		if (clazz != null) {
+			int lastIndex = jsonArray.length() - 1;
+
+			Object lastItem = jsonArray.get(lastIndex);
+
+			if (lastItem instanceof String) {
+				String value = (String)lastItem;
+
+				if (value.contains("[Ljava.lang")) {
+					jsonArray.remove(lastIndex);
+				}
+			}
+		}
+
+		return super.unmarshall(state, clazz, object);
 	}
 
 }

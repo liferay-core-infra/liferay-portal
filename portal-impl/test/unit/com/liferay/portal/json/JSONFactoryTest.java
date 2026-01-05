@@ -411,13 +411,15 @@ public class JSONFactoryTest {
 
 	private static final double[] _DOUBLE_ARRAY = {1.2345, 2.3456, 5.6789};
 
-	private static final String _DOUBLE_ARRAY_STRING = "[1.2345,2.3456,5.6789]";
+	private static final String _DOUBLE_ARRAY_STRING =
+		"[1.2345,2.3456,5.6789,\"[Ljava.lang.Double;\"]";
 
 	private static final double _DOUBLE_VALUE = 3.1425927;
 
 	private static final int[] _INTEGER_ARRAY = {1, 2, 3, 4, 5};
 
-	private static final String _INTEGER_ARRAY_STRING = "[1,2,3,4,5]";
+	private static final String _INTEGER_ARRAY_STRING =
+		"[1,2,3,4,5,\"[Ljava.lang.Integer;\"]";
 
 	private static final int _INTEGER_VALUE = 5;
 
@@ -426,7 +428,7 @@ public class JSONFactoryTest {
 	};
 
 	private static final String _LONG_ARRAY_STRING =
-		"[10000000000000,20000000000000,30000000000000]";
+		"[10000000000000,20000000000000,30000000000000,\"[Ljava.lang.Long;\"]";
 
 	private static final long _LONG_VALUE = 50000000000000L;
 

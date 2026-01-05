@@ -17,6 +17,7 @@ import org.jabsorb.JSONSerializer;
 import org.jabsorb.serializer.Serializer;
 import org.jabsorb.serializer.UnmarshallException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -46,6 +47,33 @@ public class LiferayJSONSerializer extends JSONSerializer {
 	protected Class getClassFromHint(Object object) throws UnmarshallException {
 		if (object == null) {
 			return null;
+		}
+
+		if (object instanceof JSONArray) {
+			JSONArray jsonArray = (JSONArray)object;
+
+			if (jsonArray.length() == 1) {
+				jsonArray.remove(0);
+
+				return Object[].class;
+			}
+
+			int lastIndex = jsonArray.length() - 1;
+
+			String className = jsonArray.getString(lastIndex);
+
+			jsonArray.remove(lastIndex);
+
+			if (className.equals("[Ljava.lang.Object;")) {
+				return super.getClassFromHint(object);
+			}
+
+			try {
+				return Class.forName(className);
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				throw new RuntimeException(classNotFoundException);
+			}
 		}
 
 		if (object instanceof JSONObject) {

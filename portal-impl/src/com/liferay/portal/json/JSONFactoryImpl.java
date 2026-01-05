@@ -6,6 +6,7 @@
 package com.liferay.portal.json;
 
 import com.liferay.portal.json.jabsorb.serializer.EnumSerializer;
+import com.liferay.portal.json.jabsorb.serializer.LiferayArraySerializer;
 import com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist;
 import com.liferay.portal.json.jabsorb.serializer.LiferayJSONSerializer;
 import com.liferay.portal.json.jabsorb.serializer.LiferaySerializer;
@@ -48,6 +49,7 @@ public class JSONFactoryImpl implements JSONFactory {
 			_jsonSerializer.registerDefaultSerializers();
 
 			_jsonSerializer.registerSerializer(new EnumSerializer());
+			_jsonSerializer.registerSerializer(new LiferayArraySerializer());
 			_jsonSerializer.registerSerializer(new LiferaySerializer());
 			_jsonSerializer.registerSerializer(new LocaleSerializer());
 		}

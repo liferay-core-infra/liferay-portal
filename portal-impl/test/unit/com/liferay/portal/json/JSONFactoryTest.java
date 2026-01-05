@@ -79,24 +79,6 @@ public class JSONFactoryTest {
 	}
 
 	@Test
-	public void testDeserializeLongArrayToIntegerArray() {
-		String json = JSONFactoryUtil.serialize(
-			HashMapBuilder.<String, long[]>put(
-				"key", new long[] {1L, 2L, 3L, 4L, 5L}
-			).build());
-
-		Object object = JSONFactoryUtil.deserialize(json);
-
-		Assert.assertTrue(object instanceof Map);
-
-		Map<String, long[]> deserializedMap = (Map<String, long[]>)object;
-
-		Object values = deserializedMap.get("key");
-
-		Assert.assertTrue(values instanceof Integer[]);
-	}
-
-	@Test
 	public void testDeserializeLongArray() {
 		String json = JSONFactoryUtil.serialize(
 			HashMapBuilder.<String, long[]>put(

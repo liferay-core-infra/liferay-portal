@@ -29,7 +29,6 @@ definition {
 		}
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test AlloyApplicantPortletSmoke {
 		JSONLayout.addPublicLayout(
@@ -235,7 +234,6 @@ definition {
 			startDateEdit = ${currentDate});
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test JSFApplicantPortletSmoke {
 		JSONLayout.addPublicLayout(
@@ -327,7 +325,6 @@ definition {
 			state = "FL");
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test JSFCDIApplicantPortletSmoke {
 		JSONLayout.addPublicLayout(
@@ -861,7 +858,6 @@ definition {
 		}
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test PrimeFacesCDIApplicantPortletSmoke {
 		JSONLayout.addPublicLayout(

@@ -433,6 +433,8 @@ public class CookiesManagerImpl implements CookiesManager {
 
 	@Activate
 	protected void activate(Map<String, Object> properties) {
+		_internalCookies.put("csfcfc", CookiesConstants.CONSENT_TYPE_NECESSARY);
+
 		for (String name : _getProperty(properties, "cookies.functional")) {
 			_internalCookies.put(
 				name, CookiesConstants.CONSENT_TYPE_FUNCTIONAL);

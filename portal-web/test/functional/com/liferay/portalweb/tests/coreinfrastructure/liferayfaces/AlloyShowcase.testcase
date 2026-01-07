@@ -15,18 +15,10 @@ definition {
 			groupName = "Guest",
 			layoutName = "Alloy Showcase");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "Alloy Showcase",
-			sitePageType = "Widget Page");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/alloy-showcase");
-
-		Portlet.addPG(portletName = "Alloy Showcase");
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Guest",
+			layoutName = "Alloy Showcase",
+			widgetName = "Alloy Showcase");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/alloy-showcase");
 	}

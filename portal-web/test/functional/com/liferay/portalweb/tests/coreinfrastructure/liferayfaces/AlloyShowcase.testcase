@@ -19,6 +19,10 @@ definition {
 			category = "Site Builder",
 			portlet = "Pages");
 
+		PagesAdmin.addPage(
+			pageName = "Alloy Showcase",
+			sitePageType = "Widget Page");
+
 		PagesAdmin.configurePage(
 			columnName = "1 Column",
 			pageName = "Alloy Showcase",

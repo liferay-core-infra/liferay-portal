@@ -117,8 +117,8 @@
 			todir="${liferay.home}/osgi/configs"
 		>
 			<fileset
-				dir="${liferay.faces.portal.dir}"
-				includes="**/configs/*.config"
+				dir="tools/faces"
+				includes="**/*.config"
 			/>
 		</copy>
 	</target>

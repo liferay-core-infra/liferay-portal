@@ -20,6 +20,10 @@ definition {
 			category = "Site Builder",
 			portlet = "Pages");
 
+		PagesAdmin.addPage(
+			pageName = "Portal Showcase",
+			sitePageType = "Widget Page");
+
 		PagesAdmin.configurePage(
 			columnName = "1 Column",
 			pageName = "Portal Showcase",

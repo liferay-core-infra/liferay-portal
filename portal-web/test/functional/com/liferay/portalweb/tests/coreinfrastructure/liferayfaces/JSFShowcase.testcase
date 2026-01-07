@@ -21,6 +21,10 @@ definition {
 			category = "Site Builder",
 			portlet = "Pages");
 
+		PagesAdmin.addPage(
+			pageName = "JSF Showcase",
+			sitePageType = "Widget Page");
+
 		PagesAdmin.configurePage(
 			columnName = "1 Column",
 			pageName = "JSF Showcase",

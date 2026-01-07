@@ -10,6 +10,10 @@ definition {
 			category = "Site Builder",
 			portlet = "Pages");
 
+		PagesAdmin.addPage(
+			pageName = ${portletName},
+			sitePageType = "Widget Page");
+
 		PagesAdmin.configurePage(
 			columnName = "1 Column",
 			pageName = ${portletName},

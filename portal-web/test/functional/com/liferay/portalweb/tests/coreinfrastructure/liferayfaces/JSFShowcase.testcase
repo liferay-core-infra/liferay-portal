@@ -674,11 +674,9 @@ definition {
 			link = "liferay-projects/liferay-faces",
 			linkURL = "liferay-projects/liferay-faces");
 
-		for (var link : list "liferay-projects/liferay-faces,liferay+faces") {
-			JSFShowcase.viewLink(
-				link = ${link},
-				linkURL = ${link});
-		}
+		JSFShowcase.viewLink(
+			link = "liferay-projects/liferay-faces",
+			linkURL = "liferay-projects/liferay-faces");
 
 		// OutputScriptResource
 

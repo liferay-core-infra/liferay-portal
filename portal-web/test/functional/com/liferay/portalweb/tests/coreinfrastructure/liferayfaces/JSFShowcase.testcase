@@ -207,11 +207,11 @@ definition {
 
 		JSFShowcase.submitHiddenValue(
 			key_text = "Copy a date to the value of the hidden input",
-			message1 = "Apr 5, 0033",
+			message1 = "",
 			message2 = "04/05/0033");
 
 		JSFShowcase.clearHiddenValue(
-			message1 = "Apr 5, 0033",
+			message1 = "",
 			message2 = "04/05/0033");
 
 		// InputHiddenGeneral

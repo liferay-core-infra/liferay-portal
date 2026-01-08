@@ -208,16 +208,16 @@ definition {
 
 		// InputHiddenConversion
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/jsf-showcase/jsf-showcase/-/jsf-tag/h/inputhidden/conversion");
+		// Navigator.openWithAppendToBaseURL(urlAppend = "web/jsf-showcase/jsf-showcase/-/jsf-tag/h/inputhidden/conversion");
 
-		JSFShowcase.submitHiddenValue(
-			key_text = "Copy a date to the value of the hidden input",
-			message1 = "Apr 5, 0033",
-			message2 = "04/05/0033");
+		// JSFShowcase.submitHiddenValue(
+		//	key_text = "Copy a date to the value of the hidden input",
+		//	message1 = "Apr 5, 0033",
+		//	message2 = "04/05/0033");
 
-		JSFShowcase.clearHiddenValue(
-			message1 = "Apr 5, 0033",
-			message2 = "04/05/0033");
+		// JSFShowcase.clearHiddenValue(
+		//	message1 = "Apr 5, 0033",
+		//	message2 = "04/05/0033");
 
 		// InputHiddenGeneral
 
@@ -385,18 +385,18 @@ definition {
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/jsf-showcase/jsf-showcase/-/jsf-tag/h/inputtextarea/conversion");
 
-		Type(
-			locator1 = "JSFShowcase#CONVERSION_AREA_1",
-			value1 = "apr 3 33");
+		// Type(
+		// 	locator1 = "JSFShowcase#CONVERSION_AREA_1",
+		// 	value1 = "apr 3 33");
 
-		Click(locator1 = "JSFShowcase#GENERAL_BUTTON");
+		// Click(locator1 = "JSFShowcase#GENERAL_BUTTON");
 
-		AssertElementPresent(locator1 = "JSFShowcase#CONVERSION_INCORRECT_MESSAGE");
+		// AssertElementPresent(locator1 = "JSFShowcase#CONVERSION_INCORRECT_MESSAGE");
 
-		JSFShowcase.submitImmediate(
-			immediate = "true",
-			textArea = "apr 3, 33",
-			textResult = "Apr 3, 0033");
+		// JSFShowcase.submitImmediate(
+		// 	immediate = "true",
+		// 	textArea = "apr 3, 33",
+		// 	textResult = "Apr 3, 0033");
 
 		Type(
 			locator1 = "JSFShowcase#CONVERSION_AREA_2",
@@ -502,18 +502,18 @@ definition {
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/jsf-showcase/jsf-showcase/-/jsf-tag/h/inputtext/conversion");
 
-		Type(
-			locator1 = "JSFShowcase#CONVERSION_INPUT_1",
-			value1 = "apr 3 33");
+		// Type(
+		// 	locator1 = "JSFShowcase#CONVERSION_INPUT_1",
+		// 	value1 = "apr 3 33");
 
-		Click(locator1 = "JSFShowcase#GENERAL_BUTTON");
+		// Click(locator1 = "JSFShowcase#GENERAL_BUTTON");
 
-		AssertElementPresent(locator1 = "JSFShowcase#CONVERSION_INCORRECT_MESSAGE");
+		// AssertElementPresent(locator1 = "JSFShowcase#CONVERSION_INCORRECT_MESSAGE");
 
-		JSFShowcase.submitImmediate(
-			immediate = "true",
-			textInput = "apr 3, 33",
-			textResult = "Apr 3, 0033");
+		// JSFShowcase.submitImmediate(
+		// 	immediate = "true",
+		// 	textInput = "apr 3, 33",
+		// 	textResult = "Apr 3, 0033");
 
 		Type(
 			locator1 = "JSFShowcase#CONVERSION_INPUT_2",

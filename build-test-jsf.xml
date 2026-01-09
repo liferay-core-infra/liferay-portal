@@ -107,7 +107,6 @@
 			/>
 			<fileset
 				dir="tools/faces"
-				excludes="**/com.liferay.faces.demo.jsf.cdi.applicant.portlet.war"
 				includes="**/*.war"
 			/>
 		</copy>

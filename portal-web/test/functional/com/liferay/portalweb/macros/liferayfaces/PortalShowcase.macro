@@ -4,25 +4,25 @@ definition {
 	macro _writeAdjustedBoldItalicText() {
 		Click(locator1 = "PortalShowcase#WRITEABLE_FIELD");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + a");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + a");
 
-		RobotType(locator1 = "Hel");
+		RobotType(value1 = "Hel");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + b");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + b");
 
-		RobotType(locator1 = "lo t");
+		RobotType(value1 = "lo t");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + i");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + i");
 
-		RobotType(locator1 = "o the wh");
+		RobotType(value1 = "o the wh");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + b");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + b");
 
-		RobotType(locator1 = "ole Wor");
+		RobotType(value1 = "ole Wor");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + i");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + i");
 
-		RobotType(locator1 = "ld!");
+		RobotType(value1 = "ld!");
 
 		PortalShowcase.submit();
 	}
@@ -31,17 +31,17 @@ definition {
 	macro _writeAdjustedBoldText() {
 		Click(locator1 = "PortalShowcase#WRITEABLE_FIELD");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + a");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + a");
 
-		RobotType(locator1 = "Hel");
+		RobotType(value1 = "Hel");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + b");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + b");
 
-		RobotType(locator1 = "lo to the wh");
+		RobotType(value1 = "lo to the wh");
 
-		RobotType.robotTypeShortcut(locator1 = "Ctrl + b");
+		RobotType.robotTypeShortcut(value1 = "Ctrl + b");
 
-		RobotType(locator1 = "ole World!");
+		RobotType(value1 = "ole World!");
 
 		PortalShowcase.submit();
 	}
@@ -50,7 +50,7 @@ definition {
 	macro _writeText(text = null) {
 		Click(locator1 = "PortalShowcase#WRITEABLE_FIELD");
 
-		RobotType(locator1 = ${text});
+		RobotType(value1 = ${text});
 
 		PortalShowcase.submit();
 	}
@@ -133,7 +133,7 @@ definition {
 		if (${immediate} == "true") {
 			Click(locator1 = "PortalShowcase#WRITEABLE_FIELD");
 
-			RobotType(locator1 = ${text});
+			RobotType(value1 = ${text});
 
 			Click(locator1 = "PortalShowcase#SUBMIT_BUTTON");
 
@@ -149,7 +149,7 @@ definition {
 		if (${immediate} == "false") {
 			Click(locator1 = "PortalShowcase#WRITEABLE_FIELD_2");
 
-			RobotType(locator1 = ${text});
+			RobotType(value1 = ${text});
 
 			Click(locator1 = "PortalShowcase#SUBMIT_BUTTON_2");
 

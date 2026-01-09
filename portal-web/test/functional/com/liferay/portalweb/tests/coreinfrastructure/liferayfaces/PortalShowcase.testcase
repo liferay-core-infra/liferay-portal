@@ -108,7 +108,7 @@ definition {
 
 		Click(locator1 = "PortalShowcase#WRITEABLE_FIELD");
 
-		RobotType(locator1 = "Hello world!");
+		RobotType(value1 = "Hello world!");
 
 		AssertTextEquals(
 			locator1 = "PortalShowcase#TEXT_FEEDBACK",
@@ -170,7 +170,7 @@ definition {
 			var i = ${i} + 1;
 		}
 
-		RobotType(locator1 = "ld o");
+		RobotType(value1 = "ld o");
 
 		PortalShowcase.submit();
 

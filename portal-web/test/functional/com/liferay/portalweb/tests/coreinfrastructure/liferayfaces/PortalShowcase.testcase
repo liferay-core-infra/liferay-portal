@@ -43,7 +43,6 @@ definition {
 		}
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test InputRichTextSmoke {
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/portal-showcase/-/portal-tag/portal/inputrichtext/general");

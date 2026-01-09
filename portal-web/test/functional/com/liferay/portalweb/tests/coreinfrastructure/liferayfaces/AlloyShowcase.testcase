@@ -42,7 +42,6 @@ definition {
 		}
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test ButtonSmoke {
 
@@ -77,7 +76,6 @@ definition {
 		AlloyShowcase.clickButton(buttonRow = "true");
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test DataListSmoke {
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/alloy-showcase/-/alloy-tag/alloy/datalist/general");
@@ -93,7 +91,6 @@ definition {
 		AlloyShowcase.viewDataSelection();
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test DataTableSmoke {
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/alloy-showcase/-/alloy-tag/alloy/datatable/lazy");
@@ -143,7 +140,6 @@ definition {
 			screenName4 = "William");
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test InputFileSmoke {
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/guest/alloy-showcase/-/alloy-tag/alloy/inputfile/multiple");
@@ -151,7 +147,6 @@ definition {
 		JSFShowcase.uploadAndDeleteFile(fileName = "Document_2.jpeg");
 	}
 
-	@ignore = "true"
 	@priority = 5
 	test LinkSmoke {
 

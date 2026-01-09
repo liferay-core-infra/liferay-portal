@@ -42,7 +42,7 @@
 </tr>
 <tr>
 	<td>DROPDOWN_CARET_BUTTON</td>
-	<td>//span[@role='menuitem']//span[contains(@class,'caret')]</td>
+	<td>//span[@role='menuitem']//a[contains(@href,'options')]</td>
 	<td></td>
 </tr>
 <tr>

@@ -32,7 +32,7 @@
 </tr>
 <tr>
 	<td>PAGE_BUTTON_ACTIVE</td>
-	<td>//a[contains(@class,'active') and contains(.,'${key_pageNum}')]</td>
+	<td>//button[contains(@class,'active') and contains(.,'${key_pageNum}')]</td>
 	<td></td>
 </tr>
 <tr>

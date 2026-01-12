@@ -97,6 +97,8 @@
 			mvn clean package -P liferay,liferay73,mojarra,tomcat
 		</execute>-->
 
+		<get-testcase-property property.name="liferay.faces.war.dir.name" />
+
 		<copy
 			flatten="true"
 			todir="${liferay.home}/deploy/"
@@ -106,7 +108,7 @@
 				includes="**/*.jar"
 			/>
 			<fileset
-				dir="tools/faces"
+				dir="tools/faces/war/${liferay.faces.war.dir.name}"
 				includes="**/*.war"
 			/>
 		</copy>

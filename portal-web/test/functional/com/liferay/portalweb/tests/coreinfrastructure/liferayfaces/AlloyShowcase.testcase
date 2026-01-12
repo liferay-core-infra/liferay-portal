@@ -2,6 +2,7 @@
 definition {
 
 	property liferay.faces = "true";
+	property liferay.faces.war.dir.name = "alloy-showcase";
 	property portal.release = "true";
 	property portal.upstream = "quarantine";
 	property testray.main.component.name = "Liferay Faces";

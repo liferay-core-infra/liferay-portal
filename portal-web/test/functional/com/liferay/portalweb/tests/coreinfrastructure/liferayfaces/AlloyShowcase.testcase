@@ -7,6 +7,8 @@ definition {
 	property testray.main.component.name = "Liferay Faces";
 
 	setUp {
+		AntCommands.runCommand("build-test-jsf.xml", "deploy-wars -Ddir.name="alloy-showcase");
+
 		TestCase.setUpPortalInstance();
 
 		User.firstLoginPG();

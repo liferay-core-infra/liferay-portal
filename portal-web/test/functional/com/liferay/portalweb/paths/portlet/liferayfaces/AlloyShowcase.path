@@ -167,7 +167,7 @@
 </tr>
 <tr>
 	<td>SELECTION_MODAL_SELECT</td>
-	<td>//div[contains(.,'Selection Mode')]//select</td>
+	<td>//label[contains(.,'Selection Mode')]/following-sibling::select</td>
 	<td></td>
 </tr>
 <tr>

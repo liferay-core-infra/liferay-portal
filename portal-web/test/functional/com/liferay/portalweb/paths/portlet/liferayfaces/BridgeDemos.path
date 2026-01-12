@@ -67,7 +67,7 @@
 </tr>
 <tr>
 	<td>FIELD_ERROR</td>>
-	<td>//*[contains(@id,'${key_fieldName}')]//span[contains(@class,'alloy-message') or contains(@class,'msg-err') or contains(@class,'message-error-detail')] | //*[contains(@id,'${key_fieldName}')]/../following-sibling::div/div[contains(@class,'alert-danger')]</td>
+	<td>//*[contains(@id,'${key_fieldName}')]//span[contains(@class,'alloy-message') or contains(@class,'msg-err') or contains(@class,'portlet-msg-error') or contains(@class,'message-error-detail')] | //*[contains(@id,'${key_fieldName}')]/../following-sibling::div/div[contains(@class,'alert-danger')]</td>
 	<td></td>
 </tr>
 <tr>

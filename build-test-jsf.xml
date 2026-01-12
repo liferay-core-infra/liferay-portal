@@ -6,7 +6,7 @@
 	<target name="deploy-wars">
 		<copy
 			flatten="true"
-			todir="${liferay.home}/deploy"
+			todir="${liferayHome}/deploy"
 		>
 			<fileset
 				dir="tools/faces/war/${dir.name}"

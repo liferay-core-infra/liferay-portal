@@ -9,7 +9,9 @@ definition {
 	property testray.main.component.name = "Liferay Faces";
 
 	setUp {
-		AntCommands.runCommand("build-test-jsf.xml", "deploy-wars -Ddir.name="jsf-showcase");
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		AntCommands.runCommand("build-test-jsf.xml", "deploy-wars -DliferayHome=${liferayHome} -Ddir.name="jsf-showcase");
 
 		TestCase.setUpPortalInstance();
 

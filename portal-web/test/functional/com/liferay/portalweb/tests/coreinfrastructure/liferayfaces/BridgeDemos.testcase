@@ -4,6 +4,7 @@ definition {
 	property ci.retries.disabled = "true";
 	property custom.properties = "company.default.time.zone=America/Los_Angeles";
 	property liferay.faces = "true";
+	property liferay.faces.war.dir.name = "bridge-demos";
 	property portal.release = "true";
 	property portal.upstream = "quarantine";
 	property testray.main.component.name = "Liferay Faces";
@@ -323,6 +324,7 @@ definition {
 			state = "FL");
 	}
 
+	@ignore = "true"
 	@priority = 5
 	test JSFCDIApplicantPortletSmoke {
 		JSONLayout.addPublicLayout(

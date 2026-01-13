@@ -101,12 +101,18 @@
 
 		<copy
 			flatten="true"
-			todir="${liferay.home}/deploy/"
+			todir="${liferay.home}/osgi/modules"
 		>
 			<fileset
 				dir="tools/faces"
 				includes="**/*.jar"
 			/>
+		</copy>
+
+		<copy
+			flatten="true"
+			todir="${liferay.home}/osgi/war"
+		>
 			<fileset
 				dir="tools/faces/war/${liferay.faces.war.dir.name}"
 				includes="**/*.war"

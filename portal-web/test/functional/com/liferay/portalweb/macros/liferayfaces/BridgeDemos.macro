@@ -313,7 +313,7 @@ definition {
 			locator1 = "TextInput#FILE",
 			value1 = ${fileName});
 
-		if ((${applicantName} == "Prime Faces") || (${applicantName} == "Rich JSP")) {
+		if (${applicantName} == "Prime Faces") {
 			Click(locator1 = "BridgeDemos#UPLOAD_BUTTON");
 		}
 		else {
@@ -351,12 +351,7 @@ definition {
 			key_text = "City",
 			locator1 = "TextInput#ANY");
 
-		if (${applicantName} == "Butter Faces") {
-			AssertElementPresent(
-				key_fieldName = ${fieldName},
-				locator1 = "BridgeDemos#FIELD_ERROR_BUTTER_FACES_TOAST");
-		}
-		else if (${applicantName} == "JSF JSP") {
+		if (${applicantName} == "JSF JSP") {
 			Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 			AssertTextEquals.assertPartialText(
@@ -430,13 +425,7 @@ definition {
 
 	@summary = "Default summary"
 	macro viewFieldErrorMessage(fieldName = null, errorMessage = null, applicantName = null) {
-		if (${applicantName} == "Butter Faces") {
-			AssertTextEquals.assertPartialText(
-				key_fieldName = ${fieldName},
-				locator1 = "BridgeDemos#FIELD_ERROR_BUTTER_FACES",
-				value1 = ${errorMessage});
-		}
-		else if (${applicantName} == "JSF JSP") {
+		if (${applicantName} == "JSF JSP") {
 			AssertTextEquals.assertPartialText(
 				key_fieldName = ${fieldName},
 				locator1 = "BridgeDemos#FIELD_ERROR_JSF_JSP",

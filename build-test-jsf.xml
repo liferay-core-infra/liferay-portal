@@ -70,10 +70,10 @@
 		LRQA-73302 Temporary workaround until Bridge-Impl 4.3.1 is available
 		-->
 
-		<exec dir="${liferay.faces.bridge.impl.dir}" executable="git">
+		<!--<exec dir="${liferay.faces.bridge.impl.dir}" executable="git">
 			<arg line="cherry-pick" />
 			<arg line="27b3fc29f9c2143451751083110a4f6722f212c8" />
-			<arg line="--strategy-option " />
+			<arg line="-strategy-option " />
 			<arg line="theirs " />
 		</exec>
 
@@ -85,30 +85,31 @@
 			mvn clean package -P liferay,liferay73,mojarra,tomcat
 		</execute>
 
-		<!--<execute dir="${liferay.faces.bridge.impl.dir}/tck">
+		<execute dir="${liferay.faces.bridge.impl.dir}/tck">
 			mvn clean package -P liferay,liferay73,mojarra,tomcat
-		</execute>-->
+		</execute>
 
 		<execute dir="${liferay.faces.portal.dir}/demo">
 			mvn clean package -P liferay,liferay73,mojarra,tomcat,validateCaptchaForTest
 		</execute>
 
-		<!--<execute dir="${liferay.faces.portal.dir}/test/test-setup-hook">
+		<execute dir="${liferay.faces.portal.dir}/test/test-setup-hook">
 			mvn clean package -P liferay,liferay73,mojarra,tomcat
 		</execute>-->
+
+		<get-testcase-property property.name="liferay.faces.war.dir.name" />
 
 		<copy
 			flatten="true"
 			todir="${liferay.home}/deploy/"
 		>
 			<fileset
-				dir="${liferay.faces.bridge.impl.dir}"
-				includes="**/target/*.war"
+				dir="tools/faces"
+				includes="**/*.jar"
 			/>
 			<fileset
-				dir="${liferay.faces.portal.dir}"
-				excludes="**/target/com.liferay.faces.test.setup.hook*.war"
-				includes="**/target/*.war"
+				dir="tools/faces/war/${liferay.faces.war.dir.name}"
+				includes="**/*.war"
 			/>
 		</copy>
 
@@ -117,8 +118,8 @@
 			todir="${liferay.home}/osgi/configs"
 		>
 			<fileset
-				dir="${liferay.faces.portal.dir}"
-				includes="**/configs/*.config"
+				dir="tools/faces"
+				includes="**/*.config"
 			/>
 		</copy>
 	</target>

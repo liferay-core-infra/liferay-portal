@@ -77,7 +77,7 @@ definition {
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos/jsf-flows");
 
-		BridgeDemos.viewLibraries(libraryName = "Mojarra,Liferay Faces Alloy,Liferay Faces Bridge Impl,Liferay Faces Bridge Ext,Weld");
+		BridgeDemos.viewLibraries(libraryName = "Mojarra,Liferay Faces Alloy,Liferay Faces Bridge Impl,Liferay Faces Bridge Ext,CDI API");
 
 		Click(
 			key_buttonName = "Enter Booking Flow",

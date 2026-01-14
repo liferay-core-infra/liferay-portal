@@ -120,8 +120,6 @@ definition {
 			pageURL = "faces-1478",
 			portletName = "FACES-1478");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1478");
-
 		var portalURL = PropsUtil.get("portal.url");
 
 		AssertTextEquals(
@@ -155,8 +153,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "faces-1618",
 			portletName = "FACES-1618");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1618");
 
 		AssertTextEquals(
 			locator1 = "BridgeIssues#RESOURCE_SIZE",
@@ -210,8 +206,6 @@ definition {
 			pageURL = "faces-1638",
 			portletName = "FACES-1638");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1638");
-
 		for (var index : list "1,2") {
 			BridgeIssues.verifyParam(
 				liIndex = 1,
@@ -259,8 +253,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "jsf-applicant?p_p_parallel=0",
 			portletName = "jsf-applicant");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/jsf-applicant?p_p_parallel=0");
 
 		Portlet.addPG(portletName = "primefaces-applicant");
 
@@ -313,8 +305,6 @@ definition {
 			pageURL = "jsfspec-1433",
 			portletName = "JSFSPEC-1433");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/jsfspec-1433");
-
 		Click(
 			key_pageLink = "Run Test",
 			locator1 = "BridgeIssues#RUN_TEST_BUTTON");
@@ -334,8 +324,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "faces-224",
 			portletName = "FACES-224");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-224");
 
 		AssertElementPresent.assertVisible(
 			locator1 = "BridgeIssues#FACE_VIEW1_XHTML",
@@ -368,8 +356,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "faces-257",
 			portletName = "FACES-257");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-257");
 
 		AssertElementPresent(locator1 = "BridgeIssues#REQUESTED_URL");
 
@@ -407,8 +393,6 @@ definition {
 			pageURL = "faces-2958",
 			portletName = "FACES-2958");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-2958");
-
 		for (var resourceActionIndex : list "link.xhtml,commandLinkAjax.xhtml,commandLinkNonAjax.xhtml,link.xhtml via Ajax,commandLinkAjax.xhtml via Ajax,commandLinkNonAjax.xhtml via Ajax") {
 			BridgeIssues.verifyValue(
 				detailValue = "All special URL characters were correctly encoded.",
@@ -437,8 +421,6 @@ definition {
 			pageURL = "faces-3231",
 			portletName = "FACES-3231");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3231");
-
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully load html from head section template.",
 			link = "Load html from head section template.",
@@ -451,8 +433,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "faces-3300",
 			portletName = "FACES-3300");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3300");
 
 		for (var resourceActionIndex : list "1,2,3,4,5,6") {
 			BridgeIssues.verifyValue(
@@ -476,8 +456,6 @@ definition {
 			pageURL = "faces-3356",
 			portletName = "FACES-3356");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3356");
-
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully handled",
 			link = "To nonExistentView.xhtml",
@@ -490,8 +468,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "faces-3404",
 			portletName = "FACES-3404");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3404");
 
 		for (var resourceActionIndex : list "result.xhtml via GET,result.xhtml via Ajax") {
 			BridgeIssues.verifyValue(
@@ -510,8 +486,6 @@ definition {
 			pageURL = "mojarra-4340-workaround",
 			portletName = "MOJARRA-4340-workaround");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/mojarra-4340-workaround");
-
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully loaded body script in Ajax request.",
 			link = "result.xhtml",
@@ -524,8 +498,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "mojarra-4345-workaround",
 			portletName = "MOJARRA-4345-workaround");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/mojarra-4345-workaround");
 
 		BridgeIssues.verifyValue(
 			detailValue = "Resource URLs loaded via Ajax were not double escaped.",
@@ -546,8 +518,6 @@ definition {
 			pageURL = "faces-1513-2185",
 			portletName = "FACES-1513-2185");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-1513-2185");
-
 		BridgeDemos.exportFile(lastName = "Export via p:dataExporter");
 
 		// Only export files, no verification of file content
@@ -562,8 +532,6 @@ definition {
 			pageURL = "faces-2921",
 			portletName = "FACES-2921");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-2921");
-
 		AssertElementPresent(locator1 = "BridgeIssues#RENDER_KITID");
 
 		AssertElementPresent(
@@ -576,8 +544,6 @@ definition {
 			pageURL = "faces-3031",
 			portletName = "FACES-3031");
 
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3031");
-
 		BridgeIssues.verifyValue(
 			detailValue = "State successfully saved and restored.",
 			restoreState = "true",
@@ -589,8 +555,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "faces-3250",
 			portletName = "FACES-3250");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3250");
 
 		BridgeIssues.upload3250File(
 			fileName = "Document_2.doc",
@@ -624,8 +588,6 @@ definition {
 		BridgeIssues.addPageAndPortlet(
 			pageURL = "faces-3327",
 			portletName = "FACES-3327");
-
-		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3327");
 
 		BridgeIssues.verifyValue(
 			detailValue = "Successfully navigated after exporting/downloading data from a PrimeFaces component.",

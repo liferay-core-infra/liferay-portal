@@ -117,6 +117,7 @@
 				dir="tools/faces/war/${liferay.faces.war.dir.name}"
 				includes="**/*.war"
 			/>
+			<regexpmapper from="^(.*)-\d+[\d\.]*(-SNAPSHOT)?\.war$" to="\1.war"/>
 		</copy>
 
 		<copy

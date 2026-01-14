@@ -5,6 +5,7 @@ definition {
 	property custom.properties = "company.default.time.zone=America/Los_Angeles";
 	property liferay.faces = "true";
 	property liferay.faces.war.dir.name = "bridge-demos-jsf-cdi-applicant";
+	property liferay.faces.war.auto.deploy = "false";
 	property portal.release = "true";
 	property portal.upstream = "quarantine";
 	property testray.main.component.name = "Liferay Faces";
@@ -32,6 +33,12 @@ definition {
 
 	@priority = 5
 	test JSFCDIApplicantPortletSmoke {
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		AntCommands.runCommand("build-test-jsf.xml", "deploy-jsf-cdi-applicant-war -DliferayHome=${liferayHome}");
+
+		WaitForConsoleTextPresent(value1 = "Registered 1 bean portlets and 0 bean filters for com.liferay.faces.demo.jsf.cdi.applicant.portlet");
+
 		JSONLayout.addPublicLayout(
 			groupName = "Bridge Demos JSF CDI Applicant",
 			layoutName = "jsf-cdi-applicant");

@@ -18,6 +18,8 @@ definition {
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/${pageURL}");
 
 		Portlet.addPG(portletName = ${portletName});
+
+		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/${pageURL}");
 	}
 
 	@summary = "Default summary"

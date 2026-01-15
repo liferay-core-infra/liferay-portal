@@ -43,11 +43,17 @@ definition {
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-events");
 
-		Portlet.addPG(portletName = "jsf-ipc-events-customers");
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Bridge Demos IPC",
+			layoutName = "jsf-events",
+			widgetName = "jsf-ipc-events-customers");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-events");
 
-		Portlet.addPG(portletName = "jsf-ipc-events-bookings");
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Bridge Demos IPC",
+			layoutName = "jsf-events",
+			widgetName = "jsf-ipc-events-bookings");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-events");
 
@@ -95,11 +101,17 @@ definition {
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-prp");
 
-		Portlet.addPG(portletName = "jsf-ipc-pub-render-params-customers");
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Bridge Demos IPC",
+			layoutName = "jsf-prp",
+			widgetName = "jsf-ipc-pub-render-params-customers");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-prp");
 
-		Portlet.addPG(portletName = "jsf-ipc-pub-render-params-bookings");
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Bridge Demos IPC",
+			layoutName = "jsf-prp",
+			widgetName = "jsf-ipc-pub-render-params-bookings");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-prp");
 

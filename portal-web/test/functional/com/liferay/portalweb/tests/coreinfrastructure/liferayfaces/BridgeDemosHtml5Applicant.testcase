@@ -36,14 +36,10 @@ definition {
 			groupName = "Bridge Demos Html5 Applicant",
 			layoutName = "jsf-html5-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-html5-applicant",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Bridge Demos Html5 Applicant",
+			layoutName = "jsf-html5-applicant",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-html5-applicant/jsf-html5-applicant");
 

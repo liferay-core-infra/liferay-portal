@@ -36,14 +36,10 @@ definition {
 			groupName = "Bridge Demos IPC",
 			layoutName = "jsf-events");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-events",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Bridge Demos IPC",
+			layoutName = "jsf-events",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-events");
 
@@ -92,14 +88,10 @@ definition {
 			groupName = "Bridge Demos IPC",
 			layoutName = "jsf-prp");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-prp",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Bridge Demos IPC",
+			layoutName = "jsf-prp",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-ipc/jsf-prp");
 

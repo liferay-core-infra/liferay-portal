@@ -4,8 +4,8 @@ definition {
 	property ci.retries.disabled = "true";
 	property custom.properties = "company.default.time.zone=America/Los_Angeles";
 	property liferay.faces = "true";
-	property liferay.faces.war.dir.name = "bridge-demos-jsf-cdi-applicant";
 	property liferay.faces.war.auto.deploy = "false";
+	property liferay.faces.war.dir.name = "bridge-demos-jsf-cdi-applicant";
 	property portal.release = "true";
 	property portal.upstream = "quarantine";
 	property testray.main.component.name = "Liferay Faces";
@@ -43,14 +43,10 @@ definition {
 			groupName = "Bridge Demos JSF CDI Applicant",
 			layoutName = "jsf-cdi-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-cdi-applicant",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Bridge Demos JSF CDI Applicant",
+			layoutName = "jsf-cdi-applicant",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-jsf-cdi-applicant/jsf-cdi-applicant");
 

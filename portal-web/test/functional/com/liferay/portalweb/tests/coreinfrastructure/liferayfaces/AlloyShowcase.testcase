@@ -20,14 +20,10 @@ definition {
 			groupName = "Alloy Showcase",
 			layoutName = "Alloy Showcase");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "Alloy Showcase",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Alloy Showcase",
+			layoutName = "Alloy Showcase",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/alloy-showcase/alloy-showcase");
 

@@ -21,14 +21,10 @@ definition {
 			groupName = "Portal Showcase",
 			layoutName = "Portal Showcase");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "Portal Showcase",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Portal Showcase",
+			layoutName = "Portal Showcase",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/portal-showcase/portal-showcase");
 

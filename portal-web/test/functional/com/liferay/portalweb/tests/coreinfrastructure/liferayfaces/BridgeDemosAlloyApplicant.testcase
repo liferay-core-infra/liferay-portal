@@ -36,14 +36,10 @@ definition {
 			groupName = "Bridge Demos Alloy Applicant",
 			layoutName = "alloy-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "alloy-applicant",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Bridge Demos Alloy Applicant",
+			layoutName = "alloy-applicant",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-alloy-applicant/alloy-applicant");
 

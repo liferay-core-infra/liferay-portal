@@ -254,7 +254,10 @@ definition {
 			pageURL = "jsf-applicant?p_p_parallel=0",
 			portletName = "jsf-applicant");
 
-		Portlet.addPG(portletName = "primefaces-applicant");
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Bridge Issues",
+			layoutName = "jsf-applicant",
+			widgetName = "primefaces-applicant");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/jsf-applicant?p_p_parallel=0");
 

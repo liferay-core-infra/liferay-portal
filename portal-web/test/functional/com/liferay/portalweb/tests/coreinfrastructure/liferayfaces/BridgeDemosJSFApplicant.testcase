@@ -36,14 +36,10 @@ definition {
 			groupName = "Bridge Demos JSF Applicant",
 			layoutName = "jsf-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "jsf-applicant",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Bridge Demos JSF Applicant",
+			layoutName = "jsf-applicant",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-jsf-applicant/jsf-applicant");
 

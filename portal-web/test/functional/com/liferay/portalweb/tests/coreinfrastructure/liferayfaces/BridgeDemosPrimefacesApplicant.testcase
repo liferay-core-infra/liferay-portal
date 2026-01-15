@@ -30,8 +30,8 @@ definition {
 		}
 	}
 
-	@ignore = "true"
 	@description = "This is a usecase for LPS-159239. Verify a 3.0 portlet with cdi can be deployed to a content page."
+	@ignore = "true"
 	@priority = 3
 	test PrimeFacesCDIApplicantPortletContentPageSmoke {
 		property liferay.faces = "false";
@@ -98,14 +98,10 @@ definition {
 			groupName = "Bridge Demos Primefaces Applicant",
 			layoutName = "primefaces-applicant");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
-
-		PagesAdmin.configurePage(
-			columnName = "1 Column",
-			pageName = "primefaces-applicant",
-			sitePageType = "Widget Page");
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Bridge Demos Primefaces Applicant",
+			layoutName = "primefaces-applicant",
+			layoutTemplate = "1 Column");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-demos-primefaces-applicant/primefaces-applicant");
 

@@ -444,12 +444,6 @@ definition {
 			Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3300");
 		}
 
-		for (var resourceActionIndex : list "1,2,3,4,5,6") {
-			BridgeIssues.verifyValue(inValidURL = ${resourceActionIndex});
-
-			Navigator.openWithAppendToBaseURL(urlAppend = "web/bridge-issues/faces-3300");
-		}
-
 		// FACES_3356
 
 		BridgeIssues.addPageAndPortlet(

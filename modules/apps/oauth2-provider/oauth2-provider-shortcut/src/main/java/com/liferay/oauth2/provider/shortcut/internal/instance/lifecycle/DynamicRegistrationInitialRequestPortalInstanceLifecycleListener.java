@@ -12,13 +12,11 @@ import com.liferay.oauth2.provider.constants.OAuth2ProviderActionKeys;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
 import com.liferay.oauth2.provider.util.OAuth2SecureRandomGenerator;
-import com.liferay.osgi.util.configuration.ConfigurationPersistenceUtil;
-import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
+import com.liferay.portal.instance.lifecycle.InitialRequestPortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
@@ -32,8 +30,8 @@ import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -42,22 +40,17 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jorge García Jiménez
  */
 @Component(service = PortalInstanceLifecycleListener.class)
-public class DynamicRegistrationPortalInstanceLifecycleListener
-	extends BasePortalInstanceLifecycleListener {
+public class DynamicRegistrationInitialRequestPortalInstanceLifecycleListener
+	extends InitialRequestPortalInstanceLifecycleListener {
 
 	@Override
-	public long getLastModifiedTime() {
-		return _lastModifiedTime;
-	}
-
-	@Override
-	public void portalInstanceRegistered(Company company) throws Exception {
+	public void doPortalInstanceRegistered(long companyId) throws Exception {
 		DynamicQuery dynamicQuery =
 			_oAuth2ApplicationLocalService.dynamicQuery();
 
 		Property companyIdProperty = PropertyFactoryUtil.forName("companyId");
 
-		dynamicQuery.add(companyIdProperty.eq(company.getCompanyId()));
+		dynamicQuery.add(companyIdProperty.eq(companyId));
 
 		Property nameProperty = PropertyFactoryUtil.forName("name");
 
@@ -73,11 +66,11 @@ public class DynamicRegistrationPortalInstanceLifecycleListener
 		}
 
 		User user = _userLocalService.getUserByScreenName(
-			company.getCompanyId(), "default-service-account");
+			companyId, "default-service-account");
 
 		OAuth2Application oAuth2Application =
 			_oAuth2ApplicationLocalService.addOAuth2Application(
-				company.getCompanyId(), user.getUserId(), user.getScreenName(),
+				companyId, user.getUserId(), user.getScreenName(),
 				Collections.singletonList(GrantType.CLIENT_CREDENTIALS),
 				"client_secret_post", user.getUserId(),
 				OAuth2SecureRandomGenerator.generateClientId(),
@@ -120,12 +113,10 @@ public class DynamicRegistrationPortalInstanceLifecycleListener
 	}
 
 	@Activate
-	protected void activate(Map<String, Object> properties) throws Exception {
-		_lastModifiedTime = ConfigurationPersistenceUtil.update(
-			this, properties);
+	@Override
+	protected void activate(BundleContext bundleContext) {
+		super.activate(bundleContext);
 	}
-
-	private long _lastModifiedTime;
 
 	@Reference
 	private OAuth2ApplicationLocalService _oAuth2ApplicationLocalService;

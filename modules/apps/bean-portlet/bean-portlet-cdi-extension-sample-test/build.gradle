@@ -3,7 +3,7 @@ apply plugin: "war"
 dependencies {
 	compileOnly group: "com.liferay", name: "jakarta.enterprise.cdi", version: "4.1.0.LIFERAY-PATCHED-1"
 	compileOnly group: "com.liferay.jakarta.portlet", name: "com.liferay.jakarta.portlet-api", version: "4.0.0"
-	compileOnly group: "jakarta.faces", name: "jakarta.faces-api", version: "4.1.2"
+	compileOnly group: "jakarta.faces", name: "jakarta.faces-api", version: "3.0.0"
 	implementation group: "com.liferay", name: "com.liferay.faces.bridge.api", version: "4.3.0.JAKARTA-LIFERAY-PATCHED-1"
 	implementation group: "com.liferay", name: "com.liferay.faces.bridge.ext", version: "6.1.1.JAKARTA-LIFERAY-PATCHED-1"
 	implementation group: "com.liferay", name: "com.liferay.faces.bridge.impl", version: "4.3.0.JAKARTA-LIFERAY-PATCHED-1"

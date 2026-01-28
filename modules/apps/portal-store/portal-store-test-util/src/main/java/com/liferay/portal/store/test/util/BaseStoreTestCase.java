@@ -9,6 +9,7 @@ import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -35,8 +36,8 @@ public abstract class BaseStoreTestCase {
 	}
 
 	@After
-	public void tearDown() {
-		_store.deleteDirectory(_companyId, _repositoryId, StringPool.SLASH);
+	public void tearDown() throws PortalException {
+		_store.deleteDirectory(_companyId);
 	}
 
 	@Test
@@ -152,6 +153,23 @@ public abstract class BaseStoreTestCase {
 				_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT));
 		Assert.assertTrue(
 			_store.hasFile(_companyId, _repositoryId, fileName, "1.1"));
+	}
+
+	@Test
+	public void testGetCompanyIds() throws Exception {
+		String fileName = RandomTestUtil.randomString();
+
+		_store.addFile(
+			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(DATA_VERSION));
+
+		Assert.assertArrayEquals(
+			new long[] {_companyId}, _store.getCompanyIds());
+
+		_store.deleteFile(
+			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT);
+
+		Assert.assertArrayEquals(new long[0], _store.getCompanyIds());
 	}
 
 	@Test

@@ -28,6 +28,7 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.change.tracking.store.CTStoreFactory;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -85,6 +86,9 @@ public class CTStoreTest {
 		for (int i = 0; i < 4; i++) {
 			_ctCollections[i] = _createCTCollection();
 		}
+
+		_fileSystemStore.deleteDirectory(
+			_companyId, _REPOSITORY_ID, StringPool.BLANK);
 	}
 
 	@After
@@ -515,6 +519,41 @@ public class CTStoreTest {
 		_publish(_ctCollections[3]);
 
 		_assertNoSuchCTSContent(fileName);
+		_assertNoSuchFile(fileName);
+	}
+
+	@Test
+	public void testGetCompanyIds() throws Exception {
+
+		// Production mode, with files
+
+		_addFiles("testDir1/testFile1:v1");
+
+		Assert.assertArrayEquals(
+			PortalInstancePool.getCompanyIds(), _getCompanyIds());
+
+		_assertMethods(_GET_COMPANY_IDS_METHOD);
+
+		// CT mode, delete company files
+
+		_deleteDirectory();
+
+		_assertMethods(_DELETE_DIRECTORY_COMPANY_METHOD);
+
+		String fileName = "testFile";
+
+		_runInCTMode(
+			_ctCollections[0],
+			() -> {
+				_addCTFile(fileName, _DATA_1);
+
+				_assertCTSContent(fileName, _DATA_1);
+				_assertNoSuchFile(fileName);
+
+				Assert.assertArrayEquals(
+					PortalInstancePool.getCompanyIds(), _getCompanyIds());
+			});
+
 		_assertNoSuchFile(fileName);
 	}
 
@@ -1072,6 +1111,10 @@ public class CTStoreTest {
 			_companyId, _REPOSITORY_ID, fileName, version);
 	}
 
+	private long[] _getCompanyIds() throws Exception {
+		return _ctStore.getCompanyIds();
+	}
+
 	private void _publish(CTCollection ctCollection) throws Exception {
 		try (SafeCloseable safeCloseable =
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
@@ -1305,6 +1348,8 @@ public class CTStoreTest {
 
 	private static final Method _DELETE_FILE_METHOD;
 
+	private static final Method _GET_COMPANY_IDS_METHOD;
+
 	private static final Method _GET_FILE_AS_STREAM_METHOD;
 
 	private static final Method _GET_FILE_NAMES;
@@ -1359,6 +1404,8 @@ public class CTStoreTest {
 
 			_DELETE_DIRECTORY_METHOD = Store.class.getMethod(
 				"deleteDirectory", long.class, long.class, String.class);
+
+			_GET_COMPANY_IDS_METHOD = Store.class.getMethod("getCompanyIds");
 
 			_DELETE_FILE_METHOD = Store.class.getMethod(
 				"deleteFile", long.class, long.class, String.class,

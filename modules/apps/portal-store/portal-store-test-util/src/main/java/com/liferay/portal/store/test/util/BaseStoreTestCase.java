@@ -9,7 +9,10 @@ import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
 import java.io.InputStream;
@@ -28,15 +31,25 @@ import org.junit.Test;
 public abstract class BaseStoreTestCase {
 
 	@Before
-	public void setUp() {
+	public void setUp() throws PortalException {
 		_companyId = RandomTestUtil.nextLong();
 		_repositoryId = RandomTestUtil.nextLong();
+
 		_store = getStore();
+
+		_store.addFile(
+			TestPropsValues.getCompanyId(), TestPropsValues.getGroupId(),
+			_TEMP_FILE_NAME, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(new byte[0]));
 	}
 
 	@After
-	public void tearDown() {
-		_store.deleteDirectory(_companyId, _repositoryId, StringPool.SLASH);
+	public void tearDown() throws PortalException {
+		_store.deleteFile(
+			TestPropsValues.getCompanyId(), TestPropsValues.getGroupId(),
+			_TEMP_FILE_NAME, Store.VERSION_DEFAULT);
+
+		_store.deleteDirectory(_companyId);
 	}
 
 	@Test
@@ -152,6 +165,23 @@ public abstract class BaseStoreTestCase {
 				_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT));
 		Assert.assertTrue(
 			_store.hasFile(_companyId, _repositoryId, fileName, "1.1"));
+	}
+
+	@Test
+	public void testGetCompanyIds() throws Exception {
+		String fileName = RandomTestUtil.randomString();
+
+		_store.addFile(
+			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
+			new UnsyncByteArrayInputStream(DATA_VERSION));
+
+		Assert.assertTrue(
+			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
+
+		_store.deleteDirectory(_companyId);
+
+		Assert.assertFalse(
+			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
 	}
 
 	@Test
@@ -399,6 +429,8 @@ public abstract class BaseStoreTestCase {
 		new byte[BaseStoreTestCase._DATA_SIZE];
 
 	private static final int _DATA_SIZE = 1024 * 65;
+
+	private static final String _TEMP_FILE_NAME = RandomTestUtil.randomString();
 
 	static {
 		for (int i = 0; i < _DATA_SIZE; i++) {

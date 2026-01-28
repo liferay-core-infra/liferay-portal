@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay OSB Site Initializer
 Bundle-SymbolicName: com.liferay.osb.site.initializer
 Bundle-Version: 1.0.0

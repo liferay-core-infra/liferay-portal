@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Segments DXP Web
 Bundle-SymbolicName: com.liferay.segments.dxp.web
 Bundle-Version: 1.0.15

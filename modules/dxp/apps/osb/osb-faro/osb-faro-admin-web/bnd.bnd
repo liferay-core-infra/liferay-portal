@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay OSB Faro Admin Web
 Bundle-SymbolicName: com.liferay.osb.faro.admin.web
 Bundle-Version: 1.0.0

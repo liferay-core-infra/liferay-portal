@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay OSB Faro Test
 Bundle-SymbolicName: com.liferay.osb.faro.test
 Bundle-Version: 1.0.0

@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Salesforce Connector
 Bundle-SymbolicName: com.liferay.salesforce.connector
 Bundle-Version: 1.0.15

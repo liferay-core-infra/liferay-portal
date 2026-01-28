@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay SCIM REST Client
 Bundle-SymbolicName: com.liferay.scim.rest.client
 Bundle-Version: 1.0.17

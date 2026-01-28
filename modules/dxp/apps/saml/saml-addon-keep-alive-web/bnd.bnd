@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay SAML Addon Keep Alive Web
 Bundle-SymbolicName: com.liferay.saml.addon.keep.alive.web
 Bundle-Version: 5.0.28

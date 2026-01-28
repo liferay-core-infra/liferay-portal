@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bnd-LastModified: 1594397843463
 Bundle-ManifestVersion: 2
+DXP:
 Bundle-Name: Liferay Portal Workflow Metrics Calendar Sample
 Bundle-SymbolicName: com.liferay.portal.workflow.metrics.calendar.samp
  le
@@ -25,8 +26,8 @@ Liferay-Releng-Restart-Required: true
 Liferay-Releng-Suite: forms-and-workflow
 Liferay-Releng-Suite-Description: Apps and Features: Calendar, Dynamic
   Data Lists, Dynamic Data Mapping, Forms, Polls, Workflow<br /><br />
- An increase in productivity means you're saving time and effort; youâ
- €™re becoming more efficient. The Forms and Workflow apps help you do
+ An increase in productivity means you're saving time and effort; youï¿½
+ ï¿½ï¿½re becoming more efficient. The Forms and Workflow apps help you do
   that by giving you built-in calendars and the ability to create your
   own forms and list applications. These are powerful, flexible apps t
  hat can be quickly leveraged for basic tasks, or carefully configured

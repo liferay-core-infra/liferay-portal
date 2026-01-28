@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay OSB Faro Contacts Demo
 Bundle-SymbolicName: com.liferay.osb.faro.contacts.demo
 Bundle-Version: 1.0.0

@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Portal Search Similar Results Web SPI
 Bundle-SymbolicName: com.liferay.portal.search.similar.results.web.spi
 Bundle-Version: 4.0.3

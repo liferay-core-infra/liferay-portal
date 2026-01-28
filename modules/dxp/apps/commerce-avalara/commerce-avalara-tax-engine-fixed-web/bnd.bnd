@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Avalara Tax Engine Fixed Web
 Bundle-SymbolicName: com.liferay.commerce.avalara.tax.engine.fixed.web
 Bundle-Version: 1.0.0

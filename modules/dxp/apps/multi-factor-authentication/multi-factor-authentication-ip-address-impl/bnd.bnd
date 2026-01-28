@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Multi-Factor Authentication IP Address Implementation
 Bundle-SymbolicName: com.liferay.multi.factor.authentication.ip.address.impl
 Bundle-Version: 2.0.19

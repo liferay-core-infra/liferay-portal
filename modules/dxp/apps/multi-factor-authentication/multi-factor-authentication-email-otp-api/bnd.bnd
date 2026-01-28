@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Multi-Factor Authentication Email OTP API
 Bundle-SymbolicName: com.liferay.multi.factor.authentication.email.otp.api
 Bundle-Version: 4.0.2

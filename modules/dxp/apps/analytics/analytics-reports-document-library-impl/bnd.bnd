@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Analytics Reports Document Library Implementation
 Bundle-SymbolicName: com.liferay.analytics.reports.document.library.impl
 Bundle-Version: 1.0.18

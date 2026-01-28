@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Search Experiences Service
 Bundle-SymbolicName: com.liferay.search.experiences.service
 Bundle-Version: 3.0.92

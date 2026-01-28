@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Portal DAO DB
 Bundle-SymbolicName: com.liferay.portal.dao.db
 Bundle-Version: 5.0.42

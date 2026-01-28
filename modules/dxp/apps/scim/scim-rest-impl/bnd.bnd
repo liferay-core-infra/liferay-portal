@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay SCIM REST Implementation
 Bundle-SymbolicName: com.liferay.scim.rest.impl
 Bundle-Version: 1.0.35

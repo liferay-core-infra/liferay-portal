@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Shop by Diagram Web
 Bundle-SymbolicName: com.liferay.commerce.shop.by.diagram.web
 Bundle-Version: 1.0.119

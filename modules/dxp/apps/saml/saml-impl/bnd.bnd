@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay SAML Implementation
 Bundle-SymbolicName: com.liferay.saml.impl
 Bundle-Version: 5.0.63

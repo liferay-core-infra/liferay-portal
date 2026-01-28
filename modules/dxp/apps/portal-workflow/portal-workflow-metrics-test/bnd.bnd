@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Portal Workflow Metrics Test
 Bundle-SymbolicName: com.liferay.portal.workflow.metrics.test
 Bundle-Version: 1.0.0

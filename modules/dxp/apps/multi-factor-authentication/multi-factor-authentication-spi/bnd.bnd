@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Multi-Factor Authentication SPI
 Bundle-SymbolicName: com.liferay.multi.factor.authentication.spi
 Bundle-Version: 3.0.1

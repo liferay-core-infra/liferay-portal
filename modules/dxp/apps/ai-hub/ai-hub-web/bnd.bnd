@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay AI Hub Web
 Bundle-SymbolicName: com.liferay.ai.hub.web
 Bundle-Version: 1.0.0

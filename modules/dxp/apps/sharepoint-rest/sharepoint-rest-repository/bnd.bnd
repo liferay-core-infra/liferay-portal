@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Sharepoint REST Repository
 Bundle-SymbolicName: com.liferay.sharepoint.rest.repository
 Bundle-Version: 5.0.37

@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay SAML API
 Bundle-SymbolicName: com.liferay.saml.api
 Bundle-Version: 12.0.1

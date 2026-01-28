@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay OSB Faro API
 Bundle-SymbolicName: com.liferay.osb.faro.api
 Bundle-Version: 1.0.0

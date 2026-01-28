@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Machine Learning API
 Bundle-SymbolicName: com.liferay.commerce.machine.learning.api
 Bundle-Version: 7.2.7

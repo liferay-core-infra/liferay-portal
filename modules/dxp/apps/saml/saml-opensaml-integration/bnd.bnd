@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay SAML OpenSAML Integration
 Bundle-SymbolicName: com.liferay.saml.opensaml.integration
 Bundle-Version: 6.2.31

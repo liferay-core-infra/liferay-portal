@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Segments Asah REST Implementation
 Bundle-SymbolicName: com.liferay.segments.asah.rest.impl
 Bundle-Version: 3.0.79

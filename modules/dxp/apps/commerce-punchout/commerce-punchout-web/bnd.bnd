@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Punch Out Web
 Bundle-SymbolicName: com.liferay.commerce.punchout.web
 Bundle-Version: 4.0.29

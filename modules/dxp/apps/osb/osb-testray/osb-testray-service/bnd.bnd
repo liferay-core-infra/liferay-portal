@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay OSB Testray Service
 Bundle-SymbolicName: com.liferay.osb.testray.service
 Bundle-Version: 1.0.0

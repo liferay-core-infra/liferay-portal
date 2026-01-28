@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Machine Learning Test
 Bundle-SymbolicName: com.liferay.commerce.machine.learning.test
 Bundle-Version: 1.0.0

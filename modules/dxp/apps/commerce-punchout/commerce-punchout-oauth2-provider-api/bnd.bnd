@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Punch Out OAuth2 Provider API
 Bundle-SymbolicName: com.liferay.commerce.punchout.oauth2.provider.api
 Bundle-Version: 5.0.12

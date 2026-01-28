@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Machine Learning Forecast Alert Service
 Bundle-SymbolicName: com.liferay.commerce.machine.learning.forecast.alert.service
 Bundle-Version: 5.0.43

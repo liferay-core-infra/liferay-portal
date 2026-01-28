@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Search Experiences REST Implementation
 Bundle-SymbolicName: com.liferay.search.experiences.rest.impl
 Bundle-Version: 3.0.85

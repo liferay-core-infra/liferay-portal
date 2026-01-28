@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Sharepoint REST OAuth 2 Test
 Bundle-SymbolicName: com.liferay.sharepoint.rest.oauth2.test
 Bundle-Version: 1.0.0

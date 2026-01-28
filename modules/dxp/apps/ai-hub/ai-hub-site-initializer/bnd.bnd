@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay AI Hub Site Initializer
 Bundle-SymbolicName: com.liferay.ai.hub.site.initializer
 Bundle-Version: 1.0.5

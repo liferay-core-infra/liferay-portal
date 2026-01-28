@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Enterprise Product Notification Web
 Bundle-SymbolicName: com.liferay.enterprise.product.notification.web
 Bundle-Version: 1.0.23

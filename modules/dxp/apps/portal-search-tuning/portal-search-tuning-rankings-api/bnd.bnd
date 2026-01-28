@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Portal Search Tuning Rankings API
 Bundle-SymbolicName: com.liferay.portal.search.tuning.rankings.api
 Bundle-Version: 1.1.1

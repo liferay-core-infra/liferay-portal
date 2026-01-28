@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Portal Reports Engine Console Service
 Bundle-SymbolicName: com.liferay.portal.reports.engine.console.service
 Bundle-Version: 8.0.56

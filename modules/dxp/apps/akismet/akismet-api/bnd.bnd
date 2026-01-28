@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Akismet API
 Bundle-SymbolicName: com.liferay.akismet.api
 Bundle-Version: 1.0.0

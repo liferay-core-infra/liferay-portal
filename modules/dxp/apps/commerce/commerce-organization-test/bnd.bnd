@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Organization Test
 Bundle-SymbolicName: com.liferay.commerce.organization.test
 Bundle-Version: 1.0.0

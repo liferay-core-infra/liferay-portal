@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Antivirus Async Store
 Bundle-SymbolicName: com.liferay.antivirus.async.store
 Bundle-Version: 5.0.1

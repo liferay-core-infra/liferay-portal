@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Frontend Theme DXP Override
 Bundle-SymbolicName: com.liferay.frontend.theme.dxp.override
 Bundle-Version: 4.0.80

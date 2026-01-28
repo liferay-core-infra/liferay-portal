@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay SAML Persistence API
 Bundle-SymbolicName: com.liferay.saml.persistence.api
 Bundle-Version: 14.0.1

@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Portal Search Learning To Rank Implementation
 Bundle-SymbolicName: com.liferay.portal.search.learning.to.rank.impl
 Bundle-Version: 3.0.13

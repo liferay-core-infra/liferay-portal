@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Search Experiences API
 Bundle-SymbolicName: com.liferay.search.experiences.api
 Bundle-Version: 31.1.1

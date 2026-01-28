@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Commerce Punch Out Portal Security Auto Login
 Bundle-SymbolicName: com.liferay.commerce.punchout.portal.security.auto.login
 Bundle-Version: 4.0.35

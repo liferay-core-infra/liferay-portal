@@ -1,3 +1,4 @@
+DXP: true
 Bundle-Name: Liferay Portal Search Elasticsearch Cross Cluster Replication Implementation
 Bundle-SymbolicName: com.liferay.portal.search.elasticsearch.cross.cluster.replication.impl
 Bundle-Version: 8.0.18

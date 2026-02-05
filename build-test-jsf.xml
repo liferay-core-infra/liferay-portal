@@ -3,7 +3,19 @@
 <project basedir="./" name="portal-test-batch" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	<import file="./build-test-batch.xml" />
 
-	<target name="run-jsf-tests">
+	<target name="deploy-jsf-cdi-applicant-war">
+		<copy
+			flatten="true"
+			todir="${liferayHome}/osgi/war"
+		>
+			<fileset
+				dir="tools/faces/war/bridge-demos-jsf-cdi-applicant"
+				includes="**/*.war"
+			/>
+		</copy>
+	</target>
+
+	<target name="prepare-jsf-app-server">
 		<property name="max.metaspace.size" value="-XX:MaxMetaspaceSize=1024m" />
 
 		<propertycopy from="app.server.${app.server.type}.bin.dir" name="test.app.server.bin.dir" />
@@ -64,6 +76,30 @@
 
 		<echo file="${app.server.classes.portal.dir}/portal-ext.properties">${portal.ext.properties}</echo>
 
+		<copy
+			flatten="true"
+			todir="${liferay.home}/osgi/modules"
+		>
+			<fileset
+				dir="tools/faces"
+				includes="**/*.jar"
+			/>
+		</copy>
+
+		<copy
+			flatten="true"
+			todir="${liferay.home}/osgi/configs"
+		>
+			<fileset
+				dir="tools/faces"
+				includes="**/*.config"
+			/>
+		</copy>
+	</target>
+
+	<target name="run-jsf-tests">
+		<antcall target="prepare-jsf-app-server" />
+
 		<propertycopy from="browser.firefox.bin.file[${liferay.faces.test.browser.version}]" name="browser.firefox.bin.file" silent="true" />
 
 		<!--
@@ -99,23 +135,15 @@
 
 		<get-testcase-property property.name="liferay.faces.war.dir.name" />
 
-		<copy
-			flatten="true"
-			todir="${liferay.home}/osgi/modules"
-		>
-			<fileset
-				dir="tools/faces"
-				includes="**/*.jar"
-			/>
-		</copy>
-
 		<if>
 			<and>
 				<isset property="liferay.faces.war.auto.deploy" />
 				<isfalse value="${liferay.faces.war.auto.deploy}" />
 			</and>
 			<then>
-				<echo message="Skip deploying war file from ${liferay.faces.war.dir.name}" />
+				<echo>
+Skip deploying war file from ${liferay.faces.war.dir.name}
+				</echo>
 			</then>
 			<else>
 				<copy
@@ -129,27 +157,5 @@
 				</copy>
 			</else>
 		</if>
-
-		<copy
-			flatten="true"
-			todir="${liferay.home}/osgi/configs"
-		>
-			<fileset
-				dir="tools/faces"
-				includes="**/*.config"
-			/>
-		</copy>
-	</target>
-
-	<target name="deploy-jsf-cdi-applicant-war">
-		<copy
-			flatten="true"
-			todir="${liferayHome}/osgi/war"
-		>
-			<fileset
-				dir="tools/faces/war/bridge-demos-jsf-cdi-applicant"
-				includes="**/*.war"
-			/>
-		</copy>
 	</target>
 </project>

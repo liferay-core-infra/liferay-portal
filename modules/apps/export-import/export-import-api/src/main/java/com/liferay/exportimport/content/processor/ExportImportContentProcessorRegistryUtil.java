@@ -14,7 +14,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import java.util.List;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 /**
@@ -58,10 +57,8 @@ public class ExportImportContentProcessorRegistryUtil {
 		Bundle bundle = FrameworkUtil.getBundle(
 			ExportImportContentProcessorRegistryUtil.class);
 
-		_bundleContext = bundle.getBundleContext();
-
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			_bundleContext,
+			bundle.getBundleContext(),
 			(Class<ExportImportContentProcessor<String>>)
 				(Class<?>)ExportImportContentProcessor.class,
 			null, _serviceReferenceMapper);
@@ -70,8 +67,6 @@ public class ExportImportContentProcessorRegistryUtil {
 	private static final ExportImportContentProcessorRegistryUtil
 		_exportImportContentProcessorRegistryUtil =
 			new ExportImportContentProcessorRegistryUtil();
-
-	private final BundleContext _bundleContext;
 
 	private final ServiceReferenceMapper
 		<String, ExportImportContentProcessor<String>> _serviceReferenceMapper =

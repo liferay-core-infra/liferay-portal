@@ -5,6 +5,9 @@
 
 package com.liferay.exportimport.content.processor;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.osgi.util.StringPlus;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -61,6 +64,12 @@ public class ExportImportContentProcessorRegistryUtil {
 			(Class<ExportImportContentProcessor<String>>)
 				(Class<?>)ExportImportContentProcessor.class,
 			new ExportImportContentProcessorServiceTrackerCustomizer());
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext,
+			(Class<ExportImportContentProcessor<String>>)
+				(Class<?>)ExportImportContentProcessor.class,
+			null, _serviceReferenceMapper);
 	}
 
 	private ExportImportContentProcessor<String>
@@ -98,9 +107,30 @@ public class ExportImportContentProcessorRegistryUtil {
 	private final Map<String, ExportImportContentProcessor<String>>
 		_modelClassNameExportImportContentProcessors =
 			new ConcurrentHashMap<>();
+
+	private final ServiceReferenceMapper
+		<String, ExportImportContentProcessor<String>> _serviceReferenceMapper =
+			(serviceReference, emitter) -> {
+				List<String> modelClassNames = StringPlus.asList(
+					serviceReference.getProperty("model.class.name"));
+
+				for (String modelClassName : modelClassNames) {
+					emitter.emit(modelClassName);
+				}
+
+				List<String> contentProcessorTypes = StringPlus.asList(
+					serviceReference.getProperty("content.processor.type"));
+
+				for (String contentProcessorType : contentProcessorTypes) {
+					emitter.emit(contentProcessorType);
+				}
+			};
+
 	private final ServiceTracker
 		<ExportImportContentProcessor<String>,
 		 ExportImportContentProcessor<String>> _serviceTracker;
+	private final ServiceTrackerMap
+		<String, ExportImportContentProcessor<String>> _serviceTrackerMap;
 
 	private class ExportImportContentProcessorServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer

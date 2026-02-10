@@ -33,24 +33,32 @@ public class ExportImportContentProcessorRegistryUtil {
 	public static ExportImportContentProcessor<String>
 		getExportImportContentProcessor(String className) {
 
-		return _exportImportContentProcessorRegistryUtil.
-			_getExportImportContentProcessor(className);
+		ServiceTrackerMap<String, ExportImportContentProcessor<String>>
+			serviceTrackerMap =
+				_exportImportContentProcessorRegistryUtil._serviceTrackerMap;
+
+		return serviceTrackerMap.getService(className);
 	}
 
 	public static ExportImportContentProcessor<String>
 		getExportImportContentProcessorByContentProcessorType(
 			String contentProcessorType) {
 
-		return _exportImportContentProcessorRegistryUtil.
-			_getExportImportContentProcessorByContentProcessorType(
-				contentProcessorType);
+		ServiceTrackerMap<String, ExportImportContentProcessor<String>>
+			serviceTrackerMap =
+				_exportImportContentProcessorRegistryUtil._serviceTrackerMap;
+
+		return serviceTrackerMap.getService(contentProcessorType);
 	}
 
 	public static List<ExportImportContentProcessor<String>>
 		getExportImportContentProcessors() {
 
-		return _exportImportContentProcessorRegistryUtil.
-			_getExportImportContentProcessors();
+		ServiceTrackerMap<String, ExportImportContentProcessor<String>>
+			serviceTrackerMap =
+				_exportImportContentProcessorRegistryUtil._serviceTrackerMap;
+
+		return ListUtil.fromCollection(serviceTrackerMap.values());
 	}
 
 	private ExportImportContentProcessorRegistryUtil() {

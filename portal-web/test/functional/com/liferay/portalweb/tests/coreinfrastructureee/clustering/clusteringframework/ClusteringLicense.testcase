@@ -1,6 +1,7 @@
 @component-name = "portal-core-infra"
 definition {
 
+	property browser.chrome.version = "139.0";
 	property app.server.bundles.size = "2";
 	property cluster.enabled = "true";
 	property license.required = "true";

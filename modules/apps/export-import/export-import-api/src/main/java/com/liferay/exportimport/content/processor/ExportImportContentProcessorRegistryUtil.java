@@ -40,7 +40,10 @@ public class ExportImportContentProcessorRegistryUtil {
 		return ListUtil.fromCollection(_serviceTrackerMap.values());
 	}
 
-	private ExportImportContentProcessorRegistryUtil() {
+	private static final ServiceTrackerMap
+		<String, ExportImportContentProcessor<String>> _serviceTrackerMap;
+
+	static {
 		Bundle bundle = FrameworkUtil.getBundle(
 			ExportImportContentProcessorRegistryUtil.class);
 
@@ -65,11 +68,5 @@ public class ExportImportContentProcessorRegistryUtil {
 				}
 			});
 	}
-
-	private static final ExportImportContentProcessorRegistryUtil
-		_exportImportContentProcessorRegistryUtil =
-			new ExportImportContentProcessorRegistryUtil();
-	private static  ServiceTrackerMap
-		<String, ExportImportContentProcessor<String>> _serviceTrackerMap;
 
 }

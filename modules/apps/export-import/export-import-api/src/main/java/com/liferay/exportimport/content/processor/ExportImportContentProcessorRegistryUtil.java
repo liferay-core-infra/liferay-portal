@@ -5,7 +5,6 @@
 
 package com.liferay.exportimport.content.processor;
 
-import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.util.StringPlus;
@@ -61,15 +60,7 @@ public class ExportImportContentProcessorRegistryUtil {
 			bundle.getBundleContext(),
 			(Class<ExportImportContentProcessor<String>>)
 				(Class<?>)ExportImportContentProcessor.class,
-			null, _serviceReferenceMapper);
-	}
-
-	private static final ExportImportContentProcessorRegistryUtil
-		_exportImportContentProcessorRegistryUtil =
-			new ExportImportContentProcessorRegistryUtil();
-
-	private final ServiceReferenceMapper
-		<String, ExportImportContentProcessor<String>> _serviceReferenceMapper =
+			null,
 			(serviceReference, emitter) -> {
 				List<String> modelClassNames = StringPlus.asList(
 					serviceReference.getProperty("model.class.name"));
@@ -84,7 +75,12 @@ public class ExportImportContentProcessorRegistryUtil {
 				for (String contentProcessorType : contentProcessorTypes) {
 					emitter.emit(contentProcessorType);
 				}
-			};
+			});
+	}
+
+	private static final ExportImportContentProcessorRegistryUtil
+		_exportImportContentProcessorRegistryUtil =
+			new ExportImportContentProcessorRegistryUtil();
 
 	private final ServiceTrackerMap
 		<String, ExportImportContentProcessor<String>> _serviceTrackerMap;

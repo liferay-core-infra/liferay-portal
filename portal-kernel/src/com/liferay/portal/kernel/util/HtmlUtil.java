@@ -906,6 +906,8 @@ public class HtmlUtil {
 	).put(
 		"nbsp", " "
 	).put(
+		"quot", "\""
+	).put(
 		"rsquo", "\u2019"
 	).build();
 

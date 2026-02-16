@@ -118,6 +118,8 @@ public class HtmlUtilTest {
 		Assert.assertEquals(
 			"&lt;span class=&#34;test&#34;&gt;Test&lt;/span&gt;",
 			HtmlUtil.escape("<span class=\"test\">Test</span>"));
+
+		Assert.assertEquals("\"", HtmlUtil.unescape("&quot;"));
 	}
 
 	@Test

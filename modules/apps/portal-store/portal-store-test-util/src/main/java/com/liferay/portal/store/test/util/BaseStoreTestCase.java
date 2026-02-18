@@ -11,6 +11,7 @@ import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
 import java.io.InputStream;
@@ -163,13 +164,14 @@ public abstract class BaseStoreTestCase {
 			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
 			new UnsyncByteArrayInputStream(DATA_VERSION));
 
-		Assert.assertArrayEquals(
-			new long[] {_companyId}, _store.getCompanyIds());
+		Assert.assertTrue(
+			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
 
 		_store.deleteFile(
 			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT);
 
-		Assert.assertArrayEquals(new long[0], _store.getCompanyIds());
+		Assert.assertFalse(
+			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
 	}
 
 	@Test

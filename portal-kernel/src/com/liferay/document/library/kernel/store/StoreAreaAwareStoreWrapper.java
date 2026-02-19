@@ -8,6 +8,8 @@ package com.liferay.document.library.kernel.store;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.io.InputStream;
 
@@ -124,6 +126,32 @@ public class StoreAreaAwareStoreWrapper implements Store {
 		else {
 			store.deleteFile(companyId, repositoryId, fileName, versionLabel);
 		}
+	}
+
+	@Override
+	public long[] getCompanyIds() throws PortalException {
+		Store store = _storeSupplier.get();
+
+		if (_isStoreAreaSupported(PortalInstancePool.getDefaultCompanyId())) {
+
+			long[] companyIds = StoreArea.tryGetWithStoreAreas(
+				store::getCompanyIds, Objects::nonNull, null, StoreArea.LIVE);
+
+			long[] newCompanyIds = StoreArea.tryGetWithStoreAreas(
+				store::getCompanyIds, Objects::nonNull, null, StoreArea.NEW);
+			companyIds = ArrayUtil.append(companyIds, newCompanyIds);
+
+			long[] deletedCompanyIds = StoreArea.tryGetWithStoreAreas(
+				store::getCompanyIds, Objects::nonNull, null, StoreArea.DELETED);
+			companyIds = ArrayUtil.append(companyIds, deletedCompanyIds);
+
+			companyIds = ArrayUtil.unique(companyIds);
+			Arrays.sort(companyIds);
+
+			return companyIds;
+		}
+
+		return store.getCompanyIds();
 	}
 
 	@Override

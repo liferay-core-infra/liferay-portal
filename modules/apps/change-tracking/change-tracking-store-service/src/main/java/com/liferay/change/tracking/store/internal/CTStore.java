@@ -15,6 +15,9 @@ import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
@@ -134,6 +137,30 @@ public class CTStore implements Store {
 			_ctsContentLocalService.deleteCTSContent(
 				companyId, repositoryId, fileName, versionLabel, _storeType);
 		}
+	}
+
+	@Override
+	public long[] getCompanyIds() throws PortalException {
+		DynamicQuery dynamicQuery = _ctsContentLocalService.dynamicQuery();
+
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.distinct(
+				ProjectionFactoryUtil.property("companyId")));
+
+		dynamicQuery.add(RestrictionsFactoryUtil.gt("companyId", 0L));
+
+		Set<Long> companyIds = new HashSet<>(
+			_ctsContentLocalService.dynamicQuery(dynamicQuery));
+
+		for (long storeCompanyId : _store.getCompanyIds()) {
+			companyIds.add(storeCompanyId);
+		}
+
+		long[] companyIdsArray = ArrayUtil.toLongArray(companyIds);
+
+		Arrays.sort(companyIdsArray);
+
+		return companyIdsArray;
 	}
 
 	@Override

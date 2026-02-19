@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -56,9 +57,11 @@ import java.time.temporal.TemporalAmount;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.osgi.framework.BundleContext;
@@ -132,6 +135,35 @@ public class GCSStore implements Store {
 				_gcsStoreConfiguration.bucketName(),
 				_getHeadVersionLabel(
 					companyId, repositoryId, fileName, versionLabel)));
+	}
+
+	public long[] getCompanyIds() throws PortalException {
+		Set<Long> companyIdsSet = new HashSet<>();
+
+		try {
+			Page<Blob> blobPage = _gcsStore.list(
+				_gcsStoreConfiguration.bucketName(),
+				Storage.BlobListOption.delimiter("/"));
+
+			for (Blob blob : blobPage.iterateAll()) {
+				String name = blob.getName();
+
+				if (name.endsWith("/")) {
+					String folderName = name.substring(0, name.length() - 1);
+
+					companyIdsSet.add(GetterUtil.getLong(folderName));
+				}
+			}
+		}
+		catch (Exception exception) {
+			throw new PortalException(exception);
+		}
+
+		long[] companyIds = ArrayUtil.toLongArray(companyIdsSet);
+
+		Arrays.sort(companyIds);
+
+		return companyIds;
 	}
 
 	@Override

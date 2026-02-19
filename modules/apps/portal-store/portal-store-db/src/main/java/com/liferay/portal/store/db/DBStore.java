@@ -13,10 +13,13 @@ import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 
 import java.io.InputStream;
@@ -85,6 +88,24 @@ public class DBStore implements Store {
 
 		_dlContentLocalService.deleteContent(
 			companyId, repositoryId, fileName, versionLabel);
+	}
+
+	@Override
+	public long[] getCompanyIds() {
+		DynamicQuery dynamicQuery = _dlContentLocalService.dynamicQuery();
+
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.distinct(
+				ProjectionFactoryUtil.property("companyId")));
+
+		dynamicQuery.add(RestrictionsFactoryUtil.gt("companyId", 0L));
+
+		List<Long> companyIds = _dlContentLocalService.dynamicQuery(
+			dynamicQuery);
+
+		ListUtil.sort(companyIds);
+
+		return ArrayUtil.toLongArray(companyIds);
 	}
 
 	@Override

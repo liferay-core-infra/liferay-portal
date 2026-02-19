@@ -19,7 +19,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.s3.configuration.S3StoreConfiguration;
 
@@ -34,10 +36,12 @@ import java.time.Instant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -61,10 +65,12 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3AsyncClientBuilder;
 import software.amazon.awssdk.services.s3.model.AbortMultipartUploadResponse;
+import software.amazon.awssdk.services.s3.model.CommonPrefix;
 import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectsResponse;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.MultipartUpload;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
@@ -228,6 +234,54 @@ public class S3Store implements Store {
 		catch (CompletionException completionException) {
 			throw _toSystemException(completionException.getCause());
 		}
+	}
+
+	public long[] getCompanyIds() {
+		Set<Long> companyIdsSet = new HashSet<>();
+		String continuationToken = null;
+
+		try {
+			do {
+				String currentToken = continuationToken;
+
+				CompletableFuture<ListObjectsV2Response> future =
+					_s3AsyncClient.listObjectsV2(
+						builder -> builder.bucket(
+							_s3StoreConfiguration.bucketName()
+						).delimiter(
+							"/"
+						).continuationToken(
+							currentToken
+						));
+
+				ListObjectsV2Response response = future.join();
+
+				List<CommonPrefix> prefixes = response.commonPrefixes();
+
+				for (CommonPrefix prefix : prefixes) {
+					String folderName = prefix.prefix();
+
+					if (folderName.endsWith("/")) {
+						folderName = folderName.substring(
+							0, folderName.length() - 1);
+					}
+
+					companyIdsSet.add(GetterUtil.getLong(folderName));
+				}
+
+				continuationToken = response.nextContinuationToken();
+			}
+			while ((continuationToken != null) && !continuationToken.isEmpty());
+		}
+		catch (CompletionException completionException) {
+			throw _toSystemException(completionException.getCause());
+		}
+
+		long[] companyIds = ArrayUtil.toLongArray(companyIdsSet);
+
+		Arrays.sort(companyIds);
+
+		return companyIds;
 	}
 
 	@Override

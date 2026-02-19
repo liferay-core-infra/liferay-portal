@@ -12,12 +12,15 @@ import com.liferay.document.library.kernel.store.StoreAreaAwareStoreWrapper;
 import com.liferay.document.library.kernel.store.StoreAreaProcessor;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -26,8 +29,10 @@ import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,35 +62,59 @@ public class GCStoreStoreAreaAwareStoreWrapperTest {
 			dlStoreImpl.equals(gcsStoreClassName));
 	}
 
+	@Before
+	public void setUp() throws Exception {
+		_company = CompanyTestUtil.addCompany();
+	}
+
+	@After
+	public void tearDown() throws PortalException {
+		_companyLocalService.deleteCompany(_company);
+	}
+
 	@Test
 	public void testDeleteDirectory() throws Exception {
 		String fileName = StringUtil.randomString();
 
-		Company company = CompanyTestUtil.addCompany();
+		_wrappedStore.addFile(
+			_company.getCompanyId(), _company.getGroupId(), fileName,
+			Store.VERSION_DEFAULT, new UnsyncByteArrayInputStream(new byte[0]));
 
-		try {
-			_wrappedStore.addFile(
-				company.getCompanyId(), company.getGroupId(), fileName,
-				Store.VERSION_DEFAULT,
-				new UnsyncByteArrayInputStream(new byte[0]));
+		_wrappedStore.deleteDirectory(_company.getCompanyId());
 
-			_wrappedStore.deleteDirectory(company.getCompanyId());
+		Assert.assertFalse(
+			_store.hasFile(
+				_company.getCompanyId(), _company.getGroupId(), fileName,
+				Store.VERSION_DEFAULT));
 
-			Assert.assertFalse(
+		StoreArea.withStoreArea(
+			StoreArea.DELETED,
+			() -> Assert.assertTrue(
 				_store.hasFile(
-					company.getCompanyId(), company.getGroupId(), fileName,
-					Store.VERSION_DEFAULT));
+					_company.getCompanyId(), _company.getGroupId(), fileName,
+					Store.VERSION_DEFAULT)));
+	}
 
-			StoreArea.withStoreArea(
-				StoreArea.DELETED,
-				() -> Assert.assertTrue(
-					_store.hasFile(
-						company.getCompanyId(), company.getGroupId(), fileName,
-						Store.VERSION_DEFAULT)));
-		}
-		finally {
-			_companyLocalService.deleteCompany(company);
-		}
+	@Test
+	public void testGetCompanyIds() throws Exception {
+		String fileName = RandomTestUtil.randomString();
+
+		_wrappedStore.addFile(
+			_company.getCompanyId(), _company.getGroupId(), fileName,
+			Store.VERSION_DEFAULT, new UnsyncByteArrayInputStream(new byte[0]));
+
+		Assert.assertArrayEquals(
+			PortalInstancePool.getCompanyIds(), _wrappedStore.getCompanyIds());
+
+		_wrappedStore.deleteDirectory(_company.getCompanyId());
+
+		Assert.assertFalse(
+			_store.hasFile(
+				_company.getCompanyId(), _company.getGroupId(), fileName,
+				Store.VERSION_DEFAULT));
+
+		Assert.assertArrayEquals(
+			PortalInstancePool.getCompanyIds(), _wrappedStore.getCompanyIds());
 	}
 
 	@Inject
@@ -101,6 +130,8 @@ public class GCStoreStoreAreaAwareStoreWrapperTest {
 		"(default=true)", true);
 	private static final Store _wrappedStore = new StoreAreaAwareStoreWrapper(
 		_storeSnapshot::get, _storeAreaProcessorSnapshot::get);
+
+	private Company _company;
 
 	@Inject(
 		filter = "store.type=com.liferay.portal.store.gcs.GCSStore",

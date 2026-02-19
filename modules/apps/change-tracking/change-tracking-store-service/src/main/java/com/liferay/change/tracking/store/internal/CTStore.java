@@ -15,9 +15,13 @@ import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -38,10 +42,12 @@ import java.util.Set;
 public class CTStore implements Store {
 
 	public CTStore(
+		CompanyLocalService companyLocalService,
 		CTEntryLocalService ctEntryLocalService,
 		CTSContentLocalService ctsContentLocalService, Store store,
 		String storeType) {
 
+		_companyLocalService = companyLocalService;
 		_ctEntryLocalService = ctEntryLocalService;
 		_ctsContentLocalService = ctsContentLocalService;
 		_store = store;
@@ -134,6 +140,36 @@ public class CTStore implements Store {
 			_ctsContentLocalService.deleteCTSContent(
 				companyId, repositoryId, fileName, versionLabel, _storeType);
 		}
+	}
+
+	@Override
+	public long[] getCompanyIds() throws PortalException {
+		Set<Long> companyIdsSet = new HashSet<>();
+
+		for (long storeCompanyId : _store.getCompanyIds()) {
+			companyIdsSet.add(storeCompanyId);
+		}
+
+		_companyLocalService.forEachCompany(
+			company -> {
+				DynamicQuery dynamicQuery =
+					_ctsContentLocalService.dynamicQuery();
+
+				dynamicQuery.setProjection(
+					ProjectionFactoryUtil.distinct(
+						ProjectionFactoryUtil.property("companyId")));
+
+				dynamicQuery.add(RestrictionsFactoryUtil.gt("companyId", 0L));
+
+				companyIdsSet.addAll(
+					_ctsContentLocalService.dynamicQuery(dynamicQuery));
+			});
+
+		long[] companyIdsArray = ArrayUtil.toLongArray(companyIdsSet);
+
+		Arrays.sort(companyIdsArray);
+
+		return companyIdsArray;
 	}
 
 	@Override
@@ -418,6 +454,7 @@ public class CTStore implements Store {
 		return stringArray;
 	}
 
+	private final CompanyLocalService _companyLocalService;
 	private final CTEntryLocalService _ctEntryLocalService;
 	private final CTSContentLocalService _ctsContentLocalService;
 	private final Store _store;

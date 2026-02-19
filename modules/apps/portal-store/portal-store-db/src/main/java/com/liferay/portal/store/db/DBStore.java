@@ -13,16 +13,21 @@ import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 
 import java.io.InputStream;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -85,6 +90,32 @@ public class DBStore implements Store {
 
 		_dlContentLocalService.deleteContent(
 			companyId, repositoryId, fileName, versionLabel);
+	}
+
+	@Override
+	public long[] getCompanyIds() {
+		Set<Long> companyIdsSet = new HashSet<>();
+
+		_companyLocalService.forEachCompany(
+			company -> {
+				DynamicQuery dynamicQuery =
+					_dlContentLocalService.dynamicQuery();
+
+				dynamicQuery.setProjection(
+					ProjectionFactoryUtil.distinct(
+						ProjectionFactoryUtil.property("companyId")));
+
+				dynamicQuery.add(RestrictionsFactoryUtil.gt("companyId", 0L));
+
+				companyIdsSet.addAll(
+					_dlContentLocalService.dynamicQuery(dynamicQuery));
+			});
+
+		long[] companyIdsArray = ArrayUtil.toLongArray(companyIdsSet);
+
+		Arrays.sort(companyIdsArray);
+
+		return companyIdsArray;
 	}
 
 	@Override
@@ -178,6 +209,9 @@ public class DBStore implements Store {
 		return _dlContentLocalService.hasContent(
 			companyId, repositoryId, fileName, versionLabel);
 	}
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
 
 	@Reference
 	private DLContentLocalService _dlContentLocalService;

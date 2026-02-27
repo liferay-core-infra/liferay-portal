@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -92,6 +93,10 @@ public class DBStore implements Store {
 
 	@Override
 	public long[] getCompanyIds() {
+		if (PropsValues.DATABASE_PARTITION_ENABLED) {
+			return new long[] {CompanyThreadLocal.getCompanyId()};
+		}
+
 		DynamicQuery dynamicQuery = _dlContentLocalService.dynamicQuery();
 
 		dynamicQuery.setProjection(

@@ -3,14 +3,17 @@
 <project basedir="./" name="portal-test-batch" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	<import file="./build-test-batch.xml" />
 
-	<target name="deploy-jsf-cdi-applicant-war">
+	<target name="deploy-jsf-war">
+		<get-testcase-property property.name="liferay.faces.war.dir.name" />
+		<get-testcase-property property.name="liferay.faces.war.file.name" />
+
 		<copy
 			flatten="true"
 			todir="${liferayHome}/osgi/war"
 		>
 			<fileset
-				dir="tools/faces/war/bridge-demos-jsf-cdi-applicant"
-				includes="**/*.war"
+				dir="tools/faces/war/${liferay.faces.war.dir.name}"
+				includes="**/${liferay.faces.war.file.name}"
 			/>
 		</copy>
 	</target>
@@ -133,6 +136,7 @@
 			mvn clean package -P liferay,liferay73,mojarra,tomcat
 		</execute>-->
 
+		<get-testcase-property property.name="liferay.faces.war.auto.deploy" />
 		<get-testcase-property property.name="liferay.faces.war.dir.name" />
 
 		<if>

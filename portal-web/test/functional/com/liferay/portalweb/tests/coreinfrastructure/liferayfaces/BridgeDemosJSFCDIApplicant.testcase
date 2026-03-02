@@ -33,9 +33,11 @@ definition {
 
 	@priority = 5
 	test JSFCDIApplicantPortletSmoke {
+		property liferay.faces.war.file.name = "com.liferay.faces.demo.jsf.cdi.applicant.portlet.war";
+
 		var liferayHome = PropsUtil.get("liferay.home.dir.name");
 
-		AntCommands.runCommand("build-test-jsf.xml", "deploy-jsf-cdi-applicant-war -DliferayHome=${liferayHome}");
+		AntCommands.runCommand("build-test-jsf.xml", "deploy-jsf-war -DliferayHome=${liferayHome}");
 
 		WaitForConsoleTextPresent(value1 = "Registered 1 bean portlets and 0 bean filters for com.liferay.faces.demo.jsf.cdi.applicant.portlet");
 

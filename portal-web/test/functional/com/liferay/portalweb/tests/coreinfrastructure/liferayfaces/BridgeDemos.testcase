@@ -4,6 +4,7 @@ definition {
 	property ci.retries.disabled = "true";
 	property custom.properties = "company.default.time.zone=America/Los_Angeles";
 	property liferay.faces = "true";
+	property liferay.faces.war.auto.deploy = "false";
 	property liferay.faces.war.dir.name = "bridge-demos";
 	property portal.release = "true";
 	property portal.upstream = "quarantine";
@@ -32,6 +33,14 @@ definition {
 
 	@priority = 5
 	test JSFExportPDFPortletSmoke {
+		property liferay.faces.war.file.name = "com.liferay.faces.demo.jsf.export.pdf.portlet.war";
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		AntCommands.runCommand("build-test-jsf.xml", "deploy-jsf-war -DliferayHome=${liferayHome}");
+
+		WaitForConsoleTextPresent(value1 = "1 portlet for com.liferay.faces.demo.jsf.export.pdf.portlet is available for use");
+
 		JSONLayout.addPublicLayout(
 			groupName = "Bridge Demos",
 			layoutName = "jsf-pdf");
@@ -54,6 +63,14 @@ definition {
 
 	@priority = 5
 	test JSFFlowsPortletSmoke {
+		property liferay.faces.war.file.name = "com.liferay.faces.demo.jsf.flows.portlet.war";
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		AntCommands.runCommand("build-test-jsf.xml", "deploy-jsf-war -DliferayHome=${liferayHome}");
+
+		WaitForConsoleTextPresent(value1 = "Registered 1 bean portlets and 0 bean filters for com.liferay.faces.demo.jsf.flows.portlet");
+
 		JSONLayout.addPublicLayout(
 			groupName = "Bridge Demos",
 			layoutName = "jsf flows");

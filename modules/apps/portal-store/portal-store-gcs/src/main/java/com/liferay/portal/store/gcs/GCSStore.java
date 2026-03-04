@@ -140,13 +140,20 @@ public class GCSStore implements Store {
 	public long[] getCompanyIds() throws PortalException {
 		Set<Long> companyIdsSet = new HashSet<>();
 
+		String prefix = StoreArea.getCurrentStoreAreaPath();
+
 		try {
 			Page<Blob> blobPage = _gcsStore.list(
 				_gcsStoreConfiguration.bucketName(),
-				Storage.BlobListOption.delimiter("/"));
+				Storage.BlobListOption.prefix(prefix),
+				Storage.BlobListOption.currentDirectory());
 
 			for (Blob blob : blobPage.iterateAll()) {
 				String name = blob.getName();
+
+				if (!prefix.isEmpty() && StringUtil.startsWith(name, prefix)) {
+					name = StringUtil.removeSubstring(name, prefix);
+				}
 
 				if (name.endsWith("/")) {
 					String folderName = name.substring(0, name.length() - 1);

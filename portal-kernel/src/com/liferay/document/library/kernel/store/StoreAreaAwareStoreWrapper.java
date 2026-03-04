@@ -133,19 +133,18 @@ public class StoreAreaAwareStoreWrapper implements Store {
 		Store store = _storeSupplier.get();
 
 		if (_isStoreAreaSupported(PortalInstancePool.getDefaultCompanyId())) {
+			long[] companyIds = new long[0];
 
-			long[] companyIds = StoreArea.tryGetWithStoreAreas(
-				store::getCompanyIds, Objects::nonNull, null, StoreArea.LIVE);
-
-			long[] newCompanyIds = StoreArea.tryGetWithStoreAreas(
-				store::getCompanyIds, Objects::nonNull, null, StoreArea.NEW);
-			companyIds = ArrayUtil.append(companyIds, newCompanyIds);
-
-			long[] deletedCompanyIds = StoreArea.tryGetWithStoreAreas(
-				store::getCompanyIds, Objects::nonNull, null, StoreArea.DELETED);
-			companyIds = ArrayUtil.append(companyIds, deletedCompanyIds);
+			for (StoreArea storeArea : _STORE_AREAS) {
+				companyIds = ArrayUtil.append(
+					companyIds,
+					StoreArea.tryGetWithStoreAreas(
+						store::getCompanyIds, Objects::nonNull, null,
+						storeArea));
+			}
 
 			companyIds = ArrayUtil.unique(companyIds);
+
 			Arrays.sort(companyIds);
 
 			return companyIds;
@@ -284,6 +283,10 @@ public class StoreAreaAwareStoreWrapper implements Store {
 
 	private static final StoreArea[] _SOURCE_STORE_AREAS = {
 		StoreArea.LIVE, StoreArea.NEW
+	};
+
+	private static final StoreArea[] _STORE_AREAS = {
+		StoreArea.DELETED, StoreArea.LIVE, StoreArea.NEW
 	};
 
 	private final Supplier<StoreAreaProcessor> _storeAreaProcessorSupplier;

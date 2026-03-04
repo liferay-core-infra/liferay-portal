@@ -808,6 +808,14 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	}
 
 	protected boolean isGroupAdminImpl(Group group) throws Exception {
+		if (group == null) {
+			return false;
+		}
+
+		if (group.isCompany()) {
+			return isCompanyAdmin(group.getCompanyId());
+		}
+
 		if (group.isLayout()) {
 			long parentGroupId = group.getParentGroupId();
 
@@ -848,10 +856,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 					return true;
 				}
 			}
-		}
-
-		if (group.isCompany()) {
-			return isCompanyAdmin();
 		}
 		else if (group.isLayoutPrototype()) {
 			return LayoutPrototypePermissionUtil.contains(

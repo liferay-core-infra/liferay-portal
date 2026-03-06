@@ -64,6 +64,11 @@ public class AdvancedFileSystemStoreTest extends BaseStoreTestCase {
 	}
 
 	@Override
+	public String getStoreClassName() {
+		return "com.liferay.portal.store.file.system.FileSystemStore";
+	}
+
+	@Override
 	protected Store getStore() {
 		return _store;
 	}

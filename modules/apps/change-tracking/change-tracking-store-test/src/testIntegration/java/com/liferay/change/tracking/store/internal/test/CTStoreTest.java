@@ -28,13 +28,14 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.change.tracking.store.CTStoreFactory;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -523,41 +524,6 @@ public class CTStoreTest {
 	}
 
 	@Test
-	public void testGetCompanyIds() throws Exception {
-
-		// Production mode, with files
-
-		_addFiles("testDir1/testFile1:v1");
-
-		Assert.assertArrayEquals(
-			PortalInstancePool.getCompanyIds(), _getCompanyIds());
-
-		_assertMethods(_GET_COMPANY_IDS_METHOD);
-
-		// CT mode, delete company files
-
-		_deleteDirectory();
-
-		_assertMethods(_DELETE_DIRECTORY_COMPANY_METHOD);
-
-		String fileName = "testFile";
-
-		_runInCTMode(
-			_ctCollections[0],
-			() -> {
-				_addCTFile(fileName, _DATA_1);
-
-				_assertCTSContent(fileName, _DATA_1);
-				_assertNoSuchFile(fileName);
-
-				Assert.assertArrayEquals(
-					PortalInstancePool.getCompanyIds(), _getCompanyIds());
-			});
-
-		_assertNoSuchFile(fileName);
-	}
-
-	@Test
 	public void testGetFileAsStream() throws Exception {
 		_testSingleFileRead(
 			this::_assertCTFile, this::_assertFile, _GET_FILE_AS_STREAM_METHOD);
@@ -875,6 +841,47 @@ public class CTStoreTest {
 			this::_assertFile, _GET_FILE_AS_STREAM_METHOD);
 	}
 
+	@Test
+	public void testVerifyCompanyStores() throws Exception {
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
+				_CLASS_NAME_CTSTORE, LoggerTestUtil.WARN)) {
+
+			_addFiles("testDir1/testFile1:v1");
+
+			_verifyCompanyStores();
+
+			_assertMethods(_VERIFY_COMPANY_STORES_METHOD);
+
+			List<String> messages = logCapture1.getMessages();
+
+			Assert.assertTrue(messages.toString(), messages.isEmpty());
+
+			_deleteDirectory();
+
+			_assertMethods(_DELETE_DIRECTORY_COMPANY_METHOD);
+
+			String fileName = "testFile";
+
+			_runInCTMode(
+				_ctCollections[0],
+				() -> {
+					_addCTFile(fileName, _DATA_1);
+
+					_assertCTSContent(fileName, _DATA_1);
+					_assertNoSuchFile(fileName);
+
+					_verifyCompanyStores();
+
+					List<String> ctModeMessages = logCapture1.getMessages();
+
+					Assert.assertTrue(
+						ctModeMessages.toString(), ctModeMessages.isEmpty());
+				});
+
+			_assertNoSuchFile(fileName);
+		}
+	}
+
 	private void _addCTFile(String fileName, byte[] data)
 		throws PortalException {
 
@@ -1111,10 +1118,6 @@ public class CTStoreTest {
 			_companyId, _REPOSITORY_ID, fileName, version);
 	}
 
-	private long[] _getCompanyIds() throws Exception {
-		return _ctStore.getCompanyIds();
-	}
-
 	private void _publish(CTCollection ctCollection) throws Exception {
 		try (SafeCloseable safeCloseable =
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
@@ -1334,7 +1337,14 @@ public class CTStoreTest {
 		return version;
 	}
 
+	private void _verifyCompanyStores() throws Exception {
+		_ctStore.verifyCompanyStores();
+	}
+
 	private static final Method _ADD_FILE_METHOD;
+
+	private static final String _CLASS_NAME_CTSTORE =
+		"com.liferay.change.tracking.store.internal.CTStore";
 
 	private static final byte[] _DATA_1 = "Data1 a".getBytes();
 
@@ -1347,8 +1357,6 @@ public class CTStoreTest {
 	private static final Method _DELETE_DIRECTORY_METHOD;
 
 	private static final Method _DELETE_FILE_METHOD;
-
-	private static final Method _GET_COMPANY_IDS_METHOD;
 
 	private static final Method _GET_FILE_AS_STREAM_METHOD;
 
@@ -1366,6 +1374,8 @@ public class CTStoreTest {
 
 	private static final String _STORE_TYPE =
 		"com.liferay.portal.store.file.system.FileSystemStore";
+
+	private static final Method _VERIFY_COMPANY_STORES_METHOD;
 
 	private static final String _VERSION_1 = Store.VERSION_DEFAULT;
 
@@ -1405,7 +1415,8 @@ public class CTStoreTest {
 			_DELETE_DIRECTORY_METHOD = Store.class.getMethod(
 				"deleteDirectory", long.class, long.class, String.class);
 
-			_GET_COMPANY_IDS_METHOD = Store.class.getMethod("getCompanyIds");
+			_VERIFY_COMPANY_STORES_METHOD = Store.class.getMethod(
+				"verifyCompanyStores");
 
 			_DELETE_FILE_METHOD = Store.class.getMethod(
 				"deleteFile", long.class, long.class, String.class,

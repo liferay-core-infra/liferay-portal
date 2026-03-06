@@ -13,6 +13,7 @@ import com.liferay.document.library.kernel.store.StoreAreaProcessor;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -20,14 +21,17 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -52,14 +56,13 @@ public class GCStoreStoreAreaAwareStoreWrapperTest {
 			new AssumeTestRule("assume"), new LiferayIntegrationTestRule());
 
 	public static void assume() {
-		String gcsStoreClassName = "com.liferay.portal.store.gcs.GCSStore";
 		String dlStoreImpl = PropsUtil.get(PropsKeys.DL_STORE_IMPL);
 
 		Assume.assumeTrue(
 			StringBundler.concat(
 				"Property \"", PropsKeys.DL_STORE_IMPL, "\" is not set to \"",
-				gcsStoreClassName, "\""),
-			dlStoreImpl.equals(gcsStoreClassName));
+				_CLASS_NAME_GCSSTORE, "\""),
+			dlStoreImpl.equals(_CLASS_NAME_GCSSTORE));
 	}
 
 	@Before
@@ -96,32 +99,70 @@ public class GCStoreStoreAreaAwareStoreWrapperTest {
 	}
 
 	@Test
-	public void testGetCompanyIds() throws Exception {
+	public void testVerifyCompanyStores() throws Exception {
 		String fileName = RandomTestUtil.randomString();
 
-		_wrappedStore.addFile(
-			_company.getCompanyId(), _company.getGroupId(), fileName,
-			Store.VERSION_DEFAULT, new UnsyncByteArrayInputStream(new byte[0]));
+		String warnMessage = StringBundler.concat(
+			"Store ", _company.getCompanyId(), " belongs to deleted company ",
+			_company.getCompanyId(),
+			". Remove it if it is not used anywhere else.");
 
-		Assert.assertTrue(
-			ArrayUtil.contains(
-				_wrappedStore.getCompanyIds(), _company.getCompanyId()));
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
+				_CLASS_NAME_GCSSTORE, LoggerTestUtil.WARN)) {
 
-		_wrappedStore.deleteDirectory(_company.getCompanyId());
-
-		Assert.assertFalse(
-			_store.hasFile(
+			_wrappedStore.addFile(
 				_company.getCompanyId(), _company.getGroupId(), fileName,
-				Store.VERSION_DEFAULT));
+				Store.VERSION_DEFAULT,
+				new UnsyncByteArrayInputStream(new byte[0]));
 
-		Assert.assertTrue(
-			ArrayUtil.contains(
-				_wrappedStore.getCompanyIds(), _company.getCompanyId()));
+			_wrappedStore.verifyCompanyStores();
 
-		Assert.assertFalse(
-			ArrayUtil.contains(
-				_store.getCompanyIds(), _company.getCompanyId()));
+			List<String> messages1 = logCapture1.getMessages();
+
+			Assert.assertFalse(
+				messages1.toString(), messages1.contains(warnMessage));
+
+			try {
+				PortalInstancePool.remove(_company.getCompanyId());
+
+				_wrappedStore.deleteDirectory(_company.getCompanyId());
+
+				Assert.assertFalse(
+					_store.hasFile(
+						_company.getCompanyId(), _company.getGroupId(),
+						fileName, Store.VERSION_DEFAULT));
+
+				try (LogCapture logCapture2 =
+						LoggerTestUtil.configureLog4JLogger(
+							_CLASS_NAME_GCSSTORE, LoggerTestUtil.WARN)) {
+
+					_wrappedStore.verifyCompanyStores();
+
+					List<String> messages2 = logCapture2.getMessages();
+
+					Assert.assertTrue(
+						messages2.toString(), messages2.contains(warnMessage));
+				}
+			}
+			finally {
+				PortalInstancePool.add(_company);
+			}
+		}
+
+		try (LogCapture logCapture3 = LoggerTestUtil.configureLog4JLogger(
+				_CLASS_NAME_GCSSTORE, LoggerTestUtil.WARN)) {
+
+			_store.verifyCompanyStores();
+
+			List<String> messages3 = logCapture3.getMessages();
+
+			Assert.assertFalse(
+				messages3.toString(), messages3.contains(warnMessage));
+		}
 	}
+
+	private static final String _CLASS_NAME_GCSSTORE =
+		"com.liferay.portal.store.gcs.GCSStore";
 
 	@Inject
 	private static CompanyLocalService _companyLocalService;

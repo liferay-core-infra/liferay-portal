@@ -11,6 +11,10 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.util.PortalInstances;
 
@@ -31,21 +35,25 @@ public class StorePostUpgradeDataCleanupProcessTest
 	public void testOrphanStoreFound() throws Exception {
 		Company company = CompanyTestUtil.addCompany();
 
-		test(
-			logCapture -> {
-				List<String> messages = logCapture.getMessages();
+		String dlStoreImpl = PropsUtil.get(PropsKeys.DL_STORE_IMPL);
 
-				Assert.assertTrue(
-					messages.toString(),
-					messages.contains(
-						StringBundler.concat(
-							"Store ", company.getCompanyId(),
-							" belongs to deleted company ",
-							company.getCompanyId(),
-							". Remove it if it is not used anywhere else.")));
-			},
-			() -> _companyLocalService.deleteCompany(company),
-			() -> PortalInstances.removeCompany(company.getCompanyId()));
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
+				dlStoreImpl, LoggerTestUtil.WARN)) {
+
+			test(
+				null, () -> _companyLocalService.deleteCompany(company),
+				() -> PortalInstances.removeCompany(company.getCompanyId()));
+
+			List<String> messages = logCapture1.getMessages();
+
+			Assert.assertTrue(
+				messages.toString(),
+				messages.contains(
+					StringBundler.concat(
+						"Store ", company.getCompanyId(),
+						" belongs to deleted company ", company.getCompanyId(),
+						". Remove it if it is not used anywhere else.")));
+		}
 	}
 
 	@Override

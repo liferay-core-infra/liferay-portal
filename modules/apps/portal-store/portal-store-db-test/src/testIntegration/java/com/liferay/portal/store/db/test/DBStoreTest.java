@@ -30,6 +30,11 @@ public class DBStoreTest extends BaseStoreTestCase {
 		new LiferayIntegrationTestRule();
 
 	@Override
+	public String getStoreClassName() {
+		return "com.liferay.portal.store.db.DBStore";
+	}
+
+	@Override
 	protected Store getStore() {
 		return _store;
 	}

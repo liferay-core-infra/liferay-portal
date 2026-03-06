@@ -34,20 +34,27 @@ public class GCSStoreTest extends BaseStoreTestCase {
 			new AssumeTestRule("assume"), new LiferayIntegrationTestRule());
 
 	public static void assume() {
-		String gcsStoreClassName = "com.liferay.portal.store.gcs.GCSStore";
 		String dlStoreImpl = PropsUtil.get(PropsKeys.DL_STORE_IMPL);
 
 		Assume.assumeTrue(
 			StringBundler.concat(
 				"Property \"", PropsKeys.DL_STORE_IMPL, "\" is not set to \"",
-				gcsStoreClassName, "\""),
-			dlStoreImpl.equals(gcsStoreClassName));
+				_CLASS_NAME_GCSTORE, "\""),
+			dlStoreImpl.equals(_CLASS_NAME_GCSTORE));
+	}
+
+	@Override
+	public String getStoreClassName() {
+		return _CLASS_NAME_GCSTORE;
 	}
 
 	@Override
 	protected Store getStore() {
 		return _store;
 	}
+
+	private static final String _CLASS_NAME_GCSTORE =
+		"com.liferay.portal.store.gcs.GCSStore";
 
 	@Inject(
 		filter = "store.type=com.liferay.portal.store.gcs.GCSStore",

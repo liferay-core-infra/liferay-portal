@@ -8,16 +8,19 @@ package com.liferay.portal.store.test.util;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LoggerTestUtil;
 
 import java.io.InputStream;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.After;
@@ -29,6 +32,10 @@ import org.junit.Test;
  * @author Preston Crary
  */
 public abstract class BaseStoreTestCase {
+
+	public String getStoreClassName() {
+		return "";
+	}
 
 	@Before
 	public void setUp() throws PortalException {
@@ -165,23 +172,6 @@ public abstract class BaseStoreTestCase {
 				_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT));
 		Assert.assertTrue(
 			_store.hasFile(_companyId, _repositoryId, fileName, "1.1"));
-	}
-
-	@Test
-	public void testGetCompanyIds() throws Exception {
-		String fileName = RandomTestUtil.randomString();
-
-		_store.addFile(
-			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
-			new UnsyncByteArrayInputStream(DATA_VERSION));
-
-		Assert.assertTrue(
-			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
-
-		_store.deleteDirectory(_companyId);
-
-		Assert.assertFalse(
-			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
 	}
 
 	@Test
@@ -408,6 +398,37 @@ public abstract class BaseStoreTestCase {
 			Assert.assertTrue(
 				_store.hasFile(
 					_companyId, _repositoryId, fileName, versionLabel + i));
+		}
+	}
+
+	@Test
+	public void testVerifyCompanyStores() throws Exception {
+		String fileName = RandomTestUtil.randomString();
+
+		String warnMessage = StringBundler.concat(
+			"Store ", _companyId, " belongs to deleted company ", _companyId,
+			". Remove it if it is not used anywhere else.");
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				getStoreClassName(), LoggerTestUtil.WARN)) {
+
+			_store.verifyCompanyStores();
+
+			List<String> messages = logCapture.getMessages();
+
+			Assert.assertFalse(
+				messages.toString(), messages.contains(warnMessage));
+
+			_store.addFile(
+				_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
+				new UnsyncByteArrayInputStream(DATA_VERSION));
+
+			_store.verifyCompanyStores();
+
+			messages = logCapture.getMessages();
+
+			Assert.assertTrue(
+				messages.toString(), messages.contains(warnMessage));
 		}
 	}
 

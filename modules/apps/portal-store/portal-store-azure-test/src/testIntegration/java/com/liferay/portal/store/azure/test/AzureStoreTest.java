@@ -34,21 +34,27 @@ public class AzureStoreTest extends BaseStoreTestCase {
 			new AssumeTestRule("assume"), new LiferayIntegrationTestRule());
 
 	public static void assume() {
-		String azureStoreClassName =
-			"com.liferay.portal.store.azure.AzureStore";
 		String dlStoreImpl = PropsUtil.get(PropsKeys.DL_STORE_IMPL);
 
 		Assume.assumeTrue(
 			StringBundler.concat(
 				"Property \"", PropsKeys.DL_STORE_IMPL, "\" is not set to \"",
-				azureStoreClassName, "\""),
-			dlStoreImpl.equals(azureStoreClassName));
+				_CLASS_NAME_AZURESTORE, "\""),
+			dlStoreImpl.equals(_CLASS_NAME_AZURESTORE));
+	}
+
+	@Override
+	public String getStoreClassName() {
+		return _CLASS_NAME_AZURESTORE;
 	}
 
 	@Override
 	protected Store getStore() {
 		return _store;
 	}
+
+	private static final String _CLASS_NAME_AZURESTORE =
+		"com.liferay.portal.store.azure.AzureStore";
 
 	@Inject(
 		filter = "store.type=com.liferay.portal.store.azure.AzureStore",

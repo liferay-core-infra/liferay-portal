@@ -73,6 +73,11 @@ public class FileSystemStoreTest extends BaseStoreTestCase {
 		FileUtil.deltree(_rootDir);
 	}
 
+	@Override
+	public String getStoreClassName() {
+		return "com.liferay.portal.store.file.system.FileSystemStore";
+	}
+
 	@Test
 	public void testDeleteDirectoryWithSlash() throws Exception {
 		_testDeleteDirectoryWithSlash();

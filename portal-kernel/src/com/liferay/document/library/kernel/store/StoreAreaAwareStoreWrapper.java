@@ -6,13 +6,9 @@
 package com.liferay.document.library.kernel.store;
 
 import com.liferay.document.library.kernel.util.DLUtil;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.io.InputStream;
 
@@ -132,26 +128,6 @@ public class StoreAreaAwareStoreWrapper implements Store {
 	}
 
 	@Override
-	public void checkCompanyIds() throws PortalException {
-		Store store = _storeSupplier.get();
-
-		if (_isStoreAreaSupported(PortalInstancePool.getDefaultCompanyId())) {
-			for (StoreArea storeArea : _STORE_AREAS) {
-				StoreArea.withStoreArea(
-					storeArea,
-					store::checkCompanyIds);
-			}
-		}
-		else {
-			store.checkCompanyIds();
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		Store.class);
-
-
-	@Override
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName,
 			String versionLabel)
@@ -224,6 +200,20 @@ public class StoreAreaAwareStoreWrapper implements Store {
 		}
 
 		return store.hasFile(companyId, repositoryId, fileName, versionLabel);
+	}
+
+	@Override
+	public void verifyCompanyStores() throws PortalException {
+		Store store = _storeSupplier.get();
+
+		if (_isStoreAreaSupported(PortalInstancePool.getDefaultCompanyId())) {
+			for (StoreArea storeArea : _STORE_AREAS) {
+				StoreArea.withStoreArea(storeArea, store::verifyCompanyStores);
+			}
+		}
+		else {
+			store.verifyCompanyStores();
+		}
 	}
 
 	private String[] _getFileNames(

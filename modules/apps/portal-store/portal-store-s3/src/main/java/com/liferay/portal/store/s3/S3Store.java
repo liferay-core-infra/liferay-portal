@@ -238,79 +238,6 @@ public class S3Store implements Store {
 	}
 
 	@Override
-	public void checkCompanyIds() {
-		long[] companyIds = PortalInstancePool.getCompanyIds();
-
-		Arrays.sort(companyIds);
-
-		for (long storeCompanyId : getCompanyIds()) {
-			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Store ", storeCompanyId,
-							" belongs to deleted company ", storeCompanyId,
-							". Remove it if it is not used anywhere else."));
-				}
-			}
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		S3Store.class);
-
-
-	private long[] getCompanyIds() {
-		Set<Long> companyIdsSet = new HashSet<>();
-		String continuationToken = null;
-
-		try {
-			do {
-				String currentToken = continuationToken;
-
-				CompletableFuture<ListObjectsV2Response> future =
-					_s3AsyncClient.listObjectsV2(
-						builder -> builder.bucket(
-							_s3StoreConfiguration.bucketName()
-						).delimiter(
-							"/"
-						).continuationToken(
-							currentToken
-						));
-
-				ListObjectsV2Response response = future.join();
-
-				List<CommonPrefix> prefixes = response.commonPrefixes();
-
-				for (CommonPrefix prefix : prefixes) {
-					String folderName = prefix.prefix();
-
-					if (folderName.endsWith("/")) {
-						folderName = folderName.substring(
-							0, folderName.length() - 1);
-					}
-
-					if (Validator.isNumber(folderName)) {
-						companyIdsSet.add(GetterUtil.getLong(folderName));
-					}
-				}
-
-				continuationToken = response.nextContinuationToken();
-			}
-			while (continuationToken != null);
-		}
-		catch (CompletionException completionException) {
-			throw _toSystemException(completionException.getCause());
-		}
-
-		long[] companyIds = ArrayUtil.toLongArray(companyIdsSet);
-
-		Arrays.sort(companyIds);
-
-		return companyIds;
-	}
-
-	@Override
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName,
 			String versionLabel)
@@ -491,6 +418,25 @@ public class S3Store implements Store {
 		}
 	}
 
+	@Override
+	public void verifyCompanyStores() {
+		long[] companyIds = PortalInstancePool.getCompanyIds();
+
+		Arrays.sort(companyIds);
+
+		for (long storeCompanyId : _getCompanyIds()) {
+			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Store ", storeCompanyId,
+							" belongs to deleted company ", storeCompanyId,
+							". Remove it if it is not used anywhere else."));
+				}
+			}
+		}
+	}
+
 	@Activate
 	protected void activate(Map<String, Object> properties) {
 		_s3StoreConfiguration = ConfigurableUtil.createConfigurable(
@@ -656,6 +602,56 @@ public class S3Store implements Store {
 		}
 	}
 
+	private long[] _getCompanyIds() {
+		Set<Long> companyIdsSet = new HashSet<>();
+		String continuationToken = null;
+
+		try {
+			do {
+				String currentToken = continuationToken;
+
+				CompletableFuture<ListObjectsV2Response> future =
+					_s3AsyncClient.listObjectsV2(
+						builder -> builder.bucket(
+							_s3StoreConfiguration.bucketName()
+						).delimiter(
+							"/"
+						).continuationToken(
+							currentToken
+						));
+
+				ListObjectsV2Response response = future.join();
+
+				List<CommonPrefix> prefixes = response.commonPrefixes();
+
+				for (CommonPrefix prefix : prefixes) {
+					String folderName = prefix.prefix();
+
+					if (folderName.endsWith("/")) {
+						folderName = folderName.substring(
+							0, folderName.length() - 1);
+					}
+
+					if (Validator.isNumber(folderName)) {
+						companyIdsSet.add(GetterUtil.getLong(folderName));
+					}
+				}
+
+				continuationToken = response.nextContinuationToken();
+			}
+			while (continuationToken != null);
+		}
+		catch (CompletionException completionException) {
+			throw _toSystemException(completionException.getCause());
+		}
+
+		long[] companyIds = ArrayUtil.toLongArray(companyIdsSet);
+
+		Arrays.sort(companyIds);
+
+		return companyIds;
+	}
+
 	private String _getHeadVersionLabel(
 			long companyId, long repositoryId, String fileName)
 		throws NoSuchFileException {
@@ -744,6 +740,8 @@ public class S3Store implements Store {
 	}
 
 	private static final int _DELETE_MAX = 1000;
+
+	private static final Log _log = LogFactoryUtil.getLog(S3Store.class);
 
 	private S3AsyncClient _s3AsyncClient;
 	private S3StoreConfiguration _s3StoreConfiguration;

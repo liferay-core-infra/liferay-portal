@@ -66,12 +66,6 @@ public interface Store {
 		String versionLabel);
 
 	/**
-	 * Returns all company IDs currently present in the store.
-	 * @return A list of unique company IDs.
-	 */
-	public void checkCompanyIds() throws PortalException;
-
-	/**
 	 * Returns the file as an {@link InputStream} object.
 	 *
 	 * @param  companyId the primary key of the company
@@ -129,5 +123,11 @@ public interface Store {
 	public boolean hasFile(
 		long companyId, long repositoryId, String fileName,
 		String versionLabel);
+
+	/**
+	 * Returns all company IDs currently present in the store.
+	 * @return A list of unique company IDs.
+	 */
+	public void verifyCompanyStores() throws PortalException;
 
 }

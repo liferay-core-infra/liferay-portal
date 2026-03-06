@@ -147,53 +147,6 @@ public class CTStore implements Store {
 	}
 
 	@Override
-	public void checkCompanyIds() throws PortalException {
-		_store.checkCompanyIds();
-
-		if (PortalInstancePool.getDefaultCompanyId() !=
-			CompanyThreadLocal.getCompanyId()) {
-
-			return;
-		}
-
-		long[] existingCompanyIds = PortalInstancePool.getCompanyIds();
-
-		Arrays.sort(existingCompanyIds);
-
-		Set<Long> storeCompanyIds = new HashSet<>();
-
-		_companyLocalService.forEachCompany(
-			company -> {
-				DynamicQuery dynamicQuery =
-					_ctsContentLocalService.dynamicQuery();
-
-				dynamicQuery.setProjection(
-					ProjectionFactoryUtil.distinct(
-						ProjectionFactoryUtil.property("companyId")));
-
-				dynamicQuery.add(RestrictionsFactoryUtil.gt("companyId", 0L));
-
-				storeCompanyIds.addAll(
-					_ctsContentLocalService.dynamicQuery(dynamicQuery));
-			});
-
-		for (long storeCompanyId : storeCompanyIds) {
-			if (Arrays.binarySearch(existingCompanyIds, storeCompanyId) < 0) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Store ", storeCompanyId,
-							" belongs to deleted company ", storeCompanyId,
-							". Remove it if it is not used anywhere else."));
-				}
-			}
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		CTStore.class);
-
-	@Override
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName,
 			String versionLabel)
@@ -391,6 +344,50 @@ public class CTStore implements Store {
 		return _store.hasFile(companyId, repositoryId, fileName, versionLabel);
 	}
 
+	@Override
+	public void verifyCompanyStores() throws PortalException {
+		_store.verifyCompanyStores();
+
+		if (PortalInstancePool.getDefaultCompanyId() !=
+				CompanyThreadLocal.getCompanyId()) {
+
+			return;
+		}
+
+		long[] existingCompanyIds = PortalInstancePool.getCompanyIds();
+
+		Arrays.sort(existingCompanyIds);
+
+		Set<Long> storeCompanyIds = new HashSet<>();
+
+		_companyLocalService.forEachCompany(
+			company -> {
+				DynamicQuery dynamicQuery =
+					_ctsContentLocalService.dynamicQuery();
+
+				dynamicQuery.setProjection(
+					ProjectionFactoryUtil.distinct(
+						ProjectionFactoryUtil.property("companyId")));
+
+				dynamicQuery.add(RestrictionsFactoryUtil.gt("companyId", 0L));
+
+				storeCompanyIds.addAll(
+					_ctsContentLocalService.dynamicQuery(dynamicQuery));
+			});
+
+		for (long storeCompanyId : storeCompanyIds) {
+			if (Arrays.binarySearch(existingCompanyIds, storeCompanyId) < 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Store ", storeCompanyId,
+							" belongs to deleted company ", storeCompanyId,
+							". Remove it if it is not used anywhere else."));
+				}
+			}
+		}
+	}
+
 	private void _ensureCTSContentIsLoaded(
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
@@ -474,6 +471,8 @@ public class CTStore implements Store {
 
 		return stringArray;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(CTStore.class);
 
 	private final CompanyLocalService _companyLocalService;
 	private final CTEntryLocalService _ctEntryLocalService;

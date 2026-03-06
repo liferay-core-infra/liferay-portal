@@ -7,14 +7,9 @@ package com.liferay.portal.store.file.system.lenient;
 
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.petra.io.unsync.UnsyncByteArrayInputStream;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.instance.PortalInstancePool;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.InputStream;
-import java.util.Arrays;
 
 /**
  * @author Adolfo Pérez
@@ -53,11 +48,6 @@ public class LenientStore implements Store {
 		String versionLabel) {
 
 		_store.deleteFile(companyId, repositoryId, fileName, versionLabel);
-	}
-
-	@Override
-	public void checkCompanyIds() throws PortalException {
-		_store.checkCompanyIds();
 	}
 
 	@Override
@@ -114,11 +104,13 @@ public class LenientStore implements Store {
 		return true;
 	}
 
+	@Override
+	public void verifyCompanyStores() throws PortalException {
+		_store.verifyCompanyStores();
+	}
+
 	private static final byte[] _DUMMY_CONTENT =
 		"This is a test file.".getBytes();
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LenientStore.class);
 
 	private final Store _store;
 

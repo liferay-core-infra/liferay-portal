@@ -20,14 +20,17 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -96,31 +99,49 @@ public class GCStoreStoreAreaAwareStoreWrapperTest {
 	}
 
 	@Test
-	public void testGetCompanyIds() throws Exception {
+	public void testVerifyCompanyStores() throws Exception {
 		String fileName = RandomTestUtil.randomString();
 
-		_wrappedStore.addFile(
-			_company.getCompanyId(), _company.getGroupId(), fileName,
-			Store.VERSION_DEFAULT, new UnsyncByteArrayInputStream(new byte[0]));
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
+				_wrappedStore.getClass(
+				).getName(),
+				LoggerTestUtil.WARN);
+			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.store.gcs.GCSStore", LoggerTestUtil.WARN)) {
 
-		Assert.assertTrue(
-			ArrayUtil.contains(
-				_wrappedStore.getCompanyIds(), _company.getCompanyId()));
-
-		_wrappedStore.deleteDirectory(_company.getCompanyId());
-
-		Assert.assertFalse(
-			_store.hasFile(
+			_wrappedStore.addFile(
 				_company.getCompanyId(), _company.getGroupId(), fileName,
-				Store.VERSION_DEFAULT));
+				Store.VERSION_DEFAULT,
+				new UnsyncByteArrayInputStream(new byte[0]));
 
-		Assert.assertTrue(
-			ArrayUtil.contains(
-				_wrappedStore.getCompanyIds(), _company.getCompanyId()));
+			_wrappedStore.verifyCompanyStores();
 
-		Assert.assertFalse(
-			ArrayUtil.contains(
-				_store.getCompanyIds(), _company.getCompanyId()));
+			List<String> messages1 = logCapture1.getMessages();
+
+			Assert.assertTrue(messages1.toString(), messages1.isEmpty());
+
+			_wrappedStore.deleteDirectory(_company.getCompanyId());
+
+			_companyLocalService.deleteCompany(_company);
+
+			_wrappedStore.verifyCompanyStores();
+
+			messages1 = logCapture1.getMessages();
+
+			Assert.assertTrue(
+				messages1.toString(),
+				messages1.contains(
+					StringBundler.concat(
+						"Store ", _company.getCompanyId(),
+						" belongs to deleted company ", _company.getCompanyId(),
+						". Remove it if it is not used anywhere else.")));
+
+			_store.verifyCompanyStores();
+
+			List<String> messages2 = logCapture2.getMessages();
+
+			Assert.assertTrue(messages2.toString(), messages2.isEmpty());
+		}
 	}
 
 	@Inject

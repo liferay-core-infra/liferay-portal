@@ -128,60 +128,6 @@ public class AzureStore implements Store {
 		}
 	}
 
-
-	@Override
-	public void checkCompanyIds() throws PortalException {
-		long[] companyIds = PortalInstancePool.getCompanyIds();
-
-		Arrays.sort(companyIds);
-
-		for (long storeCompanyId : getCompanyIds()) {
-			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Store ", storeCompanyId,
-							" belongs to deleted company ", storeCompanyId,
-							". Remove it if it is not used anywhere else."));
-				}
-			}
-		}
-	}
-
-
-	public long[] getCompanyIds() throws PortalException {
-		Set<Long> companyIdsSet = new HashSet<>();
-
-		try {
-			PagedIterable<BlobItem> blobs =
-				_blobContainerClient.listBlobsByHierarchy("");
-
-			for (BlobItem blobItem : blobs) {
-				if (Boolean.TRUE.equals(blobItem.isPrefix())) {
-					String folderName = blobItem.getName();
-
-					if (folderName.endsWith("/")) {
-						folderName = folderName.substring(
-							0, folderName.length() - 1);
-					}
-
-					if (Validator.isNumber(folderName)) {
-						companyIdsSet.add(GetterUtil.getLong(folderName));
-					}
-				}
-			}
-		}
-		catch (Exception exception) {
-			throw new PortalException(exception);
-		}
-
-		long[] companyIds = ArrayUtil.toLongArray(companyIdsSet);
-
-		Arrays.sort(companyIds);
-
-		return companyIds;
-	}
-
 	@Override
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName,
@@ -297,6 +243,25 @@ public class AzureStore implements Store {
 			_getAzurePath(companyId, repositoryId, fileName, versionLabel));
 
 		return blobClient.exists();
+	}
+
+	@Override
+	public void verifyCompanyStores() throws PortalException {
+		long[] companyIds = PortalInstancePool.getCompanyIds();
+
+		Arrays.sort(companyIds);
+
+		for (long storeCompanyId : _getCompanyIds()) {
+			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Store ", storeCompanyId,
+							" belongs to deleted company ", storeCompanyId,
+							". Remove it if it is not used anywhere else."));
+				}
+			}
+		}
 	}
 
 	@Activate
@@ -434,6 +399,39 @@ public class AzureStore implements Store {
 		}
 
 		return sb.toString();
+	}
+
+	private long[] _getCompanyIds() throws PortalException {
+		Set<Long> companyIdsSet = new HashSet<>();
+
+		try {
+			PagedIterable<BlobItem> blobs =
+				_blobContainerClient.listBlobsByHierarchy("");
+
+			for (BlobItem blobItem : blobs) {
+				if (Boolean.TRUE.equals(blobItem.isPrefix())) {
+					String folderName = blobItem.getName();
+
+					if (folderName.endsWith("/")) {
+						folderName = folderName.substring(
+							0, folderName.length() - 1);
+					}
+
+					if (Validator.isNumber(folderName)) {
+						companyIdsSet.add(GetterUtil.getLong(folderName));
+					}
+				}
+			}
+		}
+		catch (Exception exception) {
+			throw new PortalException(exception);
+		}
+
+		long[] companyIds = ArrayUtil.toLongArray(companyIdsSet);
+
+		Arrays.sort(companyIds);
+
+		return companyIds;
 	}
 
 	private String _getFileName(

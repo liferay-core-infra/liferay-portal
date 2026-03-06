@@ -11,7 +11,6 @@ import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
@@ -153,72 +152,6 @@ public class FileSystemStore implements Store {
 		_deleteEmptyAncestors(parentFile);
 	}
 
-
-	@Override
-	public void checkCompanyIds() throws PortalException {
-		long[] companyIds = PortalInstancePool.getCompanyIds();
-
-		Arrays.sort(companyIds);
-
-		for (long storeCompanyId : getCompanyIds()) {
-			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Store ", storeCompanyId,
-							" belongs to deleted company ", storeCompanyId,
-							". Remove it if it is not used anywhere else."));
-				}
-			}
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		FileSystemStore.class);
-
-
-
-	private long[] getCompanyIds() {
-		File[] companyDirs = _rootDir.listFiles(
-			new FileFilter() {
-
-				@Override
-				public boolean accept(File file) {
-					if (file.isDirectory() &&
-						file.getName(
-						).matches(
-							"^\\d+$"
-						)) {
-
-						long id = GetterUtil.getLong(file.getName());
-
-						if (id != 0) {
-							return true;
-						}
-
-						return false;
-					}
-
-					return false;
-				}
-
-			});
-
-		if (ArrayUtil.isEmpty(companyDirs)) {
-			return new long[0];
-		}
-
-		long[] companyIds = new long[companyDirs.length];
-
-		for (int i = 0; i < companyDirs.length; i++) {
-			companyIds[i] = GetterUtil.getLong(companyDirs[i].getName());
-		}
-
-		Arrays.sort(companyIds);
-
-		return companyIds;
-	}
-
 	@Override
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName,
@@ -321,6 +254,25 @@ public class FileSystemStore implements Store {
 		return fileNameVersionFile.exists();
 	}
 
+	@Override
+	public void verifyCompanyStores() {
+		long[] companyIds = PortalInstancePool.getCompanyIds();
+
+		Arrays.sort(companyIds);
+
+		for (long storeCompanyId : _getCompanyIds()) {
+			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Store ", storeCompanyId,
+							" belongs to deleted company ", storeCompanyId,
+							". Remove it if it is not used anywhere else."));
+				}
+			}
+		}
+	}
+
 	protected File getDirNameDir(
 		long companyId, long repositoryId, String dirName) {
 
@@ -412,6 +364,50 @@ public class FileSystemStore implements Store {
 			file = file.getParentFile();
 		}
 	}
+
+	private long[] _getCompanyIds() {
+		File[] companyDirs = _rootDir.listFiles(
+			new FileFilter() {
+
+				@Override
+				public boolean accept(File file) {
+					if (file.isDirectory() &&
+						file.getName(
+						).matches(
+							"^\\d+$"
+						)) {
+
+						long id = GetterUtil.getLong(file.getName());
+
+						if (id != 0) {
+							return true;
+						}
+
+						return false;
+					}
+
+					return false;
+				}
+
+			});
+
+		if (ArrayUtil.isEmpty(companyDirs)) {
+			return new long[0];
+		}
+
+		long[] companyIds = new long[companyDirs.length];
+
+		for (int i = 0; i < companyDirs.length; i++) {
+			companyIds[i] = GetterUtil.getLong(companyDirs[i].getName());
+		}
+
+		Arrays.sort(companyIds);
+
+		return companyIds;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FileSystemStore.class);
 
 	private final File _rootDir;
 

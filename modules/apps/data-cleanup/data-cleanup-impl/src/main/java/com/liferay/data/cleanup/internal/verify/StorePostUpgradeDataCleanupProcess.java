@@ -6,13 +6,8 @@
 package com.liferay.data.cleanup.internal.verify;
 
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-
-import java.util.Arrays;
 
 /**
  * @author Jorge Avalos
@@ -31,11 +26,8 @@ public class StorePostUpgradeDataCleanupProcess
 			return;
 		}
 
-		_store.checkCompanyIds();
+		_store.verifyCompanyStores();
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		StorePostUpgradeDataCleanupProcess.class);
 
 	private final Store _store;
 

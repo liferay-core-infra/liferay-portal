@@ -13,6 +13,7 @@ import com.liferay.change.tracking.store.service.CTSContentLocalService;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -21,6 +22,9 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -143,12 +147,20 @@ public class CTStore implements Store {
 	}
 
 	@Override
-	public long[] getCompanyIds() throws PortalException {
-		Set<Long> companyIdsSet = new HashSet<>();
+	public void checkCompanyIds() throws PortalException {
+		_store.checkCompanyIds();
 
-		for (long storeCompanyId : _store.getCompanyIds()) {
-			companyIdsSet.add(storeCompanyId);
+		if (PortalInstancePool.getDefaultCompanyId() !=
+			CompanyThreadLocal.getCompanyId()) {
+
+			return;
 		}
+
+		long[] existingCompanyIds = PortalInstancePool.getCompanyIds();
+
+		Arrays.sort(existingCompanyIds);
+
+		Set<Long> storeCompanyIds = new HashSet<>();
 
 		_companyLocalService.forEachCompany(
 			company -> {
@@ -161,16 +173,25 @@ public class CTStore implements Store {
 
 				dynamicQuery.add(RestrictionsFactoryUtil.gt("companyId", 0L));
 
-				companyIdsSet.addAll(
+				storeCompanyIds.addAll(
 					_ctsContentLocalService.dynamicQuery(dynamicQuery));
 			});
 
-		long[] companyIdsArray = ArrayUtil.toLongArray(companyIdsSet);
-
-		Arrays.sort(companyIdsArray);
-
-		return companyIdsArray;
+		for (long storeCompanyId : storeCompanyIds) {
+			if (Arrays.binarySearch(existingCompanyIds, storeCompanyId) < 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Store ", storeCompanyId,
+							" belongs to deleted company ", storeCompanyId,
+							". Remove it if it is not used anywhere else."));
+				}
+			}
+		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CTStore.class);
 
 	@Override
 	public InputStream getFileAsStream(

@@ -168,23 +168,6 @@ public abstract class BaseStoreTestCase {
 	}
 
 	@Test
-	public void testGetCompanyIds() throws Exception {
-		String fileName = RandomTestUtil.randomString();
-
-		_store.addFile(
-			_companyId, _repositoryId, fileName, Store.VERSION_DEFAULT,
-			new UnsyncByteArrayInputStream(DATA_VERSION));
-
-		Assert.assertTrue(
-			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
-
-		_store.deleteDirectory(_companyId);
-
-		Assert.assertFalse(
-			ArrayUtil.contains(_store.getCompanyIds(), _companyId));
-	}
-
-	@Test
 	public void testGetFileAsStream() throws Exception {
 		String fileName = RandomTestUtil.randomString();
 

@@ -7,7 +7,12 @@ package com.liferay.portal.store.file.system.safe.file.name;
 
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.DLUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.InputStream;
@@ -74,9 +79,10 @@ public class SafeFileNameStore implements Store {
 		_store.deleteFile(companyId, repositoryId, safeFileName, versionLabel);
 	}
 
+
 	@Override
-	public long[] getCompanyIds() throws PortalException {
-		return _store.getCompanyIds();
+	public void checkCompanyIds() throws PortalException {
+		 _store.checkCompanyIds();
 	}
 
 	@Override

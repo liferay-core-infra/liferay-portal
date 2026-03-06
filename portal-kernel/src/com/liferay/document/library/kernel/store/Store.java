@@ -69,7 +69,7 @@ public interface Store {
 	 * Returns all company IDs currently present in the store.
 	 * @return A list of unique company IDs.
 	 */
-	public long[] getCompanyIds() throws PortalException;
+	public void checkCompanyIds() throws PortalException;
 
 	/**
 	 * Returns the file as an {@link InputStream} object.

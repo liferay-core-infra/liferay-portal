@@ -36,6 +36,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -137,7 +138,31 @@ public class GCSStore implements Store {
 					companyId, repositoryId, fileName, versionLabel)));
 	}
 
-	public long[] getCompanyIds() throws PortalException {
+
+	@Override
+	public void checkCompanyIds() throws PortalException {
+		long[] companyIds = PortalInstancePool.getCompanyIds();
+
+		Arrays.sort(companyIds);
+
+		for (long storeCompanyId : getCompanyIds()) {
+			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Store ", storeCompanyId,
+							" belongs to deleted company ", storeCompanyId,
+							". Remove it if it is not used anywhere else."));
+				}
+			}
+		}
+	}
+
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		GCSStore.class);
+
+	private long[] getCompanyIds() throws PortalException {
 		Set<Long> companyIdsSet = new HashSet<>();
 
 		String prefix = StoreArea.getCurrentStoreAreaPath();
@@ -295,6 +320,24 @@ public class GCSStore implements Store {
 		catch (PortalException portalException) {
 			throw new IllegalStateException(
 				"Unable to initialize GCS store", portalException);
+		}
+	}
+
+	public void verifyCompanyStores() throws PortalException {
+		long[] companyIds = PortalInstancePool.getCompanyIds();
+
+		Arrays.sort(companyIds);
+
+		for (long storeCompanyId : getCompanyIds()) {
+			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Store ", storeCompanyId,
+							" belongs to deleted company ", storeCompanyId,
+							". Remove it if it is not used anywhere else."));
+				}
+			}
 		}
 	}
 
@@ -623,8 +666,6 @@ public class GCSStore implements Store {
 	private static final int _EVICTED_BATCH_SIZE = 10;
 
 	private static final long _PAGE_SIZE = 50L;
-
-	private static final Log _log = LogFactoryUtil.getLog(GCSStore.class);
 
 	private BucketInfo _bucketInfo;
 	private Blob.BlobSourceOption _decryptBlobBlobSourceOption;

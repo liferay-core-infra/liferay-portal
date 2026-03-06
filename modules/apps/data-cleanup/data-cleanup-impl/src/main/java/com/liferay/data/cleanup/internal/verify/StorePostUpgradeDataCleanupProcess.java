@@ -31,21 +31,7 @@ public class StorePostUpgradeDataCleanupProcess
 			return;
 		}
 
-		long[] companyIds = PortalInstancePool.getCompanyIds();
-
-		Arrays.sort(companyIds);
-
-		for (long storeCompanyId : _store.getCompanyIds()) {
-			if (Arrays.binarySearch(companyIds, storeCompanyId) < 0) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringBundler.concat(
-							"Store ", storeCompanyId,
-							" belongs to deleted company ", storeCompanyId,
-							". Remove it if it is not used anywhere else."));
-				}
-			}
-		}
+		_store.checkCompanyIds();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -6,6 +6,7 @@
 package com.liferay.portal.license.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -15,6 +16,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -24,6 +26,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Kevin Lee
@@ -104,6 +109,87 @@ public class DXPModuleLicenseTest {
 
 		Assert.assertTrue(
 			licenseProperties.toString(), licenseProperties.isEmpty());
+	}
+
+	@Test
+	public void testFreeLicenseManualDeploy() throws Exception {
+		Map<String, String> licenseProperties =
+			LicenseTestUtil.getPortalLicenseProperties();
+
+		Assert.assertTrue(
+			licenseProperties.toString(), licenseProperties.isEmpty());
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Bundle dxpBundle = null;
+		Bundle enterpriseAppBundle = null;
+
+		for (Bundle bundle : bundleContext.getBundles()) {
+			if (Objects.equals(
+					bundle.getSymbolicName(), _DXP_MODULE_SYMBOLIC_NAME)) {
+
+				dxpBundle = bundle;
+			}
+
+			if (Objects.equals(
+					bundle.getSymbolicName(), _ENTERPRISE_APP_SYMBOLIC_NAME)) {
+
+				enterpriseAppBundle = bundle;
+			}
+		}
+
+		Assert.assertNotNull(dxpBundle);
+		Assert.assertNotNull(enterpriseAppBundle);
+
+		Assert.assertEquals(Bundle.ACTIVE, dxpBundle.getState());
+		Assert.assertEquals(Bundle.ACTIVE, enterpriseAppBundle.getState());
+
+		String response = LicenseTestUtil.hitHomePage("localhost", 8080);
+
+		Assert.assertTrue(
+			response.contains("This instance is not registered."));
+
+		Assert.assertEquals(Bundle.ACTIVE, dxpBundle.getState());
+		Assert.assertEquals(Bundle.ACTIVE, enterpriseAppBundle.getState());
+
+		long now = System.currentTimeMillis();
+
+		LicenseTestUtil.deployFreeTierLicenseContent(
+			new Date(now), new Date(now + Time.HOUR));
+
+		licenseProperties = LicenseTestUtil.getPortalLicenseProperties();
+
+		Assert.assertFalse(
+			licenseProperties.toString(), licenseProperties.isEmpty());
+
+		response = LicenseTestUtil.hitHomePage("localhost", 8080);
+
+		Assert.assertTrue(response.contains("setup_wizard"));
+
+		Assert.assertEquals(Bundle.UNINSTALLED, dxpBundle.getState());
+		Assert.assertEquals(Bundle.UNINSTALLED, enterpriseAppBundle.getState());
+
+		dxpBundle = bundleContext.installBundle(dxpBundle.getLocation());
+		enterpriseAppBundle = bundleContext.installBundle(
+			enterpriseAppBundle.getLocation());
+
+		try {
+			dxpBundle.start();
+			enterpriseAppBundle.start();
+
+			Assert.assertEquals(Bundle.ACTIVE, dxpBundle.getState());
+			Assert.assertEquals(Bundle.ACTIVE, enterpriseAppBundle.getState());
+
+			Thread.sleep(Time.MINUTE * 5);
+
+			response = LicenseTestUtil.hitHomePage("localhost", 8080);
+
+			Assert.assertTrue(response.contains("This instance is invalid."));
+		}
+		finally {
+			dxpBundle.uninstall();
+			enterpriseAppBundle.uninstall();
+		}
 	}
 
 	private static final String _DXP_MODULE_SYMBOLIC_NAME =

@@ -9,10 +9,13 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.license.test.util.LicenseTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+
+import java.io.InputStream;
 
 import java.util.Date;
 import java.util.Map;
@@ -52,6 +55,54 @@ public class DXPModuleLicenseTest {
 	public void tearDown() throws Exception {
 		LicenseTestUtil.removeAllLicenseBinaryFiles();
 		LicenseTestUtil.resetLifecycleAction();
+	}
+
+	@Test
+	public void testEmptyBundlesFile() throws Exception {
+		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+
+		PortalClassLoaderUtil.setClassLoader(
+			new ClassLoader() {
+
+				@Override
+				public boolean equals(Object object) {
+					return classLoader.equals(object);
+				}
+
+				@Override
+				public InputStream getResourceAsStream(String name) {
+					if (name.equals("com/liferay/portal/ee/license/bundles")) {
+						return InputStream.nullInputStream();
+					}
+
+					return super.getResourceAsStream(name);
+				}
+
+				@Override
+				public int hashCode() {
+					return classLoader.hashCode();
+				}
+
+			});
+
+		try {
+			String response = LicenseTestUtil.hitHomePage("localhost", 8080);
+
+			Assert.assertTrue(
+				response.contains("This instance is not registered."));
+
+			long now = System.currentTimeMillis();
+
+			LicenseTestUtil.deployFreeTierLicenseContent(
+				new Date(now), new Date(now + Time.HOUR));
+
+			response = LicenseTestUtil.hitHomePage("localhost", 8080);
+
+			Assert.assertTrue(response.contains("This instance is invalid."));
+		}
+		finally {
+			PortalClassLoaderUtil.setClassLoader(classLoader);
+		}
 	}
 
 	@Test
@@ -189,6 +240,54 @@ public class DXPModuleLicenseTest {
 		finally {
 			dxpBundle.uninstall();
 			enterpriseAppBundle.uninstall();
+		}
+	}
+
+	@Test
+	public void testMissingBundlesFile() throws Exception {
+		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+
+		PortalClassLoaderUtil.setClassLoader(
+			new ClassLoader() {
+
+				@Override
+				public boolean equals(Object object) {
+					return classLoader.equals(object);
+				}
+
+				@Override
+				public InputStream getResourceAsStream(String name) {
+					if (name.equals("com/liferay/portal/ee/license/bundles")) {
+						return null;
+					}
+
+					return super.getResourceAsStream(name);
+				}
+
+				@Override
+				public int hashCode() {
+					return classLoader.hashCode();
+				}
+
+			});
+
+		try {
+			String response = LicenseTestUtil.hitHomePage("localhost", 8080);
+
+			Assert.assertTrue(
+				response.contains("This instance is not registered."));
+
+			long now = System.currentTimeMillis();
+
+			LicenseTestUtil.deployFreeTierLicenseContent(
+				new Date(now), new Date(now + Time.HOUR));
+
+			response = LicenseTestUtil.hitHomePage("localhost", 8080);
+
+			Assert.assertTrue(response.contains("This instance is invalid."));
+		}
+		finally {
+			PortalClassLoaderUtil.setClassLoader(classLoader);
 		}
 	}
 

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="JavaVariableTypeCheck" files="src/testIntegration/java/com/liferay/portal/license/test/util/LicenseTestUtil\.java" />
+	</source-check>
+</suppressions>

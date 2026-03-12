@@ -102,6 +102,13 @@ public class LicenseTestUtil {
 		return _transformMethod(_validateMethod, true);
 	}
 
+	public static long getCheckInterval() throws IllegalAccessException {
+		Object lifecycleAction = ReflectionTestUtil.getFieldValue(
+			EventsProcessorUtil.class, "_lifecycleAction");
+
+		return _checkIntervalField.getLong(lifecycleAction);
+	}
+
 	public static Set<String> getCurrentBundleNames() {
 		Set<String> bundleNames = new HashSet<>();
 
@@ -329,6 +336,7 @@ public class LicenseTestUtil {
 		LicenseTestUtil.class);
 
 	private static Set<Field> _bundleDataFields;
+	private static Field _checkIntervalField;
 	private static Method _getVersionDisplayNameMethod;
 	private static Method _installAndStartBundlesMethod;
 	private static Instrumentation _instrumentation;
@@ -376,6 +384,16 @@ public class LicenseTestUtil {
 						field.setAccessible(true);
 
 						_bundleDataFields.add(field);
+					}
+
+					if (long.class.isAssignableFrom(field.getType()) &&
+						(field.getModifiers() ==
+							(Modifier.FINAL | Modifier.PRIVATE |
+							 Modifier.STATIC))) {
+
+						field.setAccessible(true);
+
+						_checkIntervalField = field;
 					}
 				}
 

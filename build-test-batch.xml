@@ -2945,6 +2945,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 								<param name="database.type" value="@{database.type}" />
 								<param name="gcs.store.enabled" value="@{gcs.store.enabled}" />
 								<param name="ibm.store.enabled" value="@{ibm.store.enabled}" />
+								<param name="setup.wizard.enabled" value="@{setup.wizard.enabled}" />
 							</antcall>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
@@ -8985,6 +8986,10 @@ information. Make sure to commit in all format-javadoc results.
 				</ant>
 			</finally>
 		</trycatch>
+	</target>
+
+	<target name="modules-integration-license-postgresql163">
+		<run-modules-integration-test database.type="postgresql" database.version="16.3" setup.wizard.enabled="true" />
 	</target>
 
 	<target name="modules-integration-mariadb">

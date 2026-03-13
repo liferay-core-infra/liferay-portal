@@ -191,6 +191,8 @@ public class LicenseTestUtil {
 			ReflectionTestUtil.invoke(
 				_licenseManagerHelperClass, "getLifecycleAction",
 				new Class<?>[0]));
+
+		_resetLifecycleActionFields();
 	}
 
 	public static ResettableClassFileTransformer setVersionDisplayName(
@@ -290,6 +292,36 @@ public class LicenseTestUtil {
 		throw new ClassNotFoundException("Unable to find key validator class");
 	}
 
+	private static void _resetLifecycleActionFields() {
+		Object lifecycleAction = ReflectionTestUtil.getFieldValue(
+			EventsProcessorUtil.class, "_lifecycleAction");
+
+		Class<?> lifecycleActionClass = lifecycleAction.getClass();
+
+		_installAndStartBundlesMethod = _findMethod(
+			lifecycleActionClass, Modifier.PRIVATE, Void.TYPE,
+			new Class<?>[] {BundleContext.class, Map.class, Framework.class});
+
+		_bundleDataFields = new HashSet<>();
+
+		for (Field field : lifecycleActionClass.getDeclaredFields()) {
+			if (Map.class.isAssignableFrom(field.getType())) {
+				field.setAccessible(true);
+
+				_bundleDataFields.add(field);
+			}
+
+			if (long.class.isAssignableFrom(field.getType()) &&
+				(field.getModifiers() ==
+					(Modifier.FINAL | Modifier.PRIVATE | Modifier.STATIC))) {
+
+				field.setAccessible(true);
+
+				_checkIntervalField = field;
+			}
+		}
+	}
+
 	private static ResettableClassFileTransformer _transformMethod(
 		Method method, Object returnValue) {
 
@@ -366,36 +398,7 @@ public class LicenseTestUtil {
 						classLoader, _licenseManagerHelperClass),
 					Modifier.PUBLIC | Modifier.STATIC, boolean.class, null);
 
-				Object lifecycleAction = ReflectionTestUtil.getFieldValue(
-					EventsProcessorUtil.class, "_lifecycleAction");
-
-				Class<?> lifecycleActionClass = lifecycleAction.getClass();
-
-				_installAndStartBundlesMethod = _findMethod(
-					lifecycleActionClass, Modifier.PRIVATE, Void.TYPE,
-					new Class<?>[] {
-						BundleContext.class, Map.class, Framework.class
-					});
-
-				_bundleDataFields = new HashSet<>();
-
-				for (Field field : lifecycleActionClass.getDeclaredFields()) {
-					if (Map.class.isAssignableFrom(field.getType())) {
-						field.setAccessible(true);
-
-						_bundleDataFields.add(field);
-					}
-
-					if (long.class.isAssignableFrom(field.getType()) &&
-						(field.getModifiers() ==
-							(Modifier.FINAL | Modifier.PRIVATE |
-							 Modifier.STATIC))) {
-
-						field.setAccessible(true);
-
-						_checkIntervalField = field;
-					}
-				}
+				_resetLifecycleActionFields();
 
 				ByteBuddyAgent.install();
 

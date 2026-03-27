@@ -221,10 +221,12 @@ public abstract class BaseLicenseTestCase {
 
 	public File deployFreeTierPortalLicense() throws Exception {
 		return deployFreeTierPortalLicense(
-			ListUtil.fromArray(_FREE_TIER_DOMAIN, "localhost"));
+			ListUtil.fromArray(_FREE_TIER_DOMAIN, "localhost"),
+			StringPool.BLANK, System.currentTimeMillis());
 	}
 
-	public File deployFreeTierPortalLicense(List<String> domains)
+	public File deployFreeTierPortalLicense(
+			List<String> domains, String key, long startTimeMillis)
 		throws Exception {
 
 		StringBundler sb = new StringBundler(20);
@@ -241,14 +243,11 @@ public abstract class BaseLicenseTestCase {
 		sb.append("</license-type><license-version>6</license-version>");
 		sb.append("<start-date>");
 
-		long currentTimeMillis = System.currentTimeMillis();
-
-		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
+		sb.append(_DATE_FORMAT.format(new Date(startTimeMillis)));
 
 		sb.append("</start-date><expiration-date>");
 		sb.append(
-			_DATE_FORMAT.format(
-				new Date(currentTimeMillis + _VALIDITY_PERIOD)));
+			_DATE_FORMAT.format(new Date(startTimeMillis + _VALIDITY_PERIOD)));
 		sb.append("</expiration-date>");
 		sb.append("<max-cluster-nodes>3</max-cluster-nodes><domains>");
 
@@ -258,7 +257,9 @@ public abstract class BaseLicenseTestCase {
 			sb.append("</domain>");
 		}
 
-		sb.append("</domains><key></key></license>");
+		sb.append("</domains><key>");
+		sb.append(key);
+		sb.append("</key></license>");
 
 		LicenseManagerUtil.registerLicense(
 			JSONUtil.put("licenseXML", sb.toString()));

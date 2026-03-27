@@ -6,6 +6,7 @@
 package com.liferay.portal.license.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -78,7 +79,9 @@ public class LicenseValidationTest extends BaseLicenseTestCase {
 			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				_getLicenseManagerClassName(), LoggerTestUtil.ERROR)) {
 
-			deployFreeTierPortalLicense(ListUtil.fromArray(domain));
+			deployFreeTierPortalLicense(
+				ListUtil.fromArray(domain), StringPool.BLANK,
+				System.currentTimeMillis());
 
 			assertPortalLicenseInvalid();
 
@@ -110,7 +113,9 @@ public class LicenseValidationTest extends BaseLicenseTestCase {
 			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				_getLicenseManagerClassName(), LoggerTestUtil.ERROR)) {
 
-			deployFreeTierPortalLicense(ListUtil.fromArray(domain));
+			deployFreeTierPortalLicense(
+				ListUtil.fromArray(domain), StringPool.BLANK,
+				System.currentTimeMillis());
 
 			assertPortalLicenseRegistered();
 

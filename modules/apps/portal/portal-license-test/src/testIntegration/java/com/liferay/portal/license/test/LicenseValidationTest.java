@@ -8,10 +8,14 @@ package com.liferay.portal.license.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+
+import java.net.InetAddress;
 
 import java.util.List;
 
@@ -41,6 +45,20 @@ public class LicenseValidationTest extends BaseLicenseTestCase {
 	}
 
 	@Test
+	public void testFreeTierLicenseValidateDomain() throws Exception {
+		InetAddress inetAddress = InetAddress.getLocalHost();
+
+		try (AutoCloseable autoCloseable = _disableValidate()) {
+			_assertDomainIsValid("localhost");
+			_assertDomainIsValid("LOCALHOST");
+			_assertDomainIsValid(inetAddress.getCanonicalHostName());
+			_assertDomainIsValid(inetAddress.getHostName());
+
+			_assertDomainIsInvalid(RandomTestUtil.randomString());
+		}
+	}
+
+	@Test
 	public void testFreeTierLicenseValidateVersion() throws Exception {
 		try (AutoCloseable autoCloseable = _disableValidate()) {
 			_assertVersionIsValid("2026.Q1.0 LTS");
@@ -52,6 +70,54 @@ public class LicenseValidationTest extends BaseLicenseTestCase {
 			_assertVersionIsInvalid("2026.Q1.1 LTS");
 			_assertVersionIsInvalid("2026.Q2.1");
 			_assertVersionIsInvalid("2026.Q3");
+		}
+	}
+
+	private void _assertDomainIsInvalid(String domain) throws Exception {
+		try (AutoCloseable autoCloseable = _setVersion("2026.Q1.0 LTS");
+			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				_getLicenseManagerClassName(), LoggerTestUtil.ERROR)) {
+
+			deployFreeTierPortalLicense(ListUtil.fromArray(domain));
+
+			assertPortalLicenseInvalid();
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertFalse(logEntries.isEmpty());
+
+			LogEntry logEntry = logEntries.getFirst();
+
+			Assert.assertEquals(
+				"DXP Production license validation failed",
+				logEntry.getMessage());
+
+			Throwable throwable = logEntry.getThrowable();
+
+			Assert.assertNotNull(throwable);
+
+			Assert.assertEquals(
+				"Current domain is not allowed, allowed domains are: " + domain,
+				throwable.getMessage());
+		}
+		finally {
+			resetLicenseData();
+		}
+	}
+
+	private void _assertDomainIsValid(String domain) throws Exception {
+		try (AutoCloseable autoCloseable = _setVersion("2026.Q1.0 LTS");
+			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				_getLicenseManagerClassName(), LoggerTestUtil.ERROR)) {
+
+			deployFreeTierPortalLicense(ListUtil.fromArray(domain));
+
+			assertPortalLicenseRegistered();
+
+			Assert.assertTrue(ListUtil.isEmpty(logCapture.getLogEntries()));
+		}
+		finally {
+			resetLicenseData();
 		}
 	}
 

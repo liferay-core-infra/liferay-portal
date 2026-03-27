@@ -69,6 +69,17 @@ public abstract class BaseLicenseTestCase {
 		return _transformMethod(ReflectionsHolder._validateMethod, true);
 	}
 
+	public static String encryptLicenseProperties(
+			Map<String, String> licenseProperties)
+		throws Exception {
+
+		Method method = _findMethod(
+			PortalClassLoaderUtil.getClassLoader(),
+			_licenseTestProperties.getProperty("encrypt.method"));
+
+		return (String)method.invoke(null, licenseProperties);
+	}
+
 	public static boolean isReleaseBundle() {
 		if (ReflectionsHolder._licenseManagerHelperClass != null) {
 			return true;

@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -41,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -218,6 +220,13 @@ public abstract class BaseLicenseTestCase {
 	}
 
 	public File deployFreeTierPortalLicense() throws Exception {
+		return deployFreeTierPortalLicense(
+			ListUtil.fromArray(_FREE_TIER_DOMAIN, "localhost"));
+	}
+
+	public File deployFreeTierPortalLicense(List<String> domains)
+		throws Exception {
+
 		StringBundler sb = new StringBundler(20);
 
 		sb.append("<?xml version=\"1.0\"?><license><account-name>");
@@ -241,11 +250,15 @@ public abstract class BaseLicenseTestCase {
 			_DATE_FORMAT.format(
 				new Date(currentTimeMillis + _VALIDITY_PERIOD)));
 		sb.append("</expiration-date>");
-		sb.append("<max-cluster-nodes>3</max-cluster-nodes>");
-		sb.append("<domains><domain>");
-		sb.append(_FREE_TIER_DOMAIN);
-		sb.append("</domain><domain>localhost</domain></domains>");
-		sb.append("<key></key></license>");
+		sb.append("<max-cluster-nodes>3</max-cluster-nodes><domains>");
+
+		for (String domain : domains) {
+			sb.append("<domain>");
+			sb.append(domain);
+			sb.append("</domain>");
+		}
+
+		sb.append("</domains><key></key></license>");
 
 		LicenseManagerUtil.registerLicense(
 			JSONUtil.put("licenseXML", sb.toString()));

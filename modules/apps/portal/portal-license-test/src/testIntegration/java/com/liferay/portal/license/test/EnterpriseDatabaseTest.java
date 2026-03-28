@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import net.bytebuddy.agent.builder.ResettableClassFileTransformer;
@@ -59,6 +60,27 @@ public class EnterpriseDatabaseTest extends BaseLicenseTestCase {
 	public void tearDown() throws Exception {
 		resetLicenseData();
 		resetLifecycleAction();
+	}
+
+	@Test
+	public void testEnterpriseLicense() throws Exception {
+		DB db = DBManagerUtil.getDB();
+
+		for (DBType dbType :
+				ArrayUtil.append(_ENTERPRISE_DB_TYPES, _FREE_TIER_DB_TYPES)) {
+
+			try (AutoCloseable autoCloseable =
+					ReflectionTestUtil.setFieldValueWithAutoCloseable(
+						db, "_dbType", dbType)) {
+
+				deployEnterprisePortalLicense();
+
+				assertPortalLicenseRegistered();
+			}
+			finally {
+				resetLicenseData();
+			}
+		}
 	}
 
 	@Test

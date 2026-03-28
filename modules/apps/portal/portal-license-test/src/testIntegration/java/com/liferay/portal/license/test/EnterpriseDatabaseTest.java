@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import net.bytebuddy.agent.builder.ResettableClassFileTransformer;
@@ -127,6 +128,37 @@ public class EnterpriseDatabaseTest extends BaseLicenseTestCase {
 		try (AutoCloseable autoCloseable =
 				ReflectionTestUtil.setFieldValueWithAutoCloseable(
 					db, "_dbType", _ENTERPRISE_DB_TYPES[0])) {
+
+			_assertDatabaseNotSupported(_ENTERPRISE_DB_TYPES[0]);
+		}
+	}
+
+	@Test
+	public void testFreeTierLicenseSetupWizard() throws Exception {
+		Assume.assumeTrue(PropsValues.SETUP_WIZARD_ENABLED);
+
+		deployFreeTierPortalLicense();
+
+		assertPortalLicenseRegistered();
+
+		String response = hitHomePage("localhost", 8080);
+
+		for (DBType freeTierDBType : _FREE_TIER_DB_TYPES) {
+			Assert.assertTrue(
+				response.contains(
+					"value=\"" + freeTierDBType.getName() + "\""));
+		}
+
+		for (DBType enterpriseDBType : _ENTERPRISE_DB_TYPES) {
+			Assert.assertFalse(
+				response.contains(
+					"value=\"" + enterpriseDBType.getName() + "\""));
+		}
+
+		try (AutoCloseable autoCloseable =
+				ReflectionTestUtil.setFieldValueWithAutoCloseable(
+					DBManagerUtil.getDB(), "_dbType",
+					_ENTERPRISE_DB_TYPES[0])) {
 
 			_assertDatabaseNotSupported(_ENTERPRISE_DB_TYPES[0]);
 		}

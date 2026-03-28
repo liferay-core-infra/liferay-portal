@@ -85,6 +85,24 @@ public class EnterpriseDatabaseTest extends BaseLicenseTestCase {
 	}
 
 	@Test
+	public void testEnterpriseLicenseSetupWizard() throws Exception {
+		Assume.assumeTrue(PropsValues.SETUP_WIZARD_ENABLED);
+
+		deployEnterprisePortalLicense();
+
+		assertPortalLicenseRegistered();
+
+		String response = hitHomePage("localhost", 8080);
+
+		for (DBType dbType :
+				ArrayUtil.append(_ENTERPRISE_DB_TYPES, _FREE_TIER_DB_TYPES)) {
+
+			Assert.assertTrue(
+				response.contains("value=\"" + dbType.getName() + "\""));
+		}
+	}
+
+	@Test
 	public void testFreeTierLicense() throws Exception {
 		DB db = DBManagerUtil.getDB();
 

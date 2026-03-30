@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PropsValues;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.URLUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -181,7 +180,7 @@ public class CKEditorLicenseTest extends BaseLicenseTestCase {
 
 		_assertCKEditorConfiguration(licenseKey, useConfigFile);
 
-		File binaryFile = deployFreeTierPortalLicense(Time.HOUR);
+		File binaryFile = deployFreeTierPortalLicense();
 
 		assertLicensePropertiesExisted(getPortalProductId());
 
@@ -218,7 +217,7 @@ public class CKEditorLicenseTest extends BaseLicenseTestCase {
 
 		assertPortalLicenseNotRegistered();
 
-		deployEnterprisePortalLicense(Time.HOUR);
+		deployEnterprisePortalLicense();
 
 		assertLicensePropertiesExisted(getPortalProductId());
 

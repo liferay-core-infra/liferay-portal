@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.File;
@@ -85,7 +84,7 @@ public class DXPModuleLicenseTest extends BaseLicenseTestCase {
 		assertBundlesExisted(
 			_getDxpOnlyModuleSymbolicName(), _getEnterpriseAppSymbolicName());
 
-		File binaryFile = deployFreeTierPortalLicense(Time.HOUR);
+		File binaryFile = deployFreeTierPortalLicense();
 
 		assertLicensePropertiesExisted(getPortalProductId());
 
@@ -146,7 +145,7 @@ public class DXPModuleLicenseTest extends BaseLicenseTestCase {
 		Assert.assertEquals(Bundle.ACTIVE, dxpOnlyBundle.getState());
 		Assert.assertEquals(Bundle.ACTIVE, enterpriseAppBundle.getState());
 
-		deployFreeTierPortalLicense(Time.HOUR);
+		deployFreeTierPortalLicense();
 
 		assertLicensePropertiesExisted(getPortalProductId());
 

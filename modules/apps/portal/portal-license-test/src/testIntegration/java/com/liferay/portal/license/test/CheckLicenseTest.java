@@ -71,7 +71,7 @@ public class CheckLicenseTest extends BaseLicenseTestCase {
 	public void testCheckLicenseForCMP() throws Exception {
 		assertLicensePropertiesNotExisted(getCMPProductId());
 
-		deployCMPLicense(Time.HOUR);
+		deployCMPLicense();
 
 		assertLicensePropertiesExisted(getCMPProductId());
 

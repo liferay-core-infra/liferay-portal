@@ -8,7 +8,6 @@ package com.liferay.portal.license.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
-import com.liferay.portal.kernel.util.Time;
 
 import java.io.File;
 
@@ -60,7 +59,7 @@ public class CMPModuleLicenseTest extends BaseLicenseTestCase {
 
 		assertBundlesExisted(_getCMPSymbolicNames());
 
-		deployEnterprisePortalLicense(Time.HOUR);
+		deployEnterprisePortalLicense();
 
 		assertLicensePropertiesNotExisted(getCMPProductId());
 
@@ -68,7 +67,7 @@ public class CMPModuleLicenseTest extends BaseLicenseTestCase {
 
 		assertBundlesNotExisted(_getCMPSymbolicNames());
 
-		File binaryFile = deployCMPLicense(Time.HOUR);
+		File binaryFile = deployCMPLicense();
 
 		assertLicensePropertiesExisted(getCMPProductId());
 
@@ -99,7 +98,7 @@ public class CMPModuleLicenseTest extends BaseLicenseTestCase {
 
 		assertBundlesExisted(_getCMPSymbolicNames());
 
-		deployFreeTierPortalLicense(Time.HOUR);
+		deployFreeTierPortalLicense();
 
 		assertLicensePropertiesNotExisted(getCMPProductId());
 
@@ -107,7 +106,7 @@ public class CMPModuleLicenseTest extends BaseLicenseTestCase {
 
 		assertBundlesNotExisted(_getCMPSymbolicNames());
 
-		File binaryFile = deployCMPLicense(Time.HOUR);
+		File binaryFile = deployCMPLicense();
 
 		assertLicensePropertiesExisted(getCMPProductId());
 

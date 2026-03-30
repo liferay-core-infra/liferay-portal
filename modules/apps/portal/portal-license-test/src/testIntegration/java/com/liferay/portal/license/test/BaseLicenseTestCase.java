@@ -135,7 +135,7 @@ public abstract class BaseLicenseTestCase {
 		Assert.assertFalse(response.contains(_LICENSE_PAGE_KEY));
 	}
 
-	public File deployCMPLicense(long validityPeriod) throws Exception {
+	public File deployCMPLicense() throws Exception {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		StringBundler sb = new StringBundler(19);
@@ -152,7 +152,8 @@ public abstract class BaseLicenseTestCase {
 		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
 		sb.append("</start-date><expiration-date>");
 		sb.append(
-			_DATE_FORMAT.format(new Date(currentTimeMillis + validityPeriod)));
+			_DATE_FORMAT.format(
+				new Date(currentTimeMillis + _VALIDITY_PERIOD)));
 		sb.append("</expiration-date><host-names>");
 		sb.append("<host-name>localhost</host-name>");
 		sb.append("</host-names><ip-addresses>");
@@ -181,9 +182,7 @@ public abstract class BaseLicenseTestCase {
 			_CMP_LICENSE_TYPE);
 	}
 
-	public File deployEnterprisePortalLicense(long validityPeriod)
-		throws Exception {
-
+	public File deployEnterprisePortalLicense() throws Exception {
 		long currentTimeMillis = System.currentTimeMillis();
 
 		StringBundler sb = new StringBundler(19);
@@ -202,7 +201,8 @@ public abstract class BaseLicenseTestCase {
 		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
 		sb.append("</start-date><expiration-date>");
 		sb.append(
-			_DATE_FORMAT.format(new Date(currentTimeMillis + validityPeriod)));
+			_DATE_FORMAT.format(
+				new Date(currentTimeMillis + _VALIDITY_PERIOD)));
 		sb.append("</expiration-date>");
 		sb.append("<domains><domain>");
 		sb.append(_ENTERPRISE_DOMAIN);
@@ -217,9 +217,7 @@ public abstract class BaseLicenseTestCase {
 			_ENTERPRISE_PRODUCT_NAME, _ENTERPRISE_LICENSE_TYPE);
 	}
 
-	public File deployFreeTierPortalLicense(long validityPeriod)
-		throws Exception {
-
+	public File deployFreeTierPortalLicense() throws Exception {
 		StringBundler sb = new StringBundler(20);
 
 		sb.append("<?xml version=\"1.0\"?><license><account-name>");
@@ -240,7 +238,8 @@ public abstract class BaseLicenseTestCase {
 
 		sb.append("</start-date><expiration-date>");
 		sb.append(
-			_DATE_FORMAT.format(new Date(currentTimeMillis + validityPeriod)));
+			_DATE_FORMAT.format(
+				new Date(currentTimeMillis + _VALIDITY_PERIOD)));
 		sb.append("</expiration-date>");
 		sb.append("<max-cluster-nodes>3</max-cluster-nodes>");
 		sb.append("<domains><domain>");
@@ -483,7 +482,7 @@ public abstract class BaseLicenseTestCase {
 		try {
 			assertPortalLicenseNotRegistered();
 
-			deployFreeTierPortalLicense(Time.HOUR);
+			deployFreeTierPortalLicense();
 
 			assertLicensePropertiesExisted(getPortalProductId());
 
@@ -575,6 +574,8 @@ public abstract class BaseLicenseTestCase {
 		"This instance is not registered.";
 
 	private static final String _PROPERTY_PREFIX = "license.test.";
+
+	private static final long _VALIDITY_PERIOD = Time.HOUR;
 
 	private static Properties _licenseTestProperties;
 

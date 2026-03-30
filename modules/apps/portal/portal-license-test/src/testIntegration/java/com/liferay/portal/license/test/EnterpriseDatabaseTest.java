@@ -6,6 +6,7 @@
 package com.liferay.portal.license.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
@@ -15,6 +16,8 @@ import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+
+import java.util.Collections;
 
 import net.bytebuddy.agent.builder.ResettableClassFileTransformer;
 
@@ -180,6 +183,35 @@ public class EnterpriseDatabaseTest extends BaseLicenseTestCase {
 
 			_assertDatabaseNotSupported(_ENTERPRISE_DB_TYPES[0]);
 		}
+	}
+
+	@Test
+	public void testInvalidLicenseSetupWizard() throws Exception {
+		Assume.assumeTrue(PropsValues.SETUP_WIZARD_ENABLED);
+
+		assertPortalLicenseNotRegistered();
+
+		deployFreeTierPortalLicense();
+
+		assertPortalLicenseRegistered();
+
+		String response = hitHomePage("localhost", 8080);
+
+		Assert.assertTrue(response.contains("setup_wizard"));
+
+		resetLicenseData();
+
+		assertPortalLicenseNotRegistered();
+
+		deployFreeTierPortalLicense(
+			Collections.emptyList(), StringPool.BLANK,
+			System.currentTimeMillis());
+
+		assertPortalLicenseInvalid();
+
+		response = hitHomePage("localhost", 8080);
+
+		Assert.assertFalse(response.contains("setup_wizard"));
 	}
 
 	private void _assertDatabaseNotSupported(DBType dbType) throws Exception {

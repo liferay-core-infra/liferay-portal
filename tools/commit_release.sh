@@ -23,7 +23,7 @@ function main {
 
 		release_info_version_trivial=$(get_property "release.info.version.trivial")
 
-		git clean -df && ant setup-profile-portal && ant setup-sdk && cd modules && ant build-app-all -Dartifact.exclude=true -Dcheck.stale.artifacts.skip=true -Ddownload.app.sources=false -Dgit.commit.app.ticket="7.4.3.${release_info_version_trivial} GA${release_info_version_trivial}"
+		git clean -df && ant setup-profile-dxp && ant setup-sdk && cd modules && ant build-app-all -Dartifact.exclude=true -Dcheck.stale.artifacts.skip=true -Ddownload.app.sources=false -Dgit.commit.app.ticket="7.4.3.${release_info_version_trivial} GA${release_info_version_trivial}"
 
 		cd ..
 

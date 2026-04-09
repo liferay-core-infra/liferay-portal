@@ -19,6 +19,7 @@ import static org.osgi.service.http.whiteboard.HttpWhiteboardConstants.HTTP_WHIT
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
@@ -66,7 +67,9 @@ public class BaseServletExtension implements Extension {
 	protected final AtomicBoolean destroyed = new AtomicBoolean(false);
 
 	void register(@Observes final BeforeBeanDiscovery beforeBeanDiscovery, final BeanManager manager) {
-		manager.fireEvent(new RegisterExtension(this));
+		Event<Object> event = manager.getEvent();
+
+		event.fire(new RegisterExtension(this));
 	}
 
 	void setConfiguration(@Observes Configuration configuration) {
@@ -77,7 +80,9 @@ public class BaseServletExtension implements Extension {
 		@Observes @FiltersOn(annotations = WebFilter.class) ProcessPotentialService pat,
 		BeanManager beanManager) {
 
-		beanManager.fireEvent(MergeServiceTypes.forEvent(pat).withTypes(Filter.class).build());
+		Event<Object> event = beanManager.getEvent();
+
+		event.fire(MergeServiceTypes.forEvent(pat).withTypes(Filter.class).build());
 
 		final AnnotatedTypeConfigurator<?> configurator = pat.configureAnnotatedType();
 		final AnnotatedType<?> annotatedType = pat.getAnnotatedType();
@@ -136,7 +141,9 @@ public class BaseServletExtension implements Extension {
 		.filter(c -> c.isAssignableFrom(javaClass))
 		.toArray(Class[]::new);
 
-		beanManager.fireEvent(MergeServiceTypes.forEvent(pat).withTypes(serviceTypes).build());
+		Event<Object> event = beanManager.getEvent();
+
+		event.fire(MergeServiceTypes.forEvent(pat).withTypes(serviceTypes).build());
 
 		AnnotatedTypeConfigurator<?> configurator = pat.configureAnnotatedType();
 
@@ -161,7 +168,9 @@ public class BaseServletExtension implements Extension {
 		@Observes @FiltersOn(annotations = WebServlet.class) ProcessPotentialService pat,
 		BeanManager beanManager) {
 
-		beanManager.fireEvent(MergeServiceTypes.forEvent(pat).withTypes(Servlet.class).build());
+		Event<Object> event = beanManager.getEvent();
+
+		event.fire(MergeServiceTypes.forEvent(pat).withTypes(Servlet.class).build());
 
 		final AnnotatedTypeConfigurator<?> configurator = pat.configureAnnotatedType();
 		final AnnotatedType<?> annotatedType = pat.getAnnotatedType();
@@ -220,4 +229,5 @@ public class BaseServletExtension implements Extension {
 		}
 	}
 }
+/* @generated */
 

@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.liferay</groupId>
   <artifactId>org.apache.aries.cdi.extension.servlet.common</artifactId>
-  <version>1.1.5.LIFERAY-PATCHED-1</version>
+  <version>1.1.5.LIFERAY-PATCHED-1.JAKARTA-LIFERAY-PATCHED-1</version>
   <licenses>
     <license>
       <name>LGPL 2.1</name>

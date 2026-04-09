@@ -1,0 +1,23 @@
+import com.liferay.gradle.plugins.patcher.PatchTask
+
+apply plugin: "com.liferay.patcher"
+
+task deployJar(type: Copy)
+task patch(type: PatchTask)
+
+dependencies {
+	compileOnly group: "org.apache.aries.cdi", name: "org.apache.aries.cdi.extension.servlet.common", version: "1.1.5"
+}
+
+jarSources {
+	mustRunAfter patch
+}
+
+patch {
+	ext {
+		autoClean = false
+	}
+
+	fileNames "org/apache/aries/cdi/extension/servlet/common/BaseServletExtension.java"
+	originalLibModuleName = "org.apache.aries.cdi.extension.servlet.common"
+}

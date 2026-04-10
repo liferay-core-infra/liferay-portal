@@ -36,10 +36,12 @@ import org.osgi.framework.wiring.BundleRevision;
 public class WebBundleDeployer {
 
 	public WebBundleDeployer(
-		BundleContext bundleContext, JSPServletFactory jspServletFactory,
+		BundleContext bundleContext, long cdiContainerTimeout,
+		JSPServletFactory jspServletFactory,
 		Dictionary<String, Object> properties) {
 
 		_bundleContext = bundleContext;
+		_cdiContainerTimeout = cdiContainerTimeout;
 		_jspServletFactory = jspServletFactory;
 		_properties = properties;
 	}
@@ -120,7 +122,7 @@ public class WebBundleDeployer {
 	private void _initWabBundle(Bundle bundle) {
 		try {
 			WabBundleProcessor wabBundleProcessor = new WabBundleProcessor(
-				bundle, _jspServletFactory);
+				bundle, _jspServletFactory, _cdiContainerTimeout);
 
 			wabBundleProcessor.init(_properties);
 
@@ -137,6 +139,7 @@ public class WebBundleDeployer {
 		WebBundleDeployer.class);
 
 	private final BundleContext _bundleContext;
+	private final long _cdiContainerTimeout;
 	private final JSPServletFactory _jspServletFactory;
 	private final Dictionary<String, Object> _properties;
 	private final ConcurrentMap<Bundle, WabBundleProcessor>

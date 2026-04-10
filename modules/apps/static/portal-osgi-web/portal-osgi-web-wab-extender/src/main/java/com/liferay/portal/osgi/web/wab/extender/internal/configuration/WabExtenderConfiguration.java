@@ -19,6 +19,9 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface WabExtenderConfiguration {
 
+	@Meta.AD(deflt = "60000", name = "cdi-container-timeout", required = false)
+	public long cdiContainerTimeout();
+
 	@Meta.AD(deflt = "60000", name = "stop-timeout", required = false)
 	public long stopTimeout();
 

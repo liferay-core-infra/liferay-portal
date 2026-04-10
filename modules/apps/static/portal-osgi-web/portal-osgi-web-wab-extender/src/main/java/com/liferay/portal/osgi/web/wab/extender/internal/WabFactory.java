@@ -159,7 +159,8 @@ public class WabFactory
 			WabExtenderConfiguration.class, properties);
 
 		_webBundleDeployer = new WebBundleDeployer(
-			bundleContext, _jspServletFactory, properties);
+			bundleContext, _wabExtenderConfiguration.cdiContainerTimeout(),
+			_jspServletFactory, properties);
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, this);

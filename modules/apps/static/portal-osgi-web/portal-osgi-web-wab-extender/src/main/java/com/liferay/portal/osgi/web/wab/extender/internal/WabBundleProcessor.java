@@ -12,6 +12,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Plugin;
+import com.liferay.portal.kernel.module.util.ServiceLatch;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -72,12 +73,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 
@@ -88,9 +92,11 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 public class WabBundleProcessor {
 
 	public WabBundleProcessor(
-		Bundle bundle, JSPServletFactory jspServletFactory) {
+		Bundle bundle, long cdiContainerTimeout,
+		JSPServletFactory jspServletFactory) {
 
 		_bundle = bundle;
+		_cdiContainerTimeout = cdiContainerTimeout;
 		_jspServletFactory = jspServletFactory;
 
 		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
@@ -522,6 +528,15 @@ public class WabBundleProcessor {
 			ServletContext servletContext)
 		throws Exception {
 
+		BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
+
+		List<BundleWire> bundleWires = bundleWiring.getRequiredWires(
+			"osgi.cdi.extension");
+
+		if (!bundleWires.isEmpty()) {
+			_waitForCDIInitalizerListenerRegistered(servletContext);
+		}
+
 		boolean registeredPortletContextLoaderListener = false;
 
 		PluginPackage pluginPackage =
@@ -883,6 +898,36 @@ public class WabBundleProcessor {
 		}
 	}
 
+	private void _waitForCDIInitalizerListenerRegistered(
+		ServletContext servletContext) {
+
+		CountDownLatch countDownLatch = new CountDownLatch(1);
+
+		ServiceLatch serviceLatch = new ServiceLatch(
+			_bundle.getBundleContext());
+
+		serviceLatch.waitFor(
+			StringBundler.concat(
+				"(&(", HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_SELECT,
+				"=\\(", HttpWhiteboardConstants.HTTP_WHITEBOARD_CONTEXT_NAME,
+				"=/", servletContext.getServletContextName(), "\\))(",
+				HttpWhiteboardConstants.HTTP_WHITEBOARD_LISTENER, "=",
+				Boolean.TRUE, "))"));
+
+		serviceLatch.openOn(countDownLatch::countDown);
+
+		try {
+			countDownLatch.await(_cdiContainerTimeout, TimeUnit.MILLISECONDS);
+		}
+		catch (Exception exception) {
+			_log.error(
+				StringBundler.concat(
+					"Bundle ", _bundle, " is unable to see cdi container ",
+					"initalizer listener registered"),
+				exception);
+		}
+	}
+
 	private static final String _VENDOR = "Liferay, Inc.";
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -894,6 +939,7 @@ public class WabBundleProcessor {
 	private final Bundle _bundle;
 	private final ClassLoader _bundleClassLoader;
 	private final BundleContext _bundleContext;
+	private final long _cdiContainerTimeout;
 	private String _contextName;
 	private final Set<ServiceRegistration<Filter>> _filterServiceRegistrations =
 		new ConcurrentSkipListSet<>();

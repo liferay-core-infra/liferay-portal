@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.liferay</groupId>
   <artifactId>org.primefaces</artifactId>
-  <version>15.0.6.LIFERAY-PATCHED-2</version>
+  <version>15.0.6.LIFERAY-PATCHED-2.JAKARTA-LIFERAY-PATCHED-1</version>
   <licenses>
     <license>
       <name>LGPL 2.1</name>

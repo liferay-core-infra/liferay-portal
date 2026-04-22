@@ -69,6 +69,12 @@ public class QuartzUpgradeProcessTest {
 
 	@After
 	public void tearDown() throws Exception {
+		_companyLocalService.forEachCompany(
+			company -> _schedulerEngine.delete(
+				StringBundler.concat(
+					_GROUP_NAME, StringPool.AT, company.getCompanyId()),
+				StorageType.PERSISTED));
+
 		_schedulerEngine.delete(_GROUP_NAME, StorageType.PERSISTED);
 	}
 
@@ -93,7 +99,50 @@ public class QuartzUpgradeProcessTest {
 		Assert.assertNotNull(
 			_schedulerEngine.getScheduledJob(
 				StringBundler.concat(ctCollectionId, StringPool.AT, companyId),
-				_GROUP_NAME, StorageType.PERSISTED));
+				StringBundler.concat(_GROUP_NAME, StringPool.AT, companyId),
+				StorageType.PERSISTED));
+	}
+
+	@Test
+	public void testUpgradeWithDispatchJobGroupRename() throws Exception {
+		long companyId = TestPropsValues.getCompanyId();
+
+		_dispatchTrigger = _dispatchTriggerLocalService.addDispatchTrigger(
+			null, TestPropsValues.getUserId(),
+			SetUtil.randomElement(
+				_dispatchTaskExecutorRegistry.getDispatchTaskExecutorTypes()),
+			null, "test", false);
+
+		long dispatchTriggerId = _dispatchTrigger.getDispatchTriggerId();
+
+		String jobName = String.format("DISPATCH_JOB_%07d", dispatchTriggerId);
+		String groupName = String.format(
+			"DISPATCH_GROUP_%07d", dispatchTriggerId);
+
+		Message message = new Message();
+
+		message.setPayload(
+			StringBundler.concat(
+				"{\"dispatchTriggerId\": ", dispatchTriggerId, "}"));
+
+		_scheduleJob(jobName, groupName, _DISPATCH_DESTINATION_NAME, message);
+
+		_runUpgrade();
+
+		String renamedJobName = StringBundler.concat(
+			jobName, StringPool.AT, companyId);
+		String renamedGroupName = StringBundler.concat(
+			groupName, StringPool.AT, companyId);
+
+		Assert.assertNotNull(
+			_schedulerEngine.getScheduledJob(
+				renamedJobName, renamedGroupName, StorageType.PERSISTED));
+
+		Assert.assertNull(
+			_schedulerEngine.getScheduledJob(
+				renamedJobName, groupName, StorageType.PERSISTED));
+
+		_schedulerEngine.delete(renamedGroupName, StorageType.PERSISTED);
 	}
 
 	@Test
@@ -124,7 +173,8 @@ public class QuartzUpgradeProcessTest {
 			_schedulerEngine.getScheduledJob(
 				StringBundler.concat(
 					dispatchTriggerId, StringPool.AT, companyId),
-				_GROUP_NAME, StorageType.PERSISTED));
+				StringBundler.concat(_GROUP_NAME, StringPool.AT, companyId),
+				StorageType.PERSISTED));
 	}
 
 	@Test
@@ -179,7 +229,8 @@ public class QuartzUpgradeProcessTest {
 
 		for (SchedulerResponse schedulerResponse :
 				_schedulerEngine.getScheduledJobs(
-					_GROUP_NAME, StorageType.PERSISTED)) {
+					StringBundler.concat(_GROUP_NAME, StringPool.AT, companyId),
+					StorageType.PERSISTED)) {
 
 			expectedJobNames.remove(schedulerResponse.getJobName());
 		}
@@ -227,11 +278,14 @@ public class QuartzUpgradeProcessTest {
 			"test1@" + companyId1, "test2@" + companyId2,
 			"test3@" + companyId2);
 
-		for (SchedulerResponse schedulerResponse :
-				_schedulerEngine.getScheduledJobs(
-					_GROUP_NAME, StorageType.PERSISTED)) {
+		for (long cId : new long[] {companyId1, companyId2}) {
+			for (SchedulerResponse schedulerResponse :
+					_schedulerEngine.getScheduledJobs(
+						StringBundler.concat(_GROUP_NAME, StringPool.AT, cId),
+						StorageType.PERSISTED)) {
 
-			expectedJobNames.remove(schedulerResponse.getJobName());
+				expectedJobNames.remove(schedulerResponse.getJobName());
+			}
 		}
 
 		Assert.assertTrue(
@@ -264,11 +318,14 @@ public class QuartzUpgradeProcessTest {
 			"test1@" + companyId1, "test2@" + companyId1, "test3@" + companyId2,
 			"test4@" + companyId2);
 
-		for (SchedulerResponse schedulerResponse :
-				_schedulerEngine.getScheduledJobs(
-					_GROUP_NAME, StorageType.PERSISTED)) {
+		for (long cId : new long[] {companyId1, companyId2}) {
+			for (SchedulerResponse schedulerResponse :
+					_schedulerEngine.getScheduledJobs(
+						StringBundler.concat(_GROUP_NAME, StringPool.AT, cId),
+						StorageType.PERSISTED)) {
 
-			expectedJobNames.remove(schedulerResponse.getJobName());
+				expectedJobNames.remove(schedulerResponse.getJobName());
+			}
 		}
 
 		Assert.assertTrue(
@@ -290,8 +347,16 @@ public class QuartzUpgradeProcessTest {
 			String jobName, String destinationName, Message message)
 		throws Exception {
 
+		_scheduleJob(jobName, _GROUP_NAME, destinationName, message);
+	}
+
+	private void _scheduleJob(
+			String jobName, String groupName, String destinationName,
+			Message message)
+		throws Exception {
+
 		Trigger trigger = _triggerFactory.createTrigger(
-			jobName, _GROUP_NAME, null, null, 1, TimeUnit.DAY);
+			jobName, groupName, null, null, 1, TimeUnit.DAY);
 
 		_schedulerEngine.schedule(
 			trigger, StringPool.BLANK, destinationName, message,

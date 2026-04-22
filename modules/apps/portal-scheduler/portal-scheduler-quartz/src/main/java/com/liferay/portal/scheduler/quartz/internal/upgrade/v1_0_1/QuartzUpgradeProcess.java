@@ -42,26 +42,50 @@ public class QuartzUpgradeProcess extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		Map<String, Long> companyIds = new HashMap<>();
+		Map<String, Long> groupCompanyIds = new HashMap<>();
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"select job_name, job_data from QUARTZ_JOB_DETAILS where " +
-					"job_name not like '%@%'");
+				"select job_name, job_group, job_data from " +
+					"QUARTZ_JOB_DETAILS where job_name not like '%@%'");
 
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
+				String jobName = resultSet.getString("job_name");
+
 				JobDataMap jobDataMap = _deserializeJobDataMap(
 					resultSet.getBinaryStream("job_data"));
 
-				_loadCompanyId(
-					companyIds, resultSet.getString("job_name"), jobDataMap);
+				_loadCompanyId(companyIds, jobName, jobDataMap);
+
+				Long companyId = companyIds.get(jobName);
+
+				if (companyId != null) {
+					String jobGroup = resultSet.getString("job_group");
+
+					groupCompanyIds.put(jobGroup, companyId);
+				}
 			}
 		}
+
+		_updateTables(
+			groupCompanyIds, "job_group",
+			new String[] {
+				"QUARTZ_FIRED_TRIGGERS", "QUARTZ_JOB_DETAILS", "QUARTZ_TRIGGERS"
+			});
 
 		_updateTables(
 			companyIds, "job_name",
 			new String[] {
 				"QUARTZ_FIRED_TRIGGERS", "QUARTZ_JOB_DETAILS", "QUARTZ_TRIGGERS"
+			});
+
+		_updateTables(
+			groupCompanyIds, "trigger_group",
+			new String[] {
+				"QUARTZ_BLOB_TRIGGERS", "QUARTZ_CRON_TRIGGERS",
+				"QUARTZ_FIRED_TRIGGERS", "QUARTZ_SIMPLE_TRIGGERS",
+				"QUARTZ_SIMPROP_TRIGGERS", "QUARTZ_TRIGGERS"
 			});
 
 		_updateTables(

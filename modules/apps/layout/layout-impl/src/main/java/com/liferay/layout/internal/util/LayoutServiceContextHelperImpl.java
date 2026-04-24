@@ -6,6 +6,7 @@
 package com.liferay.layout.internal.util;
 
 import com.liferay.layout.util.LayoutServiceContextHelper;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -20,6 +21,7 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
@@ -150,6 +152,10 @@ public class LayoutServiceContextHelperImpl
 
 			_company = company;
 
+			_companyIdSafeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_company.getCompanyId());
+
 			_attributes = ConcurrentHashMapBuilder.<String, Object>put(
 				WebKeys.CTX,
 				ServletContextPool.get(_portal.getServletContextName())
@@ -257,6 +263,8 @@ public class LayoutServiceContextHelperImpl
 				_originalPermissionChecker);
 			PrincipalThreadLocal.setName(_originalName, false);
 			ServiceContextThreadLocal.popServiceContext();
+
+			_companyIdSafeCloseable.close();
 
 			if (_originalHttpServletRequest == null) {
 				return;
@@ -518,6 +526,7 @@ public class LayoutServiceContextHelperImpl
 
 		private final Map<String, Object> _attributes;
 		private final Company _company;
+		private final SafeCloseable _companyIdSafeCloseable;
 		private final Group _group;
 		private final HttpServletRequest _httpServletRequest;
 		private final HttpServletResponse _httpServletResponse;

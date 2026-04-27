@@ -17,6 +17,8 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -40,6 +42,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Mikel Lorza
  */
+@DeletableSystemGroup
 @RunWith(Arquillian.class)
 public class DepotEntryModelListenerTest {
 
@@ -47,6 +50,7 @@ public class DepotEntryModelListenerTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
+			new DeletableSystemGroupTestRule(),
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
 

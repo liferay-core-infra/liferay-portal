@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletRenderResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -74,13 +76,16 @@ import org.junit.runner.RunWith;
 /**
  * @author Alicia García
  */
+@DeletableSystemGroup
 @RunWith(Arquillian.class)
 public class WorkflowTaskDisplayContextTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new DeletableSystemGroupTestRule(),
+			new LiferayIntegrationTestRule());
 
 	@Before
 	public void setUp() throws Exception {

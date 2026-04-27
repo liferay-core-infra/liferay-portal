@@ -43,6 +43,8 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -69,15 +71,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * @author Carolina Barbosa
  */
+@DeletableSystemGroup
 @RunWith(Arquillian.class)
 public class ObjectEntryInfoItemFieldValuesUpdaterTest
 	extends BaseObjectEntryInfoItemTestCase {
+
+	@ClassRule
+	@Rule
+	public static final DeletableSystemGroupTestRule
+		deletableSystemGroupTestRule = DeletableSystemGroupTestRule.INSTANCE;
 
 	@Test
 	public void testUpdateFromInfoItemFieldValues() throws Exception {

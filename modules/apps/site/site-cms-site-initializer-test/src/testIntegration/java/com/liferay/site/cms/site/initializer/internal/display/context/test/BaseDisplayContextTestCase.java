@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -38,13 +40,21 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * @author Eudaldo Alonso
  */
+@DeletableSystemGroup
 public abstract class BaseDisplayContextTestCase {
+
+	@ClassRule
+	@Rule
+	public static final DeletableSystemGroupTestRule
+		deletableSystemGroupTestRule = new DeletableSystemGroupTestRule();
 
 	@Before
 	public void setUp() throws Exception {

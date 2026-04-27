@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.context.ContextUserReplace;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -65,6 +67,7 @@ import org.junit.runner.RunWith;
  * @author Gabriel Albuquerque
  */
 @DataGuard(scope = DataGuard.Scope.METHOD)
+@DeletableSystemGroup
 @RunWith(Arquillian.class)
 public class ObjectDefinitionServiceTest {
 
@@ -72,6 +75,7 @@ public class ObjectDefinitionServiceTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
+			new DeletableSystemGroupTestRule(),
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
 

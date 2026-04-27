@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.context.ContextUserReplace;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -47,6 +49,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Balazs Breier
  */
+@DeletableSystemGroup
 @FeatureFlag("LPD-17564")
 @RunWith(Arquillian.class)
 public class DeleteObjectBulkSelectionActionTest {
@@ -55,6 +58,7 @@ public class DeleteObjectBulkSelectionActionTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
+			new DeletableSystemGroupTestRule(),
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
 

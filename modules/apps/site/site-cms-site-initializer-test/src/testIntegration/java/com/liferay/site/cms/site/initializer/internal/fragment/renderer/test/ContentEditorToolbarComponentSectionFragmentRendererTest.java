@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -59,6 +61,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * @author Stefano Motta
  */
+@DeletableSystemGroup
 @FeatureFlag("LPD-17564")
 @RunWith(Arquillian.class)
 public class ContentEditorToolbarComponentSectionFragmentRendererTest {
@@ -67,6 +70,7 @@ public class ContentEditorToolbarComponentSectionFragmentRendererTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
+			new DeletableSystemGroupTestRule(),
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
 

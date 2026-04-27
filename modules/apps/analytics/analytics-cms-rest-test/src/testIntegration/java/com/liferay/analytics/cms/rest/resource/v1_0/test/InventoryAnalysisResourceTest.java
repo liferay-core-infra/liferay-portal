@@ -30,6 +30,8 @@ import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.rest.test.util.ObjectEntryTestUtil;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
+import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -60,12 +62,18 @@ import org.junit.runner.RunWith;
 /**
  * @author Rachael Koestartyo
  */
+@DeletableSystemGroup
 @FeatureFlags(
 	featureFlags = {@FeatureFlag("LPD-17564"), @FeatureFlag("LPD-34594")}
 )
 @RunWith(Arquillian.class)
 public class InventoryAnalysisResourceTest
 	extends BaseInventoryAnalysisResourceTestCase {
+
+	@ClassRule
+	@Rule
+	public static final DeletableSystemGroupTestRule
+		deletableSystemGroupTestRule = DeletableSystemGroupTestRule.INSTANCE;
 
 	@ClassRule
 	@Rule

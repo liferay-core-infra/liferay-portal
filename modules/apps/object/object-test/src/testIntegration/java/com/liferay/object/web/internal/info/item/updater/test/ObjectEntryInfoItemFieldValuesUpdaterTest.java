@@ -43,6 +43,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeletableSystemGroup;
 import com.liferay.portal.kernel.test.rule.DeletableSystemGroupTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -59,6 +60,8 @@ import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.site.cms.site.initializer.test.util.CMSTestUtil;
 
@@ -86,8 +89,11 @@ public class ObjectEntryInfoItemFieldValuesUpdaterTest
 
 	@ClassRule
 	@Rule
-	public static final DeletableSystemGroupTestRule
-		deletableSystemGroupTestRule = DeletableSystemGroupTestRule.INSTANCE;
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new DeletableSystemGroupTestRule(),
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Test
 	public void testUpdateFromInfoItemFieldValues() throws Exception {

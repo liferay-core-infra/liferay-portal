@@ -14437,6 +14437,10 @@ analytics.cloud.domain.allowed=*</echo>
 			<property name="project.release.dir.native" value="${release.tool.dir}" />
 		</ant>
 
+		<ant antfile="build-developer.xml" dir="${release.tool.dir}" inheritAll="false" target="generate-license-test-properties" useNativeBasedir="true">
+			<property name="properties.file" value="${app.server.classes.portal.dir}/portal-ext.properties" />
+		</ant>
+
 		<copy
 			overwrite="true"
 			tofile="${project.dir}/liferay-portal-bundle-tomcat.tar.gz"

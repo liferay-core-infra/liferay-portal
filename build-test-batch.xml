@@ -1134,6 +1134,10 @@ mariadb.executable=${mariadb.executable}]]></echo>
 				</not>
 				<then>
 					<antcall target="deploy-license-xml" />
+
+					<ant antfile="build-developer.xml" dir="${release.tool.dir}" inheritAll="false" target="generate-license-test-properties" useNativeBasedir="true">
+						<property name="properties.file" value="${app.server.classes.portal.dir}/portal-ext.properties" />
+					</ant>
 				</then>
 			</if>
 

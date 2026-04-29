@@ -1530,12 +1530,23 @@ public class PortletURLImpl
 					PortletRequest portletRequest = getPortletRequest();
 
 					if (portletRequest != null) {
-						LiferayRenderParameters renderParameters =
-							(LiferayRenderParameters)
-								portletRequest.getRenderParameters();
+						String[] requestRenderParameterValues = null;
 
-						String[] requestRenderParameterValues =
-							renderParameters.getValues(renderParameterName);
+						try {
+							LiferayRenderParameters renderParameters =
+								(LiferayRenderParameters)
+									portletRequest.getRenderParameters();
+
+							requestRenderParameterValues =
+								renderParameters.getValues(renderParameterName);
+						}
+						catch (UnsupportedOperationException
+									unsupportedOperationException) {
+
+							requestRenderParameterValues =
+								portletRequest.getParameterValues(
+									renderParameterName);
+						}
 
 						if ((requestRenderParameterValues != null) &&
 							_copyCurrentRenderParameters &&
@@ -1658,30 +1669,44 @@ public class PortletURLImpl
 		else {
 			mutableRenderParameterMap = new LinkedHashMap<>();
 
-			RenderParametersImpl liferayRenderParametersImpl =
-				(RenderParametersImpl)_portletRequest.getRenderParameters();
+			try {
+				RenderParametersImpl liferayRenderParametersImpl =
+					(RenderParametersImpl)_portletRequest.getRenderParameters();
 
-			publicRenderParameterNames =
-				liferayRenderParametersImpl.getPublicRenderParameterNames();
+				publicRenderParameterNames =
+					liferayRenderParametersImpl.getPublicRenderParameterNames();
 
-			if (MimeResponse.Copy.ALL.equals(_copy) ||
-				MimeResponse.Copy.PUBLIC.equals(_copy)) {
+				if (MimeResponse.Copy.ALL.equals(_copy) ||
+					MimeResponse.Copy.PUBLIC.equals(_copy)) {
 
-				Map<String, String[]> liferayRenderParameterMap =
-					liferayRenderParametersImpl.getParameterMap();
+					Map<String, String[]> liferayRenderParameterMap =
+						liferayRenderParametersImpl.getParameterMap();
 
-				for (Map.Entry<String, String[]> entry :
-						liferayRenderParameterMap.entrySet()) {
+					for (Map.Entry<String, String[]> entry :
+							liferayRenderParameterMap.entrySet()) {
 
-					String renderParameterName = entry.getKey();
+						String renderParameterName = entry.getKey();
 
-					if (MimeResponse.Copy.ALL.equals(_copy) ||
-						liferayRenderParametersImpl.isPublic(
-							renderParameterName)) {
+						if (MimeResponse.Copy.ALL.equals(_copy) ||
+							liferayRenderParametersImpl.isPublic(
+								renderParameterName)) {
 
-						mutableRenderParameterMap.put(
-							renderParameterName, entry.getValue());
+							mutableRenderParameterMap.put(
+								renderParameterName, entry.getValue());
+						}
 					}
+				}
+			}
+			catch (UnsupportedOperationException
+						unsupportedOperationException) {
+
+				publicRenderParameterNames = new HashSet<>();
+
+				if (MimeResponse.Copy.ALL.equals(_copy) ||
+					MimeResponse.Copy.PUBLIC.equals(_copy)) {
+
+					mutableRenderParameterMap.putAll(
+						_portletRequest.getParameterMap());
 				}
 			}
 		}

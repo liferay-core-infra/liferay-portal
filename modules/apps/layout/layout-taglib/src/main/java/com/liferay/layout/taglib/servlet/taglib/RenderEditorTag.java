@@ -8,6 +8,9 @@ package com.liferay.layout.taglib.servlet.taglib;
 import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -84,6 +87,12 @@ public class RenderEditorTag extends IncludeTag {
 	@Override
 	protected void setAttributes(HttpServletRequest httpServletRequest) {
 		try {
+			long companyId = CompanyThreadLocal.getCompanyId();
+
+			if (companyId != CompanyConstants.SYSTEM) {
+				httpServletRequest.setAttribute(WebKeys.COMPANY_ID, companyId);
+			}
+
 			httpServletRequest.setAttribute(
 				"liferay-layout:render-editor:content", _content);
 			httpServletRequest.setAttribute(

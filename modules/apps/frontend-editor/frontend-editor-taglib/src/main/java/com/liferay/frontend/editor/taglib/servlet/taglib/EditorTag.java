@@ -11,10 +11,12 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.editor.configuration.EditorConfiguration;
 import com.liferay.portal.kernel.editor.configuration.EditorConfigurationFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -353,6 +355,12 @@ public class EditorTag extends BaseValidatorTagSupport {
 
 	@Override
 	protected void setAttributes(HttpServletRequest httpServletRequest) {
+		long companyId = CompanyThreadLocal.getCompanyId();
+
+		if (companyId != CompanyConstants.SYSTEM) {
+			httpServletRequest.setAttribute(WebKeys.COMPANY_ID, companyId);
+		}
+
 		setNamespacedAttribute(
 			httpServletRequest, "allowBrowseDocuments",
 			String.valueOf(_allowBrowseDocuments));

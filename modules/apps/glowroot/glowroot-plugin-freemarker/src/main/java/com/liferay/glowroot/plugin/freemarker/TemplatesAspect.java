@@ -134,10 +134,17 @@ public class TemplatesAspect {
 
 			ThemeDisplayShim themeDisplayShim = (ThemeDisplayShim)parameters[9];
 
-			sb.append(themeDisplayShim.getCompanyId());
+			if (themeDisplayShim != null) {
+				sb.append(themeDisplayShim.getCompanyId());
+				sb.append(", Site Group ID ");
+				sb.append(themeDisplayShim.getSiteGroupId());
+			}
+			else {
+				JournalArticleShim journalArticleShim =
+					(JournalArticleShim)parameters[0];
 
-			sb.append(", Site Group ID ");
-			sb.append(themeDisplayShim.getSiteGroupId());
+				sb.append(journalArticleShim.getCompanyId());
+			}
 
 			DDMTemplateShim dDMTemplateShim = (DDMTemplateShim)parameters[1];
 
@@ -301,6 +308,9 @@ public class TemplatesAspect {
 
 	@Shim("com.liferay.journal.model.JournalArticle")
 	public interface JournalArticleShim {
+
+		public long getCompanyId();
+
 	}
 
 	@Shim("com.liferay.portal.kernel.theme.ThemeDisplay")

@@ -102,7 +102,9 @@ public final class LiferayXmlLayout extends AbstractStringLayout {
 		sb.append(
 			Transform.escapeHtmlTags(String.valueOf(logEvent.getLevel())));
 		sb.append("\" thread=\"");
-		sb.append(Transform.escapeHtmlTags(logEvent.getThreadName()));
+		sb.append(
+			Transform.escapeHtmlTags(
+				_stripForbiddenXML10Chars(logEvent.getThreadName())));
 		sb.append("\">");
 		sb.append(StringPool.RETURN_NEW_LINE);
 		sb.append("<log4j:message>");
@@ -110,7 +112,8 @@ public final class LiferayXmlLayout extends AbstractStringLayout {
 
 		Message message = logEvent.getMessage();
 
-		Transform.appendEscapingCData(sb, message.getFormattedMessage());
+		Transform.appendEscapingCData(
+			sb, _stripForbiddenXML10Chars(message.getFormattedMessage()));
 
 		sb.append(StringPool.CDATA_CLOSE);
 		sb.append("</log4j:message>");
@@ -125,7 +128,8 @@ public final class LiferayXmlLayout extends AbstractStringLayout {
 			sb.append(StringPool.CDATA_OPEN);
 
 			Transform.appendEscapingCData(
-				sb, Strings.join(ndc, CharPool.SPACE));
+				sb,
+				_stripForbiddenXML10Chars(Strings.join(ndc, CharPool.SPACE)));
 
 			sb.append(StringPool.CDATA_CLOSE);
 			sb.append("</log4j:NDC>");
@@ -142,7 +146,8 @@ public final class LiferayXmlLayout extends AbstractStringLayout {
 
 			throwable.printStackTrace(new PrintWriter(stringWriter));
 
-			Transform.appendEscapingCData(sb, stringWriter.toString());
+			Transform.appendEscapingCData(
+				sb, _stripForbiddenXML10Chars(stringWriter.toString()));
 
 			sb.append(StringPool.CDATA_CLOSE);
 			sb.append("</log4j:throwable>");
@@ -181,11 +186,14 @@ public final class LiferayXmlLayout extends AbstractStringLayout {
 					(key, value) -> {
 						if (value != null) {
 							sb.append("<log4j:data name=\"");
-							sb.append(Transform.escapeHtmlTags(key));
+							sb.append(
+								Transform.escapeHtmlTags(
+									_stripForbiddenXML10Chars(key)));
 							sb.append("\" value=\"");
 							sb.append(
 								Transform.escapeHtmlTags(
-									String.valueOf(value)));
+									_stripForbiddenXML10Chars(
+										String.valueOf(value))));
 							sb.append("\"/>");
 							sb.append(StringPool.RETURN_NEW_LINE);
 						}
@@ -200,6 +208,47 @@ public final class LiferayXmlLayout extends AbstractStringLayout {
 		sb.append(StringPool.RETURN_NEW_LINE);
 		sb.append(StringPool.RETURN_NEW_LINE);
 	}
+
+	private boolean _isForbiddenXML10Char(char c) {
+		if ((c < 0x20) && (c != CharPool.NEW_LINE) && (c != CharPool.RETURN) &&
+			(c != CharPool.TAB)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private String _stripForbiddenXML10Chars(String string) {
+		if (string == null) {
+			return null;
+		}
+
+		StringBuilder sb = null;
+
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+
+			if (_isForbiddenXML10Char(c)) {
+				if (sb == null) {
+					sb = new StringBuilder(string.substring(0, i));
+				}
+
+				sb.append(_REPLACEMENT_CHARACTER);
+			}
+			else if (sb != null) {
+				sb.append(c);
+			}
+		}
+
+		if (sb != null) {
+			return sb.toString();
+		}
+
+		return string;
+	}
+
+	private static final char _REPLACEMENT_CHARACTER = '\uFFFD';
 
 	private final boolean _locationInfo;
 	private final boolean _properties;

@@ -231,6 +231,36 @@ public class PortalLog4jTest {
 			"TestLogContext");
 	}
 
+	@Test
+	public void testXmlLogOutputWithForbiddenXml10Chars() throws Exception {
+		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
+
+		String forbiddenCharString = String.valueOf((char)1);
+
+		logger.info("message with forbidden char: " + forbiddenCharString);
+
+		try {
+			String xmlOutput = new String(Files.readAllBytes(_xmlLogFilePath));
+
+			Assert.assertTrue(
+				xmlOutput.contains("message with forbidden char"));
+
+			Assert.assertTrue(xmlOutput.contains("\uFFFD"));
+
+			Assert.assertFalse(xmlOutput.contains(forbiddenCharString));
+		}
+		finally {
+			_unsyncStringWriter.reset();
+
+			Files.write(
+				_textLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+			Files.write(
+				_xmlLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+		}
+	}
+
 	private static Path _initFileAppender(
 		Logger logger, Appender appender, String tempLogDir) {
 

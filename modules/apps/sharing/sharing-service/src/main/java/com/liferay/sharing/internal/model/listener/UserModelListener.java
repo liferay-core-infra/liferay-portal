@@ -72,8 +72,9 @@ public class UserModelListener extends BaseModelListener<User> {
 			TicketTable.INSTANCE.type.eq(
 				TicketConstants.TYPE_INVITE_COLLABORATOR)
 		).and(
-			DSLFunctionFactoryUtil.castClobText(
-				TicketTable.INSTANCE.extraInfo
+			DSLFunctionFactoryUtil.lower(
+				DSLFunctionFactoryUtil.castClobText(
+					TicketTable.INSTANCE.extraInfo)
 			).eq(
 				StringUtil.lowerCase(user.getEmailAddress())
 			)

@@ -79,9 +79,9 @@ public class UserModelListenerTest {
 	@Test
 	@TestInfo("LPD-48130")
 	public void testAddUser() throws Exception {
-		_testAddUser();
 		_testAddUserWithDuplicatePendingInvitations();
 		_testAddUserWithInvalidExtraInfo();
+		_testAddUserWithPendingInvitations();
 	}
 
 	@Test
@@ -198,8 +198,8 @@ public class UserModelListenerTest {
 	@Test
 	@TestInfo("LPD-48130")
 	public void testUpdateUserStatus() throws Exception {
-		_testUpdateUserStatus();
 		_testUpdateUserStatusWithExistingUserSharingEntry();
+		_testUpdateUserStatusWithPendingInvitations();
 	}
 
 	private Ticket _addInviteCollaboratorTicket(
@@ -258,56 +258,9 @@ public class UserModelListenerTest {
 		return StringUtil.toLowerCase(StringUtil.trim(emailAddress));
 	}
 
-	private void _testAddUser() throws Exception {
-		String emailAddress1 = RandomTestUtil.randomString() + "@liferay.com";
-		String emailAddress2 = RandomTestUtil.randomString() + "@liferay.com";
+	private void _testAddUserWithDuplicatePendingInvitations()
+		throws Exception {
 
-		_group2 = GroupTestUtil.addGroup();
-
-		Ticket ticket1 = _addInviteCollaboratorTicket(
-			_group1.getGroupId(), emailAddress1);
-		Ticket ticket2 = _addInviteCollaboratorTicket(
-			_group2.getGroupId(), emailAddress1);
-		Ticket ticket3 = _addInviteCollaboratorTicket(
-			_group1.getGroupId(), emailAddress2);
-
-		SharingEntry sharingEntry1 = _addTicketSharingEntry(
-			_group1.getGroupId(), ticket1.getTicketId());
-		SharingEntry sharingEntry2 = _addTicketSharingEntry(
-			_group2.getGroupId(), ticket2.getTicketId());
-		SharingEntry sharingEntry3 = _addTicketSharingEntry(
-			_group1.getGroupId(), ticket3.getTicketId());
-
-		User user = _addUser(emailAddress1);
-
-		Assert.assertNull(
-			_ticketLocalService.fetchTicket(ticket1.getTicketId()));
-		Assert.assertNull(
-			_ticketLocalService.fetchTicket(ticket2.getTicketId()));
-
-		sharingEntry1 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry1.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry1.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry1.getToUserId());
-
-		sharingEntry2 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry2.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry2.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry2.getToUserId());
-
-		ticket3 = _ticketLocalService.fetchTicket(ticket3.getTicketId());
-
-		sharingEntry3 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry3.getSharingEntryId());
-
-		Assert.assertEquals(
-			ticket3.getTicketId(), sharingEntry3.getToTicketId());
-		Assert.assertEquals(0, sharingEntry3.getToUserId());
-	}
-
-	private void _testAddUserWithDuplicatePendingInvitations() throws Exception {
 		String emailAddress = RandomTestUtil.randomString() + "@liferay.com";
 
 		Ticket ticket1 = _addInviteCollaboratorTicket(
@@ -415,57 +368,53 @@ public class UserModelListenerTest {
 		Assert.assertEquals(user.getUserId(), sharingEntry3.getToUserId());
 	}
 
-	private void _testUpdateUserStatus() throws Exception {
-		WorkflowDefinitionLink workflowDefinitionLink =
-			_workflowDefinitionLinkLocalService.addWorkflowDefinitionLink(
-				null, TestPropsValues.getUserId(),
-				TestPropsValues.getCompanyId(),
-				WorkflowConstants.DEFAULT_GROUP_ID, User.class.getName(), 0, 0,
-				"Single Approver", 1);
+	private void _testAddUserWithPendingInvitations() throws Exception {
+		String emailAddress1 = RandomTestUtil.randomString() + "@liferay.com";
+		String emailAddress2 = RandomTestUtil.randomString() + "@liferay.com";
 
-		try {
-			String emailAddress =
-				RandomTestUtil.randomString() + "@liferay.com";
+		_group2 = GroupTestUtil.addGroup();
 
-			Ticket ticket = _addInviteCollaboratorTicket(
-				_group1.getGroupId(), emailAddress);
+		Ticket ticket1 = _addInviteCollaboratorTicket(
+			_group1.getGroupId(), emailAddress1);
+		Ticket ticket2 = _addInviteCollaboratorTicket(
+			_group2.getGroupId(), emailAddress1);
+		Ticket ticket3 = _addInviteCollaboratorTicket(
+			_group1.getGroupId(), emailAddress2);
 
-			SharingEntry sharingEntry = _addTicketSharingEntry(
-				_group1.getGroupId(), ticket.getTicketId());
+		SharingEntry sharingEntry1 = _addTicketSharingEntry(
+			_group1.getGroupId(), ticket1.getTicketId());
+		SharingEntry sharingEntry2 = _addTicketSharingEntry(
+			_group2.getGroupId(), ticket2.getTicketId());
+		SharingEntry sharingEntry3 = _addTicketSharingEntry(
+			_group1.getGroupId(), ticket3.getTicketId());
 
-			User user = _addUserWithWorkflow(emailAddress);
+		User user = _addUser(emailAddress1);
 
-			Assert.assertEquals(
-				WorkflowConstants.STATUS_PENDING, user.getStatus());
+		Assert.assertNull(
+			_ticketLocalService.fetchTicket(ticket1.getTicketId()));
+		Assert.assertNull(
+			_ticketLocalService.fetchTicket(ticket2.getTicketId()));
 
-			Assert.assertNotNull(
-				_ticketLocalService.fetchTicket(ticket.getTicketId()));
+		sharingEntry1 = _sharingEntryLocalService.getSharingEntry(
+			sharingEntry1.getSharingEntryId());
 
-			sharingEntry = _sharingEntryLocalService.getSharingEntry(
-				sharingEntry.getSharingEntryId());
+		Assert.assertEquals(0, sharingEntry1.getToTicketId());
+		Assert.assertEquals(user.getUserId(), sharingEntry1.getToUserId());
 
-			Assert.assertEquals(
-				ticket.getTicketId(), sharingEntry.getToTicketId());
-			Assert.assertEquals(0, sharingEntry.getToUserId());
+		sharingEntry2 = _sharingEntryLocalService.getSharingEntry(
+			sharingEntry2.getSharingEntryId());
 
-			_userLocalService.updateStatus(
-				user.getUserId(), WorkflowConstants.STATUS_APPROVED,
-				ServiceContextTestUtil.getServiceContext(
-					_group1.getGroupId(), TestPropsValues.getUserId()));
+		Assert.assertEquals(0, sharingEntry2.getToTicketId());
+		Assert.assertEquals(user.getUserId(), sharingEntry2.getToUserId());
 
-			Assert.assertNull(
-				_ticketLocalService.fetchTicket(ticket.getTicketId()));
+		ticket3 = _ticketLocalService.fetchTicket(ticket3.getTicketId());
 
-			sharingEntry = _sharingEntryLocalService.getSharingEntry(
-				sharingEntry.getSharingEntryId());
+		sharingEntry3 = _sharingEntryLocalService.getSharingEntry(
+			sharingEntry3.getSharingEntryId());
 
-			Assert.assertEquals(0, sharingEntry.getToTicketId());
-			Assert.assertEquals(user.getUserId(), sharingEntry.getToUserId());
-		}
-		finally {
-			_workflowDefinitionLinkLocalService.deleteWorkflowDefinitionLink(
-				workflowDefinitionLink);
-		}
+		Assert.assertEquals(
+			ticket3.getTicketId(), sharingEntry3.getToTicketId());
+		Assert.assertEquals(0, sharingEntry3.getToUserId());
 	}
 
 	private void _testUpdateUserStatusWithExistingUserSharingEntry()
@@ -521,6 +470,61 @@ public class UserModelListenerTest {
 		Assert.assertEquals(
 			existingSharingEntry.getSharingEntryId(),
 			toUserSharingEntry.getSharingEntryId());
+	}
+
+	private void _testUpdateUserStatusWithPendingInvitations()
+		throws Exception {
+
+		WorkflowDefinitionLink workflowDefinitionLink =
+			_workflowDefinitionLinkLocalService.addWorkflowDefinitionLink(
+				null, TestPropsValues.getUserId(),
+				TestPropsValues.getCompanyId(),
+				WorkflowConstants.DEFAULT_GROUP_ID, User.class.getName(), 0, 0,
+				"Single Approver", 1);
+
+		try {
+			String emailAddress =
+				RandomTestUtil.randomString() + "@liferay.com";
+
+			Ticket ticket = _addInviteCollaboratorTicket(
+				_group1.getGroupId(), emailAddress);
+
+			SharingEntry sharingEntry = _addTicketSharingEntry(
+				_group1.getGroupId(), ticket.getTicketId());
+
+			User user = _addUserWithWorkflow(emailAddress);
+
+			Assert.assertEquals(
+				WorkflowConstants.STATUS_PENDING, user.getStatus());
+
+			Assert.assertNotNull(
+				_ticketLocalService.fetchTicket(ticket.getTicketId()));
+
+			sharingEntry = _sharingEntryLocalService.getSharingEntry(
+				sharingEntry.getSharingEntryId());
+
+			Assert.assertEquals(
+				ticket.getTicketId(), sharingEntry.getToTicketId());
+			Assert.assertEquals(0, sharingEntry.getToUserId());
+
+			_userLocalService.updateStatus(
+				user.getUserId(), WorkflowConstants.STATUS_APPROVED,
+				ServiceContextTestUtil.getServiceContext(
+					_group1.getGroupId(), TestPropsValues.getUserId()));
+
+			Assert.assertNull(
+				_ticketLocalService.fetchTicket(ticket.getTicketId()));
+
+			sharingEntry = _sharingEntryLocalService.getSharingEntry(
+				sharingEntry.getSharingEntryId());
+
+			Assert.assertEquals(0, sharingEntry.getToTicketId());
+			Assert.assertEquals(user.getUserId(), sharingEntry.getToUserId());
+		}
+		finally {
+			_workflowDefinitionLinkLocalService.deleteWorkflowDefinitionLink(
+				workflowDefinitionLink);
+		}
 	}
 
 	@Inject

@@ -123,8 +123,8 @@ public class UserModelListener extends BaseModelListener<User> {
 				sharingEntry.getClassNameId(), sharingEntry.getClassPK());
 
 		if (existingSharingEntry != null) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					StringBundler.concat(
 						"A sharing entry already exists for user ",
 						user.getUserId(), " with classNameId ",

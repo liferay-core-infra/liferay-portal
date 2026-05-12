@@ -231,6 +231,139 @@ public class PortalLog4jTest {
 			"TestLogContext");
 	}
 
+	@Test
+	public void testXMLLogOutputWithForbiddenXML10CharsInLogFields()
+		throws Exception {
+
+		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
+
+		Files.write(
+			_xmlLogFilePath, new byte[0], StandardOpenOption.CREATE,
+			StandardOpenOption.TRUNCATE_EXISTING);
+
+		String forbiddenCharString = String.valueOf((char)1);
+
+		String originalThreadNameString = Thread.currentThread(
+		).getName();
+
+		Thread.currentThread(
+		).setName(
+			"thread:" + forbiddenCharString
+		);
+
+		ThreadContext.push("ndc:" + forbiddenCharString);
+		ThreadContext.put(
+			"key:" + forbiddenCharString, "value:" + forbiddenCharString);
+
+		logger.info("message");
+
+		try {
+			String xmlOutput = new String(Files.readAllBytes(_xmlLogFilePath));
+
+			Assert.assertFalse(xmlOutput.contains(forbiddenCharString));
+		}
+		finally {
+			Thread.currentThread(
+			).setName(
+				originalThreadNameString
+			);
+
+			ThreadContext.pop();
+			ThreadContext.remove("key:" + forbiddenCharString);
+
+			_unsyncStringWriter.reset();
+
+			Files.write(
+				_textLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+			Files.write(
+				_xmlLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+		}
+	}
+
+	@Test
+	public void testXMLLogOutputWithForbiddenXML10CharsInMessage()
+		throws Exception {
+
+		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
+
+		Files.write(
+			_xmlLogFilePath, new byte[0], StandardOpenOption.CREATE,
+			StandardOpenOption.TRUNCATE_EXISTING);
+
+		String forbiddenCharString = String.valueOf((char)1);
+
+		logger.info(
+			"tab:\there newline:\nhere return:\rhere forbidden:" +
+				forbiddenCharString);
+
+		try {
+			String xmlOutput = new String(Files.readAllBytes(_xmlLogFilePath));
+
+			Matcher matcher = _xmlMessagePattern.matcher(xmlOutput);
+
+			Assert.assertTrue(matcher.find());
+			Assert.assertEquals(
+				"tab:\there newline:\nhere return:\rhere forbidden:",
+				matcher.group(1));
+		}
+		finally {
+			_unsyncStringWriter.reset();
+
+			Files.write(
+				_textLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+			Files.write(
+				_xmlLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+		}
+	}
+
+	@Test
+	public void testXMLLogOutputWithForbiddenXML10CharsInThrowable()
+		throws Exception {
+
+		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
+
+		Files.write(
+			_xmlLogFilePath, new byte[0], StandardOpenOption.CREATE,
+			StandardOpenOption.TRUNCATE_EXISTING);
+
+		String forbiddenCharString = String.valueOf((char)1);
+
+		logger.error(
+			"error logged",
+			new RuntimeException(
+				"exception with forbidden char: " + forbiddenCharString));
+
+		try {
+			String xmlOutput = new String(Files.readAllBytes(_xmlLogFilePath));
+
+			Matcher matcher = _xmlThrowablePattern.matcher(xmlOutput);
+
+			Assert.assertTrue(matcher.find());
+			Assert.assertTrue(
+				matcher.group(
+					1
+				).contains(
+					"exception with forbidden char: "
+				));
+
+			Assert.assertFalse(xmlOutput.contains(forbiddenCharString));
+		}
+		finally {
+			_unsyncStringWriter.reset();
+
+			Files.write(
+				_textLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+			Files.write(
+				_xmlLogFilePath, new byte[0],
+				StandardOpenOption.TRUNCATE_EXISTING);
+		}
+	}
+
 	private static Path _initFileAppender(
 		Logger logger, Appender appender, String tempLogDir) {
 
@@ -687,6 +820,12 @@ public class PortalLog4jTest {
 	private static final UnsyncStringWriter _unsyncStringWriter =
 		new UnsyncStringWriter();
 	private static Path _xmlLogFilePath;
+	private static final Pattern _xmlMessagePattern = Pattern.compile(
+		"<log4j:message><!\\[CDATA\\[(.*?)\\]\\]></log4j:message>",
+		Pattern.DOTALL);
+	private static final Pattern _xmlThrowablePattern = Pattern.compile(
+		"<log4j:throwable><!\\[CDATA\\[(.*?)\\]\\]></log4j:throwable>",
+		Pattern.DOTALL);
 
 	private static class TestOutputStream extends CloseShieldOutputStream {
 

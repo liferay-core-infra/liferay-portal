@@ -9,11 +9,12 @@ import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.TicketConstants;
 import com.liferay.portal.kernel.model.TicketTable;
 import com.liferay.portal.kernel.model.User;
@@ -25,7 +26,9 @@ import com.liferay.sharing.model.SharingEntryTable;
 import com.liferay.sharing.service.SharingEntryLocalService;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -62,11 +65,6 @@ public class UserModelListener extends BaseModelListener<User> {
 		_sharingEntryLocalService.deleteToUserSharingEntries(user.getUserId());
 	}
 
-	private Predicate _getPredicate() {
-		return SharingEntryTable.INSTANCE.toTicketId.eq(
-			TicketTable.INSTANCE.ticketId);
-	}
-
 	private Predicate _getWherePredicate(User user) {
 		return TicketTable.INSTANCE.companyId.eq(
 			user.getCompanyId()
@@ -85,26 +83,35 @@ public class UserModelListener extends BaseModelListener<User> {
 	}
 
 	private void _updateSharingEntries(User user) {
-		List<Ticket> tickets = (List<Ticket>)_ticketLocalService.dslQuery(
-			DSLQueryFactoryUtil.selectDistinct(
-				TicketTable.INSTANCE
-			).from(
-				TicketTable.INSTANCE
-			).innerJoinON(
-				SharingEntryTable.INSTANCE, _getPredicate()
-			).where(
-				_getWherePredicate(user)
-			));
+		List<SharingEntry> sharingEntries =
+			(List<SharingEntry>)_sharingEntryLocalService.dslQuery(
+				DSLQueryFactoryUtil.selectDistinct(
+					SharingEntryTable.INSTANCE
+				).from(
+					SharingEntryTable.INSTANCE
+				).innerJoinON(
+					TicketTable.INSTANCE,
+					SharingEntryTable.INSTANCE.toTicketId.eq(
+						TicketTable.INSTANCE.ticketId)
+				).where(
+					_getWherePredicate(user)
+				));
 
-		for (Ticket ticket : tickets) {
-			for (SharingEntry sharingEntry :
-					_sharingEntryLocalService.getToTicketSharingEntries(
-						ticket.getTicketId())) {
+		Set<Long> ticketIds = new HashSet<>();
 
-				_updateSharingEntry(sharingEntry, user);
+		for (SharingEntry sharingEntry : sharingEntries) {
+			ticketIds.add(sharingEntry.getToTicketId());
+
+			_updateSharingEntry(sharingEntry, user);
+		}
+
+		for (Long ticketId : ticketIds) {
+			try {
+				_ticketLocalService.deleteTicket(ticketId);
 			}
-
-			_ticketLocalService.deleteTicket(ticket);
+			catch (PortalException portalException) {
+				throw new ModelListenerException(portalException);
+			}
 		}
 	}
 

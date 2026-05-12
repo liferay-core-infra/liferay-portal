@@ -63,14 +63,8 @@ public class UserModelListener extends BaseModelListener<User> {
 	}
 
 	private Predicate _getPredicate() {
-		return SharingEntryTable.INSTANCE.classNameId.eq(
-			TicketTable.INSTANCE.classNameId
-		).and(
-			SharingEntryTable.INSTANCE.classPK.eq(TicketTable.INSTANCE.classPK)
-		).and(
-			SharingEntryTable.INSTANCE.toTicketId.eq(
-				TicketTable.INSTANCE.ticketId)
-		);
+		return SharingEntryTable.INSTANCE.toTicketId.eq(
+			TicketTable.INSTANCE.ticketId);
 	}
 
 	private Predicate _getWherePredicate(User user) {

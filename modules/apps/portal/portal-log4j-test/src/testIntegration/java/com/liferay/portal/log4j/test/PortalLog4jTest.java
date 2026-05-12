@@ -231,6 +231,128 @@ public class PortalLog4jTest {
 			"TestLogContext");
 	}
 
+	@Test
+	public void testXMLLogOutputWithCDATAClosingSequence() throws Exception {
+		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
+
+		Files.write(
+			_xmlLogFilePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+
+		logger.info("before]]>after");
+
+		try {
+			String xmlOutput = new String(Files.readAllBytes(_xmlLogFilePath));
+
+			Assert.assertTrue(xmlOutput.contains("before"));
+			Assert.assertTrue(xmlOutput.contains("after"));
+			Assert.assertTrue(xmlOutput.contains("]]>]]&gt;<![CDATA["));
+		}
+		finally {
+			_clearLogFiles();
+		}
+	}
+
+	@Test
+	public void testXMLLogOutputWithForbiddenXML10Chars() throws Exception {
+		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
+
+		Files.write(
+			_xmlLogFilePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+
+		String forbiddenCharString = String.valueOf((char)1);
+
+		String originalThreadNameString = Thread.currentThread(
+		).getName();
+
+		Thread.currentThread(
+		).setName(
+			"thread:" + forbiddenCharString
+		);
+
+		ThreadContext.push("ndc:" + forbiddenCharString);
+		ThreadContext.put(
+			"key:" + forbiddenCharString, "value:" + forbiddenCharString);
+
+		logger.error(
+			"tab:\there newline:\nhere return:\rhere forbidden:" +
+				forbiddenCharString,
+			new RuntimeException(
+				"exception with forbidden char: " + forbiddenCharString));
+
+		try {
+			String xmlOutput = new String(Files.readAllBytes(_xmlLogFilePath));
+
+			Assert.assertFalse(xmlOutput.contains(forbiddenCharString));
+			Assert.assertTrue(xmlOutput.contains("thread=\"thread: \""));
+
+			Matcher messageMatcher = _xmlMessagePattern.matcher(xmlOutput);
+
+			Assert.assertTrue(messageMatcher.find());
+			Assert.assertEquals(
+				"tab:\there newline:\nhere return:\rhere forbidden:",
+				messageMatcher.group(1));
+
+			Matcher ndcMatcher = _xmlNdcPattern.matcher(xmlOutput);
+
+			Assert.assertTrue(ndcMatcher.find());
+			Assert.assertEquals("ndc:", ndcMatcher.group(1));
+
+			Matcher throwableMatcher = _xmlThrowablePattern.matcher(xmlOutput);
+
+			Assert.assertTrue(throwableMatcher.find());
+			Assert.assertTrue(
+				throwableMatcher.group(
+					1
+				).contains(
+					"exception with forbidden char: "
+				));
+		}
+		finally {
+			Thread.currentThread(
+			).setName(
+				originalThreadNameString
+			);
+
+			ThreadContext.pop();
+			ThreadContext.remove("key:" + forbiddenCharString);
+
+			_clearLogFiles();
+		}
+	}
+
+	@Test
+	public void testXMLLogOutputWithHTMLSpecialChars() throws Exception {
+		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
+
+		Files.write(
+			_xmlLogFilePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+
+		String originalThreadNameString = Thread.currentThread(
+		).getName();
+
+		Thread.currentThread(
+		).setName(
+			"thread:<>&\""
+		);
+
+		logger.info("message");
+
+		try {
+			String xmlOutput = new String(Files.readAllBytes(_xmlLogFilePath));
+
+			Assert.assertFalse(xmlOutput.contains("thread:<>&\""));
+			Assert.assertTrue(xmlOutput.contains("thread:&lt;&gt;&amp;&quot;"));
+		}
+		finally {
+			Thread.currentThread(
+			).setName(
+				originalThreadNameString
+			);
+
+			_clearLogFiles();
+		}
+	}
+
 	private static Path _initFileAppender(
 		Logger logger, Appender appender, String tempLogDir) {
 
@@ -476,6 +598,16 @@ public class PortalLog4jTest {
 				0, expectedLog4JLocationInfoFile.length()));
 	}
 
+	private void _clearLogFiles() throws IOException {
+		_unsyncStringWriter.reset();
+
+		Files.write(
+			_textLogFilePath, new byte[0],
+			StandardOpenOption.TRUNCATE_EXISTING);
+		Files.write(
+			_xmlLogFilePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+	}
+
 	private void _outputLog(String level, String message, Throwable throwable) {
 		if (level.equals("DEBUG")) {
 			if ((message == null) && (throwable != null)) {
@@ -687,6 +819,14 @@ public class PortalLog4jTest {
 	private static final UnsyncStringWriter _unsyncStringWriter =
 		new UnsyncStringWriter();
 	private static Path _xmlLogFilePath;
+	private static final Pattern _xmlMessagePattern = Pattern.compile(
+		"<log4j:message><!\\[CDATA\\[(.*?)\\]\\]></log4j:message>",
+		Pattern.DOTALL);
+	private static final Pattern _xmlNdcPattern = Pattern.compile(
+		"<log4j:NDC><!\\[CDATA\\[(.*?)\\]\\]></log4j:NDC>", Pattern.DOTALL);
+	private static final Pattern _xmlThrowablePattern = Pattern.compile(
+		"<log4j:throwable><!\\[CDATA\\[(.*?)\\]\\]></log4j:throwable>",
+		Pattern.DOTALL);
 
 	private static class TestOutputStream extends CloseShieldOutputStream {
 

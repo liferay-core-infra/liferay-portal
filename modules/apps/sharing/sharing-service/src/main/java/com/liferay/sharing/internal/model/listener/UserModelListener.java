@@ -95,7 +95,8 @@ public class UserModelListener extends BaseModelListener<User> {
 						TicketTable.INSTANCE.ticketId)
 				).where(
 					_getWherePredicate(user)
-				));
+				),
+				false);
 
 		Set<Long> ticketIds = new HashSet<>();
 

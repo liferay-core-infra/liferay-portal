@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.model.TicketConstants;
 import com.liferay.portal.kernel.model.TicketTable;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.TicketLocalService;
-import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.sharing.model.SharingEntry;
@@ -92,33 +91,27 @@ public class UserModelListener extends BaseModelListener<User> {
 	}
 
 	private void _updateSharingEntries(User user) {
-		TransactionCommitCallbackUtil.registerCallback(
-			() -> {
-				List<Ticket> tickets =
-					(List<Ticket>)_ticketLocalService.dslQuery(
-						DSLQueryFactoryUtil.selectDistinct(
-							TicketTable.INSTANCE
-						).from(
-							TicketTable.INSTANCE
-						).innerJoinON(
-							SharingEntryTable.INSTANCE, _getPredicate()
-						).where(
-							_getWherePredicate(user)
-						));
+		List<Ticket> tickets = (List<Ticket>)_ticketLocalService.dslQuery(
+			DSLQueryFactoryUtil.selectDistinct(
+				TicketTable.INSTANCE
+			).from(
+				TicketTable.INSTANCE
+			).innerJoinON(
+				SharingEntryTable.INSTANCE, _getPredicate()
+			).where(
+				_getWherePredicate(user)
+			));
 
-				for (Ticket ticket : tickets) {
-					for (SharingEntry sharingEntry :
-							_sharingEntryLocalService.getToTicketSharingEntries(
-								ticket.getTicketId())) {
+		for (Ticket ticket : tickets) {
+			for (SharingEntry sharingEntry :
+					_sharingEntryLocalService.getToTicketSharingEntries(
+						ticket.getTicketId())) {
 
-						_updateSharingEntry(sharingEntry, user);
-					}
+				_updateSharingEntry(sharingEntry, user);
+			}
 
-					_ticketLocalService.deleteTicket(ticket);
-				}
-
-				return null;
-			});
+			_ticketLocalService.deleteTicket(ticket);
+		}
 	}
 
 	private void _updateSharingEntry(SharingEntry sharingEntry, User user) {

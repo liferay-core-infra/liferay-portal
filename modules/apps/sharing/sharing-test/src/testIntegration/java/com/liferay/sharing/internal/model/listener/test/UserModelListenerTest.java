@@ -81,6 +81,7 @@ public class UserModelListenerTest {
 	public void testAddUser() throws Exception {
 		_testAddUserWithDuplicatePendingInvitations();
 		_testAddUserWithInvalidExtraInfo();
+		_testAddUserWithMixedCaseExtraInfo();
 		_testAddUserWithPendingInvitations();
 	}
 
@@ -366,6 +367,31 @@ public class UserModelListenerTest {
 
 		Assert.assertEquals(0, sharingEntry3.getToTicketId());
 		Assert.assertEquals(user.getUserId(), sharingEntry3.getToUserId());
+	}
+
+	private void _testAddUserWithMixedCaseExtraInfo() throws Exception {
+		String emailAddress = RandomTestUtil.randomString() + "@liferay.com";
+
+		Ticket ticket = _ticketLocalService.addTicket(
+			TestPropsValues.getCompanyId(), Group.class.getName(),
+			_group1.getGroupId(), TicketConstants.TYPE_INVITE_COLLABORATOR,
+			StringUtil.toUpperCase(emailAddress),
+			new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(48)),
+			new ServiceContext());
+
+		SharingEntry sharingEntry = _addTicketSharingEntry(
+			_group1.getGroupId(), ticket.getTicketId());
+
+		User user = _addUser(emailAddress);
+
+		Assert.assertNull(
+			_ticketLocalService.fetchTicket(ticket.getTicketId()));
+
+		sharingEntry = _sharingEntryLocalService.getSharingEntry(
+			sharingEntry.getSharingEntryId());
+
+		Assert.assertEquals(0, sharingEntry.getToTicketId());
+		Assert.assertEquals(user.getUserId(), sharingEntry.getToUserId());
 	}
 
 	private void _testAddUserWithPendingInvitations() throws Exception {

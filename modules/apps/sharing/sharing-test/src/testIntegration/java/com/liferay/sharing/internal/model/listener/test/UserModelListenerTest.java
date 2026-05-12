@@ -115,26 +115,9 @@ public class UserModelListenerTest {
 		Assert.assertNull(
 			_ticketLocalService.fetchTicket(ticket2.getTicketId()));
 
-		sharingEntry1 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry1.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry1.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry1.getToUserId());
-
-		sharingEntry2 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry2.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry2.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry2.getToUserId());
-
-		ticket3 = _ticketLocalService.fetchTicket(ticket3.getTicketId());
-
-		sharingEntry3 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry3.getSharingEntryId());
-
-		Assert.assertEquals(
-			ticket3.getTicketId(), sharingEntry3.getToTicketId());
-		Assert.assertEquals(0, sharingEntry3.getToUserId());
+		_assertSharingEntryToUserId(sharingEntry1, user);
+		_assertSharingEntryToUserId(sharingEntry2, user);
+		_assertSharingEntryToTicketId(sharingEntry3, ticket3);
 	}
 
 	@Test
@@ -205,15 +188,23 @@ public class UserModelListenerTest {
 	}
 
 	private Ticket _addInviteCollaboratorTicket(
-			long classPK, String emailAddress)
+			long classPK, Date expirationDate, String extraInfo)
 		throws Exception {
 
 		return _ticketLocalService.addTicket(
 			TestPropsValues.getCompanyId(), Group.class.getName(), classPK,
-			TicketConstants.TYPE_INVITE_COLLABORATOR,
-			_normalizeEmailAddress(emailAddress),
-			new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(48)),
+			TicketConstants.TYPE_INVITE_COLLABORATOR, extraInfo, expirationDate,
 			new ServiceContext());
+	}
+
+	private Ticket _addInviteCollaboratorTicket(
+			long classPK, String emailAddress)
+		throws Exception {
+
+		return _addInviteCollaboratorTicket(
+			classPK,
+			new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(48)),
+			_normalizeEmailAddress(emailAddress));
 	}
 
 	private SharingEntry _addTicketSharingEntry(long classPK, long toTicketId)
@@ -256,6 +247,42 @@ public class UserModelListenerTest {
 		return user;
 	}
 
+	private void _assertSharingEntryToTicketId(
+			SharingEntry sharingEntry, Ticket ticket)
+		throws Exception {
+
+		SharingEntry persistedSharingEntry =
+			_sharingEntryLocalService.getSharingEntry(
+				sharingEntry.getSharingEntryId());
+
+		Assert.assertEquals(
+			ticket.getTicketId(), persistedSharingEntry.getToTicketId());
+		Assert.assertEquals(0, persistedSharingEntry.getToUserId());
+	}
+
+	private void _assertSharingEntryToUserId(
+			SharingEntry sharingEntry, User user)
+		throws Exception {
+
+		SharingEntry persistedSharingEntry =
+			_sharingEntryLocalService.getSharingEntry(
+				sharingEntry.getSharingEntryId());
+
+		Assert.assertEquals(0, persistedSharingEntry.getToTicketId());
+		Assert.assertEquals(
+			user.getUserId(), persistedSharingEntry.getToUserId());
+	}
+
+	private void _assertToTicketSharingEntriesCount(int count, Ticket ticket) {
+		List<SharingEntry> toTicketSharingEntries =
+			_sharingEntryLocalService.getToTicketSharingEntries(
+				ticket.getTicketId());
+
+		Assert.assertEquals(
+			toTicketSharingEntries.toString(), count,
+			toTicketSharingEntries.size());
+	}
+
 	private String _normalizeEmailAddress(String emailAddress) {
 		return StringUtil.toLowerCase(StringUtil.trim(emailAddress));
 	}
@@ -273,21 +300,8 @@ public class UserModelListenerTest {
 		_addTicketSharingEntry(_group1.getGroupId(), ticket1.getTicketId());
 		_addTicketSharingEntry(_group1.getGroupId(), ticket2.getTicketId());
 
-		List<SharingEntry> toTicketSharingEntries =
-			_sharingEntryLocalService.getToTicketSharingEntries(
-				ticket1.getTicketId());
-
-		Assert.assertEquals(
-			toTicketSharingEntries.toString(), 1,
-			toTicketSharingEntries.size());
-
-		toTicketSharingEntries =
-			_sharingEntryLocalService.getToTicketSharingEntries(
-				ticket2.getTicketId());
-
-		Assert.assertEquals(
-			toTicketSharingEntries.toString(), 1,
-			toTicketSharingEntries.size());
+		_assertToTicketSharingEntriesCount(1, ticket1);
+		_assertToTicketSharingEntriesCount(1, ticket2);
 
 		User user = _addUser(emailAddress);
 
@@ -306,47 +320,27 @@ public class UserModelListenerTest {
 
 		Assert.assertEquals(0, toUserSharingEntry.getToTicketId());
 
-		toTicketSharingEntries =
-			_sharingEntryLocalService.getToTicketSharingEntries(
-				ticket1.getTicketId());
-
-		Assert.assertEquals(
-			toTicketSharingEntries.toString(), 0,
-			toTicketSharingEntries.size());
-
-		toTicketSharingEntries =
-			_sharingEntryLocalService.getToTicketSharingEntries(
-				ticket2.getTicketId());
-
-		Assert.assertEquals(
-			toTicketSharingEntries.toString(), 0,
-			toTicketSharingEntries.size());
+		_assertToTicketSharingEntriesCount(0, ticket1);
+		_assertToTicketSharingEntriesCount(0, ticket2);
 	}
 
 	private void _testAddUserWithExpiredInvitationTicket() throws Exception {
 		String emailAddress = RandomTestUtil.randomString() + "@liferay.com";
 
-		Ticket ticket = _ticketLocalService.addTicket(
-			TestPropsValues.getCompanyId(), Group.class.getName(),
-			_group1.getGroupId(), TicketConstants.TYPE_INVITE_COLLABORATOR,
-			_normalizeEmailAddress(emailAddress),
+		Ticket ticket = _addInviteCollaboratorTicket(
+			_group1.getGroupId(),
 			new Date(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(1)),
-			new ServiceContext());
+			_normalizeEmailAddress(emailAddress));
 
 		SharingEntry sharingEntry = _addTicketSharingEntry(
 			_group1.getGroupId(), ticket.getTicketId());
 
-		User user = _addUser(emailAddress);
+		_addUser(emailAddress);
 
 		Assert.assertNotNull(
 			_ticketLocalService.fetchTicket(ticket.getTicketId()));
 
-		sharingEntry = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry.getSharingEntryId());
-
-		Assert.assertEquals(
-			ticket.getTicketId(), sharingEntry.getToTicketId());
-		Assert.assertEquals(0, sharingEntry.getToUserId());
+		_assertSharingEntryToTicketId(sharingEntry, ticket);
 	}
 
 	private void _testAddUserWithInvalidExtraInfo() throws Exception {
@@ -375,36 +369,18 @@ public class UserModelListenerTest {
 		Assert.assertNull(
 			_ticketLocalService.fetchTicket(ticket3.getTicketId()));
 
-		sharingEntry1 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry1.getSharingEntryId());
-
-		Assert.assertEquals(
-			ticket1.getTicketId(), sharingEntry1.getToTicketId());
-		Assert.assertEquals(0, sharingEntry1.getToUserId());
-
-		sharingEntry2 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry2.getSharingEntryId());
-
-		Assert.assertEquals(
-			ticket2.getTicketId(), sharingEntry2.getToTicketId());
-		Assert.assertEquals(0, sharingEntry2.getToUserId());
-
-		sharingEntry3 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry3.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry3.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry3.getToUserId());
+		_assertSharingEntryToTicketId(sharingEntry1, ticket1);
+		_assertSharingEntryToTicketId(sharingEntry2, ticket2);
+		_assertSharingEntryToUserId(sharingEntry3, user);
 	}
 
 	private void _testAddUserWithMixedCaseExtraInfo() throws Exception {
 		String emailAddress = RandomTestUtil.randomString() + "@liferay.com";
 
-		Ticket ticket = _ticketLocalService.addTicket(
-			TestPropsValues.getCompanyId(), Group.class.getName(),
-			_group1.getGroupId(), TicketConstants.TYPE_INVITE_COLLABORATOR,
-			StringUtil.toUpperCase(emailAddress),
+		Ticket ticket = _addInviteCollaboratorTicket(
+			_group1.getGroupId(),
 			new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(48)),
-			new ServiceContext());
+			StringUtil.toUpperCase(emailAddress));
 
 		SharingEntry sharingEntry = _addTicketSharingEntry(
 			_group1.getGroupId(), ticket.getTicketId());
@@ -414,11 +390,7 @@ public class UserModelListenerTest {
 		Assert.assertNull(
 			_ticketLocalService.fetchTicket(ticket.getTicketId()));
 
-		sharingEntry = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry.getToUserId());
+		_assertSharingEntryToUserId(sharingEntry, user);
 	}
 
 	private void _testAddUserWithPendingInvitations() throws Exception {
@@ -448,26 +420,9 @@ public class UserModelListenerTest {
 		Assert.assertNull(
 			_ticketLocalService.fetchTicket(ticket2.getTicketId()));
 
-		sharingEntry1 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry1.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry1.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry1.getToUserId());
-
-		sharingEntry2 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry2.getSharingEntryId());
-
-		Assert.assertEquals(0, sharingEntry2.getToTicketId());
-		Assert.assertEquals(user.getUserId(), sharingEntry2.getToUserId());
-
-		ticket3 = _ticketLocalService.fetchTicket(ticket3.getTicketId());
-
-		sharingEntry3 = _sharingEntryLocalService.getSharingEntry(
-			sharingEntry3.getSharingEntryId());
-
-		Assert.assertEquals(
-			ticket3.getTicketId(), sharingEntry3.getToTicketId());
-		Assert.assertEquals(0, sharingEntry3.getToUserId());
+		_assertSharingEntryToUserId(sharingEntry1, user);
+		_assertSharingEntryToUserId(sharingEntry2, user);
+		_assertSharingEntryToTicketId(sharingEntry3, ticket3);
 	}
 
 	private void _testUpdateUserStatusWithExistingUserSharingEntry()
@@ -504,13 +459,7 @@ public class UserModelListenerTest {
 		Assert.assertNull(
 			_ticketLocalService.fetchTicket(ticket.getTicketId()));
 
-		List<SharingEntry> toTicketSharingEntries =
-			_sharingEntryLocalService.getToTicketSharingEntries(
-				ticket.getTicketId());
-
-		Assert.assertEquals(
-			toTicketSharingEntries.toString(), 0,
-			toTicketSharingEntries.size());
+		_assertToTicketSharingEntriesCount(0, ticket);
 
 		List<SharingEntry> toUserSharingEntries =
 			_sharingEntryLocalService.getToUserSharingEntries(user.getUserId());
@@ -553,12 +502,7 @@ public class UserModelListenerTest {
 			Assert.assertNotNull(
 				_ticketLocalService.fetchTicket(ticket.getTicketId()));
 
-			sharingEntry = _sharingEntryLocalService.getSharingEntry(
-				sharingEntry.getSharingEntryId());
-
-			Assert.assertEquals(
-				ticket.getTicketId(), sharingEntry.getToTicketId());
-			Assert.assertEquals(0, sharingEntry.getToUserId());
+			_assertSharingEntryToTicketId(sharingEntry, ticket);
 
 			_userLocalService.updateStatus(
 				user.getUserId(), WorkflowConstants.STATUS_APPROVED,
@@ -568,11 +512,7 @@ public class UserModelListenerTest {
 			Assert.assertNull(
 				_ticketLocalService.fetchTicket(ticket.getTicketId()));
 
-			sharingEntry = _sharingEntryLocalService.getSharingEntry(
-				sharingEntry.getSharingEntryId());
-
-			Assert.assertEquals(0, sharingEntry.getToTicketId());
-			Assert.assertEquals(user.getUserId(), sharingEntry.getToUserId());
+			_assertSharingEntryToUserId(sharingEntry, user);
 		}
 		finally {
 			_workflowDefinitionLinkLocalService.deleteWorkflowDefinitionLink(

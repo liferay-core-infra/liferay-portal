@@ -101,10 +101,35 @@ public class UserModelListener extends BaseModelListener<User> {
 
 		Set<Long> ticketIds = new HashSet<>();
 
-		for (SharingEntry sharingEntry : sharingEntries) {
-			ticketIds.add(sharingEntry.getToTicketId());
+		for (SharingEntry pendingSharingEntry : sharingEntries) {
+			ticketIds.add(pendingSharingEntry.getToTicketId());
 
-			_updateSharingEntry(sharingEntry, user);
+			SharingEntry existingSharingEntry =
+				_sharingEntryLocalService.fetchSharingEntry(
+					0, pendingSharingEntry.getToUserGroupId(), user.getUserId(),
+					pendingSharingEntry.getClassNameId(),
+					pendingSharingEntry.getClassPK());
+
+			if (existingSharingEntry != null) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						StringBundler.concat(
+							"A sharing entry already exists for user ",
+							user.getUserId(), " with classNameId ",
+							pendingSharingEntry.getClassNameId(),
+							" and classPK ", pendingSharingEntry.getClassPK()));
+				}
+
+				_sharingEntryLocalService.deleteSharingEntry(
+					pendingSharingEntry);
+			}
+			else {
+				pendingSharingEntry.setToTicketId(0);
+				pendingSharingEntry.setToUserId(user.getUserId());
+
+				_sharingEntryLocalService.updateSharingEntry(
+					pendingSharingEntry);
+			}
 		}
 
 		for (Long ticketId : ticketIds) {
@@ -115,33 +140,6 @@ public class UserModelListener extends BaseModelListener<User> {
 				throw new ModelListenerException(portalException);
 			}
 		}
-	}
-
-	private void _updateSharingEntry(SharingEntry sharingEntry, User user) {
-		SharingEntry existingSharingEntry =
-			_sharingEntryLocalService.fetchSharingEntry(
-				0, sharingEntry.getToUserGroupId(), user.getUserId(),
-				sharingEntry.getClassNameId(), sharingEntry.getClassPK());
-
-		if (existingSharingEntry != null) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					StringBundler.concat(
-						"A sharing entry already exists for user ",
-						user.getUserId(), " with classNameId ",
-						sharingEntry.getClassNameId(), " and classPK ",
-						sharingEntry.getClassPK()));
-			}
-
-			_sharingEntryLocalService.deleteSharingEntry(sharingEntry);
-
-			return;
-		}
-
-		sharingEntry.setToTicketId(0);
-		sharingEntry.setToUserId(user.getUserId());
-
-		_sharingEntryLocalService.updateSharingEntry(sharingEntry);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

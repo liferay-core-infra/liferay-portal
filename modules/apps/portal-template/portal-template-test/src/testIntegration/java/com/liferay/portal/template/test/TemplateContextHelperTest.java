@@ -27,6 +27,7 @@ import java.io.InputStream;
 
 import java.net.URL;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +37,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -201,6 +207,39 @@ public class TemplateContextHelperTest {
 
 		Assert.assertEquals(
 			" nonce=\"TEST_NONCE\"", contextObjects.get("nonceAttribute"));
+	}
+
+	@Test
+	public void testPropsUtilNotAccessibleInRestrictedTemplateContext()
+		throws Exception {
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			TemplateContextHelperTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		Collection<ServiceReference<TemplateContextHelper>> serviceReferences =
+			bundleContext.getServiceReferences(
+				TemplateContextHelper.class, null);
+
+		Assert.assertFalse(serviceReferences.isEmpty());
+
+		for (ServiceReference<TemplateContextHelper> serviceReference :
+				serviceReferences) {
+
+			TemplateContextHelper templateContextHelper =
+				bundleContext.getService(serviceReference);
+
+			try {
+				Map<String, Object> helperUtilities =
+					templateContextHelper.getHelperUtilities(true);
+
+				Assert.assertFalse(helperUtilities.containsKey("propsUtil"));
+			}
+			finally {
+				bundleContext.ungetService(serviceReference);
+			}
+		}
 	}
 
 }

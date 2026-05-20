@@ -1,0 +1,1 @@
+create unique index IX_5BC23E1F on IgnoredRule (companyId, ruleKey[$COLUMN_LENGTH:75$]);

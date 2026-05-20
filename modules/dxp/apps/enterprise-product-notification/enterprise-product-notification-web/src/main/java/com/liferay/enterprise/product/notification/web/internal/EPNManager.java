@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 
+import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
@@ -36,15 +38,33 @@ public class EPNManager {
 		PortalPreferences portalPreferences =
 			_portletPreferencesFactory.getPortalPreferences(userId, true);
 
-		portalPreferences.resetValues(_NAMESPACE);
+		String[] enabledKeys = TransformUtil.transform(
+			ArrayUtil.filter(
+				_keyValuePairs,
+				keyValuePair -> _isEnabled(keyValuePair.getKey())),
+			keyValuePair -> keyValuePair.getKey(), String.class);
 
-		portalPreferences.setValues(
-			_NAMESPACE, "confirmedKeys",
-			TransformUtil.transform(
-				ArrayUtil.filter(
-					_keyValuePairs,
-					keyValuePair -> _isEnabled(keyValuePair.getKey())),
-				keyValuePair -> keyValuePair.getKey(), String.class));
+		String[] confirmedKeys = portalPreferences.getValues(
+			_NAMESPACE, "confirmedKeys", null);
+
+		if (Arrays.equals(enabledKeys, confirmedKeys)) {
+			return;
+		}
+
+		try {
+			portalPreferences.setValues(
+				_NAMESPACE, "confirmedKeys", enabledKeys);
+		}
+		catch (ConcurrentModificationException
+					concurrentModificationException) {
+
+			String[] reloadedConfirmedKeys = portalPreferences.getValues(
+				_NAMESPACE, "confirmedKeys", null);
+
+			if (!Arrays.equals(enabledKeys, reloadedConfirmedKeys)) {
+				throw concurrentModificationException;
+			}
+		}
 	}
 
 	public String getBodyHTML(Locale locale, long userId) {

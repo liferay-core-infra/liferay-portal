@@ -35,10 +35,12 @@ public class VulcanCompanyConfigurationUpgradeProcess extends UpgradeProcess {
 		}
 
 		try (Statement statement = connection.createStatement();
+
 			ResultSet resultSet = statement.executeQuery(
 				StringBundler.concat(
 					"select * from Configuration_ where configurationId LIKE ",
 					"'%", VulcanCompanyConfiguration.class.getName(), "%'"));
+
 			PreparedStatement preparedStatement =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection,

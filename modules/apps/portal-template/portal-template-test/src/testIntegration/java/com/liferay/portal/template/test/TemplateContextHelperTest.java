@@ -187,6 +187,40 @@ public class TemplateContextHelperTest {
 	}
 
 	@Test
+	public void testPortletConfigNotAccessibleInRestrictedTemplateContext()
+		throws Exception {
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			TemplateContextHelperTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		Collection<ServiceReference<TemplateContextHelper>> serviceReferences =
+			bundleContext.getServiceReferences(
+				TemplateContextHelper.class, null);
+
+		Assert.assertFalse(serviceReferences.isEmpty());
+
+		for (ServiceReference<TemplateContextHelper> serviceReference :
+				serviceReferences) {
+
+			TemplateContextHelper templateContextHelper =
+				bundleContext.getService(serviceReference);
+
+			try {
+				Assert.assertTrue(
+					templateContextHelper.getRestrictedVariables(
+					).contains(
+						"portletConfig"
+					));
+			}
+			finally {
+				bundleContext.ungetService(serviceReference);
+			}
+		}
+	}
+
+	@Test
 	public void testPrepare() {
 		TemplateContextHelper templateContextHelper =
 			new TemplateContextHelper();

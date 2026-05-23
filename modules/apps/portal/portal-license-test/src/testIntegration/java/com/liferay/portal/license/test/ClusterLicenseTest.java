@@ -23,6 +23,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +67,8 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		System.setOut(
 			new TestPrintStream(System.out, _testConsoleMessageListener));
 
-		_tomcatNode1 = _startTomcatNode();
-		_tomcatNode2 = _startTomcatNode();
+		_tomcatNode1 = _startTomcatNode(true);
+		_tomcatNode2 = _startTomcatNode(true);
 	}
 
 	@AfterClass
@@ -104,7 +107,7 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		_tomcatNode1.syncExecute(this::_testFreeTierLicense);
 		_tomcatNode2.syncExecute(this::_testFreeTierLicense);
 
-		TomcatNode tomcatNode3 = _startTomcatNode();
+		TomcatNode tomcatNode3 = _startTomcatNode(true);
 
 		tomcatNode3.syncExecute(this::_testFreeTierLicense);
 
@@ -119,6 +122,7 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 			_CONSOLE_KEY_NODE_EXCEEDED);
 
 		TomcatNode tomcatNode4 = _startTomcatNode(
+			true,
 			_getClusterExecutable(
 				tomcatNode3.syncExecute(this::_getTimeStamp)));
 
@@ -160,7 +164,7 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		_tomcatNode1.syncExecute(this::_testFreeTierLicense);
 		_tomcatNode2.syncExecute(this::_testFreeTierLicense);
 
-		TomcatNode tomcatNode3 = _startTomcatNode();
+		TomcatNode tomcatNode3 = _startTomcatNode(true);
 
 		tomcatNode3.syncExecute(this::_testFreeTierLicense);
 
@@ -177,9 +181,9 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		TomcatNode.ClusterExecutable<Serializable> clusterExecutable =
 			_getClusterExecutable(tomcatNode3.syncExecute(this::_getTimeStamp));
 
-		TomcatNode tomcatNode4 = _startTomcatNode(clusterExecutable);
-		TomcatNode tomcatNode5 = _startTomcatNode(clusterExecutable);
-		TomcatNode tomcatNode6 = _startTomcatNode(clusterExecutable);
+		TomcatNode tomcatNode4 = _startTomcatNode(true, clusterExecutable);
+		TomcatNode tomcatNode5 = _startTomcatNode(true, clusterExecutable);
+		TomcatNode tomcatNode6 = _startTomcatNode(true, clusterExecutable);
 
 		_testConsoleMessageListener.assertMessageListened(messageFuture1);
 		_testConsoleMessageListener.assertMessageListened(messageFuture2);
@@ -216,7 +220,7 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 
 		_testConsoleMessageListener.assertMessageListened(messageFuture6);
 
-		TomcatNode tomcatNode7 = _startTomcatNode(clusterExecutable);
+		TomcatNode tomcatNode7 = _startTomcatNode(true, clusterExecutable);
 
 		Future<String> messageFuture7 = _testConsoleMessageListener.register(
 			tomcatNode7.getNodeId(), _CONSOLE_KEY_BEYOND_TEMPORARY_NODE,
@@ -251,6 +255,7 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 
 	@SafeVarargs
 	private static TomcatNode _startTomcatNode(
+			boolean overloadNodeAutoShutDown,
 			TomcatNode.ClusterExecutable<Serializable>...
 				additionalClusterExecutables)
 		throws Exception {
@@ -258,6 +263,13 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		TomcatCluster.Builder builder = tomcatClusterTestRule.buildTomcatNode();
 
 		TomcatNode tomcatNode = builder.build();
+
+		Files.write(
+			tomcatNode.getPortalExtPropertiesPath(),
+			List.of(
+				"license.cluster.overload.node.auto.shut.down=" +
+					overloadNodeAutoShutDown),
+			StandardOpenOption.APPEND);
 
 		tomcatNode.start(true);
 

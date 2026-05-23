@@ -26,6 +26,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -294,9 +297,26 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 				additionalClusterExecutables)
 		throws Exception {
 
+		return _startTomcatNode(true, additionalClusterExecutables);
+	}
+
+	@SafeVarargs
+	private TomcatNode _startTomcatNode(
+			boolean overloadNodeAutoShutdown,
+			TomcatNode.ClusterExecutable<Serializable>...
+				additionalClusterExecutables)
+		throws Exception {
+
 		TomcatCluster.Builder builder = tomcatClusterTestRule.buildTomcatNode();
 
 		TomcatNode tomcatNode = builder.build();
+
+		Files.write(
+			tomcatNode.getPortalExtPropertiesPath(),
+			List.of(
+				"license.cluster.overload.node.auto.shut.down=" +
+					overloadNodeAutoShutdown),
+			StandardOpenOption.APPEND);
 
 		tomcatNode.start(true);
 

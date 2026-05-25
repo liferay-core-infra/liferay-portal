@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.tools.service.builder.test.exception.DuplicateERCVersionedEntryExternalReferenceCodeException;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchERCVersionedEntryException;
 import com.liferay.portal.tools.service.builder.test.model.ERCVersionedEntry;
@@ -101,8 +100,8 @@ public class ERCVersionedEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByUuid.find(
-			finderCache, new Object[] {uuid}, start, end, orderByComparator,
-			useFinderCache);
+			dummyFinderCache, new Object[] {uuid}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -142,7 +141,7 @@ public class ERCVersionedEntryPersistenceImpl
 		String uuid, OrderByComparator<ERCVersionedEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByUuid.fetchFirst(
-			finderCache, new Object[] {uuid}, orderByComparator);
+			dummyFinderCache, new Object[] {uuid}, orderByComparator);
 	}
 
 	/**
@@ -153,7 +152,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		_collectionPersistenceFinderByUuid.remove(
-			finderCache, new Object[] {uuid});
+			dummyFinderCache, new Object[] {uuid});
 	}
 
 	/**
@@ -165,7 +164,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByUuid(String uuid) {
 		return _collectionPersistenceFinderByUuid.count(
-			finderCache, new Object[] {uuid});
+			dummyFinderCache, new Object[] {uuid});
 	}
 
 	private CollectionPersistenceFinder<ERCVersionedEntry>
@@ -193,7 +192,7 @@ public class ERCVersionedEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByUuid_Head.find(
-			finderCache, new Object[] {uuid, head}, start, end,
+			dummyFinderCache, new Object[] {uuid, head}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -238,7 +237,7 @@ public class ERCVersionedEntryPersistenceImpl
 		OrderByComparator<ERCVersionedEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByUuid_Head.fetchFirst(
-			finderCache, new Object[] {uuid, head}, orderByComparator);
+			dummyFinderCache, new Object[] {uuid, head}, orderByComparator);
 	}
 
 	/**
@@ -250,7 +249,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public void removeByUuid_Head(String uuid, boolean head) {
 		_collectionPersistenceFinderByUuid_Head.remove(
-			finderCache, new Object[] {uuid, head});
+			dummyFinderCache, new Object[] {uuid, head});
 	}
 
 	/**
@@ -263,7 +262,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByUuid_Head(String uuid, boolean head) {
 		return _collectionPersistenceFinderByUuid_Head.count(
-			finderCache, new Object[] {uuid, head});
+			dummyFinderCache, new Object[] {uuid, head});
 	}
 
 	private CollectionPersistenceFinder<ERCVersionedEntry>
@@ -291,7 +290,7 @@ public class ERCVersionedEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByUUID_G.find(
-			finderCache, new Object[] {uuid, groupId}, start, end,
+			dummyFinderCache, new Object[] {uuid, groupId}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -336,7 +335,7 @@ public class ERCVersionedEntryPersistenceImpl
 		OrderByComparator<ERCVersionedEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByUUID_G.fetchFirst(
-			finderCache, new Object[] {uuid, groupId}, orderByComparator);
+			dummyFinderCache, new Object[] {uuid, groupId}, orderByComparator);
 	}
 
 	/**
@@ -348,7 +347,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public void removeByUUID_G(String uuid, long groupId) {
 		_collectionPersistenceFinderByUUID_G.remove(
-			finderCache, new Object[] {uuid, groupId});
+			dummyFinderCache, new Object[] {uuid, groupId});
 	}
 
 	/**
@@ -361,7 +360,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByUUID_G(String uuid, long groupId) {
 		return _collectionPersistenceFinderByUUID_G.count(
-			finderCache, new Object[] {uuid, groupId});
+			dummyFinderCache, new Object[] {uuid, groupId});
 	}
 
 	private UniquePersistenceFinder<ERCVersionedEntry>
@@ -414,7 +413,8 @@ public class ERCVersionedEntryPersistenceImpl
 		String uuid, long groupId, boolean head, boolean useFinderCache) {
 
 		return _uniquePersistenceFinderByUUID_G_Head.fetch(
-			finderCache, new Object[] {uuid, groupId, head}, useFinderCache);
+			dummyFinderCache, new Object[] {uuid, groupId, head},
+			useFinderCache);
 	}
 
 	/**
@@ -447,7 +447,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByUUID_G_Head(String uuid, long groupId, boolean head) {
 		return _uniquePersistenceFinderByUUID_G_Head.count(
-			finderCache, new Object[] {uuid, groupId, head});
+			dummyFinderCache, new Object[] {uuid, groupId, head});
 	}
 
 	private CollectionPersistenceFinder<ERCVersionedEntry>
@@ -475,7 +475,7 @@ public class ERCVersionedEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByUuid_C.find(
-			finderCache, new Object[] {uuid, companyId}, start, end,
+			dummyFinderCache, new Object[] {uuid, companyId}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -520,7 +520,8 @@ public class ERCVersionedEntryPersistenceImpl
 		OrderByComparator<ERCVersionedEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByUuid_C.fetchFirst(
-			finderCache, new Object[] {uuid, companyId}, orderByComparator);
+			dummyFinderCache, new Object[] {uuid, companyId},
+			orderByComparator);
 	}
 
 	/**
@@ -532,7 +533,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		_collectionPersistenceFinderByUuid_C.remove(
-			finderCache, new Object[] {uuid, companyId});
+			dummyFinderCache, new Object[] {uuid, companyId});
 	}
 
 	/**
@@ -545,7 +546,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByUuid_C(String uuid, long companyId) {
 		return _collectionPersistenceFinderByUuid_C.count(
-			finderCache, new Object[] {uuid, companyId});
+			dummyFinderCache, new Object[] {uuid, companyId});
 	}
 
 	private CollectionPersistenceFinder<ERCVersionedEntry>
@@ -574,7 +575,7 @@ public class ERCVersionedEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByUuid_C_Head.find(
-			finderCache, new Object[] {uuid, companyId, head}, start, end,
+			dummyFinderCache, new Object[] {uuid, companyId, head}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -622,7 +623,7 @@ public class ERCVersionedEntryPersistenceImpl
 		OrderByComparator<ERCVersionedEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByUuid_C_Head.fetchFirst(
-			finderCache, new Object[] {uuid, companyId, head},
+			dummyFinderCache, new Object[] {uuid, companyId, head},
 			orderByComparator);
 	}
 
@@ -636,7 +637,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C_Head(String uuid, long companyId, boolean head) {
 		_collectionPersistenceFinderByUuid_C_Head.remove(
-			finderCache, new Object[] {uuid, companyId, head});
+			dummyFinderCache, new Object[] {uuid, companyId, head});
 	}
 
 	/**
@@ -650,7 +651,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByUuid_C_Head(String uuid, long companyId, boolean head) {
 		return _collectionPersistenceFinderByUuid_C_Head.count(
-			finderCache, new Object[] {uuid, companyId, head});
+			dummyFinderCache, new Object[] {uuid, companyId, head});
 	}
 
 	private CollectionPersistenceFinder<ERCVersionedEntry>
@@ -678,8 +679,8 @@ public class ERCVersionedEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByERC_G.find(
-			finderCache, new Object[] {externalReferenceCode, groupId}, start,
-			end, orderByComparator, useFinderCache);
+			dummyFinderCache, new Object[] {externalReferenceCode, groupId},
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -724,7 +725,7 @@ public class ERCVersionedEntryPersistenceImpl
 		OrderByComparator<ERCVersionedEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByERC_G.fetchFirst(
-			finderCache, new Object[] {externalReferenceCode, groupId},
+			dummyFinderCache, new Object[] {externalReferenceCode, groupId},
 			orderByComparator);
 	}
 
@@ -737,7 +738,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public void removeByERC_G(String externalReferenceCode, long groupId) {
 		_collectionPersistenceFinderByERC_G.remove(
-			finderCache, new Object[] {externalReferenceCode, groupId});
+			dummyFinderCache, new Object[] {externalReferenceCode, groupId});
 	}
 
 	/**
@@ -750,7 +751,7 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByERC_G(String externalReferenceCode, long groupId) {
 		return _collectionPersistenceFinderByERC_G.count(
-			finderCache, new Object[] {externalReferenceCode, groupId});
+			dummyFinderCache, new Object[] {externalReferenceCode, groupId});
 	}
 
 	private UniquePersistenceFinder<ERCVersionedEntry>
@@ -804,7 +805,8 @@ public class ERCVersionedEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _uniquePersistenceFinderByERC_G_Head.fetch(
-			finderCache, new Object[] {externalReferenceCode, groupId, head},
+			dummyFinderCache,
+			new Object[] {externalReferenceCode, groupId, head},
 			useFinderCache);
 	}
 
@@ -840,7 +842,8 @@ public class ERCVersionedEntryPersistenceImpl
 		String externalReferenceCode, long groupId, boolean head) {
 
 		return _uniquePersistenceFinderByERC_G_Head.count(
-			finderCache, new Object[] {externalReferenceCode, groupId, head});
+			dummyFinderCache,
+			new Object[] {externalReferenceCode, groupId, head});
 	}
 
 	private UniquePersistenceFinder<ERCVersionedEntry>
@@ -886,7 +889,7 @@ public class ERCVersionedEntryPersistenceImpl
 		long headId, boolean useFinderCache) {
 
 		return _uniquePersistenceFinderByHeadId.fetch(
-			finderCache, new Object[] {headId}, useFinderCache);
+			dummyFinderCache, new Object[] {headId}, useFinderCache);
 	}
 
 	/**
@@ -913,13 +916,14 @@ public class ERCVersionedEntryPersistenceImpl
 	@Override
 	public int countByHeadId(long headId) {
 		return _uniquePersistenceFinderByHeadId.count(
-			finderCache, new Object[] {headId});
+			dummyFinderCache, new Object[] {headId});
 	}
 
 	public ERCVersionedEntryPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
+		dbColumnNames.put("blob", "blob_");
 
 		setDBColumnNames(dbColumnNames);
 
@@ -1157,7 +1161,7 @@ public class ERCVersionedEntryPersistenceImpl
 
 	@Override
 	protected EntityCache getEntityCache() {
-		return entityCache;
+		return dummyEntityCache;
 	}
 
 	@Override
@@ -1438,14 +1442,8 @@ public class ERCVersionedEntryPersistenceImpl
 	public void destroy() {
 		ERCVersionedEntryUtil.setPersistence(null);
 
-		entityCache.removeCache(ERCVersionedEntryImpl.class.getName());
+		dummyEntityCache.removeCache(ERCVersionedEntryImpl.class.getName());
 	}
-
-	@ServiceReference(type = EntityCache.class)
-	protected EntityCache entityCache;
-
-	@ServiceReference(type = FinderCache.class)
-	protected FinderCache finderCache;
 
 	private static final String _ENTITY_ALIAS_PREFIX =
 		ERCVersionedEntryModelImpl.ENTITY_ALIAS + ".";
@@ -1466,12 +1464,12 @@ public class ERCVersionedEntryPersistenceImpl
 		ERCVersionedEntryPersistenceImpl.class);
 
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
-		new String[] {"uuid"});
+		new String[] {"uuid", "blob"});
 
 	@Override
 	protected FinderCache getFinderCache() {
-		return finderCache;
+		return dummyFinderCache;
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:545969811
+// LIFERAY-SERVICE-BUILDER-HASH:2137508036

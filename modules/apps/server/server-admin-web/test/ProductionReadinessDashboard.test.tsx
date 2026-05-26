@@ -95,7 +95,9 @@ describe('ProductionReadinessDashboard', () => {
 		);
 
 		await waitFor(() =>
-			expect(screen.getByText('security-enabled')).toBeInTheDocument()
+			expect(
+				screen.getByText('production-readiness-rule-security-enabled')
+			).toBeInTheDocument()
 		);
 
 		expect(
@@ -108,12 +110,20 @@ describe('ProductionReadinessDashboard', () => {
 			screen.getByText('1', {selector: '.h2.text-secondary'})
 		).toBeInTheDocument();
 
-		expect(screen.getByText('security (1)')).toBeInTheDocument();
 		expect(
-			screen.getByText('performance', {selector: '.panel-title'})
+			screen.getByText('production-readiness-category-security (1)')
 		).toBeInTheDocument();
-		expect(screen.getByText('password-encryption')).toBeInTheDocument();
-		expect(screen.getByText('heap-size-upper-limit')).toBeInTheDocument();
+		expect(
+			screen.getByText('production-readiness-category-performance', {
+				selector: '.panel-title',
+			})
+		).toBeInTheDocument();
+		expect(
+			screen.getByText('production-readiness-rule-password-encryption')
+		).toBeInTheDocument();
+		expect(
+			screen.getByText('production-readiness-rule-heap-size-upper-limit')
+		).toBeInTheDocument();
 	});
 
 	it('renders an empty state when no rules are deployed', async () => {
@@ -157,10 +167,14 @@ describe('ProductionReadinessDashboard', () => {
 		);
 
 		await waitFor(() =>
-			expect(screen.getByText('security-enabled')).toBeInTheDocument()
+			expect(
+				screen.getByText('production-readiness-rule-security-enabled')
+			).toBeInTheDocument()
 		);
 
-		const row = screen.getByText('security-enabled').closest('tr')!;
+		const row = screen
+			.getByText('production-readiness-rule-security-enabled')
+			.closest('tr')!;
 
 		const toggle = within(row).getByRole('switch');
 

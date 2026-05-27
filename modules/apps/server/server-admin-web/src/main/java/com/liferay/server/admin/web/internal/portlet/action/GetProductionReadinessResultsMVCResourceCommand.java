@@ -114,8 +114,7 @@ public class GetProductionReadinessResultsMVCResourceCommand
 				}
 
 				resultsJSONArray.put(
-					_toJSONObject(
-						productionReadinessRule, result, ignoredRule, locale));
+					_toJSONObject(result, ignoredRule, locale));
 			}
 		}
 
@@ -156,8 +155,7 @@ public class GetProductionReadinessResultsMVCResourceCommand
 	}
 
 	private JSONObject _toJSONObject(
-		ProductionReadinessRule productionReadinessRule, Result result,
-		IgnoredRule ignoredRule, Locale locale) {
+		Result result, IgnoredRule ignoredRule, Locale locale) {
 
 		String message = LanguageUtil.format(
 			locale, result.getMessageKey(), result.getMessageParameters(),
@@ -177,7 +175,7 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		).put(
 			"recommendedValue", result.getRecommendedValue()
 		).put(
-			"ruleKey", productionReadinessRule.getKey()
+			"ruleKey", result.getKey()
 		).put(
 			"severity", String.valueOf(result.getSeverity())
 		).put(

@@ -32,7 +32,7 @@ public class CounterIncrementRuleImpl implements ProductionReadinessRule {
 					Result.Status.FAIL, Result.Severity.LOW, getCategory(),
 					String.valueOf(counterIncrement), null,
 					"production-readiness-rule-counter-increment-fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -40,7 +40,7 @@ public class CounterIncrementRuleImpl implements ProductionReadinessRule {
 				Result.Status.PASS, Result.Severity.LOW, getCategory(),
 				String.valueOf(counterIncrement), null,
 				"production-readiness-rule-counter-increment-pass",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class HeapAllocationConsistencyRuleImpl
 					null,
 					"production-readiness-rule-heap-allocation-consistency-" +
 						"pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -55,7 +55,7 @@ public class HeapAllocationConsistencyRuleImpl
 					xmxBytes / 1024 / 1024, "MB"),
 				null,
 				"production-readiness-rule-heap-allocation-consistency-fail",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

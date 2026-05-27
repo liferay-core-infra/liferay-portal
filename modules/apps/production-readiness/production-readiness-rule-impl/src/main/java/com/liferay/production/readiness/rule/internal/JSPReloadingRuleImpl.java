@@ -34,7 +34,7 @@ public class JSPReloadingRuleImpl implements ProductionReadinessRule {
 						directServletContextReload,
 					"direct.servlet.context.reload=false",
 					"production-readiness-rule-jsp-reloading-fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -43,7 +43,7 @@ public class JSPReloadingRuleImpl implements ProductionReadinessRule {
 				"direct.servlet.context.reload=" + directServletContextReload,
 				"direct.servlet.context.reload=false",
 				"production-readiness-rule-jsp-reloading-pass", new Object[0],
-				null));
+				null, getKey()));
 	}
 
 	@Override

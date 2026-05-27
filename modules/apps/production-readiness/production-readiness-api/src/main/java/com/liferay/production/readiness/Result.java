@@ -13,7 +13,7 @@ public class Result {
 	public Result(
 		Status status, Severity severity, String category, String currentValue,
 		String recommendedValue, String messageKey, Object[] messageParameters,
-		String docsLink) {
+		String docsLink, String key) {
 
 		_status = status;
 		_severity = severity;
@@ -23,6 +23,7 @@ public class Result {
 		_messageKey = messageKey;
 		_messageParameters = messageParameters;
 		_docsLink = docsLink;
+		_key = key;
 	}
 
 	public String getCategory() {
@@ -39,6 +40,10 @@ public class Result {
 		}
 
 		return _docsLink;
+	}
+
+	public String getKey() {
+		return _key;
 	}
 
 	public String getMessageKey() {
@@ -81,6 +86,7 @@ public class Result {
 	private final String _category;
 	private final String _currentValue;
 	private final String _docsLink;
+	private final String _key;
 	private final String _messageKey;
 	private final Object[] _messageParameters;
 	private final String _recommendedValue;

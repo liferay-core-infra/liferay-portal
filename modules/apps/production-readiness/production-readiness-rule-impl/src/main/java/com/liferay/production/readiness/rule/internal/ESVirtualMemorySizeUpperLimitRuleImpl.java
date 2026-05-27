@@ -30,7 +30,8 @@ public class ESVirtualMemorySizeUpperLimitRuleImpl
 					"limit-message",
 				new Object[0],
 				"https://www.elastic.co/docs/deploy-manage/deploy/self-" +
-					"managed/vm-max-map-count"));
+					"managed/vm-max-map-count",
+				getKey()));
 	}
 
 	@Override

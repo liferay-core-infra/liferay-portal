@@ -26,7 +26,7 @@ public class ESHeapSizeRuleImpl implements ProductionReadinessRule {
 				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
 				"ES_JAVA_OPTS -Xms16g",
 				"production-readiness-rule-es-heap-size-message", new Object[0],
-				null));
+				null, getKey()));
 	}
 
 	@Override

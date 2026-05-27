@@ -39,7 +39,7 @@ public class HeapSizeUpperLimitRuleImpl implements ProductionReadinessRule {
 					Result.Status.PASS, Result.Severity.LOW, getCategory(),
 					maxMemoryGB + "GB", null,
 					"production-readiness-rule-heap-size-upper-limit-pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -47,7 +47,7 @@ public class HeapSizeUpperLimitRuleImpl implements ProductionReadinessRule {
 				Result.Status.FAIL, Result.Severity.LOW, getCategory(),
 				maxMemoryGB + "GB", null,
 				"production-readiness-rule-heap-size-upper-limit-fail",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class DLPreviewForkingRuleImpl implements ProductionReadinessRule {
 					new Object[] {
 						PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED
 					},
-					null));
+					null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -48,7 +48,7 @@ public class DLPreviewForkingRuleImpl implements ProductionReadinessRule {
 				new Object[] {
 					PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED
 				},
-				null));
+				null, getKey()));
 	}
 
 	@Override

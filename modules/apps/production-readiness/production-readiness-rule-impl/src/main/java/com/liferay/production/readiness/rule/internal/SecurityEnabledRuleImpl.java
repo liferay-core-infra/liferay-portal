@@ -73,7 +73,7 @@ public class SecurityEnabledRuleImpl implements ProductionReadinessRule {
 			new Result(
 				Result.Status.PASS, Result.Severity.HIGH, getCategory(), null,
 				null, "production-readiness-rule-security-enabled-pass",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class SecurityEnabledRuleImpl implements ProductionReadinessRule {
 				"authenticationEnabled=false", "authenticationEnabled=true",
 				"production-readiness-rule-security-enabled-authentication-" +
 					"disabled-fail",
-				new Object[] {fileName}, null);
+				new Object[] {fileName}, null, getKey());
 		}
 
 		if (content.contains("httpSSLEnabled=B\"false\"")) {
@@ -101,7 +101,7 @@ public class SecurityEnabledRuleImpl implements ProductionReadinessRule {
 				Result.Status.FAIL, Result.Severity.HIGH, getCategory(),
 				"httpSSLEnabled=false", "httpSSLEnabled=true",
 				"production-readiness-rule-security-enabled-ssl-disabled-fail",
-				new Object[] {fileName}, null);
+				new Object[] {fileName}, null, getKey());
 		}
 
 		return null;
@@ -123,7 +123,7 @@ public class SecurityEnabledRuleImpl implements ProductionReadinessRule {
 				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
 				null,
 				"production-readiness-rule-security-enabled-file-missing-fail",
-				new Object[] {fileName}, null));
+				new Object[] {fileName}, null, getKey()));
 	}
 
 	private File _getFile(String fileName) {

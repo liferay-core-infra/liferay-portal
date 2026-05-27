@@ -30,7 +30,7 @@ public class DLImagePreviewDPIRuleImpl implements ProductionReadinessRule {
 					Result.Status.FAIL, Result.Severity.LOW, getCategory(),
 					String.valueOf(dpi), null,
 					"production-readiness-rule-dl-image-preview-dpi-fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -38,7 +38,7 @@ public class DLImagePreviewDPIRuleImpl implements ProductionReadinessRule {
 				Result.Status.PASS, Result.Severity.LOW, getCategory(),
 				String.valueOf(dpi), null,
 				"production-readiness-rule-dl-image-preview-dpi-pass",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

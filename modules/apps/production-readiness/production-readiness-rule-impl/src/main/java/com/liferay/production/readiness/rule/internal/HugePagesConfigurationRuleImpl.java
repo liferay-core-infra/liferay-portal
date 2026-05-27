@@ -50,7 +50,7 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 					null, null,
 					"production-readiness-rule-huge-pages-configuration-heap-" +
 						"under-4gb-pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
@@ -76,7 +76,7 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 					null, "-XX:+UseLargePages",
 					"production-readiness-rule-huge-pages-configuration-no-" +
 						"large-pages-fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		if (largePageSizeArg == null) {
@@ -86,7 +86,7 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 					null, null,
 					"production-readiness-rule-huge-pages-configuration-" +
 						"missing-large-page-size-fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		long osHugePageSize = _getOSHugePageSize();
@@ -106,7 +106,7 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 						null,
 						"production-readiness-rule-huge-pages-configuration-" +
 							"size-mismatch-fail",
-						new Object[0], null));
+						new Object[0], null, getKey()));
 			}
 		}
 
@@ -116,7 +116,7 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 				null,
 				"production-readiness-rule-huge-pages-configuration-" +
 					"configured-pass",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

@@ -108,7 +108,7 @@ public class JSPEngineSettingsRuleImpl implements ProductionReadinessRule {
 							"development=false, mappedfile=false",
 							"production-readiness-rule-jsp-engine-settings-" +
 								"pass",
-							new Object[0], null));
+							new Object[0], null, getKey()));
 				}
 
 				return Collections.singletonList(
@@ -119,7 +119,7 @@ public class JSPEngineSettingsRuleImpl implements ProductionReadinessRule {
 							mappedFile),
 						"development=false, mappedfile=false",
 						"production-readiness-rule-jsp-engine-settings-fail",
-						new Object[0], null));
+						new Object[0], null, getKey()));
 			}
 			else if (Validator.isNull(development) ||
 					 Validator.isNull(mappedFile)) {
@@ -132,7 +132,7 @@ public class JSPEngineSettingsRuleImpl implements ProductionReadinessRule {
 								"mappedfile=true",
 						"development=false, mappedfile=false",
 						"production-readiness-rule-jsp-engine-settings-fail",
-						new Object[0], null));
+						new Object[0], null, getKey()));
 			}
 		}
 		catch (Exception exception) {

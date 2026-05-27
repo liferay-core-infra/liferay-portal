@@ -50,7 +50,7 @@ public class LanguagesRuleImpl implements ProductionReadinessRule {
 				new Result(
 					Result.Status.PASS, Result.Severity.LOW, getCategory(),
 					null, null, "production-readiness-rule-languages-pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		List<Result> results = new ArrayList<>(2);
@@ -65,7 +65,7 @@ public class LanguagesRuleImpl implements ProductionReadinessRule {
 						"You are using Beta locale in production:" +
 							StringUtil.merge(enabledBetaLocales)
 					},
-					null));
+					null, getKey()));
 		}
 
 		if (!unusedLocales.isEmpty()) {
@@ -80,7 +80,7 @@ public class LanguagesRuleImpl implements ProductionReadinessRule {
 						"Unused languages add overhead to the XML’s stored " +
 							"in the database" + StringUtil.merge(unusedLocales)
 					},
-					null));
+					null, getKey()));
 		}
 
 		return results;

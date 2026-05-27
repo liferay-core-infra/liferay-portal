@@ -28,7 +28,8 @@ public class DisablingWildcardsRuleImpl implements ProductionReadinessRule {
 				"production-readiness-rule-disable-wildcards-message",
 				new Object[0],
 				"https://www.elastic.co/docs/api/doc/elasticsearch-serverless" +
-					"/operation/operation-indices-delete"));
+					"/operation/operation-indices-delete",
+				getKey()));
 	}
 
 	@Override

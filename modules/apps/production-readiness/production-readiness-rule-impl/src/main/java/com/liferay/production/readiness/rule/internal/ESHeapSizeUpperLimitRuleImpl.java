@@ -26,7 +26,7 @@ public class ESHeapSizeUpperLimitRuleImpl implements ProductionReadinessRule {
 				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
 				"ES_JAVA_OPTS -Xmx<=30g and <=50% of system memory",
 				"production-readiness-rule-es-heap-size-upper-limit-message",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class FileStoreImplementationRuleImpl
 					Result.Status.PASS, Result.Severity.LOW, getCategory(),
 					dlStoreImpl, null,
 					"production-readiness-rule-file-store-implementation-pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -52,7 +52,7 @@ public class FileStoreImplementationRuleImpl
 				Result.Status.FAIL, Result.Severity.LOW, getCategory(),
 				dlStoreImpl, "AdvancedFileSystemStore or Cloud Store",
 				"production-readiness-rule-file-store-implementation-fail",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

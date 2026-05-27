@@ -31,7 +31,7 @@ public class PasswordEncryptionRuleImpl implements ProductionReadinessRule {
 					Result.Status.PASS, Result.Severity.LOW, getCategory(),
 					algorithm, "PBKDF2WithHmacSHA1/160/1300000 (or stronger)",
 					"production-readiness-rule-password-encryption-pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -39,7 +39,7 @@ public class PasswordEncryptionRuleImpl implements ProductionReadinessRule {
 				Result.Status.FAIL, Result.Severity.HIGH, getCategory(),
 				algorithm, "PBKDF2WithHmacSHA1/160/1300000 (or stronger)",
 				"production-readiness-rule-password-encryption-fail",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

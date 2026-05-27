@@ -65,7 +65,7 @@ public class DatabasePoolSizeAndTomcatThreadsRuleImpl
 					Result.Status.PASS, Result.Severity.LOW, getCategory(),
 					String.valueOf(ratio), null,
 					"production-readiness-rule-pool-vs-thread-ratio-pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -73,7 +73,7 @@ public class DatabasePoolSizeAndTomcatThreadsRuleImpl
 				Result.Status.FAIL, Result.Severity.LOW, getCategory(),
 				currentValue, null,
 				"production-readiness-rule-pool-vs-thread-ratio-fail",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

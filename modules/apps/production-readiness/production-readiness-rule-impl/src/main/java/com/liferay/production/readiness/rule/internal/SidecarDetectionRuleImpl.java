@@ -38,14 +38,14 @@ public class SidecarDetectionRuleImpl implements ProductionReadinessRule {
 					Result.Status.FAIL, Result.Severity.HIGH, getCategory(),
 					null, null,
 					"production-readiness-rule-sidecar-detection-fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
 			new Result(
 				Result.Status.PASS, Result.Severity.HIGH, getCategory(), null,
 				null, "production-readiness-rule-sidecar-detection-pass",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

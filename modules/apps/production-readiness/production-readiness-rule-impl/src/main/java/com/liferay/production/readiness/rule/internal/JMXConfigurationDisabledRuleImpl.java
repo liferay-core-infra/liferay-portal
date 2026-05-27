@@ -49,7 +49,7 @@ public class JMXConfigurationDisabledRuleImpl
 					"JMX Configuration has been enabled (" + enabledArg + ")",
 					null,
 					"production-readiness-rule-jmx-configuration-disabled-fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -57,7 +57,7 @@ public class JMXConfigurationDisabledRuleImpl
 				Result.Status.PASS, Result.Severity.LOW, getCategory(), null,
 				null,
 				"production-readiness-rule-jmx-configuration-disabled-pass",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

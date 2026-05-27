@@ -29,7 +29,8 @@ public class OpenFileDescriptorLimitRuleImpl
 				"production-readiness-rule-open-file-descriptor-limit-message",
 				new Object[0],
 				"https://www.elastic.co/docs/deploy-manage/deploy/self-" +
-					"managed/file-descriptors"));
+					"managed/file-descriptors",
+				getKey()));
 	}
 
 	@Override

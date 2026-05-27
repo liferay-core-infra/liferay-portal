@@ -27,7 +27,7 @@ public class AnalyzerPluginsRuleImpl implements ProductionReadinessRule {
 				"analysis-icu, analysis-kuromoji, analysis-smartcn, " +
 					"analysis-stempel",
 				"production-readiness-rule-analyzer-plugins-message",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

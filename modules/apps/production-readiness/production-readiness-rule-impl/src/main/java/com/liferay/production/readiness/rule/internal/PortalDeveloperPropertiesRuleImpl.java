@@ -43,7 +43,7 @@ public class PortalDeveloperPropertiesRuleImpl
 					"portal-developer.properties included", null,
 					"production-readiness-rule-portal-developer-properties-" +
 						"fail",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -51,7 +51,7 @@ public class PortalDeveloperPropertiesRuleImpl
 				Result.Status.PASS, Result.Severity.LOW, getCategory(),
 				"portal-developer.properties is not included", null,
 				"production-readiness-rule-portal-developer-properties-pass",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

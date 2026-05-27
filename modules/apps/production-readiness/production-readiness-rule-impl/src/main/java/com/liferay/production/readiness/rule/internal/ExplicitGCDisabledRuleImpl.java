@@ -45,7 +45,7 @@ public class ExplicitGCDisabledRuleImpl implements ProductionReadinessRule {
 					Result.Status.PASS, Result.Severity.LOW, getCategory(),
 					"-XX:+DisableExplicitGC", null,
 					"production-readiness-rule-explicit-gc-disabled-pass",
-					new Object[0], null));
+					new Object[0], null, getKey()));
 		}
 
 		return Collections.singletonList(
@@ -53,7 +53,7 @@ public class ExplicitGCDisabledRuleImpl implements ProductionReadinessRule {
 				Result.Status.FAIL, Result.Severity.LOW, getCategory(), null,
 				"-XX:+DisableExplicitGC",
 				"production-readiness-rule-explicit-gc-disabled-fail",
-				new Object[0], null));
+				new Object[0], null, getKey()));
 	}
 
 	@Override

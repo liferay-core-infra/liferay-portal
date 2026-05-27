@@ -23,12 +23,13 @@ public class DisablingSwapRuleImpl implements ProductionReadinessRule {
 	public Collection<Result> check(long companyId) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
-				"bootstrap.memory_lock: true and LimitMEMLOCK=infinity",
-				"production-readiness-rule-disable-swap-message", new Object[0],
+				getCategory(), null,
 				"https://www.elastic.co/docs/deploy-manage/deploy/self-" +
 					"managed/setup-configuration-memory",
-				getKey()));
+				getKey(), "production-readiness-rule-disable-swap-message",
+				new Object[0],
+				"bootstrap.memory_lock: true and LimitMEMLOCK=infinity",
+				Result.Severity.HIGH, Result.Status.FAIL));
 	}
 
 	@Override

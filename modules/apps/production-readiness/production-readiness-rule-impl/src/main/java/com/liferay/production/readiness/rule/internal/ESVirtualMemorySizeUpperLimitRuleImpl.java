@@ -24,14 +24,14 @@ public class ESVirtualMemorySizeUpperLimitRuleImpl
 	public Collection<Result> check(long companyId) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
-				"vm.max_map_count >= 262144",
-				"production-readiness-rule-es-virtual-memory-size-upper-" +
-					"limit-message",
-				new Object[0],
+				getCategory(), null,
 				"https://www.elastic.co/docs/deploy-manage/deploy/self-" +
 					"managed/vm-max-map-count",
-				getKey()));
+				getKey(),
+				"production-readiness-rule-es-virtual-memory-size-upper-" +
+					"limit-message",
+				new Object[0], "vm.max_map_count >= 262144",
+				Result.Severity.HIGH, Result.Status.FAIL));
 	}
 
 	@Override

@@ -46,11 +46,11 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 		if (maxMemoryGB <= 4.0) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.PASS, Result.Severity.LOW, getCategory(),
-					null, null,
+					getCategory(), null, null, getKey(),
 					"production-readiness-rule-huge-pages-configuration-heap-" +
 						"under-4gb-pass",
-					new Object[0], null, getKey()));
+					new Object[0], null, Result.Severity.LOW,
+					Result.Status.PASS));
 		}
 
 		RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
@@ -72,21 +72,21 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 		if (!useLargePages) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.FAIL, Result.Severity.MEDIUM, getCategory(),
-					null, "-XX:+UseLargePages",
+					getCategory(), null, null, getKey(),
 					"production-readiness-rule-huge-pages-configuration-no-" +
 						"large-pages-fail",
-					new Object[0], null, getKey()));
+					new Object[0], "-XX:+UseLargePages", Result.Severity.MEDIUM,
+					Result.Status.FAIL));
 		}
 
 		if (largePageSizeArg == null) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.FAIL, Result.Severity.MEDIUM, getCategory(),
-					null, null,
+					getCategory(), null, null, getKey(),
 					"production-readiness-rule-huge-pages-configuration-" +
 						"missing-large-page-size-fail",
-					new Object[0], null, getKey()));
+					new Object[0], null, Result.Severity.MEDIUM,
+					Result.Status.FAIL));
 		}
 
 		long osHugePageSize = _getOSHugePageSize();
@@ -97,26 +97,25 @@ public class HugePagesConfigurationRuleImpl implements ProductionReadinessRule {
 			if (configLargePageSize != osHugePageSize) {
 				return Collections.singletonList(
 					new Result(
-						Result.Status.FAIL, Result.Severity.MEDIUM,
 						getCategory(),
 						StringBundler.concat(
 							"-XX:LargePageSizeInBytes = ", largePageSizeArg,
 							", OS’s huge page size = ", osHugePageSize / 1024,
 							"kB"),
-						null,
+						null, getKey(),
 						"production-readiness-rule-huge-pages-configuration-" +
 							"size-mismatch-fail",
-						new Object[0], null, getKey()));
+						new Object[0], null, Result.Severity.MEDIUM,
+						Result.Status.FAIL));
 			}
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.PASS, Result.Severity.LOW, getCategory(), null,
-				null,
+				getCategory(), null, null, getKey(),
 				"production-readiness-rule-huge-pages-configuration-" +
 					"configured-pass",
-				new Object[0], null, getKey()));
+				new Object[0], null, Result.Severity.LOW, Result.Status.PASS));
 	}
 
 	@Override

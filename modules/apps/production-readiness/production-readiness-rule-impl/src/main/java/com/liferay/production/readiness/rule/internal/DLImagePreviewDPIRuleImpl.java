@@ -27,18 +27,17 @@ public class DLImagePreviewDPIRuleImpl implements ProductionReadinessRule {
 		if (dpi > 75) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.FAIL, Result.Severity.LOW, getCategory(),
-					String.valueOf(dpi), null,
+					getCategory(), String.valueOf(dpi), null, getKey(),
 					"production-readiness-rule-dl-image-preview-dpi-fail",
-					new Object[0], null, getKey()));
+					new Object[0], null, Result.Severity.LOW,
+					Result.Status.FAIL));
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.PASS, Result.Severity.LOW, getCategory(),
-				String.valueOf(dpi), null,
+				getCategory(), String.valueOf(dpi), null, getKey(),
 				"production-readiness-rule-dl-image-preview-dpi-pass",
-				new Object[0], null, getKey()));
+				new Object[0], null, Result.Severity.LOW, Result.Status.PASS));
 	}
 
 	@Override

@@ -29,21 +29,22 @@ public class JSPReloadingRuleImpl implements ProductionReadinessRule {
 		if (directServletContextReload) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.FAIL, Result.Severity.MEDIUM, getCategory(),
+					getCategory(),
 					"direct.servlet.context.reload=" +
 						directServletContextReload,
-					"direct.servlet.context.reload=false",
+					null, getKey(),
 					"production-readiness-rule-jsp-reloading-fail",
-					new Object[0], null, getKey()));
+					new Object[0], "direct.servlet.context.reload=false",
+					Result.Severity.MEDIUM, Result.Status.FAIL));
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.PASS, Result.Severity.LOW, getCategory(),
+				getCategory(),
 				"direct.servlet.context.reload=" + directServletContextReload,
-				"direct.servlet.context.reload=false",
-				"production-readiness-rule-jsp-reloading-pass", new Object[0],
-				null, getKey()));
+				null, getKey(), "production-readiness-rule-jsp-reloading-pass",
+				new Object[0], "direct.servlet.context.reload=false",
+				Result.Severity.LOW, Result.Status.PASS));
 	}
 
 	@Override

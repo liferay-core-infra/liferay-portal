@@ -62,18 +62,17 @@ public class DatabasePoolSizeAndTomcatThreadsRuleImpl
 		if (pass) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.PASS, Result.Severity.LOW, getCategory(),
-					String.valueOf(ratio), null,
+					getCategory(), String.valueOf(ratio), null, getKey(),
 					"production-readiness-rule-pool-vs-thread-ratio-pass",
-					new Object[0], null, getKey()));
+					new Object[0], null, Result.Severity.LOW,
+					Result.Status.PASS));
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.LOW, getCategory(),
-				currentValue, null,
+				getCategory(), currentValue, null, getKey(),
 				"production-readiness-rule-pool-vs-thread-ratio-fail",
-				new Object[0], null, getKey()));
+				new Object[0], null, Result.Severity.LOW, Result.Status.FAIL));
 	}
 
 	@Override

@@ -26,29 +26,31 @@ public class DLPreviewForkingRuleImpl implements ProductionReadinessRule {
 		if (PropsValues.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.PASS, Result.Severity.LOW, getCategory(),
+					getCategory(),
 					PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED + "=" +
 						PropsValues.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED,
-					PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED +
-						"=true",
+					null, getKey(),
 					"production-readiness-rule-dl-preview-forking-pass",
 					new Object[] {
 						PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED
 					},
-					null, getKey()));
+					PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED +
+						"=true",
+					Result.Severity.LOW, Result.Status.PASS));
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.LOW, getCategory(),
+				getCategory(),
 				PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED + "=" +
 					PropsValues.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED,
-				PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED + "=true",
+				null, getKey(),
 				"production-readiness-rule-dl-preview-forking-fail",
 				new Object[] {
 					PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED
 				},
-				null, getKey()));
+				PropsKeys.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED + "=true",
+				Result.Severity.LOW, Result.Status.FAIL));
 	}
 
 	@Override

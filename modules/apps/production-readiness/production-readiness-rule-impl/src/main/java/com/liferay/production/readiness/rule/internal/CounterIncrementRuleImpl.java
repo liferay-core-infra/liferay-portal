@@ -29,18 +29,18 @@ public class CounterIncrementRuleImpl implements ProductionReadinessRule {
 		if (counterIncrement < 2000) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.FAIL, Result.Severity.LOW, getCategory(),
-					String.valueOf(counterIncrement), null,
+					getCategory(), String.valueOf(counterIncrement), null,
+					getKey(),
 					"production-readiness-rule-counter-increment-fail",
-					new Object[0], null, getKey()));
+					new Object[0], null, Result.Severity.LOW,
+					Result.Status.FAIL));
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.PASS, Result.Severity.LOW, getCategory(),
-				String.valueOf(counterIncrement), null,
+				getCategory(), String.valueOf(counterIncrement), null, getKey(),
 				"production-readiness-rule-counter-increment-pass",
-				new Object[0], null, getKey()));
+				new Object[0], null, Result.Severity.LOW, Result.Status.PASS));
 	}
 
 	@Override

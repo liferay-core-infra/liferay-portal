@@ -23,10 +23,11 @@ public class ESHeapSizeUpperLimitRuleImpl implements ProductionReadinessRule {
 	public Collection<Result> check(long companyId) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
-				"ES_JAVA_OPTS -Xmx<=30g and <=50% of system memory",
+				getCategory(), null, null, getKey(),
 				"production-readiness-rule-es-heap-size-upper-limit-message",
-				new Object[0], null, getKey()));
+				new Object[0],
+				"ES_JAVA_OPTS -Xmx<=30g and <=50% of system memory",
+				Result.Severity.HIGH, Result.Status.FAIL));
 	}
 
 	@Override

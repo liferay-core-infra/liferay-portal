@@ -36,18 +36,17 @@ public class HeapSizeUpperLimitRuleImpl implements ProductionReadinessRule {
 		if (maxMemoryGB <= 32.0) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.PASS, Result.Severity.LOW, getCategory(),
-					maxMemoryGB + "GB", null,
+					getCategory(), maxMemoryGB + "GB", null, getKey(),
 					"production-readiness-rule-heap-size-upper-limit-pass",
-					new Object[0], null, getKey()));
+					new Object[0], null, Result.Severity.LOW,
+					Result.Status.PASS));
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.LOW, getCategory(),
-				maxMemoryGB + "GB", null,
+				getCategory(), maxMemoryGB + "GB", null, getKey(),
 				"production-readiness-rule-heap-size-upper-limit-fail",
-				new Object[0], null, getKey()));
+				new Object[0], null, Result.Severity.LOW, Result.Status.FAIL));
 	}
 
 	@Override

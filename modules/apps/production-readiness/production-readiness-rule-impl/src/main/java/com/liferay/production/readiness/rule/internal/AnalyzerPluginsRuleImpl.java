@@ -23,11 +23,12 @@ public class AnalyzerPluginsRuleImpl implements ProductionReadinessRule {
 	public Collection<Result> check(long companyId) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
+				getCategory(), null, null, getKey(),
+				"production-readiness-rule-analyzer-plugins-message",
+				new Object[0],
 				"analysis-icu, analysis-kuromoji, analysis-smartcn, " +
 					"analysis-stempel",
-				"production-readiness-rule-analyzer-plugins-message",
-				new Object[0], null, getKey()));
+				Result.Severity.HIGH, Result.Status.FAIL));
 	}
 
 	@Override

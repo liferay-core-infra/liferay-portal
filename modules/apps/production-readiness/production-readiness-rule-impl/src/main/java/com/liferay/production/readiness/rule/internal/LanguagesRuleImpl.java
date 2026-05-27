@@ -48,9 +48,9 @@ public class LanguagesRuleImpl implements ProductionReadinessRule {
 		if (enabledBetaLocales.isEmpty() && unusedLocales.isEmpty()) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.PASS, Result.Severity.LOW, getCategory(),
-					null, null, "production-readiness-rule-languages-pass",
-					new Object[0], null, getKey()));
+					getCategory(), null, null, getKey(),
+					"production-readiness-rule-languages-pass", new Object[0],
+					null, Result.Severity.LOW, Result.Status.PASS));
 		}
 
 		List<Result> results = new ArrayList<>(2);
@@ -58,29 +58,27 @@ public class LanguagesRuleImpl implements ProductionReadinessRule {
 		if (!enabledBetaLocales.isEmpty()) {
 			results.add(
 				new Result(
-					Result.Status.FAIL, Result.Severity.LOW, getCategory(),
-					StringUtil.merge(enabledBetaLocales), null,
-					"production-readiness-rule-languages-beta-fail",
+					getCategory(), StringUtil.merge(enabledBetaLocales), null,
+					getKey(), "production-readiness-rule-languages-beta-fail",
 					new Object[] {
 						"You are using Beta locale in production:" +
 							StringUtil.merge(enabledBetaLocales)
 					},
-					null, getKey()));
+					null, Result.Severity.LOW, Result.Status.FAIL));
 		}
 
 		if (!unusedLocales.isEmpty()) {
 			results.add(
 				new Result(
-					Result.Status.FAIL, Result.Severity.LOW, getCategory(),
-					StringUtil.merge(unusedLocales),
-					"Remove unused locales from LOCALES " +
-						"(portal-ext.properties)",
-					"production-readiness-rule-languages-unused-fail",
+					getCategory(), StringUtil.merge(unusedLocales), null,
+					getKey(), "production-readiness-rule-languages-unused-fail",
 					new Object[] {
 						"Unused languages add overhead to the XML’s stored " +
 							"in the database" + StringUtil.merge(unusedLocales)
 					},
-					null, getKey()));
+					"Remove unused locales from LOCALES " +
+						"(portal-ext.properties)",
+					Result.Severity.LOW, Result.Status.FAIL));
 		}
 
 		return results;

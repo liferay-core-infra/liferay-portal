@@ -23,10 +23,10 @@ public class ESHeapSizeRuleImpl implements ProductionReadinessRule {
 	public Collection<Result> check(long companyId) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
-				"ES_JAVA_OPTS -Xms16g",
+				getCategory(), null, null, getKey(),
 				"production-readiness-rule-es-heap-size-message", new Object[0],
-				null, getKey()));
+				"ES_JAVA_OPTS -Xms16g", Result.Severity.HIGH,
+				Result.Status.FAIL));
 	}
 
 	@Override

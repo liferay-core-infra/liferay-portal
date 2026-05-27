@@ -35,17 +35,17 @@ public class SidecarDetectionRuleImpl implements ProductionReadinessRule {
 		if (!file.exists() || !_isProductionModeEnabled(file)) {
 			return Collections.singletonList(
 				new Result(
-					Result.Status.FAIL, Result.Severity.HIGH, getCategory(),
-					null, null,
+					getCategory(), null, null, getKey(),
 					"production-readiness-rule-sidecar-detection-fail",
-					new Object[0], null, getKey()));
+					new Object[0], null, Result.Severity.HIGH,
+					Result.Status.FAIL));
 		}
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.PASS, Result.Severity.HIGH, getCategory(), null,
-				null, "production-readiness-rule-sidecar-detection-pass",
-				new Object[0], null, getKey()));
+				getCategory(), null, null, getKey(),
+				"production-readiness-rule-sidecar-detection-pass",
+				new Object[0], null, Result.Severity.HIGH, Result.Status.PASS));
 	}
 
 	@Override

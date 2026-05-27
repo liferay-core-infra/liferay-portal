@@ -23,13 +23,12 @@ public class DisablingWildcardsRuleImpl implements ProductionReadinessRule {
 	public Collection<Result> check(long companyId) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
-				"action.destructive_requires_name: true",
-				"production-readiness-rule-disable-wildcards-message",
-				new Object[0],
+				getCategory(), null,
 				"https://www.elastic.co/docs/api/doc/elasticsearch-serverless" +
 					"/operation/operation-indices-delete",
-				getKey()));
+				getKey(), "production-readiness-rule-disable-wildcards-message",
+				new Object[0], "action.destructive_requires_name: true",
+				Result.Severity.HIGH, Result.Status.FAIL));
 	}
 
 	@Override

@@ -100,39 +100,42 @@ public class JSPEngineSettingsRuleImpl implements ProductionReadinessRule {
 				if (!(boolean)development && !(boolean)mappedFile) {
 					return Collections.singletonList(
 						new Result(
-							Result.Status.PASS, Result.Severity.LOW,
 							getCategory(),
 							StringBundler.concat(
 								"development=", development, ", mappedfile=",
 								mappedFile),
-							"development=false, mappedfile=false",
+							null, getKey(),
 							"production-readiness-rule-jsp-engine-settings-" +
 								"pass",
-							new Object[0], null, getKey()));
+							new Object[0],
+							"development=false, mappedfile=false",
+							Result.Severity.LOW, Result.Status.PASS));
 				}
 
 				return Collections.singletonList(
 					new Result(
-						Result.Status.FAIL, Result.Severity.LOW, getCategory(),
+						getCategory(),
 						StringBundler.concat(
 							"development=", development, ", mappedfile=",
 							mappedFile),
-						"development=false, mappedfile=false",
+						null, getKey(),
 						"production-readiness-rule-jsp-engine-settings-fail",
-						new Object[0], null, getKey()));
+						new Object[0], "development=false, mappedfile=false",
+						Result.Severity.LOW, Result.Status.FAIL));
 			}
 			else if (Validator.isNull(development) ||
 					 Validator.isNull(mappedFile)) {
 
 				return Collections.singletonList(
 					new Result(
-						Result.Status.FAIL, Result.Severity.LOW, getCategory(),
+						getCategory(),
 						"development or mappedfile is not set, Tomcat will " +
 							"use the default value development=true or " +
 								"mappedfile=true",
-						"development=false, mappedfile=false",
+						null, getKey(),
 						"production-readiness-rule-jsp-engine-settings-fail",
-						new Object[0], null, getKey()));
+						new Object[0], "development=false, mappedfile=false",
+						Result.Severity.LOW, Result.Status.FAIL));
 			}
 		}
 		catch (Exception exception) {

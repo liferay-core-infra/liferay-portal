@@ -24,13 +24,13 @@ public class OpenFileDescriptorLimitRuleImpl
 	public Collection<Result> check(long companyId) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
-				"ulimit -n >= 65536",
-				"production-readiness-rule-open-file-descriptor-limit-message",
-				new Object[0],
+				getCategory(), null,
 				"https://www.elastic.co/docs/deploy-manage/deploy/self-" +
 					"managed/file-descriptors",
-				getKey()));
+				getKey(),
+				"production-readiness-rule-open-file-descriptor-limit-message",
+				new Object[0], "ulimit -n >= 65536", Result.Severity.HIGH,
+				Result.Status.FAIL));
 	}
 
 	@Override

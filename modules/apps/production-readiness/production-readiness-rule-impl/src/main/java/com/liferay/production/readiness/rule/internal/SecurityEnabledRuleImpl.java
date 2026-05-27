@@ -71,9 +71,9 @@ public class SecurityEnabledRuleImpl implements ProductionReadinessRule {
 
 		return Collections.singletonList(
 			new Result(
-				Result.Status.PASS, Result.Severity.HIGH, getCategory(), null,
-				null, "production-readiness-rule-security-enabled-pass",
-				new Object[0], null, getKey()));
+				getCategory(), null, null, getKey(),
+				"production-readiness-rule-security-enabled-pass",
+				new Object[0], null, Result.Severity.HIGH, Result.Status.PASS));
 	}
 
 	@Override
@@ -89,19 +89,19 @@ public class SecurityEnabledRuleImpl implements ProductionReadinessRule {
 	private Result _checkSecurity(String content, String fileName) {
 		if (content.contains("authenticationEnabled=B\"false\"")) {
 			return new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(),
-				"authenticationEnabled=false", "authenticationEnabled=true",
+				getCategory(), "authenticationEnabled=false", null, getKey(),
 				"production-readiness-rule-security-enabled-authentication-" +
 					"disabled-fail",
-				new Object[] {fileName}, null, getKey());
+				new Object[] {fileName}, "authenticationEnabled=true",
+				Result.Severity.HIGH, Result.Status.FAIL);
 		}
 
 		if (content.contains("httpSSLEnabled=B\"false\"")) {
 			return new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(),
-				"httpSSLEnabled=false", "httpSSLEnabled=true",
+				getCategory(), "httpSSLEnabled=false", null, getKey(),
 				"production-readiness-rule-security-enabled-ssl-disabled-fail",
-				new Object[] {fileName}, null, getKey());
+				new Object[] {fileName}, "httpSSLEnabled=true",
+				Result.Severity.HIGH, Result.Status.FAIL);
 		}
 
 		return null;
@@ -120,10 +120,10 @@ public class SecurityEnabledRuleImpl implements ProductionReadinessRule {
 	private Collection<Result> _failFileMissing(String fileName) {
 		return Collections.singletonList(
 			new Result(
-				Result.Status.FAIL, Result.Severity.HIGH, getCategory(), null,
-				null,
+				getCategory(), null, null, getKey(),
 				"production-readiness-rule-security-enabled-file-missing-fail",
-				new Object[] {fileName}, null, getKey()));
+				new Object[] {fileName}, null, Result.Severity.HIGH,
+				Result.Status.FAIL));
 	}
 
 	private File _getFile(String fileName) {

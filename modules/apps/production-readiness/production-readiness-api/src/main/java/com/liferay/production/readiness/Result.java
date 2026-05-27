@@ -11,19 +11,19 @@ package com.liferay.production.readiness;
 public class Result {
 
 	public Result(
-		Status status, Severity severity, String category, String currentValue,
-		String recommendedValue, String messageKey, Object[] messageParameters,
-		String docsLink, String key) {
+		String category, String currentValue, String docsLink, String key,
+		String messageKey, Object[] messageParameters, String recommendedValue,
+		Severity severity, Status status) {
 
-		_status = status;
-		_severity = severity;
 		_category = category;
 		_currentValue = currentValue;
-		_recommendedValue = recommendedValue;
-		_messageKey = messageKey;
-		_messageParameters = messageParameters;
 		_docsLink = docsLink;
 		_key = key;
+		_messageKey = messageKey;
+		_messageParameters = messageParameters;
+		_recommendedValue = recommendedValue;
+		_severity = severity;
+		_status = status;
 	}
 
 	public String getCategory() {

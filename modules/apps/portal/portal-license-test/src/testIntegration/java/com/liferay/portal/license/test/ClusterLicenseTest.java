@@ -328,6 +328,82 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		_testConsoleMessageListener.assertMessageListened(messageFuture3);
 	}
 
+	@Test
+	public void testFreeTierLicenseWithManualRecovery() throws Exception {
+		TomcatNode tomcatNode1 = _startTomcatNode();
+
+		tomcatNode1.syncExecute(this::_testFreeTierLicense);
+
+		TomcatNode tomcatNode2 = _startTomcatNode();
+
+		tomcatNode2.syncExecute(this::_testFreeTierLicense);
+
+		TomcatNode tomcatNode3 = _startTomcatNode();
+
+		tomcatNode3.syncExecute(this::_testFreeTierLicense);
+
+		Future<String> messageFuture1 = _testConsoleMessageListener.register(
+			tomcatNode1.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+		Future<String> messageFuture2 = _testConsoleMessageListener.register(
+			tomcatNode2.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+		Future<String> messageFuture3 = _testConsoleMessageListener.register(
+			tomcatNode3.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+
+		TomcatNode tomcatNode4 = _startTomcatNode(
+			false,
+			_getClusterExecutable(
+				tomcatNode3.syncExecute(this::_getTimeStamp)));
+
+		Future<String> messageFuture4 = _testConsoleMessageListener.register(
+			tomcatNode4.getNodeId(), _CONSOLE_KEY_TEMPORARY_NODE_MANUAL,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+
+		tomcatNode4.syncExecute(this::_testFreeTierLicense);
+
+		_testConsoleMessageListener.assertMessageListened(messageFuture1);
+		_testConsoleMessageListener.assertMessageListened(messageFuture2);
+		_testConsoleMessageListener.assertMessageListened(messageFuture3);
+		_testConsoleMessageListener.assertMessageListened(messageFuture4);
+
+		try {
+			tomcatNode4.wait(6L, TimeUnit.MINUTES);
+
+			Assert.fail();
+		}
+		catch (Exception exception) {
+			Assert.assertTrue(exception instanceof TimeoutException);
+		}
+
+		tomcatNode4.syncExecute(
+			() -> {
+				String response = hitHomePage("localhost", getLocalPort());
+
+				Assert.assertTrue(response.contains(_PAGE_KEY_EXCEEDED_LIMIT));
+
+				return null;
+			});
+
+		messageFuture1 = _testConsoleMessageListener.register(
+			tomcatNode1.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+		messageFuture2 = _testConsoleMessageListener.register(
+			tomcatNode2.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+		messageFuture3 = _testConsoleMessageListener.register(
+			tomcatNode3.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+
+		tomcatNode4.stop();
+
+		_testConsoleMessageListener.assertMessageListened(messageFuture1);
+		_testConsoleMessageListener.assertMessageListened(messageFuture2);
+		_testConsoleMessageListener.assertMessageListened(messageFuture3);
+
+		tomcatNode1.syncExecute(this::_assertPortalLicenseRegistered);
+		tomcatNode2.syncExecute(this::_assertPortalLicenseRegistered);
+		tomcatNode3.syncExecute(this::_assertPortalLicenseRegistered);
+	}
+
 	private Serializable _assertPortalLicenseRegistered() throws Exception {
 		assertPortalLicenseRegistered();
 

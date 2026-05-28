@@ -52,6 +52,10 @@ public class PropsUtil_IW {
 		return PropsUtil.getProperties(prefix, removePrefix);
 	}
 
+	public boolean isOverridden(java.lang.String key) {
+		return PropsUtil.isOverridden(key);
+	}
+
 	public void set(java.lang.String key, java.lang.String value) {
 		PropsUtil.set(key, value);
 	}

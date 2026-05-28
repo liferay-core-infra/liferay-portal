@@ -23,10 +23,12 @@ import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.configuration.AbstractFileConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
@@ -151,13 +153,18 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 		return _loadedSources;
 	}
 
+	public Set<String> overriddenKeys() {
+		return _overriddenKeys;
+	}
+
 	private void _addBaseFileName(String fileName) {
 		URL url = _classLoader.getResource(fileName);
 
 		List<String> includeAndOverrides = new ArrayList<>();
 
 		Configuration configuration = _addPropertiesSource(
-			fileName, url, _baseCompositeConfiguration, includeAndOverrides);
+			fileName, url, _baseCompositeConfiguration, includeAndOverrides,
+			true);
 
 		if (configuration == null) {
 			throw new SystemException(
@@ -246,14 +253,14 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 
 			_addPropertiesSource(
 				fileName, url, loadedCompositeConfiguration,
-				includeAndOverrides);
+				includeAndOverrides, false);
 		}
 	}
 
 	private Configuration _addPropertiesSource(
 		String sourceName, URL url,
 		CompositeConfiguration loadedCompositeConfiguration,
-		List<String> includeAndOverrides) {
+		List<String> includeAndOverrides, boolean base) {
 
 		try {
 			Configuration newConfiguration = null;
@@ -288,6 +295,14 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 			}
 			else {
 				_loadedSources.add(sourceName);
+			}
+
+			if (!base) {
+				Iterator<String> keyIterator = newConfiguration.getKeys();
+
+				while (keyIterator.hasNext()) {
+					_overriddenKeys.add(keyIterator.next());
+				}
 			}
 
 			return newConfiguration;
@@ -430,6 +445,7 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 	private final CompositeConfiguration _globalCompositeConfiguration =
 		new CompositeConfiguration();
 	private final List<String> _loadedSources = new ArrayList<>();
+	private final Set<String> _overriddenKeys = new HashSet<>();
 	private final String _prefix;
 	private final Configuration _prefixedSystemConfiguration;
 	private final SystemConfiguration _systemConfiguration =

@@ -208,6 +208,18 @@ public class ConfigurationImpl implements Configuration {
 	}
 
 	@Override
+	public boolean isOverridden(String key) {
+		Set<String> overriddenKeys =
+			_classLoaderAggregateProperties.overriddenKeys();
+
+		if (overriddenKeys.contains(key) || (System.getProperty(key) != null)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public void set(String key, String value) {
 		_classLoaderAggregateProperties.setProperty(key, value);
 

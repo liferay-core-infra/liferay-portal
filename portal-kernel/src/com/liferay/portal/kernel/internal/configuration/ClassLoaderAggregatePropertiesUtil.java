@@ -11,6 +11,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.EnvPropertiesUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 
+import java.util.Set;
+
 /**
  * @author Shuyang Zhou
  */
@@ -31,8 +33,16 @@ public class ClassLoaderAggregatePropertiesUtil {
 					classLoaderAggregateProperties.loadedSources()));
 		}
 
+		Set<String> overriddenKeys =
+			classLoaderAggregateProperties.overriddenKeys();
+
 		EnvPropertiesUtil.loadEnvOverrides(
-			_ENV_OVERRIDE_PREFIX, classLoaderAggregateProperties::setProperty);
+			_ENV_OVERRIDE_PREFIX,
+			(key, value) -> {
+				overriddenKeys.add(key);
+
+				classLoaderAggregateProperties.setProperty(key, value);
+			});
 
 		return classLoaderAggregateProperties;
 	}

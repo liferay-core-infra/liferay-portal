@@ -31,6 +31,8 @@ public interface Configuration {
 
 	public Properties getProperties(String prefix, boolean removePrefix);
 
+	public boolean isOverridden(String key);
+
 	public void set(String key, String value);
 
 }

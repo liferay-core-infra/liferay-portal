@@ -72,6 +72,10 @@ public class PropsUtil {
 		return _configuration.getProperties(prefix, removePrefix);
 	}
 
+	public static boolean isOverridden(String key) {
+		return _configuration.isOverridden(key);
+	}
+
 	public static void set(String key, String value) {
 		_configuration.set(key, value);
 	}

@@ -318,6 +318,78 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		_testConsoleMessageListener.assertMessageListened(messageFuture3);
 	}
 
+	@Test
+	public void testFreeTierLicenseWithManualRecovery() throws Exception {
+		_tomcatNode1.syncExecute(this::_testFreeTierLicense);
+		_tomcatNode2.syncExecute(this::_testFreeTierLicense);
+
+		TomcatNode tomcatNode3 = _startTomcatNode(true);
+
+		tomcatNode3.syncExecute(this::_testFreeTierLicense);
+
+		Future<String> messageFuture1 = _testConsoleMessageListener.register(
+			_tomcatNode1.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+		Future<String> messageFuture2 = _testConsoleMessageListener.register(
+			_tomcatNode2.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+		Future<String> messageFuture3 = _testConsoleMessageListener.register(
+			tomcatNode3.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+
+		TomcatNode tomcatNode4 = _startTomcatNode(
+			false,
+			_getClusterExecutable(
+				tomcatNode3.syncExecute(this::_getTimeStamp)));
+
+		Future<String> messageFuture4 = _testConsoleMessageListener.register(
+			tomcatNode4.getNodeId(), _CONSOLE_KEY_TEMPORARY_NODE_MANUAL,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+
+		tomcatNode4.syncExecute(this::_testFreeTierLicense);
+
+		_testConsoleMessageListener.assertMessageListened(messageFuture1);
+		_testConsoleMessageListener.assertMessageListened(messageFuture2);
+		_testConsoleMessageListener.assertMessageListened(messageFuture3);
+		_testConsoleMessageListener.assertMessageListened(messageFuture4);
+
+		try {
+			tomcatNode4.wait(_NODE_SHUTDOWN_MINUTES, TimeUnit.MINUTES);
+
+			Assert.fail();
+		}
+		catch (Exception exception) {
+			Assert.assertTrue(exception instanceof TimeoutException);
+		}
+
+		tomcatNode4.syncExecute(
+			() -> {
+				String response = hitHomePage("localhost", getLocalPort());
+
+				Assert.assertTrue(response.contains(_PAGE_KEY_EXCEEDED_LIMIT));
+
+				return null;
+			});
+
+		messageFuture1 = _testConsoleMessageListener.register(
+			_tomcatNode1.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+		messageFuture2 = _testConsoleMessageListener.register(
+			_tomcatNode2.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+		messageFuture3 = _testConsoleMessageListener.register(
+			tomcatNode3.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+
+		tomcatNode4.stop();
+
+		_testConsoleMessageListener.assertMessageListened(messageFuture1);
+		_testConsoleMessageListener.assertMessageListened(messageFuture2);
+		_testConsoleMessageListener.assertMessageListened(messageFuture3);
+
+		_tomcatNode1.syncExecute(this::_assertPortalLicenseRegistered);
+		_tomcatNode2.syncExecute(this::_assertPortalLicenseRegistered);
+
+		tomcatNode3.syncExecute(this::_assertPortalLicenseRegistered);
+	}
+
 	@SafeVarargs
 	private static TomcatNode _startTomcatNode(
 			boolean overloadNodeAutoShutDown,

@@ -22,10 +22,10 @@ import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portlet.PortalPreferencesWrapper;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -42,8 +42,7 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 	public void onAfterCreate(Company company) throws ModelListenerException {
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
-				_processDeprecationFeatureFlagsForCompany(
-					company.getCompanyId());
+				_processDeprecationFeatureFlags(company.getCompanyId());
 
 				return null;
 			});
@@ -52,11 +51,11 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 	@Activate
 	protected void activate() {
 		if (StartupHelperUtil.isDBNew()) {
-			_processDeprecationFeatureFlagsForSystem();
+			_processDeprecationFeatureFlags(CompanyConstants.SYSTEM);
 		}
 
 		_companyLocalService.forEachCompanyId(
-			this::_processDeprecationFeatureFlagsForCompany);
+			this::_processDeprecationFeatureFlags);
 	}
 
 	private PortalPreferences _getPortalPreferences(long companyId) {
@@ -68,9 +67,7 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 		return portalPreferencesWrapper.getPortalPreferencesImpl();
 	}
 
-	private void _processDeprecationFeatureFlags(
-		long companyId, Predicate<FeatureFlag> enabledPredicate) {
-
+	private void _processDeprecationFeatureFlags(long companyId) {
 		PortalPreferences portalPreferences = _getPortalPreferences(companyId);
 
 		boolean processed = GetterUtil.getBoolean(
@@ -90,9 +87,17 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 				FeatureFlagType.DEPRECATION.getPredicate());
 
 		for (FeatureFlag deprecationFeatureFlag : deprecationFeatureFlags) {
-			_featureFlagsBagProvider.setEnabled(
-				companyId, deprecationFeatureFlag.getKey(),
-				enabledPredicate.test(deprecationFeatureFlag));
+			String key = deprecationFeatureFlag.getKey();
+
+			boolean enabled = false;
+
+			if (PropsUtil.isOverridden(FeatureFlagConstants.getKey(key)) &&
+				deprecationFeatureFlag.isEnabled()) {
+
+				enabled = true;
+			}
+
+			_featureFlagsBagProvider.setEnabled(companyId, key, enabled);
 		}
 
 		portalPreferences = _getPortalPreferences(companyId);
@@ -103,16 +108,6 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 		_portalPreferencesLocalService.updatePreferences(
 			companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY, portalPreferences);
-	}
-
-	private void _processDeprecationFeatureFlagsForCompany(long companyId) {
-		_processDeprecationFeatureFlags(
-			companyId, deprecationFeatureFlag -> false);
-	}
-
-	private void _processDeprecationFeatureFlagsForSystem() {
-		_processDeprecationFeatureFlags(
-			CompanyConstants.SYSTEM, FeatureFlag::isEnabled);
 	}
 
 	@Reference

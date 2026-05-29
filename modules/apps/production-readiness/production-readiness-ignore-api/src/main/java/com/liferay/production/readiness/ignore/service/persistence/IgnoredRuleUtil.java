@@ -125,55 +125,6 @@ public class IgnoredRuleUtil {
 	}
 
 	/**
-	 * Returns all the ignored rules where companyId = &#63;.
-	 *
-	 * @param companyId the company ID
-	 * @return the matching ignored rules
-	 */
-	public static List<IgnoredRule> findByCompanyId(long companyId) {
-		return getPersistence().findByCompanyId(companyId);
-	}
-
-	/**
-	 * Returns a range of all the ignored rules where companyId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.production.readiness.ignore.model.impl.IgnoredRuleModelImpl</code>.
-	 * </p>
-	 *
-	 * @param companyId the company ID
-	 * @param start the lower bound of the range of ignored rules
-	 * @param end the upper bound of the range of ignored rules (not inclusive)
-	 * @return the range of matching ignored rules
-	 */
-	public static List<IgnoredRule> findByCompanyId(
-		long companyId, int start, int end) {
-
-		return getPersistence().findByCompanyId(companyId, start, end);
-	}
-
-	/**
-	 * Returns an ordered range of all the ignored rules where companyId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.production.readiness.ignore.model.impl.IgnoredRuleModelImpl</code>.
-	 * </p>
-	 *
-	 * @param companyId the company ID
-	 * @param start the lower bound of the range of ignored rules
-	 * @param end the upper bound of the range of ignored rules (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching ignored rules
-	 */
-	public static List<IgnoredRule> findByCompanyId(
-		long companyId, int start, int end,
-		OrderByComparator<IgnoredRule> orderByComparator) {
-
-		return getPersistence().findByCompanyId(
-			companyId, start, end, orderByComparator);
-	}
-
-	/**
 	 * Returns an ordered range of all the ignored rules where companyId = &#63;.
 	 *
 	 * <p>
@@ -259,17 +210,6 @@ public class IgnoredRuleUtil {
 			NoSuchIgnoredRuleException {
 
 		return getPersistence().findByC_R(companyId, ruleKey);
-	}
-
-	/**
-	 * Returns the ignored rule where companyId = &#63; and ruleKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param companyId the company ID
-	 * @param ruleKey the rule key
-	 * @return the matching ignored rule, or <code>null</code> if a matching ignored rule could not be found
-	 */
-	public static IgnoredRule fetchByC_R(long companyId, String ruleKey) {
-		return getPersistence().fetchByC_R(companyId, ruleKey);
 	}
 
 	/**
@@ -363,6 +303,66 @@ public class IgnoredRuleUtil {
 		return getPersistence().fetchByPrimaryKey(ignoredRuleId);
 	}
 
+	/**
+	 * Returns the ignored rule where companyId = &#63; and ruleKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param companyId the company ID
+	 * @param ruleKey the rule key
+	 * @return the matching ignored rule, or <code>null</code> if a matching ignored rule could not be found
+	 */
+	public static IgnoredRule fetchByC_R(long companyId, String ruleKey) {
+		return getPersistence().fetchByC_R(companyId, ruleKey);
+	}
+
+	/**
+	 * Returns all the ignored rules where companyId = &#63;.
+	 *
+	 * @param companyId the company ID
+	 * @return the matching ignored rules
+	 */
+	public static List<IgnoredRule> findByCompanyId(long companyId) {
+		return getPersistence().findByCompanyId(companyId);
+	}
+
+	/**
+	 * Returns a range of all the ignored rules where companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.production.readiness.ignore.model.impl.IgnoredRuleModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of ignored rules
+	 * @param end the upper bound of the range of ignored rules (not inclusive)
+	 * @return the range of matching ignored rules
+	 */
+	public static List<IgnoredRule> findByCompanyId(
+		long companyId, int start, int end) {
+
+		return getPersistence().findByCompanyId(companyId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the ignored rules where companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.production.readiness.ignore.model.impl.IgnoredRuleModelImpl</code>.
+	 * </p>
+	 *
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of ignored rules
+	 * @param end the upper bound of the range of ignored rules (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ignored rules
+	 */
+	public static List<IgnoredRule> findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<IgnoredRule> orderByComparator) {
+
+		return getPersistence().findByCompanyId(
+			companyId, start, end, orderByComparator);
+	}
+
 	public static IgnoredRulePersistence getPersistence() {
 		return _persistence;
 	}
@@ -374,4 +374,4 @@ public class IgnoredRuleUtil {
 	private static volatile IgnoredRulePersistence _persistence;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:158168489
+// LIFERAY-SERVICE-BUILDER-HASH:-311863961

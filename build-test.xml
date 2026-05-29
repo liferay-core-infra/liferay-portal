@@ -9172,22 +9172,14 @@ ${docker.start.error}</fail>
 			<delete failonerror="false" file="${liferay.home}/deploy/license.xml" verbose="true" />
 
 			<if>
-				<equals arg1="@{dxp.license.file}" arg2="dxp-license-virtual-cluster.xml" />
+				<equals arg1="@{dxp.license.file}" arg2="portal-dxp-license-custom-expiration-48-hours.xml" />
 				<then>
 					<copy
-						file="${project.dir}/portal-web/test/functional/com/liferay/portalweb/tests/coreinfrastructureee/clustering/clusteringframework/dependencies/@{dxp.license.file}"
+						file="${project.dir}/portal-web/test/functional/com/liferay/portalweb/tests/coreinfrastructure/license/dependencies/@{dxp.license.file}"
 						todir="${liferay.home}/deploy"
 					/>
-				</then>
-				<elseif>
-					<equals arg1="@{dxp.license.file}" arg2="portal-dxp-license-custom-expiration-48-hours.xml" />
-					<then>
-						<copy
-							file="${project.dir}/portal-web/test/functional/com/liferay/portalweb/tests/coreinfrastructure/license/dependencies/@{dxp.license.file}"
-							todir="${liferay.home}/deploy"
-						/>
 
-						<beanshell>
+					<beanshell>
 							<![CDATA[
 								import java.time.ZoneId;
 								import java.time.ZonedDateTime;
@@ -9207,9 +9199,8 @@ ${docker.start.error}</fail>
 
 								project.setProperty("expiration.date", dateTimeFormatter.format(zonedDateTime));
 							]]>
-						</beanshell>
-					</then>
-				</elseif>
+					</beanshell>
+				</then>
 				<else>
 					<copy
 						file="${project.dir}/portal-web/test/functional/com/liferay/portalweb/dependencies/license/@{dxp.license.file}"

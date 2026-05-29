@@ -103,6 +103,71 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 	}
 
 	@Test
+	public void testClusterCanRecoverByShuttingDownLicensedNode()
+		throws Exception {
+
+		_tomcatNode1.syncExecute(this::_testFreeTierLicense);
+		_tomcatNode2.syncExecute(this::_testFreeTierLicense);
+
+		TomcatNode tomcatNode3 = _startTomcatNode(true);
+
+		tomcatNode3.syncExecute(this::_testFreeTierLicense);
+
+		Future<String> messageFuture1 = _testConsoleMessageListener.register(
+			_tomcatNode1.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+		Future<String> messageFuture2 = _testConsoleMessageListener.register(
+			_tomcatNode2.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+		Future<String> messageFuture3 = _testConsoleMessageListener.register(
+			tomcatNode3.getNodeId(), _CONSOLE_KEY_LICENSED_NODE,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+
+		TomcatNode tomcatNode4 = _startTomcatNode(
+			false,
+			_getClusterExecutable(
+				tomcatNode3.syncExecute(this::_getTimeStamp)));
+
+		Future<String> messageFuture4 = _testConsoleMessageListener.register(
+			tomcatNode4.getNodeId(), _CONSOLE_KEY_TEMPORARY_NODE_MANUAL,
+			_CONSOLE_KEY_NODE_EXCEEDED);
+
+		tomcatNode4.syncExecute(this::_testFreeTierLicense);
+
+		_testConsoleMessageListener.assertMessageListened(messageFuture1);
+		_testConsoleMessageListener.assertMessageListened(messageFuture2);
+		_testConsoleMessageListener.assertMessageListened(messageFuture3);
+		_testConsoleMessageListener.assertMessageListened(messageFuture4);
+
+		try {
+			tomcatNode4.wait(_NODE_SHUTDOWN_MINUTES, TimeUnit.MINUTES);
+
+			Assert.fail();
+		}
+		catch (Exception exception) {
+			Assert.assertTrue(exception instanceof TimeoutException);
+		}
+
+		messageFuture1 = _testConsoleMessageListener.register(
+			_tomcatNode1.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+		messageFuture2 = _testConsoleMessageListener.register(
+			_tomcatNode2.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+		messageFuture4 = _testConsoleMessageListener.register(
+			tomcatNode4.getNodeId(), _CONSOLE_KEY_FINISHED_SHUTDOWN);
+
+		tomcatNode3.stop();
+
+		_testConsoleMessageListener.assertMessageListened(messageFuture1);
+		_testConsoleMessageListener.assertMessageListened(messageFuture2);
+		_testConsoleMessageListener.assertMessageListened(messageFuture4);
+
+		_tomcatNode1.syncExecute(this::_assertPortalLicenseRegistered);
+		_tomcatNode2.syncExecute(this::_assertPortalLicenseRegistered);
+
+		tomcatNode4.syncExecute(this::_assertPortalLicenseRegistered);
+	}
+
+	@Test
 	public void testEnterpriseLicense() throws Exception {
 		_tomcatNode1.syncExecute(this::_testFreeTierLicense);
 		_tomcatNode2.syncExecute(this::_testFreeTierLicense);
@@ -370,6 +435,11 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 		"This current node is within the temporarily permitted node count " +
 			"and will be automatically deactivated and shut down after the " +
 				"grace period expires";
+
+	private static final String _CONSOLE_KEY_TEMPORARY_NODE_MANUAL =
+		"This current node is within the temporarily permitted node count " +
+			"and will be automatically deactivated after the grace period " +
+				"expires";
 
 	private static final long _NODE_SHUTDOWN_MINUTES = 6L;
 

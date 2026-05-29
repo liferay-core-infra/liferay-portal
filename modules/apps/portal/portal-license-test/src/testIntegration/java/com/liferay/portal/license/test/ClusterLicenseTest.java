@@ -128,7 +128,7 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 			_CONSOLE_KEY_NODE_EXCEEDED);
 
 		TomcatNode tomcatNode4 = _startTomcatNode(
-			false,
+			null, false,
 			_getClusterExecutable(
 				tomcatNode3.syncExecute(this::_getTimeStamp)));
 
@@ -353,7 +353,7 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 			_CONSOLE_KEY_NODE_EXCEEDED);
 
 		TomcatNode tomcatNode4 = _startTomcatNode(
-			false,
+			null, false,
 			_getClusterExecutable(
 				tomcatNode3.syncExecute(this::_getTimeStamp)));
 
@@ -442,26 +442,29 @@ public class ClusterLicenseTest extends BaseLicenseTestCase {
 				additionalClusterExecutables)
 		throws Exception {
 
-		return _startTomcatNode(true, additionalClusterExecutables);
+		return _startTomcatNode(null, true, additionalClusterExecutables);
 	}
 
 	@SafeVarargs
 	private TomcatNode _startTomcatNode(
-			boolean overloadNodeAutoShutdown,
+			TomcatNode tomcatNode, boolean overloadNodeAutoShutdown,
 			TomcatNode.ClusterExecutable<Serializable>...
 				additionalClusterExecutables)
 		throws Exception {
 
-		TomcatCluster.Builder builder = tomcatClusterTestRule.buildTomcatNode();
+		if (tomcatNode == null) {
+			TomcatCluster.Builder builder =
+				tomcatClusterTestRule.buildTomcatNode();
 
-		TomcatNode tomcatNode = builder.build();
+			tomcatNode = builder.build();
 
-		Files.write(
-			tomcatNode.getPortalExtPropertiesPath(),
-			List.of(
-				"license.cluster.overload.node.auto.shut.down=" +
-					overloadNodeAutoShutdown),
-			StandardOpenOption.APPEND);
+			Files.write(
+				tomcatNode.getPortalExtPropertiesPath(),
+				List.of(
+					"license.cluster.overload.node.auto.shut.down=" +
+						overloadNodeAutoShutdown),
+				StandardOpenOption.APPEND);
+		}
 
 		tomcatNode.start(true);
 

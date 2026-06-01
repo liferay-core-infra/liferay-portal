@@ -10,3 +10,4 @@ module.framework.base.dir=${OSGI_BASE}
 module.framework.configs.dir=${OSGI_CONFIGS}
 module.framework.state.dir=${OSGI_STATE}
 setup.wizard.enabled=false
+virtual.hosts.default.site.name=Guest

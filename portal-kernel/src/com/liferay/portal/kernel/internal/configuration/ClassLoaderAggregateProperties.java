@@ -164,7 +164,7 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 
 		Configuration configuration = _addPropertiesSource(
 			fileName, url, _baseCompositeConfiguration, includeAndOverrides,
-			true);
+			false);
 
 		if (configuration == null) {
 			throw new SystemException(
@@ -253,14 +253,14 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 
 			_addPropertiesSource(
 				fileName, url, loadedCompositeConfiguration,
-				includeAndOverrides, false);
+				includeAndOverrides, true);
 		}
 	}
 
 	private Configuration _addPropertiesSource(
 		String sourceName, URL url,
 		CompositeConfiguration loadedCompositeConfiguration,
-		List<String> includeAndOverrides, boolean base) {
+		List<String> includeAndOverrides, boolean override) {
 
 		try {
 			Configuration newConfiguration = null;
@@ -297,7 +297,7 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 				_loadedSources.add(sourceName);
 			}
 
-			if (!base) {
+			if (override) {
 				Iterator<String> keyIterator = newConfiguration.getKeys();
 
 				while (keyIterator.hasNext()) {

@@ -329,8 +329,11 @@ public class ProductionReadinessRuleUtil {
 			if (inputArgument.equals("-XX:+UseLargePages")) {
 				useLargePages = true;
 			}
-			else if (inputArgument.startsWith("-XX:LargePageSizeInBytes=")) {
-				largePageSizeArg = inputArgument.substring(25);
+			else if (inputArgument.startsWith(
+						_PREFIX_LARGE_PAGE_SIZE_IN_BYTES)) {
+
+				largePageSizeArg = inputArgument.substring(
+					_PREFIX_LARGE_PAGE_SIZE_IN_BYTES.length());
 			}
 		}
 
@@ -820,9 +823,9 @@ public class ProductionReadinessRuleUtil {
 			String content = FileUtil.read(file);
 
 			for (String line : StringUtil.splitLines(content)) {
-				if (line.startsWith("Hugepagesize:")) {
+				if (line.startsWith(_PREFIX_HUGEPAGESIZE)) {
 					String sizeStr = line.substring(
-						13
+						_PREFIX_HUGEPAGESIZE.length()
 					).trim();
 
 					return _parseSize(StringUtil.removeSubstring(sizeStr, " "));
@@ -903,6 +906,11 @@ public class ProductionReadinessRuleUtil {
 
 		return GetterUtil.getLong(sizeStr) * multiplier;
 	}
+
+	private static final String _PREFIX_HUGEPAGESIZE = "Hugepagesize:";
+
+	private static final String _PREFIX_LARGE_PAGE_SIZE_IN_BYTES =
+		"-XX:LargePageSizeInBytes=";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ProductionReadinessRuleUtil.class);

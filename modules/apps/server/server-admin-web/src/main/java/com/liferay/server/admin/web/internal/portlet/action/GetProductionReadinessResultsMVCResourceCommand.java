@@ -12,6 +12,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -56,6 +58,8 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		_checkOmniadmin(themeDisplay);
+
 		Locale locale = themeDisplay.getLocale();
 
 		JSONArray resultsJSONArray = _jsonFactory.createJSONArray();
@@ -63,9 +67,9 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		int passed = 0;
 		int failed = 0;
 
-		_ignoreRules = _getIgnoreRules();
+		List<String> ignoreRules = _getIgnoreRules();
 
-		int ignored = _ignoreRules.size();
+		int ignored = ignoreRules.size();
 
 		for (ProductionReadinessResult productionReadinessResult :
 				ProductionReadinessRuleUtil.check()) {
@@ -74,7 +78,7 @@ public class GetProductionReadinessResultsMVCResourceCommand
 				continue;
 			}
 
-			if (!_ignoreRules.contains(productionReadinessResult.getKey())) {
+			if (!ignoreRules.contains(productionReadinessResult.getKey())) {
 				if (productionReadinessResult.getStatus() ==
 						ProductionReadinessResult.Status.PASS) {
 
@@ -86,7 +90,7 @@ public class GetProductionReadinessResultsMVCResourceCommand
 			}
 
 			resultsJSONArray.put(
-				_toJSONObject(locale, productionReadinessResult));
+				_toJSONObject(ignoreRules, locale, productionReadinessResult));
 		}
 
 		JSONObject summaryJSONObject = _jsonFactory.createJSONObject(
@@ -112,6 +116,16 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		printWriter.write(responseJSONObject.toString());
 	}
 
+	private void _checkOmniadmin(ThemeDisplay themeDisplay) throws Exception {
+		PermissionChecker permissionChecker =
+			themeDisplay.getPermissionChecker();
+
+		if (!permissionChecker.isOmniadmin()) {
+			throw new PrincipalException.MustBeOmniadmin(
+				themeDisplay.getUserId());
+		}
+	}
+
 	private List<String> _getIgnoreRules() throws Exception {
 		File configsDir = new File(PropsValues.LIFERAY_HOME, "osgi/configs");
 
@@ -133,7 +147,8 @@ public class GetProductionReadinessResultsMVCResourceCommand
 	}
 
 	private JSONObject _toJSONObject(
-		Locale locale, ProductionReadinessResult productionReadinessResult) {
+		List<String> ignoreRules, Locale locale,
+		ProductionReadinessResult productionReadinessResult) {
 
 		String message = LanguageUtil.format(
 			locale, productionReadinessResult.getMessageKey(),
@@ -147,7 +162,7 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		).put(
 			"docsLink", _CHECKLIST_DOCS_LINK
 		).put(
-			"ignored", _ignoreRules.contains(productionReadinessResult.getKey())
+			"ignored", ignoreRules.contains(productionReadinessResult.getKey())
 		).put(
 			"message", message
 		).put(
@@ -169,8 +184,6 @@ public class GetProductionReadinessResultsMVCResourceCommand
 	private static final String _PID =
 		"com.liferay.server.admin.web.internal.configuration." +
 			"ProductionReadinessConfiguration";
-
-	private volatile List<String> _ignoreRules;
 
 	@Reference
 	private JSONFactory _jsonFactory;

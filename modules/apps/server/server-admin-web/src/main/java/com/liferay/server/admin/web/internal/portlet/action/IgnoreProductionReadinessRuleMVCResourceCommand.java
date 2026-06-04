@@ -7,11 +7,10 @@ package com.liferay.server.admin.web.internal.portlet.action;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -25,7 +24,6 @@ import jakarta.portlet.ResourceResponse;
 import java.io.File;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Lily Chi
@@ -48,7 +46,7 @@ public class IgnoreProductionReadinessRuleMVCResourceCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		_checkAdmin(themeDisplay);
+		_checkOmniadmin(themeDisplay);
 
 		String ruleKey = ParamUtil.getString(resourceRequest, "ruleKey");
 
@@ -93,12 +91,12 @@ public class IgnoreProductionReadinessRuleMVCResourceCommand
 		}
 	}
 
-	private void _checkAdmin(ThemeDisplay themeDisplay) throws Exception {
-		if (!_roleLocalService.hasUserRole(
-				themeDisplay.getUserId(), themeDisplay.getCompanyId(),
-				RoleConstants.ADMINISTRATOR, true)) {
+	private void _checkOmniadmin(ThemeDisplay themeDisplay) throws Exception {
+		PermissionChecker permissionChecker =
+			themeDisplay.getPermissionChecker();
 
-			throw new PrincipalException.MustBeCompanyAdmin(
+		if (!permissionChecker.isOmniadmin()) {
+			throw new PrincipalException.MustBeOmniadmin(
 				themeDisplay.getUserId());
 		}
 	}
@@ -106,8 +104,5 @@ public class IgnoreProductionReadinessRuleMVCResourceCommand
 	private static final String _PID =
 		"com.liferay.server.admin.web.internal.configuration." +
 			"ProductionReadinessConfiguration";
-
-	@Reference
-	private RoleLocalService _roleLocalService;
 
 }

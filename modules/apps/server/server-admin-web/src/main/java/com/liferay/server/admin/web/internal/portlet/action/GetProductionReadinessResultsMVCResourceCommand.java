@@ -5,32 +5,24 @@
 
 package com.liferay.server.admin.web.internal.portlet.action;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.server.admin.web.internal.production.readiness.ProductionReadinessIgnoreRuleUtil;
 import com.liferay.server.admin.web.internal.production.readiness.ProductionReadinessResult;
 import com.liferay.server.admin.web.internal.production.readiness.ProductionReadinessRuleUtil;
 
 import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
 
-import java.io.File;
 import java.io.PrintWriter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,17 +40,15 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCResourceCommand.class
 )
 public class GetProductionReadinessResultsMVCResourceCommand
-	extends BaseMVCResourceCommand {
+	extends BaseProductionReadinessMVCResourceCommand {
 
 	@Override
-	protected void doServeResource(
+	protected void serveProductionReadinessResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
-
-		_checkOmniadmin(themeDisplay);
 
 		Locale locale = themeDisplay.getLocale();
 
@@ -67,7 +57,8 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		int passed = 0;
 		int failed = 0;
 
-		List<String> ignoreRules = _getIgnoreRules();
+		List<String> ignoreRules =
+			ProductionReadinessIgnoreRuleUtil.getIgnoreRules();
 
 		int ignored = ignoreRules.size();
 
@@ -116,36 +107,6 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		printWriter.write(responseJSONObject.toString());
 	}
 
-	private void _checkOmniadmin(ThemeDisplay themeDisplay) throws Exception {
-		PermissionChecker permissionChecker =
-			themeDisplay.getPermissionChecker();
-
-		if (!permissionChecker.isOmniadmin()) {
-			throw new PrincipalException.MustBeOmniadmin(
-				themeDisplay.getUserId());
-		}
-	}
-
-	private List<String> _getIgnoreRules() throws Exception {
-		File configsDir = new File(PropsValues.LIFERAY_HOME, "osgi/configs");
-
-		File configFile = new File(configsDir, _PID + ".config");
-
-		if (!FileUtil.exists(configFile)) {
-			return new ArrayList<>();
-		}
-
-		String configFileContent = FileUtil.read(configFile);
-
-		String configValue = configFileContent.split(StringPool.EQUAL)[1];
-
-		configValue = configValue.substring(1, configValue.length() - 1);
-
-		String[] ignoreRules = configValue.split(StringPool.COMMA);
-
-		return new ArrayList<>(Arrays.asList(ignoreRules));
-	}
-
 	private JSONObject _toJSONObject(
 		List<String> ignoreRules, Locale locale,
 		ProductionReadinessResult productionReadinessResult) {
@@ -192,10 +153,6 @@ public class GetProductionReadinessResultsMVCResourceCommand
 		"https://www.liferay.com/documents/10182/3292406/Liferay+DXP+7." +
 			"4+Deployment+Checklist.pdf/f3464a36-c0f0-6708-37dd-efe7b8270403?" +
 				"t=1643744619710";
-
-	private static final String _PID =
-		"com.liferay.server.admin.web.internal.configuration." +
-			"ProductionReadinessConfiguration";
 
 	@Reference
 	private JSONFactory _jsonFactory;

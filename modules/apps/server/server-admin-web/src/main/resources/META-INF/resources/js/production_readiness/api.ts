@@ -39,12 +39,13 @@ export async function fetchResults(
 	return response.json();
 }
 
-export async function ignoreRule(
+async function toggleRule(
 	baseResourceURL: string,
+	resourceId: string,
 	ruleKey: string
 ): Promise<void> {
 	const response = await fetch(
-		buildURL(baseResourceURL, RESOURCE_ID_IGNORE_RULE, {
+		buildURL(baseResourceURL, resourceId, {
 			ruleKey,
 		}),
 		{
@@ -57,20 +58,16 @@ export async function ignoreRule(
 	}
 }
 
-export async function unignoreRule(
+export function ignoreRule(
 	baseResourceURL: string,
 	ruleKey: string
 ): Promise<void> {
-	const response = await fetch(
-		buildURL(baseResourceURL, RESOURCE_ID_UNIGNORE_RULE, {
-			ruleKey,
-		}),
-		{
-			method: 'POST',
-		}
-	);
+	return toggleRule(baseResourceURL, RESOURCE_ID_IGNORE_RULE, ruleKey);
+}
 
-	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}`);
-	}
+export function unignoreRule(
+	baseResourceURL: string,
+	ruleKey: string
+): Promise<void> {
+	return toggleRule(baseResourceURL, RESOURCE_ID_UNIGNORE_RULE, ruleKey);
 }

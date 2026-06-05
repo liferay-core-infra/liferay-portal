@@ -1469,12 +1469,6 @@ public class ProductionReadinessRuleUtilTest {
 		);
 
 		Mockito.when(
-			servletElement.getName()
-		).thenReturn(
-			"servlet"
-		);
-
-		Mockito.when(
 			servletElement.elementText("servlet-name")
 		).thenReturn(
 			"jsp"
@@ -1487,7 +1481,7 @@ public class ProductionReadinessRuleUtilTest {
 		);
 
 		Mockito.when(
-			rootElement.elements()
+			rootElement.elements("servlet")
 		).thenReturn(
 			Collections.singletonList(servletElement)
 		);

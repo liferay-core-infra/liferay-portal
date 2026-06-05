@@ -8,8 +8,10 @@ package com.liferay.server.admin.web.internal.production.readiness;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -168,15 +170,7 @@ public class ProductionReadinessRuleUtil {
 
 		List<String> inputArguments = runtimeMXBean.getInputArguments();
 
-		boolean disabled = false;
-
-		for (String inputArgument : inputArguments) {
-			if (inputArgument.equals("-XX:+DisableExplicitGC")) {
-				disabled = true;
-
-				break;
-			}
-		}
+		boolean disabled = inputArguments.contains("-XX:+DisableExplicitGC");
 
 		ProductionReadinessResult.Builder builder =
 			ProductionReadinessResult.builder(category, "explicit-gc-disabled");
@@ -310,10 +304,12 @@ public class ProductionReadinessRuleUtil {
 
 		double maxMemoryGB = xmxBytes / (1024.0 * 1024.0 * 1024.0);
 
+		ProductionReadinessResult.Builder builder =
+			ProductionReadinessResult.builder(
+				category, "huge-pages-configuration");
+
 		if (maxMemoryGB <= 4.0) {
-			return ProductionReadinessResult.builder(
-				category, "huge-pages-configuration"
-			).messageKeySuffix(
+			return builder.messageKeySuffix(
 				"heap-under-4gb"
 			).pass();
 		}
@@ -338,9 +334,7 @@ public class ProductionReadinessRuleUtil {
 		}
 
 		if (!useLargePages) {
-			return ProductionReadinessResult.builder(
-				category, "huge-pages-configuration"
-			).messageKeySuffix(
+			return builder.messageKeySuffix(
 				"no-large-pages"
 			).recommendedValue(
 				"-XX:+UseLargePages"
@@ -350,9 +344,7 @@ public class ProductionReadinessRuleUtil {
 		}
 
 		if (largePageSizeArg == null) {
-			return ProductionReadinessResult.builder(
-				category, "huge-pages-configuration"
-			).messageKeySuffix(
+			return builder.messageKeySuffix(
 				"missing-large-page-size"
 			).severity(
 				ProductionReadinessResult.Severity.MEDIUM
@@ -365,9 +357,7 @@ public class ProductionReadinessRuleUtil {
 			long configLargePageSize = _parseSize(largePageSizeArg);
 
 			if (configLargePageSize != osHugePageSize) {
-				return ProductionReadinessResult.builder(
-					category, "huge-pages-configuration"
-				).currentValue(
+				return builder.currentValue(
 					StringBundler.concat(
 						"-XX:LargePageSizeInBytes = ", largePageSizeArg,
 						", OS's huge page size = ", osHugePageSize / 1024, "kB")
@@ -379,9 +369,7 @@ public class ProductionReadinessRuleUtil {
 			}
 		}
 
-		return ProductionReadinessResult.builder(
-			category, "huge-pages-configuration"
-		).messageKeySuffix(
+		return builder.messageKeySuffix(
 			"configured"
 		).pass();
 	}
@@ -448,29 +436,23 @@ public class ProductionReadinessRuleUtil {
 
 			Element rootElement = document.getRootElement();
 
-			Object development = null;
-			Object mappedFile = null;
+			Boolean development = null;
+			Boolean mappedFile = null;
 
-			List<Element> allElements = rootElement.elements();
-
-			for (Element element : allElements) {
-				String elementName = element.getName();
-
-				if (!elementName.equals("servlet")) {
-					continue;
-				}
-
+			for (Element element : rootElement.elements("servlet")) {
 				String servletName = element.elementText("servlet-name");
 
 				if (!servletName.equals("jsp")) {
 					continue;
 				}
 
-				List<Element> initParams = element.elements("init-param");
+				for (Element initParamElement :
+						element.elements("init-param")) {
 
-				for (Element param : initParams) {
-					String paramName = param.elementText("param-name");
-					String paramValue = param.elementText("param-value");
+					String paramName = initParamElement.elementText(
+						"param-name");
+					String paramValue = initParamElement.elementText(
+						"param-value");
 
 					if (paramName.equals("development")) {
 						development = GetterUtil.getBoolean(paramValue);
@@ -481,29 +463,7 @@ public class ProductionReadinessRuleUtil {
 				}
 			}
 
-			if (Validator.isNotNull(development) &&
-				Validator.isNotNull(mappedFile)) {
-
-				ProductionReadinessResult.Builder builder =
-					ProductionReadinessResult.builder(
-						category, "jsp-engine-settings"
-					).currentValue(
-						StringBundler.concat(
-							"development=", development, ", mappedfile=",
-							mappedFile)
-					).recommendedValue(
-						"development=false, mappedfile=false"
-					);
-
-				if (!(boolean)development && !(boolean)mappedFile) {
-					return builder.pass();
-				}
-
-				return builder.fail();
-			}
-			else if (Validator.isNull(development) ||
-					 Validator.isNull(mappedFile)) {
-
+			if ((development == null) || (mappedFile == null)) {
 				return ProductionReadinessResult.builder(
 					category, "jsp-engine-settings"
 				).currentValue(
@@ -513,6 +473,23 @@ public class ProductionReadinessRuleUtil {
 					"development=false, mappedfile=false"
 				).fail();
 			}
+
+			ProductionReadinessResult.Builder builder =
+				ProductionReadinessResult.builder(
+					category, "jsp-engine-settings"
+				).currentValue(
+					StringBundler.concat(
+						"development=", development, ", mappedfile=",
+						mappedFile)
+				).recommendedValue(
+					"development=false, mappedfile=false"
+				);
+
+			if (!development && !mappedFile) {
+				return builder.pass();
+			}
+
+			return builder.fail();
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -585,24 +562,15 @@ public class ProductionReadinessRuleUtil {
 		String category) {
 
 		List<String> availableLocales = List.of(PropsValues.LOCALES);
+
 		List<String> betaLocales = List.of(PropsValues.LOCALES_BETA);
 		List<String> enabledLocales = List.of(PropsValues.LOCALES_ENABLED);
 
-		List<String> enabledBetaLocales = new ArrayList<>();
+		List<String> enabledBetaLocales = ListUtil.filter(
+			enabledLocales, betaLocales::contains);
 
-		for (String locale : enabledLocales) {
-			if (betaLocales.contains(locale)) {
-				enabledBetaLocales.add(locale);
-			}
-		}
-
-		List<String> unusedLocales = new ArrayList<>();
-
-		for (String locale : availableLocales) {
-			if (!enabledLocales.contains(locale)) {
-				unusedLocales.add(locale);
-			}
-		}
+		List<String> unusedLocales = ListUtil.filter(
+			availableLocales, locale -> !enabledLocales.contains(locale));
 
 		if (enabledBetaLocales.isEmpty() && unusedLocales.isEmpty()) {
 			return Collections.singletonList(
@@ -669,18 +637,9 @@ public class ProductionReadinessRuleUtil {
 	private static ProductionReadinessResult _checkPortalDeveloperProperties(
 		String category) {
 
-		String[] includeAndOverrides = PropsUtil.getArray(
-			"include-and-override");
-
-		boolean hasDeveloperProperties = false;
-
-		for (String includeAndOverride : includeAndOverrides) {
-			if (includeAndOverride.equals("portal-developer.properties")) {
-				hasDeveloperProperties = true;
-
-				break;
-			}
-		}
+		boolean hasDeveloperProperties = ArrayUtil.contains(
+			PropsUtil.getArray("include-and-override"),
+			"portal-developer.properties");
 
 		ProductionReadinessResult.Builder builder =
 			ProductionReadinessResult.builder(
@@ -732,15 +691,8 @@ public class ProductionReadinessRuleUtil {
 
 		List<String> inputArguments = runtimeMXBean.getInputArguments();
 
-		boolean unlocked = false;
-
-		for (String inputArgument : inputArguments) {
-			if (inputArgument.equals("-XX:+UnlockDiagnosticVMOptions")) {
-				unlocked = true;
-
-				break;
-			}
-		}
+		boolean unlocked = inputArguments.contains(
+			"-XX:+UnlockDiagnosticVMOptions");
 
 		ProductionReadinessResult.Builder builder =
 			ProductionReadinessResult.builder(
@@ -893,15 +845,16 @@ public class ProductionReadinessRuleUtil {
 
 		if (sizeStr.endsWith("k") || sizeStr.endsWith("kb")) {
 			multiplier = 1024;
-			sizeStr = sizeStr.replaceAll("[^0-9]", "");
 		}
 		else if (sizeStr.endsWith("m") || sizeStr.endsWith("mb")) {
 			multiplier = 1024 * 1024;
-			sizeStr = sizeStr.replaceAll("[^0-9]", "");
 		}
 		else if (sizeStr.endsWith("g") || sizeStr.endsWith("gb")) {
 			multiplier = 1024 * 1024 * 1024;
-			sizeStr = sizeStr.replaceAll("[^0-9]", "");
+		}
+
+		if (multiplier > 1) {
+			sizeStr = StringUtil.extractDigits(sizeStr);
 		}
 
 		return GetterUtil.getLong(sizeStr) * multiplier;

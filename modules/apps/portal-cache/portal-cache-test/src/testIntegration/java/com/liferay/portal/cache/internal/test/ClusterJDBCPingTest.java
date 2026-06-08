@@ -152,6 +152,97 @@ public class ClusterJDBCPingTest implements Serializable {
 					TestPropsValues.USER_PASSWORD, null)));
 	}
 
+	@Test
+	public void testStartupWithZombieEntries() throws Exception {
+		Path jdbcPingXMLPath = Files.createTempFile(
+			"clustering_jdbc_ping_", ".xml");
+
+		try (InputStream inputStream =
+				ClusterJDBCPingTest.class.getResourceAsStream(
+					"dependencies/clustering_jdbc_ping.xml")) {
+
+			Files.copy(
+				inputStream, jdbcPingXMLPath,
+				StandardCopyOption.REPLACE_EXISTING);
+		}
+
+		File jdbcPingXMLFile = jdbcPingXMLPath.toFile();
+
+		jdbcPingXMLFile.deleteOnExit();
+
+		_recreateJGroupsPingTable();
+
+		TomcatNode tomcatNode1 = _buildJDBCPingTomcatNode(jdbcPingXMLPath);
+
+		tomcatNode1.start(true);
+
+		_injectDataSourceIntoJDBCPing(tomcatNode1);
+
+		String ownAddress = null;
+		String clusterName = null;
+		byte[] pingData = null;
+
+		try (Connection connection = DataAccess.getConnection();
+
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"select own_addr, cluster_name, ping_data from JGROUPSPING");
+
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			Assert.assertTrue(resultSet.next());
+
+			ownAddress = resultSet.getString("own_addr");
+			clusterName = resultSet.getString("cluster_name");
+			pingData = resultSet.getBytes("ping_data");
+		}
+
+		tomcatNode1.stop();
+
+		_recreateJGroupsPingTable();
+
+		try (Connection connection = DataAccess.getConnection();
+
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"insert into JGROUPSPING (own_addr, cluster_name, ping_data) " +
+					"values (?, ?, ?)")) {
+
+			preparedStatement.setString(1, ownAddress);
+			preparedStatement.setString(2, clusterName);
+			preparedStatement.setBytes(3, pingData);
+
+			preparedStatement.executeUpdate();
+		}
+
+		try (Connection connection = DataAccess.getConnection();
+
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"select count(*) as countValue from JGROUPSPING");
+
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			Assert.assertTrue(resultSet.next());
+			Assert.assertEquals(1, resultSet.getInt("countValue"));
+		}
+
+		TomcatNode tomcatNode2 = _buildJDBCPingTomcatNode(jdbcPingXMLPath);
+
+		tomcatNode2.start(true);
+
+		_injectDataSourceIntoJDBCPing(tomcatNode2);
+
+		ClusterNode clusterNode = tomcatNode2.syncExecute(
+			ClusterExecutorUtil::getLocalClusterNode);
+
+		Assert.assertNotNull(clusterNode);
+
+		Assert.assertEquals(
+			TestPropsValues.getUserId(),
+			(long)tomcatNode2.syncExecute(
+				() -> AuthenticatedSessionManagerUtil.getAuthenticatedUserId(
+					new MockHttpServletRequest(), "test@liferay.com",
+					TestPropsValues.USER_PASSWORD, null)));
+	}
+
 	private TomcatNode _buildJDBCPingTomcatNode(Path jdbcPingXMLPath)
 		throws Exception {
 

@@ -75,21 +75,7 @@ public class ClusterJDBCPingTest implements Serializable {
 
 	@Test
 	public void testStartup() throws Exception {
-		Path jdbcPingXMLPath = Files.createTempFile(
-			"clustering_jdbc_ping_", ".xml");
-
-		try (InputStream inputStream =
-				ClusterJDBCPingTest.class.getResourceAsStream(
-					"dependencies/clustering_jdbc_ping.xml")) {
-
-			Files.copy(
-				inputStream, jdbcPingXMLPath,
-				StandardCopyOption.REPLACE_EXISTING);
-		}
-
-		File jdbcPingXMLFile = jdbcPingXMLPath.toFile();
-
-		jdbcPingXMLFile.deleteOnExit();
+		Path jdbcPingXMLPath = _createJDBCPingXMLPath();
 
 		_recreateJGroupsPingTable();
 
@@ -105,16 +91,7 @@ public class ClusterJDBCPingTest implements Serializable {
 
 		_injectDataSourceIntoJDBCPing(tomcatNode2);
 
-		try (Connection connection = DataAccess.getConnection();
-
-			PreparedStatement preparedStatement = connection.prepareStatement(
-				"select count(*) as countValue from JGROUPSPING");
-
-			ResultSet resultSet = preparedStatement.executeQuery()) {
-
-			Assert.assertTrue(resultSet.next());
-			Assert.assertEquals(2, resultSet.getInt("countValue"));
-		}
+		_assertJGroupsPingCount(2);
 
 		ClusterNode clusterNode1 = tomcatNode1.syncExecute(
 			ClusterExecutorUtil::getLocalClusterNode);
@@ -154,21 +131,7 @@ public class ClusterJDBCPingTest implements Serializable {
 
 	@Test
 	public void testStartupWithZombieEntries() throws Exception {
-		Path jdbcPingXMLPath = Files.createTempFile(
-			"clustering_jdbc_ping_", ".xml");
-
-		try (InputStream inputStream =
-				ClusterJDBCPingTest.class.getResourceAsStream(
-					"dependencies/clustering_jdbc_ping.xml")) {
-
-			Files.copy(
-				inputStream, jdbcPingXMLPath,
-				StandardCopyOption.REPLACE_EXISTING);
-		}
-
-		File jdbcPingXMLFile = jdbcPingXMLPath.toFile();
-
-		jdbcPingXMLFile.deleteOnExit();
+		Path jdbcPingXMLPath = _createJDBCPingXMLPath();
 
 		_recreateJGroupsPingTable();
 
@@ -213,16 +176,7 @@ public class ClusterJDBCPingTest implements Serializable {
 			preparedStatement.executeUpdate();
 		}
 
-		try (Connection connection = DataAccess.getConnection();
-
-			PreparedStatement preparedStatement = connection.prepareStatement(
-				"select count(*) as countValue from JGROUPSPING");
-
-			ResultSet resultSet = preparedStatement.executeQuery()) {
-
-			Assert.assertTrue(resultSet.next());
-			Assert.assertEquals(1, resultSet.getInt("countValue"));
-		}
+		_assertJGroupsPingCount(1);
 
 		TomcatNode tomcatNode2 = _buildJDBCPingTomcatNode(jdbcPingXMLPath);
 
@@ -243,6 +197,19 @@ public class ClusterJDBCPingTest implements Serializable {
 					TestPropsValues.USER_PASSWORD, null)));
 	}
 
+	private void _assertJGroupsPingCount(int expectedCount) throws Exception {
+		try (Connection connection = DataAccess.getConnection();
+
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"select count(*) as countValue from JGROUPSPING");
+
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			Assert.assertTrue(resultSet.next());
+			Assert.assertEquals(expectedCount, resultSet.getInt("countValue"));
+		}
+	}
+
 	private TomcatNode _buildJDBCPingTomcatNode(Path jdbcPingXMLPath)
 		throws Exception {
 
@@ -258,6 +225,26 @@ public class ClusterJDBCPingTest implements Serializable {
 			StandardOpenOption.APPEND);
 
 		return tomcatNode;
+	}
+
+	private Path _createJDBCPingXMLPath() throws Exception {
+		Path jdbcPingXMLPath = Files.createTempFile(
+			"clustering_jdbc_ping_", ".xml");
+
+		try (InputStream inputStream =
+				ClusterJDBCPingTest.class.getResourceAsStream(
+					"dependencies/clustering_jdbc_ping.xml")) {
+
+			Files.copy(
+				inputStream, jdbcPingXMLPath,
+				StandardCopyOption.REPLACE_EXISTING);
+		}
+
+		File jdbcPingXMLFile = jdbcPingXMLPath.toFile();
+
+		jdbcPingXMLFile.deleteOnExit();
+
+		return jdbcPingXMLPath;
 	}
 
 	private void _injectDataSourceIntoJDBCPing(TomcatNode tomcatNode)

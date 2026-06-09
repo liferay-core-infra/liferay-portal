@@ -30,17 +30,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.LockOptions;
+import org.hibernate.engine.internal.Versioning;
 import org.hibernate.engine.spi.EntityKey;
 import org.hibernate.engine.spi.PersistenceContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.Status;
 import org.hibernate.event.spi.EventSource;
-import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.metamodel.spi.MappingMetamodelImplementor;
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.type.TypeHelper;
 
 /**
  * @author Brian Wing Shun Chan
@@ -114,15 +115,14 @@ public class SessionImpl implements Session {
 			SessionFactoryImplementor sessionFactoryImplementor =
 				sessionImplementor.getSessionFactory();
 
-			MetamodelImplementor metamodelImplementor =
-				sessionFactoryImplementor.getMetamodel();
+			MappingMetamodelImplementor mappingMetamodelImplementor =
+				sessionFactoryImplementor.getMappingMetamodel();
 
-			Map<String, EntityPersister> entityPersisters =
-				metamodelImplementor.entityPersisters();
+			EntityPersister entityPersister =
+				mappingMetamodelImplementor.findEntityDescriptor(
+					object.getClass());
 
-			Class<?> clazz = object.getClass();
-
-			if (!entityPersisters.containsKey(clazz.getName())) {
+			if (entityPersister == null) {
 				return false;
 			}
 
@@ -166,7 +166,8 @@ public class SessionImpl implements Session {
 			queryString = SQLTransformer.transform(queryString);
 
 			return new SQLQueryImpl(
-				_session.createSQLQuery(queryString), strictName);
+				_session.createNativeQuery(queryString, (Class<?>)null),
+				strictName);
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -223,7 +224,8 @@ public class SessionImpl implements Session {
 			queryString = SQLTransformer.transform(queryString);
 
 			SQLQuery sqlQuery = new SQLQueryImpl(
-				_session.createSQLQuery(queryString), strictName);
+				_session.createNativeQuery(queryString, (Class<?>)null),
+				strictName);
 
 			sqlQuery.addSynchronizedQuerySpaces(tableNames);
 
@@ -237,7 +239,7 @@ public class SessionImpl implements Session {
 	@Override
 	public void delete(Object object) throws ORMException {
 		try {
-			_session.delete(object);
+			_session.remove(object);
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -255,11 +257,11 @@ public class SessionImpl implements Session {
 			SessionFactoryImplementor sessionFactoryImplementor =
 				eventSource.getFactory();
 
-			MetamodelImplementor metamodelImplementor =
-				sessionFactoryImplementor.getMetamodel();
+			MappingMetamodelImplementor mappingMetamodelImplementor =
+				sessionFactoryImplementor.getMappingMetamodel();
 
 			EntityPersister entityPersister =
-				metamodelImplementor.entityPersister(clazz);
+				mappingMetamodelImplementor.findEntityDescriptor(clazz);
 
 			Object object = persistenceContext.getEntity(
 				new EntityKey(id, entityPersister));
@@ -298,7 +300,7 @@ public class SessionImpl implements Session {
 	@Override
 	public Object get(Class<?> clazz, Serializable id) throws ORMException {
 		try {
-			return _session.get(clazz, id);
+			return _session.find(clazz, id);
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -309,11 +311,11 @@ public class SessionImpl implements Session {
 	public Object get(Class<?> clazz, Serializable id, LockMode lockMode)
 		throws ORMException {
 
-		LockOptions lockOptions = new LockOptions(
-			LockModeTranslator.translate(lockMode));
+		org.hibernate.LockMode hibernateLockMode = LockModeTranslator.translate(
+			lockMode);
 
 		try {
-			return _session.get(clazz, id, lockOptions);
+			return _session.find(clazz, id, hibernateLockMode.toJpaLockMode());
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -338,7 +340,7 @@ public class SessionImpl implements Session {
 	@Override
 	public Object load(Class<?> clazz, Serializable id) throws ORMException {
 		try {
-			return _session.load(clazz, id);
+			return _session.getReference(clazz, id);
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -368,20 +370,39 @@ public class SessionImpl implements Session {
 			SessionFactoryImplementor sessionFactoryImplementor =
 				eventSource.getFactory();
 
-			MetamodelImplementor metamodelImplementor =
-				sessionFactoryImplementor.getMetamodel();
+			MappingMetamodelImplementor mappingMetamodelImplementor =
+				sessionFactoryImplementor.getMappingMetamodel();
 
 			EntityPersister entityPersister =
-				metamodelImplementor.entityPersister(clazz);
+				mappingMetamodelImplementor.findEntityDescriptor(clazz);
 
-			Object currentObject = persistenceContext.getEntity(
-				new EntityKey(id, entityPersister));
+			EntityKey entityKey = new EntityKey(id, entityPersister);
+
+			Object currentObject = persistenceContext.getEntity(entityKey);
 
 			if (currentObject != null) {
 				return currentObject;
 			}
 
-			_session.lock(object, org.hibernate.LockMode.NONE);
+			Object[] values = entityPersister.getValues(object);
+
+			TypeHelper.deepCopy(
+				values, entityPersister.getPropertyTypes(),
+				entityPersister.getPropertyUpdateability(), values,
+				eventSource);
+
+			Status status = Status.MANAGED;
+
+			if (!entityPersister.isMutable()) {
+				status = Status.READ_ONLY;
+			}
+
+			persistenceContext.addEntity(
+				object, status, values, entityKey,
+				Versioning.getVersion(values, entityPersister),
+				org.hibernate.LockMode.NONE, true, entityPersister, false);
+
+			entityPersister.afterReassociate(object, eventSource);
 
 			return object;
 		}
@@ -393,7 +414,9 @@ public class SessionImpl implements Session {
 	@Override
 	public Serializable save(Object object) throws ORMException {
 		try {
-			return _session.save(object);
+			_session.persist(object);
+
+			return (Serializable)_session.getIdentifier(object);
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -411,7 +434,8 @@ public class SessionImpl implements Session {
 		try {
 			queryString = SQLTransformer.transformForHibernate(queryString);
 
-			return new QueryImpl(_session.createQuery(queryString), strictName);
+			return new QueryImpl(
+				_session.createQuery(queryString, null), strictName);
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);

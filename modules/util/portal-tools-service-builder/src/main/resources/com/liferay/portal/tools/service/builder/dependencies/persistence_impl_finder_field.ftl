@@ -9,7 +9,11 @@
 </#if>
 
 <#if entity.hasCompoundPK() && entityColumn.isPrimary()>
-	<#assign finderFieldName = entity.alias + ".id." + entityColumnName />
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		<#assign finderFieldName = entity.alias + ".primaryKey." + entityColumnName />
+	<#else>
+		<#assign finderFieldName = entity.alias + ".id." + entityColumnName />
+	</#if>
 <#else>
 	<#assign finderFieldName = entity.alias + "." + entityColumnName />
 </#if>

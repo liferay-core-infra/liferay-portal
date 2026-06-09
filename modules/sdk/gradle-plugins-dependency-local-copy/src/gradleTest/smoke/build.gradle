@@ -10,7 +10,7 @@ runGradleTest {
 		assert !FileUtil.exists(rootProject, "bar/build/local-copy/baz/guava-25.1-jre.jar")
 
 		assert FileUtil.exists(rootProject, "bar/build/local-copy/foo/foo.jar")
-		assert FileUtil.exists(rootProject, "bar/build/local-copy/foo/org.hibernate.core-5.6.7.LIFERAY-PATCHED-2.jar")
+		assert FileUtil.exists(rootProject, "bar/build/local-copy/foo/hibernate-core-7.4.0.Final.jar")
 	}
 }
 
@@ -57,6 +57,6 @@ project(":baz") {
 
 project(":foo") {
 	dependencies {
-		api group: "com.liferay", name: "org.hibernate.core", version: "5.6.7.LIFERAY-PATCHED-2.JAKARTA-LIFERAY-PATCHED-1"
+		api group: "org.hibernate.orm", name: "hibernate-core", version: "7.4.0.Final"
 	}
 }

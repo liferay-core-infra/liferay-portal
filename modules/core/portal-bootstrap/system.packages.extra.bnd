@@ -109,7 +109,7 @@ Export-Package:\
 	\
 	jakarta.mail.*;version='2.1.0',\
 	\
-	jakarta.persistence.*;version='3.1.0',\
+	jakarta.persistence.*;version='3.2.0',\
 	\
 	jakarta.portlet.*;version='4.0',\
 	\

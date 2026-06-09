@@ -177,7 +177,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	<#list orderList as order>
 		<#if entity.hasCompoundPK() && order.isPrimary()>
-			<#assign orderByJPQL = orderByJPQL + entity.alias + ".id." + order.name />
+			<#if serviceBuilder.isVersionGTE_7_4_0()>
+				<#assign orderByJPQL = orderByJPQL + entity.alias + ".primaryKey." + order.name />
+			<#else>
+				<#assign orderByJPQL = orderByJPQL + entity.alias + ".id." + order.name />
+			</#if>
 		<#else>
 			<#assign orderByJPQL = orderByJPQL + entity.alias + "." + order.name />
 		</#if>

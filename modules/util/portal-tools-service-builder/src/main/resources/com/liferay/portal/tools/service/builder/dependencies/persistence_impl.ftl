@@ -3133,7 +3133,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						"${entityFinder.where!}",
 						<#list entityColumns as entityColumn>
 							<#if entity.hasCompoundPK() && entityColumn.isPrimary()>
-								<#assign columnName = "id." + entityColumn.name />
+								<#if serviceBuilder.isVersionGTE_7_4_0()>
+									<#assign columnName = "primaryKey." + entityColumn.name />
+								<#else>
+									<#assign columnName = "id." + entityColumn.name />
+								</#if>
 							<#else>
 								<#assign columnName = entityColumn.name />
 							</#if>
@@ -3296,7 +3300,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						</#if>
 						<#list entityColumns as entityColumn>
 							<#if entity.hasCompoundPK() && entityColumn.isPrimary()>
-								<#assign columnName = "id." + entityColumn.name />
+								<#if serviceBuilder.isVersionGTE_7_4_0()>
+									<#assign columnName = "primaryKey." + entityColumn.name />
+								<#else>
+									<#assign columnName = "id." + entityColumn.name />
+								</#if>
 							<#else>
 								<#assign columnName = entityColumn.name />
 							</#if>

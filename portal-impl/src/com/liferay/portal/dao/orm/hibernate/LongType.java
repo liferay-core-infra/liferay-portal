@@ -14,35 +14,35 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class LongType implements Serializable, UserType {
+public class LongType implements Serializable, UserType<Long> {
 
 	public static final Long DEFAULT_VALUE = Long.valueOf(0);
 
 	@Override
-	public Object assemble(Serializable cached, Object owner) {
-		return cached;
+	public Long assemble(Serializable cached, Object owner) {
+		return (Long)cached;
 	}
 
 	@Override
-	public Object deepCopy(Object object) {
+	public Long deepCopy(Long object) {
 		return object;
 	}
 
 	@Override
-	public Serializable disassemble(Object value) {
-		return (Serializable)value;
+	public Serializable disassemble(Long value) {
+		return value;
 	}
 
 	@Override
-	public boolean equals(Object x, Object y) {
+	public boolean equals(Long x, Long y) {
 		if (x == y) {
 			return true;
 		}
@@ -54,7 +54,12 @@ public class LongType implements Serializable, UserType {
 	}
 
 	@Override
-	public int hashCode(Object x) {
+	public int getSqlType() {
+		return Types.BIGINT;
+	}
+
+	@Override
+	public int hashCode(Long x) {
 		return x.hashCode();
 	}
 
@@ -64,71 +69,46 @@ public class LongType implements Serializable, UserType {
 	}
 
 	@Override
-	public Object nullSafeGet(
-			ResultSet resultSet, String[] names,
-			SharedSessionContractImplementor sharedSessionContractImplementor,
-			Object owner)
+	public Long nullSafeGet(
+			ResultSet resultSet, int index, WrapperOptions wrapperOptions)
 		throws SQLException {
 
-		Object value = null;
-
 		try {
-			value = StandardBasicTypes.LONG.nullSafeGet(
-				resultSet, names[0], sharedSessionContractImplementor);
+			return resultSet.getLong(index);
 		}
-		catch (SQLException sqlException1) {
+		catch (SQLException sqlException) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(sqlException1);
-			}
-
-			// Some JDBC drivers do not know how to convert a VARCHAR column
-			// with a blank entry into a BIGINT
-
-			try {
-				value = Long.valueOf(
-					GetterUtil.getLong(
-						StandardBasicTypes.STRING.nullSafeGet(
-							resultSet, names[0],
-							sharedSessionContractImplementor)));
-			}
-			catch (SQLException sqlException2) {
-				throw sqlException2;
+				_log.debug(sqlException);
 			}
 		}
 
-		if (value == null) {
-			return DEFAULT_VALUE;
-		}
+		// Some JDBC drivers do not know how to convert a VARCHAR column
+		// with a blank entry into a BIGINT
 
-		return value;
+		return GetterUtil.getLong(resultSet.getString(index));
 	}
 
 	@Override
 	public void nullSafeSet(
-			PreparedStatement preparedStatement, Object target, int index,
-			SharedSessionContractImplementor sharedSessionContractImplementor)
+			PreparedStatement preparedStatement, Long target, int index,
+			WrapperOptions wrapperOptions)
 		throws SQLException {
 
 		if (target == null) {
 			target = DEFAULT_VALUE;
 		}
 
-		preparedStatement.setLong(index, (Long)target);
+		preparedStatement.setLong(index, target);
 	}
 
 	@Override
-	public Object replace(Object original, Object target, Object owner) {
+	public Long replace(Long original, Long target, Object owner) {
 		return original;
 	}
 
 	@Override
 	public Class<Long> returnedClass() {
 		return Long.class;
-	}
-
-	@Override
-	public int[] sqlTypes() {
-		return new int[] {StandardBasicTypes.LONG.sqlType()};
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LongType.class);

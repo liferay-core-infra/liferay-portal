@@ -1,5 +1,11 @@
 <#assign parentPKColumn = "" />
 
+<#if serviceBuilder.isVersionGTE_7_4_0()>
+	<#assign compoundPKAttributeName = "primaryKey" />
+<#else>
+	<#assign compoundPKAttributeName = "id" />
+</#if>
+
 <#if entity.isHierarchicalTree()>
 	<#if entity.hasEntityColumn("groupId")>
 		<#assign scopeEntityColumn = entity.getEntityColumn("groupId") />
@@ -1111,7 +1117,7 @@ public class ${entity.name}PersistenceTest {
 
 		<#if entity.hasCompoundPK()>
 			<#list entity.PKEntityColumns as entityColumn>
-				dynamicQuery.add(RestrictionsFactoryUtil.eq("id.${entityColumn.name}", new${entity.name}.get${entityColumn.methodName}()));
+				dynamicQuery.add(RestrictionsFactoryUtil.eq("${compoundPKAttributeName}.${entityColumn.name}", new${entity.name}.get${entityColumn.methodName}()));
 			</#list>
 		<#else>
 			<#assign entityColumn = entity.PKEntityColumns[0] />
@@ -1134,7 +1140,7 @@ public class ${entity.name}PersistenceTest {
 
 		<#if entity.hasCompoundPK()>
 			<#list entity.PKEntityColumns as entityColumn>
-				dynamicQuery.add(RestrictionsFactoryUtil.eq("id.${entityColumn.name}",
+				dynamicQuery.add(RestrictionsFactoryUtil.eq("${compoundPKAttributeName}.${entityColumn.name}",
 
 				<#if stringUtil.equals(entityColumn.type, "int")>
 					RandomTestUtil.nextInt()
@@ -1188,7 +1194,7 @@ public class ${entity.name}PersistenceTest {
 		<#assign entityColumn = entity.PKEntityColumns[0] />
 
 		<#if entity.hasCompoundPK()>
-			<#assign propertyName = "id.${entityColumn.name}" />
+			<#assign propertyName = "${compoundPKAttributeName}.${entityColumn.name}" />
 		<#else>
 			<#assign propertyName = "${entityColumn.name}" />
 		</#if>
@@ -1215,7 +1221,7 @@ public class ${entity.name}PersistenceTest {
 		<#assign entityColumn = entity.PKEntityColumns[0] />
 
 		<#if entity.hasCompoundPK()>
-			<#assign propertyName = "id.${entityColumn.name}" />
+			<#assign propertyName = "${compoundPKAttributeName}.${entityColumn.name}" />
 		<#else>
 			<#assign propertyName = "${entityColumn.name}" />
 		</#if>
@@ -1301,7 +1307,7 @@ public class ${entity.name}PersistenceTest {
 
 				<#if entity.hasCompoundPK()>
 					<#list entity.PKEntityColumns as entityColumn>
-						dynamicQuery.add(RestrictionsFactoryUtil.eq("id.${entityColumn.name}", new${entity.name}.get${entityColumn.methodName}()));
+						dynamicQuery.add(RestrictionsFactoryUtil.eq("${compoundPKAttributeName}.${entityColumn.name}", new${entity.name}.get${entityColumn.methodName}()));
 					</#list>
 				<#else>
 					<#assign entityColumn = entity.PKEntityColumns[0] />

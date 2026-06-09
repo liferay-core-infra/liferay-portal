@@ -9547,7 +9547,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/hibernate-core.jar</file-name>
-				<version>5.6.7.LIFERAY-PATCHED-2.JAKARTA-LIFERAY-PATCHED-1</version>
+				<version>7.4.0.Final</version>
 				<project-name>Hibernate</project-name>
 				<project-url>http://www.hibernate.org</project-url>
 				<licenses>
@@ -9556,7 +9556,6 @@
 						<license-url>http://www.gnu.org/licenses/lgpl-2.1.html</license-url>
 					</license>
 				</licenses>
-				<comments>This includes a public patch from HHH-6286.</comments>
 			</library>
 			<library>
 				<file-name>lib/portal/hikaricp.jar</file-name>
@@ -9745,7 +9744,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/persistence.jar</file-name>
-				<version>3.1.0</version>
+				<version>3.2.0</version>
 				<project-name>Java Persistence</project-name>
 				<project-url>http://java.sun.com/javaee/overview/faq/persistence.jsp</project-url>
 				<licenses>

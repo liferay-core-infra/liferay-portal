@@ -16,8 +16,8 @@ import java.util.function.Supplier;
 import org.hibernate.Session;
 import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
+import org.hibernate.engine.creation.internal.SessionCreationOptions;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.internal.SessionCreationOptions;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.jdbc.Work;
@@ -126,7 +126,7 @@ public class PortletTransactionManager implements PlatformTransactionManager {
 			portalSession.flush();
 		}
 
-		SessionBuilder<?> sessionBuilder = portletSessionFactory.withOptions();
+		SessionBuilder sessionBuilder = portletSessionFactory.withOptions();
 
 		sessionBuilder = sessionBuilder.connection(portalConnection);
 

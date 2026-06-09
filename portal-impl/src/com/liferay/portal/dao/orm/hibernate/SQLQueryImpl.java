@@ -25,6 +25,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.ParameterMetadata;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,14 +36,20 @@ import java.util.List;
  */
 public class SQLQueryImpl implements SQLQuery {
 
-	public SQLQueryImpl(org.hibernate.SQLQuery sqlQuery, boolean strictName) {
-		_sqlQuery = sqlQuery;
+	public SQLQueryImpl(NativeQuery nativeQuery, boolean strictName) {
+		_nativeQuery = nativeQuery;
 		_strictName = strictName;
 
 		String[] names = null;
 
 		if (!_strictName) {
-			names = sqlQuery.getNamedParameters();
+			ParameterMetadata parameterMetadata =
+				nativeQuery.getParameterMetadata();
+
+			Set<String> namedParameterNames =
+				parameterMetadata.getNamedParameterNames();
+
+			names = namedParameterNames.toArray(new String[0]);
 
 			Arrays.sort(names);
 		}
@@ -49,21 +59,21 @@ public class SQLQueryImpl implements SQLQuery {
 
 	@Override
 	public SQLQuery addEntity(String alias, Class<?> entityClass) {
-		_sqlQuery.addEntity(alias, entityClass);
+		_nativeQuery.addEntity(alias, entityClass);
 
 		return this;
 	}
 
 	@Override
 	public SQLQuery addScalar(String columnAlias, Type type) {
-		_sqlQuery.addScalar(columnAlias, TypeTranslator.translate(type));
+		_nativeQuery.addScalar(columnAlias, TypeTranslator.translate(type));
 
 		return this;
 	}
 
 	@Override
 	public SQLQuery addSynchronizedEntityClass(Class<?> entityClass) {
-		_sqlQuery.addSynchronizedEntityClass(entityClass);
+		_nativeQuery.addSynchronizedEntityClass(entityClass);
 
 		return this;
 	}
@@ -71,7 +81,7 @@ public class SQLQueryImpl implements SQLQuery {
 	@Override
 	public SQLQuery addSynchronizedEntityClasses(Class<?>... entityClasses) {
 		for (Class<?> entityClass : entityClasses) {
-			_sqlQuery.addSynchronizedEntityClass(entityClass);
+			_nativeQuery.addSynchronizedEntityClass(entityClass);
 		}
 
 		return this;
@@ -79,7 +89,7 @@ public class SQLQueryImpl implements SQLQuery {
 
 	@Override
 	public SQLQuery addSynchronizedEntityName(String entityName) {
-		_sqlQuery.addSynchronizedEntityName(entityName);
+		_nativeQuery.addSynchronizedEntityName(entityName);
 
 		return this;
 	}
@@ -87,7 +97,7 @@ public class SQLQueryImpl implements SQLQuery {
 	@Override
 	public SQLQuery addSynchronizedEntityNames(String... entityNames) {
 		for (String entityName : entityNames) {
-			_sqlQuery.addSynchronizedEntityName(entityName);
+			_nativeQuery.addSynchronizedEntityName(entityName);
 		}
 
 		return this;
@@ -95,7 +105,7 @@ public class SQLQueryImpl implements SQLQuery {
 
 	@Override
 	public SQLQuery addSynchronizedQuerySpace(String querySpace) {
-		_sqlQuery.addSynchronizedQuerySpace(querySpace);
+		_nativeQuery.addSynchronizedQuerySpace(querySpace);
 
 		return this;
 	}
@@ -103,7 +113,7 @@ public class SQLQueryImpl implements SQLQuery {
 	@Override
 	public SQLQuery addSynchronizedQuerySpaces(String... querySpaces) {
 		for (String querySpace : querySpaces) {
-			_sqlQuery.addSynchronizedQuerySpace(querySpace);
+			_nativeQuery.addSynchronizedQuerySpace(querySpace);
 		}
 
 		return this;
@@ -112,7 +122,7 @@ public class SQLQueryImpl implements SQLQuery {
 	@Override
 	public int executeUpdate() throws ORMException {
 		try {
-			return _sqlQuery.executeUpdate();
+			return _nativeQuery.executeUpdate();
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -164,7 +174,7 @@ public class SQLQueryImpl implements SQLQuery {
 		throws ORMException {
 
 		try {
-			List<?> list = _sqlQuery.list();
+			List<?> list = _nativeQuery.list();
 
 			if (unmodifiable) {
 				list = Collections.unmodifiableList(list);
@@ -183,7 +193,7 @@ public class SQLQueryImpl implements SQLQuery {
 	@Override
 	public ScrollableResults scroll() throws ORMException {
 		try {
-			return new ScrollableResultsImpl(_sqlQuery.scroll());
+			return new ScrollableResultsImpl(_nativeQuery.scroll());
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -192,7 +202,7 @@ public class SQLQueryImpl implements SQLQuery {
 
 	@Override
 	public Query setBigDecimal(int pos, BigDecimal value) {
-		_sqlQuery.setBigDecimal(pos, value);
+		_nativeQuery.setParameter(pos, value, BigDecimal.class);
 
 		return this;
 	}
@@ -203,14 +213,14 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setBigDecimal(name, value);
+		_nativeQuery.setParameter(name, value, BigDecimal.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setBoolean(int pos, boolean value) {
-		_sqlQuery.setBoolean(pos, value);
+		_nativeQuery.setParameter(pos, value, Boolean.class);
 
 		return this;
 	}
@@ -221,35 +231,35 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setBoolean(name, value);
+		_nativeQuery.setParameter(name, value, Boolean.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setCacheMode(CacheMode cacheMode) {
-		_sqlQuery.setCacheMode(CacheModeTranslator.translate(cacheMode));
+		_nativeQuery.setCacheMode(CacheModeTranslator.translate(cacheMode));
 
 		return this;
 	}
 
 	@Override
 	public Query setCacheRegion(String cacheRegion) {
-		_sqlQuery.setCacheRegion(cacheRegion);
+		_nativeQuery.setCacheRegion(cacheRegion);
 
 		return this;
 	}
 
 	@Override
 	public Query setCacheable(boolean cacheable) {
-		_sqlQuery.setCacheable(cacheable);
+		_nativeQuery.setCacheable(cacheable);
 
 		return this;
 	}
 
 	@Override
 	public Query setDouble(int pos, double value) {
-		_sqlQuery.setDouble(pos, value);
+		_nativeQuery.setParameter(pos, value, Double.class);
 
 		return this;
 	}
@@ -260,21 +270,21 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setDouble(name, value);
+		_nativeQuery.setParameter(name, value, Double.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setFirstResult(int firstResult) {
-		_sqlQuery.setFirstResult(firstResult);
+		_nativeQuery.setFirstResult(firstResult);
 
 		return this;
 	}
 
 	@Override
 	public Query setFloat(int pos, float value) {
-		_sqlQuery.setFloat(pos, value);
+		_nativeQuery.setParameter(pos, value, Float.class);
 
 		return this;
 	}
@@ -285,14 +295,14 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setFloat(name, value);
+		_nativeQuery.setParameter(name, value, Float.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setInteger(int pos, int value) {
-		_sqlQuery.setInteger(pos, value);
+		_nativeQuery.setParameter(pos, value, Integer.class);
 
 		return this;
 	}
@@ -303,21 +313,21 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setInteger(name, value);
+		_nativeQuery.setParameter(name, value, Integer.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setLockMode(String alias, LockMode lockMode) {
-		_sqlQuery.setLockMode(alias, LockModeTranslator.translate(lockMode));
+		_nativeQuery.setLockMode(alias, LockModeTranslator.translate(lockMode));
 
 		return this;
 	}
 
 	@Override
 	public Query setLong(int pos, long value) {
-		_sqlQuery.setLong(pos, value);
+		_nativeQuery.setParameter(pos, value, Long.class);
 
 		return this;
 	}
@@ -328,21 +338,21 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setLong(name, value);
+		_nativeQuery.setParameter(name, value, Long.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setMaxResults(int maxResults) {
-		_sqlQuery.setMaxResults(maxResults);
+		_nativeQuery.setMaxResults(maxResults);
 
 		return this;
 	}
 
 	@Override
 	public Query setSerializable(int pos, Serializable value) {
-		_sqlQuery.setSerializable(pos, value);
+		_nativeQuery.setParameter(pos, value, Serializable.class);
 
 		return this;
 	}
@@ -353,14 +363,14 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setSerializable(name, value);
+		_nativeQuery.setParameter(name, value, Serializable.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setShort(int pos, short value) {
-		_sqlQuery.setShort(pos, value);
+		_nativeQuery.setParameter(pos, value, Short.class);
 
 		return this;
 	}
@@ -371,14 +381,14 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setShort(name, value);
+		_nativeQuery.setParameter(name, value, Short.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setString(int pos, String value) {
-		_sqlQuery.setString(pos, value);
+		_nativeQuery.setParameter(pos, value, String.class);
 
 		return this;
 	}
@@ -389,14 +399,14 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setString(name, value);
+		_nativeQuery.setParameter(name, value, String.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setTimestamp(int pos, Timestamp value) {
-		_sqlQuery.setTimestamp(pos, value);
+		_nativeQuery.setParameter(pos, value, Timestamp.class);
 
 		return this;
 	}
@@ -407,7 +417,7 @@ public class SQLQueryImpl implements SQLQuery {
 			return this;
 		}
 
-		_sqlQuery.setTimestamp(name, value);
+		_nativeQuery.setParameter(name, value, Timestamp.class);
 
 		return this;
 	}
@@ -415,14 +425,14 @@ public class SQLQueryImpl implements SQLQuery {
 	@Override
 	public String toString() {
 		return StringBundler.concat(
-			"{names=", Arrays.toString(_names), ", _sqlQuery=", _sqlQuery,
+			"{names=", Arrays.toString(_names), ", _nativeQuery=", _nativeQuery,
 			", _strictName=", _strictName, "}");
 	}
 
 	@Override
 	public Object uniqueResult() throws ORMException {
 		try {
-			return _sqlQuery.uniqueResult();
+			return _nativeQuery.uniqueResult();
 		}
 		catch (Exception exception) {
 			throw ExceptionTranslator.translate(exception);
@@ -430,7 +440,7 @@ public class SQLQueryImpl implements SQLQuery {
 	}
 
 	private final String[] _names;
-	private final org.hibernate.SQLQuery _sqlQuery;
+	private final NativeQuery _nativeQuery;
 	private final boolean _strictName;
 
 }

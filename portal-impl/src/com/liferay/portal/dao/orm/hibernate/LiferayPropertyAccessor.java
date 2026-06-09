@@ -18,6 +18,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -25,7 +26,6 @@ import java.util.function.Function;
 
 import org.hibernate.PropertyAccessException;
 import org.hibernate.PropertyNotFoundException;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.internal.util.ReflectHelper;
 import org.hibernate.property.access.spi.Getter;
@@ -42,7 +42,7 @@ public class LiferayPropertyAccessor implements PropertyAccessStrategy {
 
 	@Override
 	public PropertyAccess buildPropertyAccess(
-		Class containerJavaType, String propertyName) {
+		Class containerJavaType, String propertyName, boolean setterRequired) {
 
 		return new LiferayPropertyAccess(this, containerJavaType, propertyName);
 	}
@@ -302,7 +302,12 @@ public class LiferayPropertyAccessor implements PropertyAccessStrategy {
 			}
 
 			@Override
-			public Class getReturnType() {
+			public Type getReturnType() {
+				return _method.getReturnType();
+			}
+
+			@Override
+			public Class<?> getReturnTypeClass() {
 				return _method.getReturnType();
 			}
 
@@ -348,15 +353,17 @@ public class LiferayPropertyAccessor implements PropertyAccessStrategy {
 			}
 
 			@Override
-			public Class getReturnType() {
+			public Type getReturnType() {
 				return null;
 			}
 
 			@Override
-			public void set(
-				Object target, Object value,
-				SessionFactoryImplementor factory) {
+			public Class<?> getReturnTypeClass() {
+				return null;
+			}
 
+			@Override
+			public void set(Object target, Object value) {
 				_setterBiConsumer.accept(target, value);
 			}
 
@@ -386,9 +393,7 @@ public class LiferayPropertyAccessor implements PropertyAccessStrategy {
 			}
 
 			@Override
-			public void set(
-					Object target, Object value,
-					SessionFactoryImplementor sessionFactoryImplementor)
+			public void set(Object target, Object value)
 				throws PropertyAccessException {
 
 				try {

@@ -16,11 +16,11 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 import java.util.Map;
 
 import org.hibernate.PropertyAccessException;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.property.access.spi.Getter;
 import org.hibernate.property.access.spi.PropertyAccess;
@@ -34,7 +34,7 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 
 	@Override
 	public PropertyAccess buildPropertyAccess(
-		Class clazz, String propertyName) {
+		Class clazz, String propertyName, boolean setterRequired) {
 
 		String key = StringBundler.concat(
 			clazz.hashCode(), StringPool.POUND, clazz.getName(),
@@ -57,6 +57,14 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 			FinalizeManager.WEAK_REFERENCE_FACTORY);
 
 	private static class MethodHolder {
+
+		public Method getGetterMethod() {
+			if (_getterMethod == null) {
+				_initialize();
+			}
+
+			return _getterMethod;
+		}
 
 		public MethodHandle getGetterMethodHandle() {
 			if (_getterMethodHandle == null) {
@@ -133,6 +141,7 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 								_propertyName)));
 				}
 
+				_getterMethod = getterMethod;
 				_getterMethodHandle = lookup.unreflect(getterMethod);
 
 				_setterMethodHandle = lookup.findVirtual(
@@ -146,6 +155,7 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 		}
 
 		private final Class<?> _clazz;
+		private Method _getterMethod;
 		private MethodHandle _getterMethodHandle;
 		private final String _propertyName;
 		private MethodHandle _setterMethodHandle;
@@ -212,7 +222,7 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 
 		@Override
 		public Member getMember() {
-			return null;
+			return _methodHolder.getGetterMethod();
 		}
 
 		@Override
@@ -226,7 +236,17 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 		}
 
 		@Override
-		public Class getReturnType() {
+		public Type getReturnType() {
+			MethodHandle getterMethodHandle =
+				_methodHolder.getGetterMethodHandle();
+
+			MethodType methodType = getterMethodHandle.type();
+
+			return methodType.returnType();
+		}
+
+		@Override
+		public Class<?> getReturnTypeClass() {
 			MethodHandle getterMethodHandle =
 				_methodHolder.getGetterMethodHandle();
 
@@ -256,9 +276,7 @@ public class MethodPropertyAccessor implements PropertyAccessStrategy {
 		}
 
 		@Override
-		public void set(
-				Object target, Object value,
-				SessionFactoryImplementor sessionFactoryImplementor)
+		public void set(Object target, Object value)
 			throws PropertyAccessException {
 
 			try {

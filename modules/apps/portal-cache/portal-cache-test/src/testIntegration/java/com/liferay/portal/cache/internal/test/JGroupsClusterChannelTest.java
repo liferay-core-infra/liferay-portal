@@ -86,31 +86,15 @@ public class JGroupsClusterChannelTest implements Serializable {
 
 		_recreateJGroupsPingTable();
 
-		TomcatCluster.Builder builder1 = tomcatClusterTestRule.buildTomcatNode();
-
-		TomcatNode tomcatNode1 = builder1.build();
-
-		Files.write(
-			tomcatNode1.getPortalExtPropertiesPath(),
-			List.of(
-				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL + "=" +
-					jdbcPingXMLPath.toAbsolutePath()),
-			StandardOpenOption.APPEND);
+		TomcatNode tomcatNode1 = _buildJDBCPingTomcatNode(
+			jdbcPingXMLPath, false);
 
 		tomcatNode1.start(true);
 
 		_injectDataSourceIntoJDBCPing(tomcatNode1);
 
-		TomcatCluster.Builder builder2 = tomcatClusterTestRule.buildTomcatNode();
-
-		TomcatNode tomcatNode2 = builder2.build();
-
-		Files.write(
-			tomcatNode2.getPortalExtPropertiesPath(),
-			List.of(
-				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL + "=" +
-					jdbcPingXMLPath.toAbsolutePath()),
-			StandardOpenOption.APPEND);
+		TomcatNode tomcatNode2 = _buildJDBCPingTomcatNode(
+			jdbcPingXMLPath, false);
 
 		tomcatNode2.start(true);
 
@@ -153,21 +137,8 @@ public class JGroupsClusterChannelTest implements Serializable {
 	public void testConnectWithJDBCPingZombieEntries() throws Exception {
 		_recreateJGroupsPingTable();
 
-		Path zombieJDBCPingXMLPath = _createJDBCPingXMLPath(
-			"clustering_jdbc_ping_zombie.xml");
-
-		TomcatCluster.Builder builder1 = tomcatClusterTestRule.buildTomcatNode();
-
-		TomcatNode tomcatNode1 = builder1.build();
-
-		Files.write(
-			tomcatNode1.getPortalExtPropertiesPath(),
-			List.of(
-				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL + "=" +
-					zombieJDBCPingXMLPath.toAbsolutePath(),
-				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_TRANSPORT + ".0=" +
-					zombieJDBCPingXMLPath.toAbsolutePath()),
-			StandardOpenOption.APPEND);
+		TomcatNode tomcatNode1 = _buildJDBCPingTomcatNode(
+			_createJDBCPingXMLPath("clustering_jdbc_ping_zombie.xml"), true);
 
 		tomcatNode1.start(true);
 
@@ -218,21 +189,8 @@ public class JGroupsClusterChannelTest implements Serializable {
 
 		_assertJGroupsPingCount(ownAddresses.size());
 
-		Path jdbcPingXMLPath = _createJDBCPingXMLPath(
-			"clustering_jdbc_ping.xml");
-
-		TomcatCluster.Builder builder2 = tomcatClusterTestRule.buildTomcatNode();
-
-		TomcatNode tomcatNode2 = builder2.build();
-
-		Files.write(
-			tomcatNode2.getPortalExtPropertiesPath(),
-			List.of(
-				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL + "=" +
-					jdbcPingXMLPath.toAbsolutePath(),
-				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_TRANSPORT + ".0=" +
-					jdbcPingXMLPath.toAbsolutePath()),
-			StandardOpenOption.APPEND);
+		TomcatNode tomcatNode2 = _buildJDBCPingTomcatNode(
+			_createJDBCPingXMLPath("clustering_jdbc_ping.xml"), true);
 
 		Path liferayLogPath = Paths.get(
 			PropsUtil.get(PropsKeys.LIFERAY_HOME), "logs",
@@ -285,6 +243,33 @@ public class JGroupsClusterChannelTest implements Serializable {
 			Assert.assertTrue(resultSet.next());
 			Assert.assertEquals(expectedCount, resultSet.getInt("countValue"));
 		}
+	}
+
+	private TomcatNode _buildJDBCPingTomcatNode(
+			Path jdbcPingXMLPath, boolean clusterLinkChannelTransport)
+		throws Exception {
+
+		TomcatCluster.Builder builder = tomcatClusterTestRule.buildTomcatNode();
+
+		TomcatNode tomcatNode = builder.build();
+
+		List<String> clusterLinkChannelProperties = new ArrayList<>();
+
+		clusterLinkChannelProperties.add(
+			PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_CONTROL + "=" +
+				jdbcPingXMLPath.toAbsolutePath());
+
+		if (clusterLinkChannelTransport) {
+			clusterLinkChannelProperties.add(
+				PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_TRANSPORT + ".0=" +
+					jdbcPingXMLPath.toAbsolutePath());
+		}
+
+		Files.write(
+			tomcatNode.getPortalExtPropertiesPath(),
+			clusterLinkChannelProperties, StandardOpenOption.APPEND);
+
+		return tomcatNode;
 	}
 
 	private Path _createJDBCPingXMLPath(String fileName) throws Exception {

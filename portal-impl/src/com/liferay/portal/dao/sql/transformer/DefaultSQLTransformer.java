@@ -5,6 +5,7 @@
 
 package com.liferay.portal.dao.sql.transformer;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -30,6 +31,31 @@ public class DefaultSQLTransformer implements SQLTransformer {
 
 		for (Function<String, String> function : _functions) {
 			transformedSQL = function.apply(transformedSQL);
+		}
+
+		if (transformedSQL.contains("?")) {
+			StringBundler sb = new StringBundler();
+
+			int counter = 1;
+			boolean quoted = false;
+
+			for (int i = 0; i < transformedSQL.length(); i++) {
+				char c = transformedSQL.charAt(i);
+
+				if (c == '\'') {
+					quoted = !quoted;
+				}
+
+				if ((c == '?') && !quoted) {
+					sb.append('?');
+					sb.append(counter++);
+				}
+				else {
+					sb.append(c);
+				}
+			}
+
+			transformedSQL = sb.toString();
 		}
 
 		if (_log.isDebugEnabled()) {

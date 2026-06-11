@@ -108,9 +108,7 @@ public class CTMessagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTMessage newCTMessage = _persistence.create(pk);
+		CTMessage newCTMessage = addCTMessage();
 
 		newCTMessage.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -407,4 +405,4 @@ public class CTMessagePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:336080262
+// LIFERAY-SERVICE-BUILDER-HASH:-509726273

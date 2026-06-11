@@ -115,10 +115,8 @@ public class ObjectValidationRuleSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		ObjectValidationRuleSetting newObjectValidationRuleSetting =
-			_persistence.create(pk);
+			addObjectValidationRuleSetting();
 
 		newObjectValidationRuleSetting.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -655,4 +653,4 @@ public class ObjectValidationRuleSettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-872657924
+// LIFERAY-SERVICE-BUILDER-HASH:664619113

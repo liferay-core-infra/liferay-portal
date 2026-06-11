@@ -118,10 +118,8 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CPInstanceUnitOfMeasure newCPInstanceUnitOfMeasure =
-			_persistence.create(pk);
+			addCPInstanceUnitOfMeasure();
 
 		newCPInstanceUnitOfMeasure.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -709,4 +707,4 @@ public class CPInstanceUnitOfMeasurePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1989275577
+// LIFERAY-SERVICE-BUILDER-HASH:-1692808171

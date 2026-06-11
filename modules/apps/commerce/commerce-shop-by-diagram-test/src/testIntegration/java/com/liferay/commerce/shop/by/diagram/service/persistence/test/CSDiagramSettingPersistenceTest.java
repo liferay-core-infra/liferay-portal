@@ -113,9 +113,7 @@ public class CSDiagramSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CSDiagramSetting newCSDiagramSetting = _persistence.create(pk);
+		CSDiagramSetting newCSDiagramSetting = addCSDiagramSetting();
 
 		newCSDiagramSetting.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -567,4 +565,4 @@ public class CSDiagramSettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:251821636
+// LIFERAY-SERVICE-BUILDER-HASH:1229547854

@@ -112,9 +112,7 @@ public class AccountGroupPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AccountGroup newAccountGroup = _persistence.create(pk);
+		AccountGroup newAccountGroup = addAccountGroup();
 
 		newAccountGroup.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -627,4 +625,4 @@ public class AccountGroupPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1361051920
+// LIFERAY-SERVICE-BUILDER-HASH:-2035252153

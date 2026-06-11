@@ -114,9 +114,7 @@ public class CommerceDiscountPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceDiscount newCommerceDiscount = _persistence.create(pk);
+		CommerceDiscount newCommerceDiscount = addCommerceDiscount();
 
 		newCommerceDiscount.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -819,4 +817,4 @@ public class CommerceDiscountPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:682121288
+// LIFERAY-SERVICE-BUILDER-HASH:-1070225597

@@ -108,9 +108,7 @@ public class PatcherFixRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PatcherFixRel newPatcherFixRel = _persistence.create(pk);
+		PatcherFixRel newPatcherFixRel = addPatcherFixRel();
 
 		newPatcherFixRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -423,4 +421,4 @@ public class PatcherFixRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-865763028
+// LIFERAY-SERVICE-BUILDER-HASH:2041501986

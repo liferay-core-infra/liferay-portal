@@ -120,10 +120,8 @@ public class LayoutUtilityPageEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		LayoutUtilityPageEntry newLayoutUtilityPageEntry = _persistence.create(
-			pk);
+		LayoutUtilityPageEntry newLayoutUtilityPageEntry =
+			addLayoutUtilityPageEntry();
 
 		newLayoutUtilityPageEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -809,4 +807,4 @@ public class LayoutUtilityPageEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1041788631
+// LIFERAY-SERVICE-BUILDER-HASH:1597400545

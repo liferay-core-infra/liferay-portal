@@ -111,9 +111,7 @@ public class PortletPreferencesPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PortletPreferences newPortletPreferences = _persistence.create(pk);
+		PortletPreferences newPortletPreferences = addPortletPreferences();
 
 		newPortletPreferences.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -612,4 +610,4 @@ public class PortletPreferencesPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-990461209
+// LIFERAY-SERVICE-BUILDER-HASH:-582287050

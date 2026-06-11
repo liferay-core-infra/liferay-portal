@@ -112,9 +112,7 @@ public class CommerceWishListPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceWishList newCommerceWishList = _persistence.create(pk);
+		CommerceWishList newCommerceWishList = addCommerceWishList();
 
 		newCommerceWishList.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -588,4 +586,4 @@ public class CommerceWishListPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-934772466
+// LIFERAY-SERVICE-BUILDER-HASH:1790002019

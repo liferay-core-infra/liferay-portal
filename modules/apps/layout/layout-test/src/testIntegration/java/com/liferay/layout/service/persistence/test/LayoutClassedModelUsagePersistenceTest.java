@@ -115,10 +115,8 @@ public class LayoutClassedModelUsagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		LayoutClassedModelUsage newLayoutClassedModelUsage =
-			_persistence.create(pk);
+			addLayoutClassedModelUsage();
 
 		newLayoutClassedModelUsage.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -758,4 +756,4 @@ public class LayoutClassedModelUsagePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1724850664
+// LIFERAY-SERVICE-BUILDER-HASH:-468378670

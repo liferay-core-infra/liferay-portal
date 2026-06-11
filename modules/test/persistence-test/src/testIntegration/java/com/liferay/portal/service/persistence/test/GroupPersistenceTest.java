@@ -111,9 +111,7 @@ public class GroupPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Group newGroup = _persistence.create(pk);
+		Group newGroup = addGroup();
 
 		newGroup.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -948,4 +946,4 @@ public class GroupPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2007031751
+// LIFERAY-SERVICE-BUILDER-HASH:-1675655031

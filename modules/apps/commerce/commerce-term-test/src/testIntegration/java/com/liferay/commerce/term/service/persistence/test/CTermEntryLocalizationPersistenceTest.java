@@ -110,10 +110,8 @@ public class CTermEntryLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTermEntryLocalization newCTermEntryLocalization = _persistence.create(
-			pk);
+		CTermEntryLocalization newCTermEntryLocalization =
+			addCTermEntryLocalization();
 
 		newCTermEntryLocalization.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -518,4 +516,4 @@ public class CTermEntryLocalizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:62480043
+// LIFERAY-SERVICE-BUILDER-HASH:-538719460

@@ -116,9 +116,7 @@ public class JournalFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		JournalFolder newJournalFolder = _persistence.create(pk);
+		JournalFolder newJournalFolder = addJournalFolder();
 
 		newJournalFolder.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -783,4 +781,4 @@ public class JournalFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2035807229
+// LIFERAY-SERVICE-BUILDER-HASH:103405069

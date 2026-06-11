@@ -114,10 +114,8 @@ public class RedirectNotFoundEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		RedirectNotFoundEntry newRedirectNotFoundEntry = _persistence.create(
-			pk);
+		RedirectNotFoundEntry newRedirectNotFoundEntry =
+			addRedirectNotFoundEntry();
 
 		newRedirectNotFoundEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -570,4 +568,4 @@ public class RedirectNotFoundEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:431404944
+// LIFERAY-SERVICE-BUILDER-HASH:-26415464

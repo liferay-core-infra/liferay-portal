@@ -113,9 +113,7 @@ public class ListTypeDefinitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ListTypeDefinition newListTypeDefinition = _persistence.create(pk);
+		ListTypeDefinition newListTypeDefinition = addListTypeDefinition();
 
 		newListTypeDefinition.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -602,4 +600,4 @@ public class ListTypeDefinitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:867291205
+// LIFERAY-SERVICE-BUILDER-HASH:140166739

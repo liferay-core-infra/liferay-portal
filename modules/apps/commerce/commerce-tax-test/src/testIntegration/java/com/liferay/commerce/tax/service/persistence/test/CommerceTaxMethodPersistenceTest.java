@@ -112,9 +112,7 @@ public class CommerceTaxMethodPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceTaxMethod newCommerceTaxMethod = _persistence.create(pk);
+		CommerceTaxMethod newCommerceTaxMethod = addCommerceTaxMethod();
 
 		newCommerceTaxMethod.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -574,4 +572,4 @@ public class CommerceTaxMethodPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:653272755
+// LIFERAY-SERVICE-BUILDER-HASH:-1386059595

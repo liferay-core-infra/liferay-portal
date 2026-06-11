@@ -117,10 +117,8 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		OAuthClientASLocalMetadata newOAuthClientASLocalMetadata =
-			_persistence.create(pk);
+			addOAuthClientASLocalMetadata();
 
 		newOAuthClientASLocalMetadata.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -758,4 +756,4 @@ public class OAuthClientASLocalMetadataPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:265863961
+// LIFERAY-SERVICE-BUILDER-HASH:-1939627594

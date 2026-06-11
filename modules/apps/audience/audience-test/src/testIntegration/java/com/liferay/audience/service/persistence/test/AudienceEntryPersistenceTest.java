@@ -112,9 +112,7 @@ public class AudienceEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AudienceEntry newAudienceEntry = _persistence.create(pk);
+		AudienceEntry newAudienceEntry = addAudienceEntry();
 
 		newAudienceEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -555,4 +553,4 @@ public class AudienceEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1891683297
+// LIFERAY-SERVICE-BUILDER-HASH:335088606

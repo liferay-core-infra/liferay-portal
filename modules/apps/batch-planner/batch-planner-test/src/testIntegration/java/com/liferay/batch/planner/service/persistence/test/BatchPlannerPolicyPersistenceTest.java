@@ -113,9 +113,7 @@ public class BatchPlannerPolicyPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		BatchPlannerPolicy newBatchPlannerPolicy = _persistence.create(pk);
+		BatchPlannerPolicy newBatchPlannerPolicy = addBatchPlannerPolicy();
 
 		newBatchPlannerPolicy.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -544,4 +542,4 @@ public class BatchPlannerPolicyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:170565517
+// LIFERAY-SERVICE-BUILDER-HASH:-292630816

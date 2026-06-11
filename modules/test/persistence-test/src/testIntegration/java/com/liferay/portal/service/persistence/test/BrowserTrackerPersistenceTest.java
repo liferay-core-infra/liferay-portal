@@ -109,9 +109,7 @@ public class BrowserTrackerPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		BrowserTracker newBrowserTracker = _persistence.create(pk);
+		BrowserTracker newBrowserTracker = addBrowserTracker();
 
 		newBrowserTracker.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -474,4 +472,4 @@ public class BrowserTrackerPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1700104601
+// LIFERAY-SERVICE-BUILDER-HASH:1768144788

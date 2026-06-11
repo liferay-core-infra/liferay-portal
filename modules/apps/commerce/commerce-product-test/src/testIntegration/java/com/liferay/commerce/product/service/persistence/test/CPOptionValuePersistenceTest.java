@@ -113,9 +113,7 @@ public class CPOptionValuePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CPOptionValue newCPOptionValue = _persistence.create(pk);
+		CPOptionValue newCPOptionValue = addCPOptionValue();
 
 		newCPOptionValue.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -628,4 +626,4 @@ public class CPOptionValuePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1950355463
+// LIFERAY-SERVICE-BUILDER-HASH:801281433

@@ -115,9 +115,7 @@ public class BookmarksFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		BookmarksFolder newBookmarksFolder = _persistence.create(pk);
+		BookmarksFolder newBookmarksFolder = addBookmarksFolder();
 
 		newBookmarksFolder.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -685,4 +683,4 @@ public class BookmarksFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2090253887
+// LIFERAY-SERVICE-BUILDER-HASH:-353255299

@@ -111,9 +111,7 @@ public class AssetTagPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AssetTag newAssetTag = _persistence.create(pk);
+		AssetTag newAssetTag = addAssetTag();
 
 		newAssetTag.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -636,4 +634,4 @@ public class AssetTagPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1427730816
+// LIFERAY-SERVICE-BUILDER-HASH:741114673

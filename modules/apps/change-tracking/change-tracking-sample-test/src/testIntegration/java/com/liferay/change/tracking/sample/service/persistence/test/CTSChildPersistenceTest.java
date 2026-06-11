@@ -109,9 +109,7 @@ public class CTSChildPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTSChild newCTSChild = _persistence.create(pk);
+		CTSChild newCTSChild = addCTSChild();
 
 		newCTSChild.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -442,4 +440,4 @@ public class CTSChildPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1713794830
+// LIFERAY-SERVICE-BUILDER-HASH:495971117

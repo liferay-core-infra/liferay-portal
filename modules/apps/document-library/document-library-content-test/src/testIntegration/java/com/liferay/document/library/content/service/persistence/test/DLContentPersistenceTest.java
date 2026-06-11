@@ -116,9 +116,7 @@ public class DLContentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DLContent newDLContent = _persistence.create(pk);
+		DLContent newDLContent = addDLContent();
 
 		newDLContent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -563,4 +561,4 @@ public class DLContentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1694078217
+// LIFERAY-SERVICE-BUILDER-HASH:-240864473

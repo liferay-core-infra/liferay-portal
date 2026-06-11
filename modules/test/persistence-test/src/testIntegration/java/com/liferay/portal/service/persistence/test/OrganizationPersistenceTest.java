@@ -111,9 +111,7 @@ public class OrganizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Organization newOrganization = _persistence.create(pk);
+		Organization newOrganization = addOrganization();
 
 		newOrganization.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -713,4 +711,4 @@ public class OrganizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1696261332
+// LIFERAY-SERVICE-BUILDER-HASH:-2047019070

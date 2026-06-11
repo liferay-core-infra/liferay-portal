@@ -109,9 +109,7 @@ public class CTRemotePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTRemote newCTRemote = _persistence.create(pk);
+		CTRemote newCTRemote = addCTRemote();
 
 		newCTRemote.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -442,4 +440,4 @@ public class CTRemotePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:702069521
+// LIFERAY-SERVICE-BUILDER-HASH:762374783

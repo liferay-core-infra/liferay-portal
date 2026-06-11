@@ -113,9 +113,7 @@ public class FragmentCollectionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		FragmentCollection newFragmentCollection = _persistence.create(pk);
+		FragmentCollection newFragmentCollection = addFragmentCollection();
 
 		newFragmentCollection.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -728,4 +726,4 @@ public class FragmentCollectionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2027776509
+// LIFERAY-SERVICE-BUILDER-HASH:-858376688

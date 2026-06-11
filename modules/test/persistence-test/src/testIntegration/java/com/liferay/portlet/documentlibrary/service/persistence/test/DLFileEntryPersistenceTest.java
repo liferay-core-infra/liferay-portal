@@ -115,9 +115,7 @@ public class DLFileEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DLFileEntry newDLFileEntry = _persistence.create(pk);
+		DLFileEntry newDLFileEntry = addDLFileEntry();
 
 		newDLFileEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -1005,4 +1003,4 @@ public class DLFileEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1848297266
+// LIFERAY-SERVICE-BUILDER-HASH:-694351859

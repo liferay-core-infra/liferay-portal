@@ -112,9 +112,7 @@ public class RegionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Region newRegion = _persistence.create(pk);
+		Region newRegion = addRegion();
 
 		newRegion.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -624,4 +622,4 @@ public class RegionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1941573259
+// LIFERAY-SERVICE-BUILDER-HASH:1367129684

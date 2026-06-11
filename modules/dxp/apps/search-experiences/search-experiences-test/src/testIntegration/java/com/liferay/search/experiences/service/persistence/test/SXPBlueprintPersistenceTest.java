@@ -113,9 +113,7 @@ public class SXPBlueprintPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SXPBlueprint newSXPBlueprint = _persistence.create(pk);
+		SXPBlueprint newSXPBlueprint = addSXPBlueprint();
 
 		newSXPBlueprint.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -625,4 +623,4 @@ public class SXPBlueprintPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1216472529
+// LIFERAY-SERVICE-BUILDER-HASH:893118868

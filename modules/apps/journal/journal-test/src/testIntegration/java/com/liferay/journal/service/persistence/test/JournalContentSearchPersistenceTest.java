@@ -113,9 +113,8 @@ public class JournalContentSearchPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		JournalContentSearch newJournalContentSearch = _persistence.create(pk);
+		JournalContentSearch newJournalContentSearch =
+			addJournalContentSearch();
 
 		newJournalContentSearch.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -639,4 +638,4 @@ public class JournalContentSearchPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-612448810
+// LIFERAY-SERVICE-BUILDER-HASH:-2088074681

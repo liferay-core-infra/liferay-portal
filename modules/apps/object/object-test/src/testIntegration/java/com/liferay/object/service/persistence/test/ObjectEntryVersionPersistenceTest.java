@@ -112,9 +112,7 @@ public class ObjectEntryVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectEntryVersion newObjectEntryVersion = _persistence.create(pk);
+		ObjectEntryVersion newObjectEntryVersion = addObjectEntryVersion();
 
 		newObjectEntryVersion.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -651,4 +649,4 @@ public class ObjectEntryVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1780667422
+// LIFERAY-SERVICE-BUILDER-HASH:1967896502

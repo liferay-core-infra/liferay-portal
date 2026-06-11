@@ -119,10 +119,9 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommercePaymentMethodGroupRelQualifier
-			newCommercePaymentMethodGroupRelQualifier = _persistence.create(pk);
+			newCommercePaymentMethodGroupRelQualifier =
+				addCommercePaymentMethodGroupRelQualifier();
 
 		newCommercePaymentMethodGroupRelQualifier.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -669,4 +668,4 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:555329933
+// LIFERAY-SERVICE-BUILDER-HASH:48270522

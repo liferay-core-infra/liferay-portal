@@ -111,9 +111,7 @@ public class KaleoTimerPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KaleoTimer newKaleoTimer = _persistence.create(pk);
+		KaleoTimer newKaleoTimer = addKaleoTimer();
 
 		newKaleoTimer.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -538,4 +536,4 @@ public class KaleoTimerPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-134570361
+// LIFERAY-SERVICE-BUILDER-HASH:-271940431

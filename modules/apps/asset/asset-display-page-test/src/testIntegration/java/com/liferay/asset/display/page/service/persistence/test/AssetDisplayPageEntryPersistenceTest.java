@@ -115,10 +115,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AssetDisplayPageEntry newAssetDisplayPageEntry = _persistence.create(
-			pk);
+		AssetDisplayPageEntry newAssetDisplayPageEntry =
+			addAssetDisplayPageEntry();
 
 		newAssetDisplayPageEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -669,4 +667,4 @@ public class AssetDisplayPageEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2106530656
+// LIFERAY-SERVICE-BUILDER-HASH:-253514526

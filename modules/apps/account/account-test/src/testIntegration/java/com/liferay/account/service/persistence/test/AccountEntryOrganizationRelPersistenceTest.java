@@ -114,10 +114,8 @@ public class AccountEntryOrganizationRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		AccountEntryOrganizationRel newAccountEntryOrganizationRel =
-			_persistence.create(pk);
+			addAccountEntryOrganizationRel();
 
 		newAccountEntryOrganizationRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -560,4 +558,4 @@ public class AccountEntryOrganizationRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-781956722
+// LIFERAY-SERVICE-BUILDER-HASH:-716638852

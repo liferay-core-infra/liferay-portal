@@ -111,9 +111,7 @@ public class CSDiagramPinPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CSDiagramPin newCSDiagramPin = _persistence.create(pk);
+		CSDiagramPin newCSDiagramPin = addCSDiagramPin();
 
 		newCSDiagramPin.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -466,4 +464,4 @@ public class CSDiagramPinPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1017997871
+// LIFERAY-SERVICE-BUILDER-HASH:1351630054

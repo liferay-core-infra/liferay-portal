@@ -114,10 +114,8 @@ public class NotificationRecipientPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		NotificationRecipient newNotificationRecipient = _persistence.create(
-			pk);
+		NotificationRecipient newNotificationRecipient =
+			addNotificationRecipient();
 
 		newNotificationRecipient.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -573,4 +571,4 @@ public class NotificationRecipientPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:792618093
+// LIFERAY-SERVICE-BUILDER-HASH:158418636

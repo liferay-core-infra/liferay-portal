@@ -109,9 +109,7 @@ public class DDMFieldAttributePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DDMFieldAttribute newDDMFieldAttribute = _persistence.create(pk);
+		DDMFieldAttribute newDDMFieldAttribute = addDDMFieldAttribute();
 
 		newDDMFieldAttribute.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -549,4 +547,4 @@ public class DDMFieldAttributePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1678931277
+// LIFERAY-SERVICE-BUILDER-HASH:1688282995

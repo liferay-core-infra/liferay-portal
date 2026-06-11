@@ -111,9 +111,7 @@ public class ReadingTimeEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ReadingTimeEntry newReadingTimeEntry = _persistence.create(pk);
+		ReadingTimeEntry newReadingTimeEntry = addReadingTimeEntry();
 
 		newReadingTimeEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -574,4 +572,4 @@ public class ReadingTimeEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1199045994
+// LIFERAY-SERVICE-BUILDER-HASH:1312809508

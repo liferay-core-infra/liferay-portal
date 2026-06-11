@@ -111,9 +111,7 @@ public class MBThreadFlagPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		MBThreadFlag newMBThreadFlag = _persistence.create(pk);
+		MBThreadFlag newMBThreadFlag = addMBThreadFlag();
 
 		newMBThreadFlag.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -579,4 +577,4 @@ public class MBThreadFlagPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1488639558
+// LIFERAY-SERVICE-BUILDER-HASH:1098689602

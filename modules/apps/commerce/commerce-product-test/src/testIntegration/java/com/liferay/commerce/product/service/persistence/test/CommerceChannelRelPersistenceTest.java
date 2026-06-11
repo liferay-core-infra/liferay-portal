@@ -112,9 +112,7 @@ public class CommerceChannelRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceChannelRel newCommerceChannelRel = _persistence.create(pk);
+		CommerceChannelRel newCommerceChannelRel = addCommerceChannelRel();
 
 		newCommerceChannelRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -563,4 +561,4 @@ public class CommerceChannelRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:734255101
+// LIFERAY-SERVICE-BUILDER-HASH:-1464589241

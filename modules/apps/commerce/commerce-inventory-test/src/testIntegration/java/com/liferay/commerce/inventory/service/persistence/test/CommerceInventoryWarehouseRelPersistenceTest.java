@@ -116,10 +116,8 @@ public class CommerceInventoryWarehouseRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceInventoryWarehouseRel newCommerceInventoryWarehouseRel =
-			_persistence.create(pk);
+			addCommerceInventoryWarehouseRel();
 
 		newCommerceInventoryWarehouseRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -623,4 +621,4 @@ public class CommerceInventoryWarehouseRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-160743182
+// LIFERAY-SERVICE-BUILDER-HASH:1294501210

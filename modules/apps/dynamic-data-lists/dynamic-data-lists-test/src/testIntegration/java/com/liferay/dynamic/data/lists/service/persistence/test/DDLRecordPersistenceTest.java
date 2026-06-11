@@ -112,9 +112,7 @@ public class DDLRecordPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DDLRecord newDDLRecord = _persistence.create(pk);
+		DDLRecord newDDLRecord = addDDLRecord();
 
 		newDDLRecord.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -630,4 +628,4 @@ public class DDLRecordPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1253708968
+// LIFERAY-SERVICE-BUILDER-HASH:476767322

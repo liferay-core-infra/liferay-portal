@@ -108,9 +108,7 @@ public class PatcherBuildRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PatcherBuildRel newPatcherBuildRel = _persistence.create(pk);
+		PatcherBuildRel newPatcherBuildRel = addPatcherBuildRel();
 
 		newPatcherBuildRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -425,4 +423,4 @@ public class PatcherBuildRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:818177988
+// LIFERAY-SERVICE-BUILDER-HASH:1975749075

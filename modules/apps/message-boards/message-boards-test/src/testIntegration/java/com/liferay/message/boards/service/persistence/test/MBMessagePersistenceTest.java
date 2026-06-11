@@ -117,9 +117,7 @@ public class MBMessagePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		MBMessage newMBMessage = _persistence.create(pk);
+		MBMessage newMBMessage = addMBMessage();
 
 		newMBMessage.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -987,4 +985,4 @@ public class MBMessagePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-361392601
+// LIFERAY-SERVICE-BUILDER-HASH:218424618

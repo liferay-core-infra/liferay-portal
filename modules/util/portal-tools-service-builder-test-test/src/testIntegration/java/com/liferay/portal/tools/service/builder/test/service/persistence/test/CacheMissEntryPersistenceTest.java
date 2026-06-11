@@ -109,9 +109,7 @@ public class CacheMissEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CacheMissEntry newCacheMissEntry = _persistence.create(pk);
+		CacheMissEntry newCacheMissEntry = addCacheMissEntry();
 
 		newCacheMissEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -396,4 +394,4 @@ public class CacheMissEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:755990661
+// LIFERAY-SERVICE-BUILDER-HASH:-1677631632

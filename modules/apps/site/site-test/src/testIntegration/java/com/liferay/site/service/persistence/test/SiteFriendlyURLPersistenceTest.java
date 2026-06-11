@@ -111,9 +111,7 @@ public class SiteFriendlyURLPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SiteFriendlyURL newSiteFriendlyURL = _persistence.create(pk);
+		SiteFriendlyURL newSiteFriendlyURL = addSiteFriendlyURL();
 
 		newSiteFriendlyURL.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -635,4 +633,4 @@ public class SiteFriendlyURLPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:920918371
+// LIFERAY-SERVICE-BUILDER-HASH:-533245999

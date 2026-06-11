@@ -106,9 +106,7 @@ public class ObjectViewColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectViewColumn newObjectViewColumn = _persistence.create(pk);
+		ObjectViewColumn newObjectViewColumn = addObjectViewColumn();
 
 		newObjectViewColumn.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -471,4 +469,4 @@ public class ObjectViewColumnPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1892644887
+// LIFERAY-SERVICE-BUILDER-HASH:-1932974038

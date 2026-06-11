@@ -109,9 +109,7 @@ public class PluginSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PluginSetting newPluginSetting = _persistence.create(pk);
+		PluginSetting newPluginSetting = addPluginSetting();
 
 		newPluginSetting.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -506,4 +504,4 @@ public class PluginSettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1112262749
+// LIFERAY-SERVICE-BUILDER-HASH:1948269845

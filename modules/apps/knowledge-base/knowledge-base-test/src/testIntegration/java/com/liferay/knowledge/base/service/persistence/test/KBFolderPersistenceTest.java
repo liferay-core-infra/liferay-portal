@@ -112,9 +112,7 @@ public class KBFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KBFolder newKBFolder = _persistence.create(pk);
+		KBFolder newKBFolder = addKBFolder();
 
 		newKBFolder.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -707,4 +705,4 @@ public class KBFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1296207782
+// LIFERAY-SERVICE-BUILDER-HASH:849575282

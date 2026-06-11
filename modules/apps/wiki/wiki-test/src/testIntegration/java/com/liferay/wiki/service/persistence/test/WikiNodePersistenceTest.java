@@ -116,9 +116,7 @@ public class WikiNodePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		WikiNode newWikiNode = _persistence.create(pk);
+		WikiNode newWikiNode = addWikiNode();
 
 		newWikiNode.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -697,4 +695,4 @@ public class WikiNodePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-909512508
+// LIFERAY-SERVICE-BUILDER-HASH:-1690933499

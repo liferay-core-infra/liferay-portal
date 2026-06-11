@@ -115,10 +115,8 @@ public class CommerceDiscountOrderTypeRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceDiscountOrderTypeRel newCommerceDiscountOrderTypeRel =
-			_persistence.create(pk);
+			addCommerceDiscountOrderTypeRel();
 
 		newCommerceDiscountOrderTypeRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -642,4 +640,4 @@ public class CommerceDiscountOrderTypeRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-947806861
+// LIFERAY-SERVICE-BUILDER-HASH:1294336533

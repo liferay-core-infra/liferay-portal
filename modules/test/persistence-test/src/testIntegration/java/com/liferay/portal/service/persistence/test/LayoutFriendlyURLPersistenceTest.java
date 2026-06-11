@@ -111,9 +111,7 @@ public class LayoutFriendlyURLPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		LayoutFriendlyURL newLayoutFriendlyURL = _persistence.create(pk);
+		LayoutFriendlyURL newLayoutFriendlyURL = addLayoutFriendlyURL();
 
 		newLayoutFriendlyURL.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -694,4 +692,4 @@ public class LayoutFriendlyURLPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1192504534
+// LIFERAY-SERVICE-BUILDER-HASH:1332873173

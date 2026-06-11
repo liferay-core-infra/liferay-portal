@@ -120,11 +120,9 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CPSpecificationOptionListTypeDefinitionRel
-			newCPSpecificationOptionListTypeDefinitionRel = _persistence.create(
-				pk);
+			newCPSpecificationOptionListTypeDefinitionRel =
+				addCPSpecificationOptionListTypeDefinitionRel();
 
 		newCPSpecificationOptionListTypeDefinitionRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -640,4 +638,4 @@ public class CPSpecificationOptionListTypeDefinitionRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1866321537
+// LIFERAY-SERVICE-BUILDER-HASH:798045325

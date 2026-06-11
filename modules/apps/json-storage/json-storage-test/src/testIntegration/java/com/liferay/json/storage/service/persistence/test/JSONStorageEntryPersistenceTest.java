@@ -110,9 +110,7 @@ public class JSONStorageEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		JSONStorageEntry newJSONStorageEntry = _persistence.create(pk);
+		JSONStorageEntry newJSONStorageEntry = addJSONStorageEntry();
 
 		newJSONStorageEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -583,4 +581,4 @@ public class JSONStorageEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-572783507
+// LIFERAY-SERVICE-BUILDER-HASH:180141939

@@ -114,10 +114,8 @@ public class CPConfigurationListRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CPConfigurationListRel newCPConfigurationListRel = _persistence.create(
-			pk);
+		CPConfigurationListRel newCPConfigurationListRel =
+			addCPConfigurationListRel();
 
 		newCPConfigurationListRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -594,4 +592,4 @@ public class CPConfigurationListRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:899267929
+// LIFERAY-SERVICE-BUILDER-HASH:-869358844

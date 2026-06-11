@@ -113,10 +113,8 @@ public class DepotAppCustomizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DepotAppCustomization newDepotAppCustomization = _persistence.create(
-			pk);
+		DepotAppCustomization newDepotAppCustomization =
+			addDepotAppCustomization();
 
 		newDepotAppCustomization.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -563,4 +561,4 @@ public class DepotAppCustomizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1310808763
+// LIFERAY-SERVICE-BUILDER-HASH:-2023791438

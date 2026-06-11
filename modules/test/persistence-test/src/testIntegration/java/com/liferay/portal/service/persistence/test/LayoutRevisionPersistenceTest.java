@@ -108,9 +108,7 @@ public class LayoutRevisionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		LayoutRevision newLayoutRevision = _persistence.create(pk);
+		LayoutRevision newLayoutRevision = addLayoutRevision();
 
 		newLayoutRevision.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -682,4 +680,4 @@ public class LayoutRevisionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1552002661
+// LIFERAY-SERVICE-BUILDER-HASH:1528293107

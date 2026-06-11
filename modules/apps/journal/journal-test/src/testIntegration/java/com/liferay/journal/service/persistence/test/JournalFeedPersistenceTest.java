@@ -116,9 +116,7 @@ public class JournalFeedPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		JournalFeed newJournalFeed = _persistence.create(pk);
+		JournalFeed newJournalFeed = addJournalFeed();
 
 		newJournalFeed.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -685,4 +683,4 @@ public class JournalFeedPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-251138223
+// LIFERAY-SERVICE-BUILDER-HASH:42783403

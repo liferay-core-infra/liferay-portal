@@ -116,10 +116,8 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		WorkflowMetricsSLADefinition newWorkflowMetricsSLADefinition =
-			_persistence.create(pk);
+			addWorkflowMetricsSLADefinition();
 
 		newWorkflowMetricsSLADefinition.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -803,4 +801,4 @@ public class WorkflowMetricsSLADefinitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:376656500
+// LIFERAY-SERVICE-BUILDER-HASH:-985670490

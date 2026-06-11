@@ -111,9 +111,7 @@ public class BookmarksEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		BookmarksEntry newBookmarksEntry = _persistence.create(pk);
+		BookmarksEntry newBookmarksEntry = addBookmarksEntry();
 
 		newBookmarksEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -725,4 +723,4 @@ public class BookmarksEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1883497496
+// LIFERAY-SERVICE-BUILDER-HASH:-399087314

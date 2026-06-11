@@ -111,10 +111,8 @@ public class FriendlyURLEntryMappingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		FriendlyURLEntryMapping newFriendlyURLEntryMapping =
-			_persistence.create(pk);
+			addFriendlyURLEntryMapping();
 
 		newFriendlyURLEntryMapping.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -513,4 +511,4 @@ public class FriendlyURLEntryMappingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-377336234
+// LIFERAY-SERVICE-BUILDER-HASH:1903584935

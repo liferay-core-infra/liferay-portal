@@ -112,9 +112,7 @@ public class ObjectFieldSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectFieldSetting newObjectFieldSetting = _persistence.create(pk);
+		ObjectFieldSetting newObjectFieldSetting = addObjectFieldSetting();
 
 		newObjectFieldSetting.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -568,4 +566,4 @@ public class ObjectFieldSettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:836036035
+// LIFERAY-SERVICE-BUILDER-HASH:338726213

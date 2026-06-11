@@ -114,10 +114,8 @@ public class NotificationTemplateAttachmentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		NotificationTemplateAttachment newNotificationTemplateAttachment =
-			_persistence.create(pk);
+			addNotificationTemplateAttachment();
 
 		newNotificationTemplateAttachment.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -560,4 +558,4 @@ public class NotificationTemplateAttachmentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-324407106
+// LIFERAY-SERVICE-BUILDER-HASH:709109841

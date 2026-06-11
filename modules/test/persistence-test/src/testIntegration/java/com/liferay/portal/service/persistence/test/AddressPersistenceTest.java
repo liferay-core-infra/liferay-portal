@@ -112,9 +112,7 @@ public class AddressPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Address newAddress = _persistence.create(pk);
+		Address newAddress = addAddress();
 
 		newAddress.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -750,4 +748,4 @@ public class AddressPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1220507916
+// LIFERAY-SERVICE-BUILDER-HASH:828679857

@@ -115,10 +115,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceTaxFixedRateAddressRel newCommerceTaxFixedRateAddressRel =
-			_persistence.create(pk);
+			addCommerceTaxFixedRateAddressRel();
 
 		newCommerceTaxFixedRateAddressRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -573,4 +571,4 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1021583881
+// LIFERAY-SERVICE-BUILDER-HASH:989088005

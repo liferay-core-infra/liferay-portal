@@ -112,10 +112,8 @@ public class ObjectStateTransitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectStateTransition newObjectStateTransition = _persistence.create(
-			pk);
+		ObjectStateTransition newObjectStateTransition =
+			addObjectStateTransition();
 
 		newObjectStateTransition.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -532,4 +530,4 @@ public class ObjectStateTransitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:852724750
+// LIFERAY-SERVICE-BUILDER-HASH:-282870586

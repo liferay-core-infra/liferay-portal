@@ -115,9 +115,7 @@ public class CommerceCurrencyPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceCurrency newCommerceCurrency = _persistence.create(pk);
+		CommerceCurrency newCommerceCurrency = addCommerceCurrency();
 
 		newCommerceCurrency.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -702,4 +700,4 @@ public class CommerceCurrencyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1390789473
+// LIFERAY-SERVICE-BUILDER-HASH:-1457468074

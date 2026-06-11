@@ -109,9 +109,7 @@ public class CTSParentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTSParent newCTSParent = _persistence.create(pk);
+		CTSParent newCTSParent = addCTSParent();
 
 		newCTSParent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -423,4 +421,4 @@ public class CTSParentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:229871821
+// LIFERAY-SERVICE-BUILDER-HASH:1321211408

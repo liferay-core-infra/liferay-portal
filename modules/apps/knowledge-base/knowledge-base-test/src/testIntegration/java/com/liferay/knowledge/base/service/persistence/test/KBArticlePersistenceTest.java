@@ -112,9 +112,7 @@ public class KBArticlePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KBArticle newKBArticle = _persistence.create(pk);
+		KBArticle newKBArticle = addKBArticle();
 
 		newKBArticle.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -1431,4 +1429,4 @@ public class KBArticlePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:376693266
+// LIFERAY-SERVICE-BUILDER-HASH:304452482

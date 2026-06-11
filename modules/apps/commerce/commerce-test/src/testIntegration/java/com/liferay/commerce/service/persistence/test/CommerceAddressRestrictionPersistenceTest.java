@@ -115,10 +115,8 @@ public class CommerceAddressRestrictionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceAddressRestriction newCommerceAddressRestriction =
-			_persistence.create(pk);
+			addCommerceAddressRestriction();
 
 		newCommerceAddressRestriction.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -610,4 +608,4 @@ public class CommerceAddressRestrictionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:82710390
+// LIFERAY-SERVICE-BUILDER-HASH:1450000764

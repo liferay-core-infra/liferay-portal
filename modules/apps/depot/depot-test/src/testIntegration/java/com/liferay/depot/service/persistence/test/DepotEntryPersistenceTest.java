@@ -111,9 +111,7 @@ public class DepotEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DepotEntry newDepotEntry = _persistence.create(pk);
+		DepotEntry newDepotEntry = addDepotEntry();
 
 		newDepotEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -555,4 +553,4 @@ public class DepotEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1977394338
+// LIFERAY-SERVICE-BUILDER-HASH:-1432196919

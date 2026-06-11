@@ -112,9 +112,7 @@ public class CountryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Country newCountry = _persistence.create(pk);
+		Country newCountry = addCountry();
 
 		newCountry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -787,4 +785,4 @@ public class CountryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2019342251
+// LIFERAY-SERVICE-BUILDER-HASH:-1525002940

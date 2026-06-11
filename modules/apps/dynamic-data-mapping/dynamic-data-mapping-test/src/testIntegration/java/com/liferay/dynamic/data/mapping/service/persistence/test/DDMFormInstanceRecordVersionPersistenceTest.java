@@ -116,10 +116,8 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		DDMFormInstanceRecordVersion newDDMFormInstanceRecordVersion =
-			_persistence.create(pk);
+			addDDMFormInstanceRecordVersion();
 
 		newDDMFormInstanceRecordVersion.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -698,4 +696,4 @@ public class DDMFormInstanceRecordVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-948938455
+// LIFERAY-SERVICE-BUILDER-HASH:197719721

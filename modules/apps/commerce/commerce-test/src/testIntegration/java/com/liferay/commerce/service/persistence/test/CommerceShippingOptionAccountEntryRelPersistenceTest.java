@@ -119,10 +119,9 @@ public class CommerceShippingOptionAccountEntryRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceShippingOptionAccountEntryRel
-			newCommerceShippingOptionAccountEntryRel = _persistence.create(pk);
+			newCommerceShippingOptionAccountEntryRel =
+				addCommerceShippingOptionAccountEntryRel();
 
 		newCommerceShippingOptionAccountEntryRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -678,4 +677,4 @@ public class CommerceShippingOptionAccountEntryRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-324933552
+// LIFERAY-SERVICE-BUILDER-HASH:96798025

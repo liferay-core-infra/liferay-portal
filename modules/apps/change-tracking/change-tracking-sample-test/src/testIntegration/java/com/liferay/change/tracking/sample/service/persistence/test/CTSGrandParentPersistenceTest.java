@@ -109,9 +109,7 @@ public class CTSGrandParentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTSGrandParent newCTSGrandParent = _persistence.create(pk);
+		CTSGrandParent newCTSGrandParent = addCTSGrandParent();
 
 		newCTSGrandParent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -416,4 +414,4 @@ public class CTSGrandParentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1825462106
+// LIFERAY-SERVICE-BUILDER-HASH:-342867123

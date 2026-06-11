@@ -109,9 +109,7 @@ public class ObjectLayoutPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectLayout newObjectLayout = _persistence.create(pk);
+		ObjectLayout newObjectLayout = addObjectLayout();
 
 		newObjectLayout.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -489,4 +487,4 @@ public class ObjectLayoutPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-780112452
+// LIFERAY-SERVICE-BUILDER-HASH:-300197158

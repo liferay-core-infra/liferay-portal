@@ -116,9 +116,7 @@ public class MBCategoryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		MBCategory newMBCategory = _persistence.create(pk);
+		MBCategory newMBCategory = addMBCategory();
 
 		newMBCategory.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -809,4 +807,4 @@ public class MBCategoryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1571122642
+// LIFERAY-SERVICE-BUILDER-HASH:1939571060

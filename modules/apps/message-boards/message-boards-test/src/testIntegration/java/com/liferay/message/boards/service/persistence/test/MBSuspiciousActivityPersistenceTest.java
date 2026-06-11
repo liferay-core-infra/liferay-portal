@@ -114,9 +114,8 @@ public class MBSuspiciousActivityPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		MBSuspiciousActivity newMBSuspiciousActivity = _persistence.create(pk);
+		MBSuspiciousActivity newMBSuspiciousActivity =
+			addMBSuspiciousActivity();
 
 		newMBSuspiciousActivity.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -658,4 +657,4 @@ public class MBSuspiciousActivityPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:373848649
+// LIFERAY-SERVICE-BUILDER-HASH:902395641

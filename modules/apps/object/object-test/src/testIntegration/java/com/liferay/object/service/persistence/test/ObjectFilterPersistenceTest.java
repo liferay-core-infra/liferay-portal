@@ -109,9 +109,7 @@ public class ObjectFilterPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectFilter newObjectFilter = _persistence.create(pk);
+		ObjectFilter newObjectFilter = addObjectFilter();
 
 		newObjectFilter.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -479,4 +477,4 @@ public class ObjectFilterPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2023186224
+// LIFERAY-SERVICE-BUILDER-HASH:4999144

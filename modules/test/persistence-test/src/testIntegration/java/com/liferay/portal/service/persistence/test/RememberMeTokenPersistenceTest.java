@@ -108,9 +108,7 @@ public class RememberMeTokenPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		RememberMeToken newRememberMeToken = _persistence.create(pk);
+		RememberMeToken newRememberMeToken = addRememberMeToken();
 
 		newRememberMeToken.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -438,4 +436,4 @@ public class RememberMeTokenPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1300111689
+// LIFERAY-SERVICE-BUILDER-HASH:652891716

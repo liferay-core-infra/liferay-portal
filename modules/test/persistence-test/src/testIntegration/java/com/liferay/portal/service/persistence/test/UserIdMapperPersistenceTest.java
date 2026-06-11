@@ -109,9 +109,7 @@ public class UserIdMapperPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		UserIdMapper newUserIdMapper = _persistence.create(pk);
+		UserIdMapper newUserIdMapper = addUserIdMapper();
 
 		newUserIdMapper.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -520,4 +518,4 @@ public class UserIdMapperPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1385180888
+// LIFERAY-SERVICE-BUILDER-HASH:-1604041726

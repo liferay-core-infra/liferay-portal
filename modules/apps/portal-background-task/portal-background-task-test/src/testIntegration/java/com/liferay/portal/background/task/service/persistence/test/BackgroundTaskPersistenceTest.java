@@ -111,9 +111,7 @@ public class BackgroundTaskPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		BackgroundTask newBackgroundTask = _persistence.create(pk);
+		BackgroundTask newBackgroundTask = addBackgroundTask();
 
 		newBackgroundTask.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -643,4 +641,4 @@ public class BackgroundTaskPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1210537673
+// LIFERAY-SERVICE-BUILDER-HASH:1939814147

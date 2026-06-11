@@ -113,9 +113,7 @@ public class SXPElementPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SXPElement newSXPElement = _persistence.create(pk);
+		SXPElement newSXPElement = addSXPElement();
 
 		newSXPElement.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -650,4 +648,4 @@ public class SXPElementPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1419151878
+// LIFERAY-SERVICE-BUILDER-HASH:-564451284

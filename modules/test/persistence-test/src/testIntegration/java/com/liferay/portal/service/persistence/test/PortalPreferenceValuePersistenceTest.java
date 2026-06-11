@@ -112,10 +112,8 @@ public class PortalPreferenceValuePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PortalPreferenceValue newPortalPreferenceValue = _persistence.create(
-			pk);
+		PortalPreferenceValue newPortalPreferenceValue =
+			addPortalPreferenceValue();
 
 		newPortalPreferenceValue.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -604,4 +602,4 @@ public class PortalPreferenceValuePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2130033114
+// LIFERAY-SERVICE-BUILDER-HASH:-1956736129

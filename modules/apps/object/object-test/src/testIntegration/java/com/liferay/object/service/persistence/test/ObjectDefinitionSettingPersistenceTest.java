@@ -115,10 +115,8 @@ public class ObjectDefinitionSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		ObjectDefinitionSetting newObjectDefinitionSetting =
-			_persistence.create(pk);
+			addObjectDefinitionSetting();
 
 		newObjectDefinitionSetting.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -620,4 +618,4 @@ public class ObjectDefinitionSettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-571155320
+// LIFERAY-SERVICE-BUILDER-HASH:683951609

@@ -117,9 +117,7 @@ public class SiteNavigationMenuPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SiteNavigationMenu newSiteNavigationMenu = _persistence.create(pk);
+		SiteNavigationMenu newSiteNavigationMenu = addSiteNavigationMenu();
 
 		newSiteNavigationMenu.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -735,4 +733,4 @@ public class SiteNavigationMenuPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:235638456
+// LIFERAY-SERVICE-BUILDER-HASH:600657495

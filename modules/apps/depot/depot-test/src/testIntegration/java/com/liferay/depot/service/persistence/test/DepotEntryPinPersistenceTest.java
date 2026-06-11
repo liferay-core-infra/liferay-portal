@@ -110,9 +110,7 @@ public class DepotEntryPinPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DepotEntryPin newDepotEntryPin = _persistence.create(pk);
+		DepotEntryPin newDepotEntryPin = addDepotEntryPin();
 
 		newDepotEntryPin.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -552,4 +550,4 @@ public class DepotEntryPinPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1077594613
+// LIFERAY-SERVICE-BUILDER-HASH:-1421057107

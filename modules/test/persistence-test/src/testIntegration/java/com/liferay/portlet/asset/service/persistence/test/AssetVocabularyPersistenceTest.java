@@ -115,9 +115,7 @@ public class AssetVocabularyPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AssetVocabulary newAssetVocabulary = _persistence.create(pk);
+		AssetVocabulary newAssetVocabulary = addAssetVocabulary();
 
 		newAssetVocabulary.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -729,4 +727,4 @@ public class AssetVocabularyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1821146987
+// LIFERAY-SERVICE-BUILDER-HASH:-484374894

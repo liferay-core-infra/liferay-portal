@@ -114,9 +114,7 @@ public class CommerceTermEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceTermEntry newCommerceTermEntry = _persistence.create(pk);
+		CommerceTermEntry newCommerceTermEntry = addCommerceTermEntry();
 
 		newCommerceTermEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -756,4 +754,4 @@ public class CommerceTermEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1216843621
+// LIFERAY-SERVICE-BUILDER-HASH:-1099976809

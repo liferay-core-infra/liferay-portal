@@ -112,9 +112,7 @@ public class KaleoConditionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KaleoCondition newKaleoCondition = _persistence.create(pk);
+		KaleoCondition newKaleoCondition = addKaleoCondition();
 
 		newKaleoCondition.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -566,4 +564,4 @@ public class KaleoConditionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:86934894
+// LIFERAY-SERVICE-BUILDER-HASH:1296097654

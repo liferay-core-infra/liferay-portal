@@ -111,10 +111,8 @@ public class JournalArticleLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		JournalArticleLocalization newJournalArticleLocalization =
-			_persistence.create(pk);
+			addJournalArticleLocalization();
 
 		newJournalArticleLocalization.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -543,4 +541,4 @@ public class JournalArticleLocalizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1835204292
+// LIFERAY-SERVICE-BUILDER-HASH:1035190467

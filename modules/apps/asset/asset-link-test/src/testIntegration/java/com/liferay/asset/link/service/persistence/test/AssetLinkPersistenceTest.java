@@ -111,9 +111,7 @@ public class AssetLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AssetLink newAssetLink = _persistence.create(pk);
+		AssetLink newAssetLink = addAssetLink();
 
 		newAssetLink.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -550,4 +548,4 @@ public class AssetLinkPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1401532296
+// LIFERAY-SERVICE-BUILDER-HASH:-1049525709

@@ -112,9 +112,7 @@ public class LayoutLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		LayoutLocalization newLayoutLocalization = _persistence.create(pk);
+		LayoutLocalization newLayoutLocalization = addLayoutLocalization();
 
 		newLayoutLocalization.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -622,4 +620,4 @@ public class LayoutLocalizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2108930677
+// LIFERAY-SERVICE-BUILDER-HASH:1543906377

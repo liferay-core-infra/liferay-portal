@@ -110,9 +110,7 @@ public class RepositoryEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		RepositoryEntry newRepositoryEntry = _persistence.create(pk);
+		RepositoryEntry newRepositoryEntry = addRepositoryEntry();
 
 		newRepositoryEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -598,4 +596,4 @@ public class RepositoryEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1750635397
+// LIFERAY-SERVICE-BUILDER-HASH:-1783516308

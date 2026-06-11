@@ -108,9 +108,7 @@ public class UserTrackerPathPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		UserTrackerPath newUserTrackerPath = _persistence.create(pk);
+		UserTrackerPath newUserTrackerPath = addUserTrackerPath();
 
 		newUserTrackerPath.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -424,4 +422,4 @@ public class UserTrackerPathPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:433784273
+// LIFERAY-SERVICE-BUILDER-HASH:1779930510

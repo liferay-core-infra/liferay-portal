@@ -116,9 +116,7 @@ public class CTSContentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTSContent newCTSContent = _persistence.create(pk);
+		CTSContent newCTSContent = addCTSContent();
 
 		newCTSContent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -585,4 +583,4 @@ public class CTSContentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:65518857
+// LIFERAY-SERVICE-BUILDER-HASH:-1655882497

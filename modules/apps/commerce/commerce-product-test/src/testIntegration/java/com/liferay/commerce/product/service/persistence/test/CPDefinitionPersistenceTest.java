@@ -116,9 +116,7 @@ public class CPDefinitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CPDefinition newCPDefinition = _persistence.create(pk);
+		CPDefinition newCPDefinition = addCPDefinition();
 
 		newCPDefinition.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -926,4 +924,4 @@ public class CPDefinitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-653082843
+// LIFERAY-SERVICE-BUILDER-HASH:2128840022

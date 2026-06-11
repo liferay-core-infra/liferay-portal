@@ -108,9 +108,7 @@ public class PasswordTrackerPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PasswordTracker newPasswordTracker = _persistence.create(pk);
+		PasswordTracker newPasswordTracker = addPasswordTracker();
 
 		newPasswordTracker.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -425,4 +423,4 @@ public class PasswordTrackerPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-531767094
+// LIFERAY-SERVICE-BUILDER-HASH:-1202479108

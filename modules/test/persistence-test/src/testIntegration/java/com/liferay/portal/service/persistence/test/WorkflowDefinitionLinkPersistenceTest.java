@@ -114,10 +114,8 @@ public class WorkflowDefinitionLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		WorkflowDefinitionLink newWorkflowDefinitionLink = _persistence.create(
-			pk);
+		WorkflowDefinitionLink newWorkflowDefinitionLink =
+			addWorkflowDefinitionLink();
 
 		newWorkflowDefinitionLink.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -741,4 +739,4 @@ public class WorkflowDefinitionLinkPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:484497332
+// LIFERAY-SERVICE-BUILDER-HASH:-1798373603

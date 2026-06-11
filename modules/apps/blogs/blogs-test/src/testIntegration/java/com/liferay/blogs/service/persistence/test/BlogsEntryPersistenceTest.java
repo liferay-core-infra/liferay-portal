@@ -116,9 +116,7 @@ public class BlogsEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		BlogsEntry newBlogsEntry = _persistence.create(pk);
+		BlogsEntry newBlogsEntry = addBlogsEntry();
 
 		newBlogsEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -966,4 +964,4 @@ public class BlogsEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1975118783
+// LIFERAY-SERVICE-BUILDER-HASH:1365787783

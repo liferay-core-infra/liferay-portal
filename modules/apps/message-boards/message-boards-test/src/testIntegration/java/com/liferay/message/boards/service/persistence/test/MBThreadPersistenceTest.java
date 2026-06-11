@@ -116,9 +116,7 @@ public class MBThreadPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		MBThread newMBThread = _persistence.create(pk);
+		MBThread newMBThread = addMBThread();
 
 		newMBThread.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -763,4 +761,4 @@ public class MBThreadPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1391279336
+// LIFERAY-SERVICE-BUILDER-HASH:-1847473408

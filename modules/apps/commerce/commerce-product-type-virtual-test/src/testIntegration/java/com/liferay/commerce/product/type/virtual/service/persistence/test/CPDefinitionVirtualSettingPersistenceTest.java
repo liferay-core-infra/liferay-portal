@@ -116,10 +116,8 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CPDefinitionVirtualSetting newCPDefinitionVirtualSetting =
-			_persistence.create(pk);
+			addCPDefinitionVirtualSetting();
 
 		newCPDefinitionVirtualSetting.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -729,4 +727,4 @@ public class CPDefinitionVirtualSettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1686151303
+// LIFERAY-SERVICE-BUILDER-HASH:-586380591

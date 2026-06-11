@@ -112,9 +112,7 @@ public class CPTaxCategoryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CPTaxCategory newCPTaxCategory = _persistence.create(pk);
+		CPTaxCategory newCPTaxCategory = addCPTaxCategory();
 
 		newCPTaxCategory.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -579,4 +577,4 @@ public class CPTaxCategoryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-423788837
+// LIFERAY-SERVICE-BUILDER-HASH:-1642867960

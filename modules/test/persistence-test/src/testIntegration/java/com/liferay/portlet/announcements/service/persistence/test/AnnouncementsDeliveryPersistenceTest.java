@@ -112,10 +112,8 @@ public class AnnouncementsDeliveryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AnnouncementsDelivery newAnnouncementsDelivery = _persistence.create(
-			pk);
+		AnnouncementsDelivery newAnnouncementsDelivery =
+			addAnnouncementsDelivery();
 
 		newAnnouncementsDelivery.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -559,4 +557,4 @@ public class AnnouncementsDeliveryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1762445978
+// LIFERAY-SERVICE-BUILDER-HASH:623949867

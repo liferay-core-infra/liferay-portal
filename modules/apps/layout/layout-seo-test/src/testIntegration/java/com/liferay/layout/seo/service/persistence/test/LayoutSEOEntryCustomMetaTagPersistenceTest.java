@@ -109,10 +109,8 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		LayoutSEOEntryCustomMetaTag newLayoutSEOEntryCustomMetaTag =
-			_persistence.create(pk);
+			addLayoutSEOEntryCustomMetaTag();
 
 		newLayoutSEOEntryCustomMetaTag.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -467,4 +465,4 @@ public class LayoutSEOEntryCustomMetaTagPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-927386854
+// LIFERAY-SERVICE-BUILDER-HASH:1350671184

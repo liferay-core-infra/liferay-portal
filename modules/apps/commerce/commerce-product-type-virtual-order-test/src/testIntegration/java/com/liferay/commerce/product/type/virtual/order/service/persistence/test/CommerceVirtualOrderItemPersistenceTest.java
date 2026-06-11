@@ -116,10 +116,8 @@ public class CommerceVirtualOrderItemPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceVirtualOrderItem newCommerceVirtualOrderItem =
-			_persistence.create(pk);
+			addCommerceVirtualOrderItem();
 
 		newCommerceVirtualOrderItem.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -652,4 +650,4 @@ public class CommerceVirtualOrderItemPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:987144243
+// LIFERAY-SERVICE-BUILDER-HASH:378018791

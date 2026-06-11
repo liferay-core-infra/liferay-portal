@@ -114,9 +114,8 @@ public class AssetAutoTaggerEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AssetAutoTaggerEntry newAssetAutoTaggerEntry = _persistence.create(pk);
+		AssetAutoTaggerEntry newAssetAutoTaggerEntry =
+			addAssetAutoTaggerEntry();
 
 		newAssetAutoTaggerEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -565,4 +564,4 @@ public class AssetAutoTaggerEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:264442237
+// LIFERAY-SERVICE-BUILDER-HASH:1564313611

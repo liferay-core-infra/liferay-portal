@@ -113,9 +113,7 @@ public class COREntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		COREntry newCOREntry = _persistence.create(pk);
+		COREntry newCOREntry = addCOREntry();
 
 		newCOREntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -669,4 +667,4 @@ public class COREntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1036019686
+// LIFERAY-SERVICE-BUILDER-HASH:1054718095

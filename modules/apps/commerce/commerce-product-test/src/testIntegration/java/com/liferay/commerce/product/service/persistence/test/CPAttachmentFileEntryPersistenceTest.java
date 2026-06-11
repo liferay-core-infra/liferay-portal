@@ -116,10 +116,8 @@ public class CPAttachmentFileEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CPAttachmentFileEntry newCPAttachmentFileEntry = _persistence.create(
-			pk);
+		CPAttachmentFileEntry newCPAttachmentFileEntry =
+			addCPAttachmentFileEntry();
 
 		newCPAttachmentFileEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -872,4 +870,4 @@ public class CPAttachmentFileEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-674048705
+// LIFERAY-SERVICE-BUILDER-HASH:-224772408

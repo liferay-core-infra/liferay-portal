@@ -112,9 +112,7 @@ public class ObjectEntryFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectEntryFolder newObjectEntryFolder = _persistence.create(pk);
+		ObjectEntryFolder newObjectEntryFolder = addObjectEntryFolder();
 
 		newObjectEntryFolder.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -652,4 +650,4 @@ public class ObjectEntryFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:409986258
+// LIFERAY-SERVICE-BUILDER-HASH:811021088

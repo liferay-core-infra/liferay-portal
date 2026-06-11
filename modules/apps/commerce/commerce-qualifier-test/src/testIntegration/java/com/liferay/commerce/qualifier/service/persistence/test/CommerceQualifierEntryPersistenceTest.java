@@ -115,10 +115,8 @@ public class CommerceQualifierEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceQualifierEntry newCommerceQualifierEntry = _persistence.create(
-			pk);
+		CommerceQualifierEntry newCommerceQualifierEntry =
+			addCommerceQualifierEntry();
 
 		newCommerceQualifierEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -641,4 +639,4 @@ public class CommerceQualifierEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:784098802
+// LIFERAY-SERVICE-BUILDER-HASH:-2050162232

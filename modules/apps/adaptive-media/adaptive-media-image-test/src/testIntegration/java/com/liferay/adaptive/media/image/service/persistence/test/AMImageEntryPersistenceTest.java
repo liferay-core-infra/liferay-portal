@@ -112,9 +112,7 @@ public class AMImageEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AMImageEntry newAMImageEntry = _persistence.create(pk);
+		AMImageEntry newAMImageEntry = addAMImageEntry();
 
 		newAMImageEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -613,4 +611,4 @@ public class AMImageEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1201634329
+// LIFERAY-SERVICE-BUILDER-HASH:1458348957

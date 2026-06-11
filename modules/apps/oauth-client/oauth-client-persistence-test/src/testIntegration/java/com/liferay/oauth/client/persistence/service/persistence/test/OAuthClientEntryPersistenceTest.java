@@ -113,9 +113,7 @@ public class OAuthClientEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		OAuthClientEntry newOAuthClientEntry = _persistence.create(pk);
+		OAuthClientEntry newOAuthClientEntry = addOAuthClientEntry();
 
 		newOAuthClientEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -683,4 +681,4 @@ public class OAuthClientEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1432047800
+// LIFERAY-SERVICE-BUILDER-HASH:-737681735

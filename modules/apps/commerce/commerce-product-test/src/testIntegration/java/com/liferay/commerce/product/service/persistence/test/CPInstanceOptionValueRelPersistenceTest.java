@@ -115,10 +115,8 @@ public class CPInstanceOptionValueRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CPInstanceOptionValueRel newCPInstanceOptionValueRel =
-			_persistence.create(pk);
+			addCPInstanceOptionValueRel();
 
 		newCPInstanceOptionValueRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -684,4 +682,4 @@ public class CPInstanceOptionValueRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1654032071
+// LIFERAY-SERVICE-BUILDER-HASH:-279573189

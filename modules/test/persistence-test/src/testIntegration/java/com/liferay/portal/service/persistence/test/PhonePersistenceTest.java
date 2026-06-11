@@ -111,9 +111,7 @@ public class PhonePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Phone newPhone = _persistence.create(pk);
+		Phone newPhone = addPhone();
 
 		newPhone.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -604,4 +602,4 @@ public class PhonePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1631807683
+// LIFERAY-SERVICE-BUILDER-HASH:488461474

@@ -107,9 +107,7 @@ public class ObjectLayoutColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectLayoutColumn newObjectLayoutColumn = _persistence.create(pk);
+		ObjectLayoutColumn newObjectLayoutColumn = addObjectLayoutColumn();
 
 		newObjectLayoutColumn.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -477,4 +475,4 @@ public class ObjectLayoutColumnPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:465807198
+// LIFERAY-SERVICE-BUILDER-HASH:-1900632642

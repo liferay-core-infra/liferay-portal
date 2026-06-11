@@ -116,10 +116,8 @@ public class CommercePriceListDiscountRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommercePriceListDiscountRel newCommercePriceListDiscountRel =
-			_persistence.create(pk);
+			addCommercePriceListDiscountRel();
 
 		newCommercePriceListDiscountRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -646,4 +644,4 @@ public class CommercePriceListDiscountRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-651196396
+// LIFERAY-SERVICE-BUILDER-HASH:-210283891

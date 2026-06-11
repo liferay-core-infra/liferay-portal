@@ -111,9 +111,7 @@ public class LayoutSEOSitePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		LayoutSEOSite newLayoutSEOSite = _persistence.create(pk);
+		LayoutSEOSite newLayoutSEOSite = addLayoutSEOSite();
 
 		newLayoutSEOSite.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -571,4 +569,4 @@ public class LayoutSEOSitePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1892112252
+// LIFERAY-SERVICE-BUILDER-HASH:-2139225745

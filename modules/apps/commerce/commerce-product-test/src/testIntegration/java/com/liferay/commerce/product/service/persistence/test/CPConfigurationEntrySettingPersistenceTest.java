@@ -115,10 +115,8 @@ public class CPConfigurationEntrySettingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CPConfigurationEntrySetting newCPConfigurationEntrySetting =
-			_persistence.create(pk);
+			addCPConfigurationEntrySetting();
 
 		newCPConfigurationEntrySetting.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -657,4 +655,4 @@ public class CPConfigurationEntrySettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:649800287
+// LIFERAY-SERVICE-BUILDER-HASH:-1993155417

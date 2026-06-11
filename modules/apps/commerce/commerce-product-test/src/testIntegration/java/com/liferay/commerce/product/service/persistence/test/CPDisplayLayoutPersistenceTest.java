@@ -111,9 +111,7 @@ public class CPDisplayLayoutPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CPDisplayLayout newCPDisplayLayout = _persistence.create(pk);
+		CPDisplayLayout newCPDisplayLayout = addCPDisplayLayout();
 
 		newCPDisplayLayout.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -653,4 +651,4 @@ public class CPDisplayLayoutPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-815431732
+// LIFERAY-SERVICE-BUILDER-HASH:674624252

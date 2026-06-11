@@ -120,10 +120,9 @@ public class CommerceShippingFixedOptionQualifierPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceShippingFixedOptionQualifier
-			newCommerceShippingFixedOptionQualifier = _persistence.create(pk);
+			newCommerceShippingFixedOptionQualifier =
+				addCommerceShippingFixedOptionQualifier();
 
 		newCommerceShippingFixedOptionQualifier.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -665,4 +664,4 @@ public class CommerceShippingFixedOptionQualifierPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2111556472
+// LIFERAY-SERVICE-BUILDER-HASH:484891923

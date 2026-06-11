@@ -111,9 +111,7 @@ public class SegmentsEntryRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SegmentsEntryRel newSegmentsEntryRel = _persistence.create(pk);
+		SegmentsEntryRel newSegmentsEntryRel = addSegmentsEntryRel();
 
 		newSegmentsEntryRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -569,4 +567,4 @@ public class SegmentsEntryRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-192272848
+// LIFERAY-SERVICE-BUILDER-HASH:1675422974

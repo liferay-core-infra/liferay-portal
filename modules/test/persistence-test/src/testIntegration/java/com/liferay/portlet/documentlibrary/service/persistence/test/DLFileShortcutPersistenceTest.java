@@ -115,9 +115,7 @@ public class DLFileShortcutPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DLFileShortcut newDLFileShortcut = _persistence.create(pk);
+		DLFileShortcut newDLFileShortcut = addDLFileShortcut();
 
 		newDLFileShortcut.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -742,4 +740,4 @@ public class DLFileShortcutPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-646953205
+// LIFERAY-SERVICE-BUILDER-HASH:1775695674

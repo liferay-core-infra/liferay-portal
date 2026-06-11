@@ -111,9 +111,7 @@ public class SocialActivityLimitPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SocialActivityLimit newSocialActivityLimit = _persistence.create(pk);
+		SocialActivityLimit newSocialActivityLimit = addSocialActivityLimit();
 
 		newSocialActivityLimit.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -589,4 +587,4 @@ public class SocialActivityLimitPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1007238859
+// LIFERAY-SERVICE-BUILDER-HASH:-1825961957

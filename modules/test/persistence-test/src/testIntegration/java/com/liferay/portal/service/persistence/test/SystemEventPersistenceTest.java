@@ -108,9 +108,7 @@ public class SystemEventPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SystemEvent newSystemEvent = _persistence.create(pk);
+		SystemEvent newSystemEvent = addSystemEvent();
 
 		newSystemEvent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -519,4 +517,4 @@ public class SystemEventPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-646431674
+// LIFERAY-SERVICE-BUILDER-HASH:576565930

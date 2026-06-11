@@ -116,10 +116,8 @@ public class AssetCategoryPropertyPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		AssetCategoryProperty newAssetCategoryProperty = _persistence.create(
-			pk);
+		AssetCategoryProperty newAssetCategoryProperty =
+			addAssetCategoryProperty();
 
 		newAssetCategoryProperty.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -649,4 +647,4 @@ public class AssetCategoryPropertyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-879562848
+// LIFERAY-SERVICE-BUILDER-HASH:-1329810732

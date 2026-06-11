@@ -108,9 +108,7 @@ public class ContactPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Contact newContact = _persistence.create(pk);
+		Contact newContact = addContact();
 
 		newContact.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -574,4 +572,4 @@ public class ContactPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1784686000
+// LIFERAY-SERVICE-BUILDER-HASH:-1081707425

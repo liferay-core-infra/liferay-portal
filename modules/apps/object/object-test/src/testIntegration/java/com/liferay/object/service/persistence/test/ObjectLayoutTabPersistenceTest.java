@@ -109,9 +109,7 @@ public class ObjectLayoutTabPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectLayoutTab newObjectLayoutTab = _persistence.create(pk);
+		ObjectLayoutTab newObjectLayoutTab = addObjectLayoutTab();
 
 		newObjectLayoutTab.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -493,4 +491,4 @@ public class ObjectLayoutTabPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1585619978
+// LIFERAY-SERVICE-BUILDER-HASH:-1605880487

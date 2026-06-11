@@ -118,10 +118,8 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceInventoryBookedQuantity newCommerceInventoryBookedQuantity =
-			_persistence.create(pk);
+			addCommerceInventoryBookedQuantity();
 
 		newCommerceInventoryBookedQuantity.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -578,4 +576,4 @@ public class CommerceInventoryBookedQuantityPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-562550874
+// LIFERAY-SERVICE-BUILDER-HASH:1098830977

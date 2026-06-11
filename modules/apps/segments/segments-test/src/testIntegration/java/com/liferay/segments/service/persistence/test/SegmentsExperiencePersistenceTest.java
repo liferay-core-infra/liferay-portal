@@ -117,9 +117,7 @@ public class SegmentsExperiencePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SegmentsExperience newSegmentsExperience = _persistence.create(pk);
+		SegmentsExperience newSegmentsExperience = addSegmentsExperience();
 
 		newSegmentsExperience.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -868,4 +866,4 @@ public class SegmentsExperiencePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1934734069
+// LIFERAY-SERVICE-BUILDER-HASH:-747490062

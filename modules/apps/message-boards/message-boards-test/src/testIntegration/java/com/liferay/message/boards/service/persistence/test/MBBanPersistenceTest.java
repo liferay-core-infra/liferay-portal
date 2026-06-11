@@ -111,9 +111,7 @@ public class MBBanPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		MBBan newMBBan = _persistence.create(pk);
+		MBBan newMBBan = addMBBan();
 
 		newMBBan.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -561,4 +559,4 @@ public class MBBanPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:887610676
+// LIFERAY-SERVICE-BUILDER-HASH:-712594103

@@ -115,10 +115,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KaleoDefinitionVersion newKaleoDefinitionVersion = _persistence.create(
-			pk);
+		KaleoDefinitionVersion newKaleoDefinitionVersion =
+			addKaleoDefinitionVersion();
 
 		newKaleoDefinitionVersion.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -664,4 +662,4 @@ public class KaleoDefinitionVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1480478202
+// LIFERAY-SERVICE-BUILDER-HASH:106784996

@@ -111,9 +111,7 @@ public class RatingsStatsPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		RatingsStats newRatingsStats = _persistence.create(pk);
+		RatingsStats newRatingsStats = addRatingsStats();
 
 		newRatingsStats.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -526,4 +524,4 @@ public class RatingsStatsPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-75720746
+// LIFERAY-SERVICE-BUILDER-HASH:-420409448

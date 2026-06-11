@@ -115,10 +115,8 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KaleoTaskInstanceToken newKaleoTaskInstanceToken = _persistence.create(
-			pk);
+		KaleoTaskInstanceToken newKaleoTaskInstanceToken =
+			addKaleoTaskInstanceToken();
 
 		newKaleoTaskInstanceToken.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -710,4 +708,4 @@ public class KaleoTaskInstanceTokenPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:540053211
+// LIFERAY-SERVICE-BUILDER-HASH:-114435489

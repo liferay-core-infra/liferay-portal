@@ -110,9 +110,7 @@ public class ExpandoRowPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ExpandoRow newExpandoRow = _persistence.create(pk);
+		ExpandoRow newExpandoRow = addExpandoRow();
 
 		newExpandoRow.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -495,4 +493,4 @@ public class ExpandoRowPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1111511245
+// LIFERAY-SERVICE-BUILDER-HASH:1538716633

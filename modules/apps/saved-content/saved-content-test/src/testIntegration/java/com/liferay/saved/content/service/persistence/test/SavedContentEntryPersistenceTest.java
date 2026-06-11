@@ -116,9 +116,7 @@ public class SavedContentEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		SavedContentEntry newSavedContentEntry = _persistence.create(pk);
+		SavedContentEntry newSavedContentEntry = addSavedContentEntry();
 
 		newSavedContentEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -714,4 +712,4 @@ public class SavedContentEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1493528388
+// LIFERAY-SERVICE-BUILDER-HASH:57346765

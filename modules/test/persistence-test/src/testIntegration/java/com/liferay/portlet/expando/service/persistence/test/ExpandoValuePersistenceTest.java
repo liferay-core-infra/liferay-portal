@@ -109,9 +109,7 @@ public class ExpandoValuePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ExpandoValue newExpandoValue = _persistence.create(pk);
+		ExpandoValue newExpandoValue = addExpandoValue();
 
 		newExpandoValue.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -593,4 +591,4 @@ public class ExpandoValuePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1440643162
+// LIFERAY-SERVICE-BUILDER-HASH:-1941759015

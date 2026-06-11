@@ -115,10 +115,8 @@ public class CommerceInventoryAuditPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceInventoryAudit newCommerceInventoryAudit = _persistence.create(
-			pk);
+		CommerceInventoryAudit newCommerceInventoryAudit =
+			addCommerceInventoryAudit();
 
 		newCommerceInventoryAudit.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -523,4 +521,4 @@ public class CommerceInventoryAuditPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:557082533
+// LIFERAY-SERVICE-BUILDER-HASH:-1756209614

@@ -109,9 +109,7 @@ public class MembershipRequestPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		MembershipRequest newMembershipRequest = _persistence.create(pk);
+		MembershipRequest newMembershipRequest = addMembershipRequest();
 
 		newMembershipRequest.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -491,4 +489,4 @@ public class MembershipRequestPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1749939039
+// LIFERAY-SERVICE-BUILDER-HASH:-1024065431

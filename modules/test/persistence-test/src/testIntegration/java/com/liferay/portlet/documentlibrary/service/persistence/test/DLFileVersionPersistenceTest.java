@@ -110,9 +110,7 @@ public class DLFileVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DLFileVersion newDLFileVersion = _persistence.create(pk);
+		DLFileVersion newDLFileVersion = addDLFileVersion();
 
 		newDLFileVersion.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -822,4 +820,4 @@ public class DLFileVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:490148269
+// LIFERAY-SERVICE-BUILDER-HASH:-1577444696

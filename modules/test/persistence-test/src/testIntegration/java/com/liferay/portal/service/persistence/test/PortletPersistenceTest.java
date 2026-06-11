@@ -109,9 +109,7 @@ public class PortletPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Portlet newPortlet = _persistence.create(pk);
+		Portlet newPortlet = addPortlet();
 
 		newPortlet.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -470,4 +468,4 @@ public class PortletPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1830048486
+// LIFERAY-SERVICE-BUILDER-HASH:1145100251

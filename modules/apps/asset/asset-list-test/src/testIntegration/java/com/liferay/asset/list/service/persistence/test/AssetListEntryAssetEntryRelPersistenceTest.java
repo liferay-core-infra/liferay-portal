@@ -115,10 +115,8 @@ public class AssetListEntryAssetEntryRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		AssetListEntryAssetEntryRel newAssetListEntryAssetEntryRel =
-			_persistence.create(pk);
+			addAssetListEntryAssetEntryRel();
 
 		newAssetListEntryAssetEntryRel.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -716,4 +714,4 @@ public class AssetListEntryAssetEntryRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1102606874
+// LIFERAY-SERVICE-BUILDER-HASH:-2023677398

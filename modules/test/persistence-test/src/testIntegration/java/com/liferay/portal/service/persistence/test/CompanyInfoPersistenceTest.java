@@ -109,9 +109,7 @@ public class CompanyInfoPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CompanyInfo newCompanyInfo = _persistence.create(pk);
+		CompanyInfo newCompanyInfo = addCompanyInfo();
 
 		newCompanyInfo.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -460,4 +458,4 @@ public class CompanyInfoPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:433994396
+// LIFERAY-SERVICE-BUILDER-HASH:2007343072

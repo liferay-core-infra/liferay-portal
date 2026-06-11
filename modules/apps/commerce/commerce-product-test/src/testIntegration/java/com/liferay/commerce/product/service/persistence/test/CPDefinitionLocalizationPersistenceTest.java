@@ -111,10 +111,8 @@ public class CPDefinitionLocalizationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CPDefinitionLocalization newCPDefinitionLocalization =
-			_persistence.create(pk);
+			addCPDefinitionLocalization();
 
 		newCPDefinitionLocalization.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -574,4 +572,4 @@ public class CPDefinitionLocalizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-445156844
+// LIFERAY-SERVICE-BUILDER-HASH:-471680320

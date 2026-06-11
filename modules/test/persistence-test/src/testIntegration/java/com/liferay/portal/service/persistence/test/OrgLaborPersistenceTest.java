@@ -107,9 +107,7 @@ public class OrgLaborPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		OrgLabor newOrgLabor = _persistence.create(pk);
+		OrgLabor newOrgLabor = addOrgLabor();
 
 		newOrgLabor.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -491,4 +489,4 @@ public class OrgLaborPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2015083101
+// LIFERAY-SERVICE-BUILDER-HASH:2116276660

@@ -115,9 +115,7 @@ public class DLFolderPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DLFolder newDLFolder = _persistence.create(pk);
+		DLFolder newDLFolder = addDLFolder();
 
 		newDLFolder.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -881,4 +879,4 @@ public class DLFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-638564196
+// LIFERAY-SERVICE-BUILDER-HASH:-278629063

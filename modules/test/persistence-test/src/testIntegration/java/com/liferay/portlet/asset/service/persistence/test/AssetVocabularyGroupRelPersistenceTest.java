@@ -113,10 +113,8 @@ public class AssetVocabularyGroupRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		AssetVocabularyGroupRel newAssetVocabularyGroupRel =
-			_persistence.create(pk);
+			addAssetVocabularyGroupRel();
 
 		newAssetVocabularyGroupRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -592,4 +590,4 @@ public class AssetVocabularyGroupRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1870938902
+// LIFERAY-SERVICE-BUILDER-HASH:-139104201

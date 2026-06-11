@@ -109,9 +109,7 @@ public class ServiceComponentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ServiceComponent newServiceComponent = _persistence.create(pk);
+		ServiceComponent newServiceComponent = addServiceComponent();
 
 		newServiceComponent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -501,4 +499,4 @@ public class ServiceComponentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1768664837
+// LIFERAY-SERVICE-BUILDER-HASH:860556040

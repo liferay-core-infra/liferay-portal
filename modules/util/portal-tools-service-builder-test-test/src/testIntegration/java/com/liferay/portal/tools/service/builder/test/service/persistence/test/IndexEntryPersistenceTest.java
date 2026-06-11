@@ -109,9 +109,7 @@ public class IndexEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		IndexEntry newIndexEntry = _persistence.create(pk);
+		IndexEntry newIndexEntry = addIndexEntry();
 
 		newIndexEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -610,4 +608,4 @@ public class IndexEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2103639179
+// LIFERAY-SERVICE-BUILDER-HASH:108483464

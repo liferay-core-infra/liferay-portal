@@ -116,10 +116,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		ClientExtensionEntryRel newClientExtensionEntryRel =
-			_persistence.create(pk);
+			addClientExtensionEntryRel();
 
 		newClientExtensionEntryRel.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -729,4 +727,4 @@ public class ClientExtensionEntryRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2022384022
+// LIFERAY-SERVICE-BUILDER-HASH:1290157918

@@ -110,9 +110,7 @@ public class ReleasePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Release newRelease = _persistence.create(pk);
+		Release newRelease = addRelease();
 
 		newRelease.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -508,4 +506,4 @@ public class ReleasePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:356339734
+// LIFERAY-SERVICE-BUILDER-HASH:-157895154

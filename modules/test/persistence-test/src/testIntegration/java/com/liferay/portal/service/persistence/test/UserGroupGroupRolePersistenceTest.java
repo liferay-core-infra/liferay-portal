@@ -110,9 +110,7 @@ public class UserGroupGroupRolePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		UserGroupGroupRole newUserGroupGroupRole = _persistence.create(pk);
+		UserGroupGroupRole newUserGroupGroupRole = addUserGroupGroupRole();
 
 		newUserGroupGroupRole.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -553,4 +551,4 @@ public class UserGroupGroupRolePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1830454353
+// LIFERAY-SERVICE-BUILDER-HASH:2119224771

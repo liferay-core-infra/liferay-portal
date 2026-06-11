@@ -109,9 +109,7 @@ public class CTSchemaVersionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTSchemaVersion newCTSchemaVersion = _persistence.create(pk);
+		CTSchemaVersion newCTSchemaVersion = addCTSchemaVersion();
 
 		newCTSchemaVersion.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -411,4 +409,4 @@ public class CTSchemaVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-715517319
+// LIFERAY-SERVICE-BUILDER-HASH:1336194832

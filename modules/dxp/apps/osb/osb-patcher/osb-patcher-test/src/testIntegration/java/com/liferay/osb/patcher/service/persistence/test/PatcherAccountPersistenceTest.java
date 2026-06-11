@@ -111,9 +111,7 @@ public class PatcherAccountPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PatcherAccount newPatcherAccount = _persistence.create(pk);
+		PatcherAccount newPatcherAccount = addPatcherAccount();
 
 		newPatcherAccount.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -524,4 +522,4 @@ public class PatcherAccountPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-982994593
+// LIFERAY-SERVICE-BUILDER-HASH:1189684096

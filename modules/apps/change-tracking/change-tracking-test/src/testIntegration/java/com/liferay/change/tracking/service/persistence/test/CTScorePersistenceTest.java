@@ -110,9 +110,7 @@ public class CTScorePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTScore newCTScore = _persistence.create(pk);
+		CTScore newCTScore = addCTScore();
 
 		newCTScore.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -457,4 +455,4 @@ public class CTScorePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:592054589
+// LIFERAY-SERVICE-BUILDER-HASH:-171371957

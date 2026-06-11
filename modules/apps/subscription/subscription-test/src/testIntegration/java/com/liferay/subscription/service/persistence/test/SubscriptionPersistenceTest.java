@@ -111,9 +111,7 @@ public class SubscriptionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Subscription newSubscription = _persistence.create(pk);
+		Subscription newSubscription = addSubscription();
 
 		newSubscription.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -595,4 +593,4 @@ public class SubscriptionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1846671432
+// LIFERAY-SERVICE-BUILDER-HASH:-512444106

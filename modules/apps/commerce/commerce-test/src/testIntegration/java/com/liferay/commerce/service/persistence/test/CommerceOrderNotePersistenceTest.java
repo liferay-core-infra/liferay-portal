@@ -113,9 +113,7 @@ public class CommerceOrderNotePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceOrderNote newCommerceOrderNote = _persistence.create(pk);
+		CommerceOrderNote newCommerceOrderNote = addCommerceOrderNote();
 
 		newCommerceOrderNote.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -630,4 +628,4 @@ public class CommerceOrderNotePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-243713532
+// LIFERAY-SERVICE-BUILDER-HASH:1539521870

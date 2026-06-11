@@ -110,9 +110,7 @@ public class WebDAVPropsPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		WebDAVProps newWebDAVProps = _persistence.create(pk);
+		WebDAVProps newWebDAVProps = addWebDAVProps();
 
 		newWebDAVProps.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -497,4 +495,4 @@ public class WebDAVPropsPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1876325657
+// LIFERAY-SERVICE-BUILDER-HASH:-890060003

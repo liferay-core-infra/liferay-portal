@@ -116,10 +116,8 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CPDVirtualSettingFileEntry newCPDVirtualSettingFileEntry =
-			_persistence.create(pk);
+			addCPDVirtualSettingFileEntry();
 
 		newCPDVirtualSettingFileEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -646,4 +644,4 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1165514412
+// LIFERAY-SERVICE-BUILDER-HASH:287588497

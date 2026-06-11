@@ -114,10 +114,8 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		CommerceAvailabilityEstimate newCommerceAvailabilityEstimate =
-			_persistence.create(pk);
+			addCommerceAvailabilityEstimate();
 
 		newCommerceAvailabilityEstimate.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -545,4 +543,4 @@ public class CommerceAvailabilityEstimatePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1800479216
+// LIFERAY-SERVICE-BUILDER-HASH:-1572027419

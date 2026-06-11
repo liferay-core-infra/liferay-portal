@@ -112,9 +112,7 @@ public class PatcherTicketHintPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PatcherTicketHint newPatcherTicketHint = _persistence.create(pk);
+		PatcherTicketHint newPatcherTicketHint = addPatcherTicketHint();
 
 		newPatcherTicketHint.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -517,4 +515,4 @@ public class PatcherTicketHintPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:730645286
+// LIFERAY-SERVICE-BUILDER-HASH:1926488333

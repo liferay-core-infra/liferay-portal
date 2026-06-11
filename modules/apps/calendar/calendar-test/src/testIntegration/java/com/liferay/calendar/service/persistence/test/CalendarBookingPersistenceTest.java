@@ -112,9 +112,7 @@ public class CalendarBookingPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CalendarBooking newCalendarBooking = _persistence.create(pk);
+		CalendarBooking newCalendarBooking = addCalendarBooking();
 
 		newCalendarBooking.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -838,4 +836,4 @@ public class CalendarBookingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-911885977
+// LIFERAY-SERVICE-BUILDER-HASH:-1063175493

@@ -109,9 +109,7 @@ public class ResourceActionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ResourceAction newResourceAction = _persistence.create(pk);
+		ResourceAction newResourceAction = addResourceAction();
 
 		newResourceAction.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -490,4 +488,4 @@ public class ResourceActionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-702371119
+// LIFERAY-SERVICE-BUILDER-HASH:-1919418654

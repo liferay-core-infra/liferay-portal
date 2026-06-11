@@ -113,10 +113,8 @@ public class JournalArticleResourcePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		JournalArticleResource newJournalArticleResource = _persistence.create(
-			pk);
+		JournalArticleResource newJournalArticleResource =
+			addJournalArticleResource();
 
 		newJournalArticleResource.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -580,4 +578,4 @@ public class JournalArticleResourcePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:819910206
+// LIFERAY-SERVICE-BUILDER-HASH:1989249926

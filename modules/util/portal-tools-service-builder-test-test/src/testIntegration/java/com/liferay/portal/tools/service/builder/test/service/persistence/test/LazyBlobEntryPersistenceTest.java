@@ -116,9 +116,7 @@ public class LazyBlobEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		LazyBlobEntry newLazyBlobEntry = _persistence.create(pk);
+		LazyBlobEntry newLazyBlobEntry = addLazyBlobEntry();
 
 		newLazyBlobEntry.setUuid(RandomTestUtil.randomString());
 
@@ -525,4 +523,4 @@ public class LazyBlobEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1226908020
+// LIFERAY-SERVICE-BUILDER-HASH:1987106138

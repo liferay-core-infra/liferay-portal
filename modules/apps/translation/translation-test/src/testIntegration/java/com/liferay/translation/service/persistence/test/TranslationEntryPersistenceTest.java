@@ -111,9 +111,7 @@ public class TranslationEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		TranslationEntry newTranslationEntry = _persistence.create(pk);
+		TranslationEntry newTranslationEntry = addTranslationEntry();
 
 		newTranslationEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -642,4 +640,4 @@ public class TranslationEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:348115286
+// LIFERAY-SERVICE-BUILDER-HASH:-1476962948

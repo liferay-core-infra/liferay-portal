@@ -111,9 +111,7 @@ public class ObjectActionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectAction newObjectAction = _persistence.create(pk);
+		ObjectAction newObjectAction = addObjectAction();
 
 		newObjectAction.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -711,4 +709,4 @@ public class ObjectActionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2093497396
+// LIFERAY-SERVICE-BUILDER-HASH:-1628842954

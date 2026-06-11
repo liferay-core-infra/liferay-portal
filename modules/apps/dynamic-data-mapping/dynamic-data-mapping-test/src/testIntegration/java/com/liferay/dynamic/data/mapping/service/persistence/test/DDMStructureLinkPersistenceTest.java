@@ -111,9 +111,7 @@ public class DDMStructureLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DDMStructureLink newDDMStructureLink = _persistence.create(pk);
+		DDMStructureLink newDDMStructureLink = addDDMStructureLink();
 
 		newDDMStructureLink.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -519,4 +517,4 @@ public class DDMStructureLinkPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-947171339
+// LIFERAY-SERVICE-BUILDER-HASH:-418362964

@@ -112,9 +112,7 @@ public class ObjectRelationshipPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectRelationship newObjectRelationship = _persistence.create(pk);
+		ObjectRelationship newObjectRelationship = addObjectRelationship();
 
 		newObjectRelationship.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -849,4 +847,4 @@ public class ObjectRelationshipPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1710412621
+// LIFERAY-SERVICE-BUILDER-HASH:635503435

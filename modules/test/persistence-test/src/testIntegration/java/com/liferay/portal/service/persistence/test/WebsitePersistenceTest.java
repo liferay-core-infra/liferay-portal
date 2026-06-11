@@ -111,9 +111,7 @@ public class WebsitePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Website newWebsite = _persistence.create(pk);
+		Website newWebsite = addWebsite();
 
 		newWebsite.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -607,4 +605,4 @@ public class WebsitePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-142910279
+// LIFERAY-SERVICE-BUILDER-HASH:704546733

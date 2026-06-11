@@ -112,9 +112,7 @@ public class PatcherBuildPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PatcherBuild newPatcherBuild = _persistence.create(pk);
+		PatcherBuild newPatcherBuild = addPatcherBuild();
 
 		newPatcherBuild.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -865,4 +863,4 @@ public class PatcherBuildPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:519705364
+// LIFERAY-SERVICE-BUILDER-HASH:-2015617892

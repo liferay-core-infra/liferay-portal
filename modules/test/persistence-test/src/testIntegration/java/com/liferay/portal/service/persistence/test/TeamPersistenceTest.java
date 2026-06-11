@@ -114,9 +114,7 @@ public class TeamPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		Team newTeam = _persistence.create(pk);
+		Team newTeam = addTeam();
 
 		newTeam.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -586,4 +584,4 @@ public class TeamPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1005507279
+// LIFERAY-SERVICE-BUILDER-HASH:-1728248353

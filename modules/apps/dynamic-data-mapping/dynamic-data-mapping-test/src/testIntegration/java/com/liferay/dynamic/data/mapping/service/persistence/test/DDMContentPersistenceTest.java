@@ -112,9 +112,7 @@ public class DDMContentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DDMContent newDDMContent = _persistence.create(pk);
+		DDMContent newDDMContent = addDDMContent();
 
 		newDDMContent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -558,4 +556,4 @@ public class DDMContentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-743187788
+// LIFERAY-SERVICE-BUILDER-HASH:-2097752837

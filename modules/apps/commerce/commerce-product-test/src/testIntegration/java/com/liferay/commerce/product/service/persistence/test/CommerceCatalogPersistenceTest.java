@@ -112,9 +112,7 @@ public class CommerceCatalogPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CommerceCatalog newCommerceCatalog = _persistence.create(pk);
+		CommerceCatalog newCommerceCatalog = addCommerceCatalog();
 
 		newCommerceCatalog.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -624,4 +622,4 @@ public class CommerceCatalogPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:563567602
+// LIFERAY-SERVICE-BUILDER-HASH:513350179

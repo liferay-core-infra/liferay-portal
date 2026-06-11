@@ -112,10 +112,8 @@ public class ExportImportConfigurationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		ExportImportConfiguration newExportImportConfiguration =
-			_persistence.create(pk);
+			addExportImportConfiguration();
 
 		newExportImportConfiguration.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -585,4 +583,4 @@ public class ExportImportConfigurationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2052638975
+// LIFERAY-SERVICE-BUILDER-HASH:-952406739

@@ -111,9 +111,7 @@ public class EmailAddressPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		EmailAddress newEmailAddress = _persistence.create(pk);
+		EmailAddress newEmailAddress = addEmailAddress();
 
 		newEmailAddress.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -627,4 +625,4 @@ public class EmailAddressPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:353884812
+// LIFERAY-SERVICE-BUILDER-HASH:-936283107

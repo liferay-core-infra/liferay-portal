@@ -112,9 +112,7 @@ public class DLFileEntryMetadataPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		DLFileEntryMetadata newDLFileEntryMetadata = _persistence.create(pk);
+		DLFileEntryMetadata newDLFileEntryMetadata = addDLFileEntryMetadata();
 
 		newDLFileEntryMetadata.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -614,4 +612,4 @@ public class DLFileEntryMetadataPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-378334964
+// LIFERAY-SERVICE-BUILDER-HASH:-118445798

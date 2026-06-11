@@ -116,10 +116,8 @@ public class CPSpecificationOptionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CPSpecificationOption newCPSpecificationOption = _persistence.create(
-			pk);
+		CPSpecificationOption newCPSpecificationOption =
+			addCPSpecificationOption();
 
 		newCPSpecificationOption.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -706,4 +704,4 @@ public class CPSpecificationOptionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-887121174
+// LIFERAY-SERVICE-BUILDER-HASH:1793791462

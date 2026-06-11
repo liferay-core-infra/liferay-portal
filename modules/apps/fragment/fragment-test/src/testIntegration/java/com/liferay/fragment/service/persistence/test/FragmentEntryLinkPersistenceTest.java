@@ -113,9 +113,7 @@ public class FragmentEntryLinkPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		FragmentEntryLink newFragmentEntryLink = _persistence.create(pk);
+		FragmentEntryLink newFragmentEntryLink = addFragmentEntryLink();
 
 		newFragmentEntryLink.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -950,4 +948,4 @@ public class FragmentEntryLinkPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:457674025
+// LIFERAY-SERVICE-BUILDER-HASH:-1402414148

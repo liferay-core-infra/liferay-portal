@@ -114,10 +114,8 @@ public class KaleoNotificationRecipientPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		KaleoNotificationRecipient newKaleoNotificationRecipient =
-			_persistence.create(pk);
+			addKaleoNotificationRecipient();
 
 		newKaleoNotificationRecipient.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -619,4 +617,4 @@ public class KaleoNotificationRecipientPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1735833923
+// LIFERAY-SERVICE-BUILDER-HASH:-1922472772

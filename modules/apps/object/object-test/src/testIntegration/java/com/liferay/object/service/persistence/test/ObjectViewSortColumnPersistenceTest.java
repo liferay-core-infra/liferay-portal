@@ -109,9 +109,8 @@ public class ObjectViewSortColumnPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		ObjectViewSortColumn newObjectViewSortColumn = _persistence.create(pk);
+		ObjectViewSortColumn newObjectViewSortColumn =
+			addObjectViewSortColumn();
 
 		newObjectViewSortColumn.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -497,4 +496,4 @@ public class ObjectViewSortColumnPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-6660269
+// LIFERAY-SERVICE-BUILDER-HASH:169644078

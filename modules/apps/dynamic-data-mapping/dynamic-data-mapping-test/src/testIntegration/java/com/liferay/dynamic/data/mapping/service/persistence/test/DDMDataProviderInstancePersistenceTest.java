@@ -120,10 +120,8 @@ public class DDMDataProviderInstancePersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		DDMDataProviderInstance newDDMDataProviderInstance =
-			_persistence.create(pk);
+			addDDMDataProviderInstance();
 
 		newDDMDataProviderInstance.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -674,4 +672,4 @@ public class DDMDataProviderInstancePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1600064032
+// LIFERAY-SERVICE-BUILDER-HASH:1994553778

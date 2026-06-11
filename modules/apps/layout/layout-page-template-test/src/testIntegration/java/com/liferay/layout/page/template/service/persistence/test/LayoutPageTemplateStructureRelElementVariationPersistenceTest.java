@@ -124,11 +124,9 @@ public class LayoutPageTemplateStructureRelElementVariationPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
 		LayoutPageTemplateStructureRelElementVariation
 			newLayoutPageTemplateStructureRelElementVariation =
-				_persistence.create(pk);
+				addLayoutPageTemplateStructureRelElementVariation();
 
 		newLayoutPageTemplateStructureRelElementVariation.setMvccVersion(
 			RandomTestUtil.nextLong());
@@ -862,4 +860,4 @@ public class LayoutPageTemplateStructureRelElementVariationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1491999811
+// LIFERAY-SERVICE-BUILDER-HASH:1134515296

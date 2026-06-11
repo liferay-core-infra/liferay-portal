@@ -112,9 +112,7 @@ public class CTEntryPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTEntry newCTEntry = _persistence.create(pk);
+		CTEntry newCTEntry = addCTEntry();
 
 		newCTEntry.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -622,4 +620,4 @@ public class CTEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:108882708
+// LIFERAY-SERVICE-BUILDER-HASH:1657347458

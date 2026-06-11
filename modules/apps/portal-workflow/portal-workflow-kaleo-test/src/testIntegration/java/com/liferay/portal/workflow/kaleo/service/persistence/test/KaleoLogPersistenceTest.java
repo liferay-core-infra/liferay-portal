@@ -110,9 +110,7 @@ public class KaleoLogPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KaleoLog newKaleoLog = _persistence.create(pk);
+		KaleoLog newKaleoLog = addKaleoLog();
 
 		newKaleoLog.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -645,4 +643,4 @@ public class KaleoLogPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1498080674
+// LIFERAY-SERVICE-BUILDER-HASH:-672665477

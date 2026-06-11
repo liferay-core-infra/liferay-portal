@@ -110,9 +110,7 @@ public class CTPreferencesPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		CTPreferences newCTPreferences = _persistence.create(pk);
+		CTPreferences newCTPreferences = addCTPreferences();
 
 		newCTPreferences.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -509,4 +507,4 @@ public class CTPreferencesPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:395289488
+// LIFERAY-SERVICE-BUILDER-HASH:-1139681112

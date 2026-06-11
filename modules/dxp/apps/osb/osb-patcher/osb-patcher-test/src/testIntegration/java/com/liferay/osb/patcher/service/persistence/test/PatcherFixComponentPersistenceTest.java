@@ -113,9 +113,7 @@ public class PatcherFixComponentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		PatcherFixComponent newPatcherFixComponent = _persistence.create(pk);
+		PatcherFixComponent newPatcherFixComponent = addPatcherFixComponent();
 
 		newPatcherFixComponent.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -523,4 +521,4 @@ public class PatcherFixComponentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1287026854
+// LIFERAY-SERVICE-BUILDER-HASH:18205996

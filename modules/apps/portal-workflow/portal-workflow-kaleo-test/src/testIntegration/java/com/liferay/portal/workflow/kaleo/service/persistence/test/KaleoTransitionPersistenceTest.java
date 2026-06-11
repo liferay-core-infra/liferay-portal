@@ -112,9 +112,7 @@ public class KaleoTransitionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KaleoTransition newKaleoTransition = _persistence.create(pk);
+		KaleoTransition newKaleoTransition = addKaleoTransition();
 
 		newKaleoTransition.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -639,4 +637,4 @@ public class KaleoTransitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-832447360
+// LIFERAY-SERVICE-BUILDER-HASH:1509967514

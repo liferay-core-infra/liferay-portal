@@ -115,9 +115,8 @@ public class OpenIdConnectSessionPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		OpenIdConnectSession newOpenIdConnectSession = _persistence.create(pk);
+		OpenIdConnectSession newOpenIdConnectSession =
+			addOpenIdConnectSession();
 
 		newOpenIdConnectSession.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -655,4 +654,4 @@ public class OpenIdConnectSessionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-907656120
+// LIFERAY-SERVICE-BUILDER-HASH:-911239418

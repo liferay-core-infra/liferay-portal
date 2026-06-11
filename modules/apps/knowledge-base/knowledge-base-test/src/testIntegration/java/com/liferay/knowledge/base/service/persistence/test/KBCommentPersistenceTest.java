@@ -111,9 +111,7 @@ public class KBCommentPersistenceTest {
 
 	@Test
 	public void testUpdateExisting() throws Exception {
-		long pk = RandomTestUtil.nextLong();
-
-		KBComment newKBComment = _persistence.create(pk);
+		KBComment newKBComment = addKBComment();
 
 		newKBComment.setMvccVersion(RandomTestUtil.nextLong());
 
@@ -621,4 +619,4 @@ public class KBCommentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-684527316
+// LIFERAY-SERVICE-BUILDER-HASH:-143120827

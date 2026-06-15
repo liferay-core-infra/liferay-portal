@@ -319,6 +319,12 @@ public class VirtualHostFilter extends BasePortalFilter {
 				String homeURL = PortalUtil.getHomeURL(httpServletRequest);
 
 				if (Validator.isNotNull(homeURL)) {
+					String queryString = httpServletRequest.getQueryString();
+
+					if (Validator.isNotNull(queryString)) {
+						homeURL = homeURL + StringPool.QUESTION + queryString;
+					}
+
 					httpServletResponse.sendRedirect(homeURL);
 
 					return;

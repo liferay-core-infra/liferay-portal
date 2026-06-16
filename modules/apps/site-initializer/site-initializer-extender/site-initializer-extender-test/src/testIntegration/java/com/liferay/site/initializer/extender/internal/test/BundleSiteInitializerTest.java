@@ -1621,6 +1621,11 @@ public class BundleSiteInitializerTest {
 			depotAppCustomizations.get(
 				0
 			).getEnabled());
+
+		_assertDepotEntryContent(
+			depotEntries.get(
+				0
+			).getGroupId());
 	}
 
 	private void _assertDepotEntries2() throws Exception {
@@ -1662,6 +1667,25 @@ public class BundleSiteInitializerTest {
 			depotAppCustomizations.get(
 				0
 			).getEnabled());
+
+		_assertDepotEntryContent(
+			depotEntries.get(
+				0
+			).getGroupId());
+	}
+
+	private void _assertDepotEntryContent(long groupId) {
+		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
+			groupId, _portal.getClassNameId(JournalArticle.class.getName()),
+			"Test Depot Entry 1 DDM Structure Name");
+
+		Assert.assertNotNull(ddmStructure);
+
+		DLFileEntry dlFileEntry = _dlFileEntryLocalService.fetchFileEntry(
+			groupId, DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+			"Test Depot Entry 1 Document.md");
+
+		Assert.assertNotNull(dlFileEntry);
 	}
 
 	private void _assertDLFileEntry1() throws Exception {

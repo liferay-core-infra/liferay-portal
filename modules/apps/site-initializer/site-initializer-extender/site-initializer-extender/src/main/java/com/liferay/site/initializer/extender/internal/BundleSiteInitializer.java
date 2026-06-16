@@ -977,10 +977,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		throws Exception {
 
 		_addKeywords(
-			"ASSET_LIBRARY", "/site-initializer/keywords/asset-libraries",
-			serviceContext, stringUtilReplaceValues);
-		_addKeywords(
-			"SITE", "/site-initializer/keywords/group", serviceContext,
+			"SITE", "/site-initializer", serviceContext,
 			stringUtilReplaceValues);
 	}
 
@@ -1011,10 +1008,21 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 			long groupId = 0;
 
-			if (jsonObject.has("assetLibraryName")) {
+			if (StringUtil.equals(replaceKey, "ASSET_LIBRARY")) {
+				JSONObject depotEntrySettingsJSONObject =
+					_jsonFactory.createJSONObject(
+						SiteInitializerUtil.read(
+							resourcePath + "/depot-entry-settings.json",
+							_servletContext));
+
 				Group group = _groupLocalService.fetchGroup(
 					serviceContext.getCompanyId(),
-					jsonObject.getString("assetLibraryName"));
+					depotEntrySettingsJSONObject.getJSONObject(
+						"name_i18n"
+					).getString(
+						LocaleUtil.getSiteDefault(
+						).toString()
+					));
 
 				if (group == null) {
 					_log.error(
@@ -1881,12 +1889,20 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addOrUpdateDDMStructures(
-			ServiceContext serviceContext,
+			long groupId, String path, ServiceContext serviceContext,
 			Map<String, String> stringUtilReplaceValues)
 		throws Exception {
 
-		Set<String> resourcePaths = _servletContext.getResourcePaths(
-			"/site-initializer/ddm-structures");
+		Set<String> resourcePaths = null;
+
+		if (groupId == 0) {
+			groupId = serviceContext.getScopeGroupId();
+			resourcePaths = _servletContext.getResourcePaths(
+				"/site-initializer/ddm-structures");
+		}
+		else {
+			resourcePaths = _servletContext.getResourcePaths(path);
+		}
 
 		if (SetUtil.isEmpty(resourcePaths)) {
 			return;
@@ -1894,14 +1910,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		for (String resourcePath : resourcePaths) {
 			_defaultDDMStructureHelper.addOrUpdateDDMStructures(
-				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
+				serviceContext.getUserId(), groupId,
 				_portal.getClassNameId(JournalArticle.class), _classLoader,
 				resourcePath, serviceContext);
 		}
 
 		List<DDMStructure> ddmStructures =
-			_ddmStructureLocalService.getStructures(
-				serviceContext.getScopeGroupId());
+			_ddmStructureLocalService.getStructures(groupId);
 
 		for (DDMStructure ddmStructure : ddmStructures) {
 			stringUtilReplaceValues.put(
@@ -2038,20 +2053,33 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 	}
 
-	private void _addOrUpdateDepotEntries(ServiceContext serviceContext)
+	private void _addOrUpdateDepotEntries(
+			ServiceContext serviceContext,
+			SiteNavigationMenuItemSettingsBuilder
+				siteNavigationMenuItemSettingsBuilder,
+			Map<String, String> stringUtilReplaceValues)
 		throws Exception {
 
-		String json = SiteInitializerUtil.read(
-			"/site-initializer/depot-entries.json", _servletContext);
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			"/site-initializer/depot-entries");
 
-		if (json == null) {
+		if (SetUtil.isEmpty(resourcePaths)) {
 			return;
 		}
 
-		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
+		for (String resourcePath : resourcePaths) {
+			if (!resourcePath.endsWith("/")) {
+				continue;
+			}
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			String json = SiteInitializerUtil.read(
+				resourcePath + "depot-entry-settings.json", _servletContext);
+
+			if (json == null) {
+				continue;
+			}
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
 
 			Group group = _groupLocalService.fetchGroup(
 				serviceContext.getCompanyId(),
@@ -2061,16 +2089,23 @@ public class BundleSiteInitializer implements SiteInitializer {
 					LocaleUtil.getSiteDefault()
 				));
 
-			DepotEntry depotEntry = null;
+			long depotEntryId = 0;
+			long groupId = 0;
 
 			if (group == null) {
-				depotEntry = _depotEntryLocalService.addDepotEntry(
+				DepotEntry depotEntry = _depotEntryLocalService.addDepotEntry(
 					SiteInitializerUtil.toMap(
 						jsonObject.getString("name_i18n")),
 					SiteInitializerUtil.toMap(
 						jsonObject.getString("description_i18n")),
-					_getDepotEntryType(jsonObject.getString("type")),
-					serviceContext);
+					DepotConstants.TYPE_ASSET_LIBRARY, serviceContext);
+
+				depotEntryId = depotEntry.getDepotEntryId();
+				groupId = depotEntry.getGroupId();
+			}
+			else {
+				depotEntryId = group.getClassPK();
+				groupId = group.getGroupId();
 			}
 
 			UnicodeProperties unicodeProperties = new UnicodeProperties(true);
@@ -2093,8 +2128,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				jsonObject.getJSONObject("depotAppCustomization");
 
 			_depotEntryLocalService.updateDepotEntry(
-				(group != null) ? group.getClassPK() :
-					depotEntry.getDepotEntryId(),
+				depotEntryId,
 				SiteInitializerUtil.toMap(jsonObject.getString("name_i18n")),
 				SiteInitializerUtil.toMap(
 					jsonObject.getString("description_i18n")),
@@ -2125,14 +2159,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 				).build(),
 				unicodeProperties, serviceContext);
 
-			Group scopeGroup = serviceContext.getScopeGroup();
+			_depotEntryGroupRelLocalService.addDepotEntryGroupRel(
+				depotEntryId, serviceContext.getScopeGroupId());
 
-			if (scopeGroup.isSite()) {
-				_depotEntryGroupRelLocalService.addDepotEntryGroupRel(
-					(group != null) ? group.getClassPK() :
-						depotEntry.getDepotEntryId(),
-					serviceContext.getScopeGroupId());
-			}
+			_addOrUpdateDDMStructures(
+				groupId, resourcePath + "ddm-structures", serviceContext,
+				stringUtilReplaceValues);
+			_addOrUpdateDocuments(
+				null, groupId, resourcePath + "documents", serviceContext,
+				siteNavigationMenuItemSettingsBuilder, stringUtilReplaceValues);
+			_addKeywords(
+				"ASSET_LIBRARY", resourcePath, serviceContext,
+				stringUtilReplaceValues);
 		}
 	}
 
@@ -5285,14 +5323,16 @@ public class BundleSiteInitializer implements SiteInitializer {
 		R addOrUpdateDDMStructuresR = new R(
 			"addOrUpdateDDMStructures",
 			() -> _addOrUpdateDDMStructures(
-				serviceContext, stringUtilReplaceValues));
+				0, "", serviceContext, stringUtilReplaceValues));
 		R addOrUpdateDDMTemplatesR = new R(
 			"addOrUpdateDDMTemplates",
 			() -> _addOrUpdateDDMTemplates(
 				serviceContext, stringUtilReplaceValues));
 		R addOrUpdateDepotEntriesR = new R(
 			"addOrUpdateDepotEntries",
-			() -> _addOrUpdateDepotEntries(serviceContext));
+			() -> _addOrUpdateDepotEntries(
+				serviceContext, siteNavigationMenuItemSettingsBuilder,
+				stringUtilReplaceValues));
 		R addOrUpdateDocumentsR = new R(
 			"addOrUpdateDocuments",
 			() -> _addOrUpdateDocuments(
@@ -5651,22 +5691,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 
 		return map;
-	}
-
-	private int _getDepotEntryType(String assetLibraryTypeString) {
-		if (Validator.isNull(assetLibraryTypeString) ||
-			StringUtil.equalsIgnoreCase(
-				assetLibraryTypeString, "AssetLibrary")) {
-
-			return DepotConstants.TYPE_ASSET_LIBRARY;
-		}
-		else if (StringUtil.equalsIgnoreCase(assetLibraryTypeString, "Space")) {
-			return DepotConstants.TYPE_SPACE;
-		}
-
-		throw new IllegalArgumentException(
-			"Asset library type " + assetLibraryTypeString +
-				" must be \"AssetLibrary\" or \"Space\"");
 	}
 
 	private Serializable _getExpandoAttributeValue(JSONObject jsonObject)

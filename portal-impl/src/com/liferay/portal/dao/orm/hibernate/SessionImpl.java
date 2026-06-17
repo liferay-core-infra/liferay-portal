@@ -26,13 +26,16 @@ import java.sql.SQLException;
 
 import java.util.List;
 
+import org.hibernate.engine.internal.Versioning;
 import org.hibernate.engine.spi.EntityKey;
 import org.hibernate.engine.spi.PersistenceContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.Status;
 import org.hibernate.event.spi.EventSource;
 import org.hibernate.metamodel.spi.MappingMetamodelImplementor;
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.type.TypeHelper;
 
 /**
  * @author Brian Wing Shun Chan
@@ -351,15 +354,36 @@ public class SessionImpl implements Session {
 			EntityPersister entityPersister =
 				mappingMetamodelImplementor.findEntityDescriptor(clazz);
 
-			Object currentObject = persistenceContext.getEntity(
-				new EntityKey(id, entityPersister));
+			EntityKey entityKey = new EntityKey(id, entityPersister);
+
+			Object currentObject = persistenceContext.getEntity(entityKey);
 
 			if (currentObject == object) {
 				return;
 			}
 
 			if (currentObject == null) {
-				_session.lock(object, org.hibernate.LockMode.NONE);
+				persistenceContext.checkUniqueness(entityKey, object);
+
+				Object[] values = entityPersister.getValues(object);
+
+				TypeHelper.deepCopy(
+					values, entityPersister.getPropertyTypes(),
+					entityPersister.getPropertyUpdateability(), values,
+					eventSource);
+
+				Status status = Status.MANAGED;
+
+				if (!entityPersister.isMutable()) {
+					status = Status.READ_ONLY;
+				}
+
+				persistenceContext.addEntity(
+					object, status, values, entityKey,
+					Versioning.getVersion(values, entityPersister),
+					org.hibernate.LockMode.NONE, true, entityPersister, false);
+
+				entityPersister.afterReassociate(object, eventSource);
 			}
 		}
 		catch (Exception exception) {

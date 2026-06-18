@@ -115,7 +115,6 @@ public class ExportImportReportEntryLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
 	public ExportImportReportEntry addMissingReferenceExportImportReportEntry(
 		long groupId, long companyId, String classExternalReferenceCode,
 		long classNameId, long exportImportConfigurationId,

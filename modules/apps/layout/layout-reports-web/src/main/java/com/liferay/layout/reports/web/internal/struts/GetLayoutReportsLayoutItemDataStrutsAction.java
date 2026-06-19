@@ -56,6 +56,8 @@ import jakarta.portlet.PortletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.JspFactory;
+import jakarta.servlet.jsp.PageContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,16 +107,15 @@ public class GetLayoutReportsLayoutItemDataStrutsAction
 
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
+		PageContext pageContext = PageContextFactoryUtil.create(
+			httpServletRequest,
+			new PipingServletResponse(httpServletResponse, new DummyWriter()));
+
 		LayoutStructureRenderer layoutStructureRenderer =
 			new LayoutStructureRenderer(
 				httpServletRequest, layoutStructure,
 				layoutStructure.getMainItemId(),
-				FragmentEntryLinkConstants.VIEW,
-				PageContextFactoryUtil.create(
-					httpServletRequest,
-					new PipingServletResponse(
-						httpServletResponse, new DummyWriter())),
-				false, false);
+				FragmentEntryLinkConstants.VIEW, pageContext, false, false);
 
 		try {
 			layoutStructureRenderer.render();
@@ -124,6 +125,9 @@ public class GetLayoutReportsLayoutItemDataStrutsAction
 				"Unable to get layout structure item render times", exception);
 
 			return null;
+		}
+		finally {
+			JspFactory.getDefaultFactory().releasePageContext(pageContext);
 		}
 
 		for (LayoutStructureRenderer.LayoutStructureItemRenderTime

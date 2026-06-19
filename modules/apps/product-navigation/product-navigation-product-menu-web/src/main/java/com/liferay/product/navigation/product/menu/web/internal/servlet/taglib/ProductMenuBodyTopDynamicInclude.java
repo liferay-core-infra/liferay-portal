@@ -28,6 +28,7 @@ import com.liferay.taglib.servlet.PageContextFactoryUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.JspFactory;
 import jakarta.servlet.jsp.JspWriter;
 import jakarta.servlet.jsp.PageContext;
 
@@ -116,6 +117,9 @@ public class ProductMenuBodyTopDynamicInclude extends BaseDynamicInclude {
 		}
 		catch (Exception exception) {
 			ReflectionUtil.throwException(exception);
+		}
+		finally {
+			JspFactory.getDefaultFactory().releasePageContext(pageContext);
 		}
 	}
 

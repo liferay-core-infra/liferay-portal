@@ -39,6 +39,7 @@ import jakarta.portlet.PortletURL;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspFactory;
 import jakarta.servlet.jsp.PageContext;
 
 import java.io.IOException;
@@ -125,14 +126,14 @@ public class ManageLayoutProductNavigationControlMenuEntry
 			"editPageURL", editPageURL.toString()
 		).build();
 
+		PageContext pageContext = PageContextFactoryUtil.create(
+			httpServletRequest, httpServletResponse);
+
 		try {
 			IconTag iconTag = new IconTag();
 
 			iconTag.setCssClass("icon-monospaced");
 			iconTag.setImage("cog");
-
-			PageContext pageContext = PageContextFactoryUtil.create(
-				httpServletRequest, httpServletResponse);
 
 			values.put("iconCog", iconTag.doTagAsString(pageContext));
 
@@ -150,6 +151,9 @@ public class ManageLayoutProductNavigationControlMenuEntry
 		}
 		catch (JspException jspException) {
 			ReflectionUtil.throwException(jspException);
+		}
+		finally {
+			JspFactory.getDefaultFactory().releasePageContext(pageContext);
 		}
 
 		Writer writer = httpServletResponse.getWriter();

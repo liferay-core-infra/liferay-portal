@@ -40,6 +40,8 @@ import com.liferay.translation.translator.TranslatorRegistry;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.JspFactory;
+import jakarta.servlet.jsp.PageContext;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -147,6 +149,9 @@ public class LocalizationSelectFragmentRenderer implements FragmentRenderer {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
+		PageContext pageContext = PageContextFactoryUtil.create(
+			httpServletRequest, httpServletResponse);
+
 		try {
 			PrintWriter printWriter = httpServletResponse.getWriter();
 
@@ -157,9 +162,7 @@ public class LocalizationSelectFragmentRenderer implements FragmentRenderer {
 
 			componentTag.setModule(
 				"{LocalizationSelect} from fragment-impl/api");
-			componentTag.setPageContext(
-				PageContextFactoryUtil.create(
-					httpServletRequest, httpServletResponse));
+			componentTag.setPageContext(pageContext);
 			componentTag.setServletContext(_servletContext);
 
 			FragmentEntryLink fragmentEntryLink =
@@ -246,6 +249,9 @@ public class LocalizationSelectFragmentRenderer implements FragmentRenderer {
 			if (_log.isDebugEnabled()) {
 				_log.debug(exception);
 			}
+		}
+		finally {
+			JspFactory.getDefaultFactory().releasePageContext(pageContext);
 		}
 	}
 

@@ -20,6 +20,8 @@ import com.liferay.taglib.servlet.PageContextFactoryUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.JspFactory;
+import jakarta.servlet.jsp.PageContext;
 
 import java.util.Collections;
 import java.util.Map;
@@ -70,15 +72,21 @@ public class CaptchaDDMFormFieldTemplateContextContributor
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
-		captchaTag.setPageContext(
-			PageContextFactoryUtil.create(
-				httpServletRequest,
-				new PipingServletResponse(
-					httpServletResponse, unsyncStringWriter)));
+		PageContext pageContext = PageContextFactoryUtil.create(
+			httpServletRequest,
+			new PipingServletResponse(
+				httpServletResponse, unsyncStringWriter));
 
-		captchaTag.runTag();
+		try {
+			captchaTag.setPageContext(pageContext);
 
-		return unsyncStringWriter.toString();
+			captchaTag.runTag();
+
+			return unsyncStringWriter.toString();
+		}
+		finally {
+			JspFactory.getDefaultFactory().releasePageContext(pageContext);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -25,7 +25,7 @@ dependencies {
 	api group: "jakarta.persistence", name: "jakarta.persistence-api", version: "3.2.0"
 	api group: "org.aspectj", name: "aspectjrt", version: "1.9.22.1"
 	api group: "org.aspectj", name: "aspectjweaver", version: "1.9.22.1"
-	compileOnly group: "com.liferay", name: "org.hibernate.core", version: "5.6.7.LIFERAY-PATCHED-2.JAKARTA-LIFERAY-PATCHED-1"
+	compileOnly group: "org.hibernate.orm", name: "hibernate-core", version: "7.4.0.Final"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly project(":core:petra:petra-lang")

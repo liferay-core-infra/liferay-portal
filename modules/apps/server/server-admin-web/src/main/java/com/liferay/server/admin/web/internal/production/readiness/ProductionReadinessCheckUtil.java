@@ -611,7 +611,7 @@ public class ProductionReadinessCheckUtil {
 			productionModeEnabled =
 				elasticsearchConfiguration.productionModeEnabled();
 		}
-		catch (Exception exception) {
+		catch (Exception | NoClassDefFoundError exception) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(exception);
 			}

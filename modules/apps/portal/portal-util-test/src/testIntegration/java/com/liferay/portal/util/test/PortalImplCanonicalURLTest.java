@@ -180,6 +180,14 @@ public class PortalImplCanonicalURLTest {
 			HashMapBuilder.put(
 				LocaleUtil.US, "/test-page"
 			).build());
+		_layout6 = LayoutTestUtil.addTypePortletLayout(
+			_group.getGroupId(), false,
+			HashMapBuilder.put(
+				LocaleUtil.US, "Pöge"
+			).build(),
+			HashMapBuilder.put(
+				LocaleUtil.US, "/pöge"
+			).build());
 
 		String groupKey = PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME;
 
@@ -236,6 +244,24 @@ public class PortalImplCanonicalURLTest {
 					_group.getFriendlyURL(), "/test%20page", false),
 				_createThemeDisplay(portalDomain, _defaultGroup, 8080, false),
 				_layout5, false, false));
+	}
+
+	@Test
+	public void testCanonicalURLLayoutFriendlyURLWithSpecialCharacter()
+		throws Exception {
+
+		String portalDomain = "localhost";
+
+		Assert.assertEquals(
+			_generateURL(
+				portalDomain, "8080", StringPool.BLANK, _group.getFriendlyURL(),
+				"/p%C3%B6ge", false),
+			_portal.getCanonicalURL(
+				_generateURL(
+					portalDomain, "8080", StringPool.BLANK,
+					_group.getFriendlyURL(), "/p%C3%B6ge", false),
+				_createThemeDisplay(portalDomain, _defaultGroup, 8080, false),
+				_layout6, false, false));
 	}
 
 	@Test
@@ -811,6 +837,7 @@ public class PortalImplCanonicalURLTest {
 	private Layout _layout3;
 	private Layout _layout4;
 	private Layout _layout5;
+	private Layout _layout6;
 
 	@Inject
 	private LayoutLocalService _layoutLocalService;

@@ -8175,6 +8175,9 @@ public class PortalImpl implements Portal {
 		String siteGroupFriendlyURL, String layoutFriendlyURL,
 		String groupFriendlyURL) {
 
+		layoutFriendlyURL = FriendlyURLNormalizerUtil.normalizeWithEncoding(
+			layoutFriendlyURL);
+
 		groupFriendlyURL = FriendlyURLNormalizerUtil.normalizeWithEncoding(
 			groupFriendlyURL);
 
@@ -8184,14 +8187,12 @@ public class PortalImpl implements Portal {
 			if (groupFriendlyURL.contains(
 					StringBundler.concat(
 						_PUBLIC_GROUP_SERVLET_MAPPING, siteGroupFriendlyURL,
-						StringUtil.toLowerCase(layoutFriendlyURL)))) {
+						layoutFriendlyURL))) {
 
 				return true;
 			}
 		}
-		else if (groupFriendlyURL.contains(
-					StringUtil.toLowerCase(layoutFriendlyURL))) {
-
+		else if (groupFriendlyURL.contains(layoutFriendlyURL)) {
 			return true;
 		}
 

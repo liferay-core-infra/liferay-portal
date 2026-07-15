@@ -1571,7 +1571,7 @@ public class PortalImpl implements Portal {
 			 _requiresLayoutFriendlyURL(
 				 layoutGroup.getFriendlyURL(),
 				 themeDisplay.getLayoutFriendlyURL(layout),
-				 StringUtil.toLowerCase(groupFriendlyURL))) ||
+				 groupFriendlyURL)) ||
 			groupFriendlyURL.endsWith(
 				StringPool.SLASH + layout.getLayoutId())) {
 

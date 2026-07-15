@@ -1569,9 +1569,8 @@ public class PortalImpl implements Portal {
 		if (forceLayoutFriendlyURL ||
 			((!layout.isFirstParent() || Validator.isNotNull(parametersURL)) &&
 			 _requiresLayoutFriendlyURL(
-				 layoutGroup.getFriendlyURL(),
-				 themeDisplay.getLayoutFriendlyURL(layout),
-				 groupFriendlyURL)) ||
+				 groupFriendlyURL, themeDisplay.getLayoutFriendlyURL(layout),
+				 layoutGroup.getFriendlyURL())) ||
 			groupFriendlyURL.endsWith(
 				StringPool.SLASH + layout.getLayoutId())) {
 
@@ -8172,14 +8171,14 @@ public class PortalImpl implements Portal {
 	}
 
 	private boolean _requiresLayoutFriendlyURL(
-		String siteGroupFriendlyURL, String layoutFriendlyURL,
-		String groupFriendlyURL) {
-
-		layoutFriendlyURL = FriendlyURLNormalizerUtil.normalizeWithEncoding(
-			layoutFriendlyURL);
+		String groupFriendlyURL, String layoutFriendlyURL,
+		String siteGroupFriendlyURL) {
 
 		groupFriendlyURL = FriendlyURLNormalizerUtil.normalizeWithEncoding(
 			groupFriendlyURL);
+
+		layoutFriendlyURL = FriendlyURLNormalizerUtil.normalizeWithEncoding(
+			layoutFriendlyURL);
 
 		if (groupFriendlyURL.contains(
 				_PUBLIC_GROUP_SERVLET_MAPPING + StringPool.SLASH)) {

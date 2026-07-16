@@ -13,11 +13,11 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.util.ListUtil;
 
+import jakarta.persistence.TypedQuery;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.hibernate.Criteria;
 
 /**
  * @author Brian Wing Shun Chan
@@ -45,7 +45,7 @@ public class DynamicQueryImpl implements DynamicQuery {
 
 	@Override
 	public void compile(Session session) {
-		_criteria = HibernateCriteriaUtil.buildCriteria(
+		_typedQuery = HibernateTypedQueryUtil.buildTypedQuery(
 			this, (org.hibernate.Session)session.getWrappedSession());
 
 		if ((_start == null) && (_end == null)) {
@@ -68,8 +68,8 @@ public class DynamicQueryImpl implements DynamicQuery {
 			return;
 		}
 		else if ((start < QueryUtil.ALL_POS) && (end < QueryUtil.ALL_POS)) {
-			_criteria = _criteria.setFirstResult(0);
-			_criteria = _criteria.setMaxResults(0);
+			_typedQuery.setFirstResult(0);
+			_typedQuery.setMaxResults(0);
 
 			_requiresProcessing = false;
 
@@ -80,7 +80,7 @@ public class DynamicQueryImpl implements DynamicQuery {
 			start = 0;
 		}
 
-		_criteria = _criteria.setFirstResult(start);
+		_typedQuery.setFirstResult(start);
 
 		if (end == QueryUtil.ALL_POS) {
 			return;
@@ -93,7 +93,7 @@ public class DynamicQueryImpl implements DynamicQuery {
 			end = 0;
 		}
 
-		_criteria = _criteria.setMaxResults(end);
+		_typedQuery.setMaxResults(end);
 
 		if (end == 0) {
 			_requiresProcessing = false;
@@ -137,7 +137,7 @@ public class DynamicQueryImpl implements DynamicQuery {
 			return new ArrayList<>();
 		}
 
-		List list = _criteria.list();
+		List list = _typedQuery.getResultList();
 
 		if (unmodifiable) {
 			return Collections.unmodifiableList(list);
@@ -161,8 +161,8 @@ public class DynamicQueryImpl implements DynamicQuery {
 
 	@Override
 	public String toString() {
-		if (_criteria != null) {
-			return _criteria.toString();
+		if (_typedQuery != null) {
+			return _typedQuery.toString();
 		}
 
 		return super.toString();
@@ -170,12 +170,12 @@ public class DynamicQueryImpl implements DynamicQuery {
 
 	private final String _alias;
 	private final Class<?> _clazz;
-	private Criteria _criteria;
 	private final List<Criterion> _criterions = new ArrayList<>();
 	private Integer _end;
 	private final List<Order> _orders = new ArrayList<>();
 	private Projection _projection;
 	private boolean _requiresProcessing = true;
 	private Integer _start;
+	private TypedQuery<?> _typedQuery;
 
 }

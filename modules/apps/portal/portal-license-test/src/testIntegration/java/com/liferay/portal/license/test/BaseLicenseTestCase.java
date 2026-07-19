@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
@@ -561,6 +562,24 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 		return ReflectionTestUtil.getMethod(
 			classLoader.loadClass(className), methodSimpleName, parameterTypes);
+	}
+
+	protected static String[] getAppSymbolicNames(App app) {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		List<String> symbolicNames = new ArrayList<>();
+
+		for (Bundle bundle : bundleContext.getBundles()) {
+			String symbolicName = bundle.getSymbolicName();
+
+			if (symbolicName.contains(
+					"." + StringUtil.toLowerCase(app.toString()) + ".")) {
+
+				symbolicNames.add(symbolicName);
+			}
+		}
+
+		return ArrayUtil.toStringArray(symbolicNames);
 	}
 
 	protected static String getDateString(Date date) {

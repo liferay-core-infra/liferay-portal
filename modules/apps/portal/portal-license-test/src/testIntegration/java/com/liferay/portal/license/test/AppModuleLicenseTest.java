@@ -9,25 +9,18 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
-import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 
 import java.io.File;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 
 /**
  * @author Kevin Lee
@@ -61,27 +54,9 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 		}
 	}
 
-	private String[] _getAppSymbolicNames(App app) {
-		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
-
-		List<String> symbolicNames = new ArrayList<>();
-
-		for (Bundle bundle : bundleContext.getBundles()) {
-			String symbolicName = bundle.getSymbolicName();
-
-			if (symbolicName.contains(
-					"." + StringUtil.toLowerCase(app.toString()) + ".")) {
-
-				symbolicNames.add(symbolicName);
-			}
-		}
-
-		return ArrayUtil.toStringArray(symbolicNames);
-	}
-
 	private void _testEnterpriseLicense(App app) throws Exception {
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
-			String[] appSymbolicNames = _getAppSymbolicNames(app);
+			String[] appSymbolicNames = getAppSymbolicNames(app);
 
 			Assert.assertFalse(
 				appSymbolicNames.toString(),
@@ -141,7 +116,7 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 
 	private void _testFreeTierLicense(App app) throws Exception {
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
-			String[] appSymbolicNames = _getAppSymbolicNames(app);
+			String[] appSymbolicNames = getAppSymbolicNames(app);
 
 			Assert.assertFalse(
 				appSymbolicNames.toString(),

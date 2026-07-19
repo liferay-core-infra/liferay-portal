@@ -137,10 +137,10 @@ public abstract class BaseLicenseTestCase implements Serializable {
 			String domain, String key, long validityPeriod)
 		throws Exception {
 
-		_registerLicense(
+		registerLicense(
 			buildFreeTierPortalLicenseXML(domain, key, validityPeriod));
 
-		return _buildBinaryFile(
+		return buildBinaryFile(
 			getPortalProductId(), _FREE_TIER_ACCOUNT_NAME,
 			_FREE_TIER_PRODUCT_NAME, _FREE_TIER_LICENSE_TYPE);
 	}
@@ -331,9 +331,9 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	public File deployAppLicense(App app, long startTime, long validityPeriod)
 		throws Exception {
 
-		_registerLicense(buildAppLicenseXML(app, startTime, validityPeriod));
+		registerLicense(buildAppLicenseXML(app, startTime, validityPeriod));
 
-		return _buildBinaryFile(
+		return buildBinaryFile(
 			getProductId(app), StringPool.BLANK, app.toString(),
 			_APP_LICENSE_TYPE);
 	}
@@ -341,9 +341,9 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	public File deployEnterprisePortalLicense(long validityPeriod)
 		throws Exception {
 
-		_registerLicense(buildEnterprisePortalLicenseXML(validityPeriod));
+		registerLicense(buildEnterprisePortalLicenseXML(validityPeriod));
 
-		return _buildBinaryFile(
+		return buildBinaryFile(
 			getPortalProductId(), _ENTERPRISE_ACCOUNT_NAME,
 			_ENTERPRISE_PRODUCT_NAME, _ENTERPRISE_LICENSE_TYPE);
 	}
@@ -499,6 +499,25 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		}
 	}
 
+	protected static File buildBinaryFile(
+		String productId, String accountName, String productEntryName,
+		String licenseType) {
+
+		StringBundler sb = new StringBundler(6);
+
+		if (productId.equals(getPortalProductId())) {
+			sb.append(StringUtil.extractChars(accountName));
+			sb.append("_");
+		}
+
+		sb.append(StringUtil.extractChars(productEntryName));
+		sb.append("_");
+		sb.append(StringUtil.extractChars(licenseType));
+		sb.append(".li");
+
+		return new File(LicenseUtil.LICENSE_REPOSITORY_DIR, sb.toString());
+	}
+
 	protected static Field findField(String propertyKey) throws Exception {
 		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
 
@@ -568,6 +587,18 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		return ReflectionsHolder._validateClass;
 	}
 
+	protected static void registerLicense(String licenseXML) throws Exception {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				_licensePackageName, LoggerTestUtil.ALL)) {
+
+			LicenseManagerUtil.registerLicense(
+				JSONUtil.put(
+					"licenseXML", "<?xml version=\"1.0\"?>" + licenseXML));
+
+			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
+		}
+	}
+
 	protected void checkLicense(String productId) throws Exception {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				_licensePackageName, LoggerTestUtil.ALL)) {
@@ -615,37 +646,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 				logCapture, response, LoggerTestUtil.DEBUG);
 
 			return response;
-		}
-	}
-
-	private static File _buildBinaryFile(
-		String productId, String accountName, String productEntryName,
-		String licenseType) {
-
-		StringBundler sb = new StringBundler(6);
-
-		if (productId.equals(getPortalProductId())) {
-			sb.append(StringUtil.extractChars(accountName));
-			sb.append("_");
-		}
-
-		sb.append(StringUtil.extractChars(productEntryName));
-		sb.append("_");
-		sb.append(StringUtil.extractChars(licenseType));
-		sb.append(".li");
-
-		return new File(LicenseUtil.LICENSE_REPOSITORY_DIR, sb.toString());
-	}
-
-	private static void _registerLicense(String licenseXML) throws Exception {
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				_licensePackageName, LoggerTestUtil.ALL)) {
-
-			LicenseManagerUtil.registerLicense(
-				JSONUtil.put(
-					"licenseXML", "<?xml version=\"1.0\"?>" + licenseXML));
-
-			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
 		}
 	}
 

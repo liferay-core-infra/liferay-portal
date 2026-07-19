@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -54,6 +55,39 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 	@Test
 	public void testAppLicensesWithPortalLicenseFreeTier() throws Exception {
 		_testAppLicensesWithPortalLicense(true);
+	}
+
+	@Test
+	public void testNoLicenses() throws Exception {
+		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
+			assertPortalLicenseNotRegistered();
+
+			File[] binaryFiles = _deployCombinedLicense(
+				Collections.emptyList());
+
+			assertPortalLicenseNotRegistered();
+
+			Assert.assertNull(Arrays.toString(binaryFiles), binaryFiles);
+		}
+	}
+
+	@Test
+	public void testSingleLicense() throws Exception {
+		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
+			assertLicensePropertiesNotExisted(getPortalProductId());
+
+			assertPortalLicenseNotRegistered();
+
+			File[] binaryFiles = _deployCombinedLicense(
+				List.of(buildFreeTierPortalLicenseXML(Time.HOUR)));
+
+			assertLicensePropertiesExisted(getPortalProductId());
+
+			assertPortalLicenseRegistered();
+
+			Assert.assertEquals(
+				Arrays.toString(binaryFiles), 1, binaryFiles.length);
+		}
 	}
 
 	private File[] _deployCombinedLicense(Collection<String> licenseXMLs)

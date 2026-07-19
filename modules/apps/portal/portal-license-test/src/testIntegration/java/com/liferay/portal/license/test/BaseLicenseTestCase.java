@@ -86,6 +86,11 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		Assume.assumeTrue(isReleaseBundle());
 	}
 
+	public static String buildFreeTierPortalLicenseXML(long validityPeriod) {
+		return buildFreeTierPortalLicenseXML(
+			_FREE_TIER_DOMAIN, StringPool.BLANK, validityPeriod);
+	}
+
 	public static String buildFreeTierPortalLicenseXML(
 		String domain, String key, long validityPeriod) {
 

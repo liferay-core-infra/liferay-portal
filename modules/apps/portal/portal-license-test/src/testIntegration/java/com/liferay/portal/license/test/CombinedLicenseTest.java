@@ -58,6 +58,27 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 	}
 
 	@Test
+	public void testDuplicateLicenses() throws Exception {
+		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
+			assertLicensePropertiesNotExisted(getPortalProductId());
+
+			assertPortalLicenseNotRegistered();
+
+			File[] binaryFiles = _deployCombinedLicense(
+				List.of(
+					buildFreeTierPortalLicenseXML(Time.HOUR),
+					buildFreeTierPortalLicenseXML(Time.HOUR)));
+
+			assertLicensePropertiesExisted(getPortalProductId());
+
+			assertPortalLicenseRegistered();
+
+			Assert.assertEquals(
+				Arrays.toString(binaryFiles), 1, binaryFiles.length);
+		}
+	}
+
+	@Test
 	public void testNoLicenses() throws Exception {
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
 			assertPortalLicenseNotRegistered();

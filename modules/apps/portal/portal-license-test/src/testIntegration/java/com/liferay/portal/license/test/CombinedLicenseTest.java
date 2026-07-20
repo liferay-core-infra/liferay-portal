@@ -10,6 +10,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.license.util.App;
+import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -106,6 +107,27 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 			assertPortalLicenseNotRegistered();
 
 			Assert.assertNull(Arrays.toString(binaryFiles), binaryFiles);
+		}
+	}
+
+	@Test
+	public void testPortalLicensesEnterpriseAndFreeTier() throws Exception {
+		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
+			assertPortalLicenseNotRegistered();
+
+			File[] binaryFiles = _deployCombinedLicense(
+				List.of(
+					buildEnterprisePortalLicenseXML(Time.HOUR),
+					buildFreeTierPortalLicenseXML(Time.HOUR)));
+
+			assertLicensePropertiesExisted(getPortalProductId());
+
+			assertPortalLicenseRegistered();
+
+			Assert.assertEquals(
+				Arrays.toString(binaryFiles), 2, binaryFiles.length);
+
+			Assert.assertFalse(LicenseManagerUtil.isFreeTier());
 		}
 	}
 

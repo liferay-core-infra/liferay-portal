@@ -16,10 +16,12 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolverRegistryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -228,6 +230,33 @@ public class PortalImplCanonicalURLTest {
 			completeURL,
 			_portal.getCanonicalURL(
 				completeURL, themeDisplay, _layout2, false, false));
+	}
+
+	@Test
+	public void testCanonicalURLLayoutFriendlyURLNotStoredInCanonicalForm()
+		throws Exception {
+
+		LayoutFriendlyURL layoutFriendlyURL =
+			_layoutFriendlyURLLocalService.getLayoutFriendlyURL(
+				_layout6.getPlid(), LocaleUtil.toLanguageId(LocaleUtil.US));
+
+		layoutFriendlyURL.setFriendlyURL("/pöge");
+
+		_layoutFriendlyURLLocalService.updateLayoutFriendlyURL(
+			layoutFriendlyURL);
+
+		String portalDomain = "localhost";
+
+		Assert.assertEquals(
+			_generateURL(
+				portalDomain, "8080", StringPool.BLANK, _group.getFriendlyURL(),
+				"/p%C3%B6ge", false),
+			_portal.getCanonicalURL(
+				_generateURL(
+					portalDomain, "8080", StringPool.BLANK,
+					_group.getFriendlyURL(), "/p%C3%B6ge", false),
+				_createThemeDisplay(portalDomain, _defaultGroup, 8080, false),
+				_layout6, false, false));
 	}
 
 	@Test
@@ -838,6 +867,9 @@ public class PortalImplCanonicalURLTest {
 	private Layout _layout4;
 	private Layout _layout5;
 	private Layout _layout6;
+
+	@Inject
+	private LayoutFriendlyURLLocalService _layoutFriendlyURLLocalService;
 
 	@Inject
 	private LayoutLocalService _layoutLocalService;

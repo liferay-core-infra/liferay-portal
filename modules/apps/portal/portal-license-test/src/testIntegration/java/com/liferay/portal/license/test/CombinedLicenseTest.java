@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.util.LicenseUtil;
 
 import java.io.File;
@@ -47,6 +48,20 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 	public static void tearDownClass() {
 		_disableKeyValidatorSafeCloseable.close();
 		_setVersionSafeCloseable.close();
+	}
+
+	@Test
+	public void testAppLicensesWithExpiredPortalLicenseEnterprise()
+		throws Exception {
+
+		_testAppLicensesWithExpiredPortalLicense(false);
+	}
+
+	@Test
+	public void testAppLicensesWithExpiredPortalLicenseFreeTier()
+		throws Exception {
+
+		_testAppLicensesWithExpiredPortalLicense(true);
 	}
 
 	@Test
@@ -100,11 +115,98 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 				"<licenses>", StringUtil.merge(licenseXMLs, StringPool.BLANK),
 				"</licenses>"));
 
+		return _getLicenseBinaryFiles();
+	}
+
+	private File[] _getLicenseBinaryFiles() {
 		return new File(
 			LicenseUtil.LICENSE_REPOSITORY_DIR
 		).listFiles(
 			(dirFile, name) -> name.endsWith(".li")
 		);
+	}
+
+	private void _testAppLicensesWithExpiredPortalLicense(boolean freeTier)
+		throws Exception {
+
+		Map<App, String[]> appSymbolicNamesMap = new HashMap<>();
+
+		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
+			assertLicensePropertiesNotExisted(getPortalProductId());
+
+			for (App app : App.values()) {
+				String[] appSymbolicNames = getAppSymbolicNames(app);
+
+				Assert.assertFalse(
+					Arrays.toString(appSymbolicNames),
+					ArrayUtil.isEmpty(appSymbolicNames));
+
+				assertLicensePropertiesNotExisted(getProductId(app));
+
+				assertBundlesExisted(appSymbolicNames);
+
+				appSymbolicNamesMap.put(app, appSymbolicNames);
+			}
+
+			assertPortalLicenseNotRegistered();
+
+			List<String> licenseXMLs = new ArrayList<>();
+
+			if (freeTier) {
+				licenseXMLs.add(buildFreeTierPortalLicenseXML(-Time.WEEK));
+			}
+			else {
+				licenseXMLs.add(buildEnterprisePortalLicenseXML(-Time.WEEK));
+			}
+
+			long startTime = System.currentTimeMillis();
+
+			for (App app : App.values()) {
+				licenseXMLs.add(buildAppLicenseXML(app, startTime, Time.HOUR));
+			}
+
+			try {
+				_deployCombinedLicense(licenseXMLs);
+
+				Assert.fail(
+					"Expected expired portal license to fail validation");
+			}
+			catch (LogEntriesException logEntriesException) {
+				List<LogEntry> logEntries = logEntriesException.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 1, logEntries.size());
+
+				LogEntry logEntry = logEntries.get(0);
+
+				if (freeTier) {
+					Assert.assertEquals(
+						"DXP Production license is expired",
+						logEntry.getMessage());
+				}
+				else {
+					Assert.assertEquals(
+						"DXP Enterprise license is expired",
+						logEntry.getMessage());
+				}
+
+				assertPortalLicenseExpired();
+
+				assertLicensePropertiesExisted(getPortalProductId());
+
+				for (App app : App.values()) {
+					assertLicensePropertiesExisted(getProductId(app));
+
+					assertBundlesExisted(appSymbolicNamesMap.get(app));
+				}
+
+				File[] binaryFiles = _getLicenseBinaryFiles();
+
+				Assert.assertEquals(
+					Arrays.toString(binaryFiles), App.values().length + 1,
+					binaryFiles.length);
+			}
+		}
 	}
 
 	private void _testAppLicensesWithPortalLicense(boolean freeTier)

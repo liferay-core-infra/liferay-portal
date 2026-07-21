@@ -11,6 +11,8 @@ Import-Package:\
 	!org.apache.pdfbox.preflight.*,\
 	!org.apache.pdfbox.tools.imageio,\
 	\
+	!org.jsoup.*,\
+	\
 	!org.junit,\
 	\
 	com.rometools.*,\

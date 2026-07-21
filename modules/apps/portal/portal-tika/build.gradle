@@ -37,6 +37,7 @@ dependencies {
 	compileInclude group: "org.apache.tika", name: "tika-parser-zip-commons", version: "3.3.1"
 	compileInclude group: "org.codelibs", name: "jhighlight", version: "1.1.1"
 	compileInclude group: "org.gagravarr", name: "vorbis-java-core", version: "0.8"
+	compileInclude group: "org.jsoup", name: "jsoup", version: "1.22.2"
 	compileInclude group: "org.tallison", name: "jmatio", version: "1.5"
 	compileOnly group: "com.adobe.xmp", name: "xmpcore", version: "6.1.11"
 	compileOnly group: "com.liferay", name: "biz.aQute.bnd.annotation", version: "4.2.0.LIFERAY-PATCHED-2"
@@ -50,7 +51,6 @@ dependencies {
 	compileOnly group: "org.apache.poi", name: "poi-ooxml", version: "5.4.1"
 	compileOnly group: "org.apache.poi", name: "poi-ooxml-lite", version: "5.4.1"
 	compileOnly group: "org.apache.xmlbeans", name: "xmlbeans", version: "5.3.0"
-	compileOnly group: "org.jsoup", name: "jsoup", version: "1.15.3"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")

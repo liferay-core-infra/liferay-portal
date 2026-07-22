@@ -86,44 +86,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		Assume.assumeTrue(isReleaseBundle());
 	}
 
-	public static String buildFreeTierPortalLicenseXML(long validityPeriod) {
-		return buildFreeTierPortalLicenseXML(
-			_FREE_TIER_DOMAIN, StringPool.BLANK, validityPeriod);
-	}
-
-	public static String buildFreeTierPortalLicenseXML(
-		String domain, String key, long validityPeriod) {
-
-		StringBundler sb = new StringBundler(20);
-
-		sb.append("<license><account-name>");
-		sb.append(_FREE_TIER_ACCOUNT_NAME);
-		sb.append("</account-name><product-id>");
-		sb.append(getPortalProductId());
-		sb.append("</product-id><product-name>");
-		sb.append(_FREE_TIER_PRODUCT_NAME);
-		sb.append("</product-name><product-version>2026.Q1</product-version>");
-		sb.append("<license-type>");
-		sb.append(_FREE_TIER_LICENSE_TYPE);
-		sb.append("</license-type><license-version>6</license-version>");
-		sb.append("<start-date>");
-
-		long startTime = System.currentTimeMillis();
-
-		sb.append(_DATE_FORMAT.format(new Date(startTime)));
-
-		sb.append("</start-date><expiration-date>");
-		sb.append(_DATE_FORMAT.format(new Date(startTime + validityPeriod)));
-		sb.append("</expiration-date>");
-		sb.append("<max-cluster-nodes>3</max-cluster-nodes><domains><domain>");
-		sb.append(domain);
-		sb.append("</domain><domain>localhost</domain></domains><key>");
-		sb.append(key);
-		sb.append("</key></license>");
-
-		return sb.toString();
-	}
-
 	public static File deployFreeTierPortalLicense(long validityPeriod)
 		throws Exception {
 
@@ -143,12 +105,43 @@ public abstract class BaseLicenseTestCase implements Serializable {
 			String domain, String key, long validityPeriod)
 		throws Exception {
 
-		registerLicense(
-			buildFreeTierPortalLicenseXML(domain, key, validityPeriod));
+		_registerLicense(
+			_buildFreeTierPortalLicenseXML(domain, key, validityPeriod));
 
-		return buildBinaryFile(
+		return _buildBinaryFile(
 			getPortalProductId(), _FREE_TIER_ACCOUNT_NAME,
-			_FREE_TIER_PRODUCT_NAME, _FREE_TIER_LICENSE_TYPE);
+			_FREE_TIER_PRODUCT_NAME, FREE_TIER_LICENSE_TYPE);
+	}
+
+	public static void deployLicenses(String[][] licenses) throws Exception {
+		StringBundler sb = new StringBundler();
+
+		sb.append("<licenses>");
+
+		for (String[] license : licenses) {
+			if (Objects.equals(license[0], ENTERPRISE_LICENSE_TYPE)) {
+				sb.append(
+					_buildEnterprisePortalLicenseXML(Long.valueOf(license[1])));
+			}
+			else if (Objects.equals(license[0], FREE_TIER_LICENSE_TYPE)) {
+				sb.append(
+					_buildFreeTierPortalLicenseXML(
+						_FREE_TIER_DOMAIN, StringPool.BLANK,
+						Long.valueOf(license[1])));
+			}
+			else {
+				App app = App.valueOf(license[0]);
+
+				sb.append(
+					_buildAppLicenseXML(
+						app, System.currentTimeMillis(),
+						Long.valueOf(license[1])));
+			}
+		}
+
+		sb.append("</licenses>");
+
+		_registerLicense(sb.toString());
 	}
 
 	public static SafeCloseable disableValidateWithSafeCloseable() {
@@ -258,75 +251,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		Assert.assertFalse(response.contains(_LICENSE_PAGE_KEY));
 	}
 
-	public String buildAppLicenseXML(
-		App app, long startTime, long validityPeriod) {
-
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("<license><product-id>");
-		sb.append(getProductId(app));
-		sb.append("</product-id><product-name>");
-		sb.append(app);
-		sb.append("</product-name><product-version>2026.Q1</product-version>");
-		sb.append("<license-type>");
-		sb.append(_APP_LICENSE_TYPE);
-		sb.append("</license-type><license-version>3</license-version>");
-		sb.append("<start-date>");
-		sb.append(_DATE_FORMAT.format(new Date(startTime)));
-		sb.append("</start-date><expiration-date>");
-		sb.append(_DATE_FORMAT.format(new Date(startTime + validityPeriod)));
-		sb.append("</expiration-date><host-names>");
-		sb.append("<host-name>localhost</host-name>");
-		sb.append("</host-names><ip-addresses>");
-
-		for (String localIpAddress : LicenseUtil.getIpAddresses()) {
-			sb.append("<ip-address>");
-			sb.append(localIpAddress);
-			sb.append("</ip-address>");
-		}
-
-		sb.append("</ip-addresses><mac-addresses>");
-
-		for (String localMacAddress : LicenseUtil.getMacAddresses()) {
-			sb.append("<mac-address>");
-			sb.append(localMacAddress);
-			sb.append("</mac-address>");
-		}
-
-		sb.append("</mac-addresses><key></key></license>");
-
-		return sb.toString();
-	}
-
-	public String buildEnterprisePortalLicenseXML(long validityPeriod) {
-		long currentTimeMillis = System.currentTimeMillis();
-
-		StringBundler sb = new StringBundler(19);
-
-		sb.append("<license><account-name>");
-		sb.append(_ENTERPRISE_ACCOUNT_NAME);
-		sb.append("</account-name><product-id>");
-		sb.append(getPortalProductId());
-		sb.append("</product-id><product-name>");
-		sb.append(_ENTERPRISE_PRODUCT_NAME);
-		sb.append("</product-name><product-version>2026.Q1</product-version>");
-		sb.append("<license-type>");
-		sb.append(_ENTERPRISE_LICENSE_TYPE);
-		sb.append("</license-type><license-version>6</license-version>");
-		sb.append("<start-date>");
-		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
-		sb.append("</start-date><expiration-date>");
-		sb.append(
-			_DATE_FORMAT.format(new Date(currentTimeMillis + validityPeriod)));
-		sb.append("</expiration-date>");
-		sb.append("<domains><domain>");
-		sb.append(_ENTERPRISE_DOMAIN);
-		sb.append("</domain><domain>localhost</domain></domains>");
-		sb.append("<key></key></license>");
-
-		return sb.toString();
-	}
-
 	public File deployAppLicense(App app, long validityPeriod)
 		throws Exception {
 
@@ -337,9 +261,9 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	public File deployAppLicense(App app, long startTime, long validityPeriod)
 		throws Exception {
 
-		registerLicense(buildAppLicenseXML(app, startTime, validityPeriod));
+		_registerLicense(_buildAppLicenseXML(app, startTime, validityPeriod));
 
-		return buildBinaryFile(
+		return _buildBinaryFile(
 			getProductId(app), StringPool.BLANK, app.toString(),
 			_APP_LICENSE_TYPE);
 	}
@@ -347,11 +271,11 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	public File deployEnterprisePortalLicense(long validityPeriod)
 		throws Exception {
 
-		registerLicense(buildEnterprisePortalLicenseXML(validityPeriod));
+		_registerLicense(_buildEnterprisePortalLicenseXML(validityPeriod));
 
-		return buildBinaryFile(
+		return _buildBinaryFile(
 			getPortalProductId(), _ENTERPRISE_ACCOUNT_NAME,
-			_ENTERPRISE_PRODUCT_NAME, _ENTERPRISE_LICENSE_TYPE);
+			_ENTERPRISE_PRODUCT_NAME, ENTERPRISE_LICENSE_TYPE);
 	}
 
 	public void resetCheckInterval() throws Exception {
@@ -505,25 +429,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		}
 	}
 
-	protected static File buildBinaryFile(
-		String productId, String accountName, String productEntryName,
-		String licenseType) {
-
-		StringBundler sb = new StringBundler(6);
-
-		if (productId.equals(getPortalProductId())) {
-			sb.append(StringUtil.extractChars(accountName));
-			sb.append("_");
-		}
-
-		sb.append(StringUtil.extractChars(productEntryName));
-		sb.append("_");
-		sb.append(StringUtil.extractChars(licenseType));
-		sb.append(".li");
-
-		return new File(LicenseUtil.LICENSE_REPOSITORY_DIR, sb.toString());
-	}
-
 	protected static Field findField(String propertyKey) throws Exception {
 		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
 
@@ -595,6 +500,11 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		return getProperty("product.id.portal");
 	}
 
+	protected static String getProductId(App app) {
+		return getProperty(
+			"product.id." + StringUtil.toLowerCase(app.toString()));
+	}
+
 	protected static String getProperty(String propertyKey) {
 		String value = _licenseTestProperties.getProperty(propertyKey);
 
@@ -609,18 +519,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 	protected static Class<?> getValidateClass() {
 		return ReflectionsHolder._validateClass;
-	}
-
-	protected static void registerLicense(String licenseXML) throws Exception {
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				_licensePackageName, LoggerTestUtil.ALL)) {
-
-			LicenseManagerUtil.registerLicense(
-				JSONUtil.put(
-					"licenseXML", "<?xml version=\"1.0\"?>" + licenseXML));
-
-			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
-		}
 	}
 
 	protected void checkLicense(String productId) throws Exception {
@@ -649,11 +547,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		return localPort;
 	}
 
-	protected String getProductId(App app) {
-		return getProperty(
-			"product.id." + StringUtil.toLowerCase(app.toString()));
-	}
-
 	protected String hitHomePage(String host, int port) throws Exception {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				_lifecycleActionClass.getName(), LoggerTestUtil.ALL)) {
@@ -670,6 +563,145 @@ public abstract class BaseLicenseTestCase implements Serializable {
 				logCapture, response, LoggerTestUtil.DEBUG);
 
 			return response;
+		}
+	}
+
+	protected static final String ENTERPRISE_LICENSE_TYPE = "enterprise";
+
+	protected static final String FREE_TIER_LICENSE_TYPE = "free";
+
+	private static String _buildAppLicenseXML(
+		App app, long startTime, long validityPeriod) {
+
+		StringBundler sb = new StringBundler(19);
+
+		sb.append("<license><product-id>");
+		sb.append(getProductId(app));
+		sb.append("</product-id><product-name>");
+		sb.append(app);
+		sb.append("</product-name><product-version>2026.Q1</product-version>");
+		sb.append("<license-type>");
+		sb.append(_APP_LICENSE_TYPE);
+		sb.append("</license-type><license-version>3</license-version>");
+		sb.append("<start-date>");
+		sb.append(_DATE_FORMAT.format(new Date(startTime)));
+		sb.append("</start-date><expiration-date>");
+		sb.append(_DATE_FORMAT.format(new Date(startTime + validityPeriod)));
+		sb.append("</expiration-date><host-names>");
+		sb.append("<host-name>localhost</host-name>");
+		sb.append("</host-names><ip-addresses>");
+
+		for (String localIpAddress : LicenseUtil.getIpAddresses()) {
+			sb.append("<ip-address>");
+			sb.append(localIpAddress);
+			sb.append("</ip-address>");
+		}
+
+		sb.append("</ip-addresses><mac-addresses>");
+
+		for (String localMacAddress : LicenseUtil.getMacAddresses()) {
+			sb.append("<mac-address>");
+			sb.append(localMacAddress);
+			sb.append("</mac-address>");
+		}
+
+		sb.append("</mac-addresses><key></key></license>");
+
+		return sb.toString();
+	}
+
+	private static File _buildBinaryFile(
+		String productId, String accountName, String productEntryName,
+		String licenseType) {
+
+		StringBundler sb = new StringBundler(6);
+
+		if (productId.equals(getPortalProductId())) {
+			sb.append(StringUtil.extractChars(accountName));
+			sb.append("_");
+		}
+
+		sb.append(StringUtil.extractChars(productEntryName));
+		sb.append("_");
+		sb.append(StringUtil.extractChars(licenseType));
+		sb.append(".li");
+
+		return new File(LicenseUtil.LICENSE_REPOSITORY_DIR, sb.toString());
+	}
+
+	private static String _buildEnterprisePortalLicenseXML(
+		long validityPeriod) {
+
+		long currentTimeMillis = System.currentTimeMillis();
+
+		StringBundler sb = new StringBundler(19);
+
+		sb.append("<license><account-name>");
+		sb.append(_ENTERPRISE_ACCOUNT_NAME);
+		sb.append("</account-name><product-id>");
+		sb.append(getPortalProductId());
+		sb.append("</product-id><product-name>");
+		sb.append(_ENTERPRISE_PRODUCT_NAME);
+		sb.append("</product-name><product-version>2026.Q1</product-version>");
+		sb.append("<license-type>");
+		sb.append(ENTERPRISE_LICENSE_TYPE);
+		sb.append("</license-type><license-version>6</license-version>");
+		sb.append("<start-date>");
+		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
+		sb.append("</start-date><expiration-date>");
+		sb.append(
+			_DATE_FORMAT.format(new Date(currentTimeMillis + validityPeriod)));
+		sb.append("</expiration-date>");
+		sb.append("<domains><domain>");
+		sb.append(_ENTERPRISE_DOMAIN);
+		sb.append("</domain><domain>localhost</domain></domains>");
+		sb.append("<key></key></license>");
+
+		return sb.toString();
+	}
+
+	private static String _buildFreeTierPortalLicenseXML(
+		String domain, String key, long validityPeriod) {
+
+		StringBundler sb = new StringBundler(20);
+
+		sb.append("<license><account-name>");
+		sb.append(_FREE_TIER_ACCOUNT_NAME);
+		sb.append("</account-name><product-id>");
+		sb.append(getPortalProductId());
+		sb.append("</product-id><product-name>");
+		sb.append(_FREE_TIER_PRODUCT_NAME);
+		sb.append("</product-name><product-version>2026.Q1</product-version>");
+		sb.append("<license-type>");
+		sb.append(FREE_TIER_LICENSE_TYPE);
+		sb.append("</license-type><license-version>6</license-version>");
+		sb.append("<start-date>");
+
+		long startTime = System.currentTimeMillis();
+
+		sb.append(_DATE_FORMAT.format(new Date(startTime)));
+
+		sb.append("</start-date><expiration-date>");
+		sb.append(_DATE_FORMAT.format(new Date(startTime + validityPeriod)));
+		sb.append("</expiration-date>");
+		sb.append("<max-cluster-nodes>3</max-cluster-nodes><domains><domain>");
+		sb.append(domain);
+		sb.append("</domain><domain>localhost</domain></domains><key>");
+		sb.append(key);
+		sb.append("</key></license>");
+
+		return sb.toString();
+	}
+
+	private static void _registerLicense(String licenseXML) throws Exception {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				_licensePackageName, LoggerTestUtil.ALL)) {
+
+			LicenseManagerUtil.registerLicense(
+				JSONUtil.put(
+					"licenseXML", "<?xml version=\"1.0\"?>" + licenseXML));
+
+			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
 		}
 	}
 
@@ -735,8 +767,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 	private static final String _ENTERPRISE_DOMAIN = "enterprise.com";
 
-	private static final String _ENTERPRISE_LICENSE_TYPE = "enterprise";
-
 	private static final String _ENTERPRISE_PRODUCT_NAME = "DXP Enterprise";
 
 	private static final String _EXPIRED_LICENSE_KEY =
@@ -745,8 +775,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	private static final String _FREE_TIER_ACCOUNT_NAME = "Free Account";
 
 	private static final String _FREE_TIER_DOMAIN = "free.tier.com";
-
-	private static final String _FREE_TIER_LICENSE_TYPE = "free";
 
 	private static final String _FREE_TIER_PRODUCT_NAME = "DXP Production";
 

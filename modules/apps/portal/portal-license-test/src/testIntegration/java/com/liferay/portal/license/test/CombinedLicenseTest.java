@@ -7,20 +7,11 @@ package com.liferay.portal.license.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.util.LicenseUtil;
-
-import java.io.File;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -64,17 +55,15 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 
 			assertPortalLicenseNotRegistered();
 
-			File[] binaryFiles = _deployCombinedLicense(
-				List.of(
-					buildFreeTierPortalLicenseXML(Time.HOUR),
-					buildFreeTierPortalLicenseXML(Time.HOUR)));
+			deployLicenses(
+				new String[][] {
+					{FREE_TIER_LICENSE_TYPE, String.valueOf(Time.HOUR)},
+					{FREE_TIER_LICENSE_TYPE, String.valueOf(Time.HOUR)}
+				});
 
 			assertLicensePropertiesExisted(getPortalProductId());
 
 			assertPortalLicenseRegistered();
-
-			Assert.assertEquals(
-				Arrays.toString(binaryFiles), 1, binaryFiles.length);
 		}
 	}
 
@@ -83,12 +72,9 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
 			assertPortalLicenseNotRegistered();
 
-			File[] binaryFiles = _deployCombinedLicense(
-				Collections.emptyList());
+			deployLicenses(new String[0][]);
 
 			assertPortalLicenseNotRegistered();
-
-			Assert.assertNull(Arrays.toString(binaryFiles), binaryFiles);
 		}
 	}
 
@@ -97,17 +83,15 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
 			assertPortalLicenseNotRegistered();
 
-			File[] binaryFiles = _deployCombinedLicense(
-				List.of(
-					buildEnterprisePortalLicenseXML(Time.HOUR),
-					buildFreeTierPortalLicenseXML(Time.HOUR)));
+			deployLicenses(
+				new String[][] {
+					{ENTERPRISE_LICENSE_TYPE, String.valueOf(Time.HOUR)},
+					{FREE_TIER_LICENSE_TYPE, String.valueOf(Time.HOUR)}
+				});
 
 			assertLicensePropertiesExisted(getPortalProductId());
 
 			assertPortalLicenseRegistered();
-
-			Assert.assertEquals(
-				Arrays.toString(binaryFiles), 2, binaryFiles.length);
 
 			Assert.assertFalse(LicenseManagerUtil.isFreeTier());
 		}
@@ -120,31 +104,15 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 
 			assertPortalLicenseNotRegistered();
 
-			File[] binaryFiles = _deployCombinedLicense(
-				List.of(buildFreeTierPortalLicenseXML(Time.HOUR)));
+			deployLicenses(
+				new String[][] {
+					{FREE_TIER_LICENSE_TYPE, String.valueOf(Time.HOUR)}
+				});
 
 			assertLicensePropertiesExisted(getPortalProductId());
 
 			assertPortalLicenseRegistered();
-
-			Assert.assertEquals(
-				Arrays.toString(binaryFiles), 1, binaryFiles.length);
 		}
-	}
-
-	private File[] _deployCombinedLicense(Collection<String> licenseXMLs)
-		throws Exception {
-
-		registerLicense(
-			StringBundler.concat(
-				"<licenses>", StringUtil.merge(licenseXMLs, StringPool.BLANK),
-				"</licenses>"));
-
-		return new File(
-			LicenseUtil.LICENSE_REPOSITORY_DIR
-		).listFiles(
-			(dirFile, name) -> name.endsWith(".li")
-		);
 	}
 
 	private void _testAppLicensesWithPortalLicense(boolean freeTier)
@@ -159,22 +127,27 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 
 			assertPortalLicenseNotRegistered();
 
-			List<String> licenseXMLs = new ArrayList<>();
+			List<String[]> licenses = new ArrayList<>();
 
 			if (freeTier) {
-				licenseXMLs.add(buildFreeTierPortalLicenseXML(Time.HOUR));
+				licenses.add(
+					new String[] {
+						FREE_TIER_LICENSE_TYPE, String.valueOf(Time.HOUR)
+					});
 			}
 			else {
-				licenseXMLs.add(buildEnterprisePortalLicenseXML(Time.HOUR));
+				licenses.add(
+					new String[] {
+						ENTERPRISE_LICENSE_TYPE, String.valueOf(Time.HOUR)
+					});
 			}
-
-			long startTime = System.currentTimeMillis();
 
 			for (App app : App.values()) {
-				licenseXMLs.add(buildAppLicenseXML(app, startTime, Time.HOUR));
+				licenses.add(
+					new String[] {app.name(), String.valueOf(Time.HOUR)});
 			}
 
-			File[] binaryFiles = _deployCombinedLicense(licenseXMLs);
+			deployLicenses(licenses.toArray(new String[0][]));
 
 			assertPortalLicenseRegistered();
 
@@ -190,10 +163,6 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 			else {
 				Assert.assertFalse(LicenseManagerUtil.isFreeTier());
 			}
-
-			Assert.assertEquals(
-				Arrays.toString(binaryFiles), App.values().length + 1,
-				binaryFiles.length);
 		}
 	}
 

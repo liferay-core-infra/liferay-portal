@@ -143,6 +143,16 @@
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 	</entity>
+	<entity local-service="true" name="DateTypeEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="dateTypeEntryId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="dateValue" type="Date" />
+	</entity>
 	<entity local-service="true" name="DefinedDefaultOrderEntry" remote-service="false">
 
 		<!-- PK fields -->

@@ -520,4 +520,4 @@ public class PatcherAccountPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1783296430
+// LIFERAY-SERVICE-BUILDER-HASH:1301728334

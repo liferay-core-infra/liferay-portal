@@ -631,4 +631,4 @@ public class SiteFriendlyURLPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1020847607
+// LIFERAY-SERVICE-BUILDER-HASH:-745419249

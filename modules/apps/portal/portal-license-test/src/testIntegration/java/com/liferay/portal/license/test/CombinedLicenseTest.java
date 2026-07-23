@@ -180,53 +180,56 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 					new String[] {app.name(), String.valueOf(validityPeriod)});
 			}
 
-			deployLicenses(licenses.toArray(new String[0][]));
+			try {
+				deployLicenses(licenses.toArray(new String[0][]));
 
-			if (validityPeriod > 0) {
-				assertPortalLicenseRegistered();
+				if (validityPeriod > 0) {
+					assertPortalLicenseRegistered();
 
-				_assertPortalAndAppLicensePropertiesExisted();
+					_assertPortalAndAppLicensePropertiesExisted();
 
-				for (App app : App.values()) {
-					if (freeTier) {
-						assertBundlesNotExisted(getAppSymbolicNames(app));
+					for (App app : App.values()) {
+						if (freeTier) {
+							assertBundlesNotExisted(getAppSymbolicNames(app));
+						}
+						else {
+							assertBundlesExisted(getAppSymbolicNames(app));
+						}
 					}
-					else {
-						assertBundlesExisted(getAppSymbolicNames(app));
-					}
-				}
-			}
-			else {
-				Assert.fail(
-					"Expected expired portal license to fail validation");
-			}
-		}
-		catch (LogEntriesException logEntriesException) {
-			if (validityPeriod < 0) {
-				List<LogEntry> logEntries = logEntriesException.getLogEntries();
-
-				Assert.assertEquals(
-					logEntries.toString(), 1, logEntries.size());
-
-				LogEntry logEntry = logEntries.get(0);
-
-				if (freeTier) {
-					Assert.assertEquals(
-						"DXP Production license is expired",
-						logEntry.getMessage());
 				}
 				else {
-					Assert.assertEquals(
-						"DXP Enterprise license is expired",
-						logEntry.getMessage());
+					Assert.fail(
+						"Expected expired portal license to fail validation");
 				}
+			}
+			catch (LogEntriesException logEntriesException) {
+				if (validityPeriod < 0) {
+					List<LogEntry> logEntries =
+						logEntriesException.getLogEntries();
 
-				assertPortalLicenseExpired();
+					Assert.assertEquals(
+						logEntries.toString(), 1, logEntries.size());
 
-				_assertPortalAndAppLicensePropertiesExisted();
+					LogEntry logEntry = logEntries.get(0);
 
-				for (App app : App.values()) {
-					assertBundlesExisted(getAppSymbolicNames(app));
+					if (freeTier) {
+						Assert.assertEquals(
+							"DXP Production license is expired",
+							logEntry.getMessage());
+					}
+					else {
+						Assert.assertEquals(
+							"DXP Enterprise license is expired",
+							logEntry.getMessage());
+					}
+
+					assertPortalLicenseExpired();
+
+					_assertPortalAndAppLicensePropertiesExisted();
+
+					for (App app : App.values()) {
+						assertBundlesExisted(getAppSymbolicNames(app));
+					}
 				}
 			}
 		}

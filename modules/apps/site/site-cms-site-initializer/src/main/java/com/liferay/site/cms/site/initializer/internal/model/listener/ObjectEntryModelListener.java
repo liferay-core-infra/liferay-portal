@@ -207,10 +207,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 	private boolean _isCMSObjectEntry(ObjectEntry objectEntry)
 		throws Exception {
 
-		if (!FeatureFlagManagerUtil.isEnabled(
-				objectEntry.getCompanyId(), "LPD-17564") ||
-			(objectEntry.getGroupId() == 0)) {
-
+		if (objectEntry.getGroupId() == 0) {
 			return false;
 		}
 

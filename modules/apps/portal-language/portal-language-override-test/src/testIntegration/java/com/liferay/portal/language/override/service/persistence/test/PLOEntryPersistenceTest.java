@@ -571,4 +571,4 @@ public class PLOEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:850902319
+// LIFERAY-SERVICE-BUILDER-HASH:2075669993

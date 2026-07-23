@@ -651,4 +651,4 @@ public class CommerceDiscountCommerceAccountGroupRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:168193007
+// LIFERAY-SERVICE-BUILDER-HASH:232688501

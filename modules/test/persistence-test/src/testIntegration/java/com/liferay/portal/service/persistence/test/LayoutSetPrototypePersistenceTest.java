@@ -509,4 +509,4 @@ public class LayoutSetPrototypePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:679315346
+// LIFERAY-SERVICE-BUILDER-HASH:-1383718120

@@ -534,4 +534,4 @@ public class AppPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1405973987
+// LIFERAY-SERVICE-BUILDER-HASH:1183965981

@@ -625,4 +625,4 @@ public class SamlIdpSpConnectionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1669108393
+// LIFERAY-SERVICE-BUILDER-HASH:-61743261

@@ -588,4 +588,4 @@ public class MBDiscussionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-657024639
+// LIFERAY-SERVICE-BUILDER-HASH:-85282169

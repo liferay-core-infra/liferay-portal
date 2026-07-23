@@ -79,7 +79,7 @@ public class ViewCountEntryModelImpl
 	public static final String ENTITY_ALIAS = "viewCountEntry";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY viewCountEntry.id.companyId ASC, viewCountEntry.id.classNameId ASC, viewCountEntry.id.classPK ASC";
+		" ORDER BY viewCountEntry.primaryKey.companyId ASC, viewCountEntry.primaryKey.classNameId ASC, viewCountEntry.primaryKey.classPK ASC";
 
 	public static final String ORDER_BY_SQL =
 		" ORDER BY ViewCountEntry.companyId ASC, ViewCountEntry.classNameId ASC, ViewCountEntry.classPK ASC";
@@ -630,4 +630,4 @@ public class ViewCountEntryModelImpl
 	private ViewCountEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:708321621
+// LIFERAY-SERVICE-BUILDER-HASH:-442757385

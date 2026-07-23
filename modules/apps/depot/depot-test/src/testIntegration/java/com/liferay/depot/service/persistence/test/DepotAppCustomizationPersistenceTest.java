@@ -559,4 +559,4 @@ public class DepotAppCustomizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1284350686
+// LIFERAY-SERVICE-BUILDER-HASH:1824880740

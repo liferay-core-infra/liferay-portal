@@ -540,4 +540,4 @@ public class BatchPlannerPolicyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-769664114
+// LIFERAY-SERVICE-BUILDER-HASH:903562696

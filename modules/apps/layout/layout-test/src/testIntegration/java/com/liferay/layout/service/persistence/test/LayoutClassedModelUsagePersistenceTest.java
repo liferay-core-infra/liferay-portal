@@ -754,4 +754,4 @@ public class LayoutClassedModelUsagePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-653924718
+// LIFERAY-SERVICE-BUILDER-HASH:-1350119604

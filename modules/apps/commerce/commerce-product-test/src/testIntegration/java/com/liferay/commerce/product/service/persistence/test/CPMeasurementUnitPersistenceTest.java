@@ -699,4 +699,4 @@ public class CPMeasurementUnitPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1516075366
+// LIFERAY-SERVICE-BUILDER-HASH:482419872

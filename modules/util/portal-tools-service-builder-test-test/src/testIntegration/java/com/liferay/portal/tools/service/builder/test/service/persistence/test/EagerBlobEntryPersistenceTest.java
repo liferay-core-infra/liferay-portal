@@ -508,4 +508,4 @@ public class EagerBlobEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-673466933
+// LIFERAY-SERVICE-BUILDER-HASH:-133442043

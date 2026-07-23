@@ -439,4 +439,4 @@ public class CTProcessPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1525151765
+// LIFERAY-SERVICE-BUILDER-HASH:937870031

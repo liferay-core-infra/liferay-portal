@@ -674,4 +674,4 @@ public class CommerceShippingOptionAccountEntryRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-495047755
+// LIFERAY-SERVICE-BUILDER-HASH:1217910127

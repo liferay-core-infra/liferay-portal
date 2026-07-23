@@ -50,69 +50,13 @@ public class DepotRoleTypeContributorTest {
 		DepotRoleTypeContributor depotRoleTypeContributor =
 			new DepotRoleTypeContributor();
 
-		try (MockedStatic<FeatureFlagManagerUtil> mockedStatic =
-				Mockito.mockStatic(FeatureFlagManagerUtil.class)) {
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				false
-			);
-
-			Assert.assertEquals(
-				"asset-library", depotRoleTypeContributor.getName());
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				true
-			);
-
-			Assert.assertEquals("depot", depotRoleTypeContributor.getName());
-		}
+		Assert.assertEquals("depot", depotRoleTypeContributor.getName());
 	}
 
 	@Test
 	public void testGetSubtypes() {
 		try (MockedStatic<FeatureFlagManagerUtil> mockedStatic =
 				Mockito.mockStatic(FeatureFlagManagerUtil.class)) {
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				false
-			);
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-58677"))
-			).thenReturn(
-				false
-			);
-
-			Assert.assertArrayEquals(
-				new String[0], _depotRoleTypeContributor.getSubtypes());
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-58677"))
-			).thenReturn(
-				true
-			);
-
-			Assert.assertArrayEquals(
-				new String[] {DepotRolesConstants.SUBTYPE_PROJECT},
-				_depotRoleTypeContributor.getSubtypes());
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				true
-			);
 
 			mockedStatic.when(
 				() -> FeatureFlagManagerUtil.isEnabled(
@@ -163,31 +107,8 @@ public class DepotRoleTypeContributorTest {
 
 		_setLanguage(depotRoleTypeContributor);
 
-		try (MockedStatic<FeatureFlagManagerUtil> mockedStatic =
-				Mockito.mockStatic(FeatureFlagManagerUtil.class)) {
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				false
-			);
-
-			Assert.assertEquals(
-				"asset-library-roles",
-				depotRoleTypeContributor.getTabTitle(LocaleUtil.US));
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				true
-			);
-
-			Assert.assertEquals(
-				"depot-roles",
-				depotRoleTypeContributor.getTabTitle(LocaleUtil.US));
-		}
+		Assert.assertEquals(
+			"depot-roles", depotRoleTypeContributor.getTabTitle(LocaleUtil.US));
 	}
 
 	@Test
@@ -197,30 +118,8 @@ public class DepotRoleTypeContributorTest {
 
 		_setLanguage(depotRoleTypeContributor);
 
-		try (MockedStatic<FeatureFlagManagerUtil> mockedStatic =
-				Mockito.mockStatic(FeatureFlagManagerUtil.class)) {
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				false
-			);
-
-			Assert.assertEquals(
-				"asset-library-role",
-				depotRoleTypeContributor.getTitle(LocaleUtil.US));
-
-			mockedStatic.when(
-				() -> FeatureFlagManagerUtil.isEnabled(
-					Mockito.anyLong(), Mockito.eq("LPD-17564"))
-			).thenReturn(
-				true
-			);
-
-			Assert.assertEquals(
-				"depot-role", depotRoleTypeContributor.getTitle(LocaleUtil.US));
-		}
+		Assert.assertEquals(
+			"depot-role", depotRoleTypeContributor.getTitle(LocaleUtil.US));
 	}
 
 	@Test

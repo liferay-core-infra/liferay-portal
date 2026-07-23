@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -140,7 +139,6 @@ public class UpdateStructureStrutsActionTest {
 			serviceBuilderObjectDefinition2.getObjectDefinitionId());
 	}
 
-	@FeatureFlag("LPD-17564")
 	@Test
 	@TestInfo("LPD-92696")
 	public void testExecuteDoesNotDeleteObjectRelationships() throws Exception {

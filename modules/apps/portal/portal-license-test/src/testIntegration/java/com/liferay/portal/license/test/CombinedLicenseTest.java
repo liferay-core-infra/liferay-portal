@@ -177,7 +177,7 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 
 			for (App app : App.values()) {
 				licenses.add(
-					new String[] {app.name(), String.valueOf(validityPeriod)});
+					new String[] {app.name(), String.valueOf(Time.HOUR)});
 			}
 
 			try {

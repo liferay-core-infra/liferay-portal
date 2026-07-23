@@ -578,4 +578,4 @@ public class AudiencesEntryGroupRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:665566700
+// LIFERAY-SERVICE-BUILDER-HASH:64677738

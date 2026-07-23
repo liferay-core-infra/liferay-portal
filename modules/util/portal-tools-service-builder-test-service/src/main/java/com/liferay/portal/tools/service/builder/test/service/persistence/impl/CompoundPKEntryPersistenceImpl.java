@@ -426,11 +426,11 @@ public class CompoundPKEntryPersistenceImpl
 			CompoundPKEntryModelImpl.ORDER_BY_JPQL, _ENTITY_ALIAS_PREFIX, "",
 			"", null,
 			new FinderColumn<>(
-				"compoundPKEntry.", "id.companyId", "companyId",
+				"compoundPKEntry.", "primaryKey.companyId", "companyId",
 				FinderColumn.Type.LONG, "=", true, true,
 				CompoundPKEntry::getCompanyId),
 			new FinderColumn<>(
-				"compoundPKEntry.", "id.classNameId", "classNameId",
+				"compoundPKEntry.", "primaryKey.classNameId", "classNameId",
 				FinderColumn.Type.LONG, "=", true, true,
 				CompoundPKEntry::getClassNameId));
 
@@ -444,7 +444,7 @@ public class CompoundPKEntryPersistenceImpl
 				convertNullFunction(CompoundPKEntry::getName)),
 			_SQL_SELECT_COMPOUNDPKENTRY_WHERE, "",
 			new FinderColumn<>(
-				"compoundPKEntry.", "id.companyId", "companyId",
+				"compoundPKEntry.", "primaryKey.companyId", "companyId",
 				FinderColumn.Type.LONG, "=", true, true,
 				CompoundPKEntry::getCompanyId),
 			new FinderColumn<>(
@@ -487,4 +487,4 @@ public class CompoundPKEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:533101023
+// LIFERAY-SERVICE-BUILDER-HASH:-278858751

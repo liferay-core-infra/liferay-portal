@@ -533,4 +533,4 @@ public class UndefinedDefaultOrderEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1143386392
+// LIFERAY-SERVICE-BUILDER-HASH:593764984

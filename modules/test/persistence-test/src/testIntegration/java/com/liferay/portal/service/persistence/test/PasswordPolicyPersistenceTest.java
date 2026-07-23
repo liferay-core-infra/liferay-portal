@@ -718,4 +718,4 @@ public class PasswordPolicyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-436708279
+// LIFERAY-SERVICE-BUILDER-HASH:-608645297

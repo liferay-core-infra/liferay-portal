@@ -561,4 +561,4 @@ public class AssetAutoTaggerEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1036378817
+// LIFERAY-SERVICE-BUILDER-HASH:69789305

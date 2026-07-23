@@ -528,4 +528,4 @@ public class COREntryRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1802783169
+// LIFERAY-SERVICE-BUILDER-HASH:515591239

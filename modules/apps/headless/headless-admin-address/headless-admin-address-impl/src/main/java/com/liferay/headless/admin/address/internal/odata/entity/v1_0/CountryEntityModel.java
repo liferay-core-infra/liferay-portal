@@ -5,7 +5,6 @@
 
 package com.liferay.headless.admin.address.internal.odata.entity.v1_0;
 
-import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.odata.entity.DateTimeEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -21,16 +20,12 @@ public class CountryEntityModel implements EntityModel {
 	public CountryEntityModel() {
 		_entityFieldsMap = EntityModel.toEntityFieldsMap(
 			new DateTimeEntityField(
-				"dateCreated",
-				locale -> Field.getSortableFieldName(Field.CREATE_DATE),
-				locale -> Field.CREATE_DATE),
+				"dateCreated", locale -> "createDate", locale -> "createDate"),
 			new DateTimeEntityField(
-				"dateModified",
-				locale -> Field.getSortableFieldName(Field.MODIFIED_DATE),
-				locale -> Field.MODIFIED_DATE),
+				"dateModified", locale -> "modifiedDate",
+				locale -> "modifiedDate"),
 			new EntityField(
-				"position", EntityField.Type.DOUBLE,
-				locale -> Field.getSortableFieldName("position"),
+				"position", EntityField.Type.DOUBLE, locale -> "position",
 				locale -> "position", String::valueOf),
 			new StringEntityField("name", locale -> "name"));
 	}

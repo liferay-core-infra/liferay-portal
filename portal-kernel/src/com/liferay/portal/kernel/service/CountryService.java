@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -189,6 +190,14 @@ public interface CountryService extends BaseService {
 			OrderByComparator<Country> orderByComparator)
 		throws PortalException;
 
+	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BaseModelSearchResult<Country> searchCountries(
+			long companyId, Boolean active, String keywords,
+			LinkedHashMap<String, Object> params, int start, int end,
+			OrderByComparator<Country> orderByComparator)
+		throws PortalException;
+
 	public Country updateActive(long countryId, boolean active)
 		throws PortalException;
 
@@ -204,4 +213,4 @@ public interface CountryService extends BaseService {
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1660110941
+// LIFERAY-SERVICE-BUILDER-HASH:-2133083442

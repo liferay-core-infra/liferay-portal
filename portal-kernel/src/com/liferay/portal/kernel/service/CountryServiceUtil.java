@@ -224,6 +224,17 @@ public class CountryServiceUtil {
 			companyId, active, keywords, start, end, orderByComparator);
 	}
 
+	public static com.liferay.portal.kernel.search.BaseModelSearchResult
+		<Country> searchCountries(
+				long companyId, Boolean active, String keywords,
+				java.util.LinkedHashMap<String, Object> params, int start,
+				int end, OrderByComparator<Country> orderByComparator)
+			throws PortalException {
+
+		return getService().searchCountries(
+			companyId, active, keywords, params, start, end, orderByComparator);
+	}
+
 	public static Country updateActive(long countryId, boolean active)
 		throws PortalException {
 
@@ -261,4 +272,4 @@ public class CountryServiceUtil {
 	private static volatile CountryService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1910016994
+// LIFERAY-SERVICE-BUILDER-HASH:2002489420

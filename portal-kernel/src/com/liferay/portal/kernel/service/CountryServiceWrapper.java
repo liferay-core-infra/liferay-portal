@@ -262,6 +262,20 @@ public class CountryServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.search.BaseModelSearchResult<Country>
+			searchCountries(
+				long companyId, Boolean active, String keywords,
+				java.util.LinkedHashMap<String, Object> params, int start,
+				int end,
+				com.liferay.portal.kernel.util.OrderByComparator<Country>
+					orderByComparator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _countryService.searchCountries(
+			companyId, active, keywords, params, start, end, orderByComparator);
+	}
+
+	@Override
 	public Country updateActive(long countryId, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -303,4 +317,4 @@ public class CountryServiceWrapper
 	private CountryService _countryService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:741143933
+// LIFERAY-SERVICE-BUILDER-HASH:1347294994

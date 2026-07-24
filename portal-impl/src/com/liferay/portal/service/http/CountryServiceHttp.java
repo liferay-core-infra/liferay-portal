@@ -1037,6 +1037,53 @@ public class CountryServiceHttp {
 		}
 	}
 
+	public static com.liferay.portal.kernel.search.BaseModelSearchResult
+		<com.liferay.portal.kernel.model.Country> searchCountries(
+				HttpPrincipal httpPrincipal, long companyId, Boolean active,
+				String keywords, java.util.LinkedHashMap<String, Object> params,
+				int start, int end,
+				com.liferay.portal.kernel.util.OrderByComparator
+					<com.liferay.portal.kernel.model.Country> orderByComparator)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				CountryServiceUtil.class, "searchCountries",
+				_searchCountriesParameterTypes27);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, active, keywords, params, start, end,
+				orderByComparator);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.portal.kernel.search.BaseModelSearchResult
+				<com.liferay.portal.kernel.model.Country>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static com.liferay.portal.kernel.model.Country updateActive(
 			HttpPrincipal httpPrincipal, long countryId, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1044,7 +1091,7 @@ public class CountryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				CountryServiceUtil.class, "updateActive",
-				_updateActiveParameterTypes27);
+				_updateActiveParameterTypes28);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, countryId, active);
@@ -1087,7 +1134,7 @@ public class CountryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				CountryServiceUtil.class, "updateCountry",
-				_updateCountryParameterTypes28);
+				_updateCountryParameterTypes29);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, externalReferenceCode, countryId, a2, a3, active,
@@ -1131,7 +1178,7 @@ public class CountryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				CountryServiceUtil.class, "updateGroupFilterEnabled",
-				_updateGroupFilterEnabledParameterTypes29);
+				_updateGroupFilterEnabledParameterTypes30);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, countryId, groupFilterEnabled);
@@ -1241,16 +1288,22 @@ public class CountryServiceHttp {
 			long.class, Boolean.class, String.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _updateActiveParameterTypes27 =
+	private static final Class<?>[] _searchCountriesParameterTypes27 =
+		new Class[] {
+			long.class, Boolean.class, String.class,
+			java.util.LinkedHashMap.class, int.class, int.class,
+			com.liferay.portal.kernel.util.OrderByComparator.class
+		};
+	private static final Class<?>[] _updateActiveParameterTypes28 =
 		new Class[] {long.class, boolean.class};
-	private static final Class<?>[] _updateCountryParameterTypes28 =
+	private static final Class<?>[] _updateCountryParameterTypes29 =
 		new Class[] {
 			String.class, long.class, String.class, String.class, boolean.class,
 			boolean.class, String.class, String.class, String.class,
 			double.class, boolean.class, boolean.class
 		};
-	private static final Class<?>[] _updateGroupFilterEnabledParameterTypes29 =
+	private static final Class<?>[] _updateGroupFilterEnabledParameterTypes30 =
 		new Class[] {long.class, boolean.class};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1831132903
+// LIFERAY-SERVICE-BUILDER-HASH:1278552563

@@ -21,6 +21,7 @@
 		<suppress checks="ConstantNameCheck" files="portal-test/src/com/liferay/portal/kernel/test/rule/CodeCoverageAssertor\.java" />
 		<suppress checks="FactoryCheck" files="portal-kernel/src/com/liferay/portal/kernel/service/ServiceContext\.java" />
 		<suppress checks="FactoryCheck" files="portal-kernel/src/com/liferay/portal/kernel/service/ServiceContextFactory\.java" />
+		<suppress checks="FetchContractCatchCheck" files="portal-impl/src/com/liferay/portlet/documentlibrary/service/impl/DLAppLocalServiceImpl\.java" />
 		<suppress checks="InnerExceptionClassCheck" files="portal-kernel/src/com/liferay/document/library/kernel/exception/FileEntryLockException\.java" />
 		<suppress checks="InnerExceptionClassCheck" files="portal-kernel/src/com/liferay/expando/kernel/exception/ColumnNameException\.java" />
 		<suppress checks="InnerExceptionClassCheck" files="portal-kernel/src/com/liferay/portal/kernel/exception/CountryTitleException\.java" />

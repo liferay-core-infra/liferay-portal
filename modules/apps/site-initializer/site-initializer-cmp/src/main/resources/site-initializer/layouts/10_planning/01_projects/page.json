@@ -1,6 +1,6 @@
 {
 	"friendlyURL": "/projects",
-	"hidden": true,
+	"hidden": false,
 	"name_i18n": {
 		"ar_SA": "المشاريع",
 		"bg_BG": "Проекти",

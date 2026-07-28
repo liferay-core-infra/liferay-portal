@@ -302,6 +302,24 @@ public class DSLQueryEntryPersistenceImplTest {
 	}
 
 	@Test
+	public void testDSLQueryMax() {
+		List<Object> results = _dslQueryStatusEntryPersistence.dslQuery(
+			DSLQueryFactoryUtil.select(
+				DSLFunctionFactoryUtil.max(
+					DSLQueryStatusEntryTable.INSTANCE.statusDate
+				).as(
+					"maxDate"
+				)
+			).from(
+				DSLQueryStatusEntryTable.INSTANCE
+			));
+
+		Object maxDate = results.get(0);
+
+		Assert.assertEquals(Date.class, maxDate.getClass());
+	}
+
+	@Test
 	public void testDSLQueryOrderBy() {
 		Assert.assertEquals(
 			Arrays.asList(1L, 3L, 2L),

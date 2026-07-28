@@ -7,6 +7,7 @@ package com.liferay.portal.dao.orm.hibernate;
 
 import com.liferay.portal.kernel.dao.orm.Type;
 
+import org.hibernate.type.CustomType;
 import org.hibernate.type.StandardBasicTypes;
 
 /**
@@ -53,7 +54,8 @@ public class TypeTranslator {
 	public static final org.hibernate.type.Type CURRENCY =
 		StandardBasicTypes.CURRENCY;
 
-	public static final org.hibernate.type.Type DATE = StandardBasicTypes.DATE;
+	public static final org.hibernate.type.Type DATE = new CustomType(
+		new TimestampType());
 
 	public static final org.hibernate.type.Type DOUBLE =
 		StandardBasicTypes.DOUBLE;

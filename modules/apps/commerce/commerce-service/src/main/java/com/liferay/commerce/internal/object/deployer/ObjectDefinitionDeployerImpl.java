@@ -200,7 +200,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		if (objectDefinition.isUnmodifiableSystemObject() ||
 			Objects.equals(
 				objectDefinition.getScope(),
-				ObjectDefinitionConstants.SCOPE_COMPANY)) {
+				ObjectDefinitionConstants.SCOPE_COMPANY) ||
+			objectDefinition.isCMS()) {
 
 			return Collections.emptyList();
 		}

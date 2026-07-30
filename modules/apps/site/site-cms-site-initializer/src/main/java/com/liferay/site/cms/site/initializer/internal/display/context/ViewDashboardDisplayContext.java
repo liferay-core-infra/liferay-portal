@@ -12,6 +12,7 @@ import com.liferay.object.constants.ObjectFolderConstants;
 import com.liferay.object.service.ObjectDefinitionService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -120,6 +121,8 @@ public class ViewDashboardDisplayContext {
 			"candidateAssetLibraries",
 			SectionDisplayContextUtil.getDepotEntriesJSONArray(
 				_httpServletRequest)
+		).put(
+			"cmpEnabled", LicenseManagerUtil.isAppEnabled(App.CMP)
 		).put(
 			"cmsGroupId", () -> _getCMSGroupId()
 		).put(

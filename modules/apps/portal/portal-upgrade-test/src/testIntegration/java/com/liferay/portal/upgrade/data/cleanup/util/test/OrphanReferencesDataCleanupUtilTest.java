@@ -18,11 +18,13 @@ import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.upgrade.data.cleanup.util.OrphanReferencesDataCleanupUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -31,6 +33,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.sql.Connection;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -116,6 +119,70 @@ public class OrphanReferencesDataCleanupUtilTest {
 					OrphanReferencesDataCleanupUtilTest.class.getName(), "')")),
 			false, null, "companyId", "Audit_AuditEvent", "companyId",
 			"Company");
+	}
+
+	@Test
+	public void testCleanUpTableMigratedViewTableWithDatabasePartitionEnabled()
+		throws Exception {
+
+		Assume.assumeTrue(PropsValues.DATABASE_PARTITION_ENABLED);
+
+		long secondaryCompanyId = _getSecondaryCompanyId();
+
+		Assume.assumeTrue(secondaryCompanyId != 0);
+
+		Set<String> migratedViewTableNames = ReflectionTestUtil.getFieldValue(
+			OrphanReferencesDataCleanupUtil.class, "_migratedViewTableNames");
+
+		String migratedViewTableName = StringUtil.toLowerCase(
+			_dbInspector.normalizeName(_TEST_TABLE_NAME));
+
+		migratedViewTableNames.add(migratedViewTableName);
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
+			_testCleanUpTable(
+				logCapture -> {
+					List<LogEntry> logEntries = logCapture.getLogEntries();
+
+					Assert.assertEquals(
+						logEntries.toString(), 1, logEntries.size());
+
+					LogEntry logEntry = logEntries.get(0);
+
+					Assert.assertEquals(
+						_getCleanUpTableExpectedMessage(
+							1, false, "companyId", _TEST_TABLE_NAME,
+							"companyId", "Company", secondaryCompanyId),
+						logEntry.getMessage());
+				},
+				() -> _db.runSQL(
+					_connection, "drop table if exists " + _TEST_TABLE_NAME),
+				null,
+				() -> {
+					_db.runSQL(
+						_connection,
+						StringBundler.concat(
+							"create table ", _TEST_TABLE_NAME,
+							" (testId LONG not null primary key, companyId ",
+							"LONG)"));
+
+					_db.runSQL(
+						_connection,
+						StringBundler.concat(
+							"insert into ", _TEST_TABLE_NAME,
+							" (testId, companyId) values (",
+							RandomTestUtil.nextLong(), ", ", secondaryCompanyId,
+							")"));
+				},
+				false, null, "companyId", _TEST_TABLE_NAME, "companyId",
+				"Company");
+		}
+		finally {
+			migratedViewTableNames.remove(migratedViewTableName);
+		}
 	}
 
 	@Test
@@ -276,6 +343,88 @@ public class OrphanReferencesDataCleanupUtilTest {
 	}
 
 	@Test
+	public void testCleanUpTableWithSecondaryPartitionView() throws Exception {
+		Assume.assumeTrue(PropsValues.DATABASE_PARTITION_ENABLED);
+
+		long secondaryCompanyId = _getSecondaryCompanyId();
+
+		Assume.assumeTrue(secondaryCompanyId != 0);
+
+		long companyId = RandomTestUtil.nextLong();
+
+		Set<String> migratedViewTableNames = ReflectionTestUtil.getFieldValue(
+			OrphanReferencesDataCleanupUtil.class, "_migratedViewTableNames");
+
+		String migratedViewTableName = StringUtil.toLowerCase(
+			_dbInspector.normalizeName(_TEST_TABLE_NAME));
+
+		migratedViewTableNames.add(migratedViewTableName);
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
+			_testCleanUpTable(
+				logCapture -> {
+					List<LogEntry> logEntries = logCapture.getLogEntries();
+
+					Assert.assertEquals(
+						logEntries.toString(), 1, logEntries.size());
+
+					LogEntry logEntry = logEntries.get(0);
+
+					Assert.assertEquals(
+						_getCleanUpTableExpectedMessage(
+							1, false, "companyId", _TEST_TABLE_NAME,
+							"companyId", "Company", companyId),
+						logEntry.getMessage());
+				},
+				() -> {
+					_runSecondaryCompanySQL(
+						"drop view if exists " + _TEST_TABLE_NAME);
+
+					_db.runSQL(
+						_connection,
+						"drop table if exists " + _TEST_TABLE_NAME);
+				},
+				null,
+				() -> {
+					_db.runSQL(
+						_connection,
+						StringBundler.concat(
+							"create table ", _TEST_TABLE_NAME,
+							" (testId LONG not null primary key, companyId ",
+							"LONG)"));
+
+					_db.runSQL(
+						_connection,
+						StringBundler.concat(
+							"insert into ", _TEST_TABLE_NAME,
+							" (testId, companyId) values (",
+							RandomTestUtil.nextLong(), ", ", companyId, ")"));
+
+					_db.runSQL(
+						_connection,
+						StringBundler.concat(
+							"insert into ", _TEST_TABLE_NAME,
+							" (testId, companyId) values (",
+							RandomTestUtil.nextLong(), ", ", secondaryCompanyId,
+							")"));
+
+					_runSecondaryCompanySQL(
+						StringBundler.concat(
+							"create or replace view ", _TEST_TABLE_NAME,
+							" as select companyId from Company"));
+				},
+				false, null, "companyId", _TEST_TABLE_NAME, "companyId",
+				"Company");
+		}
+		finally {
+			migratedViewTableNames.remove(migratedViewTableName);
+		}
+	}
+
+	@Test
 	public void testCleanUpTableWithWhereClause() throws Exception {
 		long companyId = RandomTestUtil.nextLong();
 		long ownerType1 = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
@@ -394,6 +543,18 @@ public class OrphanReferencesDataCleanupUtilTest {
 			_dbInspector.normalizeName(targetTableName));
 	}
 
+	private long _getSecondaryCompanyId() {
+		long defaultCompanyId = PortalInstancePool.getDefaultCompanyId();
+
+		for (long companyId : PortalInstancePool.getCompanyIds()) {
+			if (companyId != defaultCompanyId) {
+				return companyId;
+			}
+		}
+
+		return 0;
+	}
+
 	private String _normalizeTableName(String tableName) throws Exception {
 		tableName = _dbInspector.normalizeName(tableName);
 
@@ -410,6 +571,17 @@ public class OrphanReferencesDataCleanupUtilTest {
 		return StringBundler.concat(
 			PropsValues.DATABASE_PARTITION_SCHEMA_NAME_PREFIX, companyId,
 			StringPool.PERIOD, tableName);
+	}
+
+	private void _runSecondaryCompanySQL(String sql) throws Exception {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_getSecondaryCompanyId());
+
+			Connection connection = DataAccess.getConnection()) {
+
+			_db.runSQL(connection, sql);
+		}
 	}
 
 	private void _testCleanUpTable(
@@ -444,6 +616,8 @@ public class OrphanReferencesDataCleanupUtilTest {
 			cleanUpDataUnsafeRunnable.run();
 		}
 	}
+
+	private static final String _TEST_TABLE_NAME = "TestTransitionTable";
 
 	private static Connection _connection;
 	private static DB _db;

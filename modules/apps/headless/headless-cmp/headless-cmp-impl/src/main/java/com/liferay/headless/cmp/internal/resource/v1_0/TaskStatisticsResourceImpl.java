@@ -18,7 +18,6 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -45,12 +44,6 @@ public class TaskStatisticsResourceImpl extends BaseTaskStatisticsResourceImpl {
 			Long projectId, Filter filter)
 		throws Exception {
 
-		if (!FeatureFlagManagerUtil.isEnabled(
-				contextCompany.getCompanyId(), "LPD-58677")) {
-
-			throw new UnsupportedOperationException();
-		}
-
 		return _toTaskStatistics(
 			_objectEntryLocalService.getObjectEntry(
 				GetterUtil.getLong(projectId)),
@@ -61,12 +54,6 @@ public class TaskStatisticsResourceImpl extends BaseTaskStatisticsResourceImpl {
 
 	@Override
 	public TaskStatistics getTaskStatistics(Filter filter) throws Exception {
-		if (!FeatureFlagManagerUtil.isEnabled(
-				contextCompany.getCompanyId(), "LPD-58677")) {
-
-			throw new UnsupportedOperationException();
-		}
-
 		return _toTaskStatistics(
 			null,
 			_objectDefinitionLocalService.

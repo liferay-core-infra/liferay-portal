@@ -5,6 +5,8 @@
 
 package com.liferay.portal.kernel.servlet;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Portlet;
@@ -16,12 +18,8 @@ import jakarta.servlet.ServletContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -30,7 +28,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class PortletResourcesUtil {
 
 	public static ServletContext getPathServletContext(String path) {
-		for (ServletContext servletContext : _servletContexts.values()) {
+		for (ServletContext servletContext : _serviceTrackerMap.values()) {
 			if (path.startsWith(servletContext.getContextPath())) {
 				return servletContext;
 			}
@@ -80,51 +78,67 @@ public class PortletResourcesUtil {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
-	private static final ServiceTracker<Portlet, Portlet> _serviceTracker;
-	private static final Map<ServiceReference<Portlet>, ServletContext>
-		_servletContexts = new ConcurrentHashMap<>();
 
-	private static class PortletResourcesServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<Portlet, Portlet> {
+	private static final ServiceTrackerMap<String, ServletContext>
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, Portlet.class, null,
+			(serviceReference, emitter) -> {
+				Portlet portlet = _bundleContext.getService(serviceReference);
 
-		@Override
-		public Portlet addingService(
-			ServiceReference<Portlet> serviceReference) {
+				try {
+					if (portlet != null) {
+						PortletApp portletApp = portlet.getPortletApp();
 
-			Portlet portlet = _bundleContext.getService(serviceReference);
+						if ((portletApp != null) && portletApp.isWARFile()) {
+							ServletContext servletContext =
+								portletApp.getServletContext();
 
-			PortletApp portletApp = portlet.getPortletApp();
+							if (servletContext != null) {
+								emitter.emit(servletContext.getContextPath());
+							}
+						}
+					}
+				}
+				finally {
+					_bundleContext.ungetService(serviceReference);
+				}
+			},
+			new ServiceTrackerCustomizer<Portlet, ServletContext>() {
 
-			if (portletApp.isWARFile()) {
-				_servletContexts.put(
-					serviceReference, portletApp.getServletContext());
-			}
+				@Override
+				public ServletContext addingService(
+					ServiceReference<Portlet> serviceReference) {
 
-			return portlet;
-		}
+					Portlet portlet = _bundleContext.getService(
+						serviceReference);
 
-		@Override
-		public void modifiedService(
-			ServiceReference<Portlet> serviceReference, Portlet portlet) {
-		}
+					if (portlet == null) {
+						return null;
+					}
 
-		@Override
-		public void removedService(
-			ServiceReference<Portlet> serviceReference, Portlet portlet) {
+					PortletApp portletApp = portlet.getPortletApp();
 
-			_bundleContext.ungetService(serviceReference);
+					if ((portletApp != null) && portletApp.isWARFile()) {
+						return portletApp.getServletContext();
+					}
 
-			_servletContexts.remove(serviceReference);
-		}
+					return null;
+				}
 
-	}
+				@Override
+				public void modifiedService(
+					ServiceReference<Portlet> serviceReference,
+					ServletContext servletContext) {
+				}
 
-	static {
-		_serviceTracker = new ServiceTracker<>(
-			_bundleContext, Portlet.class,
-			new PortletResourcesServiceTrackerCustomizer());
+				@Override
+				public void removedService(
+					ServiceReference<Portlet> serviceReference,
+					ServletContext servletContext) {
 
-		_serviceTracker.open();
-	}
+					_bundleContext.ungetService(serviceReference);
+				}
+
+			});
 
 }

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.service.SQLStateAcceptor;
 import com.liferay.portal.kernel.spring.aop.Property;
 import com.liferay.portal.kernel.spring.aop.Retry;
+import com.liferay.portal.kernel.transaction.TransactionCallbackUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -205,7 +206,14 @@ public class CTScoreLocalServiceImpl extends CTScoreLocalServiceBaseImpl {
 			ctScorePersistence.closeSession(session);
 		}
 
-		_sendUserNotificationEvents(ctScore, originalCTScore);
+		CTScore updatedCTScore = ctScore;
+
+		TransactionCallbackUtil.registerCommitCallback(
+			() -> {
+				_sendUserNotificationEvents(updatedCTScore, originalCTScore);
+
+				return null;
+			});
 
 		return ctScore;
 	}

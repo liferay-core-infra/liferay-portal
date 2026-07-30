@@ -5,7 +5,6 @@
 
 package com.liferay.portal.db.partition.util;
 
-import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
@@ -386,19 +385,6 @@ public class DBPartitionUtil {
 		}
 
 		return true;
-	}
-
-	public static long incrementCounter() {
-		if (!PropsValues.DATABASE_PARTITION_ENABLED) {
-			return CounterLocalServiceUtil.increment();
-		}
-
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-					CompanyConstants.SYSTEM)) {
-
-			return CounterLocalServiceUtil.increment();
-		}
 	}
 
 	public static boolean removeDBPartition(long companyId)

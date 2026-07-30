@@ -7,7 +7,6 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.cluster.Clusterable;
@@ -360,7 +359,7 @@ public class VirtualHostLocalServiceImpl
 					}
 				}
 
-				long virtualHostId = DBPartitionUtil.incrementCounter();
+				long virtualHostId = counterLocalService.increment();
 
 				virtualHost = virtualHostPersistence.create(virtualHostId);
 

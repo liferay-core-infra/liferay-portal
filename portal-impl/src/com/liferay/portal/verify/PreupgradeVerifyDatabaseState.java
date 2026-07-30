@@ -134,6 +134,10 @@ public class PreupgradeVerifyDatabaseState extends PreupgradeVerifyProcess {
 				viewNames.addAll(
 					dbInspector.getControlTableNames(missingTableNames));
 
+				if (missingTableNames.contains("VirtualHost")) {
+					viewNames.add(dbInspector.normalizeName("VirtualHost"));
+				}
+
 				missingTableNames.removeAll(viewNames);
 			}
 

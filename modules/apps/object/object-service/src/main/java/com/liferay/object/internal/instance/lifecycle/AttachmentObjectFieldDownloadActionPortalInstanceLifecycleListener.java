@@ -11,10 +11,11 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
-import com.liferay.portal.instance.lifecycle.InitialRequestPortalInstanceLifecycleListener;
+import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
@@ -27,8 +28,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.util.Collections;
 import java.util.List;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -36,21 +35,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author Manuele Castro
  */
 @Component(service = PortalInstanceLifecycleListener.class)
-public class
-	AttachmentObjectFieldDownloadActionInitialRequestPortalInstanceLifecycleListener
-		extends InitialRequestPortalInstanceLifecycleListener {
-
-	@Activate
-	@Override
-	protected void activate(BundleContext bundleContext) {
-		super.activate(bundleContext);
-	}
+public class AttachmentObjectFieldDownloadActionPortalInstanceLifecycleListener
+	extends BasePortalInstanceLifecycleListener {
 
 	@Override
-	protected void doPortalInstanceRegistered(long companyId) throws Exception {
+	public void portalInstanceRegistered(Company company) throws Exception {
 		List<ObjectDefinition> objectDefinitions =
 			_objectDefinitionLocalService.getObjectDefinitions(
-				companyId, WorkflowConstants.STATUS_APPROVED);
+				company.getCompanyId(), WorkflowConstants.STATUS_APPROVED);
 
 		for (ObjectDefinition objectDefinition : objectDefinitions) {
 			List<ObjectField> objectFields =
@@ -116,7 +108,8 @@ public class
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AttachmentObjectFieldDownloadActionInitialRequestPortalInstanceLifecycleListener.class);
+		AttachmentObjectFieldDownloadActionPortalInstanceLifecycleListener.
+			class);
 
 	@Reference
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;

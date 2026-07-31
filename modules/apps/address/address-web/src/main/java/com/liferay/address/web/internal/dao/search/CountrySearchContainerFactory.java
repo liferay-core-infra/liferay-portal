@@ -79,7 +79,8 @@ public class CountrySearchContainerFactory {
 		if (Validator.isNotNull(keywords)) {
 			baseModelSearchResult = CountryServiceUtil.searchCountries(
 				PortalUtil.getCompanyId(liferayPortletRequest), active,
-				keywords, searchContainer.getStart(), searchContainer.getEnd(),
+				keywords, null, searchContainer.getStart(),
+				searchContainer.getEnd(),
 				searchContainer.getOrderByComparator());
 		}
 		else {

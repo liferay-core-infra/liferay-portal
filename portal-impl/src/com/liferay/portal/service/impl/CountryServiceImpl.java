@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.service.base.CountryServiceBaseImpl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -260,12 +261,13 @@ public class CountryServiceImpl extends CountryServiceBaseImpl {
 	@JSONWebService(mode = JSONWebServiceMode.IGNORE)
 	@Override
 	public BaseModelSearchResult<Country> searchCountries(
-			long companyId, Boolean active, String keywords, int start, int end,
+			long companyId, Boolean active, String keywords,
+			LinkedHashMap<String, Object> params, int start, int end,
 			OrderByComparator<Country> orderByComparator)
 		throws PortalException {
 
 		return countryLocalService.searchCountries(
-			companyId, active, keywords, start, end, orderByComparator);
+			companyId, active, keywords, params, start, end, orderByComparator);
 	}
 
 	@Override

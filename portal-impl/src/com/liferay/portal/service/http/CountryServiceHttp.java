@@ -994,7 +994,8 @@ public class CountryServiceHttp {
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<com.liferay.portal.kernel.model.Country> searchCountries(
 				HttpPrincipal httpPrincipal, long companyId, Boolean active,
-				String keywords, int start, int end,
+				String keywords, java.util.LinkedHashMap<String, Object> params,
+				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator
 					<com.liferay.portal.kernel.model.Country> orderByComparator)
 			throws com.liferay.portal.kernel.exception.PortalException {
@@ -1005,7 +1006,7 @@ public class CountryServiceHttp {
 				_searchCountriesParameterTypes26);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId, active, keywords, start, end,
+				methodKey, companyId, active, keywords, params, start, end,
 				orderByComparator);
 
 			Object returnObj = null;
@@ -1238,7 +1239,8 @@ public class CountryServiceHttp {
 		new Class[] {long.class, String.class};
 	private static final Class<?>[] _searchCountriesParameterTypes26 =
 		new Class[] {
-			long.class, Boolean.class, String.class, int.class, int.class,
+			long.class, Boolean.class, String.class,
+			java.util.LinkedHashMap.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
 	private static final Class<?>[] _updateActiveParameterTypes27 =
@@ -1253,4 +1255,4 @@ public class CountryServiceHttp {
 		new Class[] {long.class, boolean.class};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1831132903
+// LIFERAY-SERVICE-BUILDER-HASH:1793028980

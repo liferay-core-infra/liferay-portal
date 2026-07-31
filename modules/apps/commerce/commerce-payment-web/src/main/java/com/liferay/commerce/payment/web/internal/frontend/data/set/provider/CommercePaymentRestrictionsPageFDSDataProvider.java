@@ -83,7 +83,8 @@ public class CommercePaymentRestrictionsPageFDSDataProvider
 		BaseModelSearchResult<Country> baseModelSearchResult =
 			_countryService.searchCountries(
 				_portal.getCompanyId(httpServletRequest), true,
-				fdsKeywords.getKeywords(), fdsPagination.getStartPosition(),
+				fdsKeywords.getKeywords(), null,
+				fdsPagination.getStartPosition(),
 				fdsPagination.getEndPosition(),
 				CommerceUtil.getCountryOrderByComparator(
 					orderByFieldName, orderByType));
@@ -106,7 +107,7 @@ public class CommercePaymentRestrictionsPageFDSDataProvider
 		BaseModelSearchResult<Country> commerceCountryBaseModelSearchResult =
 			_countryService.searchCountries(
 				_portal.getCompanyId(httpServletRequest), true,
-				fdsKeywords.getKeywords(), 0, 0, null);
+				fdsKeywords.getKeywords(), null, 0, 0, null);
 
 		return commerceCountryBaseModelSearchResult.getLength();
 	}

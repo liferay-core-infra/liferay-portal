@@ -29,8 +29,6 @@ import com.liferay.portal.kernel.model.RegionTable;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
-import com.liferay.portal.kernel.search.Indexable;
-import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.AddressLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -55,7 +53,6 @@ import java.util.List;
  */
 public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Region addRegion(
 			String externalReferenceCode, long countryId, boolean active,
@@ -110,7 +107,6 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 		return deleteRegion(region);
 	}
 
-	@Indexable(type = IndexableType.DELETE)
 	@Override
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public Region deleteRegion(Region region) {
@@ -257,7 +253,6 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 			start, end);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Region updateActive(long regionId, boolean active)
 		throws PortalException {
@@ -269,7 +264,6 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 		return regionPersistence.update(region);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Region updateRegion(
 			String externalReferenceCode, long regionId, boolean active,
@@ -351,7 +345,9 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 				}
 			).and(
 				() -> {
-					if (MapUtil.isEmpty(params)) {
+					if (MapUtil.isEmpty(params) ||
+						!params.containsKey("countryId")) {
+
 						return null;
 					}
 
@@ -362,6 +358,14 @@ public class RegionLocalServiceImpl extends RegionLocalServiceBaseImpl {
 					}
 
 					return null;
+				}
+			).and(
+				() -> {
+					if (MapUtil.isEmpty(params)) {
+						return null;
+					}
+
+					return (Predicate)params.get("filterPredicate");
 				}
 			));
 	}

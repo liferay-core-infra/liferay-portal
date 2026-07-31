@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +81,6 @@ public interface CountryLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Country addCountry(Country country);
 
-	@Indexable(type = IndexableType.REINDEX)
 	public Country addCountry(
 			String externalReferenceCode, String a2, String a3, boolean active,
 			boolean billingAllowed, String idd, String name, String number,
@@ -374,11 +374,11 @@ public interface CountryLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public BaseModelSearchResult<Country> searchCountries(
-			long companyId, Boolean active, String keywords, int start, int end,
+			long companyId, Boolean active, String keywords,
+			LinkedHashMap<String, Object> params, int start, int end,
 			OrderByComparator<Country> orderByComparator)
 		throws PortalException;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public Country updateActive(long countryId, boolean active)
 		throws PortalException;
 
@@ -395,7 +395,6 @@ public interface CountryLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Country updateCountry(Country country);
 
-	@Indexable(type = IndexableType.REINDEX)
 	public Country updateCountry(
 			String externalReferenceCode, long countryId, String a2, String a3,
 			boolean active, boolean billingAllowed, String idd, String name,
@@ -411,7 +410,6 @@ public interface CountryLocalService
 			Country country, Map<String, String> titleMap)
 		throws PortalException;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public Country updateGroupFilterEnabled(
 			long countryId, boolean groupFilterEnabled)
 		throws PortalException;
@@ -431,4 +429,4 @@ public interface CountryLocalService
 		throws E;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2003063802
+// LIFERAY-SERVICE-BUILDER-HASH:1106758933

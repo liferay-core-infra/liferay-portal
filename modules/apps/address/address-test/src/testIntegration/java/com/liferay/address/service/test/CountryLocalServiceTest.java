@@ -379,7 +379,7 @@ public class CountryLocalServiceTest {
 
 		BaseModelSearchResult<Country> baseModelSearchResult =
 			_countryLocalService.searchCountries(
-				serviceContext.getCompanyId(), true, keywords, start, end,
+				serviceContext.getCompanyId(), true, keywords, null, start, end,
 				orderByComparator);
 
 		List<Country> actualCountries = baseModelSearchResult.getBaseModels();
@@ -406,7 +406,7 @@ public class CountryLocalServiceTest {
 
 		BaseModelSearchResult<Country> baseModelSearchResult =
 			_countryLocalService.searchCountries(
-				TestPropsValues.getCompanyId(), active, keywords,
+				TestPropsValues.getCompanyId(), active, keywords, null,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				OrderByComparatorFactoryUtil.create("Country", "name", true));
 

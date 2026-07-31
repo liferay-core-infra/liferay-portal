@@ -46,7 +46,7 @@ public class ServiceBuilderCountryUtil {
 			BaseModelSearchResult<Country> baseModelSearchResult =
 				CountryServiceUtil.searchCountries(
 					companyId, true,
-					StringUtil.quote(addressCountry, CharPool.QUOTE),
+					StringUtil.quote(addressCountry, CharPool.QUOTE), null,
 					QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 					OrderByComparatorFactoryUtil.create(
 						CountryImpl.TABLE_NAME, "name", true));

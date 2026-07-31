@@ -10,35 +10,45 @@ import com.liferay.exportimport.vulcan.batch.engine.ExportImportVulcanBatchEngin
 import com.liferay.headless.admin.address.dto.v1_0.Country;
 import com.liferay.headless.admin.address.dto.v1_0.Region;
 import com.liferay.headless.admin.address.internal.odata.entity.v1_0.CountryEntityModel;
+import com.liferay.headless.admin.address.internal.odata.filter.expression.PredicateExpressionVisitorImpl;
 import com.liferay.headless.admin.address.resource.v1_0.CountryResource;
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.search.BooleanClauseOccur;
-import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.model.CountryTable;
+import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
-import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.service.CountryLocalService;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.RegionLocalService;
 import com.liferay.portal.kernel.service.RegionService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.filter.FilterParser;
+import com.liferay.portal.odata.filter.FilterParserProvider;
+import com.liferay.portal.odata.filter.expression.Expression;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
-import com.liferay.portal.vulcan.util.SearchUtil;
 
 import jakarta.ws.rs.core.MultivaluedMap;
 
 import java.io.Serializable;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -83,36 +93,15 @@ public class CountryResourceImpl
 			Sort[] sorts)
 		throws Exception {
 
-		return SearchUtil.search(
-			Collections.emptyMap(),
-			booleanQuery -> {
-				if (active != null) {
-					BooleanFilter booleanFilter =
-						booleanQuery.getPreBooleanFilter();
+		BaseModelSearchResult<com.liferay.portal.kernel.model.Country>
+			baseModelSearchResult = _countryService.searchCountries(
+				contextCompany.getCompanyId(), active, search, _getParams(),
+				pagination.getStartPosition(), pagination.getEndPosition(),
+				_toOrderByComparator(sorts));
 
-					booleanFilter.add(
-						new TermFilter("active", String.valueOf(active)),
-						BooleanClauseOccur.MUST);
-				}
-			},
-			filter, com.liferay.portal.kernel.model.Country.class.getName(),
-			search, pagination,
-			queryConfig -> queryConfig.setSelectedFieldNames(
-				Field.ENTRY_CLASS_PK),
-			searchContext -> searchContext.setCompanyId(
-				contextCompany.getCompanyId()),
-			sorts,
-			document -> {
-				com.liferay.portal.kernel.model.Country serviceBuilderCountry =
-					_countryLocalService.fetchCountry(
-						GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)));
-
-				if (serviceBuilderCountry == null) {
-					return null;
-				}
-
-				return _toCountry(serviceBuilderCountry);
-			});
+		return Page.of(
+			transform(baseModelSearchResult.getBaseModels(), this::_toCountry),
+			pagination, baseModelSearchResult.getLength());
 	}
 
 	@Override
@@ -379,6 +368,53 @@ public class CountryResourceImpl
 		return serviceBuilderRegion;
 	}
 
+	private String _getFilterString() {
+		if (contextHttpServletRequest != null) {
+			return ParamUtil.getString(contextHttpServletRequest, "filter");
+		}
+
+		if (contextUriInfo == null) {
+			return null;
+		}
+
+		MultivaluedMap<String, String> queryParameters =
+			contextUriInfo.getQueryParameters();
+
+		return queryParameters.getFirst("filter");
+	}
+
+	private LinkedHashMap<String, Object> _getParams() throws Exception {
+		String filterString = _getFilterString();
+
+		if (Validator.isNull(filterString)) {
+			return null;
+		}
+
+		FilterParser filterParser = _filterParserProvider.provide(_entityModel);
+
+		Expression expression = filterParser.parse(filterString);
+
+		Predicate predicate = (Predicate)expression.accept(
+			new PredicateExpressionVisitorImpl(
+				HashMapBuilder.<String, Column<?, ?>>put(
+					"dateCreated", CountryTable.INSTANCE.createDate
+				).put(
+					"dateModified", CountryTable.INSTANCE.modifiedDate
+				).put(
+					"name", CountryTable.INSTANCE.name
+				).put(
+					"position", CountryTable.INSTANCE.position
+				).build()));
+
+		if (predicate == null) {
+			return null;
+		}
+
+		return LinkedHashMapBuilder.<String, Object>put(
+			"filterPredicate", predicate
+		).build();
+	}
+
 	private ServiceContext _getServiceContext() throws Exception {
 		if (contextHttpServletRequest != null) {
 			ServiceContext serviceContext = ServiceContextFactory.getInstance(
@@ -415,6 +451,25 @@ public class CountryResourceImpl
 		throws Exception {
 
 		return _countryResourceDTOConverter.toDTO(serviceBuilderCountry);
+	}
+
+	private OrderByComparator<com.liferay.portal.kernel.model.Country>
+		_toOrderByComparator(Sort[] sorts) {
+
+		if (ArrayUtil.isEmpty(sorts)) {
+			return null;
+		}
+
+		List<Object> objects = new ArrayList<>();
+
+		for (Sort sort : sorts) {
+			objects.add(sort.getFieldName());
+			objects.add(!sort.isReverse());
+		}
+
+		return OrderByComparatorFactoryUtil.create(
+			CountryTable.INSTANCE.getTableName(),
+			objects.toArray(new Object[0]));
 	}
 
 	private com.liferay.portal.kernel.model.Country _updateNestedResources(
@@ -456,6 +511,9 @@ public class CountryResourceImpl
 
 	@Reference
 	private CountryService _countryService;
+
+	@Reference
+	private FilterParserProvider _filterParserProvider;
 
 	@Reference
 	private Language _language;

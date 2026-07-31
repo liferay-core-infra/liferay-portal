@@ -35,8 +35,6 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
-import com.liferay.portal.kernel.search.Indexable;
-import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.AddressLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -46,12 +44,14 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.service.base.CountryLocalServiceBaseImpl;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +61,6 @@ import java.util.Map;
  */
 public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Country addCountry(
 			String externalReferenceCode, String a2, String a3, boolean active,
@@ -126,7 +125,6 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 		}
 	}
 
-	@Indexable(type = IndexableType.DELETE)
 	@Override
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public Country deleteCountry(Country country) throws PortalException {
@@ -282,7 +280,8 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 
 	@Override
 	public BaseModelSearchResult<Country> searchCountries(
-			long companyId, Boolean active, String keywords, int start, int end,
+			long companyId, Boolean active, String keywords,
+			LinkedHashMap<String, Object> params, int start, int end,
 			OrderByComparator<Country> orderByComparator)
 		throws PortalException {
 
@@ -290,7 +289,7 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 			startAndEnd -> countryPersistence.dslQuery(
 				_getGroupByStep(
 					DSLQueryFactoryUtil.selectDistinct(CountryTable.INSTANCE),
-					companyId, active, keywords
+					companyId, active, keywords, params
 				).orderBy(
 					CountryTable.INSTANCE, orderByComparator
 				).limit(
@@ -300,11 +299,10 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 				_getGroupByStep(
 					DSLQueryFactoryUtil.countDistinct(
 						CountryTable.INSTANCE.countryId),
-					companyId, active, keywords)),
+					companyId, active, keywords, params)),
 			start, end);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Country updateActive(long countryId, boolean active)
 		throws PortalException {
@@ -316,7 +314,6 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 		return countryPersistence.update(country);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Country updateCountry(
 			String externalReferenceCode, long countryId, String a2, String a3,
@@ -362,7 +359,6 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 		return super.updateCountryLocalizations(country, titleMap);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Country updateGroupFilterEnabled(
 			long countryId, boolean groupFilterEnabled)
@@ -376,7 +372,8 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 	}
 
 	private GroupByStep _getGroupByStep(
-			FromStep fromStep, long companyId, Boolean active, String keywords)
+			FromStep fromStep, long companyId, Boolean active, String keywords,
+			LinkedHashMap<String, Object> params)
 		throws PortalException {
 
 		JoinStep joinStep = fromStep.from(
@@ -429,6 +426,14 @@ public class CountryLocalServiceImpl extends CountryLocalServiceBaseImpl {
 					}
 
 					return Predicate.withParentheses(keywordsPredicate);
+				}
+			).and(
+				() -> {
+					if (MapUtil.isEmpty(params)) {
+						return null;
+					}
+
+					return (Predicate)params.get("filterPredicate");
 				}
 			));
 	}

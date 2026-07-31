@@ -74,6 +74,7 @@ JavaAnnotationDefaultAttributeCheck | [Styling](styling_checks.md#styling-checks
 JavaAnnotationsCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Performs several checks on annotations. |
 [JavaAnonymousInnerClassCheck](check/java_anonymous_inner_class_check.md#javaanonymousinnerclasscheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Performs several checks on anonymous classes. |
 JavaAssertEqualsCheck | [Styling](styling_checks.md#styling-checks) | Validates `Assert.assertEquals` calls. |
+JavaBasePortalFilterCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Verifies that subclasses of `BasePortalFilter` do not override `isFilterEnabled()`. |
 JavaBooleanStatementCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Performs several checks on variable declaration of type `Boolean`. |
 JavaBooleanUsageCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Finds incorrect use of passing boolean values in `setAttribute` calls. |
 JavaClassNameCheck | [Naming Conventions](naming_conventions_checks.md#naming-conventions-checks) | Checks if class names follow naming conventions. |
@@ -105,6 +106,7 @@ JavaExceptionCheck | [Naming Conventions](naming_conventions_checks.md#naming-co
 JavaExpandoBridgeAttributesCallOrderCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Ensure `setExpandoBridgeAttributes` is the final setter called on a model before model persistence. |
 JavaFeatureFlagManagerUtilCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Finds cases where `FeatureFlagManagerUtil.isEnabled` should be used and incorrect use of it. |
 JavaFeatureFlagsAndTestInfoAnnotationCheck | [Styling](styling_checks.md#styling-checks) | Sorts the values in `@FeatureFlags` and `@TestInfo` annotation. |
+JavaFilterConfigurationCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Checks that filter classes are configured in the `portal.properties` file. |
 JavaFinalVariableCheck | [Styling](styling_checks.md#styling-checks) | Finds cases of unneeded `final` modifiers for variables and parameters. |
 [JavaFinderCacheCheck](check/java_finder_cache_check.md#javafindercachecheck) | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Checks that the method `BasePersistenceImpl.fetchByPrimaryKey` is overridden, when using `FinderPath`. |
 JavaFinderImplCustomSQLCheck | [Bug Prevention](bug_prevention_checks.md#bug-prevention-checks) | Checks that hardcoded SQL values in `*FinderImpl` classes match the SQL in the `.xml` file in the `custom-sql` directory. |

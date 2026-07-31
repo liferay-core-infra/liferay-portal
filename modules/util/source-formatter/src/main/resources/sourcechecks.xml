@@ -766,6 +766,11 @@
 			<category name="Bug Prevention" />
 			<description name="Performs several checks on anonymous classes." />
 		</check>
+		<check name="JavaBasePortalFilterCheck">
+			<category name="Bug Prevention" />
+			<description name="Verifies that subclasses of `BasePortalFilter` do not override `isFilterEnabled()`." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaCleanUpMethodSuperCleanUpCheck">
 			<category name="Bug Prevention" />
 			<description name="Checks that `cleanUp` method in `*Tag` class with `@Override` annotation calls the `cleanUp` method of the superclass." />
@@ -825,6 +830,11 @@
 		<check name="JavaFeatureFlagsAndTestInfoAnnotationCheck">
 			<category name="Styling" />
 			<description name="Sorts the values in `@FeatureFlags` and `@TestInfo` annotation." />
+		</check>
+		<check name="JavaFilterConfigurationCheck">
+			<category name="Bug Prevention" />
+			<description name="Checks that filter classes are configured in the `portal.properties` file." />
+			<property name="enabled" value="false" />
 		</check>
 		<check name="JavaFinderCacheCheck">
 			<category name="Bug Prevention" />

@@ -5,15 +5,16 @@
 
 package com.liferay.exportimport.kernel.xstream;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -22,7 +23,13 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 public class XStreamAliasRegistryUtil {
 
 	public static Map<Class<?>, String> getAliases() {
-		return new HashMap<>(_xstreamAliases);
+		Map<Class<?>, String> aliases = new HashMap<>();
+
+		for (Class<?> clazz : _serviceTrackerMap.keySet()) {
+			aliases.put(clazz, _serviceTrackerMap.getService(clazz));
+		}
+
+		return aliases;
 	}
 
 	private XStreamAliasRegistryUtil() {
@@ -30,51 +37,60 @@ public class XStreamAliasRegistryUtil {
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
-	private static final ServiceTracker<XStreamAlias, XStreamAlias>
-		_serviceTracker;
-	private static final Map<Class<?>, String> _xstreamAliases =
-		new ConcurrentHashMap<>();
-
-	private static class XStreamAliasServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<XStreamAlias, XStreamAlias> {
-
-		@Override
-		public XStreamAlias addingService(
-			ServiceReference<XStreamAlias> serviceReference) {
-
-			XStreamAlias xStreamAlias = _bundleContext.getService(
-				serviceReference);
-
-			_xstreamAliases.put(
-				xStreamAlias.getClazz(), xStreamAlias.getName());
-
-			return xStreamAlias;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<XStreamAlias> serviceReference,
-			XStreamAlias xStreamAlias) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<XStreamAlias> serviceReference,
-			XStreamAlias xStreamAlias) {
-
-			_bundleContext.ungetService(serviceReference);
-
-			_xstreamAliases.remove(xStreamAlias.getClazz());
-		}
-
-	}
+	private static final ServiceTrackerMap<Class<?>, String> _serviceTrackerMap;
 
 	static {
-		_serviceTracker = new ServiceTracker<>(
-			_bundleContext, XStreamAlias.class,
-			new XStreamAliasServiceTrackerCustomizer());
+		_serviceTrackerMap =
+			ServiceTrackerMapFactory.
+				<Class<?>, XStreamAlias, String>openSingleValueMap(
+					_bundleContext, XStreamAlias.class, null,
+					new ServiceReferenceMapper<Class<?>, XStreamAlias>() {
 
-		_serviceTracker.open();
+						@Override
+						public void map(
+							ServiceReference<XStreamAlias> serviceReference,
+							Emitter<Class<?>> emitter) {
+
+							XStreamAlias xStreamAlias =
+								_bundleContext.getService(serviceReference);
+
+							if (xStreamAlias != null) {
+								emitter.emit(xStreamAlias.getClazz());
+							}
+						}
+
+					},
+					new ServiceTrackerCustomizer<XStreamAlias, String>() {
+
+						@Override
+						public String addingService(
+							ServiceReference<XStreamAlias> serviceReference) {
+
+							XStreamAlias xStreamAlias =
+								_bundleContext.getService(serviceReference);
+
+							if (xStreamAlias != null) {
+								return xStreamAlias.getName();
+							}
+
+							return null;
+						}
+
+						@Override
+						public void modifiedService(
+							ServiceReference<XStreamAlias> serviceReference,
+							String name) {
+						}
+
+						@Override
+						public void removedService(
+							ServiceReference<XStreamAlias> serviceReference,
+							String name) {
+
+							_bundleContext.ungetService(serviceReference);
+						}
+
+					});
 	}
 
 }

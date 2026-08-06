@@ -1,6 +1,6 @@
 {
 	"friendlyURL": "/tasks",
-	"hidden": false,
+	"hidden": true,
 	"name_i18n": {
 		"ar_SA": "المهام",
 		"bg_BG": "Задачи",

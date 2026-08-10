@@ -138,7 +138,7 @@ public class SystemObjectEntryInfoItemFormProvider
 			).name(
 				"basic-information"
 			).build(),
-			null, displayPageInfoFieldSet, _infoItemFieldReaderFieldSetProvider,
+			displayPageInfoFieldSet, _infoItemFieldReaderFieldSetProvider,
 			_itemClassName, _objectActionLocalService, _objectDefinition,
 			objectDefinitionId, _objectDefinitionLocalService,
 			_objectFieldInfoFieldConverter, _objectFieldLocalService,

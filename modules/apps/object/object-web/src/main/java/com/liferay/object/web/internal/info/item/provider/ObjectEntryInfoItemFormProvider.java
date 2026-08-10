@@ -5,7 +5,6 @@
 
 package com.liferay.object.web.internal.info.item.provider;
 
-import com.liferay.asset.info.item.provider.AssetEntryInfoItemFieldSetProvider;
 import com.liferay.info.field.InfoFieldSet;
 import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.field.reader.InfoItemFieldReaderFieldSetProvider;
@@ -27,9 +26,6 @@ import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.GroupConstants;
-import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.template.info.item.provider.TemplateInfoItemFieldSetProvider;
 
@@ -41,9 +37,8 @@ public class ObjectEntryInfoItemFormProvider
 	implements InfoItemFormProvider<ObjectEntry> {
 
 	public ObjectEntryInfoItemFormProvider(
-		AssetEntryInfoItemFieldSetProvider assetEntryInfoItemFieldSetProvider,
 		DisplayPageInfoItemFieldSetProvider displayPageInfoItemFieldSetProvider,
-		GroupLocalService groupLocalService, ObjectDefinition objectDefinition,
+		ObjectDefinition objectDefinition,
 		InfoItemFieldReaderFieldSetProvider infoItemFieldReaderFieldSetProvider,
 		ListTypeEntryLocalService listTypeEntryLocalService,
 		ObjectActionLocalService objectActionLocalService,
@@ -57,11 +52,8 @@ public class ObjectEntryInfoItemFormProvider
 		TemplateInfoItemFieldSetProvider templateInfoItemFieldSetProvider,
 		UserLocalService userLocalService) {
 
-		_assetEntryInfoItemFieldSetProvider =
-			assetEntryInfoItemFieldSetProvider;
 		_displayPageInfoItemFieldSetProvider =
 			displayPageInfoItemFieldSetProvider;
-		_groupLocalService = groupLocalService;
 		_objectDefinition = objectDefinition;
 		_infoItemFieldReaderFieldSetProvider =
 			infoItemFieldReaderFieldSetProvider;
@@ -91,35 +83,6 @@ public class ObjectEntryInfoItemFormProvider
 	@Override
 	public InfoForm getInfoForm(String formVariationKey, long groupId) {
 		return _getInfoForm(groupId);
-	}
-
-	private long _getCategorizationGroupId(long groupId) {
-		if (_objectDefinition.isCMS()) {
-			Group group = _groupLocalService.fetchGroup(
-				_objectDefinition.getCompanyId(), GroupConstants.CMS);
-
-			if (group != null) {
-				return group.getGroupId();
-			}
-		}
-
-		return groupId;
-	}
-
-	private InfoFieldSet _getCategorizationInfoFieldSet(long groupId) {
-		if (!_objectDefinition.isEnableCategorization()) {
-			return null;
-		}
-
-		long categorizationGroupId = _getCategorizationGroupId(groupId);
-
-		if (categorizationGroupId == 0) {
-			return _assetEntryInfoItemFieldSetProvider.getInfoFieldSet(
-				_objectDefinition.getClassName());
-		}
-
-		return _assetEntryInfoItemFieldSetProvider.getInfoFieldSet(
-			_objectDefinition.getClassName(), 0, categorizationGroupId);
 	}
 
 	private InfoForm _getInfoForm(long groupId) {
@@ -162,7 +125,6 @@ public class ObjectEntryInfoItemFormProvider
 				).name(
 					"basic-information"
 				).build(),
-				_getCategorizationInfoFieldSet(groupId),
 				_displayPageInfoItemFieldSetProvider.getInfoFieldSet(
 					_objectDefinition.getClassName(), StringPool.BLANK,
 					ObjectEntry.class.getSimpleName(), groupId),
@@ -178,11 +140,8 @@ public class ObjectEntryInfoItemFormProvider
 		}
 	}
 
-	private final AssetEntryInfoItemFieldSetProvider
-		_assetEntryInfoItemFieldSetProvider;
 	private final DisplayPageInfoItemFieldSetProvider
 		_displayPageInfoItemFieldSetProvider;
-	private final GroupLocalService _groupLocalService;
 	private final InfoItemFieldReaderFieldSetProvider
 		_infoItemFieldReaderFieldSetProvider;
 	private final ListTypeEntryLocalService _listTypeEntryLocalService;

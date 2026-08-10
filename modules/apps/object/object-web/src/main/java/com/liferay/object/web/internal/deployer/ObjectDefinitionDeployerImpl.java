@@ -7,7 +7,6 @@ package com.liferay.object.web.internal.deployer;
 
 import com.liferay.application.list.PanelApp;
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
-import com.liferay.asset.info.item.provider.AssetEntryInfoItemFieldSetProvider;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
@@ -227,9 +226,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 		InfoItemFormProvider<ObjectEntry> infoItemFormProvider =
 			new ObjectEntryInfoItemFormProvider(
-				_assetEntryInfoItemFieldSetProvider,
-				_displayPageInfoItemFieldSetProvider, _groupLocalService,
-				objectDefinition, _infoItemFieldReaderFieldSetProvider,
+				_displayPageInfoItemFieldSetProvider, objectDefinition,
+				_infoItemFieldReaderFieldSetProvider,
 				_listTypeEntryLocalService, _objectActionLocalService,
 				_objectDefinitionLocalService, objectFieldInfoFieldConverter,
 				_objectFieldLocalService, _objectFieldSettingLocalService,
@@ -358,7 +356,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				InfoItemFieldValuesProvider.class,
 				new ObjectEntryInfoItemFieldValuesProvider(
-					_assetEntryInfoItemFieldSetProvider,
 					_displayPageInfoItemFieldSetProvider, _dlAppLocalService,
 					_dlURLHelper, _friendlyURLEntryLocalService,
 					_infoItemFieldReaderFieldSetProvider,
@@ -776,10 +773,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	@Reference
 	private AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
-
-	@Reference
-	private AssetEntryInfoItemFieldSetProvider
-		_assetEntryInfoItemFieldSetProvider;
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;

@@ -55,7 +55,6 @@ public class ObjectEntryInfoItemFormProviderUtil {
 
 	public static InfoForm getInfoForm(
 			InfoFieldSet basicInformationInfoFieldSet,
-			InfoFieldSet categorizationInfoFieldSet,
 			InfoFieldSet displayPageInfoFieldSet,
 			InfoItemFieldReaderFieldSetProvider
 				infoItemFieldReaderFieldSetProvider,
@@ -72,12 +71,6 @@ public class ObjectEntryInfoItemFormProviderUtil {
 		return InfoForm.builder(
 		).infoFieldSetEntry(
 			basicInformationInfoFieldSet
-		).infoFieldSetEntry(
-			unsafeConsumer -> {
-				if (categorizationInfoFieldSet != null) {
-					unsafeConsumer.accept(categorizationInfoFieldSet);
-				}
-			}
 		).<NoSuchFormVariationException>infoFieldSetEntry(
 			unsafeConsumer -> {
 				if (objectDefinitionId != 0) {

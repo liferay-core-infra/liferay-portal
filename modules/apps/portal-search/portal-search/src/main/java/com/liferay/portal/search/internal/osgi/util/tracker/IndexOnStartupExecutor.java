@@ -5,10 +5,10 @@
 
 package com.liferay.portal.search.internal.osgi.util.tracker;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.IndexWriterHelper;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -21,7 +21,6 @@ import com.liferay.portal.search.internal.instance.lifecycle.IndexOnStartupPorta
 
 import java.io.Serializable;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,7 +33,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -44,74 +42,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 	configurationPid = "com.liferay.portal.search.configuration.ReindexConfiguration",
 	service = {}
 )
-public class IndexOnStartupExecutor
-	implements ServiceTrackerCustomizer<Indexer<?>, Indexer<?>> {
-
-	@Override
-	public Indexer<?> addingService(
-		ServiceReference<Indexer<?>> serviceReference) {
-
-		Indexer<?> indexer = _bundleContext.getService(serviceReference);
-
-		boolean indexerIndexOnStartup = GetterUtil.getBoolean(
-			serviceReference.getProperty(PropsKeys.INDEX_ON_STARTUP), true);
-
-		String className = indexer.getClassName();
-
-		if (!indexerIndexOnStartup || Validator.isNull(className)) {
-			return indexer;
-		}
-
-		PortalInstanceLifecycleListener portalInstanceLifecycleListener =
-			new IndexOnStartupPortalInstanceLifecycleListener(
-				_indexWriterHelper, className,
-				HashMapBuilder.<String, Serializable>put(
-					"executionMode",
-					_reindexConfiguration.defaultReindexExecutionMode()
-				).build());
-
-		ServiceRegistration<PortalInstanceLifecycleListener>
-			serviceRegistration = _bundleContext.registerService(
-				PortalInstanceLifecycleListener.class,
-				portalInstanceLifecycleListener, null);
-
-		synchronized (_serviceRegistrations) {
-			ServiceRegistration<PortalInstanceLifecycleListener>
-				existingServiceRegistration = _serviceRegistrations.putIfAbsent(
-					className, serviceRegistration);
-
-			if (existingServiceRegistration != null) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						"Skip duplicate service registration for " + className);
-				}
-
-				serviceRegistration.unregister();
-			}
-		}
-
-		return indexer;
-	}
-
-	@Override
-	public void modifiedService(
-		ServiceReference<Indexer<?>> serviceReference, Indexer<?> indexer) {
-	}
-
-	@Override
-	public void removedService(
-		ServiceReference<Indexer<?>> serviceReference, Indexer<?> indexer) {
-
-		synchronized (_serviceRegistrations) {
-			ServiceRegistration<PortalInstanceLifecycleListener>
-				serviceRegistration = _serviceRegistrations.remove(
-					indexer.getClassName());
-
-			if (serviceRegistration != null) {
-				serviceRegistration.unregister();
-			}
-		}
-	}
+public class IndexOnStartupExecutor {
 
 	@Activate
 	protected void activate(
@@ -129,11 +60,35 @@ public class IndexOnStartupExecutor
 			scheduledExecutorService.schedule(
 				() -> {
 					if (_bundleContext != null) {
-						_serviceTracker = new ServiceTracker<>(
-							_bundleContext,
-							(Class<Indexer<?>>)(Class<?>)Indexer.class, this);
+						_serviceTrackerMap =
+							ServiceTrackerMapFactory.openSingleValueMap(
+								_bundleContext,
+								(Class<Indexer<?>>)(Class<?>)Indexer.class,
+								null,
+								(serviceReference, emitter) -> {
+									boolean indexOnStartup =
+										GetterUtil.getBoolean(
+											serviceReference.getProperty(
+												PropsKeys.INDEX_ON_STARTUP),
+											true);
 
-						_serviceTracker.open();
+									Indexer<?> indexer =
+										_bundleContext.getService(
+											serviceReference);
+
+									if (indexer == null) {
+										return;
+									}
+
+									String className = indexer.getClassName();
+
+									if (indexOnStartup &&
+										Validator.isNotNull(className)) {
+
+										emitter.emit(className);
+									}
+								},
+								new IndexerServiceTrackerCustomizer());
 					}
 				},
 				PropsValues.INDEX_ON_STARTUP_DELAY, TimeUnit.SECONDS);
@@ -146,22 +101,10 @@ public class IndexOnStartupExecutor
 	protected void deactivate() {
 		_bundleContext = null;
 
-		synchronized (_serviceRegistrations) {
-			_serviceRegistrations.values(
-			).forEach(
-				ServiceRegistration::unregister
-			);
-
-			_serviceRegistrations.clear();
-		}
-
-		if (_serviceTracker != null) {
-			_serviceTracker.close();
+		if (_serviceTrackerMap != null) {
+			_serviceTrackerMap.close();
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		IndexOnStartupExecutor.class);
 
 	private BundleContext _bundleContext;
 
@@ -169,9 +112,51 @@ public class IndexOnStartupExecutor
 	private IndexWriterHelper _indexWriterHelper;
 
 	private volatile ReindexConfiguration _reindexConfiguration;
-	private final Map
+	private ServiceTrackerMap
 		<String, ServiceRegistration<PortalInstanceLifecycleListener>>
-			_serviceRegistrations = new HashMap<>();
-	private ServiceTracker<Indexer<?>, Indexer<?>> _serviceTracker;
+			_serviceTrackerMap;
+
+	private class IndexerServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer
+			<Indexer<?>, ServiceRegistration<PortalInstanceLifecycleListener>> {
+
+		@Override
+		public ServiceRegistration<PortalInstanceLifecycleListener>
+			addingService(ServiceReference<Indexer<?>> serviceReference) {
+
+			Indexer<?> indexer = _bundleContext.getService(serviceReference);
+
+			PortalInstanceLifecycleListener portalInstanceLifecycleListener =
+				new IndexOnStartupPortalInstanceLifecycleListener(
+					_indexWriterHelper, indexer.getClassName(),
+					HashMapBuilder.<String, Serializable>put(
+						"executionMode",
+						_reindexConfiguration.defaultReindexExecutionMode()
+					).build());
+
+			return _bundleContext.registerService(
+				PortalInstanceLifecycleListener.class,
+				portalInstanceLifecycleListener, null);
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<Indexer<?>> serviceReference,
+			ServiceRegistration<PortalInstanceLifecycleListener>
+				serviceRegistration) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<Indexer<?>> serviceReference,
+			ServiceRegistration<PortalInstanceLifecycleListener>
+				serviceRegistration) {
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
+		}
+
+	}
 
 }

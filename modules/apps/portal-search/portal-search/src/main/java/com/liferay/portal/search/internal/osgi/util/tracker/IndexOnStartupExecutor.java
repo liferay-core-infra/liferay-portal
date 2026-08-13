@@ -9,7 +9,6 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.search.BaseSearcher;
 import com.liferay.portal.kernel.search.IndexWriterHelper;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -61,9 +60,7 @@ public class IndexOnStartupExecutor
 
 		String className = indexer.getClassName();
 
-		if (!indexerIndexOnStartup || Validator.isNull(className) ||
-			_isBaseSearcher(indexer.getClass())) {
-
+		if (!indexerIndexOnStartup || Validator.isNull(className)) {
 			return indexer;
 		}
 
@@ -172,18 +169,6 @@ public class IndexOnStartupExecutor
 		if (_serviceTracker != null) {
 			_serviceTracker.close();
 		}
-	}
-
-	private boolean _isBaseSearcher(Class<?> indexerClass) {
-		while ((indexerClass != null) && !Object.class.equals(indexerClass)) {
-			if (indexerClass.equals(BaseSearcher.class)) {
-				return true;
-			}
-
-			indexerClass = indexerClass.getSuperclass();
-		}
-
-		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

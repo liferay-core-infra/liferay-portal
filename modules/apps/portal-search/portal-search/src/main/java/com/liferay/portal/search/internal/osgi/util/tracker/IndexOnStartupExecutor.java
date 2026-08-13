@@ -22,9 +22,7 @@ import com.liferay.portal.search.internal.instance.lifecycle.IndexOnStartupPorta
 import java.io.Serializable;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -146,24 +144,13 @@ public class IndexOnStartupExecutor
 	protected void deactivate() {
 		_bundleContext = null;
 
-		Set<String> removedIndexerClassNames = new HashSet<>();
-
 		synchronized (_serviceRegistrations) {
-			for (Map.Entry
-					<String,
-					 ServiceRegistration<PortalInstanceLifecycleListener>>
-						entry : _serviceRegistrations.entrySet()) {
+			_serviceRegistrations.values(
+			).forEach(
+				ServiceRegistration::unregister
+			);
 
-				ServiceRegistration<?> serviceRegistration = entry.getValue();
-
-				serviceRegistration.unregister();
-
-				removedIndexerClassNames.add(entry.getKey());
-			}
-
-			for (String removedIndexerClassName : removedIndexerClassNames) {
-				_serviceRegistrations.remove(removedIndexerClassName);
-			}
+			_serviceRegistrations.clear();
 		}
 
 		if (_serviceTracker != null) {

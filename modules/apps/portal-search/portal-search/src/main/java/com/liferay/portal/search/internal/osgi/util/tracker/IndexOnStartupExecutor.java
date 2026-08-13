@@ -62,30 +62,32 @@ public class IndexOnStartupExecutor
 			return indexer;
 		}
 
+		PortalInstanceLifecycleListener portalInstanceLifecycleListener =
+			new IndexOnStartupPortalInstanceLifecycleListener(
+				_indexWriterHelper, className,
+				HashMapBuilder.<String, Serializable>put(
+					"executionMode",
+					_reindexConfiguration.defaultReindexExecutionMode()
+				).build());
+
+		ServiceRegistration<PortalInstanceLifecycleListener>
+			serviceRegistration = _bundleContext.registerService(
+				PortalInstanceLifecycleListener.class,
+				portalInstanceLifecycleListener, null);
+
 		synchronized (_serviceRegistrations) {
-			if (_serviceRegistrations.containsKey(className)) {
+			ServiceRegistration<PortalInstanceLifecycleListener>
+				existingServiceRegistration = _serviceRegistrations.putIfAbsent(
+					className, serviceRegistration);
+
+			if (existingServiceRegistration != null) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						"Skip duplicate service registration for " + className);
 				}
 
-				return indexer;
+				serviceRegistration.unregister();
 			}
-
-			PortalInstanceLifecycleListener portalInstanceLifecycleListener =
-				new IndexOnStartupPortalInstanceLifecycleListener(
-					_indexWriterHelper, className,
-					HashMapBuilder.<String, Serializable>put(
-						"executionMode",
-						_reindexConfiguration.defaultReindexExecutionMode()
-					).build());
-
-			ServiceRegistration<PortalInstanceLifecycleListener>
-				serviceRegistration = _bundleContext.registerService(
-					PortalInstanceLifecycleListener.class,
-					portalInstanceLifecycleListener, null);
-
-			_serviceRegistrations.put(className, serviceRegistration);
 		}
 
 		return indexer;

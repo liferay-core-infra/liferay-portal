@@ -5,8 +5,8 @@
 
 package com.liferay.portal.kernel.servlet;
 
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Portlet;
@@ -105,7 +105,7 @@ public class ResourceUtil {
 	}
 
 	private static ServletContext _getPathServletContext(String path) {
-		for (ServletContext servletContext : _serviceTrackerMap.values()) {
+		for (ServletContext servletContext : _servletContexts) {
 			if (path.startsWith(servletContext.getContextPath())) {
 				return servletContext;
 			}
@@ -144,30 +144,9 @@ public class ResourceUtil {
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
 
-	private static final ServiceTrackerMap<String, ServletContext>
-		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+	private static final ServiceTrackerList<ServletContext> _servletContexts =
+		ServiceTrackerListFactory.open(
 			_bundleContext, Portlet.class, null,
-			(serviceReference, emitter) -> {
-				Portlet portlet = _bundleContext.getService(serviceReference);
-
-				try {
-					if (portlet != null) {
-						PortletApp portletApp = portlet.getPortletApp();
-
-						if ((portletApp != null) && portletApp.isWARFile()) {
-							ServletContext servletContext =
-								portletApp.getServletContext();
-
-							if (servletContext != null) {
-								emitter.emit(servletContext.getContextPath());
-							}
-						}
-					}
-				}
-				finally {
-					_bundleContext.ungetService(serviceReference);
-				}
-			},
 			new ServiceTrackerCustomizer<Portlet, ServletContext>() {
 
 				@Override
@@ -177,15 +156,20 @@ public class ResourceUtil {
 					Portlet portlet = _bundleContext.getService(
 						serviceReference);
 
-					if (portlet == null) {
-						return null;
+					if (portlet != null) {
+						PortletApp portletApp = portlet.getPortletApp();
+
+						if ((portletApp != null) && portletApp.isWARFile()) {
+							ServletContext servletContext =
+								portletApp.getServletContext();
+
+							if (servletContext != null) {
+								return servletContext;
+							}
+						}
 					}
 
-					PortletApp portletApp = portlet.getPortletApp();
-
-					if ((portletApp != null) && portletApp.isWARFile()) {
-						return portletApp.getServletContext();
-					}
+					_bundleContext.ungetService(serviceReference);
 
 					return null;
 				}

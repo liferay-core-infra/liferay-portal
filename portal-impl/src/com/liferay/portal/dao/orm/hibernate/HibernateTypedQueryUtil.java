@@ -25,6 +25,9 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Selection;
 import jakarta.persistence.criteria.Subquery;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.Type.PersistenceType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,6 +209,46 @@ public class HibernateTypedQueryUtil {
 		return parts;
 	}
 
+	private static Path<?> _getCompoundPrimaryKeyPath(
+		From<?, ?> from, String[] parts) {
+
+		if (!(from instanceof Root)) {
+			return null;
+		}
+
+		Root<?> root = (Root<?>)from;
+
+		EntityType<?> entityType = root.getModel();
+
+		if (!entityType.hasSingleIdAttribute()) {
+			return null;
+		}
+
+		if (entityType.getIdType(
+			).getPersistenceType() != PersistenceType.EMBEDDABLE) {
+
+			return null;
+		}
+
+		SingularAttribute<?, ?> singularAttribute = entityType.getId(
+			entityType.getIdType(
+			).getJavaType());
+
+		String name = singularAttribute.getName();
+
+		if (!parts[0].equals(name) && !parts[0].equals("id")) {
+			return null;
+		}
+
+		Path<?> path = root.get(name);
+
+		for (int i = 1; i < parts.length; i++) {
+			path = path.get(parts[i]);
+		}
+
+		return path;
+	}
+
 	private static Path<?> _getPath(
 		AbstractQuery<?> abstractQuery, From<?, ?> from, String name) {
 
@@ -250,6 +293,12 @@ public class HibernateTypedQueryUtil {
 
 				return root.get(columnName);
 			}
+		}
+
+		Path<?> path = _getCompoundPrimaryKeyPath(from, parts);
+
+		if (path != null) {
+			return path;
 		}
 
 		throw new IllegalArgumentException(

@@ -293,8 +293,10 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			catch (Throwable throwable) {
 				Throwable causeThrowable = throwable;
 
-				if (throwable instanceof ORMException ||
-					throwable instanceof PersistenceException) {
+				if (!(throwable instanceof ConstraintViolationException ||
+					  throwable instanceof LockAcquisitionException) &&
+					(throwable instanceof ORMException ||
+					 throwable instanceof PersistenceException)) {
 
 					causeThrowable = throwable.getCause();
 				}

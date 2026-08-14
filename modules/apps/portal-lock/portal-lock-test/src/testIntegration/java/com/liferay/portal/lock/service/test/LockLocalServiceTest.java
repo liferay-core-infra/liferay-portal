@@ -260,15 +260,11 @@ public class LockLocalServiceTest {
 			Assert.fail();
 		}
 		catch (ExecutionException executionException) {
-			Throwable throwable1 = executionException.getCause();
+			Throwable throwable = executionException.getCause();
 
+			Assert.assertTrue(throwable instanceof PersistenceException);
 			Assert.assertSame(
-				PersistenceException.class, throwable1.getClass());
-
-			Throwable throwable2 = throwable1.getCause();
-
-			Assert.assertSame(
-				ConstraintViolationException.class, throwable2.getClass());
+				ConstraintViolationException.class, throwable.getClass());
 		}
 	}
 

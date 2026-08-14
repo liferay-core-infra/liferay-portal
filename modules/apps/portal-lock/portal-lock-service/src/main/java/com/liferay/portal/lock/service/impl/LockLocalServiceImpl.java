@@ -27,8 +27,6 @@ import com.liferay.portal.lock.exception.NoSuchLockException;
 import com.liferay.portal.lock.model.Lock;
 import com.liferay.portal.lock.service.base.LockLocalServiceBaseImpl;
 
-import jakarta.persistence.PersistenceException;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -293,9 +291,7 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			catch (Throwable throwable) {
 				Throwable causeThrowable = throwable;
 
-				if (throwable instanceof ORMException ||
-					throwable instanceof PersistenceException) {
-
+				if (throwable instanceof ORMException) {
 					causeThrowable = throwable.getCause();
 				}
 

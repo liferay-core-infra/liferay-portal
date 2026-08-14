@@ -16,8 +16,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.query.sqm.function.SqmFunctionRegistry;
+import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.spi.TypeConfiguration;
 
 /**
  * @author Manuel de la Peña
@@ -35,11 +37,22 @@ public abstract class BaseSQLTransformerLogic implements SQLTransformerLogic {
 		Function<String, String> castClobTextFunction =
 			getCastClobTextFunction();
 
-		configuration.addSqlFunction(
-			"CAST_CLOB_TEXT",
-			new SQLFunctionTemplate(
-				StandardBasicTypes.STRING,
-				castClobTextFunction.apply("CAST_CLOB_TEXT(?1)")));
+		configuration.registerFunctionContributor(
+			functionContributions -> {
+				TypeConfiguration typeConfiguration =
+					functionContributions.getTypeConfiguration();
+
+				BasicTypeRegistry basicTypeRegistry =
+					typeConfiguration.getBasicTypeRegistry();
+
+				SqmFunctionRegistry sqmFunctionRegistry =
+					functionContributions.getFunctionRegistry();
+
+				sqmFunctionRegistry.registerPattern(
+					"CAST_CLOB_TEXT",
+					castClobTextFunction.apply("CAST_CLOB_TEXT(?1)"),
+					basicTypeRegistry.resolve(StandardBasicTypes.STRING));
+			});
 	}
 
 	protected Function<String, String> getAggregationFunction() {

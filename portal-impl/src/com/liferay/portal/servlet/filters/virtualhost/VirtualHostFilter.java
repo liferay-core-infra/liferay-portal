@@ -313,6 +313,24 @@ public class VirtualHostFilter extends BasePortalFilter {
 				return;
 			}
 
+			if (friendlyURL.equals(StringPool.SLASH) &&
+				Validator.isNull(PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+
+				String homeURL = PortalUtil.getHomeURL(httpServletRequest);
+
+				if (Validator.isNotNull(homeURL)) {
+					String queryString = httpServletRequest.getQueryString();
+
+					if (Validator.isNotNull(queryString)) {
+						homeURL = homeURL + StringPool.QUESTION + queryString;
+					}
+
+					httpServletResponse.sendRedirect(homeURL);
+
+					return;
+				}
+			}
+
 			processFilter(
 				VirtualHostFilter.class.getName(), httpServletRequest,
 				httpServletResponse, filterChain);

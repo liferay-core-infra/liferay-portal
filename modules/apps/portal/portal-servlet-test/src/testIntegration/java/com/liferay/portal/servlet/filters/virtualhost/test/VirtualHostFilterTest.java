@@ -244,6 +244,71 @@ public class VirtualHostFilterTest {
 	}
 
 	@Test
+	public void testProcessFilterRedirectToHomeURL() throws Exception {
+		try (SafeCloseable safeCloseable =
+				PropsValuesTestUtil.swapWithSafeCloseable(
+					"VIRTUAL_HOSTS_DEFAULT_SITE_NAME", StringPool.BLANK)) {
+
+			MockHttpServletRequest mockHttpServletRequest =
+				_getMockHttpServletRequest(null, StringPool.SLASH);
+
+			MockHttpServletResponse mockHttpServletResponse =
+				new MockHttpServletResponse();
+
+			_virtualHostFilter.init(new MockFilterConfig());
+
+			ReflectionTestUtil.invoke(
+				_virtualHostFilter, "processFilter",
+				new Class<?>[] {
+					HttpServletRequest.class, HttpServletResponse.class,
+					FilterChain.class
+				},
+				mockHttpServletRequest, mockHttpServletResponse,
+				new MockFilterChain());
+
+			Assert.assertEquals(
+				_portalUtil.getHomeURL(mockHttpServletRequest),
+				mockHttpServletResponse.getRedirectedUrl());
+		}
+	}
+
+	@Test
+	public void testProcessFilterRedirectToHomeURLPreservesQueryString()
+		throws Exception {
+
+		try (SafeCloseable safeCloseable =
+				PropsValuesTestUtil.swapWithSafeCloseable(
+					"VIRTUAL_HOSTS_DEFAULT_SITE_NAME", StringPool.BLANK)) {
+
+			MockHttpServletRequest mockHttpServletRequest =
+				_getMockHttpServletRequest(null, StringPool.SLASH);
+
+			String queryString = "p_p_id=" + RandomTestUtil.randomString();
+
+			mockHttpServletRequest.setQueryString(queryString);
+
+			MockHttpServletResponse mockHttpServletResponse =
+				new MockHttpServletResponse();
+
+			_virtualHostFilter.init(new MockFilterConfig());
+
+			ReflectionTestUtil.invoke(
+				_virtualHostFilter, "processFilter",
+				new Class<?>[] {
+					HttpServletRequest.class, HttpServletResponse.class,
+					FilterChain.class
+				},
+				mockHttpServletRequest, mockHttpServletResponse,
+				new MockFilterChain());
+
+			Assert.assertEquals(
+				_portalUtil.getHomeURL(mockHttpServletRequest) +
+					StringPool.QUESTION + queryString,
+				mockHttpServletResponse.getRedirectedUrl());
+		}
+	}
+
+	@Test
 	public void testProcessFilterSetsGroupOnRequestWhenLayoutSetMatches()
 		throws Exception {
 

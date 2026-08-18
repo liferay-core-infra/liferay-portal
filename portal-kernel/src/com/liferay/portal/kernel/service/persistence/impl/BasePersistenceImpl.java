@@ -413,24 +413,28 @@ public class BasePersistenceImpl
 				sqlQuery.addEntity(_table.getTableName(), _modelImplClass);
 			}
 			else {
+				Iterator<String> labelIterator = select.getLabels().iterator();
+
 				for (Expression<?> expression : select.getExpressions()) {
+					String label = labelIterator.next();
+
 					if (expression instanceof Alias) {
 						Alias<?> alias = (Alias<?>)expression;
 
 						sqlQuery.addScalar(
-							alias.getName(), _getType(alias.getExpression()));
+							label, _getType(alias.getExpression()));
 					}
 					else if (expression instanceof Column) {
 						Column<?, ?> column = (Column<?, ?>)expression;
 
-						sqlQuery.addScalar(column.getName(), _getType(column));
+						sqlQuery.addScalar(label, _getType(column));
 					}
 					else if (expression instanceof ScalarDSLQueryAlias) {
 						ScalarDSLQueryAlias<?> scalarDSLQueryAlias =
 							(ScalarDSLQueryAlias<?>)expression;
 
 						sqlQuery.addScalar(
-							scalarDSLQueryAlias.getName(),
+							label,
 							_types.get(scalarDSLQueryAlias.getJavaType()));
 					}
 					else {

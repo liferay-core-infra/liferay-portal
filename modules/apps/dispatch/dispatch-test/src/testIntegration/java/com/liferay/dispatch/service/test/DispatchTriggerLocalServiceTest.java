@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -168,9 +169,10 @@ public class DispatchTriggerLocalServiceTest {
 
 		TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
 
-		Assert.assertEquals(
-			dispatchTrigger.getStartDate(),
-			new Date(date.getTime() - timeZone.getOffset(date.getTime())));
+		Assert.assertTrue(
+			DateUtil.equals(
+				dispatchTrigger.getStartDate(),
+				new Date(date.getTime() - timeZone.getOffset(date.getTime()))));
 
 		Assert.assertEquals(dispatchTrigger.getTimeZoneStartDate(), date);
 

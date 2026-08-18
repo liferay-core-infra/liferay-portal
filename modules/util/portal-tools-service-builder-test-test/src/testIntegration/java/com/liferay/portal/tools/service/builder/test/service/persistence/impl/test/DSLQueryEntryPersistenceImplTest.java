@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+import com.liferay.portal.tools.service.builder.test.model.ColumnNameEntryTable;
 import com.liferay.portal.tools.service.builder.test.model.DSLQueryEntry;
 import com.liferay.portal.tools.service.builder.test.model.DSLQueryEntryTable;
 import com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntry;
@@ -424,6 +425,23 @@ public class DSLQueryEntryPersistenceImplTest {
 					DSLQueryStatusEntryTable.INSTANCE.dslQueryStatusEntryId.
 						ascending()
 				)));
+	}
+
+	@Test
+	public void testDSLQueryWithDuplicateColumnNames() {
+		List<Object[]> results = _dslQueryEntryPersistence.dslQuery(
+			DSLQueryFactoryUtil.select(
+				DSLQueryEntryTable.INSTANCE.name,
+				ColumnNameEntryTable.INSTANCE.name
+			).from(
+				DSLQueryEntryTable.INSTANCE
+			).leftJoinOn(
+				ColumnNameEntryTable.INSTANCE,
+				ColumnNameEntryTable.INSTANCE.columnNameEntryId.eq(
+					DSLQueryEntryTable.INSTANCE.dslQueryEntryId)
+			));
+
+		Assert.assertEquals(results.toString(), 3, results.size());
 	}
 
 	@Test

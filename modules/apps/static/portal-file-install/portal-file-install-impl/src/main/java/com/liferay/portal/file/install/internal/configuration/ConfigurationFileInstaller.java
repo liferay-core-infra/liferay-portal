@@ -204,21 +204,29 @@ public class ConfigurationFileInstaller implements FileInstaller {
 	public void uninstall(File file) throws Exception {
 		String[] pid = _parsePid(file.getName());
 
-		String logString = StringPool.BLANK;
+		String servicePid = pid[0];
 
 		if (pid[1] != null) {
-			logString = StringPool.TILDE + pid[1];
+			servicePid = StringBundler.concat(pid[0], StringPool.TILDE, pid[1]);
 		}
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				StringBundler.concat(
-					"Deleting configuration from ", pid[0], logString,
-					".config"));
+					"Deleting configuration from ", servicePid, ".config"));
 		}
 
-		Configuration configuration = _getConfiguration(
-			file.getName(), pid[0], pid[1]);
+		Configuration configuration = _findExistingConfiguration(
+			FileInstallConstants.FELIX_FILE_INSTALL_FILENAME, file.getName());
+
+		if (configuration == null) {
+			configuration = _findExistingConfiguration(
+				Constants.SERVICE_PID, servicePid);
+		}
+
+		if (configuration == null) {
+			return;
+		}
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
@@ -263,15 +271,13 @@ public class ConfigurationFileInstaller implements FileInstaller {
 		return StringUtil.replace(string, "[\\*]", "\\\\*");
 	}
 
-	private Configuration _findExistingConfiguration(String fileName)
+	private Configuration _findExistingConfiguration(String key, String value)
 		throws Exception {
 
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			StringBundler.concat(
-				StringPool.OPEN_PARENTHESIS,
-				FileInstallConstants.FELIX_FILE_INSTALL_FILENAME,
-				StringPool.EQUAL, _escapeFilterValue(fileName),
-				StringPool.CLOSE_PARENTHESIS));
+				StringPool.OPEN_PARENTHESIS, key, StringPool.EQUAL,
+				_escapeFilterValue(value), StringPool.CLOSE_PARENTHESIS));
 
 		if ((configurations != null) && (configurations.length > 0)) {
 			return configurations[0];
@@ -363,7 +369,8 @@ public class ConfigurationFileInstaller implements FileInstaller {
 			String fileName, String pid, String name)
 		throws Exception {
 
-		Configuration configuration = _findExistingConfiguration(fileName);
+		Configuration configuration = _findExistingConfiguration(
+			FileInstallConstants.FELIX_FILE_INSTALL_FILENAME, fileName);
 
 		if (configuration != null) {
 			return configuration;

@@ -85,9 +85,18 @@ public class FileSyncConfigurationListener implements ConfigurationListener {
 
 		if (type == ConfigurationEvent.CM_UPDATED) {
 			try {
-				Configuration configuration =
-					_configurationAdmin.getConfiguration(
-						configurationEvent.getPid(), StringPool.QUESTION);
+				Configuration[] configurations =
+					_configurationAdmin.listConfigurations(
+						StringBundler.concat(
+							StringPool.OPEN_PARENTHESIS, Constants.SERVICE_PID,
+							StringPool.EQUAL, configurationEvent.getPid(),
+							StringPool.CLOSE_PARENTHESIS));
+
+				if (configurations == null) {
+					return;
+				}
+
+				Configuration configuration = configurations[0];
 
 				Dictionary<String, Object> dictionary =
 					configuration.getProperties();

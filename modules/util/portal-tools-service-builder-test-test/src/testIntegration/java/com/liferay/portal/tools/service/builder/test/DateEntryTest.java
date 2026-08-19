@@ -429,13 +429,15 @@ public class DateEntryTest {
 
 			dateEntry = _dateEntryLocalService.updateDateEntry(dateEntry);
 
-			_assertDate(_MILLIS_TIME + 2, dateEntry.getSnapshotDate());
+			_assertTimestamp(
+				new Timestamp(_MILLIS_TIME + 2), dateEntry.getSnapshotDate());
 
 			dateEntry.setCompanyId(RandomTestUtil.nextLong());
 
 			dateEntry = _dateEntryLocalService.updateDateEntry(dateEntry);
 
-			_assertDate(_MILLIS_TIME + 2, dateEntry.getSnapshotDate());
+			_assertTimestamp(
+				new Timestamp(_MILLIS_TIME + 2), dateEntry.getSnapshotDate());
 		}
 		finally {
 			_dateEntryLocalService.deleteDateEntry(dateEntryId);
@@ -524,6 +526,11 @@ public class DateEntryTest {
 		Timestamp timestamp = (Timestamp)object;
 
 		Assert.assertEquals(expectedNanos, timestamp.getNanos());
+	}
+
+	private void _assertTimestamp(Timestamp expectedTimestamp, Object object) {
+		Assert.assertEquals(Timestamp.class, object.getClass());
+		Assert.assertEquals(expectedTimestamp, object);
 	}
 
 	private void _assertTimestampRow(

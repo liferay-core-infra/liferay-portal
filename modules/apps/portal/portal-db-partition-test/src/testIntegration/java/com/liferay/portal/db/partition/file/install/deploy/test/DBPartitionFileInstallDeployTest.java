@@ -46,7 +46,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.cm.ConfigurationEvent;
+import org.osgi.service.cm.ConfigurationListener;
 
 /**
  * @author Luis Ortiz
@@ -162,6 +166,37 @@ public class DBPartitionFileInstallDeployTest extends BaseDBPartitionTestCase {
 	}
 
 	@Test
+	public void testStaleConfigurationUpdatedEvent() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(
+			DBPartitionFileInstallDeployTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ConfigurationEvent configurationEvent = new ConfigurationEvent(
+			bundleContext.getServiceReference(ConfigurationAdmin.class),
+			ConfigurationEvent.CM_UPDATED, null, _CONFIGURATION_FACTORY_PID);
+
+		try {
+			try (ServiceTrackerList<ConfigurationListener> serviceTrackerList =
+					ServiceTrackerListFactory.open(
+						bundleContext, ConfigurationListener.class)) {
+
+				for (ConfigurationListener configurationListener :
+						serviceTrackerList.toList()) {
+
+					configurationListener.configurationEvent(
+						configurationEvent);
+				}
+			}
+
+			_checkConfigurationNotExists();
+		}
+		finally {
+			_deleteConfigurations();
+		}
+	}
+
+	@Test
 	public void testSystemScopedConfiguration() throws Exception {
 		_testScopedConfiguration(
 			() -> _checkConfigurationExists(
@@ -228,6 +263,22 @@ public class DBPartitionFileInstallDeployTest extends BaseDBPartitionTestCase {
 		}
 
 		return StringBundler.concat(StringPool.QUOTE, value, StringPool.QUOTE);
+	}
+
+	private void _deleteConfigurations() throws Exception {
+		DBPartitionUtil.forEachCompanyId(
+			companyId -> {
+				try (Connection connection = _dataSource.getConnection();
+
+					PreparedStatement preparedStatement =
+						connection.prepareStatement(
+							"delete from Configuration_ where " +
+								"configurationId = ?")) {
+
+					preparedStatement.setString(1, _CONFIGURATION_FACTORY_PID);
+					preparedStatement.executeUpdate();
+				}
+			});
 	}
 
 	private String _getContent(
@@ -366,20 +417,7 @@ public class DBPartitionFileInstallDeployTest extends BaseDBPartitionTestCase {
 		finally {
 			Files.deleteIfExists(path);
 
-			DBPartitionUtil.forEachCompanyId(
-				companyId -> {
-					try (Connection connection = _dataSource.getConnection();
-
-						PreparedStatement preparedStatement =
-							connection.prepareStatement(
-								"delete from Configuration_ where " +
-									"configurationId = ?")) {
-
-						preparedStatement.setString(
-							1, _CONFIGURATION_FACTORY_PID);
-						preparedStatement.executeUpdate();
-					}
-				});
+			_deleteConfigurations();
 
 			_fileInstaller.uninstall(path.toFile());
 		}

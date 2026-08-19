@@ -428,13 +428,15 @@ public class DateEntryTest {
 
 			dateEntry = _dateEntryLocalService.updateDateEntry(dateEntry);
 
-			_assertDate(_MILLIS_TIME + 2, dateEntry.getSnapshotDate());
+			_assertTimestamp(
+				_toNanos(_MILLIS_TIME + 2, 0), dateEntry.getSnapshotDate());
 
 			dateEntry.setCompanyId(RandomTestUtil.nextLong());
 
 			dateEntry = _dateEntryLocalService.updateDateEntry(dateEntry);
 
-			_assertDate(_MILLIS_TIME + 2, dateEntry.getSnapshotDate());
+			_assertTimestamp(
+				_toNanos(_MILLIS_TIME + 2, 0), dateEntry.getSnapshotDate());
 		}
 		finally {
 			_dateEntryLocalService.deleteDateEntry(dateEntryId);

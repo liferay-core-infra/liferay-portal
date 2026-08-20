@@ -7,7 +7,6 @@ package com.liferay.exportimport.kernel.lifecycle;
 
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,16 +33,14 @@ public class ExportImportLifecycleEventListenerRegistryUtil {
 	}
 
 	private static final Set<ExportImportLifecycleListener>
-		_asyncExportImportLifecycleListeners = Collections.newSetFromMap(
-			new ConcurrentHashMap<>());
+		_asyncExportImportLifecycleListeners = ConcurrentHashMap.newKeySet();
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
 	private static final ServiceTracker
 		<ExportImportLifecycleListener, ExportImportLifecycleListener>
 			_serviceTracker;
 	private static final Set<ExportImportLifecycleListener>
-		_syncExportImportLifecycleListeners = Collections.newSetFromMap(
-			new ConcurrentHashMap<>());
+		_syncExportImportLifecycleListeners = ConcurrentHashMap.newKeySet();
 
 	private static class ExportImportLifecycleListenerServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer

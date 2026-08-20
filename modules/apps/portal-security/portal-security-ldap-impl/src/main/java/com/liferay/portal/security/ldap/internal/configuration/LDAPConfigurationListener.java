@@ -19,6 +19,7 @@ import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
 import java.io.IOException;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -37,10 +38,12 @@ public class LDAPConfigurationListener implements ConfigurationListener {
 
 	@Override
 	public void configurationEvent(ConfigurationEvent configurationEvent) {
+		String pid = configurationEvent.getPid();
+
 		String factoryPid = configurationEvent.getFactoryPid();
 
 		if (Validator.isNull(factoryPid)) {
-			factoryPid = configurationEvent.getPid();
+			factoryPid = pid;
 		}
 
 		if (factoryPid.endsWith(".scoped")) {
@@ -57,19 +60,24 @@ public class LDAPConfigurationListener implements ConfigurationListener {
 
 		try {
 			if (configurationEvent.getType() == ConfigurationEvent.CM_DELETED) {
-				configurationProvider.unregisterConfiguration(
-					configurationEvent.getPid());
+				configurationProvider.unregisterConfiguration(pid);
+
+				return;
 			}
-			else {
-				configurationProvider.registerConfiguration(
-					_configurationAdmin.getConfiguration(
-						configurationEvent.getPid(), StringPool.QUESTION));
+
+			Configuration[] configurations =
+				_configurationAdmin.listConfigurations(
+					"(service.pid=" + pid + ")");
+
+			if (configurations == null) {
+				return;
 			}
+
+			configurationProvider.registerConfiguration(configurations[0]);
 		}
-		catch (IOException ioException) {
+		catch (InvalidSyntaxException | IOException exception) {
 			throw new SystemException(
-				"Unable to load configuration " + configurationEvent.getPid(),
-				ioException);
+				"Unable to load configuration " + pid, exception);
 		}
 	}
 

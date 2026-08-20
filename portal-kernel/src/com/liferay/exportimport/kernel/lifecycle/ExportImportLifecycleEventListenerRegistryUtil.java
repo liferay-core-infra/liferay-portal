@@ -5,14 +5,17 @@
 
 package com.liferay.exportimport.kernel.lifecycle;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -23,96 +26,99 @@ public class ExportImportLifecycleEventListenerRegistryUtil {
 	public static Set<ExportImportLifecycleListener>
 		getAsyncExportImportLifecycleListeners() {
 
-		return _asyncExportImportLifecycleListeners;
+		List<ExportImportLifecycleListener> listeners =
+			_serviceTrackerMap.getService(true);
+
+		if (listeners == null) {
+			return Collections.emptySet();
+		}
+
+		return Collections.unmodifiableSet(new HashSet<>(listeners));
 	}
 
 	public static Set<ExportImportLifecycleListener>
 		getSyncExportImportLifecycleListeners() {
 
-		return _syncExportImportLifecycleListeners;
+		List<ExportImportLifecycleListener> listeners =
+			_serviceTrackerMap.getService(false);
+
+		if (listeners == null) {
+			return Collections.emptySet();
+		}
+
+		return Collections.unmodifiableSet(new HashSet<>(listeners));
 	}
 
-	private static final Set<ExportImportLifecycleListener>
-		_asyncExportImportLifecycleListeners = ConcurrentHashMap.newKeySet();
+	private static ExportImportLifecycleListener _wrapListener(
+		ExportImportLifecycleListener listener) {
+
+		if (listener instanceof ProcessAwareExportImportLifecycleListener) {
+			return ExportImportLifecycleListenerFactoryUtil.create(
+				(ProcessAwareExportImportLifecycleListener)listener);
+		}
+
+		if (listener instanceof EventAwareExportImportLifecycleListener) {
+			return ExportImportLifecycleListenerFactoryUtil.create(
+				(EventAwareExportImportLifecycleListener)listener);
+		}
+
+		return listener;
+	}
+
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
-	private static final ServiceTracker
-		<ExportImportLifecycleListener, ExportImportLifecycleListener>
-			_serviceTracker;
-	private static final Set<ExportImportLifecycleListener>
-		_syncExportImportLifecycleListeners = ConcurrentHashMap.newKeySet();
 
-	private static class ExportImportLifecycleListenerServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<ExportImportLifecycleListener, ExportImportLifecycleListener> {
+	private static final ServiceTrackerMap
+		<Boolean, List<ExportImportLifecycleListener>> _serviceTrackerMap =
+			ServiceTrackerMapFactory.openMultiValueMap(
+				_bundleContext, ExportImportLifecycleListener.class, null,
+				(serviceReference, emitter) -> {
+					ExportImportLifecycleListener listener =
+						_bundleContext.getService(serviceReference);
 
-		@Override
-		public ExportImportLifecycleListener addingService(
-			ServiceReference<ExportImportLifecycleListener> serviceReference) {
+					if (listener != null) {
+						try {
+							ExportImportLifecycleListener wrappedListener =
+								_wrapListener(listener);
 
-			ExportImportLifecycleListener exportImportLifecycleListener =
-				_bundleContext.getService(serviceReference);
+							emitter.emit(wrappedListener.isParallel());
+						}
+						finally {
+							_bundleContext.ungetService(serviceReference);
+						}
+					}
+				},
+				new ServiceTrackerCustomizer
+					<ExportImportLifecycleListener,
+					 ExportImportLifecycleListener>() {
 
-			if (exportImportLifecycleListener instanceof
-					ProcessAwareExportImportLifecycleListener) {
+					@Override
+					public ExportImportLifecycleListener addingService(
+						ServiceReference<ExportImportLifecycleListener>
+							serviceReference) {
 
-				exportImportLifecycleListener =
-					ExportImportLifecycleListenerFactoryUtil.create(
-						(ProcessAwareExportImportLifecycleListener)
-							exportImportLifecycleListener);
-			}
-			else if (exportImportLifecycleListener instanceof
-						EventAwareExportImportLifecycleListener) {
+						ExportImportLifecycleListener listener =
+							_bundleContext.getService(serviceReference);
 
-				exportImportLifecycleListener =
-					ExportImportLifecycleListenerFactoryUtil.create(
-						(EventAwareExportImportLifecycleListener)
-							exportImportLifecycleListener);
-			}
+						return _wrapListener(listener);
+					}
 
-			if (exportImportLifecycleListener.isParallel()) {
-				_asyncExportImportLifecycleListeners.add(
-					exportImportLifecycleListener);
-			}
-			else {
-				_syncExportImportLifecycleListeners.add(
-					exportImportLifecycleListener);
-			}
+					@Override
+					public void modifiedService(
+						ServiceReference<ExportImportLifecycleListener>
+							serviceReference,
+						ExportImportLifecycleListener listener) {
+					}
 
-			return exportImportLifecycleListener;
-		}
+					@Override
+					public void removedService(
+						ServiceReference<ExportImportLifecycleListener>
+							serviceReference,
+						ExportImportLifecycleListener listener) {
 
-		@Override
-		public void modifiedService(
-			ServiceReference<ExportImportLifecycleListener> serviceReference,
-			ExportImportLifecycleListener exportImportLifecycleListener) {
-		}
+						_bundleContext.ungetService(serviceReference);
+					}
 
-		@Override
-		public void removedService(
-			ServiceReference<ExportImportLifecycleListener> serviceReference,
-			ExportImportLifecycleListener exportImportLifecycleListener) {
-
-			_bundleContext.ungetService(serviceReference);
-
-			if (exportImportLifecycleListener.isParallel()) {
-				_asyncExportImportLifecycleListeners.remove(
-					exportImportLifecycleListener);
-			}
-			else {
-				_syncExportImportLifecycleListeners.remove(
-					exportImportLifecycleListener);
-			}
-		}
-
-	}
-
-	static {
-		_serviceTracker = new ServiceTracker<>(
-			_bundleContext, ExportImportLifecycleListener.class,
-			new ExportImportLifecycleListenerServiceTrackerCustomizer());
-
-		_serviceTracker.open();
-	}
+				});
 
 }

@@ -187,23 +187,7 @@ public class FilterCollectionPersistenceFinder
 			sb.append(_filterSqlSelectNoInlineDistinctWhere1);
 		}
 
-		for (int i = 0; i < finderColumns.length; i++) {
-			String fragment = finderColumns[i].getSqlFragment(values[i], true);
-
-			if (fragment.isEmpty()) {
-				continue;
-			}
-
-			sb.append(fragment);
-			sb.append(" AND ");
-		}
-
-		if (!dbWhere.isEmpty()) {
-			sb.append(dbWhere);
-		}
-		else if (sb.index() > 1) {
-			sb.setIndex(sb.index() - 1);
-		}
+		appendSQLWhere(sb, values, true);
 
 		if (!inlineDistinct) {
 			sb.append(_filterSqlSelectNoInlineDistinctWhere2);

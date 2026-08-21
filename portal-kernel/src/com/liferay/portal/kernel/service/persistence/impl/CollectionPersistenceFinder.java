@@ -239,23 +239,7 @@ public class CollectionPersistenceFinder
 
 		sb.append(sqlSelectWhere);
 
-		for (int i = 0; i < finderColumns.length; i++) {
-			String fragment = finderColumns[i].getSqlFragment(values[i], false);
-
-			if (fragment.isEmpty()) {
-				continue;
-			}
-
-			sb.append(fragment);
-			sb.append(" AND ");
-		}
-
-		if (!where.isEmpty()) {
-			sb.append(where);
-		}
-		else if (sb.index() > 1) {
-			sb.setIndex(sb.index() - 1);
-		}
+		appendSQLWhere(sb, values, false);
 
 		if (orderByComparator == null) {
 			sb.append(_defaultOrderByJpql);

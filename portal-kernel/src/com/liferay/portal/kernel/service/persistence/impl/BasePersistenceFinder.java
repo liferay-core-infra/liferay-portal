@@ -58,6 +58,33 @@ public abstract class BasePersistenceFinder
 		this.finderColumns = finderColumns;
 	}
 
+	protected void appendSQLWhere(
+		StringBundler sb, Object[] values, boolean sqlQuery) {
+
+		int startIndex = sb.index();
+
+		for (int i = 0; i < finderColumns.length; i++) {
+			String fragment = finderColumns[i].getSqlFragment(
+				values[i], sqlQuery);
+
+			if (fragment.isEmpty()) {
+				continue;
+			}
+
+			sb.append(fragment);
+			sb.append(" AND ");
+		}
+
+		String whereClause = sqlQuery ? dbWhere : where;
+
+		if (!whereClause.isEmpty()) {
+			sb.append(whereClause);
+		}
+		else if (sb.index() > startIndex) {
+			sb.setIndex(sb.index() - 1);
+		}
+	}
+
 	protected void bindQueryParams(QueryPos queryPos, Object[] values) {
 		for (int i = 0; i < finderColumns.length; i++) {
 			finderColumns[i].bindValue(queryPos, values[i]);
@@ -81,26 +108,7 @@ public abstract class BasePersistenceFinder
 
 		sb.append(sqlWhere);
 
-		for (int i = 0; i < finderColumns.length; i++) {
-			String fragment = finderColumns[i].getSqlFragment(
-				values[i], sqlQuery);
-
-			if (fragment.isEmpty()) {
-				continue;
-			}
-
-			sb.append(fragment);
-			sb.append(" AND ");
-		}
-
-		String whereClause = sqlQuery ? dbWhere : where;
-
-		if (!whereClause.isEmpty()) {
-			sb.append(whereClause);
-		}
-		else if (sb.index() > 1) {
-			sb.setIndex(sb.index() - 1);
-		}
+		appendSQLWhere(sb, values, sqlQuery);
 
 		return sb.toString();
 	}

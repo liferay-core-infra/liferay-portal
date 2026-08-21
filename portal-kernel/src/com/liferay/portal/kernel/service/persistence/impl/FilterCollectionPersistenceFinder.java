@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -213,6 +214,10 @@ public class FilterCollectionPersistenceFinder
 	private int _filterCount(
 		FinderCache finderCache, Object[] values, long[] groupIds) {
 
+		if (isArrayableNeverMatching(values)) {
+			return 0;
+		}
+
 		if (basePersistenceImpl.isPermissionsInMemoryFilterEnabled()) {
 			List<T> list = find(
 				finderCache, values, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
@@ -258,6 +263,10 @@ public class FilterCollectionPersistenceFinder
 	private List<T> _filterFind(
 		FinderCache finderCache, Object[] values, int start, int end,
 		OrderByComparator<T> orderByComparator, long[] groupIds) {
+
+		if (isArrayableNeverMatching(values)) {
+			return Collections.emptyList();
+		}
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			basePersistenceImpl.isPermissionsInMemoryFilterEnabled()) {

@@ -80,6 +80,15 @@ public abstract class BasePersistenceFinder
 		if (!whereClause.isEmpty()) {
 			sb.append(whereClause);
 		}
+		else if ((sb.index() == startIndex) && (startIndex > 0)) {
+			String sqlWhere = sb.stringAt(startIndex - 1);
+
+			if (sqlWhere.endsWith(_WHERE)) {
+				sb.setStringAt(
+					sqlWhere.substring(0, sqlWhere.length() - _WHERE.length()),
+					startIndex - 1);
+			}
+		}
 		else if (sb.index() > startIndex) {
 			sb.setIndex(sb.index() - 1);
 		}
@@ -150,5 +159,7 @@ public abstract class BasePersistenceFinder
 
 	private static final SafeCloseable _NO_OP_SAFE_CLOSEABLE = () -> {
 	};
+
+	private static final String _WHERE = " WHERE ";
 
 }

@@ -70,17 +70,16 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 			byte[] ciphertext, long companyId, String keyIdentifier)
 		throws CryptoException {
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_getAWSKMSCryptoProviderContext(companyId);
+		AWSKMSCryptoProviderContext configuration = _getConfiguration(
+			companyId);
 
-		String keyARN = _getKey(
-			companyId, awsKMSCryptoProviderContext, keyIdentifier);
+		String keyARN = _getKey(companyId, configuration, keyIdentifier);
 
 		ServiceIndicator serviceIndicator = _getServiceIndicator(
-			awsKMSCryptoProviderContext, keyARN, "AWS.KMS.Decrypt");
+			configuration, keyARN, "AWS.KMS.Decrypt");
 
 		AWSClientManager<AWSKMS> awsClientManager =
-			awsKMSCryptoProviderContext.getAWSClientManager();
+			configuration.getAWSClientManager();
 
 		try {
 			DecryptResult decryptResult = awsClientManager.execute(
@@ -106,18 +105,16 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	public void deleteKey(long companyId, String keyIdentifier)
 		throws CryptoException {
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_getAWSKMSCryptoProviderContext(companyId);
+		AWSKMSCryptoProviderContext configuration = _getConfiguration(
+			companyId);
 
-		String keyARN = _getKey(
-			companyId, awsKMSCryptoProviderContext, keyIdentifier);
+		String keyARN = _getKey(companyId, configuration, keyIdentifier);
 
 		String aliasName = _getAliasName(keyARN);
 
 		AWSClientManager<AWSKMS> awsClientManager =
-			awsKMSCryptoProviderContext.getAWSClientManager();
-		int pendingWindowInDays =
-			awsKMSCryptoProviderContext.getPendingWindowInDays();
+			configuration.getAWSClientManager();
+		int pendingWindowInDays = configuration.getPendingWindowInDays();
 
 		try {
 			awsClientManager.execute(
@@ -163,22 +160,21 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 			long companyId, String keyIdentifier, byte[] plaintext)
 		throws CryptoException {
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_getAWSKMSCryptoProviderContext(companyId);
+		AWSKMSCryptoProviderContext configuration = _getConfiguration(
+			companyId);
 
 		AWSKMSFIPSValidator awsKMSFIPSValidator =
-			awsKMSCryptoProviderContext.getAWSKMSFIPSValidator();
+			configuration.getAWSKMSFIPSValidator();
 
 		awsKMSFIPSValidator.validateCipherMode();
 
-		String keyARN = _getKey(
-			companyId, awsKMSCryptoProviderContext, keyIdentifier);
+		String keyARN = _getKey(companyId, configuration, keyIdentifier);
 
 		ServiceIndicator serviceIndicator = _getServiceIndicator(
-			awsKMSCryptoProviderContext, keyARN, "AWS.KMS.Encrypt");
+			configuration, keyARN, "AWS.KMS.Encrypt");
 
 		AWSClientManager<AWSKMS> awsClientManager =
-			awsKMSCryptoProviderContext.getAWSClientManager();
+			configuration.getAWSClientManager();
 
 		try {
 			EncryptResult encryptResult = awsClientManager.execute(
@@ -214,19 +210,19 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 			String algorithm, long companyId, String keyIdentifier)
 		throws CryptoException {
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_getAWSKMSCryptoProviderContext(companyId);
+		AWSKMSCryptoProviderContext configuration = _getConfiguration(
+			companyId);
 
 		String identifier = _createKey(
-			companyId, awsKMSCryptoProviderContext, keyIdentifier,
-			_getKeySpec(algorithm), KeyUsageType.ENCRYPT_DECRYPT);
+			companyId, configuration, keyIdentifier, _getKeySpec(algorithm),
+			KeyUsageType.ENCRYPT_DECRYPT);
 
 		AWSKMSFIPSValidator awsKMSFIPSValidator =
-			awsKMSCryptoProviderContext.getAWSKMSFIPSValidator();
+			configuration.getAWSKMSFIPSValidator();
 
 		return new CryptoServiceResult<>(
 			awsKMSFIPSValidator.toServiceIndicator(
-				awsKMSCryptoProviderContext.isUseFIPSEndpoint(),
+				configuration.isUseFIPSEndpoint(),
 				"AWS.KMS.CreateKey.Asymmetric"),
 			identifier);
 	}
@@ -244,21 +240,21 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 					algorithm + "\"");
 		}
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_getAWSKMSCryptoProviderContext(companyId);
+		AWSKMSCryptoProviderContext configuration = _getConfiguration(
+			companyId);
 
 		AWSKMSFIPSValidator awsKMSFIPSValidator =
-			awsKMSCryptoProviderContext.getAWSKMSFIPSValidator();
+			configuration.getAWSKMSFIPSValidator();
 
 		awsKMSFIPSValidator.validateCipherMode();
 
 		String identifier = _createKey(
-			companyId, awsKMSCryptoProviderContext, keyIdentifier,
-			KeySpec.SYMMETRIC_DEFAULT, KeyUsageType.ENCRYPT_DECRYPT);
+			companyId, configuration, keyIdentifier, KeySpec.SYMMETRIC_DEFAULT,
+			KeyUsageType.ENCRYPT_DECRYPT);
 
 		return new CryptoServiceResult<>(
 			awsKMSFIPSValidator.toServiceIndicator(
-				awsKMSCryptoProviderContext.isUseFIPSEndpoint(),
+				configuration.isUseFIPSEndpoint(),
 				"AWS.KMS.CreateKey.Symmetric"),
 			identifier);
 	}
@@ -267,15 +263,13 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	public CryptoKey getCryptoKey(long companyId, String keyIdentifier)
 		throws CryptoException {
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_getAWSKMSCryptoProviderContext(companyId);
+		AWSKMSCryptoProviderContext configuration = _getConfiguration(
+			companyId);
 
-		String keyARN = _getKey(
-			companyId, awsKMSCryptoProviderContext, keyIdentifier);
+		String keyARN = _getKey(companyId, configuration, keyIdentifier);
 
 		try {
-			KeyMetadata keyMetadata = _getKeyMetadata(
-				awsKMSCryptoProviderContext, keyARN);
+			KeyMetadata keyMetadata = _getKeyMetadata(configuration, keyARN);
 
 			String algorithm = GetterUtil.getString(
 				keyMetadata.getKeySpec(), "SYMMETRIC_DEFAULT");
@@ -304,18 +298,17 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	public List<String> getKeyIdentifiers(long companyId)
 		throws CryptoException {
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_getAWSKMSCryptoProviderContext(companyId);
+		AWSKMSCryptoProviderContext configuration = _getConfiguration(
+			companyId);
 
-		String aliasPrefix = _resolveAliasPrefix(
-			companyId, awsKMSCryptoProviderContext);
+		String aliasPrefix = _resolveAliasPrefix(companyId, configuration);
 
 		if (Validator.isNull(aliasPrefix)) {
 			return new ArrayList<>();
 		}
 
 		AWSClientManager<AWSKMS> awsClientManager =
-			awsKMSCryptoProviderContext.getAWSClientManager();
+			configuration.getAWSClientManager();
 
 		try {
 			return awsClientManager.execute(
@@ -366,12 +359,10 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 
 	@Override
 	public ProviderStatus getProviderStatus() {
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_awsKMSCryptoProviderContext;
+		AWSKMSCryptoProviderContext configuration = _configuration;
 
-		if ((awsKMSCryptoProviderContext == null) ||
-			!awsKMSCryptoProviderContext.isEnabled() ||
-			Validator.isNull(awsKMSCryptoProviderContext.getRegion())) {
+		if ((configuration == null) || !configuration.isEnabled() ||
+			Validator.isNull(configuration.getRegion())) {
 
 			return ProviderStatus.DEGRADED;
 		}
@@ -423,14 +414,12 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 		boolean useFIPSEndpoint = GetterUtil.getBoolean(
 			properties.get("useFIPSEndpoint"));
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_awsKMSCryptoProviderContext;
+		AWSKMSCryptoProviderContext configuration = _configuration;
 
 		AWSClientManager<AWSKMS> awsClientManager = null;
 
-		if (awsKMSCryptoProviderContext != null) {
-			awsClientManager =
-				awsKMSCryptoProviderContext.getAWSClientManager();
+		if (configuration != null) {
+			awsClientManager = configuration.getAWSClientManager();
 		}
 
 		if (awsClientManager == null) {
@@ -444,7 +433,7 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 
 		region = awsClientManager.getRegion();
 
-		_awsKMSCryptoProviderContext = new AWSKMSCryptoProviderContext(
+		_configuration = new AWSKMSCryptoProviderContext(
 			accountId, awsClientManager,
 			new AWSKMSFIPSValidator(cipherMode, fipsEnforced), enabled,
 			keyARNTemplate, pendingWindowInDays, region, useFIPSEndpoint);
@@ -458,14 +447,13 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 
 	@Deactivate
 	protected void deactivate() {
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_awsKMSCryptoProviderContext;
+		AWSKMSCryptoProviderContext configuration = _configuration;
 
-		_awsKMSCryptoProviderContext = null;
+		_configuration = null;
 
-		if (awsKMSCryptoProviderContext != null) {
+		if (configuration != null) {
 			AWSClientManager<AWSKMS> awsClientManager =
-				awsKMSCryptoProviderContext.getAWSClientManager();
+				configuration.getAWSClientManager();
 
 			awsClientManager.close();
 		}
@@ -495,16 +483,15 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	}
 
 	private String _createKey(
-			long companyId,
-			AWSKMSCryptoProviderContext awsKMSCryptoProviderContext,
+			long companyId, AWSKMSCryptoProviderContext configuration,
 			String keyIdentifier, KeySpec keySpec, KeyUsageType keyUsageType)
 		throws CryptoException {
 
 		String aliasName = _getAliasName(
-			_getKey(companyId, awsKMSCryptoProviderContext, keyIdentifier));
+			_getKey(companyId, configuration, keyIdentifier));
 
 		AWSClientManager<AWSKMS> awsClientManager =
-			awsKMSCryptoProviderContext.getAWSClientManager();
+			configuration.getAWSClientManager();
 
 		try {
 			return awsClientManager.execute(
@@ -558,16 +545,12 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 		return keyARNOrAlias.substring(index + 1);
 	}
 
-	private AWSKMSCryptoProviderContext _getAWSKMSCryptoProviderContext(
-			long companyId)
+	private AWSKMSCryptoProviderContext _getConfiguration(long companyId)
 		throws CryptoException {
 
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext =
-			_awsKMSCryptoProviderContext;
+		AWSKMSCryptoProviderContext configuration = _configuration;
 
-		if ((awsKMSCryptoProviderContext == null) ||
-			!awsKMSCryptoProviderContext.isEnabled()) {
-
+		if ((configuration == null) || !configuration.isEnabled()) {
 			throw new CryptoException(
 				"Provider " + getProviderId() + " is not enabled");
 		}
@@ -579,20 +562,18 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 					" does not handle company ID ", companyId));
 		}
 
-		return awsKMSCryptoProviderContext;
+		return configuration;
 	}
 
 	private String _getKey(
-			long companyId,
-			AWSKMSCryptoProviderContext awsKMSCryptoProviderContext,
+			long companyId, AWSKMSCryptoProviderContext configuration,
 			String keyIdentifier)
 		throws CryptoException {
 
 		try {
 			return AWSARNUtil.resolve(
-				awsKMSCryptoProviderContext.getAccountId(),
-				awsKMSCryptoProviderContext.getKeyARNTemplate(), companyId,
-				keyIdentifier, awsKMSCryptoProviderContext.getRegion());
+				configuration.getAccountId(), configuration.getKeyARNTemplate(),
+				companyId, keyIdentifier, configuration.getRegion());
 		}
 		catch (IllegalArgumentException illegalArgumentException) {
 			throw new CryptoException(
@@ -602,12 +583,11 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	}
 
 	private KeyMetadata _getKeyMetadata(
-			AWSKMSCryptoProviderContext awsKMSCryptoProviderContext,
-			String keyARN)
+			AWSKMSCryptoProviderContext configuration, String keyARN)
 		throws Exception {
 
 		AWSClientManager<AWSKMS> awsClientManager =
-			awsKMSCryptoProviderContext.getAWSClientManager();
+			configuration.getAWSClientManager();
 
 		DescribeKeyResult describeKeyResult = awsClientManager.execute(
 			awsKMS -> awsKMS.describeKey(
@@ -620,8 +600,7 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	}
 
 	private String _getKeyOrigin(
-			AWSKMSCryptoProviderContext awsKMSCryptoProviderContext,
-			String keyARN)
+			AWSKMSCryptoProviderContext configuration, String keyARN)
 		throws CryptoException {
 
 		String keyOrigin = _keyOrigins.get(keyARN);
@@ -631,8 +610,7 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 		}
 
 		try {
-			KeyMetadata keyMetadata = _getKeyMetadata(
-				awsKMSCryptoProviderContext, keyARN);
+			KeyMetadata keyMetadata = _getKeyMetadata(configuration, keyARN);
 
 			keyOrigin = keyMetadata.getOrigin();
 		}
@@ -679,19 +657,19 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	}
 
 	private ServiceIndicator _getServiceIndicator(
-			AWSKMSCryptoProviderContext awsKMSCryptoProviderContext,
-			String keyARN, String securityFunctionName)
+			AWSKMSCryptoProviderContext configuration, String keyARN,
+			String securityFunctionName)
 		throws CryptoException {
 
 		AWSKMSFIPSValidator awsKMSFIPSValidator =
-			awsKMSCryptoProviderContext.getAWSKMSFIPSValidator();
+			configuration.getAWSKMSFIPSValidator();
 
 		if (!awsKMSFIPSValidator.isFIPSEnforced()) {
 			return awsKMSFIPSValidator.toServiceIndicator(
 				false, securityFunctionName);
 		}
 
-		String keyOrigin = _getKeyOrigin(awsKMSCryptoProviderContext, keyARN);
+		String keyOrigin = _getKeyOrigin(configuration, keyARN);
 
 		awsKMSFIPSValidator.validateKeyOrigin(keyOrigin);
 
@@ -700,24 +678,22 @@ public abstract class BaseAWSKMSCryptoProvider implements CryptoProvider {
 	}
 
 	private String _resolveAliasPrefix(
-		long companyId,
-		AWSKMSCryptoProviderContext awsKMSCryptoProviderContext) {
+		long companyId, AWSKMSCryptoProviderContext configuration) {
 
-		if (Validator.isNull(awsKMSCryptoProviderContext.getKeyARNTemplate())) {
+		if (Validator.isNull(configuration.getKeyARNTemplate())) {
 			return null;
 		}
 
 		return _getAliasName(
 			AWSARNUtil.resolve(
-				awsKMSCryptoProviderContext.getAccountId(),
-				awsKMSCryptoProviderContext.getKeyARNTemplate(), companyId,
-				StringPool.BLANK, awsKMSCryptoProviderContext.getRegion()));
+				configuration.getAccountId(), configuration.getKeyARNTemplate(),
+				companyId, StringPool.BLANK, configuration.getRegion()));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseAWSKMSCryptoProvider.class);
 
-	private volatile AWSKMSCryptoProviderContext _awsKMSCryptoProviderContext;
+	private volatile AWSKMSCryptoProviderContext _configuration;
 	private final Map<String, String> _keyOrigins = new ConcurrentHashMap<>();
 
 }

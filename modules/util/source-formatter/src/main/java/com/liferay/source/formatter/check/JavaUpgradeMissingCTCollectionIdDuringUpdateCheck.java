@@ -94,7 +94,7 @@ public class JavaUpgradeMissingCTCollectionIdDuringUpdateCheck
 				JavaSourceUtil.getMethodCall(content, x));
 
 			if (methodName.startsWith("AutoBatchPreparedStatementUtil.") &&
-				(getParameterNames.size() != 2)) {
+				(getParameterNames.size() < 2)) {
 
 				continue;
 			}

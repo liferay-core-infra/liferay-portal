@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.function.Supplier;
 
 /**
  * @author Christopher Kian
@@ -29,9 +28,19 @@ public class AWSClientManager<T> {
 		ClientFactory<T> clientFactory, String fipsEndpointTemplate,
 		String region, boolean useFIPSEndpoint) {
 
-		this(
-			clientFactory, fipsEndpointTemplate, region,
-			AWSRegionUtil::getRegion, useFIPSEndpoint);
+		_clientFactory = clientFactory;
+		_fipsEndpointTemplate = fipsEndpointTemplate;
+		_region = _resolveRegion(region);
+		_useFIPSEndpoint = useFIPSEndpoint;
+
+		_awsCredentialsProvider =
+			DefaultAWSCredentialsProviderChain.getInstance();
+
+		ReentrantReadWriteLock reentrantReadWriteLock =
+			new ReentrantReadWriteLock();
+
+		_readLock = reentrantReadWriteLock.readLock();
+		_writeLock = reentrantReadWriteLock.writeLock();
 	}
 
 	public void close() {
@@ -90,7 +99,7 @@ public class AWSClientManager<T> {
 	}
 
 	public void updateConfiguration(String region, boolean useFIPSEndpoint) {
-		region = _resolveRegion(region, _regionSupplier);
+		region = _resolveRegion(region);
 
 		_writeLock.lock();
 
@@ -125,27 +134,6 @@ public class AWSClientManager<T> {
 				String region)
 			throws Exception;
 
-	}
-
-	protected AWSClientManager(
-		ClientFactory<T> clientFactory, String fipsEndpointTemplate,
-		String region, Supplier<String> regionSupplier,
-		boolean useFIPSEndpoint) {
-
-		_clientFactory = clientFactory;
-		_fipsEndpointTemplate = fipsEndpointTemplate;
-		_region = _resolveRegion(region, regionSupplier);
-		_regionSupplier = regionSupplier;
-		_useFIPSEndpoint = useFIPSEndpoint;
-
-		_awsCredentialsProvider =
-			DefaultAWSCredentialsProviderChain.getInstance();
-
-		ReentrantReadWriteLock reentrantReadWriteLock =
-			new ReentrantReadWriteLock();
-
-		_readLock = reentrantReadWriteLock.readLock();
-		_writeLock = reentrantReadWriteLock.writeLock();
 	}
 
 	private void _closeClient() {
@@ -183,11 +171,9 @@ public class AWSClientManager<T> {
 		return new AwsClientBuilder.EndpointConfiguration(endpoint, _region);
 	}
 
-	private String _resolveRegion(
-		String region, Supplier<String> regionSupplier) {
-
+	private String _resolveRegion(String region) {
 		if (Validator.isNull(region)) {
-			return regionSupplier.get();
+			return AWSRegionUtil.getRegion();
 		}
 
 		return region;
@@ -203,7 +189,6 @@ public class AWSClientManager<T> {
 	private final String _fipsEndpointTemplate;
 	private final Lock _readLock;
 	private volatile String _region;
-	private final Supplier<String> _regionSupplier;
 	private volatile boolean _useFIPSEndpoint;
 	private final Lock _writeLock;
 

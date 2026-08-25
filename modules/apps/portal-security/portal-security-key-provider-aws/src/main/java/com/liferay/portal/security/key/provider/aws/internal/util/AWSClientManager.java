@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -101,10 +100,15 @@ public class AWSClientManager<T> {
 	public void updateConfiguration(String region, boolean useFIPSEndpoint) {
 		region = _resolveRegion(region);
 
+		if (Validator.isNull(region)) {
+			throw new IllegalArgumentException(
+				"AWS region could not be resolved");
+		}
+
 		_writeLock.lock();
 
 		try {
-			if (!Objects.equals(region, _region) ||
+			if (!region.equals(_region) ||
 				(useFIPSEndpoint != _useFIPSEndpoint)) {
 
 				_region = region;

@@ -7605,7 +7605,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 					connection,
 					CustomSQLUtil.get(
 						UserLocalServiceImpl.class.getName() +
-							".updateLastLogin"))) {
+							".updateLastLogin"),
+					true)) {
 
 			for (User user : users) {
 				preparedStatement.setTimestamp(
@@ -7621,6 +7622,22 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			}
 
 			int[] results = preparedStatement.executeBatch();
+
+			if (results.length != users.size()) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Unable to map ", results.length,
+							" row counts onto ", users.size(), " users"));
+				}
+
+				for (User user : users) {
+					EntityCacheUtil.removeResult(
+						UserImpl.class, user.getUserId());
+				}
+
+				return;
+			}
 
 			PortalCache<Serializable, Serializable> portalCache =
 				EntityCacheUtil.getPortalCache(UserImpl.class);

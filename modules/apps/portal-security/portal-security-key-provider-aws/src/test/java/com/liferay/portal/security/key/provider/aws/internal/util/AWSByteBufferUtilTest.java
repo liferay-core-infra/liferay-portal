@@ -29,29 +29,29 @@ public class AWSByteBufferUtilTest {
 	public void testGetBytes() {
 		byte[] bytes = RandomTestUtil.randomBytes();
 
-		byte[] clonedBytes = bytes.clone();
+		byte[] backingArray = bytes.clone();
 
-		ByteBuffer byteBuffer = ByteBuffer.wrap(clonedBytes);
+		ByteBuffer byteBuffer = ByteBuffer.wrap(backingArray);
 
-		byte[] byteBufferBytes = AWSByteBufferUtil.getBytes(byteBuffer);
+		byte[] result = AWSByteBufferUtil.getBytes(byteBuffer);
 
-		Assert.assertArrayEquals(new byte[bytes.length], clonedBytes);
-		Assert.assertArrayEquals(bytes, byteBufferBytes);
+		Assert.assertArrayEquals(new byte[bytes.length], backingArray);
+		Assert.assertArrayEquals(bytes, result);
 	}
 
 	@Test
 	public void testGetBytesLeavesReadOnlyBuffer() {
 		byte[] bytes = RandomTestUtil.randomBytes();
 
-		byte[] clonedBytes = bytes.clone();
+		byte[] backingArray = bytes.clone();
 
-		ByteBuffer byteBuffer = ByteBuffer.wrap(clonedBytes);
+		ByteBuffer byteBuffer = ByteBuffer.wrap(backingArray);
 
-		byte[] byteBufferBytes = AWSByteBufferUtil.getBytes(
+		byte[] result = AWSByteBufferUtil.getBytes(
 			byteBuffer.asReadOnlyBuffer());
 
-		Assert.assertArrayEquals(bytes, clonedBytes);
-		Assert.assertArrayEquals(bytes, byteBufferBytes);
+		Assert.assertArrayEquals(bytes, backingArray);
+		Assert.assertArrayEquals(bytes, result);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

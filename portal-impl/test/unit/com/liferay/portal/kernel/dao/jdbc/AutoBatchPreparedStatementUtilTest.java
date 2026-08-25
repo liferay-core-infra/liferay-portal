@@ -31,6 +31,7 @@ import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,6 +87,39 @@ public class AutoBatchPreparedStatementUtilTest {
 	@After
 	public void tearDown() {
 		_serviceRegistration.unregister();
+	}
+
+	@Test
+	public void testAutoBatchReturnRowCounts() throws Exception {
+		PropsUtil.set(PropsKeys.HIBERNATE_JDBC_BATCH_SIZE, "2");
+
+		doTestDefaultTrailingBatchOnly();
+		doTestReturnRowCountsEmptyBatch();
+		doTestReturnRowCountsExactMultiple();
+		doTestReturnRowCountsRepeatedExecuteBatch();
+		doTestReturnRowCountsSuccessNoInfo();
+
+		Assert.assertArrayEquals(
+			new int[] {1, 2, 3, 4, 5}, doTestReturnRowCounts(5, true));
+		Assert.assertArrayEquals(
+			new int[] {1, 2, 3, 4, 5}, doTestReturnRowCounts(5, false));
+		Assert.assertArrayEquals(new int[0], doTestReturnRowCounts(0, false));
+	}
+
+	@Test
+	public void testAutoBatchReturnRowCountsBatchSizeZero() throws Exception {
+		PropsUtil.set(PropsKeys.HIBERNATE_JDBC_BATCH_SIZE, "0");
+
+		Assert.assertArrayEquals(
+			new int[] {1, 2, 3, 4, 5}, doTestReturnRowCounts(5, true));
+	}
+
+	@Test
+	public void testAutoBatchReturnRowCountsSingleFlush() throws Exception {
+		PropsUtil.set(PropsKeys.HIBERNATE_JDBC_BATCH_SIZE, "2000");
+
+		Assert.assertArrayEquals(
+			new int[] {1, 2, 3, 4, 5}, doTestReturnRowCounts(5, true));
 	}
 
 	@Test
@@ -339,6 +373,29 @@ public class AutoBatchPreparedStatementUtilTest {
 		Assert.assertTrue(testNoticeableFuture.hasCalledGet());
 	}
 
+	protected void doTestDefaultTrailingBatchOnly() throws Exception {
+		PreparedStatementInvocationHandler preparedStatementInvocationHandler =
+			new PreparedStatementInvocationHandler(true, true);
+
+		List<Method> methods = preparedStatementInvocationHandler.getMethods();
+
+		try (PreparedStatement preparedStatement =
+				getAutoBatchPreparedStatement(
+					preparedStatementInvocationHandler, false)) {
+
+			for (int i = 0; i < 5; i++) {
+				preparedStatement.addBatch();
+			}
+
+			Assert.assertArrayEquals(
+				new int[] {5}, preparedStatement.executeBatch());
+		}
+
+		Assert.assertEquals(
+			PreparedStatement.class.getMethod("close"),
+			methods.get(methods.size() - 1));
+	}
+
 	protected void doTestNotSupportBatchUpdates() throws Exception {
 		PreparedStatementInvocationHandler preparedStatementInvocationHandler =
 			new PreparedStatementInvocationHandler(false);
@@ -440,6 +497,163 @@ public class AutoBatchPreparedStatementUtilTest {
 			Assert.assertEquals(
 				PreparedStatement.class.getMethod("execute"),
 				methods.remove(0));
+		}
+	}
+
+	protected int[] doTestReturnRowCounts(
+			int batchCount, boolean supportBatchUpdates)
+		throws Exception {
+
+		try (PreparedStatement preparedStatement =
+				getAutoBatchPreparedStatement(
+					new PreparedStatementInvocationHandler(
+						supportBatchUpdates, true),
+					true)) {
+
+			for (int i = 0; i < batchCount; i++) {
+				preparedStatement.addBatch();
+			}
+
+			return preparedStatement.executeBatch();
+		}
+	}
+
+	protected void doTestReturnRowCountsEmptyBatch() throws Exception {
+		PreparedStatementInvocationHandler preparedStatementInvocationHandler =
+			new PreparedStatementInvocationHandler(true, true);
+
+		List<Method> methods = preparedStatementInvocationHandler.getMethods();
+
+		try (PreparedStatement preparedStatement =
+				getAutoBatchPreparedStatement(
+					preparedStatementInvocationHandler, true)) {
+
+			Assert.assertArrayEquals(
+				new int[0], preparedStatement.executeBatch());
+			Assert.assertTrue(methods.toString(), methods.isEmpty());
+		}
+	}
+
+	protected void doTestReturnRowCountsExactMultiple() throws Exception {
+		PreparedStatementInvocationHandler preparedStatementInvocationHandler =
+			new PreparedStatementInvocationHandler(true, true);
+
+		List<Method> methods = preparedStatementInvocationHandler.getMethods();
+
+		try (PreparedStatement preparedStatement =
+				getAutoBatchPreparedStatement(
+					preparedStatementInvocationHandler, true)) {
+
+			InvocationHandler invocationHandler =
+				ProxyUtil.getInvocationHandler(preparedStatement);
+
+			for (int i = 0; i < 4; i++) {
+				preparedStatement.addBatch();
+			}
+
+			Assert.assertEquals(
+				Integer.valueOf(0),
+				ReflectionTestUtil.getFieldValue(invocationHandler, "_count"));
+			Assert.assertEquals(methods.toString(), 6, methods.size());
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("executeBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("executeBatch"),
+				methods.remove(0));
+			Assert.assertArrayEquals(
+				new int[] {1, 2, 3, 4}, preparedStatement.executeBatch());
+			Assert.assertTrue(methods.toString(), methods.isEmpty());
+		}
+	}
+
+	protected void doTestReturnRowCountsRepeatedExecuteBatch()
+		throws Exception {
+
+		PreparedStatementInvocationHandler preparedStatementInvocationHandler =
+			new PreparedStatementInvocationHandler(true, true);
+
+		List<Method> methods = preparedStatementInvocationHandler.getMethods();
+
+		try (PreparedStatement preparedStatement =
+				getAutoBatchPreparedStatement(
+					preparedStatementInvocationHandler, true)) {
+
+			for (int i = 0; i < 3; i++) {
+				preparedStatement.addBatch();
+			}
+
+			Assert.assertArrayEquals(
+				new int[] {1, 2, 3}, preparedStatement.executeBatch());
+			Assert.assertEquals(methods.toString(), 5, methods.size());
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("executeBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("executeBatch"),
+				methods.remove(0));
+
+			preparedStatement.addBatch();
+			preparedStatement.addBatch();
+
+			Assert.assertArrayEquals(
+				new int[] {4, 5}, preparedStatement.executeBatch());
+			Assert.assertEquals(methods.toString(), 3, methods.size());
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("addBatch"),
+				methods.remove(0));
+			Assert.assertEquals(
+				PreparedStatement.class.getMethod("executeBatch"),
+				methods.remove(0));
+			Assert.assertTrue(methods.toString(), methods.isEmpty());
+		}
+	}
+
+	protected void doTestReturnRowCountsSuccessNoInfo() throws Exception {
+		PreparedStatementInvocationHandler preparedStatementInvocationHandler =
+			new PreparedStatementInvocationHandler(true, true);
+
+		preparedStatementInvocationHandler.setFixedRowCount(
+			Statement.SUCCESS_NO_INFO);
+
+		try (PreparedStatement preparedStatement =
+				getAutoBatchPreparedStatement(
+					preparedStatementInvocationHandler, true)) {
+
+			for (int i = 0; i < 3; i++) {
+				preparedStatement.addBatch();
+			}
+
+			Assert.assertArrayEquals(
+				new int[] {
+					Statement.SUCCESS_NO_INFO, Statement.SUCCESS_NO_INFO,
+					Statement.SUCCESS_NO_INFO
+				},
+				preparedStatement.executeBatch());
 		}
 	}
 
@@ -655,6 +869,27 @@ public class AutoBatchPreparedStatementUtilTest {
 		}
 	}
 
+	protected PreparedStatement getAutoBatchPreparedStatement(
+			PreparedStatementInvocationHandler
+				preparedStatementInvocationHandler,
+			boolean returnRowCounts)
+		throws Exception {
+
+		Connection connection = (Connection)ProxyUtil.newProxyInstance(
+			ClassLoader.getSystemClassLoader(),
+			new Class<?>[] {Connection.class},
+			new ConnectionInvocationHandler(
+				preparedStatementInvocationHandler));
+
+		if (returnRowCounts) {
+			return AutoBatchPreparedStatementUtil.autoBatch(
+				connection, StringPool.BLANK, true);
+		}
+
+		return AutoBatchPreparedStatementUtil.autoBatch(
+			connection, StringPool.BLANK);
+	}
+
 	private ServiceRegistration<?> _serviceRegistration;
 
 	private static class ConnectionInvocationHandler
@@ -736,9 +971,13 @@ public class AutoBatchPreparedStatementUtilTest {
 
 			_methods.add(method);
 
-			if (method.equals(PreparedStatement.class.getMethod("addBatch")) ||
-				method.equals(PreparedStatement.class.getMethod("close"))) {
+			if (method.equals(PreparedStatement.class.getMethod("addBatch"))) {
+				_batchCount++;
 
+				return null;
+			}
+
+			if (method.equals(PreparedStatement.class.getMethod("close"))) {
 				return null;
 			}
 
@@ -753,7 +992,19 @@ public class AutoBatchPreparedStatementUtilTest {
 					throw _runtimeException;
 				}
 
-				return new int[0];
+				if (!_trackRowCounts) {
+					return new int[0];
+				}
+
+				int[] rowCounts = new int[_batchCount];
+
+				for (int i = 0; i < rowCounts.length; i++) {
+					rowCounts[i] = _nextRowCount();
+				}
+
+				_batchCount = 0;
+
+				return rowCounts;
 			}
 
 			if (method.equals(
@@ -763,10 +1014,18 @@ public class AutoBatchPreparedStatementUtilTest {
 					throw _runtimeException;
 				}
 
+				if (_trackRowCounts) {
+					return _nextRowCount();
+				}
+
 				return 0;
 			}
 
 			throw new UnsupportedOperationException();
+		}
+
+		public void setFixedRowCount(int fixedRowCount) {
+			_fixedRowCount = fixedRowCount;
 		}
 
 		public void setRuntimeException(RuntimeException runtimeException) {
@@ -776,12 +1035,31 @@ public class AutoBatchPreparedStatementUtilTest {
 		private PreparedStatementInvocationHandler(
 			boolean supportBatchUpdates) {
 
-			_supportBatchUpdates = supportBatchUpdates;
+			this(supportBatchUpdates, false);
 		}
 
+		private PreparedStatementInvocationHandler(
+			boolean supportBatchUpdates, boolean trackRowCounts) {
+
+			_supportBatchUpdates = supportBatchUpdates;
+			_trackRowCounts = trackRowCounts;
+		}
+
+		private int _nextRowCount() {
+			if (_fixedRowCount != null) {
+				return _fixedRowCount;
+			}
+
+			return ++_rowCount;
+		}
+
+		private int _batchCount;
+		private Integer _fixedRowCount;
 		private final List<Method> _methods = new ArrayList<>();
+		private int _rowCount;
 		private RuntimeException _runtimeException;
 		private final boolean _supportBatchUpdates;
+		private final boolean _trackRowCounts;
 
 	}
 

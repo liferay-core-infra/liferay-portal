@@ -31,12 +31,12 @@ public class AWSByteBufferUtilTest {
 
 		byte[] backingArray = bytes.clone();
 
-		ByteBuffer byteBuffer = ByteBuffer.wrap(backingArray);
+		byte[] result = AWSByteBufferUtil.getBytes(
+			ByteBuffer.wrap(backingArray));
 
-		byte[] result = AWSByteBufferUtil.getBytes(byteBuffer);
+		Assert.assertArrayEquals(bytes, result);
 
 		Assert.assertArrayEquals(new byte[bytes.length], backingArray);
-		Assert.assertArrayEquals(bytes, result);
 	}
 
 	@Test

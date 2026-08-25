@@ -35,8 +35,8 @@ public class AWSByteBufferUtil {
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
-				"Sensitive bytes remain until the JVM reclaims them because " +
-					"the AWS response buffer is direct or read only");
+				"Unable to zero a direct or read only AWS response buffer so " +
+					"sensitive bytes remain until the JVM reclaims them");
 		}
 
 		return bytes;

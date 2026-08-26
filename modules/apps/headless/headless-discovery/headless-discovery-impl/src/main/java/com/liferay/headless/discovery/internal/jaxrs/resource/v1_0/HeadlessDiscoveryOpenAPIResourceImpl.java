@@ -160,8 +160,6 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 				public ServiceReference<Application> addingService(
 					ServiceReference<Application> serviceReference) {
 
-					_populateCompanyIds(serviceReference);
-
 					return serviceReference;
 				}
 
@@ -169,22 +167,12 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 				public void modifiedService(
 					ServiceReference<Application> serviceReference,
 					ServiceReference<Application> trackedServiceReference) {
-
-					_populateCompanyIds(serviceReference);
 				}
 
 				@Override
 				public void removedService(
 					ServiceReference<Application> serviceReference,
 					ServiceReference<Application> trackedServiceReference) {
-
-					Object osgiJaxRsApplicationBase =
-						serviceReference.getProperty(
-							"osgi.jaxrs.application.base");
-
-					if (osgiJaxRsApplicationBase instanceof String) {
-						_companyIds.remove(osgiJaxRsApplicationBase);
-					}
 				}
 
 			});
@@ -468,26 +456,9 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 		return null;
 	}
 
-	private void _populateCompanyIds(
-		ServiceReference<Application> serviceReference) {
-
-		Object companyIds = serviceReference.getProperty("companyId");
-		Object osgiJaxRsApplicationBase = serviceReference.getProperty(
-			"osgi.jaxrs.application.base");
-
-		if ((companyIds instanceof List) &&
-			(osgiJaxRsApplicationBase instanceof String)) {
-
-			_companyIds.put(
-				(String)osgiJaxRsApplicationBase, (List<String>)companyIds);
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		HeadlessDiscoveryOpenAPIResourceImpl.class);
 
-	private static final Map<String, List<String>> _companyIds =
-		new HashMap<>();
 	private static final Snapshot<JaxrsServiceRuntime>
 		_jaxrsServiceRuntimeSnapshot = new Snapshot<>(
 			HeadlessDiscoveryOpenAPIResourceImpl.class,

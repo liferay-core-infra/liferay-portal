@@ -151,21 +151,22 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 		_bundleContext = bundleContext;
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, Application.class, "companyId",
-			new EagerServiceTrackerCustomizer<Application, Application>() {
+			new EagerServiceTrackerCustomizer
+				<Application, ServiceReference<Application>>() {
 
 				@Override
-				public Application addingService(
+				public ServiceReference<Application> addingService(
 					ServiceReference<Application> serviceReference) {
 
 					_populateCompanyIds(serviceReference);
 
-					return bundleContext.getService(serviceReference);
+					return serviceReference;
 				}
 
 				@Override
 				public void modifiedService(
 					ServiceReference<Application> serviceReference,
-					Application application) {
+					ServiceReference<Application> trackedServiceReference) {
 
 					_populateCompanyIds(serviceReference);
 				}
@@ -173,7 +174,7 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 				@Override
 				public void removedService(
 					ServiceReference<Application> serviceReference,
-					Application application) {
+					ServiceReference<Application> trackedServiceReference) {
 
 					Object osgiJaxRsApplicationBase =
 						serviceReference.getProperty(
@@ -182,8 +183,6 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 					if (osgiJaxRsApplicationBase instanceof String) {
 						_companyIds.remove(osgiJaxRsApplicationBase);
 					}
-
-					bundleContext.ungetService(serviceReference);
 				}
 
 			});
@@ -488,7 +487,8 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 	@Reference
 	private Portal _portal;
 
-	private ServiceTrackerMap<String, Application> _serviceTrackerMap;
+	private ServiceTrackerMap<String, ServiceReference<Application>>
+		_serviceTrackerMap;
 
 	@Context
 	private UriInfo _uriInfo;

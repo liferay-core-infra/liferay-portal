@@ -6,7 +6,6 @@
 package com.liferay.headless.discovery.internal.jaxrs.resource.v1_0;
 
 import com.liferay.headless.discovery.internal.jaxrs.application.HeadlessDiscoveryOpenAPIApplication;
-import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -67,6 +66,7 @@ import org.osgi.service.jaxrs.runtime.dto.ApplicationDTO;
 import org.osgi.service.jaxrs.runtime.dto.ResourceDTO;
 import org.osgi.service.jaxrs.runtime.dto.ResourceMethodInfoDTO;
 import org.osgi.service.jaxrs.runtime.dto.RuntimeDTO;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Carlos Correa
@@ -153,7 +153,7 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, Application.class, "(osgi.jaxrs.application.base=*)",
 			new PropertyServiceReferenceMapper<>("osgi.jaxrs.application.base"),
-			new EagerServiceTrackerCustomizer
+			new ServiceTrackerCustomizer
 				<Application, ServiceReference<Application>>() {
 
 				@Override

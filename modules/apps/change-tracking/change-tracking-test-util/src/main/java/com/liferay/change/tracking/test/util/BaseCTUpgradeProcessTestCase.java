@@ -5,6 +5,7 @@
 
 package com.liferay.change.tracking.test.util;
 
+import com.liferay.change.tracking.constants.CTDestinationNames;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.change.tracking.service.CTCollectionService;
 import com.liferay.petra.lang.SafeCloseable;
@@ -12,6 +13,7 @@ import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
+import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.test.rule.Inject;
 
@@ -29,6 +31,7 @@ import org.junit.Test;
  */
 public abstract class BaseCTUpgradeProcessTestCase {
 
+	@Sync(destinationNames = CTDestinationNames.CT_SCORE)
 	@Test
 	public void testMissingCtCollectionId() throws Exception {
 		CTCollection ctCollection = _ctCollectionService.addCTCollection(

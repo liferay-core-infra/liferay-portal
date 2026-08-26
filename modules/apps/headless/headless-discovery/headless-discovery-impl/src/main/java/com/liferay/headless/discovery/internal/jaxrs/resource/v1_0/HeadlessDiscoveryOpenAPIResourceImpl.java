@@ -226,11 +226,31 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 					return false;
 				}
 
-				List<String> companyIds = _companyIds.get(applicationDTO.base);
+				ServiceReference<Application> serviceReference =
+					_serviceTrackerMap.getService(applicationDTO.base);
 
-				if (companyIds != null) {
-					return companyIds.contains(
-						String.valueOf(CompanyThreadLocal.getCompanyId()));
+				if ((serviceReference == null) &&
+					applicationDTO.base.startsWith(StringPool.FORWARD_SLASH)) {
+
+					serviceReference = _serviceTrackerMap.getService(
+						applicationDTO.base.substring(1));
+				}
+
+				if (serviceReference != null) {
+					Object companyIds = serviceReference.getProperty(
+						"companyId");
+
+					if (companyIds != null) {
+						if (companyIds instanceof List) {
+							List<?> companyIdsList = (List<?>)companyIds;
+
+							return companyIdsList.contains(
+								String.valueOf(
+									CompanyThreadLocal.getCompanyId()));
+						}
+
+						return false;
+					}
 				}
 
 				return true;

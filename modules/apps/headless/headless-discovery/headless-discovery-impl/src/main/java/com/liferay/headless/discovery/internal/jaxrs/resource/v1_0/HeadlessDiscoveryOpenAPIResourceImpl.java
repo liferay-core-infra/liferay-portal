@@ -6,7 +6,7 @@
 package com.liferay.headless.discovery.internal.jaxrs.resource.v1_0;
 
 import com.liferay.headless.discovery.internal.jaxrs.application.HeadlessDiscoveryOpenAPIApplication;
-import com.liferay.osgi.service.tracker.collections.EagerServiceTrackerCustomizer;
+import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.CharPool;
@@ -66,6 +66,7 @@ import org.osgi.service.jaxrs.runtime.dto.ApplicationDTO;
 import org.osgi.service.jaxrs.runtime.dto.ResourceDTO;
 import org.osgi.service.jaxrs.runtime.dto.ResourceMethodInfoDTO;
 import org.osgi.service.jaxrs.runtime.dto.RuntimeDTO;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Carlos Correa
@@ -150,40 +151,28 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, Application.class, "companyId",
-			new EagerServiceTrackerCustomizer<Application, Application>() {
+			bundleContext, Application.class, "(osgi.jaxrs.application.base=*)",
+			new PropertyServiceReferenceMapper<>("osgi.jaxrs.application.base"),
+			new ServiceTrackerCustomizer
+				<Application, ServiceReference<Application>>() {
 
 				@Override
-				public Application addingService(
+				public ServiceReference<Application> addingService(
 					ServiceReference<Application> serviceReference) {
 
-					_populateCompanyIds(serviceReference);
-
-					return bundleContext.getService(serviceReference);
+					return serviceReference;
 				}
 
 				@Override
 				public void modifiedService(
 					ServiceReference<Application> serviceReference,
-					Application application) {
-
-					_populateCompanyIds(serviceReference);
+					ServiceReference<Application> trackedServiceReference) {
 				}
 
 				@Override
 				public void removedService(
 					ServiceReference<Application> serviceReference,
-					Application application) {
-
-					Object osgiJaxRsApplicationBase =
-						serviceReference.getProperty(
-							"osgi.jaxrs.application.base");
-
-					if (osgiJaxRsApplicationBase instanceof String) {
-						_companyIds.remove(osgiJaxRsApplicationBase);
-					}
-
-					bundleContext.ungetService(serviceReference);
+					ServiceReference<Application> trackedServiceReference) {
 				}
 
 			});
@@ -225,11 +214,31 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 					return false;
 				}
 
-				List<String> companyIds = _companyIds.get(applicationDTO.base);
+				ServiceReference<Application> serviceReference =
+					_serviceTrackerMap.getService(applicationDTO.base);
 
-				if (companyIds != null) {
-					return companyIds.contains(
-						String.valueOf(CompanyThreadLocal.getCompanyId()));
+				if ((serviceReference == null) &&
+					applicationDTO.base.startsWith(StringPool.FORWARD_SLASH)) {
+
+					serviceReference = _serviceTrackerMap.getService(
+						applicationDTO.base.substring(1));
+				}
+
+				if (serviceReference != null) {
+					Object companyIds = serviceReference.getProperty(
+						"companyId");
+
+					if (companyIds != null) {
+						if (companyIds instanceof List) {
+							List<?> companyIdsList = (List<?>)companyIds;
+
+							return companyIdsList.contains(
+								String.valueOf(
+									CompanyThreadLocal.getCompanyId()));
+						}
+
+						return false;
+					}
 				}
 
 				return true;
@@ -447,26 +456,9 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 		return null;
 	}
 
-	private void _populateCompanyIds(
-		ServiceReference<Application> serviceReference) {
-
-		Object companyIds = serviceReference.getProperty("companyId");
-		Object osgiJaxRsApplicationBase = serviceReference.getProperty(
-			"osgi.jaxrs.application.base");
-
-		if ((companyIds instanceof List) &&
-			(osgiJaxRsApplicationBase instanceof String)) {
-
-			_companyIds.put(
-				(String)osgiJaxRsApplicationBase, (List<String>)companyIds);
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		HeadlessDiscoveryOpenAPIResourceImpl.class);
 
-	private static final Map<String, List<String>> _companyIds =
-		new HashMap<>();
 	private static final Snapshot<JaxrsServiceRuntime>
 		_jaxrsServiceRuntimeSnapshot = new Snapshot<>(
 			HeadlessDiscoveryOpenAPIResourceImpl.class,
@@ -488,7 +480,8 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 	@Reference
 	private Portal _portal;
 
-	private ServiceTrackerMap<String, Application> _serviceTrackerMap;
+	private ServiceTrackerMap<String, ServiceReference<Application>>
+		_serviceTrackerMap;
 
 	@Context
 	private UriInfo _uriInfo;

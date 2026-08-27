@@ -105,4 +105,19 @@ public class SQLBooleanValues {
 		return preparedStatement.executeQuery();
 	}
 
+	protected ResultSet method9(Connection connection, long siteGroupId)
+		throws SQLException {
+
+		PreparedStatement preparedStatement =
+			AutoBatchPreparedStatementUtil.autoBatch(
+				connection,
+				"select plid from Layout where groupId = ? and privateLayout " +
+					"= true",
+				true);
+
+		preparedStatement.setLong(1, siteGroupId);
+
+		return preparedStatement.executeQuery();
+	}
+
 }

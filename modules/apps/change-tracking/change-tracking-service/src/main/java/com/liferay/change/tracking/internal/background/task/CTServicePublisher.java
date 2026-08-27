@@ -18,13 +18,13 @@ import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PropsValues;
 
 import java.io.Serializable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -202,9 +202,9 @@ public class CTServicePublisher<T extends CTModel<T>> {
 
 					throw new SystemException(
 						StringBundler.concat(
-							"Size mismatch expected ",
-							_deletionCTEntries.size(), " but was ",
-							updatedRowCount));
+							"Unable to publish ", _deletionCTEntries.size(),
+							" deletions, predeleted ", predeletedRowCount,
+							" and updated ", updatedRowCount));
 				}
 			}
 
@@ -314,10 +314,7 @@ public class CTServicePublisher<T extends CTModel<T>> {
 
 		try (PreparedStatement preparedStatement =
 				AutoBatchPreparedStatementUtil.autoBatch(
-					connection, sb.toString())) {
-
-			int batchCount = 0;
-			int totalRowCount = 0;
+					connection, sb.toString(), true)) {
 
 			for (CTEntry ctEntry : ctEntries) {
 				preparedStatement.setLong(1, ctEntry.getModelClassPK());
@@ -327,18 +324,14 @@ public class CTServicePublisher<T extends CTModel<T>> {
 				}
 
 				preparedStatement.addBatch();
-
-				if (++batchCount >= PropsValues.HIBERNATE_JDBC_BATCH_SIZE) {
-					batchCount = 0;
-
-					for (int rowCount : preparedStatement.executeBatch()) {
-						totalRowCount += rowCount;
-					}
-				}
 			}
 
+			int totalRowCount = 0;
+
 			for (int rowCount : preparedStatement.executeBatch()) {
-				totalRowCount += rowCount;
+				if ((rowCount > 0) || (rowCount == Statement.SUCCESS_NO_INFO)) {
+					totalRowCount++;
+				}
 			}
 
 			if (checkRowCount && (totalRowCount != ctEntries.size())) {

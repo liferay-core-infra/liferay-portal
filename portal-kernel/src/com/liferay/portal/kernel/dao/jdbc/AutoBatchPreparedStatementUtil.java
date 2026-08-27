@@ -11,6 +11,7 @@ import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PrimitiveIntList;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -38,17 +39,24 @@ public class AutoBatchPreparedStatementUtil {
 	public static PreparedStatement autoBatch(Connection connection, String sql)
 		throws SQLException {
 
+		return autoBatch(connection, sql, false);
+	}
+
+	public static PreparedStatement autoBatch(
+			Connection connection, String sql, boolean returnRowCounts)
+		throws SQLException {
+
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 		if (databaseMetaData.supportsBatchUpdates()) {
 			return (PreparedStatement)ProxyUtil.newProxyInstance(
 				ClassLoader.getSystemClassLoader(), _INTERFACES,
-				new BatchInvocationHandler(connection, sql));
+				new BatchInvocationHandler(connection, sql, returnRowCounts));
 		}
 
 		return (PreparedStatement)ProxyUtil.newProxyInstance(
 			ClassLoader.getSystemClassLoader(), _INTERFACES,
-			new NoBatchInvocationHandler(connection, sql));
+			new NoBatchInvocationHandler(connection, sql, returnRowCounts));
 	}
 
 	public static PreparedStatement concurrentAutoBatch(
@@ -109,7 +117,7 @@ public class AutoBatchPreparedStatementUtil {
 			if (++_count >= _HIBERNATE_JDBC_BATCH_SIZE) {
 				_count = 0;
 
-				localPreparedStatement.executeBatch();
+				addRowCounts(localPreparedStatement.executeBatch());
 			}
 		}
 
@@ -121,14 +129,16 @@ public class AutoBatchPreparedStatementUtil {
 				PreparedStatement localPreparedStatement =
 					getPreparedStatement();
 
-				return localPreparedStatement.executeBatch();
+				return flushRowCounts(localPreparedStatement.executeBatch());
 			}
 
-			return new int[0];
+			return flushRowCounts(new int[0]);
 		}
 
-		private BatchInvocationHandler(Connection connection, String sql) {
-			super(connection, sql);
+		private BatchInvocationHandler(
+			Connection connection, String sql, boolean returnRowCounts) {
+
+			super(connection, sql, returnRowCounts);
 		}
 
 		private int _count;
@@ -268,11 +278,21 @@ public class AutoBatchPreparedStatementUtil {
 	private static class NoBatchInvocationHandler
 		extends PreparedStatementInvocationHandler {
 
+		protected void addRowCounts(int[] rowCounts) {
+			if (_rowCounts != null) {
+				_rowCounts.addAll(rowCounts);
+			}
+		}
+
 		@Override
 		protected void doAddBatch() throws SQLException {
 			PreparedStatement localPreparedStatement = getPreparedStatement();
 
-			localPreparedStatement.executeUpdate();
+			int rowCount = localPreparedStatement.executeUpdate();
+
+			if (_rowCounts != null) {
+				_rowCounts.add(rowCount);
+			}
 		}
 
 		@Override
@@ -284,12 +304,34 @@ public class AutoBatchPreparedStatementUtil {
 
 		@Override
 		protected int[] doExecuteBatch() throws SQLException {
-			return new int[0];
+			return flushRowCounts(new int[0]);
 		}
 
-		private NoBatchInvocationHandler(Connection connection, String sql) {
-			super(connection, sql);
+		protected int[] flushRowCounts(int[] rowCounts) {
+			if (_rowCounts == null) {
+				return rowCounts;
+			}
+
+			PrimitiveIntList flushedRowCounts = _rowCounts;
+
+			_rowCounts = new PrimitiveIntList();
+
+			flushedRowCounts.addAll(rowCounts);
+
+			return flushedRowCounts.getArray();
 		}
+
+		private NoBatchInvocationHandler(
+			Connection connection, String sql, boolean returnRowCounts) {
+
+			super(connection, sql);
+
+			if (returnRowCounts) {
+				_rowCounts = new PrimitiveIntList();
+			}
+		}
+
+		private PrimitiveIntList _rowCounts;
 
 	}
 

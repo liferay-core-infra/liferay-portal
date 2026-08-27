@@ -1078,6 +1078,8 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 				"Use \"SQLTransformer.transform\" to wrap SQL statement if " +
 					"it contains \"[$FALSE$]\" or \"[$TRUE$]\"",
 				83
+			).addExpectedMessage(
+				"Use \"[$TRUE$]\" instead of \"true\" in SQL statements", 112
 			));
 	}
 

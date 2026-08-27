@@ -260,7 +260,7 @@ public class JavaSQLStatementCheck extends BaseFileCheck {
 		int parameterSize = parameterList.size();
 
 		if (methodName.startsWith("AutoBatchPreparedStatementUtil")) {
-			if (parameterSize != 2) {
+			if (parameterSize < 2) {
 				return Collections.emptyList();
 			}
 

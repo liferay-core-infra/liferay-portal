@@ -534,7 +534,9 @@ public class CTCollectionLocalServiceImpl
 							preparedStatement.addBatch();
 						}
 
-						return preparedStatement.executeBatch();
+						preparedStatement.executeBatch();
+
+						return null;
 					}
 					catch (Exception exception) {
 						throw new SystemException(exception);

@@ -4256,4 +4256,30 @@ public class ObjectDefinitionLocalServiceImpl
 	@Reference(target = "(model.pre.filter.contributor.id=WorkflowStatus)")
 	private ModelPreFilterContributor _workflowStatusModelPreFilterContributor;
 
+	private static class ServiceRegistrationState {
+
+		public ServiceRegistrationState(
+			ObjectDefinitionDeployer objectDefinitionDeployer,
+			Map<String, List<ServiceRegistration<?>>> serviceRegistrationsMap) {
+
+			_objectDefinitionDeployer = objectDefinitionDeployer;
+			_serviceRegistrationsMap = serviceRegistrationsMap;
+		}
+
+		public ObjectDefinitionDeployer getObjectDefinitionDeployer() {
+			return _objectDefinitionDeployer;
+		}
+
+		public Map<String, List<ServiceRegistration<?>>>
+			getServiceRegistrationsMap() {
+
+			return _serviceRegistrationsMap;
+		}
+
+		private final ObjectDefinitionDeployer _objectDefinitionDeployer;
+		private final Map<String, List<ServiceRegistration<?>>>
+			_serviceRegistrationsMap;
+
+	}
+
 }

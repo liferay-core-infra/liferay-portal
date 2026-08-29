@@ -5,7 +5,6 @@
 
 package com.liferay.portal.util;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.dao.db.DBManagerImpl;
 import com.liferay.portal.dao.init.DBInitUtil;
@@ -24,9 +23,7 @@ import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
-import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.SystemProperties;
@@ -44,11 +41,8 @@ import com.liferay.portal.xml.SAXReaderImpl;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 import java.util.logging.LogManager;
-import java.util.zip.ZipFile;
 
 import javax.sql.DataSource;
 
@@ -69,22 +63,6 @@ public class InitUtil {
 	public static synchronized void init() {
 		if (_initialized) {
 			return;
-		}
-
-		try {
-			if (!OSDetector.isWindows() && JavaDetector.isJDK8()) {
-				Field field = ReflectionUtil.getDeclaredField(
-					ZipFile.class, "usemmap");
-
-				if ((boolean)field.get(null)) {
-					field.setBoolean(null, false);
-				}
-			}
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
 		}
 
 		StopWatch stopWatch = new StopWatch();

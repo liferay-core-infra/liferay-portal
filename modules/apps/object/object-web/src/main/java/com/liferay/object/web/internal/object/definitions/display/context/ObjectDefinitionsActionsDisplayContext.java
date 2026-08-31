@@ -318,19 +318,12 @@ public class ObjectDefinitionsActionsDisplayContext
 	}
 
 	public boolean hasUserNotificationHandler(String className) {
-		Map<String, Map<String, UserNotificationHandler>>
-			userNotificationHandlers =
-				UserNotificationManagerUtil.getUserNotificationHandlers();
-
-		Map<String, UserNotificationHandler> userNotificationHandlersMap =
-			userNotificationHandlers.get(StringPool.BLANK);
-
-		if (userNotificationHandlersMap == null) {
-			return false;
-		}
+		Map<String, UserNotificationHandler> userNotificationHandlers =
+			UserNotificationManagerUtil.getUserNotificationHandlers();
 
 		UserNotificationHandler userNotificationHandler =
-			userNotificationHandlersMap.get(className);
+			userNotificationHandlers.get(
+				StringPool.BLANK + StringPool.POUND + className);
 
 		if (userNotificationHandler == null) {
 			return false;

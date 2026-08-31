@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -902,9 +901,8 @@ public class CalendarBookingPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_S.find(
-			finderCache,
-			new Object[] {calendarId, ArrayUtil.sortedUnique(statuses)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {calendarId, statuses}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -942,8 +940,7 @@ public class CalendarBookingPersistenceImpl
 	@Override
 	public int countByC_S(long calendarId, int[] statuses) {
 		return _collectionPersistenceFinderByC_S.count(
-			finderCache,
-			new Object[] {calendarId, ArrayUtil.sortedUnique(statuses)});
+			finderCache, new Object[] {calendarId, statuses});
 	}
 
 	private CollectionPersistenceFinder<CalendarBooking, NoSuchBookingException>
@@ -1860,4 +1857,4 @@ public class CalendarBookingPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2038942349
+// LIFERAY-SERVICE-BUILDER-HASH:498059827

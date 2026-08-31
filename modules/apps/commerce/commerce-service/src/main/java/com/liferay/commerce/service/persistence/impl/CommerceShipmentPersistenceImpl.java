@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -433,8 +432,6 @@ public class CommerceShipmentPersistenceImpl
 		long[] groupIds, int start, int end,
 		OrderByComparator<CommerceShipment> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterFind(
 			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
 			groupIds);
@@ -461,8 +458,8 @@ public class CommerceShipmentPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -497,7 +494,7 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			finderCache, new Object[] {groupIds});
 	}
 
 	/**
@@ -520,8 +517,6 @@ public class CommerceShipmentPersistenceImpl
 	 */
 	@Override
 	public int filterCountByGroupId(long[] groupIds) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterCount(
 			finderCache, new Object[] {groupIds}, groupIds);
 	}
@@ -637,8 +632,6 @@ public class CommerceShipmentPersistenceImpl
 		long[] groupIds, long commerceAddressId, int start, int end,
 		OrderByComparator<CommerceShipment> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C.filterFind(
 			finderCache, new Object[] {groupIds, commerceAddressId}, start, end,
 			orderByComparator, groupIds);
@@ -666,9 +659,8 @@ public class CommerceShipmentPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), commerceAddressId},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, commerceAddressId}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -708,8 +700,7 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public int countByG_C(long[] groupIds, long commerceAddressId) {
 		return _collectionPersistenceFinderByG_C.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), commerceAddressId});
+			finderCache, new Object[] {groupIds, commerceAddressId});
 	}
 
 	/**
@@ -735,8 +726,6 @@ public class CommerceShipmentPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_C(long[] groupIds, long commerceAddressId) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C.filterCount(
 			finderCache, new Object[] {groupIds, commerceAddressId}, groupIds);
 	}
@@ -852,8 +841,6 @@ public class CommerceShipmentPersistenceImpl
 		long[] groupIds, int status, int start, int end,
 		OrderByComparator<CommerceShipment> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_S.filterFind(
 			finderCache, new Object[] {groupIds, status}, start, end,
 			orderByComparator, groupIds);
@@ -881,8 +868,7 @@ public class CommerceShipmentPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_S.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), status}, start, end,
+			finderCache, new Object[] {groupIds, status}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -921,8 +907,7 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public int countByG_S(long[] groupIds, int status) {
 		return _collectionPersistenceFinderByG_S.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), status});
+			finderCache, new Object[] {groupIds, status});
 	}
 
 	/**
@@ -947,8 +932,6 @@ public class CommerceShipmentPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_S(long[] groupIds, int status) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_S.filterCount(
 			finderCache, new Object[] {groupIds, status}, groupIds);
 	}
@@ -1555,4 +1538,4 @@ public class CommerceShipmentPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1953132712
+// LIFERAY-SERVICE-BUILDER-HASH:-969209859

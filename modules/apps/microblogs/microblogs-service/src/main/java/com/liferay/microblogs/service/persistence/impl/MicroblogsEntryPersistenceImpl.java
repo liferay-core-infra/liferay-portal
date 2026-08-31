@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.persistence.impl.ArrayableFinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -559,10 +558,7 @@ public class MicroblogsEntryPersistenceImpl
 		OrderByComparator<MicroblogsEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByCCNI_CCPK.filterFind(
-			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs)
-			},
+			finderCache, new Object[] {creatorClassNameId, creatorClassPKs},
 			start, end, orderByComparator);
 	}
 
@@ -588,10 +584,7 @@ public class MicroblogsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByCCNI_CCPK.find(
-			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs)
-			},
+			finderCache, new Object[] {creatorClassNameId, creatorClassPKs},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -636,10 +629,7 @@ public class MicroblogsEntryPersistenceImpl
 		long creatorClassNameId, long[] creatorClassPKs) {
 
 		return _collectionPersistenceFinderByCCNI_CCPK.count(
-			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs)
-			});
+			finderCache, new Object[] {creatorClassNameId, creatorClassPKs});
 	}
 
 	/**
@@ -670,10 +660,7 @@ public class MicroblogsEntryPersistenceImpl
 		long creatorClassNameId, long[] creatorClassPKs) {
 
 		return _collectionPersistenceFinderByCCNI_CCPK.filterCount(
-			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs)
-			});
+			finderCache, new Object[] {creatorClassNameId, creatorClassPKs});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1067,10 +1054,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByC_CCNI_CCPK.filterFind(
 			finderCache,
-			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs)
-			},
+			new Object[] {companyId, creatorClassNameId, creatorClassPKs},
 			start, end, orderByComparator, companyId, 0);
 	}
 
@@ -1099,10 +1083,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByC_CCNI_CCPK.find(
 			finderCache,
-			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs)
-			},
+			new Object[] {companyId, creatorClassNameId, creatorClassPKs},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -1157,10 +1138,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByC_CCNI_CCPK.count(
 			finderCache,
-			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs)
-			});
+			new Object[] {companyId, creatorClassNameId, creatorClassPKs});
 	}
 
 	/**
@@ -1197,10 +1175,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByC_CCNI_CCPK.filterCount(
 			finderCache,
-			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs)
-			},
+			new Object[] {companyId, creatorClassNameId, creatorClassPKs},
 			companyId, 0);
 	}
 
@@ -1478,11 +1453,8 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByCCNI_CCPK_T.filterFind(
 			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs),
-				type
-			},
-			start, end, orderByComparator);
+			new Object[] {creatorClassNameId, creatorClassPKs, type}, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -1509,11 +1481,8 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByCCNI_CCPK_T.find(
 			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs),
-				type
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {creatorClassNameId, creatorClassPKs, type}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1567,10 +1536,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByCCNI_CCPK_T.count(
 			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs),
-				type
-			});
+			new Object[] {creatorClassNameId, creatorClassPKs, type});
 	}
 
 	/**
@@ -1606,10 +1572,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByCCNI_CCPK_T.filterCount(
 			finderCache,
-			new Object[] {
-				creatorClassNameId, ArrayUtil.sortedUnique(creatorClassPKs),
-				type
-			});
+			new Object[] {creatorClassNameId, creatorClassPKs, type});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1750,10 +1713,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByC_CCNI_CCPK_T.filterFind(
 			finderCache,
-			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs), type
-			},
+			new Object[] {companyId, creatorClassNameId, creatorClassPKs, type},
 			start, end, orderByComparator, companyId, 0);
 	}
 
@@ -1783,10 +1743,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByC_CCNI_CCPK_T.find(
 			finderCache,
-			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs), type
-			},
+			new Object[] {companyId, creatorClassNameId, creatorClassPKs, type},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -1848,8 +1805,7 @@ public class MicroblogsEntryPersistenceImpl
 		return _collectionPersistenceFinderByC_CCNI_CCPK_T.count(
 			finderCache,
 			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs), type
+				companyId, creatorClassNameId, creatorClassPKs, type
 			});
 	}
 
@@ -1891,10 +1847,7 @@ public class MicroblogsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByC_CCNI_CCPK_T.filterCount(
 			finderCache,
-			new Object[] {
-				companyId, creatorClassNameId,
-				ArrayUtil.sortedUnique(creatorClassPKs), type
-			},
+			new Object[] {companyId, creatorClassNameId, creatorClassPKs, type},
 			companyId, 0);
 	}
 
@@ -2798,4 +2751,4 @@ public class MicroblogsEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1405982586
+// LIFERAY-SERVICE-BUILDER-HASH:-1019113742

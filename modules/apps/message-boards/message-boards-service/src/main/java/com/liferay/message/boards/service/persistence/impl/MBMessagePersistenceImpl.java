@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -1492,9 +1491,8 @@ public class MBMessagePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByU_C.find(
-			finderCache,
-			new Object[] {userId, ArrayUtil.sortedUnique(classNameIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {userId, classNameIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1532,8 +1530,7 @@ public class MBMessagePersistenceImpl
 	@Override
 	public int countByU_C(long userId, long[] classNameIds) {
 		return _collectionPersistenceFinderByU_C.count(
-			finderCache,
-			new Object[] {userId, ArrayUtil.sortedUnique(classNameIds)});
+			finderCache, new Object[] {userId, classNameIds});
 	}
 
 	private CollectionPersistenceFinder<MBMessage, NoSuchMessageException>
@@ -2831,9 +2828,8 @@ public class MBMessagePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByU_C_S.find(
-			finderCache,
-			new Object[] {userId, ArrayUtil.sortedUnique(classNameIds), status},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {userId, classNameIds, status}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2876,10 +2872,7 @@ public class MBMessagePersistenceImpl
 	@Override
 	public int countByU_C_S(long userId, long[] classNameIds, int status) {
 		return _collectionPersistenceFinderByU_C_S.count(
-			finderCache,
-			new Object[] {
-				userId, ArrayUtil.sortedUnique(classNameIds), status
-			});
+			finderCache, new Object[] {userId, classNameIds, status});
 	}
 
 	private CollectionPersistenceFinder<MBMessage, NoSuchMessageException>
@@ -4904,4 +4897,4 @@ public class MBMessagePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-759393758
+// LIFERAY-SERVICE-BUILDER-HASH:-1510747870

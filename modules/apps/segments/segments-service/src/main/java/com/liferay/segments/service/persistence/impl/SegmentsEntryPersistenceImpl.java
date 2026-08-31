@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -418,8 +417,7 @@ public class SegmentsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderBySegmentsEntryId.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(segmentsEntryIds)}, start, end,
+			finderCache, new Object[] {segmentsEntryIds}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -455,8 +453,7 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public int countBySegmentsEntryId(long[] segmentsEntryIds) {
 		return _collectionPersistenceFinderBySegmentsEntryId.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(segmentsEntryIds)});
+			finderCache, new Object[] {segmentsEntryIds});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -563,8 +560,6 @@ public class SegmentsEntryPersistenceImpl
 		long[] groupIds, int start, int end,
 		OrderByComparator<SegmentsEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterFind(
 			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
 			groupIds);
@@ -591,8 +586,8 @@ public class SegmentsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -627,7 +622,7 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			finderCache, new Object[] {groupIds});
 	}
 
 	/**
@@ -650,8 +645,6 @@ public class SegmentsEntryPersistenceImpl
 	 */
 	@Override
 	public int filterCountByGroupId(long[] groupIds) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterCount(
 			finderCache, new Object[] {groupIds}, groupIds);
 	}
@@ -997,8 +990,6 @@ public class SegmentsEntryPersistenceImpl
 		long[] groupIds, boolean active, int start, int end,
 		OrderByComparator<SegmentsEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_A.filterFind(
 			finderCache, new Object[] {groupIds, active}, start, end,
 			orderByComparator, groupIds);
@@ -1026,8 +1017,7 @@ public class SegmentsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_A.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), active}, start, end,
+			finderCache, new Object[] {groupIds, active}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -1066,8 +1056,7 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public int countByG_A(long[] groupIds, boolean active) {
 		return _collectionPersistenceFinderByG_A.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), active});
+			finderCache, new Object[] {groupIds, active});
 	}
 
 	/**
@@ -1092,8 +1081,6 @@ public class SegmentsEntryPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_A(long[] groupIds, boolean active) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_A.filterCount(
 			finderCache, new Object[] {groupIds, active}, groupIds);
 	}
@@ -1213,12 +1200,9 @@ public class SegmentsEntryPersistenceImpl
 		long[] groupIds, String[] sources, int start, int end,
 		OrderByComparator<SegmentsEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_SRC.filterFind(
-			finderCache,
-			new Object[] {groupIds, ArrayUtil.sortedUnique(sources)}, start,
-			end, orderByComparator, groupIds);
+			finderCache, new Object[] {groupIds, sources}, start, end,
+			orderByComparator, groupIds);
 	}
 
 	/**
@@ -1243,12 +1227,8 @@ public class SegmentsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_SRC.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(sources)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, sources}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1288,11 +1268,7 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public int countByG_SRC(long[] groupIds, String[] sources) {
 		return _collectionPersistenceFinderByG_SRC.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(sources)
-			});
+			finderCache, new Object[] {groupIds, sources});
 	}
 
 	/**
@@ -1319,11 +1295,8 @@ public class SegmentsEntryPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_SRC(long[] groupIds, String[] sources) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_SRC.filterCount(
-			finderCache,
-			new Object[] {groupIds, ArrayUtil.sortedUnique(sources)}, groupIds);
+			finderCache, new Object[] {groupIds, sources}, groupIds);
 	}
 
 	private CollectionPersistenceFinder<SegmentsEntry, NoSuchEntryException>
@@ -1415,9 +1388,8 @@ public class SegmentsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_SRC.find(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(sources)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {companyId, sources}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1455,8 +1427,7 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public int countByC_SRC(long companyId, String[] sources) {
 		return _collectionPersistenceFinderByC_SRC.count(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(sources)});
+			finderCache, new Object[] {companyId, sources});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1579,12 +1550,9 @@ public class SegmentsEntryPersistenceImpl
 		long[] groupIds, boolean active, String[] sources, int start, int end,
 		OrderByComparator<SegmentsEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_A_SRC.filterFind(
-			finderCache,
-			new Object[] {groupIds, active, ArrayUtil.sortedUnique(sources)},
-			start, end, orderByComparator, groupIds);
+			finderCache, new Object[] {groupIds, active, sources}, start, end,
+			orderByComparator, groupIds);
 	}
 
 	/**
@@ -1610,12 +1578,8 @@ public class SegmentsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_A_SRC.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), active,
-				ArrayUtil.sortedUnique(sources)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, active, sources}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1660,11 +1624,7 @@ public class SegmentsEntryPersistenceImpl
 		long[] groupIds, boolean active, String[] sources) {
 
 		return _collectionPersistenceFinderByG_A_SRC.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), active,
-				ArrayUtil.sortedUnique(sources)
-			});
+			finderCache, new Object[] {groupIds, active, sources});
 	}
 
 	/**
@@ -1697,12 +1657,8 @@ public class SegmentsEntryPersistenceImpl
 	public int filterCountByG_A_SRC(
 		long[] groupIds, boolean active, String[] sources) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_A_SRC.filterCount(
-			finderCache,
-			new Object[] {groupIds, active, ArrayUtil.sortedUnique(sources)},
-			groupIds);
+			finderCache, new Object[] {groupIds, active, sources}, groupIds);
 	}
 
 	private UniquePersistenceFinder<SegmentsEntry, NoSuchEntryException>
@@ -2553,4 +2509,4 @@ public class SegmentsEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:634004374
+// LIFERAY-SERVICE-BUILDER-HASH:1988861554

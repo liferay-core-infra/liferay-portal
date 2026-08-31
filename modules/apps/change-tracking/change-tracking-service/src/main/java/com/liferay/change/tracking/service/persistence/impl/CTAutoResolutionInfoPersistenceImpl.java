@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.persistence.impl.ArrayableFinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -271,8 +270,7 @@ public class CTAutoResolutionInfoPersistenceImpl
 		return _collectionPersistenceFinderByC_MCNI_SMCPK.find(
 			finderCache,
 			new Object[] {
-				ctCollectionId, modelClassNameId,
-				ArrayUtil.sortedUnique(sourceModelClassPKs)
+				ctCollectionId, modelClassNameId, sourceModelClassPKs
 			},
 			start, end, orderByComparator, useFinderCache);
 	}
@@ -332,8 +330,7 @@ public class CTAutoResolutionInfoPersistenceImpl
 		return _collectionPersistenceFinderByC_MCNI_SMCPK.count(
 			finderCache,
 			new Object[] {
-				ctCollectionId, modelClassNameId,
-				ArrayUtil.sortedUnique(sourceModelClassPKs)
+				ctCollectionId, modelClassNameId, sourceModelClassPKs
 			});
 	}
 
@@ -682,4 +679,4 @@ public class CTAutoResolutionInfoPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-563968243
+// LIFERAY-SERVICE-BUILDER-HASH:-1920227443

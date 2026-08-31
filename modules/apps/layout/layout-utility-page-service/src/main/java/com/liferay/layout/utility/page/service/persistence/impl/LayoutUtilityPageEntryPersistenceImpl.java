@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -635,8 +634,8 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		OrderByComparator<LayoutUtilityPageEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_T.filterFind(
-			finderCache, new Object[] {groupId, ArrayUtil.sortedUnique(types)},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, types}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -661,8 +660,8 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_T.find(
-			finderCache, new Object[] {groupId, ArrayUtil.sortedUnique(types)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, types}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -700,7 +699,7 @@ public class LayoutUtilityPageEntryPersistenceImpl
 	@Override
 	public int countByG_T(long groupId, String[] types) {
 		return _collectionPersistenceFinderByG_T.count(
-			finderCache, new Object[] {groupId, ArrayUtil.sortedUnique(types)});
+			finderCache, new Object[] {groupId, types});
 	}
 
 	/**
@@ -726,8 +725,7 @@ public class LayoutUtilityPageEntryPersistenceImpl
 	@Override
 	public int filterCountByG_T(long groupId, String[] types) {
 		return _collectionPersistenceFinderByG_T.filterCount(
-			finderCache, new Object[] {groupId, ArrayUtil.sortedUnique(types)},
-			groupId);
+			finderCache, new Object[] {groupId, types}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1207,9 +1205,8 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		OrderByComparator<LayoutUtilityPageEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_LikeN_T.filterFind(
-			finderCache,
-			new Object[] {groupId, name, ArrayUtil.sortedUnique(types)}, start,
-			end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, name, types}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -1300,9 +1297,8 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_LikeN_T.find(
-			finderCache,
-			new Object[] {groupId, name, ArrayUtil.sortedUnique(types)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, name, types}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1343,8 +1339,7 @@ public class LayoutUtilityPageEntryPersistenceImpl
 	@Override
 	public int countByG_LikeN_T(long groupId, String name, String[] types) {
 		return _collectionPersistenceFinderByG_LikeN_T.count(
-			finderCache,
-			new Object[] {groupId, name, ArrayUtil.sortedUnique(types)});
+			finderCache, new Object[] {groupId, name, types});
 	}
 
 	/**
@@ -1375,9 +1370,7 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		long groupId, String name, String[] types) {
 
 		return _collectionPersistenceFinderByG_LikeN_T.filterCount(
-			finderCache,
-			new Object[] {groupId, name, ArrayUtil.sortedUnique(types)},
-			groupId);
+			finderCache, new Object[] {groupId, name, types}, groupId);
 	}
 
 	private UniquePersistenceFinder
@@ -2183,4 +2176,4 @@ public class LayoutUtilityPageEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:464485241
+// LIFERAY-SERVICE-BUILDER-HASH:1111952413

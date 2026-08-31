@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -2135,9 +2134,8 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_U_S.filterFind(
-			finderCache,
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(statuses)},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, userId, statuses}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -2163,9 +2161,8 @@ public class BlogsEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_U_S.find(
-			finderCache,
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(statuses)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, userId, statuses}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2206,8 +2203,7 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public int countByG_U_S(long groupId, long userId, int[] statuses) {
 		return _collectionPersistenceFinderByG_U_S.count(
-			finderCache,
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(statuses)});
+			finderCache, new Object[] {groupId, userId, statuses});
 	}
 
 	/**
@@ -2236,9 +2232,7 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public int filterCountByG_U_S(long groupId, long userId, int[] statuses) {
 		return _collectionPersistenceFinderByG_U_S.filterCount(
-			finderCache,
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(statuses)},
-			groupId);
+			finderCache, new Object[] {groupId, userId, statuses}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder<BlogsEntry, NoSuchEntryException>
@@ -5805,4 +5799,4 @@ public class BlogsEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-795681106
+// LIFERAY-SERVICE-BUILDER-HASH:824181028

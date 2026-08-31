@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -1141,9 +1140,8 @@ public class JournalArticlePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByR_ST.find(
-			finderCache,
-			new Object[] {resourcePrimKey, ArrayUtil.sortedUnique(statuses)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {resourcePrimKey, statuses}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1181,8 +1179,7 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public int countByR_ST(long resourcePrimKey, int[] statuses) {
 		return _collectionPersistenceFinderByR_ST.count(
-			finderCache,
-			new Object[] {resourcePrimKey, ArrayUtil.sortedUnique(statuses)});
+			finderCache, new Object[] {resourcePrimKey, statuses});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1556,9 +1553,8 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_F.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, start,
-			end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, folderIds}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -1583,9 +1579,8 @@ public class JournalArticlePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_F.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, folderIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1623,8 +1618,7 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public int countByG_F(long groupId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_F.count(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)});
+			finderCache, new Object[] {groupId, folderIds});
 	}
 
 	/**
@@ -1651,8 +1645,7 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public int filterCountByG_F(long groupId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_F.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, groupId);
+			finderCache, new Object[] {groupId, folderIds}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -2995,10 +2988,7 @@ public class JournalArticlePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByR_I_S.find(
-			finderCache,
-			new Object[] {
-				resourcePrimKey, indexable, ArrayUtil.sortedUnique(statuses)
-			},
+			finderCache, new Object[] {resourcePrimKey, indexable, statuses},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -3048,10 +3038,7 @@ public class JournalArticlePersistenceImpl
 		long resourcePrimKey, boolean indexable, int[] statuses) {
 
 		return _collectionPersistenceFinderByR_I_S.count(
-			finderCache,
-			new Object[] {
-				resourcePrimKey, indexable, ArrayUtil.sortedUnique(statuses)
-			});
+			finderCache, new Object[] {resourcePrimKey, indexable, statuses});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -3390,10 +3377,8 @@ public class JournalArticlePersistenceImpl
 
 		return _collectionPersistenceFinderByG_ERC_ST.filterFind(
 			finderCache,
-			new Object[] {
-				groupId, externalReferenceCode, ArrayUtil.sortedUnique(statuses)
-			},
-			start, end, orderByComparator, groupId);
+			new Object[] {groupId, externalReferenceCode, statuses}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -3420,10 +3405,8 @@ public class JournalArticlePersistenceImpl
 
 		return _collectionPersistenceFinderByG_ERC_ST.find(
 			finderCache,
-			new Object[] {
-				groupId, externalReferenceCode, ArrayUtil.sortedUnique(statuses)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupId, externalReferenceCode, statuses}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -3473,9 +3456,7 @@ public class JournalArticlePersistenceImpl
 
 		return _collectionPersistenceFinderByG_ERC_ST.count(
 			finderCache,
-			new Object[] {
-				groupId, externalReferenceCode, ArrayUtil.sortedUnique(statuses)
-			});
+			new Object[] {groupId, externalReferenceCode, statuses});
 	}
 
 	/**
@@ -3510,10 +3491,7 @@ public class JournalArticlePersistenceImpl
 
 		return _collectionPersistenceFinderByG_ERC_ST.filterCount(
 			finderCache,
-			new Object[] {
-				groupId, externalReferenceCode, ArrayUtil.sortedUnique(statuses)
-			},
-			groupId);
+			new Object[] {groupId, externalReferenceCode, statuses}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -3633,9 +3611,8 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_F_ST.filterFind(
-			finderCache,
-			new Object[] {groupId, folderId, ArrayUtil.sortedUnique(statuses)},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, folderId, statuses}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -3661,9 +3638,8 @@ public class JournalArticlePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_F_ST.find(
-			finderCache,
-			new Object[] {groupId, folderId, ArrayUtil.sortedUnique(statuses)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, folderId, statuses}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -3704,8 +3680,7 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public int countByG_F_ST(long groupId, long folderId, int[] statuses) {
 		return _collectionPersistenceFinderByG_F_ST.count(
-			finderCache,
-			new Object[] {groupId, folderId, ArrayUtil.sortedUnique(statuses)});
+			finderCache, new Object[] {groupId, folderId, statuses});
 	}
 
 	/**
@@ -3736,9 +3711,7 @@ public class JournalArticlePersistenceImpl
 		long groupId, long folderId, int[] statuses) {
 
 		return _collectionPersistenceFinderByG_F_ST.filterCount(
-			finderCache,
-			new Object[] {groupId, folderId, ArrayUtil.sortedUnique(statuses)},
-			groupId);
+			finderCache, new Object[] {groupId, folderId, statuses}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -4505,10 +4478,7 @@ public class JournalArticlePersistenceImpl
 		int end, OrderByComparator<JournalArticle> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_C_NotL.filterFind(
-			finderCache,
-			new Object[] {
-				groupId, classNameId, ArrayUtil.sortedUnique(layoutUuids)
-			},
+			finderCache, new Object[] {groupId, classNameId, layoutUuids},
 			start, end, orderByComparator, groupId);
 	}
 
@@ -4604,10 +4574,7 @@ public class JournalArticlePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C_NotL.find(
-			finderCache,
-			new Object[] {
-				groupId, classNameId, ArrayUtil.sortedUnique(layoutUuids)
-			},
+			finderCache, new Object[] {groupId, classNameId, layoutUuids},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -4657,10 +4624,7 @@ public class JournalArticlePersistenceImpl
 		long groupId, long classNameId, String[] layoutUuids) {
 
 		return _collectionPersistenceFinderByG_C_NotL.count(
-			finderCache,
-			new Object[] {
-				groupId, classNameId, ArrayUtil.sortedUnique(layoutUuids)
-			});
+			finderCache, new Object[] {groupId, classNameId, layoutUuids});
 	}
 
 	/**
@@ -4694,10 +4658,7 @@ public class JournalArticlePersistenceImpl
 		long groupId, long classNameId, String[] layoutUuids) {
 
 		return _collectionPersistenceFinderByG_C_NotL.filterCount(
-			finderCache,
-			new Object[] {
-				groupId, classNameId, ArrayUtil.sortedUnique(layoutUuids)
-			},
+			finderCache, new Object[] {groupId, classNameId, layoutUuids},
 			groupId);
 	}
 
@@ -4891,9 +4852,8 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_A_ST.filterFind(
-			finderCache,
-			new Object[] {groupId, articleId, ArrayUtil.sortedUnique(statuses)},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, articleId, statuses}, start,
+			end, orderByComparator, groupId);
 	}
 
 	/**
@@ -4919,9 +4879,8 @@ public class JournalArticlePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_A_ST.find(
-			finderCache,
-			new Object[] {groupId, articleId, ArrayUtil.sortedUnique(statuses)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, articleId, statuses}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -4962,10 +4921,7 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public int countByG_A_ST(long groupId, String articleId, int[] statuses) {
 		return _collectionPersistenceFinderByG_A_ST.count(
-			finderCache,
-			new Object[] {
-				groupId, articleId, ArrayUtil.sortedUnique(statuses)
-			});
+			finderCache, new Object[] {groupId, articleId, statuses});
 	}
 
 	/**
@@ -4996,9 +4952,7 @@ public class JournalArticlePersistenceImpl
 		long groupId, String articleId, int[] statuses) {
 
 		return _collectionPersistenceFinderByG_A_ST.filterCount(
-			finderCache,
-			new Object[] {groupId, articleId, ArrayUtil.sortedUnique(statuses)},
-			groupId);
+			finderCache, new Object[] {groupId, articleId, statuses}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -7487,4 +7441,4 @@ public class JournalArticlePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-503261008
+// LIFERAY-SERVICE-BUILDER-HASH:539039436

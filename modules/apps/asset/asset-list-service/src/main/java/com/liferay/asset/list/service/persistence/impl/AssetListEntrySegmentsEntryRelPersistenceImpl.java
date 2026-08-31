@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -666,10 +665,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByA_S_C.find(
-			finderCache,
-			new Object[] {
-				assetListEntryId, ArrayUtil.sortedUnique(segmentsEntryIds)
-			},
+			finderCache, new Object[] {assetListEntryId, segmentsEntryIds},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -710,10 +706,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public int countByA_S_C(long assetListEntryId, long[] segmentsEntryIds) {
 		return _collectionPersistenceFinderByA_S_C.count(
-			finderCache,
-			new Object[] {
-				assetListEntryId, ArrayUtil.sortedUnique(segmentsEntryIds)
-			});
+			finderCache, new Object[] {assetListEntryId, segmentsEntryIds});
 	}
 
 	public AssetListEntrySegmentsEntryRelPersistenceImpl() {
@@ -1306,4 +1299,4 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2076719344
+// LIFERAY-SERVICE-BUILDER-HASH:-723786948

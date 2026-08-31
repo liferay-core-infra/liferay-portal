@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -873,11 +872,8 @@ public class KBCommentPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_C_S.find(
-			finderCache,
-			new Object[] {
-				classNameId, classPK, ArrayUtil.sortedUnique(statuses)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {classNameId, classPK, statuses}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -920,10 +916,7 @@ public class KBCommentPersistenceImpl
 	@Override
 	public int countByC_C_S(long classNameId, long classPK, int[] statuses) {
 		return _collectionPersistenceFinderByC_C_S.count(
-			finderCache,
-			new Object[] {
-				classNameId, classPK, ArrayUtil.sortedUnique(statuses)
-			});
+			finderCache, new Object[] {classNameId, classPK, statuses});
 	}
 
 	public KBCommentPersistenceImpl() {
@@ -1537,4 +1530,4 @@ public class KBCommentPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1004721167
+// LIFERAY-SERVICE-BUILDER-HASH:-588611117

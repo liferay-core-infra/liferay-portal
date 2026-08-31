@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -439,8 +438,6 @@ public class AssetVocabularyPersistenceImpl
 		long[] groupIds, int start, int end,
 		OrderByComparator<AssetVocabulary> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterFind(
 			FinderCacheUtil.getFinderCache(), new Object[] {groupIds}, start,
 			end, orderByComparator, groupIds);
@@ -467,9 +464,8 @@ public class AssetVocabularyPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds)}, start, end,
-			orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -506,8 +502,7 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds});
 	}
 
 	/**
@@ -531,8 +526,6 @@ public class AssetVocabularyPersistenceImpl
 	 */
 	@Override
 	public int filterCountByGroupId(long[] groupIds) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterCount(
 			FinderCacheUtil.getFinderCache(), new Object[] {groupIds},
 			groupIds);
@@ -1027,12 +1020,10 @@ public class AssetVocabularyPersistenceImpl
 		long[] groupIds, int[] visibilityTypes, int start, int end,
 		OrderByComparator<AssetVocabulary> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_V.filterFind(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupIds, ArrayUtil.sortedUnique(visibilityTypes)},
-			start, end, orderByComparator, groupIds);
+			new Object[] {groupIds, visibilityTypes}, start, end,
+			orderByComparator, groupIds);
 	}
 
 	/**
@@ -1058,11 +1049,8 @@ public class AssetVocabularyPersistenceImpl
 
 		return _collectionPersistenceFinderByG_V.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(visibilityTypes)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupIds, visibilityTypes}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1103,10 +1091,7 @@ public class AssetVocabularyPersistenceImpl
 	public int countByG_V(long[] groupIds, int[] visibilityTypes) {
 		return _collectionPersistenceFinderByG_V.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(visibilityTypes)
-			});
+			new Object[] {groupIds, visibilityTypes});
 	}
 
 	/**
@@ -1133,12 +1118,9 @@ public class AssetVocabularyPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_V(long[] groupIds, int[] visibilityTypes) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_V.filterCount(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupIds, ArrayUtil.sortedUnique(visibilityTypes)},
-			groupIds);
+			new Object[] {groupIds, visibilityTypes}, groupIds);
 	}
 
 	private UniquePersistenceFinder<AssetVocabulary, NoSuchVocabularyException>
@@ -1833,4 +1815,4 @@ public class AssetVocabularyPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:981323008
+// LIFERAY-SERVICE-BUILDER-HASH:1528003668

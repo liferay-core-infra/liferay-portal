@@ -72,13 +72,13 @@ public class CollectionPersistenceFinder
 		try (SafeCloseable safeCloseable =
 				setCTCollectionIdWithSafeCloseable()) {
 
+			normalizeValues(values);
+
 			if ((_uniquePersistenceFinder != null) &&
 				_unwrapIfAllArrayableLengthOne(values)) {
 
 				return _uniquePersistenceFinder.count(finderCache, values);
 			}
-
-			normalizeValues(values);
 
 			Object[] finderArgs = buildFinderArgs(values);
 
@@ -124,6 +124,8 @@ public class CollectionPersistenceFinder
 		try (SafeCloseable safeCloseable =
 				setCTCollectionIdWithSafeCloseable()) {
 
+			normalizeValues(values);
+
 			if ((_uniquePersistenceFinder != null) &&
 				_unwrapIfAllArrayableLengthOne(values)) {
 
@@ -136,8 +138,6 @@ public class CollectionPersistenceFinder
 
 				return Collections.singletonList(entity);
 			}
-
-			normalizeValues(values);
 
 			FinderPath finderPath = null;
 			Object[] finderArgs = null;

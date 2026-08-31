@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -997,9 +996,8 @@ public class CommercePriceModifierPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C_S.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), companyId, status},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, companyId, status}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1042,8 +1040,7 @@ public class CommercePriceModifierPersistenceImpl
 	@Override
 	public int countByG_C_S(long[] groupIds, long companyId, int status) {
 		return _collectionPersistenceFinderByG_C_S.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), companyId, status});
+			finderCache, new Object[] {groupIds, companyId, status});
 	}
 
 	private CollectionPersistenceFinder
@@ -1268,9 +1265,8 @@ public class CommercePriceModifierPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C_NotS.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), companyId, status},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, companyId, status}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1313,8 +1309,7 @@ public class CommercePriceModifierPersistenceImpl
 	@Override
 	public int countByG_C_NotS(long[] groupIds, long companyId, int status) {
 		return _collectionPersistenceFinderByG_C_NotS.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), companyId, status});
+			finderCache, new Object[] {groupIds, companyId, status});
 	}
 
 	private UniquePersistenceFinder
@@ -2156,4 +2151,4 @@ public class CommercePriceModifierPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-530150168
+// LIFERAY-SERVICE-BUILDER-HASH:1088650952

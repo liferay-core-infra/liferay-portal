@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -699,8 +698,8 @@ public class StyleBookEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -735,7 +734,7 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			finderCache, new Object[] {groupIds});
 	}
 
 	private CollectionPersistenceFinder<StyleBookEntry, NoSuchEntryException>
@@ -827,8 +826,8 @@ public class StyleBookEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId_Head.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds), head},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, head}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -866,7 +865,7 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public int countByGroupId_Head(long[] groupIds, boolean head) {
 		return _collectionPersistenceFinderByGroupId_Head.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds), head});
+			finderCache, new Object[] {groupIds, head});
 	}
 
 	private CollectionPersistenceFinder<StyleBookEntry, NoSuchEntryException>
@@ -1805,9 +1804,8 @@ public class StyleBookEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_T.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), themeId}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, themeId}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1845,8 +1843,7 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public int countByG_T(long[] groupIds, String themeId) {
 		return _collectionPersistenceFinderByG_T.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), themeId});
+			finderCache, new Object[] {groupIds, themeId});
 	}
 
 	private CollectionPersistenceFinder<StyleBookEntry, NoSuchEntryException>
@@ -1942,9 +1939,8 @@ public class StyleBookEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_T_Head.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), themeId, head},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, themeId, head}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1985,8 +1981,7 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public int countByG_T_Head(long[] groupIds, String themeId, boolean head) {
 		return _collectionPersistenceFinderByG_T_Head.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), themeId, head});
+			finderCache, new Object[] {groupIds, themeId, head});
 	}
 
 	private CollectionPersistenceFinder<StyleBookEntry, NoSuchEntryException>
@@ -2426,9 +2421,8 @@ public class StyleBookEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_LikeN_T.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), name, themeId},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, name, themeId}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2469,8 +2463,7 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public int countByG_LikeN_T(long[] groupIds, String name, String themeId) {
 		return _collectionPersistenceFinderByG_LikeN_T.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), name, themeId});
+			finderCache, new Object[] {groupIds, name, themeId});
 	}
 
 	private CollectionPersistenceFinder<StyleBookEntry, NoSuchEntryException>
@@ -2711,11 +2704,8 @@ public class StyleBookEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_LikeN_T_Head.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name, themeId, head
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, name, themeId, head}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2767,10 +2757,7 @@ public class StyleBookEntryPersistenceImpl
 		long[] groupIds, String name, String themeId, boolean head) {
 
 		return _collectionPersistenceFinderByG_LikeN_T_Head.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name, themeId, head
-			});
+			finderCache, new Object[] {groupIds, name, themeId, head});
 	}
 
 	private CollectionPersistenceFinder<StyleBookEntry, NoSuchEntryException>
@@ -4263,4 +4250,4 @@ public class StyleBookEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1858693601
+// LIFERAY-SERVICE-BUILDER-HASH:-1662274529

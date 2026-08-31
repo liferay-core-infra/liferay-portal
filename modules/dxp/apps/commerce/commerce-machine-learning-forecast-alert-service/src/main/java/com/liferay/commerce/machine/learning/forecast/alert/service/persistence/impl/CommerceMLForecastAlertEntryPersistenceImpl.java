@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -435,10 +434,7 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_C_S.find(
-			finderCache,
-			new Object[] {
-				companyId, ArrayUtil.sortedUnique(commerceAccountIds), status
-			},
+			finderCache, new Object[] {companyId, commerceAccountIds, status},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -488,10 +484,7 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		long companyId, long[] commerceAccountIds, int status) {
 
 		return _collectionPersistenceFinderByC_C_S.count(
-			finderCache,
-			new Object[] {
-				companyId, ArrayUtil.sortedUnique(commerceAccountIds), status
-			});
+			finderCache, new Object[] {companyId, commerceAccountIds, status});
 	}
 
 	private CollectionPersistenceFinder
@@ -756,8 +749,7 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		return _collectionPersistenceFinderByC_C_GtRc_S.find(
 			finderCache,
 			new Object[] {
-				companyId, ArrayUtil.sortedUnique(commerceAccountIds),
-				relativeChange, status
+				companyId, commerceAccountIds, relativeChange, status
 			},
 			start, end, orderByComparator, useFinderCache);
 	}
@@ -822,8 +814,7 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		return _collectionPersistenceFinderByC_C_GtRc_S.count(
 			finderCache,
 			new Object[] {
-				companyId, ArrayUtil.sortedUnique(commerceAccountIds),
-				relativeChange, status
+				companyId, commerceAccountIds, relativeChange, status
 			});
 	}
 
@@ -1089,8 +1080,7 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		return _collectionPersistenceFinderByC_C_LtRc_S.find(
 			finderCache,
 			new Object[] {
-				companyId, ArrayUtil.sortedUnique(commerceAccountIds),
-				relativeChange, status
+				companyId, commerceAccountIds, relativeChange, status
 			},
 			start, end, orderByComparator, useFinderCache);
 	}
@@ -1155,8 +1145,7 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		return _collectionPersistenceFinderByC_C_LtRc_S.count(
 			finderCache,
 			new Object[] {
-				companyId, ArrayUtil.sortedUnique(commerceAccountIds),
-				relativeChange, status
+				companyId, commerceAccountIds, relativeChange, status
 			});
 	}
 
@@ -1703,4 +1692,4 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1791999306
+// LIFERAY-SERVICE-BUILDER-HASH:-1962475658

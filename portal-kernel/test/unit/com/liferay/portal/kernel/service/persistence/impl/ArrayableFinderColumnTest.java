@@ -116,6 +116,47 @@ public class ArrayableFinderColumnTest {
 	}
 
 	@Test
+	public void testNormalizePreservesArgument() {
+		ArrayableFinderColumn<TestModel> arrayableFinderColumn =
+			_newStringColumn(false, false, true, entity -> "any");
+
+		String[] strings = {"Beta", null, "Alpha"};
+
+		arrayableFinderColumn.normalizeValue(strings);
+
+		Assert.assertArrayEquals(new String[] {"Beta", null, "Alpha"}, strings);
+	}
+
+	@Test
+	public void testNormalizeSortsAndDeduplicates() {
+		ArrayableFinderColumn<TestModel> longColumn = _newLongColumn(
+			false, entity -> 0L);
+
+		Object normalizedValue = longColumn.normalizeValue(
+			new long[] {30L, 10L, 30L, 20L});
+
+		Assert.assertArrayEquals(
+			new Long[] {10L, 20L, 30L}, (Object[])normalizedValue);
+		Assert.assertEquals(
+			"(t.col IN (?,?,?))",
+			longColumn.getSqlFragment(normalizedValue, false));
+		Assert.assertEquals(
+			"10,20,30", longColumn.toFinderArg(normalizedValue));
+
+		ArrayableFinderColumn<TestModel> stringColumn = _newStringColumn(
+			false, true, true, entity -> "any");
+
+		normalizedValue = stringColumn.normalizeValue(
+			new String[] {"b", "a", "b"});
+
+		Assert.assertArrayEquals(
+			new String[] {"a", "b"}, (String[])normalizedValue);
+		Assert.assertEquals(
+			"((t.col = ?) OR (t.col = ?))",
+			stringColumn.getSqlFragment(normalizedValue, false));
+	}
+
+	@Test
 	public void testSqlFragmentBuildsInClause() {
 		ArrayableFinderColumn<TestModel> arrayableFinderColumn = _newLongColumn(
 			false, entity -> 0L);

@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -438,8 +437,6 @@ public class AssetListEntryPersistenceImpl
 		long[] groupIds, int start, int end,
 		OrderByComparator<AssetListEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterFind(
 			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
 			groupIds);
@@ -466,8 +463,8 @@ public class AssetListEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -502,7 +499,7 @@ public class AssetListEntryPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			finderCache, new Object[] {groupIds});
 	}
 
 	/**
@@ -525,8 +522,6 @@ public class AssetListEntryPersistenceImpl
 	 */
 	@Override
 	public int filterCountByGroupId(long[] groupIds) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterCount(
 			finderCache, new Object[] {groupIds}, groupIds);
 	}
@@ -898,8 +893,6 @@ public class AssetListEntryPersistenceImpl
 		long[] groupIds, String title, int start, int end,
 		OrderByComparator<AssetListEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_LikeT.filterFind(
 			finderCache, new Object[] {groupIds, title}, start, end,
 			orderByComparator, groupIds);
@@ -987,8 +980,8 @@ public class AssetListEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_LikeT.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds), title},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, title}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1026,8 +1019,7 @@ public class AssetListEntryPersistenceImpl
 	@Override
 	public int countByG_LikeT(long[] groupIds, String title) {
 		return _collectionPersistenceFinderByG_LikeT.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), title});
+			finderCache, new Object[] {groupIds, title});
 	}
 
 	/**
@@ -1052,8 +1044,6 @@ public class AssetListEntryPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_LikeT(long[] groupIds, String title) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_LikeT.filterCount(
 			finderCache, new Object[] {groupIds, title}, groupIds);
 	}
@@ -1301,12 +1291,9 @@ public class AssetListEntryPersistenceImpl
 		long[] groupIds, String[] assetEntryTypes, int start, int end,
 		OrderByComparator<AssetListEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_AET.filterFind(
-			finderCache,
-			new Object[] {groupIds, ArrayUtil.sortedUnique(assetEntryTypes)},
-			start, end, orderByComparator, groupIds);
+			finderCache, new Object[] {groupIds, assetEntryTypes}, start, end,
+			orderByComparator, groupIds);
 	}
 
 	/**
@@ -1331,12 +1318,8 @@ public class AssetListEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_AET.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(assetEntryTypes)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, assetEntryTypes}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1376,11 +1359,7 @@ public class AssetListEntryPersistenceImpl
 	@Override
 	public int countByG_AET(long[] groupIds, String[] assetEntryTypes) {
 		return _collectionPersistenceFinderByG_AET.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(assetEntryTypes)
-			});
+			finderCache, new Object[] {groupIds, assetEntryTypes});
 	}
 
 	/**
@@ -1407,12 +1386,8 @@ public class AssetListEntryPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_AET(long[] groupIds, String[] assetEntryTypes) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_AET.filterCount(
-			finderCache,
-			new Object[] {groupIds, ArrayUtil.sortedUnique(assetEntryTypes)},
-			groupIds);
+			finderCache, new Object[] {groupIds, assetEntryTypes}, groupIds);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1686,14 +1661,9 @@ public class AssetListEntryPersistenceImpl
 		long[] groupIds, String title, String[] assetEntryTypes, int start,
 		int end, OrderByComparator<AssetListEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_LikeT_AET.filterFind(
-			finderCache,
-			new Object[] {
-				groupIds, title, ArrayUtil.sortedUnique(assetEntryTypes)
-			},
-			start, end, orderByComparator, groupIds);
+			finderCache, new Object[] {groupIds, title, assetEntryTypes}, start,
+			end, orderByComparator, groupIds);
 	}
 
 	/**
@@ -1788,12 +1758,8 @@ public class AssetListEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_LikeT_AET.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), title,
-				ArrayUtil.sortedUnique(assetEntryTypes)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, title, assetEntryTypes}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1846,11 +1812,7 @@ public class AssetListEntryPersistenceImpl
 		long[] groupIds, String title, String[] assetEntryTypes) {
 
 		return _collectionPersistenceFinderByG_LikeT_AET.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), title,
-				ArrayUtil.sortedUnique(assetEntryTypes)
-			});
+			finderCache, new Object[] {groupIds, title, assetEntryTypes});
 	}
 
 	/**
@@ -1885,13 +1847,8 @@ public class AssetListEntryPersistenceImpl
 	public int filterCountByG_LikeT_AET(
 		long[] groupIds, String title, String[] assetEntryTypes) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_LikeT_AET.filterCount(
-			finderCache,
-			new Object[] {
-				groupIds, title, ArrayUtil.sortedUnique(assetEntryTypes)
-			},
+			finderCache, new Object[] {groupIds, title, assetEntryTypes},
 			groupIds);
 	}
 
@@ -2025,8 +1982,6 @@ public class AssetListEntryPersistenceImpl
 		int start, int end,
 		OrderByComparator<AssetListEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_AES_AET.filterFind(
 			finderCache,
 			new Object[] {groupIds, assetEntrySubtype, assetEntryType}, start,
@@ -2057,11 +2012,8 @@ public class AssetListEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_AES_AET.find(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), assetEntrySubtype,
-				assetEntryType
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupIds, assetEntrySubtype, assetEntryType}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2115,10 +2067,7 @@ public class AssetListEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_AES_AET.count(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), assetEntrySubtype,
-				assetEntryType
-			});
+			new Object[] {groupIds, assetEntrySubtype, assetEntryType});
 	}
 
 	/**
@@ -2152,8 +2101,6 @@ public class AssetListEntryPersistenceImpl
 	@Override
 	public int filterCountByG_AES_AET(
 		long[] groupIds, String assetEntrySubtype, String assetEntryType) {
-
-		groupIds = ArrayUtil.sortedUnique(groupIds);
 
 		return _collectionPersistenceFinderByG_AES_AET.filterCount(
 			finderCache,
@@ -2458,8 +2405,6 @@ public class AssetListEntryPersistenceImpl
 		String assetEntryType, int start, int end,
 		OrderByComparator<AssetListEntry> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_LikeT_AES_AET.filterFind(
 			finderCache,
 			new Object[] {groupIds, title, assetEntrySubtype, assetEntryType},
@@ -2567,10 +2512,7 @@ public class AssetListEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_LikeT_AES_AET.find(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), title, assetEntrySubtype,
-				assetEntryType
-			},
+			new Object[] {groupIds, title, assetEntrySubtype, assetEntryType},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -2631,10 +2573,7 @@ public class AssetListEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_LikeT_AES_AET.count(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), title, assetEntrySubtype,
-				assetEntryType
-			});
+			new Object[] {groupIds, title, assetEntrySubtype, assetEntryType});
 	}
 
 	/**
@@ -2672,8 +2611,6 @@ public class AssetListEntryPersistenceImpl
 	public int filterCountByG_LikeT_AES_AET(
 		long[] groupIds, String title, String assetEntrySubtype,
 		String assetEntryType) {
-
-		groupIds = ArrayUtil.sortedUnique(groupIds);
 
 		return _collectionPersistenceFinderByG_LikeT_AES_AET.filterCount(
 			finderCache,
@@ -3570,4 +3507,4 @@ public class AssetListEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1352737343
+// LIFERAY-SERVICE-BUILDER-HASH:-494072893

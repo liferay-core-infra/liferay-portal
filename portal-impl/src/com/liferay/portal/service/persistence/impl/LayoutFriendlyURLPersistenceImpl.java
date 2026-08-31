@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -803,9 +802,8 @@ public class LayoutFriendlyURLPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByP_L.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(plids), languageId}, start,
-			end, orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {plids, languageId},
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -881,8 +879,7 @@ public class LayoutFriendlyURLPersistenceImpl
 	@Override
 	public int countByP_L(long[] plids, String languageId) {
 		return _collectionPersistenceFinderByP_L.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(plids), languageId});
+			FinderCacheUtil.getFinderCache(), new Object[] {plids, languageId});
 	}
 
 	private CollectionPersistenceFinder
@@ -1740,4 +1737,4 @@ public class LayoutFriendlyURLPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-674763126
+// LIFERAY-SERVICE-BUILDER-HASH:694029658

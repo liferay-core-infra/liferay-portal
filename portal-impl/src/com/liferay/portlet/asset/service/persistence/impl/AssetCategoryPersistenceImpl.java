@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -875,12 +874,10 @@ public class AssetCategoryPersistenceImpl
 		long[] groupIds, long[] vocabularyIds, int start, int end,
 		OrderByComparator<AssetCategory> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_V.filterFind(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupIds, ArrayUtil.sortedUnique(vocabularyIds)},
-			start, end, orderByComparator, groupIds);
+			new Object[] {groupIds, vocabularyIds}, start, end,
+			orderByComparator, groupIds);
 	}
 
 	/**
@@ -906,11 +903,8 @@ public class AssetCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_V.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(vocabularyIds)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupIds, vocabularyIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -951,10 +945,7 @@ public class AssetCategoryPersistenceImpl
 	public int countByG_V(long[] groupIds, long[] vocabularyIds) {
 		return _collectionPersistenceFinderByG_V.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(vocabularyIds)
-			});
+			new Object[] {groupIds, vocabularyIds});
 	}
 
 	/**
@@ -981,12 +972,9 @@ public class AssetCategoryPersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_V(long[] groupIds, long[] vocabularyIds) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_V.filterCount(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupIds, ArrayUtil.sortedUnique(vocabularyIds)},
-			groupIds);
+			new Object[] {groupIds, vocabularyIds}, groupIds);
 	}
 
 	private CollectionPersistenceFinder<AssetCategory, NoSuchCategoryException>
@@ -1943,14 +1931,10 @@ public class AssetCategoryPersistenceImpl
 		long[] groupIds, String name, long[] vocabularyIds, int start, int end,
 		OrderByComparator<AssetCategory> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_LikeN_V.filterFind(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				groupIds, name, ArrayUtil.sortedUnique(vocabularyIds)
-			},
-			start, end, orderByComparator, groupIds);
+			new Object[] {groupIds, name, vocabularyIds}, start, end,
+			orderByComparator, groupIds);
 	}
 
 	/**
@@ -2044,11 +2028,8 @@ public class AssetCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_LikeN_V.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name,
-				ArrayUtil.sortedUnique(vocabularyIds)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupIds, name, vocabularyIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2100,10 +2081,7 @@ public class AssetCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_LikeN_V.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name,
-				ArrayUtil.sortedUnique(vocabularyIds)
-			});
+			new Object[] {groupIds, name, vocabularyIds});
 	}
 
 	/**
@@ -2138,14 +2116,9 @@ public class AssetCategoryPersistenceImpl
 	public int filterCountByG_LikeN_V(
 		long[] groupIds, String name, long[] vocabularyIds) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_LikeN_V.filterCount(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				groupIds, name, ArrayUtil.sortedUnique(vocabularyIds)
-			},
-			groupIds);
+			new Object[] {groupIds, name, vocabularyIds}, groupIds);
 	}
 
 	private UniquePersistenceFinder<AssetCategory, NoSuchCategoryException>
@@ -3148,4 +3121,4 @@ public class AssetCategoryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-992189092
+// LIFERAY-SERVICE-BUILDER-HASH:-232154152

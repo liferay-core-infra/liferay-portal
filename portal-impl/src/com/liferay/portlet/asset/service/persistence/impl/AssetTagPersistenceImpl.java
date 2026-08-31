@@ -415,9 +415,8 @@ public class AssetTagPersistenceImpl
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds)}, start, end,
-			orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -454,8 +453,7 @@ public class AssetTagPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds});
 	}
 
 	private CollectionPersistenceFinder<AssetTag, NoSuchTagException>
@@ -540,8 +538,7 @@ public class AssetTagPersistenceImpl
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByName.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(names)}, start, end,
+			FinderCacheUtil.getFinderCache(), new Object[] {names}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -579,8 +576,7 @@ public class AssetTagPersistenceImpl
 	@Override
 	public int countByName(String[] names) {
 		return _collectionPersistenceFinderByName.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(names)});
+			FinderCacheUtil.getFinderCache(), new Object[] {names});
 	}
 
 	private CollectionPersistenceFinder<AssetTag, NoSuchTagException>
@@ -878,9 +874,8 @@ public class AssetTagPersistenceImpl
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_LikeN.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds), name}, start, end,
-			orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds, name},
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -920,8 +915,7 @@ public class AssetTagPersistenceImpl
 	@Override
 	public int countByG_LikeN(long[] groupIds, String name) {
 		return _collectionPersistenceFinderByG_LikeN.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds), name});
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds, name});
 	}
 
 	private UniquePersistenceFinder<AssetTag, NoSuchTagException>
@@ -1905,4 +1899,4 @@ public class AssetTagPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-123491212
+// LIFERAY-SERVICE-BUILDER-HASH:-1885770444

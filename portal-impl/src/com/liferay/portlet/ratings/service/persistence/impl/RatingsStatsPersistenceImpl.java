@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portlet.ratings.model.impl.RatingsStatsImpl;
@@ -102,8 +101,8 @@ public class RatingsStatsPersistenceImpl
 
 		return _collectionPersistenceFinderByC_C.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {classNameId, ArrayUtil.sortedUnique(classPKs)}, start,
-			end, orderByComparator, useFinderCache);
+			new Object[] {classNameId, classPKs}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -181,7 +180,7 @@ public class RatingsStatsPersistenceImpl
 	public int countByC_C(long classNameId, long[] classPKs) {
 		return _collectionPersistenceFinderByC_C.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {classNameId, ArrayUtil.sortedUnique(classPKs)});
+			new Object[] {classNameId, classPKs});
 	}
 
 	public RatingsStatsPersistenceImpl() {
@@ -521,4 +520,4 @@ public class RatingsStatsPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-38466564
+// LIFERAY-SERVICE-BUILDER-HASH:-805374144

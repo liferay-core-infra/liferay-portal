@@ -2215,11 +2215,8 @@ public class PatcherBuildPersistenceImpl
 		OrderByComparator<PatcherBuild> orderByComparator) {
 
 		return _collectionPersistenceFinderByLtM_N_S.filterFind(
-			finderCache,
-			new Object[] {
-				modifiedDate, notified, ArrayUtil.sortedUnique(statuses)
-			},
-			start, end, orderByComparator);
+			finderCache, new Object[] {modifiedDate, notified, statuses}, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -2314,11 +2311,8 @@ public class PatcherBuildPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByLtM_N_S.find(
-			finderCache,
-			new Object[] {
-				modifiedDate, notified, ArrayUtil.sortedUnique(statuses)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {modifiedDate, notified, statuses}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2365,10 +2359,7 @@ public class PatcherBuildPersistenceImpl
 		Date modifiedDate, boolean notified, int[] statuses) {
 
 		return _collectionPersistenceFinderByLtM_N_S.count(
-			finderCache,
-			new Object[] {
-				modifiedDate, notified, ArrayUtil.sortedUnique(statuses)
-			});
+			finderCache, new Object[] {modifiedDate, notified, statuses});
 	}
 
 	/**
@@ -2401,10 +2392,7 @@ public class PatcherBuildPersistenceImpl
 		Date modifiedDate, boolean notified, int[] statuses) {
 
 		return _collectionPersistenceFinderByLtM_N_S.filterCount(
-			finderCache,
-			new Object[] {
-				modifiedDate, notified, ArrayUtil.sortedUnique(statuses)
-			});
+			finderCache, new Object[] {modifiedDate, notified, statuses});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -4331,4 +4319,4 @@ public class PatcherBuildPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-187522727
+// LIFERAY-SERVICE-BUILDER-HASH:18711415

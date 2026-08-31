@@ -445,8 +445,6 @@ public class DLFileEntryTypePersistenceImpl
 		long[] groupIds, int start, int end,
 		OrderByComparator<DLFileEntryType> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterFind(
 			FinderCacheUtil.getFinderCache(), new Object[] {groupIds}, start,
 			end, orderByComparator, groupIds);
@@ -473,9 +471,8 @@ public class DLFileEntryTypePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds)}, start, end,
-			orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -512,8 +509,7 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			FinderCacheUtil.getFinderCache(), new Object[] {groupIds});
 	}
 
 	/**
@@ -537,8 +533,6 @@ public class DLFileEntryTypePersistenceImpl
 	 */
 	@Override
 	public int filterCountByGroupId(long[] groupIds) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterCount(
 			FinderCacheUtil.getFinderCache(), new Object[] {groupIds},
 			groupIds);
@@ -1780,4 +1774,4 @@ public class DLFileEntryTypePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-106791065
+// LIFERAY-SERVICE-BUILDER-HASH:-365314088

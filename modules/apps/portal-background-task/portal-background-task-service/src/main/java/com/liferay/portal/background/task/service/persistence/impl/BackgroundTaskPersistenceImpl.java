@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.persistence.impl.ArrayableFinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -511,12 +510,8 @@ public class BackgroundTaskPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_T.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(taskExecutorClassNames)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, taskExecutorClassNames}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -560,11 +555,7 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public int countByG_T(long[] groupIds, String[] taskExecutorClassNames) {
 		return _collectionPersistenceFinderByG_T.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(taskExecutorClassNames)
-			});
+			finderCache, new Object[] {groupIds, taskExecutorClassNames});
 	}
 
 	private CollectionPersistenceFinder
@@ -751,11 +742,8 @@ public class BackgroundTaskPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByT_S.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(taskExecutorClassNames), status
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {taskExecutorClassNames, status}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -795,10 +783,7 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public int countByT_S(String[] taskExecutorClassNames, int status) {
 		return _collectionPersistenceFinderByT_S.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(taskExecutorClassNames), status
-			});
+			finderCache, new Object[] {taskExecutorClassNames, status});
 	}
 
 	private CollectionPersistenceFinder
@@ -904,11 +889,7 @@ public class BackgroundTaskPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_N_T.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name,
-				ArrayUtil.sortedUnique(taskExecutorClassNames)
-			},
+			finderCache, new Object[] {groupIds, name, taskExecutorClassNames},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -962,11 +943,7 @@ public class BackgroundTaskPersistenceImpl
 		long[] groupIds, String name, String[] taskExecutorClassNames) {
 
 		return _collectionPersistenceFinderByG_N_T.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name,
-				ArrayUtil.sortedUnique(taskExecutorClassNames)
-			});
+			finderCache, new Object[] {groupIds, name, taskExecutorClassNames});
 	}
 
 	private CollectionPersistenceFinder
@@ -1076,11 +1053,8 @@ public class BackgroundTaskPersistenceImpl
 
 		return _collectionPersistenceFinderByG_T_C.find(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(taskExecutorClassNames), completed
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupIds, taskExecutorClassNames, completed}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1136,10 +1110,7 @@ public class BackgroundTaskPersistenceImpl
 
 		return _collectionPersistenceFinderByG_T_C.count(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds),
-				ArrayUtil.sortedUnique(taskExecutorClassNames), completed
-			});
+			new Object[] {groupIds, taskExecutorClassNames, completed});
 	}
 
 	private CollectionPersistenceFinder
@@ -1245,10 +1216,7 @@ public class BackgroundTaskPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_T_S.find(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(taskExecutorClassNames), status
-			},
+			finderCache, new Object[] {groupId, taskExecutorClassNames, status},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -1303,9 +1271,7 @@ public class BackgroundTaskPersistenceImpl
 
 		return _collectionPersistenceFinderByG_T_S.count(
 			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(taskExecutorClassNames), status
-			});
+			new Object[] {groupId, taskExecutorClassNames, status});
 	}
 
 	private CollectionPersistenceFinder
@@ -1420,10 +1386,7 @@ public class BackgroundTaskPersistenceImpl
 
 		return _collectionPersistenceFinderByG_N_T_C.find(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name, taskExecutorClassName,
-				completed
-			},
+			new Object[] {groupIds, name, taskExecutorClassName, completed},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -1484,10 +1447,7 @@ public class BackgroundTaskPersistenceImpl
 
 		return _collectionPersistenceFinderByG_N_T_C.count(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), name, taskExecutorClassName,
-				completed
-			});
+			new Object[] {groupIds, name, taskExecutorClassName, completed});
 	}
 
 	public BackgroundTaskPersistenceImpl() {
@@ -2125,4 +2085,4 @@ public class BackgroundTaskPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-841838411
+// LIFERAY-SERVICE-BUILDER-HASH:1140549101

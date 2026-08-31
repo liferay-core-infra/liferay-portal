@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -1380,9 +1379,8 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_F.filterFind(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, start,
-			end, orderByComparator, groupId);
+			FinderCacheUtil.getFinderCache(), new Object[] {groupId, folderIds},
+			start, end, orderByComparator, groupId);
 	}
 
 	/**
@@ -1407,9 +1405,8 @@ public class DLFileEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_F.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, start,
-			end, orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {groupId, folderIds},
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1450,7 +1447,7 @@ public class DLFileEntryPersistenceImpl
 	public int countByG_F(long groupId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_F.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)});
+			new Object[] {groupId, folderIds});
 	}
 
 	/**
@@ -1477,8 +1474,8 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public int filterCountByG_F(long groupId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_F.filterCount(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, groupId);
+			FinderCacheUtil.getFinderCache(), new Object[] {groupId, folderIds},
+			groupId);
 	}
 
 	private CollectionPersistenceFinder<DLFileEntry, NoSuchFileEntryException>
@@ -1790,8 +1787,8 @@ public class DLFileEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_U_F.filterFind(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(folderIds)},
-			start, end, orderByComparator, groupId);
+			new Object[] {groupId, userId, folderIds}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -1818,8 +1815,8 @@ public class DLFileEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_U_F.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(folderIds)},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupId, userId, folderIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1863,7 +1860,7 @@ public class DLFileEntryPersistenceImpl
 	public int countByG_U_F(long groupId, long userId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_U_F.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(folderIds)});
+			new Object[] {groupId, userId, folderIds});
 	}
 
 	/**
@@ -1893,8 +1890,7 @@ public class DLFileEntryPersistenceImpl
 	public int filterCountByG_U_F(long groupId, long userId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_U_F.filterCount(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {groupId, userId, ArrayUtil.sortedUnique(folderIds)},
-			groupId);
+			new Object[] {groupId, userId, folderIds}, groupId);
 	}
 
 	private UniquePersistenceFinder<DLFileEntry, NoSuchFileEntryException>
@@ -2234,10 +2230,8 @@ public class DLFileEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_F_F.filterFind(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(folderIds), fileEntryTypeId
-			},
-			start, end, orderByComparator, groupId);
+			new Object[] {groupId, folderIds, fileEntryTypeId}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -2264,10 +2258,8 @@ public class DLFileEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_F_F.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(folderIds), fileEntryTypeId
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupId, folderIds, fileEntryTypeId}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2315,9 +2307,7 @@ public class DLFileEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_F_F.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(folderIds), fileEntryTypeId
-			});
+			new Object[] {groupId, folderIds, fileEntryTypeId});
 	}
 
 	/**
@@ -2352,10 +2342,7 @@ public class DLFileEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByG_F_F.filterCount(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(folderIds), fileEntryTypeId
-			},
-			groupId);
+			new Object[] {groupId, folderIds, fileEntryTypeId}, groupId);
 	}
 
 	private CollectionPersistenceFinder<DLFileEntry, NoSuchFileEntryException>
@@ -3754,4 +3741,4 @@ public class DLFileEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-637523695
+// LIFERAY-SERVICE-BUILDER-HASH:-444842807

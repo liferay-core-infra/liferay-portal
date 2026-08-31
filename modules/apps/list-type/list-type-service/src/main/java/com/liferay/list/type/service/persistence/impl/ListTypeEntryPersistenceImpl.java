@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -349,8 +348,7 @@ public class ListTypeEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByListTypeEntryId.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(listTypeEntryIds)}, start, end,
+			finderCache, new Object[] {listTypeEntryIds}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -386,8 +384,7 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public int countByListTypeEntryId(long[] listTypeEntryIds) {
 		return _collectionPersistenceFinderByListTypeEntryId.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(listTypeEntryIds)});
+			finderCache, new Object[] {listTypeEntryIds});
 	}
 
 	private CollectionPersistenceFinder
@@ -476,9 +473,8 @@ public class ListTypeEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByListTypeDefinitionId.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(listTypeDefinitionIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {listTypeDefinitionIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -513,8 +509,7 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public int countByListTypeDefinitionId(long[] listTypeDefinitionIds) {
 		return _collectionPersistenceFinderByListTypeDefinitionId.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(listTypeDefinitionIds)});
+			finderCache, new Object[] {listTypeDefinitionIds});
 	}
 
 	private CollectionPersistenceFinder
@@ -1270,4 +1265,4 @@ public class ListTypeEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1907130449
+// LIFERAY-SERVICE-BUILDER-HASH:2022226397

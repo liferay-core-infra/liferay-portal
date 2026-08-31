@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -986,8 +985,8 @@ public class DLFileVersionPersistenceImpl
 
 		return _collectionPersistenceFinderByF_S.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {fileEntryId, ArrayUtil.sortedUnique(statuses)}, start,
-			end, orderByComparator, useFinderCache);
+			new Object[] {fileEntryId, statuses}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -1028,7 +1027,7 @@ public class DLFileVersionPersistenceImpl
 	public int countByF_S(long fileEntryId, int[] statuses) {
 		return _collectionPersistenceFinderByF_S.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {fileEntryId, ArrayUtil.sortedUnique(statuses)});
+			new Object[] {fileEntryId, statuses});
 	}
 
 	private CollectionPersistenceFinder
@@ -1382,10 +1381,8 @@ public class DLFileVersionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_E_S.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, expirationDate, ArrayUtil.sortedUnique(statuses)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, expirationDate, statuses}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1431,9 +1428,7 @@ public class DLFileVersionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_E_S.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, expirationDate, ArrayUtil.sortedUnique(statuses)
-			});
+			new Object[] {companyId, expirationDate, statuses});
 	}
 
 	private CollectionPersistenceFinder
@@ -2296,4 +2291,4 @@ public class DLFileVersionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:767410794
+// LIFERAY-SERVICE-BUILDER-HASH:-1551679130

@@ -994,9 +994,8 @@ public class RolePersistenceImpl
 		OrderByComparator<Role> orderByComparator) {
 
 		return _collectionPersistenceFinderByC_T.filterFind(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {companyId, ArrayUtil.sortedUnique(types)}, start, end,
-			orderByComparator, companyId, 0);
+			FinderCacheUtil.getFinderCache(), new Object[] {companyId, types},
+			start, end, orderByComparator, companyId, 0);
 	}
 
 	/**
@@ -1020,9 +1019,8 @@ public class RolePersistenceImpl
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_T.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {companyId, ArrayUtil.sortedUnique(types)}, start, end,
-			orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {companyId, types},
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1062,8 +1060,7 @@ public class RolePersistenceImpl
 	@Override
 	public int countByC_T(long companyId, int[] types) {
 		return _collectionPersistenceFinderByC_T.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {companyId, ArrayUtil.sortedUnique(types)});
+			FinderCacheUtil.getFinderCache(), new Object[] {companyId, types});
 	}
 
 	/**
@@ -1090,9 +1087,8 @@ public class RolePersistenceImpl
 	@Override
 	public int filterCountByC_T(long companyId, int[] types) {
 		return _collectionPersistenceFinderByC_T.filterCount(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {companyId, ArrayUtil.sortedUnique(types)}, companyId,
-			0);
+			FinderCacheUtil.getFinderCache(), new Object[] {companyId, types},
+			companyId, 0);
 	}
 
 	private FilterCollectionPersistenceFinder<Role, NoSuchRoleException>
@@ -1249,10 +1245,8 @@ public class RolePersistenceImpl
 
 		return _collectionPersistenceFinderByC_C_C.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, ArrayUtil.sortedUnique(classPKs)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, classNameId, classPKs}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1336,9 +1330,7 @@ public class RolePersistenceImpl
 	public int countByC_C_C(long companyId, long classNameId, long[] classPKs) {
 		return _collectionPersistenceFinderByC_C_C.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, ArrayUtil.sortedUnique(classPKs)
-			});
+			new Object[] {companyId, classNameId, classPKs});
 	}
 
 	/**
@@ -1373,10 +1365,7 @@ public class RolePersistenceImpl
 
 		return _collectionPersistenceFinderByC_C_C.filterCount(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, ArrayUtil.sortedUnique(classPKs)
-			},
-			companyId, 0);
+			new Object[] {companyId, classNameId, classPKs}, companyId, 0);
 	}
 
 	private FilterCollectionPersistenceFinder<Role, NoSuchRoleException>
@@ -1409,10 +1398,8 @@ public class RolePersistenceImpl
 
 		return _collectionPersistenceFinderByC_C_C_T.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, ArrayUtil.sortedUnique(classPKs), type
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, classNameId, classPKs, type}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1508,9 +1495,7 @@ public class RolePersistenceImpl
 
 		return _collectionPersistenceFinderByC_C_C_T.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, ArrayUtil.sortedUnique(classPKs), type
-			});
+			new Object[] {companyId, classNameId, classPKs, type});
 	}
 
 	/**
@@ -1547,10 +1532,8 @@ public class RolePersistenceImpl
 
 		return _collectionPersistenceFinderByC_C_C_T.filterCount(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, ArrayUtil.sortedUnique(classPKs), type
-			},
-			companyId, 0);
+			new Object[] {companyId, classNameId, classPKs, type}, companyId,
+			0);
 	}
 
 	private UniquePersistenceFinder<Role, NoSuchRoleException>
@@ -3070,4 +3053,4 @@ public class RolePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1076464501
+// LIFERAY-SERVICE-BUILDER-HASH:-136901133

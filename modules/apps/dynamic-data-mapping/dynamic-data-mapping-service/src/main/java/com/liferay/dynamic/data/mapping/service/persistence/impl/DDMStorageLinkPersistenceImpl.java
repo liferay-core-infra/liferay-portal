@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -487,9 +486,8 @@ public class DDMStorageLinkPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByStructureVersionId.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(structureVersionIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {structureVersionIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -524,8 +522,7 @@ public class DDMStorageLinkPersistenceImpl
 	@Override
 	public int countByStructureVersionId(long[] structureVersionIds) {
 		return _collectionPersistenceFinderByStructureVersionId.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(structureVersionIds)});
+			finderCache, new Object[] {structureVersionIds});
 	}
 
 	public DDMStorageLinkPersistenceImpl() {
@@ -980,4 +977,4 @@ public class DDMStorageLinkPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1329297692
+// LIFERAY-SERVICE-BUILDER-HASH:1300787592

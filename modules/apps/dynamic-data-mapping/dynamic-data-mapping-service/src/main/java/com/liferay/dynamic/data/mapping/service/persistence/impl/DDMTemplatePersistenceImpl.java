@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -1086,8 +1085,6 @@ public class DDMTemplatePersistenceImpl
 		long[] groupIds, long classPK, int start, int end,
 		OrderByComparator<DDMTemplate> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_CPK.filterFind(
 			finderCache, new Object[] {groupIds, classPK}, start, end,
 			orderByComparator, groupIds);
@@ -1115,9 +1112,8 @@ public class DDMTemplatePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_CPK.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), classPK}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, classPK}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1155,8 +1151,7 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public int countByG_CPK(long[] groupIds, long classPK) {
 		return _collectionPersistenceFinderByG_CPK.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), classPK});
+			finderCache, new Object[] {groupIds, classPK});
 	}
 
 	/**
@@ -1181,8 +1176,6 @@ public class DDMTemplatePersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_CPK(long[] groupIds, long classPK) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_CPK.filterCount(
 			finderCache, new Object[] {groupIds, classPK}, groupIds);
 	}
@@ -1307,8 +1300,6 @@ public class DDMTemplatePersistenceImpl
 		long[] groupIds, long classNameId, long classPK, int start, int end,
 		OrderByComparator<DDMTemplate> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C_C.filterFind(
 			finderCache, new Object[] {groupIds, classNameId, classPK}, start,
 			end, orderByComparator, groupIds);
@@ -1337,11 +1328,8 @@ public class DDMTemplatePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C_C.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), classNameId, classPK
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, classNameId, classPK}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1384,10 +1372,7 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public int countByG_C_C(long[] groupIds, long classNameId, long classPK) {
 		return _collectionPersistenceFinderByG_C_C.count(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), classNameId, classPK
-			});
+			finderCache, new Object[] {groupIds, classNameId, classPK});
 	}
 
 	/**
@@ -1418,8 +1403,6 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public int filterCountByG_C_C(
 		long[] groupIds, long classNameId, long classPK) {
-
-		groupIds = ArrayUtil.sortedUnique(groupIds);
 
 		return _collectionPersistenceFinderByG_C_C.filterCount(
 			finderCache, new Object[] {groupIds, classNameId, classPK},
@@ -2913,4 +2896,4 @@ public class DDMTemplatePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1541191909
+// LIFERAY-SERVICE-BUILDER-HASH:-1718328489

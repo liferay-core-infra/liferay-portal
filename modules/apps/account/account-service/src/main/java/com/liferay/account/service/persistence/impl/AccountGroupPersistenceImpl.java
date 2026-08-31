@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -442,8 +441,8 @@ public class AccountGroupPersistenceImpl
 		OrderByComparator<AccountGroup> orderByComparator) {
 
 		return _collectionPersistenceFinderByAccountGroupId.filterFind(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(accountGroupIds)},
-			start, end, orderByComparator);
+			finderCache, new Object[] {accountGroupIds}, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -467,8 +466,8 @@ public class AccountGroupPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByAccountGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(accountGroupIds)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {accountGroupIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -503,8 +502,7 @@ public class AccountGroupPersistenceImpl
 	@Override
 	public int countByAccountGroupId(long[] accountGroupIds) {
 		return _collectionPersistenceFinderByAccountGroupId.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(accountGroupIds)});
+			finderCache, new Object[] {accountGroupIds});
 	}
 
 	/**
@@ -528,8 +526,7 @@ public class AccountGroupPersistenceImpl
 	@Override
 	public int filterCountByAccountGroupId(long[] accountGroupIds) {
 		return _collectionPersistenceFinderByAccountGroupId.filterCount(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(accountGroupIds)});
+			finderCache, new Object[] {accountGroupIds});
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1755,4 +1752,4 @@ public class AccountGroupPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:827042424
+// LIFERAY-SERVICE-BUILDER-HASH:-1075398144

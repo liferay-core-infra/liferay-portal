@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -349,9 +348,8 @@ public class DDMFieldAttributePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByS_L.find(
-			finderCache,
-			new Object[] {storageId, ArrayUtil.sortedUnique(languageIds)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {storageId, languageIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -389,8 +387,7 @@ public class DDMFieldAttributePersistenceImpl
 	@Override
 	public int countByS_L(long storageId, String[] languageIds) {
 		return _collectionPersistenceFinderByS_L.count(
-			finderCache,
-			new Object[] {storageId, ArrayUtil.sortedUnique(languageIds)});
+			finderCache, new Object[] {storageId, languageIds});
 	}
 
 	private CollectionPersistenceFinder
@@ -1025,4 +1022,4 @@ public class DDMFieldAttributePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1024056831
+// LIFERAY-SERVICE-BUILDER-HASH:640218111

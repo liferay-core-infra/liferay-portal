@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.push.notifications.exception.NoSuchDeviceException;
@@ -226,9 +225,8 @@ public class PushNotificationsDevicePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByU_P.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(userIds), platform}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {userIds, platform}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -266,8 +264,7 @@ public class PushNotificationsDevicePersistenceImpl
 	@Override
 	public int countByU_P(long[] userIds, String platform) {
 		return _collectionPersistenceFinderByU_P.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(userIds), platform});
+			finderCache, new Object[] {userIds, platform});
 	}
 
 	public PushNotificationsDevicePersistenceImpl() {
@@ -575,4 +572,4 @@ public class PushNotificationsDevicePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1130430525
+// LIFERAY-SERVICE-BUILDER-HASH:1007279229

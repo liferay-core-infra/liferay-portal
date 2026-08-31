@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -418,8 +417,8 @@ public class TemplateEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -454,7 +453,7 @@ public class TemplateEntryPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			finderCache, new Object[] {groupIds});
 	}
 
 	private UniquePersistenceFinder<TemplateEntry, NoSuchTemplateEntryException>
@@ -720,8 +719,7 @@ public class TemplateEntryPersistenceImpl
 		return _collectionPersistenceFinderByG_IICN_IIFVK.find(
 			finderCache,
 			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), infoItemClassName,
-				infoItemFormVariationKey
+				groupIds, infoItemClassName, infoItemFormVariationKey
 			},
 			start, end, orderByComparator, useFinderCache);
 	}
@@ -783,8 +781,7 @@ public class TemplateEntryPersistenceImpl
 		return _collectionPersistenceFinderByG_IICN_IIFVK.count(
 			finderCache,
 			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), infoItemClassName,
-				infoItemFormVariationKey
+				groupIds, infoItemClassName, infoItemFormVariationKey
 			});
 	}
 
@@ -1498,4 +1495,4 @@ public class TemplateEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-670487924
+// LIFERAY-SERVICE-BUILDER-HASH:-74610804

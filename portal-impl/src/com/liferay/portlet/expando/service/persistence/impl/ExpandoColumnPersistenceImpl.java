@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -225,9 +224,8 @@ public class ExpandoColumnPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByT_N.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {tableId, ArrayUtil.sortedUnique(names)}, start, end,
-			orderByComparator, useFinderCache);
+			FinderCacheUtil.getFinderCache(), new Object[] {tableId, names},
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -303,8 +301,7 @@ public class ExpandoColumnPersistenceImpl
 	@Override
 	public int countByT_N(long tableId, String[] names) {
 		return _collectionPersistenceFinderByT_N.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {tableId, ArrayUtil.sortedUnique(names)});
+			FinderCacheUtil.getFinderCache(), new Object[] {tableId, names});
 	}
 
 	/**
@@ -331,8 +328,7 @@ public class ExpandoColumnPersistenceImpl
 	@Override
 	public int filterCountByT_N(long tableId, String[] names) {
 		return _collectionPersistenceFinderByT_N.filterCount(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {tableId, ArrayUtil.sortedUnique(names)});
+			FinderCacheUtil.getFinderCache(), new Object[] {tableId, names});
 	}
 
 	public ExpandoColumnPersistenceImpl() {
@@ -707,4 +703,4 @@ public class ExpandoColumnPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2014091982
+// LIFERAY-SERVICE-BUILDER-HASH:798152286

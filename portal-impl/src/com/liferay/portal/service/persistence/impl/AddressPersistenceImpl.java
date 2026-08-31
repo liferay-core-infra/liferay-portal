@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -992,11 +991,8 @@ public class AddressPersistenceImpl
 
 		return _collectionPersistenceFinderByC_C_C_L.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, classPK,
-				ArrayUtil.sortedUnique(listTypeIds)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, classNameId, classPK, listTypeIds}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1053,10 +1049,7 @@ public class AddressPersistenceImpl
 
 		return _collectionPersistenceFinderByC_C_C_L.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, classNameId, classPK,
-				ArrayUtil.sortedUnique(listTypeIds)
-			});
+			new Object[] {companyId, classNameId, classPK, listTypeIds});
 	}
 
 	private CollectionPersistenceFinder<Address, NoSuchAddressException>
@@ -2164,4 +2157,4 @@ public class AddressPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-358065422
+// LIFERAY-SERVICE-BUILDER-HASH:-111476238

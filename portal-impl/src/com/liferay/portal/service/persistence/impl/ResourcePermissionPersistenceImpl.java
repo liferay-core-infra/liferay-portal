@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.model.impl.ResourcePermissionImpl;
@@ -244,8 +243,7 @@ public class ResourcePermissionPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByScope.find(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(scopes)}, start, end,
+			FinderCacheUtil.getFinderCache(), new Object[] {scopes}, start, end,
 			orderByComparator, useFinderCache);
 	}
 
@@ -281,8 +279,7 @@ public class ResourcePermissionPersistenceImpl
 	@Override
 	public int countByScope(int[] scopes) {
 		return _collectionPersistenceFinderByScope.count(
-			FinderCacheUtil.getFinderCache(),
-			new Object[] {ArrayUtil.sortedUnique(scopes)});
+			FinderCacheUtil.getFinderCache(), new Object[] {scopes});
 	}
 
 	private CollectionPersistenceFinder
@@ -829,10 +826,8 @@ public class ResourcePermissionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_N_S_P.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, name, scope, ArrayUtil.sortedUnique(primKeys)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, name, scope, primKeys}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -885,9 +880,7 @@ public class ResourcePermissionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_N_S_P.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, name, scope, ArrayUtil.sortedUnique(primKeys)
-			});
+			new Object[] {companyId, name, scope, primKeys});
 	}
 
 	private CollectionPersistenceFinder
@@ -1034,10 +1027,8 @@ public class ResourcePermissionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_N_S_P_R.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, name, scope, primKey, ArrayUtil.sortedUnique(roleIds)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, name, scope, primKey, roleIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1142,9 +1133,7 @@ public class ResourcePermissionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_N_S_P_R.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, name, scope, primKey, ArrayUtil.sortedUnique(roleIds)
-			});
+			new Object[] {companyId, name, scope, primKey, roleIds});
 	}
 
 	private CollectionPersistenceFinder
@@ -1263,11 +1252,8 @@ public class ResourcePermissionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_N_S_R_V.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, name, scope, ArrayUtil.sortedUnique(roleIds),
-				viewActionId
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, name, scope, roleIds, viewActionId}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1330,10 +1316,7 @@ public class ResourcePermissionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_N_S_R_V.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, name, scope, ArrayUtil.sortedUnique(roleIds),
-				viewActionId
-			});
+			new Object[] {companyId, name, scope, roleIds, viewActionId});
 	}
 
 	public ResourcePermissionPersistenceImpl() {
@@ -2022,4 +2005,4 @@ public class ResourcePermissionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1955366497
+// LIFERAY-SERVICE-BUILDER-HASH:952387193

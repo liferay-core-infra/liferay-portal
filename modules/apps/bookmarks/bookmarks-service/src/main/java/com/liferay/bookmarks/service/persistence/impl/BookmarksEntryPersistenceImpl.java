@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -520,9 +519,8 @@ public class BookmarksEntryPersistenceImpl
 		OrderByComparator<BookmarksEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_F.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, start,
-			end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, folderIds}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -547,9 +545,8 @@ public class BookmarksEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_F.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, folderIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -587,8 +584,7 @@ public class BookmarksEntryPersistenceImpl
 	@Override
 	public int countByG_F(long groupId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_F.count(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)});
+			finderCache, new Object[] {groupId, folderIds});
 	}
 
 	/**
@@ -615,8 +611,7 @@ public class BookmarksEntryPersistenceImpl
 	@Override
 	public int filterCountByG_F(long groupId, long[] folderIds) {
 		return _collectionPersistenceFinderByG_F.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds)}, groupId);
+			finderCache, new Object[] {groupId, folderIds}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1601,9 +1596,8 @@ public class BookmarksEntryPersistenceImpl
 		OrderByComparator<BookmarksEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_F_S.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, folderIds, status}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -1629,9 +1623,8 @@ public class BookmarksEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_F_S.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, folderIds, status}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1672,8 +1665,7 @@ public class BookmarksEntryPersistenceImpl
 	@Override
 	public int countByG_F_S(long groupId, long[] folderIds, int status) {
 		return _collectionPersistenceFinderByG_F_S.count(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status});
+			finderCache, new Object[] {groupId, folderIds, status});
 	}
 
 	/**
@@ -1702,9 +1694,7 @@ public class BookmarksEntryPersistenceImpl
 	@Override
 	public int filterCountByG_F_S(long groupId, long[] folderIds, int status) {
 		return _collectionPersistenceFinderByG_F_S.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status},
-			groupId);
+			finderCache, new Object[] {groupId, folderIds, status}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -1964,9 +1954,8 @@ public class BookmarksEntryPersistenceImpl
 		OrderByComparator<BookmarksEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_F_NotS.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, folderIds, status}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -2058,9 +2047,8 @@ public class BookmarksEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_F_NotS.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, folderIds, status}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2101,8 +2089,7 @@ public class BookmarksEntryPersistenceImpl
 	@Override
 	public int countByG_F_NotS(long groupId, long[] folderIds, int status) {
 		return _collectionPersistenceFinderByG_F_NotS.count(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status});
+			finderCache, new Object[] {groupId, folderIds, status});
 	}
 
 	/**
@@ -2133,9 +2120,7 @@ public class BookmarksEntryPersistenceImpl
 		long groupId, long[] folderIds, int status) {
 
 		return _collectionPersistenceFinderByG_F_NotS.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(folderIds), status},
-			groupId);
+			finderCache, new Object[] {groupId, folderIds, status}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder
@@ -2264,10 +2249,7 @@ public class BookmarksEntryPersistenceImpl
 		int end, OrderByComparator<BookmarksEntry> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_U_F_S.filterFind(
-			finderCache,
-			new Object[] {
-				groupId, userId, ArrayUtil.sortedUnique(folderIds), status
-			},
+			finderCache, new Object[] {groupId, userId, folderIds, status},
 			start, end, orderByComparator, groupId);
 	}
 
@@ -2295,10 +2277,7 @@ public class BookmarksEntryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_U_F_S.find(
-			finderCache,
-			new Object[] {
-				groupId, userId, ArrayUtil.sortedUnique(folderIds), status
-			},
+			finderCache, new Object[] {groupId, userId, folderIds, status},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -2351,10 +2330,7 @@ public class BookmarksEntryPersistenceImpl
 		long groupId, long userId, long[] folderIds, int status) {
 
 		return _collectionPersistenceFinderByG_U_F_S.count(
-			finderCache,
-			new Object[] {
-				groupId, userId, ArrayUtil.sortedUnique(folderIds), status
-			});
+			finderCache, new Object[] {groupId, userId, folderIds, status});
 	}
 
 	/**
@@ -2390,10 +2366,7 @@ public class BookmarksEntryPersistenceImpl
 		long groupId, long userId, long[] folderIds, int status) {
 
 		return _collectionPersistenceFinderByG_U_F_S.filterCount(
-			finderCache,
-			new Object[] {
-				groupId, userId, ArrayUtil.sortedUnique(folderIds), status
-			},
+			finderCache, new Object[] {groupId, userId, folderIds, status},
 			groupId);
 	}
 
@@ -3181,4 +3154,4 @@ public class BookmarksEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:33803898
+// LIFERAY-SERVICE-BUILDER-HASH:-1536415728

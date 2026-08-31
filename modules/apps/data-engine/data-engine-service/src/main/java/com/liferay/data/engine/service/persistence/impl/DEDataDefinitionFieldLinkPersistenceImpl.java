@@ -701,9 +701,8 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByDDMSI_F.find(
-			finderCache,
-			new Object[] {ddmStructureId, ArrayUtil.sortedUnique(fieldNames)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {ddmStructureId, fieldNames}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -743,8 +742,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public int countByDDMSI_F(long ddmStructureId, String[] fieldNames) {
 		return _collectionPersistenceFinderByDDMSI_F.count(
-			finderCache,
-			new Object[] {ddmStructureId, ArrayUtil.sortedUnique(fieldNames)});
+			finderCache, new Object[] {ddmStructureId, fieldNames});
 	}
 
 	private CollectionPersistenceFinder
@@ -850,10 +848,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_DDMSI_F.find(
-			finderCache,
-			new Object[] {
-				classNameId, ddmStructureId, ArrayUtil.sortedUnique(fieldNames)
-			},
+			finderCache, new Object[] {classNameId, ddmStructureId, fieldNames},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -908,9 +903,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 
 		return _collectionPersistenceFinderByC_DDMSI_F.count(
 			finderCache,
-			new Object[] {
-				classNameId, ddmStructureId, ArrayUtil.sortedUnique(fieldNames)
-			});
+			new Object[] {classNameId, ddmStructureId, fieldNames});
 	}
 
 	private FinderPath _finderPathWithPaginationCountByC_C_DDMSI_F;
@@ -1803,4 +1796,4 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1141605928
+// LIFERAY-SERVICE-BUILDER-HASH:-773551272

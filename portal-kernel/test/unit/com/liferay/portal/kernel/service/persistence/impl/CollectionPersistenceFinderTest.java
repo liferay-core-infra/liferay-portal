@@ -51,6 +51,15 @@ public class CollectionPersistenceFinderTest {
 			QueryUtil.ALL_POS, null, true);
 
 		Assert.assertSame(_UNPAGINATED_FIND_PATH, recordedFinderPath[0]);
+
+		recordedFinderPath[0] = null;
+
+		collectionPersistenceFinder.find(
+			_createRecordingFinderCache(recordedFinderPath),
+			new Object[] {new long[] {100L, 100L}}, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null, true);
+
+		Assert.assertSame(_UNPAGINATED_FIND_PATH, recordedFinderPath[0]);
 	}
 
 	private CollectionPersistenceFinder<TestModel, NoSuchModelException>

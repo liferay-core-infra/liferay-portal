@@ -1297,17 +1297,11 @@ that may or may not be enforced with a unique index at the database level. Case
 
 			int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
 				<#if entityFinder.collectionPersistenceFinderEnabled>
-					<#if entityFinder.hasEntityColumn("groupId") && entityFinder.getEntityColumn("groupId").hasArrayableOperator()>
-						groupIds = ArrayUtil.sortedUnique(groupIds);
-					</#if>
-
 					return _collectionPersistenceFinderBy${entityFinder.name}.filterFind(
 						${finderCacheInstance},
 						new Object[] {
 							<#list entityColumns as entityColumn>
-								<#if entityColumn.hasArrayableOperator() && !stringUtil.equals(entityColumn.name, "groupId")>
-									ArrayUtil.sortedUnique(${entityColumn.pluralName})
-								<#elseif entityColumn.hasArrayableOperator()>
+								<#if entityColumn.hasArrayableOperator()>
 									${entityColumn.pluralName}
 								<#else>
 									${entityColumn.name}
@@ -1803,7 +1797,7 @@ that may or may not be enforced with a unique index at the database level. Case
 				new Object[] {
 					<#list entityColumns as entityColumn>
 						<#if entityColumn.hasArrayableOperator()>
-							ArrayUtil.sortedUnique(${entityColumn.pluralName})
+							${entityColumn.pluralName}
 						<#else>
 							${entityColumn.name}
 						</#if>

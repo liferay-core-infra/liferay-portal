@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -647,9 +646,8 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_P.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(parentCategoryIds)},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, parentCategoryIds}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -674,9 +672,8 @@ public class MBCategoryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_P.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(parentCategoryIds)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, parentCategoryIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -714,8 +711,7 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public int countByG_P(long groupId, long[] parentCategoryIds) {
 		return _collectionPersistenceFinderByG_P.count(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(parentCategoryIds)});
+			finderCache, new Object[] {groupId, parentCategoryIds});
 	}
 
 	/**
@@ -742,9 +738,7 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public int filterCountByG_P(long groupId, long[] parentCategoryIds) {
 		return _collectionPersistenceFinderByG_P.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(parentCategoryIds)},
-			groupId);
+			finderCache, new Object[] {groupId, parentCategoryIds}, groupId);
 	}
 
 	private UniquePersistenceFinder<MBCategory, NoSuchCategoryException>
@@ -1302,11 +1296,7 @@ public class MBCategoryPersistenceImpl
 		int end, OrderByComparator<MBCategory> orderByComparator) {
 
 		return _collectionPersistenceFinderByNotC_G_P.filterFind(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds)
-			},
+			finderCache, new Object[] {categoryIds, groupId, parentCategoryIds},
 			start, end, orderByComparator, groupId);
 	}
 
@@ -1402,11 +1392,7 @@ public class MBCategoryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByNotC_G_P.find(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds)
-			},
+			finderCache, new Object[] {categoryIds, groupId, parentCategoryIds},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -1461,10 +1447,7 @@ public class MBCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByNotC_G_P.count(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds)
-			});
+			new Object[] {categoryIds, groupId, parentCategoryIds});
 	}
 
 	/**
@@ -1500,11 +1483,7 @@ public class MBCategoryPersistenceImpl
 		long[] categoryIds, long groupId, long[] parentCategoryIds) {
 
 		return _collectionPersistenceFinderByNotC_G_P.filterCount(
-			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds)
-			},
+			finderCache, new Object[] {categoryIds, groupId, parentCategoryIds},
 			groupId);
 	}
 
@@ -1629,10 +1608,7 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_P_S.filterFind(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			finderCache, new Object[] {groupId, parentCategoryIds, status},
 			start, end, orderByComparator, groupId);
 	}
 
@@ -1659,10 +1635,7 @@ public class MBCategoryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_P_S.find(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			finderCache, new Object[] {groupId, parentCategoryIds, status},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -1708,10 +1681,7 @@ public class MBCategoryPersistenceImpl
 		long groupId, long[] parentCategoryIds, int status) {
 
 		return _collectionPersistenceFinderByG_P_S.count(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			});
+			finderCache, new Object[] {groupId, parentCategoryIds, status});
 	}
 
 	/**
@@ -1745,10 +1715,7 @@ public class MBCategoryPersistenceImpl
 		long groupId, long[] parentCategoryIds, int status) {
 
 		return _collectionPersistenceFinderByG_P_S.filterCount(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			finderCache, new Object[] {groupId, parentCategoryIds, status},
 			groupId);
 	}
 
@@ -2016,10 +1983,7 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_P_NotS.filterFind(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			finderCache, new Object[] {groupId, parentCategoryIds, status},
 			start, end, orderByComparator, groupId);
 	}
 
@@ -2115,10 +2079,7 @@ public class MBCategoryPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_P_NotS.find(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			finderCache, new Object[] {groupId, parentCategoryIds, status},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -2168,10 +2129,7 @@ public class MBCategoryPersistenceImpl
 		long groupId, long[] parentCategoryIds, int status) {
 
 		return _collectionPersistenceFinderByG_P_NotS.count(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			});
+			finderCache, new Object[] {groupId, parentCategoryIds, status});
 	}
 
 	/**
@@ -2205,10 +2163,7 @@ public class MBCategoryPersistenceImpl
 		long groupId, long[] parentCategoryIds, int status) {
 
 		return _collectionPersistenceFinderByG_P_NotS.filterCount(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			finderCache, new Object[] {groupId, parentCategoryIds, status},
 			groupId);
 	}
 
@@ -2504,10 +2459,7 @@ public class MBCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByNotC_G_P_S.filterFind(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			new Object[] {categoryIds, groupId, parentCategoryIds, status},
 			start, end, orderByComparator, groupId);
 	}
 
@@ -2609,10 +2561,7 @@ public class MBCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByNotC_G_P_S.find(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			new Object[] {categoryIds, groupId, parentCategoryIds, status},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -2673,10 +2622,7 @@ public class MBCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByNotC_G_P_S.count(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds), status
-			});
+			new Object[] {categoryIds, groupId, parentCategoryIds, status});
 	}
 
 	/**
@@ -2717,10 +2663,7 @@ public class MBCategoryPersistenceImpl
 
 		return _collectionPersistenceFinderByNotC_G_P_S.filterCount(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(categoryIds), groupId,
-				ArrayUtil.sortedUnique(parentCategoryIds), status
-			},
+			new Object[] {categoryIds, groupId, parentCategoryIds, status},
 			groupId);
 	}
 
@@ -3619,4 +3562,4 @@ public class MBCategoryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:990794388
+// LIFERAY-SERVICE-BUILDER-HASH:167982746

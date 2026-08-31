@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -642,8 +641,6 @@ public class CalendarResourcePersistenceImpl
 		long[] groupIds, String code, int start, int end,
 		OrderByComparator<CalendarResource> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C.filterFind(
 			finderCache, new Object[] {groupIds, code}, start, end,
 			orderByComparator, groupIds);
@@ -671,8 +668,8 @@ public class CalendarResourcePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds), code},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, code}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -710,7 +707,7 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public int countByG_C(long[] groupIds, String code) {
 		return _collectionPersistenceFinderByG_C.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds), code});
+			finderCache, new Object[] {groupIds, code});
 	}
 
 	/**
@@ -735,8 +732,6 @@ public class CalendarResourcePersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_C(long[] groupIds, String code) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C.filterCount(
 			finderCache, new Object[] {groupIds, code}, groupIds);
 	}
@@ -1712,4 +1707,4 @@ public class CalendarResourcePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2934866
+// LIFERAY-SERVICE-BUILDER-HASH:-784924813

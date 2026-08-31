@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -436,8 +435,6 @@ public class DDMStructurePersistenceImpl
 		long[] groupIds, int start, int end,
 		OrderByComparator<DDMStructure> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterFind(
 			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
 			groupIds);
@@ -464,8 +461,8 @@ public class DDMStructurePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -500,7 +497,7 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			finderCache, new Object[] {groupIds});
 	}
 
 	/**
@@ -523,8 +520,6 @@ public class DDMStructurePersistenceImpl
 	 */
 	@Override
 	public int filterCountByGroupId(long[] groupIds) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByGroupId.filterCount(
 			finderCache, new Object[] {groupIds}, groupIds);
 	}
@@ -940,8 +935,6 @@ public class DDMStructurePersistenceImpl
 		long[] groupIds, long classNameId, int start, int end,
 		OrderByComparator<DDMStructure> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C.filterFind(
 			finderCache, new Object[] {groupIds, classNameId}, start, end,
 			orderByComparator, groupIds);
@@ -969,9 +962,8 @@ public class DDMStructurePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C.find(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), classNameId}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, classNameId}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1009,8 +1001,7 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public int countByG_C(long[] groupIds, long classNameId) {
 		return _collectionPersistenceFinderByG_C.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(groupIds), classNameId});
+			finderCache, new Object[] {groupIds, classNameId});
 	}
 
 	/**
@@ -1036,8 +1027,6 @@ public class DDMStructurePersistenceImpl
 	 */
 	@Override
 	public int filterCountByG_C(long[] groupIds, long classNameId) {
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C.filterCount(
 			finderCache, new Object[] {groupIds, classNameId}, groupIds);
 	}
@@ -1551,8 +1540,6 @@ public class DDMStructurePersistenceImpl
 		long[] groupIds, long classNameId, String name, String description,
 		int start, int end, OrderByComparator<DDMStructure> orderByComparator) {
 
-		groupIds = ArrayUtil.sortedUnique(groupIds);
-
 		return _collectionPersistenceFinderByG_C_N_D.filterFind(
 			finderCache,
 			new Object[] {groupIds, classNameId, name, description}, start, end,
@@ -1584,10 +1571,8 @@ public class DDMStructurePersistenceImpl
 
 		return _collectionPersistenceFinderByG_C_N_D.find(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), classNameId, name, description
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupIds, classNameId, name, description}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1644,9 +1629,7 @@ public class DDMStructurePersistenceImpl
 
 		return _collectionPersistenceFinderByG_C_N_D.count(
 			finderCache,
-			new Object[] {
-				ArrayUtil.sortedUnique(groupIds), classNameId, name, description
-			});
+			new Object[] {groupIds, classNameId, name, description});
 	}
 
 	/**
@@ -1680,8 +1663,6 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public int filterCountByG_C_N_D(
 		long[] groupIds, long classNameId, String name, String description) {
-
-		groupIds = ArrayUtil.sortedUnique(groupIds);
 
 		return _collectionPersistenceFinderByG_C_N_D.filterCount(
 			finderCache,
@@ -2485,4 +2466,4 @@ public class DDMStructurePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1858720436
+// LIFERAY-SERVICE-BUILDER-HASH:-745419089

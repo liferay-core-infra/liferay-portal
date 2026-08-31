@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -831,10 +830,7 @@ public class CTEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByNotC_MCNI_MCPK.find(
 			finderCache,
-			new Object[] {
-				ctCollectionId, modelClassNameId,
-				ArrayUtil.sortedUnique(modelClassPKs)
-			},
+			new Object[] {ctCollectionId, modelClassNameId, modelClassPKs},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -889,10 +885,7 @@ public class CTEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByNotC_MCNI_MCPK.count(
 			finderCache,
-			new Object[] {
-				ctCollectionId, modelClassNameId,
-				ArrayUtil.sortedUnique(modelClassPKs)
-			});
+			new Object[] {ctCollectionId, modelClassNameId, modelClassPKs});
 	}
 
 	private UniquePersistenceFinder<CTEntry, NoSuchEntryException>
@@ -1514,4 +1507,4 @@ public class CTEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1267484428
+// LIFERAY-SERVICE-BUILDER-HASH:412704436

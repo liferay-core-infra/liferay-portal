@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -770,9 +769,8 @@ public class FragmentEntryLinkPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_R.find(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(rendererKeys)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {companyId, rendererKeys}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -810,8 +808,7 @@ public class FragmentEntryLinkPersistenceImpl
 	@Override
 	public int countByC_R(long companyId, String[] rendererKeys) {
 		return _collectionPersistenceFinderByC_R.count(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(rendererKeys)});
+			finderCache, new Object[] {companyId, rendererKeys});
 	}
 
 	private CollectionPersistenceFinder
@@ -1225,10 +1222,7 @@ public class FragmentEntryLinkPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_S_P.find(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(segmentsExperienceIds), plid
-			},
+			finderCache, new Object[] {groupId, segmentsExperienceIds, plid},
 			start, end, orderByComparator, useFinderCache);
 	}
 
@@ -1278,10 +1272,7 @@ public class FragmentEntryLinkPersistenceImpl
 		long groupId, long[] segmentsExperienceIds, long plid) {
 
 		return _collectionPersistenceFinderByG_S_P.count(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(segmentsExperienceIds), plid
-			});
+			finderCache, new Object[] {groupId, segmentsExperienceIds, plid});
 	}
 
 	private CollectionPersistenceFinder
@@ -2196,11 +2187,8 @@ public class FragmentEntryLinkPersistenceImpl
 
 		return _collectionPersistenceFinderByG_S_P_D.find(
 			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(segmentsExperienceIds), plid,
-				deleted
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {groupId, segmentsExperienceIds, plid, deleted}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2258,10 +2246,7 @@ public class FragmentEntryLinkPersistenceImpl
 
 		return _collectionPersistenceFinderByG_S_P_D.count(
 			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(segmentsExperienceIds), plid,
-				deleted
-			});
+			new Object[] {groupId, segmentsExperienceIds, plid, deleted});
 	}
 
 	private CollectionPersistenceFinder
@@ -3994,4 +3979,4 @@ public class FragmentEntryLinkPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-911053134
+// LIFERAY-SERVICE-BUILDER-HASH:1135707970

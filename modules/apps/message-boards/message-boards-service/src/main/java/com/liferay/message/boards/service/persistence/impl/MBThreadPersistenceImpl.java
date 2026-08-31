@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceF
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -617,9 +616,8 @@ public class MBThreadPersistenceImpl
 		OrderByComparator<MBThread> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_C.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds)}, start,
-			end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, categoryIds}, start, end,
+			orderByComparator, groupId);
 	}
 
 	/**
@@ -643,9 +641,8 @@ public class MBThreadPersistenceImpl
 		OrderByComparator<MBThread> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, categoryIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -683,8 +680,7 @@ public class MBThreadPersistenceImpl
 	@Override
 	public int countByG_C(long groupId, long[] categoryIds) {
 		return _collectionPersistenceFinderByG_C.count(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds)});
+			finderCache, new Object[] {groupId, categoryIds});
 	}
 
 	/**
@@ -711,9 +707,7 @@ public class MBThreadPersistenceImpl
 	@Override
 	public int filterCountByG_C(long groupId, long[] categoryIds) {
 		return _collectionPersistenceFinderByG_C.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds)},
-			groupId);
+			finderCache, new Object[] {groupId, categoryIds}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder<MBThread, NoSuchThreadException>
@@ -1498,9 +1492,8 @@ public class MBThreadPersistenceImpl
 		OrderByComparator<MBThread> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_C_S.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds), status},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, categoryIds, status}, start,
+			end, orderByComparator, groupId);
 	}
 
 	/**
@@ -1525,9 +1518,8 @@ public class MBThreadPersistenceImpl
 		OrderByComparator<MBThread> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C_S.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds), status},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, categoryIds, status}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1570,10 +1562,7 @@ public class MBThreadPersistenceImpl
 	@Override
 	public int countByG_C_S(long groupId, long[] categoryIds, int status) {
 		return _collectionPersistenceFinderByG_C_S.count(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(categoryIds), status
-			});
+			finderCache, new Object[] {groupId, categoryIds, status});
 	}
 
 	/**
@@ -1604,9 +1593,7 @@ public class MBThreadPersistenceImpl
 		long groupId, long[] categoryIds, int status) {
 
 		return _collectionPersistenceFinderByG_C_S.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds), status},
-			groupId);
+			finderCache, new Object[] {groupId, categoryIds, status}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder<MBThread, NoSuchThreadException>
@@ -1868,9 +1855,8 @@ public class MBThreadPersistenceImpl
 		OrderByComparator<MBThread> orderByComparator) {
 
 		return _collectionPersistenceFinderByG_C_NotS.filterFind(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds), status},
-			start, end, orderByComparator, groupId);
+			finderCache, new Object[] {groupId, categoryIds, status}, start,
+			end, orderByComparator, groupId);
 	}
 
 	/**
@@ -1961,9 +1947,8 @@ public class MBThreadPersistenceImpl
 		OrderByComparator<MBThread> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByG_C_NotS.find(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds), status},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupId, categoryIds, status}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -2006,10 +1991,7 @@ public class MBThreadPersistenceImpl
 	@Override
 	public int countByG_C_NotS(long groupId, long[] categoryIds, int status) {
 		return _collectionPersistenceFinderByG_C_NotS.count(
-			finderCache,
-			new Object[] {
-				groupId, ArrayUtil.sortedUnique(categoryIds), status
-			});
+			finderCache, new Object[] {groupId, categoryIds, status});
 	}
 
 	/**
@@ -2042,9 +2024,7 @@ public class MBThreadPersistenceImpl
 		long groupId, long[] categoryIds, int status) {
 
 		return _collectionPersistenceFinderByG_C_NotS.filterCount(
-			finderCache,
-			new Object[] {groupId, ArrayUtil.sortedUnique(categoryIds), status},
-			groupId);
+			finderCache, new Object[] {groupId, categoryIds, status}, groupId);
 	}
 
 	private FilterCollectionPersistenceFinder<MBThread, NoSuchThreadException>
@@ -3341,4 +3321,4 @@ public class MBThreadPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-794651765
+// LIFERAY-SERVICE-BUILDER-HASH:-1377281933

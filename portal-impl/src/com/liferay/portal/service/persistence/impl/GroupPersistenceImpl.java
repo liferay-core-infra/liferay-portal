@@ -719,8 +719,8 @@ public class GroupPersistenceImpl
 
 		return _collectionPersistenceFinderByC_GK.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {companyId, ArrayUtil.sortedUnique(groupKeys)}, start,
-			end, orderByComparator, useFinderCache);
+			new Object[] {companyId, groupKeys}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -798,7 +798,7 @@ public class GroupPersistenceImpl
 	public int countByC_GK(long companyId, String[] groupKeys) {
 		return _collectionPersistenceFinderByC_GK.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {companyId, ArrayUtil.sortedUnique(groupKeys)});
+			new Object[] {companyId, groupKeys});
 	}
 
 	private UniquePersistenceFinder<Group, NoSuchGroupException>
@@ -5689,4 +5689,4 @@ public class GroupPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-6014212
+// LIFERAY-SERVICE-BUILDER-HASH:932084752

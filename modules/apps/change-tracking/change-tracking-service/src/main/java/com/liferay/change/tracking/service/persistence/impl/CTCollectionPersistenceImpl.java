@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -825,9 +824,8 @@ public class CTCollectionPersistenceImpl
 		OrderByComparator<CTCollection> orderByComparator) {
 
 		return _collectionPersistenceFinderByC_S.filterFind(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(statuses)}, start,
-			end, orderByComparator, companyId, 0);
+			finderCache, new Object[] {companyId, statuses}, start, end,
+			orderByComparator, companyId, 0);
 	}
 
 	/**
@@ -852,9 +850,8 @@ public class CTCollectionPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_S.find(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(statuses)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {companyId, statuses}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -892,8 +889,7 @@ public class CTCollectionPersistenceImpl
 	@Override
 	public int countByC_S(long companyId, int[] statuses) {
 		return _collectionPersistenceFinderByC_S.count(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(statuses)});
+			finderCache, new Object[] {companyId, statuses});
 	}
 
 	/**
@@ -920,9 +916,7 @@ public class CTCollectionPersistenceImpl
 	@Override
 	public int filterCountByC_S(long companyId, int[] statuses) {
 		return _collectionPersistenceFinderByC_S.filterCount(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(statuses)},
-			companyId, 0);
+			finderCache, new Object[] {companyId, statuses}, companyId, 0);
 	}
 
 	private UniquePersistenceFinder<CTCollection, NoSuchCollectionException>
@@ -1528,4 +1522,4 @@ public class CTCollectionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:757331529
+// LIFERAY-SERVICE-BUILDER-HASH:-316362667

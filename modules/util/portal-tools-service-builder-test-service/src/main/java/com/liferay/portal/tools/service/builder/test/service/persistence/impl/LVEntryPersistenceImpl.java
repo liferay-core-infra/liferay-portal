@@ -669,8 +669,8 @@ public class LVEntryPersistenceImpl
 		OrderByComparator<LVEntry> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)}, start,
-			end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds}, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -705,7 +705,7 @@ public class LVEntryPersistenceImpl
 	@Override
 	public int countByGroupId(long[] groupIds) {
 		return _collectionPersistenceFinderByGroupId.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds)});
+			finderCache, new Object[] {groupIds});
 	}
 
 	private CollectionPersistenceFinder<LVEntry, NoSuchLVEntryException>
@@ -795,8 +795,8 @@ public class LVEntryPersistenceImpl
 		OrderByComparator<LVEntry> orderByComparator, boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByGroupId_Head.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds), head},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {groupIds, head}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -834,7 +834,7 @@ public class LVEntryPersistenceImpl
 	@Override
 	public int countByGroupId_Head(long[] groupIds, boolean head) {
 		return _collectionPersistenceFinderByGroupId_Head.count(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(groupIds), head});
+			finderCache, new Object[] {groupIds, head});
 	}
 
 	private CollectionPersistenceFinder<LVEntry, NoSuchLVEntryException>
@@ -1957,4 +1957,4 @@ public class LVEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-962837678
+// LIFERAY-SERVICE-BUILDER-HASH:670140242

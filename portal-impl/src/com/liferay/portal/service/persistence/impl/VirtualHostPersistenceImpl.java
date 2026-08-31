@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.model.impl.VirtualHostImpl;
@@ -523,8 +522,8 @@ public class VirtualHostPersistenceImpl
 
 		return _collectionPersistenceFinderByNotL_H.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {layoutSetId, ArrayUtil.sortedUnique(hostnames)},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {layoutSetId, hostnames}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -565,7 +564,7 @@ public class VirtualHostPersistenceImpl
 	public int countByNotL_H(long layoutSetId, String[] hostnames) {
 		return _collectionPersistenceFinderByNotL_H.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {layoutSetId, ArrayUtil.sortedUnique(hostnames)});
+			new Object[] {layoutSetId, hostnames});
 	}
 
 	public VirtualHostPersistenceImpl() {
@@ -925,4 +924,4 @@ public class VirtualHostPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2086776316
+// LIFERAY-SERVICE-BUILDER-HASH:-1924076644

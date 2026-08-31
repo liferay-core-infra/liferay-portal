@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -151,9 +150,8 @@ public class PortalPreferenceValuePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByPortalPreferencesId.find(
-			dummyFinderCache,
-			new Object[] {ArrayUtil.sortedUnique(portalPreferencesIds)}, start,
-			end, orderByComparator, useFinderCache);
+			dummyFinderCache, new Object[] {portalPreferencesIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -188,8 +186,7 @@ public class PortalPreferenceValuePersistenceImpl
 	@Override
 	public int countByPortalPreferencesId(long[] portalPreferencesIds) {
 		return _collectionPersistenceFinderByPortalPreferencesId.count(
-			dummyFinderCache,
-			new Object[] {ArrayUtil.sortedUnique(portalPreferencesIds)});
+			dummyFinderCache, new Object[] {portalPreferencesIds});
 	}
 
 	private CollectionPersistenceFinder
@@ -1014,4 +1011,4 @@ public class PortalPreferenceValuePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:553219297
+// LIFERAY-SERVICE-BUILDER-HASH:1488340769

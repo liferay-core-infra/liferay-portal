@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -379,10 +378,8 @@ public class RatingsEntryPersistenceImpl
 
 		return _collectionPersistenceFinderByU_C_C.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				userId, classNameId, ArrayUtil.sortedUnique(classPKs)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {userId, classNameId, classPKs}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -466,9 +463,7 @@ public class RatingsEntryPersistenceImpl
 	public int countByU_C_C(long userId, long classNameId, long[] classPKs) {
 		return _collectionPersistenceFinderByU_C_C.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				userId, classNameId, ArrayUtil.sortedUnique(classPKs)
-			});
+			new Object[] {userId, classNameId, classPKs});
 	}
 
 	private CollectionPersistenceFinder<RatingsEntry, NoSuchEntryException>
@@ -1065,4 +1060,4 @@ public class RatingsEntryPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-164408085
+// LIFERAY-SERVICE-BUILDER-HASH:1651709867

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.CollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.model.impl.SubscriptionImpl;
@@ -475,10 +474,8 @@ public class SubscriptionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_U_C_C.find(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, userId, classNameId, ArrayUtil.sortedUnique(classPKs)
-			},
-			start, end, orderByComparator, useFinderCache);
+			new Object[] {companyId, userId, classNameId, classPKs}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -577,9 +574,7 @@ public class SubscriptionPersistenceImpl
 
 		return _collectionPersistenceFinderByC_U_C_C.count(
 			FinderCacheUtil.getFinderCache(),
-			new Object[] {
-				companyId, userId, classNameId, ArrayUtil.sortedUnique(classPKs)
-			});
+			new Object[] {companyId, userId, classNameId, classPKs});
 	}
 
 	public SubscriptionPersistenceImpl() {
@@ -1003,4 +998,4 @@ public class SubscriptionPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2042541053
+// LIFERAY-SERVICE-BUILDER-HASH:1031061571

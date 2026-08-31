@@ -218,7 +218,7 @@ public int countBy${entityFinder.name}(
 				new Object[] {
 					<#list entityColumns as entityColumn>
 						<#if entityColumn.hasArrayableOperator()>
-							ArrayUtil.sortedUnique(${entityColumn.pluralName})
+							${entityColumn.pluralName}
 						<#else>
 							${entityColumn.name}
 						</#if>
@@ -709,17 +709,11 @@ public int countBy${entityFinder.name}(
 
 		) {
 			<#if entityFinder.collectionPersistenceFinderEnabled>
-				<#if entityFinder.hasEntityColumn("groupId") && entityFinder.getEntityColumn("groupId").hasArrayableOperator()>
-					groupIds = ArrayUtil.sortedUnique(groupIds);
-				</#if>
-
 				return _collectionPersistenceFinderBy${entityFinder.name}.filterCount(
 					${finderCacheInstance},
 					new Object[] {
 						<#list entityColumns as entityColumn>
-							<#if entityColumn.hasArrayableOperator() && !stringUtil.equals(entityColumn.name, "groupId")>
-								ArrayUtil.sortedUnique(${entityColumn.pluralName})
-							<#elseif entityColumn.hasArrayableOperator()>
+							<#if entityColumn.hasArrayableOperator()>
 								${entityColumn.pluralName}
 							<#else>
 								${entityColumn.name}

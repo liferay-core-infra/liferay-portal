@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -305,8 +304,8 @@ public class AccountRolePersistenceImpl
 		OrderByComparator<AccountRole> orderByComparator) {
 
 		return _collectionPersistenceFinderByAccountEntryId.filterFind(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(accountEntryIds)},
-			start, end, orderByComparator);
+			finderCache, new Object[] {accountEntryIds}, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -330,8 +329,8 @@ public class AccountRolePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByAccountEntryId.find(
-			finderCache, new Object[] {ArrayUtil.sortedUnique(accountEntryIds)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {accountEntryIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -366,8 +365,7 @@ public class AccountRolePersistenceImpl
 	@Override
 	public int countByAccountEntryId(long[] accountEntryIds) {
 		return _collectionPersistenceFinderByAccountEntryId.count(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(accountEntryIds)});
+			finderCache, new Object[] {accountEntryIds});
 	}
 
 	/**
@@ -391,8 +389,7 @@ public class AccountRolePersistenceImpl
 	@Override
 	public int filterCountByAccountEntryId(long[] accountEntryIds) {
 		return _collectionPersistenceFinderByAccountEntryId.filterCount(
-			finderCache,
-			new Object[] {ArrayUtil.sortedUnique(accountEntryIds)});
+			finderCache, new Object[] {accountEntryIds});
 	}
 
 	private UniquePersistenceFinder<AccountRole, NoSuchRoleException>
@@ -560,9 +557,8 @@ public class AccountRolePersistenceImpl
 		OrderByComparator<AccountRole> orderByComparator) {
 
 		return _collectionPersistenceFinderByC_A.filterFind(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(accountEntryIds)},
-			start, end, orderByComparator, companyId, 0);
+			finderCache, new Object[] {companyId, accountEntryIds}, start, end,
+			orderByComparator, companyId, 0);
 	}
 
 	/**
@@ -587,9 +583,8 @@ public class AccountRolePersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByC_A.find(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(accountEntryIds)},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {companyId, accountEntryIds}, start, end,
+			orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -627,8 +622,7 @@ public class AccountRolePersistenceImpl
 	@Override
 	public int countByC_A(long companyId, long[] accountEntryIds) {
 		return _collectionPersistenceFinderByC_A.count(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(accountEntryIds)});
+			finderCache, new Object[] {companyId, accountEntryIds});
 	}
 
 	/**
@@ -655,9 +649,8 @@ public class AccountRolePersistenceImpl
 	@Override
 	public int filterCountByC_A(long companyId, long[] accountEntryIds) {
 		return _collectionPersistenceFinderByC_A.filterCount(
-			finderCache,
-			new Object[] {companyId, ArrayUtil.sortedUnique(accountEntryIds)},
-			companyId, 0);
+			finderCache, new Object[] {companyId, accountEntryIds}, companyId,
+			0);
 	}
 
 	private UniquePersistenceFinder<AccountRole, NoSuchRoleException>
@@ -1133,4 +1126,4 @@ public class AccountRolePersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2133954621
+// LIFERAY-SERVICE-BUILDER-HASH:-1604371965

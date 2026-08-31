@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.FilterCollectionPersistenceFinder;
 import com.liferay.portal.kernel.service.persistence.impl.FinderColumn;
 import com.liferay.portal.kernel.service.persistence.impl.UniquePersistenceFinder;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -1017,11 +1016,8 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator) {
 
 		return _collectionPersistenceFinderByA_DTCM.filterFind(
-			finderCache,
-			new Object[] {
-				active, ArrayUtil.sortedUnique(dispatchTaskClusterModes)
-			},
-			start, end, orderByComparator);
+			finderCache, new Object[] {active, dispatchTaskClusterModes}, start,
+			end, orderByComparator);
 	}
 
 	/**
@@ -1046,11 +1042,8 @@ public class DispatchTriggerPersistenceImpl
 		boolean useFinderCache) {
 
 		return _collectionPersistenceFinderByA_DTCM.find(
-			finderCache,
-			new Object[] {
-				active, ArrayUtil.sortedUnique(dispatchTaskClusterModes)
-			},
-			start, end, orderByComparator, useFinderCache);
+			finderCache, new Object[] {active, dispatchTaskClusterModes}, start,
+			end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -1090,10 +1083,7 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public int countByA_DTCM(boolean active, int[] dispatchTaskClusterModes) {
 		return _collectionPersistenceFinderByA_DTCM.count(
-			finderCache,
-			new Object[] {
-				active, ArrayUtil.sortedUnique(dispatchTaskClusterModes)
-			});
+			finderCache, new Object[] {active, dispatchTaskClusterModes});
 	}
 
 	/**
@@ -1124,10 +1114,7 @@ public class DispatchTriggerPersistenceImpl
 		boolean active, int[] dispatchTaskClusterModes) {
 
 		return _collectionPersistenceFinderByA_DTCM.filterCount(
-			finderCache,
-			new Object[] {
-				active, ArrayUtil.sortedUnique(dispatchTaskClusterModes)
-			});
+			finderCache, new Object[] {active, dispatchTaskClusterModes});
 	}
 
 	private UniquePersistenceFinder<DispatchTrigger, NoSuchTriggerException>
@@ -1799,4 +1786,4 @@ public class DispatchTriggerPersistenceImpl
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-629571282
+// LIFERAY-SERVICE-BUILDER-HASH:-1613140600

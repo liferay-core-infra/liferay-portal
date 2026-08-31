@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -101,6 +102,8 @@ public class FilterCollectionPersistenceFinder
 	public int filterCount(
 		FinderCache finderCache, Object[] values, long[] groupIds) {
 
+		groupIds = ArrayUtil.sortedUnique(groupIds);
+
 		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
 			return count(finderCache, values);
 		}
@@ -153,6 +156,8 @@ public class FilterCollectionPersistenceFinder
 	public List<T> filterFind(
 		FinderCache finderCache, Object[] values, int start, int end,
 		OrderByComparator<T> orderByComparator, long[] groupIds) {
+
+		groupIds = ArrayUtil.sortedUnique(groupIds);
 
 		if (!InlineSQLHelperUtil.isEnabled(groupIds)) {
 			return find(

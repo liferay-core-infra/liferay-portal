@@ -5,6 +5,7 @@
 		<suppress checks="CompanyIterationCheck" files="src/testIntegration/java/com/liferay/portal/db/partition/test/DBPartitionTest\.java" />
 		<suppress checks="CompanyIterationCheck" files="src/testIntegration/java/com/liferay/portal/db/partition/test/DBPartitionUtilTest\.java" />
 		<suppress checks="JavaUpgradeIndexCheck" files="src/testIntegration/java/com/liferay/portal/db/partition/test/DBPartitionTest\.java" />
+		<suppress checks="PersistenceCallCheck" files="src/testIntegration/java/com/liferay/portal/db/partition/test/TransactionFlushDBPartitionTest\.java" />
 	</checkstyle>
 	<source-check>
 		<suppress checks="JavaUpgradeIndexCheck" files="src/testIntegration/java/com/liferay/portal/db/partition/test/DBPartitionTest\.java" />

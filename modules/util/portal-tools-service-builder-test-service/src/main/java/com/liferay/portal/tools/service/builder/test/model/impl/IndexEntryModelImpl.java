@@ -80,7 +80,7 @@ public class IndexEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table IndexEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,externalReferenceCode VARCHAR(75) null,indexEntryId LONG not null,companyId LONG,ownerId LONG,ownerType INTEGER,plid LONG,portletId VARCHAR(75) null,primary key (indexEntryId, ctCollectionId))";
+		"create table IndexEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,externalReferenceCode VARCHAR(500) null,indexEntryId LONG not null,companyId LONG,ownerId LONG,ownerType INTEGER,plid LONG,portletId VARCHAR(75) null,primary key (indexEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table IndexEntry";
 
@@ -858,4 +858,4 @@ public class IndexEntryModelImpl
 	private IndexEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1367211451
+// LIFERAY-SERVICE-BUILDER-HASH:-381041396

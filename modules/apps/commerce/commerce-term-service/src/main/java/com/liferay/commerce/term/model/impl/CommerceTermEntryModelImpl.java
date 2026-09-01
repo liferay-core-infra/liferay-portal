@@ -112,7 +112,7 @@ public class CommerceTermEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CommerceTermEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,defaultLanguageId VARCHAR(75) null,commerceTermEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,active_ BOOLEAN,displayDate DATE null,expirationDate DATE null,name VARCHAR(75) null,priority DOUBLE,type_ VARCHAR(75) null,typeSettings VARCHAR(75) null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
+		"create table CommerceTermEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,defaultLanguageId VARCHAR(75) null,commerceTermEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,active_ BOOLEAN,displayDate DATE null,expirationDate DATE null,name VARCHAR(75) null,priority DOUBLE,type_ VARCHAR(75) null,typeSettings VARCHAR(75) null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table CommerceTermEntry";
 
@@ -1785,4 +1785,4 @@ public class CommerceTermEntryModelImpl
 	private CommerceTermEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1847043986
+// LIFERAY-SERVICE-BUILDER-HASH:-1712679003

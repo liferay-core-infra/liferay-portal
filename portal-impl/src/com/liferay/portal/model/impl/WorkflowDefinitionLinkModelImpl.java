@@ -100,7 +100,7 @@ public class WorkflowDefinitionLinkModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table WorkflowDefinitionLink (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,workflowDefinitionLinkId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,typePK LONG,workflowDefinitionName VARCHAR(75) null,workflowDefinitionVersion INTEGER,primary key (workflowDefinitionLinkId, ctCollectionId))";
+		"create table WorkflowDefinitionLink (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,workflowDefinitionLinkId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,typePK LONG,workflowDefinitionName VARCHAR(75) null,workflowDefinitionVersion INTEGER,primary key (workflowDefinitionLinkId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table WorkflowDefinitionLink";
@@ -1284,4 +1284,4 @@ public class WorkflowDefinitionLinkModelImpl
 	private WorkflowDefinitionLink _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1183166849
+// LIFERAY-SERVICE-BUILDER-HASH:-424507606

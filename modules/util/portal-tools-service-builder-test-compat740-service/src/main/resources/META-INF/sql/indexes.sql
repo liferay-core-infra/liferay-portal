@@ -9,13 +9,13 @@ create unique index IX_1CF99E19 on CacheDisabledEntry (name[$COLUMN_LENGTH:75$])
 
 create unique index IX_91F43DDD on ConvertNullEntry (name[$COLUMN_LENGTH:75$]);
 
-create unique index IX_1B0249DC on ERCCompanyEntry (externalReferenceCode[$COLUMN_LENGTH:75$], companyId);
+create unique index IX_1B0249DC on ERCCompanyEntry (externalReferenceCode[$COLUMN_LENGTH:500$], companyId);
 create index IX_84557D43 on ERCCompanyEntry (uuid_[$COLUMN_LENGTH:75$]);
 
-create unique index IX_DA61F9E2 on ERCGroupEntry (groupId, externalReferenceCode[$COLUMN_LENGTH:75$]);
+create unique index IX_DA61F9E2 on ERCGroupEntry (groupId, externalReferenceCode[$COLUMN_LENGTH:500$]);
 create unique index IX_17A11405 on ERCGroupEntry (uuid_[$COLUMN_LENGTH:75$], groupId);
 
-create unique index IX_6EA6F478 on ERCVersionedEntry (externalReferenceCode[$COLUMN_LENGTH:75$], groupId, head);
+create unique index IX_6EA6F478 on ERCVersionedEntry (externalReferenceCode[$COLUMN_LENGTH:500$], groupId, head);
 create unique index IX_4DC13E66 on ERCVersionedEntry (headId);
 create unique index IX_A1B6E921 on ERCVersionedEntry (uuid_[$COLUMN_LENGTH:75$], groupId, head);
 

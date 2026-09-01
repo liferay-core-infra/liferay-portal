@@ -96,7 +96,7 @@ public class
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LPTSREVAudienceEntryRel (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,lptsrevAudienceEntryRelId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,audienceEntryERC VARCHAR(75) null,lptsRelElementVariationERC VARCHAR(75) null,primary key (lptsrevAudienceEntryRelId, ctCollectionId))";
+		"create table LPTSREVAudienceEntryRel (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,lptsrevAudienceEntryRelId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,audienceEntryERC VARCHAR(500) null,lptsRelElementVariationERC VARCHAR(500) null,primary key (lptsrevAudienceEntryRelId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table LPTSREVAudienceEntryRel";
@@ -1340,4 +1340,4 @@ public class
 		_escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-281251879
+// LIFERAY-SERVICE-BUILDER-HASH:330092002

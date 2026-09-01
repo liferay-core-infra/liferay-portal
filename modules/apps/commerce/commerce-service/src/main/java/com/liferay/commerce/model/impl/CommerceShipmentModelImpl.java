@@ -105,7 +105,7 @@ public class CommerceShipmentModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CommerceShipment (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,commerceShipmentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commerceAccountId LONG,commerceAddressId LONG,commerceShippingMethodId LONG,carrier VARCHAR(75) null,expectedDate DATE null,shippingDate DATE null,shippingOptionName TEXT null,trackingNumber VARCHAR(75) null,trackingURL STRING null,status INTEGER)";
+		"create table CommerceShipment (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,commerceShipmentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commerceAccountId LONG,commerceAddressId LONG,commerceShippingMethodId LONG,carrier VARCHAR(75) null,expectedDate DATE null,shippingDate DATE null,shippingOptionName TEXT null,trackingNumber VARCHAR(75) null,trackingURL STRING null,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table CommerceShipment";
 
@@ -1376,4 +1376,4 @@ public class CommerceShipmentModelImpl
 	private CommerceShipment _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:836503292
+// LIFERAY-SERVICE-BUILDER-HASH:-1396264709

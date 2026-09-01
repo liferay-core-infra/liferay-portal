@@ -95,7 +95,7 @@ public class TemplateEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table TemplateEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,templateEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,ddmTemplateId LONG,infoItemClassName VARCHAR(75) null,infoItemFormVariationKey VARCHAR(75) null,lastPublishDate DATE null,primary key (templateEntryId, ctCollectionId))";
+		"create table TemplateEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,templateEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,ddmTemplateId LONG,infoItemClassName VARCHAR(75) null,infoItemFormVariationKey VARCHAR(75) null,lastPublishDate DATE null,primary key (templateEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table TemplateEntry";
 
@@ -1169,4 +1169,4 @@ public class TemplateEntryModelImpl
 	private TemplateEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1819005481
+// LIFERAY-SERVICE-BUILDER-HASH:1811178380

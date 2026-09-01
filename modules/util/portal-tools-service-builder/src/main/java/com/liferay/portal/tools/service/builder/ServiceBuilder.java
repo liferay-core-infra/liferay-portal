@@ -1197,6 +1197,27 @@ public class ServiceBuilder {
 		return createTableSQL;
 	}
 
+	public int getDefaultMaxLengthHint(
+		String model, EntityColumn entityColumn) {
+
+		String modelHintsName = entityColumn.getModelHintsName();
+
+		int defaultMaxLength = _getDefaultMaxLength(modelHintsName);
+
+		if (defaultMaxLength == _DEFAULT_COLUMN_MAX_LENGTH) {
+			return 0;
+		}
+
+		Map<String, String> hints = ModelHintsUtil.getHints(
+			_apiPackagePath + ".model." + model, modelHintsName);
+
+		if ((hints != null) && hints.containsKey("max-length")) {
+			return 0;
+		}
+
+		return defaultMaxLength;
+	}
+
 	public String getDimensions(int dims) {
 		String dimensions = "";
 
@@ -1450,16 +1471,17 @@ public class ServiceBuilder {
 	}
 
 	public int getMaxLength(String model, EntityColumn entityColumn) {
+		String modelHintsName = entityColumn.getModelHintsName();
+
 		Map<String, String> hints = ModelHintsUtil.getHints(
-			_apiPackagePath + ".model." + model,
-			entityColumn.getModelHintsName());
+			_apiPackagePath + ".model." + model, modelHintsName);
 
 		if (hints == null) {
-			return _DEFAULT_COLUMN_MAX_LENGTH;
+			return _getDefaultMaxLength(modelHintsName);
 		}
 
 		return GetterUtil.getInteger(
-			hints.get("max-length"), _DEFAULT_COLUMN_MAX_LENGTH);
+			hints.get("max-length"), _getDefaultMaxLength(modelHintsName));
 	}
 
 	public Set<String> getModifiedFileNames() {
@@ -5843,6 +5865,14 @@ public class ServiceBuilder {
 		return sb.toString();
 	}
 
+	private int _getDefaultMaxLength(String modelHintsName) {
+		if (_isExternalReferenceCode(modelHintsName)) {
+			return _EXTERNAL_REFERENCE_CODE_MAX_LENGTH;
+		}
+
+		return _DEFAULT_COLUMN_MAX_LENGTH;
+	}
+
 	private String _getDeleteUADEntityMethodName(
 		JavaClass javaClass, String entityName) {
 
@@ -6448,6 +6478,25 @@ public class ServiceBuilder {
 			if (modifiedFileName.endsWith(".sql")) {
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @see com.liferay.portal.upgrade.v7_4_x.UpgradeExternalReferenceCodeColumnSize#_isExternalReferenceCode(
+	 *      String)
+	 */
+	private boolean _isExternalReferenceCode(String fieldName) {
+		if (fieldName == null) {
+			return false;
+		}
+
+		if (fieldName.equals("externalReferenceCode") ||
+			fieldName.endsWith("ERC") ||
+			fieldName.endsWith("ExternalReferenceCode")) {
+
+			return true;
 		}
 
 		return false;
@@ -8745,6 +8794,8 @@ public class ServiceBuilder {
 	}
 
 	private static final int _DEFAULT_COLUMN_MAX_LENGTH = 75;
+
+	private static final int _EXTERNAL_REFERENCE_CODE_MAX_LENGTH = 500;
 
 	private static final String[] _FORCE_UNIQUE_FINDER_PACKAGE_PATHS = {
 		"com.liferay.counter", "com.liferay.portal"

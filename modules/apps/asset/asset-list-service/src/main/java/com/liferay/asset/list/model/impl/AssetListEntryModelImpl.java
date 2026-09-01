@@ -99,7 +99,7 @@ public class AssetListEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AssetListEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,assetListEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,assetListEntryKey VARCHAR(75) null,title VARCHAR(75) null,type_ INTEGER,assetEntrySubtype VARCHAR(255) null,assetEntryType VARCHAR(255) null,lastPublishDate DATE null,primary key (assetListEntryId, ctCollectionId))";
+		"create table AssetListEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,assetListEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,assetListEntryKey VARCHAR(75) null,title VARCHAR(75) null,type_ INTEGER,assetEntrySubtype VARCHAR(255) null,assetEntryType VARCHAR(255) null,lastPublishDate DATE null,primary key (assetListEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table AssetListEntry";
 
@@ -1300,4 +1300,4 @@ public class AssetListEntryModelImpl
 	private AssetListEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1297974467
+// LIFERAY-SERVICE-BUILDER-HASH:-1123976678

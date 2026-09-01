@@ -1,5 +1,5 @@
-create index IX_7E9C8FF8 on KBArticle (externalReferenceCode[$COLUMN_LENGTH:75$]);
-create unique index IX_7AF9AA6E on KBArticle (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], version, ctCollectionId);
+create index IX_7E9C8FF8 on KBArticle (externalReferenceCode[$COLUMN_LENGTH:500$]);
+create unique index IX_7AF9AA6E on KBArticle (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], version, ctCollectionId);
 create index IX_4A49CDD6 on KBArticle (groupId, kbFolderId, urlTitle[$COLUMN_LENGTH:75$]);
 create index IX_7B1749F4 on KBArticle (groupId, latest, kbFolderId);
 create index IX_E2460F71 on KBArticle (groupId, latest, parentResourcePrimKey);
@@ -40,7 +40,7 @@ create unique index IX_3854CAF6 on KBComment (groupId, uuid_[$COLUMN_LENGTH:75$]
 create index IX_8E470726 on KBComment (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_F32A081D on KBFolder (companyId);
-create unique index IX_49E6ADC on KBFolder (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_49E6ADC on KBFolder (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
 create index IX_3FA4415C on KBFolder (groupId, parentKBFolderId, name[$COLUMN_LENGTH:75$]);
 create index IX_C8923D43 on KBFolder (groupId, parentKBFolderId, status);
 create index IX_729A89FA on KBFolder (groupId, parentKBFolderId, urlTitle[$COLUMN_LENGTH:75$]);

@@ -103,7 +103,7 @@ public class ListTypeEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ListTypeEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,listTypeEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,listTypeDefinitionId LONG,key_ VARCHAR(75) null,name STRING null,system_ BOOLEAN,type_ VARCHAR(75) null,status INTEGER)";
+		"create table ListTypeEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,listTypeEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,listTypeDefinitionId LONG,key_ VARCHAR(75) null,name STRING null,system_ BOOLEAN,type_ VARCHAR(75) null,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table ListTypeEntry";
 
@@ -1337,4 +1337,4 @@ public class ListTypeEntryModelImpl
 	private ListTypeEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-796252283
+// LIFERAY-SERVICE-BUILDER-HASH:215125478

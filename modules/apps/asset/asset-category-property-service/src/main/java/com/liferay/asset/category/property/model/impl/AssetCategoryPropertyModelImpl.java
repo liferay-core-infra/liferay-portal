@@ -91,7 +91,7 @@ public class AssetCategoryPropertyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AssetCategoryProperty (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,externalReferenceCode VARCHAR(75) null,categoryPropertyId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,categoryId LONG,key_ VARCHAR(255) null,value VARCHAR(255) null,primary key (categoryPropertyId, ctCollectionId))";
+		"create table AssetCategoryProperty (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,externalReferenceCode VARCHAR(500) null,categoryPropertyId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,categoryId LONG,key_ VARCHAR(255) null,value VARCHAR(255) null,primary key (categoryPropertyId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table AssetCategoryProperty";
@@ -1030,4 +1030,4 @@ public class AssetCategoryPropertyModelImpl
 	private AssetCategoryProperty _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-905198096
+// LIFERAY-SERVICE-BUILDER-HASH:-1282651783

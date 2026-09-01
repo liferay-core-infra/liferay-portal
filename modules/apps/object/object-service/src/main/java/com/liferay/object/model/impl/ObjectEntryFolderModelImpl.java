@@ -106,7 +106,7 @@ public class ObjectEntryFolderModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ObjectEntryFolder (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,objectEntryFolderId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentObjectEntryFolderId LONG,description STRING null,label STRING null,name VARCHAR(75) null,treePath STRING null,status INTEGER)";
+		"create table ObjectEntryFolder (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,objectEntryFolderId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentObjectEntryFolderId LONG,description STRING null,label STRING null,name VARCHAR(75) null,treePath STRING null,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table ObjectEntryFolder";
 
@@ -1454,4 +1454,4 @@ public class ObjectEntryFolderModelImpl
 	private ObjectEntryFolder _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-119267696
+// LIFERAY-SERVICE-BUILDER-HASH:-1060954947

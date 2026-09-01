@@ -101,7 +101,7 @@ public class RepositoryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Repository (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,repositoryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,name VARCHAR(200) null,description STRING null,portletId VARCHAR(200) null,typeSettings TEXT null,dlFolderId LONG,lastPublishDate DATE null,primary key (repositoryId, ctCollectionId))";
+		"create table Repository (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,repositoryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,name VARCHAR(200) null,description STRING null,portletId VARCHAR(200) null,typeSettings TEXT null,dlFolderId LONG,lastPublishDate DATE null,primary key (repositoryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table Repository";
 
@@ -1281,4 +1281,4 @@ public class RepositoryModelImpl
 	private Repository _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2143426725
+// LIFERAY-SERVICE-BUILDER-HASH:-1273541694

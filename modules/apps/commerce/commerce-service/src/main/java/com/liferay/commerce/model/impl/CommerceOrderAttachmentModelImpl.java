@@ -99,7 +99,7 @@ public class CommerceOrderAttachmentModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CommerceOrderAttachment (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,commerceOrderAttachmentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commerceOrderId LONG,fileEntryId LONG,priority DOUBLE,restricted BOOLEAN,title VARCHAR(75) null,type_ VARCHAR(75) null)";
+		"create table CommerceOrderAttachment (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,commerceOrderAttachmentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commerceOrderId LONG,fileEntryId LONG,priority DOUBLE,restricted BOOLEAN,title VARCHAR(75) null,type_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table CommerceOrderAttachment";
@@ -1232,4 +1232,4 @@ public class CommerceOrderAttachmentModelImpl
 	private CommerceOrderAttachment _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-673593320
+// LIFERAY-SERVICE-BUILDER-HASH:-1416538171

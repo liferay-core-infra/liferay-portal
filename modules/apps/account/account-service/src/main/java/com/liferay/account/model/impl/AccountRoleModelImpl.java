@@ -77,7 +77,7 @@ public class AccountRoleModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AccountRole (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(75) null,accountRoleId LONG not null primary key,companyId LONG,accountEntryId LONG,roleId LONG)";
+		"create table AccountRole (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(500) null,accountRoleId LONG not null primary key,companyId LONG,accountEntryId LONG,roleId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table AccountRole";
 
@@ -742,4 +742,4 @@ public class AccountRoleModelImpl
 	private AccountRole _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1118820874
+// LIFERAY-SERVICE-BUILDER-HASH:1502794207

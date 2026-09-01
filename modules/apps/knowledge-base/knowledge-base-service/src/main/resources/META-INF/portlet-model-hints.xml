@@ -13,7 +13,9 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="rootResourcePrimKey" type="long" />
 		<field name="parentResourceClassNameId" type="long" />
 		<field name="parentResourcePrimKey" type="long" />
@@ -76,7 +78,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="kbFolderId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />

@@ -117,7 +117,7 @@ public class CommerceAddressModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CommerceAddress (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(75) null,commerceAddressId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,countryId LONG,regionId LONG,city VARCHAR(75) null,defaultBilling BOOLEAN,defaultShipping BOOLEAN,description STRING null,latitude DOUBLE,longitude DOUBLE,name VARCHAR(255) null,phoneNumber VARCHAR(75) null,street1 VARCHAR(255) null,street2 VARCHAR(255) null,street3 VARCHAR(255) null,subtype VARCHAR(75) null,type_ INTEGER,zip VARCHAR(75) null)";
+		"create table CommerceAddress (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(500) null,commerceAddressId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,countryId LONG,regionId LONG,city VARCHAR(75) null,defaultBilling BOOLEAN,defaultShipping BOOLEAN,description STRING null,latitude DOUBLE,longitude DOUBLE,name VARCHAR(255) null,phoneNumber VARCHAR(75) null,street1 VARCHAR(255) null,street2 VARCHAR(255) null,street3 VARCHAR(255) null,subtype VARCHAR(75) null,type_ INTEGER,zip VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table CommerceAddress";
 
@@ -1694,4 +1694,4 @@ public class CommerceAddressModelImpl
 	private CommerceAddress _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1544729626
+// LIFERAY-SERVICE-BUILDER-HASH:167519141

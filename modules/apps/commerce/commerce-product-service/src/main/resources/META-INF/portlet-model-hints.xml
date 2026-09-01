@@ -5,7 +5,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceCatalogId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -23,7 +25,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceChannelId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -80,7 +84,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPAttachmentFileEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -116,7 +122,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPConfigurationEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -171,7 +179,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPConfigurationListId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -216,7 +226,9 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="CProductExternalReferenceCode" type="String" />
+		<field name="CProductExternalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CProductId" type="long" />
 		<field name="CPTaxCategoryId" type="long" />
 		<field name="accountGroupFilterEnabled" type="boolean" />
@@ -397,7 +409,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPDefinitionSpecificationOptionValueId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -442,7 +456,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPInstanceId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -561,7 +577,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPMeasurementUnitId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -588,7 +606,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPOptionId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -617,7 +637,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPOptionCategoryId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -641,7 +663,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPOptionValueId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -665,7 +689,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CProductId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -680,7 +706,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPSpecificationOptionId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -715,7 +743,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="CPTaxCategoryId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />

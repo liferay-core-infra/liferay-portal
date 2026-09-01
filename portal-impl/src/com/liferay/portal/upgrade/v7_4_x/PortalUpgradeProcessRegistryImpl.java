@@ -833,6 +833,10 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeVersionTreeMap.put(
 			new Version(39, 0, 0), new UpgradeCompanyInfo());
+
+		upgradeVersionTreeMap.put(
+			new Version(39, 1, 0),
+			new UpgradeExternalReferenceCodeColumnSize());
 	}
 
 }

@@ -1,7 +1,7 @@
 create table BatchEngineExportTask (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	batchEngineExportTaskId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -25,7 +25,7 @@ create table BatchEngineExportTask (
 create table BatchEngineImportTask (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	batchEngineImportTaskId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

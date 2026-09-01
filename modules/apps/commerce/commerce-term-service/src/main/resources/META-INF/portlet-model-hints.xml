@@ -4,7 +4,9 @@
 	<model name="com.liferay.commerce.term.model.CommerceTermEntry">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="defaultLanguageId" type="String" />
 		<field name="commerceTermEntryId" type="long" />
 		<field name="companyId" type="long" />

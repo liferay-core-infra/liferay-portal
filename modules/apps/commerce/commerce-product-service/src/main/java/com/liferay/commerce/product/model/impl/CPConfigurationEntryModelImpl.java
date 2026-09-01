@@ -138,7 +138,7 @@ public class CPConfigurationEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CPConfigurationEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,CPConfigurationEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,CPConfigurationListId LONG,CPTaxCategoryId LONG,allowedOrderQuantities VARCHAR(75) null,backOrders BOOLEAN,commerceAvailabilityEstimateId LONG,CPDefinitionInventoryEngine VARCHAR(75) null,depth DOUBLE,displayAvailability BOOLEAN,displayStockQuantity BOOLEAN,freeShipping BOOLEAN,height DOUBLE,lowStockActivity VARCHAR(75) null,maxOrderQuantity BIGDECIMAL null,minOrderQuantity BIGDECIMAL null,minStockQuantity BIGDECIMAL null,multipleOrderQuantity BIGDECIMAL null,purchasable BOOLEAN,shippable BOOLEAN,shippingExtraPrice DOUBLE,shipSeparately BOOLEAN,taxExempt BOOLEAN,weight DOUBLE,width DOUBLE,primary key (CPConfigurationEntryId, ctCollectionId))";
+		"create table CPConfigurationEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,CPConfigurationEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,CPConfigurationListId LONG,CPTaxCategoryId LONG,allowedOrderQuantities VARCHAR(75) null,backOrders BOOLEAN,commerceAvailabilityEstimateId LONG,CPDefinitionInventoryEngine VARCHAR(75) null,depth DOUBLE,displayAvailability BOOLEAN,displayStockQuantity BOOLEAN,freeShipping BOOLEAN,height DOUBLE,lowStockActivity VARCHAR(75) null,maxOrderQuantity BIGDECIMAL null,minOrderQuantity BIGDECIMAL null,minStockQuantity BIGDECIMAL null,multipleOrderQuantity BIGDECIMAL null,purchasable BOOLEAN,shippable BOOLEAN,shippingExtraPrice DOUBLE,shipSeparately BOOLEAN,taxExempt BOOLEAN,weight DOUBLE,width DOUBLE,primary key (CPConfigurationEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table CPConfigurationEntry";
@@ -1990,4 +1990,4 @@ public class CPConfigurationEntryModelImpl
 	private CPConfigurationEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1211568564
+// LIFERAY-SERVICE-BUILDER-HASH:475766099

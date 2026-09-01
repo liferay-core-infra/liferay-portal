@@ -4,7 +4,9 @@
 	<model name="com.liferay.search.experiences.model.SXPBlueprint">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="SXPBlueprintId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -35,7 +37,9 @@
 	<model name="com.liferay.search.experiences.model.SXPElement">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="SXPElementId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />

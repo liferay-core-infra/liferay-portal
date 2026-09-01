@@ -32,7 +32,7 @@ create table ConvertNullEntry (
 
 create table ERCCompanyEntry (
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ercCompanyEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -42,7 +42,7 @@ create table ERCCompanyEntry (
 
 create table ERCGroupEntry (
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ercGroupEntryId LONG not null primary key,
 	groupId LONG,
 	companyId LONG
@@ -50,7 +50,7 @@ create table ERCGroupEntry (
 
 create table ERCVersionedEntry (
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ercVersionedEntryId LONG not null primary key,
 	groupId LONG,
 	companyId LONG

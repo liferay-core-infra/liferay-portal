@@ -93,7 +93,7 @@ public class CommerceTaxCategoryMappingModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CommerceTaxCategoryMapping (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,commerceTaxCategoryMappingId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commerceTaxMethodId LONG,CPTaxCategoryId LONG)";
+		"create table CommerceTaxCategoryMapping (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,commerceTaxCategoryMappingId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,commerceTaxMethodId LONG,CPTaxCategoryId LONG)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table CommerceTaxCategoryMapping";
@@ -1085,4 +1085,4 @@ public class CommerceTaxCategoryMappingModelImpl
 	private CommerceTaxCategoryMapping _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:162096751
+// LIFERAY-SERVICE-BUILDER-HASH:-656943080

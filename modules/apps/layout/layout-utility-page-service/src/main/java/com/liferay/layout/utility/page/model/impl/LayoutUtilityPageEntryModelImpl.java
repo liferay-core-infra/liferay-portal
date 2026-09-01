@@ -101,7 +101,7 @@ public class LayoutUtilityPageEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LayoutUtilityPageEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,LayoutUtilityPageEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,plid LONG,previewFileEntryId LONG,defaultLayoutUtilityPageEntry BOOLEAN,name VARCHAR(75) null,type_ VARCHAR(75) null,lastPublishDate DATE null,primary key (LayoutUtilityPageEntryId, ctCollectionId))";
+		"create table LayoutUtilityPageEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,LayoutUtilityPageEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,plid LONG,previewFileEntryId LONG,defaultLayoutUtilityPageEntry BOOLEAN,name VARCHAR(75) null,type_ VARCHAR(75) null,lastPublishDate DATE null,primary key (LayoutUtilityPageEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table LayoutUtilityPageEntry";
@@ -1301,4 +1301,4 @@ public class LayoutUtilityPageEntryModelImpl
 	private LayoutUtilityPageEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1297730749
+// LIFERAY-SERVICE-BUILDER-HASH:592889768

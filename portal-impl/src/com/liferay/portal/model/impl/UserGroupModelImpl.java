@@ -96,7 +96,7 @@ public class UserGroupModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table UserGroup (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,userGroupId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentUserGroupId LONG,name VARCHAR(255) null,description STRING null,addedByLDAPImport BOOLEAN,status INTEGER,primary key (userGroupId, ctCollectionId))";
+		"create table UserGroup (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,userGroupId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentUserGroupId LONG,name VARCHAR(255) null,description STRING null,addedByLDAPImport BOOLEAN,status INTEGER,primary key (userGroupId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table UserGroup";
 
@@ -1194,4 +1194,4 @@ public class UserGroupModelImpl
 	private UserGroup _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1697668085
+// LIFERAY-SERVICE-BUILDER-HASH:1978905906

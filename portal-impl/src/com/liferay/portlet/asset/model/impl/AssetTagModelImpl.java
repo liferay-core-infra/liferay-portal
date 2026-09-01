@@ -94,7 +94,7 @@ public class AssetTagModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AssetTag (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,tagId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,assetCount INTEGER,lastPublishDate DATE null,primary key (tagId, ctCollectionId))";
+		"create table AssetTag (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,tagId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,assetCount INTEGER,lastPublishDate DATE null,primary key (tagId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table AssetTag";
 
@@ -1091,4 +1091,4 @@ public class AssetTagModelImpl
 	private AssetTag _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1995621866
+// LIFERAY-SERVICE-BUILDER-HASH:-344589503

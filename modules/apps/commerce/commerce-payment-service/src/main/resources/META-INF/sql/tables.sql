@@ -13,7 +13,7 @@ create table CPMethodGroupRelQualifier (
 
 create table CommercePaymentEntry (
 	mvccVersion LONG default 0 not null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	commercePaymentEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

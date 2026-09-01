@@ -107,7 +107,7 @@ public class AssetVocabularyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AssetVocabulary (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,vocabularyId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,title STRING null,description STRING null,settings_ STRING null,visibilityType INTEGER,lastPublishDate DATE null,status INTEGER,primary key (vocabularyId, ctCollectionId))";
+		"create table AssetVocabulary (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,vocabularyId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,title STRING null,description STRING null,settings_ STRING null,visibilityType INTEGER,lastPublishDate DATE null,status INTEGER,primary key (vocabularyId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table AssetVocabulary";
 
@@ -1565,4 +1565,4 @@ public class AssetVocabularyModelImpl
 	private AssetVocabulary _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1598540392
+// LIFERAY-SERVICE-BUILDER-HASH:-747966585

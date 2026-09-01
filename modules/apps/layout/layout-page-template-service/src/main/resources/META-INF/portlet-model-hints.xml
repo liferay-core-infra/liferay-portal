@@ -5,7 +5,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="layoutPageTemplateCollectionId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -28,7 +30,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="layoutPageTemplateEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -92,7 +96,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="layoutPageTemplateStructureRelElementVariationId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -108,7 +114,9 @@
 		<field localized="true" name="js" type="String" />
 		<field name="name" type="String" />
 		<field name="plid" type="long" />
-		<field name="segmentsExperienceERC" type="String" />
+		<field name="segmentsExperienceERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="targetElement" type="String">
 			<hint name="max-length">1000</hint>
 		</field>
@@ -117,7 +125,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="layoutPageTemplateStructureRelElementVariationAudienceEntryRelId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -125,7 +135,11 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="audienceEntryERC" type="String" />
-		<field name="layoutPageTemplateStructureRelElementVariationERC" type="String" />
+		<field name="audienceEntryERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="layoutPageTemplateStructureRelElementVariationERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 	</model>
 </model-hints>

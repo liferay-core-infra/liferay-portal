@@ -79,7 +79,7 @@ public class ERCVersionedEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ERCVersionedEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,headId LONG,head BOOLEAN,ercVersionedEntryId LONG not null primary key,groupId LONG,companyId LONG)";
+		"create table ERCVersionedEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,headId LONG,head BOOLEAN,ercVersionedEntryId LONG not null primary key,groupId LONG,companyId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table ERCVersionedEntry";
 
@@ -876,4 +876,4 @@ public class ERCVersionedEntryModelImpl
 	private ERCVersionedEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1914985765
+// LIFERAY-SERVICE-BUILDER-HASH:-90637664

@@ -1,14 +1,14 @@
-create index IX_11CEFB3 on LPTSREVAudienceEntryRel (companyId, audienceEntryERC[$COLUMN_LENGTH:75$]);
-create unique index IX_BB3F862 on LPTSREVAudienceEntryRel (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
-create index IX_BFC958B6 on LPTSREVAudienceEntryRel (groupId, lptsRelElementVariationERC[$COLUMN_LENGTH:75$]);
+create index IX_11CEFB3 on LPTSREVAudienceEntryRel (companyId, audienceEntryERC[$COLUMN_LENGTH:500$]);
+create unique index IX_BB3F862 on LPTSREVAudienceEntryRel (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
+create index IX_BFC958B6 on LPTSREVAudienceEntryRel (groupId, lptsRelElementVariationERC[$COLUMN_LENGTH:500$]);
 create unique index IX_B988F085 on LPTSREVAudienceEntryRel (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);
 
-create unique index IX_D4E7D564 on LPTSRelElementVariation (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
-create index IX_E09954CB on LPTSRelElementVariation (plid, segmentsExperienceERC[$COLUMN_LENGTH:75$], active_);
-create index IX_22DF7069 on LPTSRelElementVariation (segmentsExperienceERC[$COLUMN_LENGTH:75$]);
+create unique index IX_D4E7D564 on LPTSRelElementVariation (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
+create index IX_E09954CB on LPTSRelElementVariation (plid, segmentsExperienceERC[$COLUMN_LENGTH:500$], active_);
+create index IX_22DF7069 on LPTSRelElementVariation (segmentsExperienceERC[$COLUMN_LENGTH:500$]);
 create unique index IX_BFCB1187 on LPTSRelElementVariation (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);
 
-create unique index IX_D22242C8 on LayoutPageTemplateCollection (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_D22242C8 on LayoutPageTemplateCollection (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
 create index IX_5A1F4BFC on LayoutPageTemplateCollection (groupId, parentLPTCollectionId);
 create unique index IX_332638E5 on LayoutPageTemplateCollection (groupId, type_, lptCollectionKey[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_D2A97D41 on LayoutPageTemplateCollection (groupId, type_, name[$COLUMN_LENGTH:75$]);
@@ -17,7 +17,7 @@ create unique index IX_BC92AB3F on LayoutPageTemplateCollection (groupId, uuid_[
 create index IX_A17F0EBD on LayoutPageTemplateCollection (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_D30C0FA1 on LayoutPageTemplateEntry (groupId, classNameId, classTypeKey[$COLUMN_LENGTH:75$], defaultTemplate);
-create unique index IX_3C2ECF56 on LayoutPageTemplateEntry (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_3C2ECF56 on LayoutPageTemplateEntry (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
 create index IX_E7CC5585 on LayoutPageTemplateEntry (groupId, layoutPageTemplateCollectionId);
 create unique index IX_ECAFF217 on LayoutPageTemplateEntry (groupId, layoutPageTemplateEntryKey[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_FFE79984 on LayoutPageTemplateEntry (groupId, name[$COLUMN_LENGTH:75$], layoutPageTemplateCollectionId);

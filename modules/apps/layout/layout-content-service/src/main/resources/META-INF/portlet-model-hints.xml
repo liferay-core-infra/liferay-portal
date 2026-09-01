@@ -3,7 +3,9 @@
 <model-hints>
 	<model name="com.liferay.layout.content.model.LayoutContentVersion">
 		<field name="mvccVersion" type="long" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="layoutContentVersionId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -38,6 +40,8 @@
 			<hint-collection name="CLOB" />
 		</field>
 		<field name="languageId" type="String" />
-		<field name="segmentsExperienceERC" type="String" />
+		<field name="segmentsExperienceERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 	</model>
 </model-hints>

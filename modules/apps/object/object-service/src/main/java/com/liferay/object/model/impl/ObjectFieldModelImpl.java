@@ -123,7 +123,7 @@ public class ObjectFieldModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ObjectField (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,objectFieldId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,listTypeDefinitionId LONG,objectDefinitionId LONG,businessType VARCHAR(75) null,dbColumnName VARCHAR(75) null,dbTableName VARCHAR(75) null,dbType VARCHAR(75) null,indexed BOOLEAN,indexedAsKeyword BOOLEAN,indexedLanguageId VARCHAR(75) null,label STRING null,localized BOOLEAN,name VARCHAR(75) null,readOnly VARCHAR(75) null,readOnlyConditionExpression TEXT null,relationshipType VARCHAR(75) null,required BOOLEAN,state_ BOOLEAN,system_ BOOLEAN)";
+		"create table ObjectField (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,objectFieldId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,listTypeDefinitionId LONG,objectDefinitionId LONG,businessType VARCHAR(75) null,dbColumnName VARCHAR(75) null,dbTableName VARCHAR(75) null,dbType VARCHAR(75) null,indexed BOOLEAN,indexedAsKeyword BOOLEAN,indexedLanguageId VARCHAR(75) null,label STRING null,localized BOOLEAN,name VARCHAR(75) null,readOnly VARCHAR(75) null,readOnlyConditionExpression TEXT null,relationshipType VARCHAR(75) null,required BOOLEAN,state_ BOOLEAN,system_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP = "drop table ObjectField";
 
@@ -1920,4 +1920,4 @@ public class ObjectFieldModelImpl
 	private ObjectField _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1657694445
+// LIFERAY-SERVICE-BUILDER-HASH:2130229382

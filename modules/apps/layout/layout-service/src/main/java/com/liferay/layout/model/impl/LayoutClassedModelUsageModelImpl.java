@@ -95,7 +95,7 @@ public class LayoutClassedModelUsageModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LayoutClassedModelUsage (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,layoutClassedModelUsageId LONG not null,groupId LONG,companyId LONG,createDate DATE null,modifiedDate DATE null,classExternalReferenceCode VARCHAR(75) null,classNameId LONG,classPK LONG,containerKey VARCHAR(200) null,containerType LONG,plid LONG,type_ INTEGER,lastPublishDate DATE null,primary key (layoutClassedModelUsageId, ctCollectionId))";
+		"create table LayoutClassedModelUsage (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,layoutClassedModelUsageId LONG not null,groupId LONG,companyId LONG,createDate DATE null,modifiedDate DATE null,classExternalReferenceCode VARCHAR(500) null,classNameId LONG,classPK LONG,containerKey VARCHAR(200) null,containerType LONG,plid LONG,type_ INTEGER,lastPublishDate DATE null,primary key (layoutClassedModelUsageId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table LayoutClassedModelUsage";
@@ -1253,4 +1253,4 @@ public class LayoutClassedModelUsageModelImpl
 	private LayoutClassedModelUsage _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-756088336
+// LIFERAY-SERVICE-BUILDER-HASH:261855097

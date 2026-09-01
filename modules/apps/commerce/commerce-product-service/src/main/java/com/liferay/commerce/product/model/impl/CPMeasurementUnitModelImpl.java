@@ -109,7 +109,7 @@ public class CPMeasurementUnitModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CPMeasurementUnit (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,CPMeasurementUnitId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,key_ VARCHAR(75) null,rate DOUBLE,primary_ BOOLEAN,priority DOUBLE,type_ INTEGER,lastPublishDate DATE null,status INTEGER,primary key (CPMeasurementUnitId, ctCollectionId))";
+		"create table CPMeasurementUnit (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,CPMeasurementUnitId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,key_ VARCHAR(75) null,rate DOUBLE,primary_ BOOLEAN,priority DOUBLE,type_ INTEGER,lastPublishDate DATE null,status INTEGER,primary key (CPMeasurementUnitId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table CPMeasurementUnit";
 
@@ -1495,4 +1495,4 @@ public class CPMeasurementUnitModelImpl
 	private CPMeasurementUnit _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:827442639
+// LIFERAY-SERVICE-BUILDER-HASH:1556258886

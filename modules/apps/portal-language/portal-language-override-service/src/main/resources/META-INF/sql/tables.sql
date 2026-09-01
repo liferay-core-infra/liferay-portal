@@ -1,6 +1,6 @@
 create table PLOEntry (
 	mvccVersion LONG default 0 not null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ploEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

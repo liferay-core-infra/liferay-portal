@@ -96,7 +96,7 @@ public class CSDiagramEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CSDiagramEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,externalReferenceCode VARCHAR(75) null,CSDiagramEntryId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,CPDefinitionId LONG,CPInstanceId LONG,CProductId LONG,diagram BOOLEAN,quantity INTEGER,sequence VARCHAR(75) null,sku VARCHAR(75) null,primary key (CSDiagramEntryId, ctCollectionId))";
+		"create table CSDiagramEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,externalReferenceCode VARCHAR(500) null,CSDiagramEntryId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,CPDefinitionId LONG,CPInstanceId LONG,CProductId LONG,diagram BOOLEAN,quantity INTEGER,sequence VARCHAR(75) null,sku VARCHAR(75) null,primary key (CSDiagramEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table CSDiagramEntry";
 
@@ -1160,4 +1160,4 @@ public class CSDiagramEntryModelImpl
 	private CSDiagramEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1435688288
+// LIFERAY-SERVICE-BUILDER-HASH:-958686389

@@ -103,7 +103,7 @@ public class SiteNavigationMenuItemModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SiteNavigationMenuItem (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,siteNavigationMenuItemId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,siteNavigationMenuId LONG,parentSiteNavigationMenuItemId LONG,name VARCHAR(255) null,type_ VARCHAR(75) null,typeSettings TEXT null,order_ INTEGER,lastPublishDate DATE null,primary key (siteNavigationMenuItemId, ctCollectionId))";
+		"create table SiteNavigationMenuItem (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,siteNavigationMenuItemId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,siteNavigationMenuId LONG,parentSiteNavigationMenuItemId LONG,name VARCHAR(255) null,type_ VARCHAR(75) null,typeSettings TEXT null,order_ INTEGER,lastPublishDate DATE null,primary key (siteNavigationMenuItemId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SiteNavigationMenuItem";
@@ -1345,4 +1345,4 @@ public class SiteNavigationMenuItemModelImpl
 	private SiteNavigationMenuItem _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:13477702
+// LIFERAY-SERVICE-BUILDER-HASH:-954694515

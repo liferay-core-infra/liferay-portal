@@ -90,7 +90,7 @@ public class LayoutContentVersionPreviewModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LayoutContentVersionPreview (mvccVersion LONG default 0 not null,layoutContentVersionPreviewId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,layoutContentVersionId LONG,html TEXT null,languageId VARCHAR(75) null,segmentsExperienceERC VARCHAR(75) null)";
+		"create table LayoutContentVersionPreview (mvccVersion LONG default 0 not null,layoutContentVersionPreviewId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,layoutContentVersionId LONG,html TEXT null,languageId VARCHAR(75) null,segmentsExperienceERC VARCHAR(500) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table LayoutContentVersionPreview";
@@ -1015,4 +1015,4 @@ public class LayoutContentVersionPreviewModelImpl
 	private LayoutContentVersionPreview _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-455832470
+// LIFERAY-SERVICE-BUILDER-HASH:-153235607

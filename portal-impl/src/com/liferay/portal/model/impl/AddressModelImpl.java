@@ -121,7 +121,7 @@ public class AddressModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Address (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,addressId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,countryId LONG,listTypeId LONG,regionId LONG,city VARCHAR(75) null,description STRING null,latitude DOUBLE,longitude DOUBLE,mailing BOOLEAN,name VARCHAR(255) null,primary_ BOOLEAN,street1 VARCHAR(255) null,street2 VARCHAR(255) null,street3 VARCHAR(255) null,subtype VARCHAR(75) null,validationDate DATE null,validationStatus INTEGER,zip VARCHAR(75) null,status INTEGER,primary key (addressId, ctCollectionId))";
+		"create table Address (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,addressId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,countryId LONG,listTypeId LONG,regionId LONG,city VARCHAR(75) null,description STRING null,latitude DOUBLE,longitude DOUBLE,mailing BOOLEAN,name VARCHAR(255) null,primary_ BOOLEAN,street1 VARCHAR(255) null,street2 VARCHAR(255) null,street3 VARCHAR(255) null,subtype VARCHAR(75) null,validationDate DATE null,validationStatus INTEGER,zip VARCHAR(75) null,status INTEGER,primary key (addressId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table Address";
 
@@ -1743,4 +1743,4 @@ public class AddressModelImpl
 	private Address _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2085931435
+// LIFERAY-SERVICE-BUILDER-HASH:-1613061318

@@ -1,14 +1,14 @@
 create index IX_D89CE7B9 on ObjectAction (active_, objectActionExecutorKey[$COLUMN_LENGTH:255$]);
 create index IX_E3B248CA on ObjectAction (active_, objectActionTriggerKey[$COLUMN_LENGTH:75$], companyId);
 create index IX_2B979E5C on ObjectAction (objectDefinitionId, active_, objectActionTriggerKey[$COLUMN_LENGTH:75$], name[$COLUMN_LENGTH:75$]);
-create unique index IX_7CB6AA71 on ObjectAction (objectDefinitionId, companyId, externalReferenceCode[$COLUMN_LENGTH:75$]);
+create unique index IX_7CB6AA71 on ObjectAction (objectDefinitionId, companyId, externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_E817201B on ObjectAction (objectDefinitionId, name[$COLUMN_LENGTH:75$]);
 create index IX_570E3859 on ObjectAction (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_2B2CA94C on ObjectDefinition (accountEntryRestricted);
 create index IX_659D02BB on ObjectDefinition (className[$COLUMN_LENGTH:255$]);
 create index IX_2A008543 on ObjectDefinition (companyId, className[$COLUMN_LENGTH:255$]);
-create unique index IX_F861636D on ObjectDefinition (companyId, externalReferenceCode[$COLUMN_LENGTH:75$]);
+create unique index IX_F861636D on ObjectDefinition (companyId, externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_3E56F38F on ObjectDefinition (companyId, name[$COLUMN_LENGTH:75$]);
 create index IX_2055DB0 on ObjectDefinition (companyId, status, active_, objectFolderId, enableObjectEntryDraft, scope[$COLUMN_LENGTH:75$]);
 create index IX_B56984FF on ObjectDefinition (companyId, status, system_, active_);
@@ -35,7 +35,7 @@ create index IX_68B7FB2 on ObjectEntry (objectDefinitionId, userId, createDate);
 create index IX_F4C7E3D on ObjectEntry (status, rootObjectEntryId);
 create index IX_BD205C3B on ObjectEntry (uuid_[$COLUMN_LENGTH:75$]);
 
-create unique index IX_9D7AE9B8 on ObjectEntryFolder (groupId, companyId, externalReferenceCode[$COLUMN_LENGTH:75$]);
+create unique index IX_9D7AE9B8 on ObjectEntryFolder (groupId, companyId, externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_487A29C2 on ObjectEntryFolder (groupId, companyId, parentObjectEntryFolderId, name[$COLUMN_LENGTH:75$], status);
 create index IX_772D12BC on ObjectEntryFolder (groupId, companyId, treePath[$COLUMN_LENGTH:4000$]);
 create unique index IX_8EC73DF1 on ObjectEntryFolder (groupId, uuid_[$COLUMN_LENGTH:75$]);
@@ -51,7 +51,7 @@ create index IX_57E61DF5 on ObjectField (companyId, businessType[$COLUMN_LENGTH:
 create index IX_EAECE0E1 on ObjectField (companyId, userId);
 create index IX_6DCE835D on ObjectField (listTypeDefinitionId, state_);
 create index IX_87111650 on ObjectField (objectDefinitionId, businessType[$COLUMN_LENGTH:75$]);
-create unique index IX_B0716ED7 on ObjectField (objectDefinitionId, companyId, externalReferenceCode[$COLUMN_LENGTH:75$]);
+create unique index IX_B0716ED7 on ObjectField (objectDefinitionId, companyId, externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_5DDCF209 on ObjectField (objectDefinitionId, dbTableName[$COLUMN_LENGTH:75$]);
 create index IX_52AAA62B on ObjectField (objectDefinitionId, indexed, dbType[$COLUMN_LENGTH:75$]);
 create index IX_4FCDD77 on ObjectField (objectDefinitionId, localized, system_);
@@ -65,7 +65,7 @@ create index IX_66E899D9 on ObjectFieldSetting (uuid_[$COLUMN_LENGTH:75$]);
 create index IX_B3C95F49 on ObjectFilter (objectFieldId);
 create index IX_444AB557 on ObjectFilter (uuid_[$COLUMN_LENGTH:75$]);
 
-create unique index IX_677F9088 on ObjectFolder (companyId, externalReferenceCode[$COLUMN_LENGTH:75$]);
+create unique index IX_677F9088 on ObjectFolder (companyId, externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_8FBAE114 on ObjectFolder (companyId, name[$COLUMN_LENGTH:75$]);
 create index IX_14631921 on ObjectFolder (uuid_[$COLUMN_LENGTH:75$]);
 
@@ -92,7 +92,7 @@ create index IX_4CC508B8 on ObjectLayoutTab (objectRelationshipId);
 create index IX_9D1A2542 on ObjectLayoutTab (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_44505405 on ObjectRelationship (companyId, userId);
-create index IX_9FD90360 on ObjectRelationship (externalReferenceCode[$COLUMN_LENGTH:75$]);
+create index IX_9FD90360 on ObjectRelationship (externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_97E37468 on ObjectRelationship (objectDefinitionId1, edge);
 create index IX_A71785B6 on ObjectRelationship (objectDefinitionId1, name[$COLUMN_LENGTH:75$]);
 create index IX_C44DA840 on ObjectRelationship (objectDefinitionId1, objectDefinitionId2, reverse, type_[$COLUMN_LENGTH:75$], name[$COLUMN_LENGTH:75$]);
@@ -121,7 +121,7 @@ create index IX_5E1D73A7 on ObjectStateTransition (uuid_[$COLUMN_LENGTH:75$]);
 create index IX_23EC0B65 on ObjectValidationRule (active_, engine[$COLUMN_LENGTH:255$]);
 create index IX_C476B36E on ObjectValidationRule (objectDefinitionId, active_);
 create index IX_EE533031 on ObjectValidationRule (objectDefinitionId, engine[$COLUMN_LENGTH:255$]);
-create unique index IX_88476606 on ObjectValidationRule (objectDefinitionId, externalReferenceCode[$COLUMN_LENGTH:75$], companyId);
+create unique index IX_88476606 on ObjectValidationRule (objectDefinitionId, externalReferenceCode[$COLUMN_LENGTH:500$], companyId);
 create index IX_465D010A on ObjectValidationRule (objectDefinitionId, outputType[$COLUMN_LENGTH:75$]);
 create index IX_ADDDA15A on ObjectValidationRule (uuid_[$COLUMN_LENGTH:75$]);
 
@@ -130,7 +130,7 @@ create unique index IX_7FCFA51D on ObjectValidationRuleSetting (objectValidation
 create index IX_9CCE9B52 on ObjectValidationRuleSetting (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_6AF6C9EA on ObjectView (objectDefinitionId, defaultObjectView);
-create unique index IX_405BB456 on ObjectView (objectDefinitionId, externalReferenceCode[$COLUMN_LENGTH:75$], companyId);
+create unique index IX_405BB456 on ObjectView (objectDefinitionId, externalReferenceCode[$COLUMN_LENGTH:500$], companyId);
 create index IX_877B3D0A on ObjectView (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_B7B14E3 on ObjectViewColumn (objectViewId, objectFieldName[$COLUMN_LENGTH:75$]);

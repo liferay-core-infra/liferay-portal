@@ -2,7 +2,7 @@ create table LPTSREVAudienceEntryRel (
 	mvccVersion LONG default 0 not null,
 	ctCollectionId LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	lptsrevAudienceEntryRelId LONG not null,
 	groupId LONG,
 	companyId LONG,
@@ -10,8 +10,8 @@ create table LPTSREVAudienceEntryRel (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
-	audienceEntryERC VARCHAR(75) null,
-	lptsRelElementVariationERC VARCHAR(75) null,
+	audienceEntryERC VARCHAR(500) null,
+	lptsRelElementVariationERC VARCHAR(500) null,
 	primary key (lptsrevAudienceEntryRelId, ctCollectionId)
 );
 
@@ -19,7 +19,7 @@ create table LPTSRelElementVariation (
 	mvccVersion LONG default 0 not null,
 	ctCollectionId LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	lptsRelElementVariationId LONG not null,
 	groupId LONG,
 	companyId LONG,
@@ -33,7 +33,7 @@ create table LPTSRelElementVariation (
 	js STRING null,
 	name VARCHAR(75) null,
 	plid LONG,
-	segmentsExperienceERC VARCHAR(75) null,
+	segmentsExperienceERC VARCHAR(500) null,
 	targetElement VARCHAR(1000) null,
 	primary key (lptsRelElementVariationId, ctCollectionId)
 );
@@ -42,7 +42,7 @@ create table LayoutPageTemplateCollection (
 	mvccVersion LONG default 0 not null,
 	ctCollectionId LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	layoutPageTemplateCollectionId LONG not null,
 	groupId LONG,
 	companyId LONG,
@@ -63,7 +63,7 @@ create table LayoutPageTemplateEntry (
 	mvccVersion LONG default 0 not null,
 	ctCollectionId LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	layoutPageTemplateEntryId LONG not null,
 	groupId LONG,
 	companyId LONG,

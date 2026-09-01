@@ -109,7 +109,7 @@ public class CPOptionModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CPOption (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,CPOptionId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,description STRING null,commerceOptionTypeKey VARCHAR(75) null,facetable BOOLEAN,required BOOLEAN,skuContributor BOOLEAN,key_ VARCHAR(75) null,lastPublishDate DATE null,status INTEGER,primary key (CPOptionId, ctCollectionId))";
+		"create table CPOption (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,CPOptionId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,description STRING null,commerceOptionTypeKey VARCHAR(75) null,facetable BOOLEAN,required BOOLEAN,skuContributor BOOLEAN,key_ VARCHAR(75) null,lastPublishDate DATE null,status INTEGER,primary key (CPOptionId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table CPOption";
 
@@ -1544,4 +1544,4 @@ public class CPOptionModelImpl
 	private CPOption _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:366179792
+// LIFERAY-SERVICE-BUILDER-HASH:-983881935

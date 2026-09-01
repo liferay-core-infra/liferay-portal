@@ -98,7 +98,7 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Phone (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,phoneId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,number_ VARCHAR(75) null,extension VARCHAR(75) null,listTypeId LONG,primary_ BOOLEAN,primary key (phoneId, ctCollectionId))";
+		"create table Phone (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,phoneId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,number_ VARCHAR(75) null,extension VARCHAR(75) null,listTypeId LONG,primary_ BOOLEAN,primary key (phoneId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table Phone";
 
@@ -1184,4 +1184,4 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	private Phone _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1667038236
+// LIFERAY-SERVICE-BUILDER-HASH:-1184071137

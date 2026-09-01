@@ -1,7 +1,7 @@
-create index IX_B498953F on StyleBookEntry (externalReferenceCode[$COLUMN_LENGTH:75$]);
+create index IX_B498953F on StyleBookEntry (externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_957FE3BD on StyleBookEntry (groupId, defaultStyleBookEntry);
 create index IX_9EFBE469 on StyleBookEntry (groupId, head, defaultStyleBookEntry);
-create unique index IX_8E48D09B on StyleBookEntry (groupId, head, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_8E48D09B on StyleBookEntry (groupId, head, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
 create index IX_A5545D15 on StyleBookEntry (groupId, head, name[$COLUMN_LENGTH:75$], themeId[$COLUMN_LENGTH:255$]);
 create unique index IX_28482235 on StyleBookEntry (groupId, head, styleBookEntryKey[$COLUMN_LENGTH:75$], ctCollectionId);
 create index IX_BE1AA4F5 on StyleBookEntry (groupId, head, themeId[$COLUMN_LENGTH:255$], defaultStyleBookEntry);

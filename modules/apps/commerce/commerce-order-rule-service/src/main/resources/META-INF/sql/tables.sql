@@ -1,7 +1,7 @@
 create table COREntry (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	COREntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

@@ -111,7 +111,7 @@ public class CPConfigurationListModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CPConfigurationList (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,CPConfigurationListId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentCPConfigurationListId LONG,master BOOLEAN,name VARCHAR(75) null,priority DOUBLE,displayDate DATE null,expirationDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,primary key (CPConfigurationListId, ctCollectionId))";
+		"create table CPConfigurationList (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,CPConfigurationListId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentCPConfigurationListId LONG,master BOOLEAN,name VARCHAR(75) null,priority DOUBLE,displayDate DATE null,expirationDate DATE null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,primary key (CPConfigurationListId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table CPConfigurationList";
@@ -1606,4 +1606,4 @@ public class CPConfigurationListModelImpl
 	private CPConfigurationList _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:11556623
+// LIFERAY-SERVICE-BUILDER-HASH:767023730

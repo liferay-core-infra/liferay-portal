@@ -98,7 +98,7 @@ public class EmailAddressModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table EmailAddress (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,emailAddressId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,address VARCHAR(254) null,listTypeId LONG,primary_ BOOLEAN,primary key (emailAddressId, ctCollectionId))";
+		"create table EmailAddress (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,emailAddressId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,address VARCHAR(254) null,listTypeId LONG,primary_ BOOLEAN,primary key (emailAddressId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table EmailAddress";
 
@@ -1188,4 +1188,4 @@ public class EmailAddressModelImpl
 	private EmailAddress _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1841423857
+// LIFERAY-SERVICE-BUILDER-HASH:373555772

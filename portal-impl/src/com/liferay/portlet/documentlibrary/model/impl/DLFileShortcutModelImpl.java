@@ -106,7 +106,7 @@ public class DLFileShortcutModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table DLFileShortcut (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,fileShortcutId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,repositoryId LONG,folderId LONG,toFileEntryId LONG,treePath STRING null,active_ BOOLEAN,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,primary key (fileShortcutId, ctCollectionId))";
+		"create table DLFileShortcut (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,fileShortcutId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,repositoryId LONG,folderId LONG,toFileEntryId LONG,treePath STRING null,active_ BOOLEAN,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,primary key (fileShortcutId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table DLFileShortcut";
 
@@ -1524,4 +1524,4 @@ public class DLFileShortcutModelImpl
 	private DLFileShortcut _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1417450673
+// LIFERAY-SERVICE-BUILDER-HASH:1590075910

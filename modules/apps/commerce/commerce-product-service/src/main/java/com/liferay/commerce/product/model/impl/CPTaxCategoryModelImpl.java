@@ -101,7 +101,7 @@ public class CPTaxCategoryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CPTaxCategory (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,CPTaxCategoryId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,description STRING null,status INTEGER,primary key (CPTaxCategoryId, ctCollectionId))";
+		"create table CPTaxCategory (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,CPTaxCategoryId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,description STRING null,status INTEGER,primary key (CPTaxCategoryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table CPTaxCategory";
 
@@ -1327,4 +1327,4 @@ public class CPTaxCategoryModelImpl
 	private CPTaxCategory _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:209165891
+// LIFERAY-SERVICE-BUILDER-HASH:768574268

@@ -111,7 +111,7 @@ public class CPDefinitionSpecificationOptionValueModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CPDSpecificationOptionValue (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,CPDSpecificationOptionValueId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,CPDefinitionId LONG,CPSpecificationOptionId LONG,CPOptionCategoryId LONG,key_ VARCHAR(75) null,priority DOUBLE,value STRING null,visible BOOLEAN,lastPublishDate DATE null,primary key (CPDSpecificationOptionValueId, ctCollectionId))";
+		"create table CPDSpecificationOptionValue (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,CPDSpecificationOptionValueId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,CPDefinitionId LONG,CPSpecificationOptionId LONG,CPOptionCategoryId LONG,key_ VARCHAR(75) null,priority DOUBLE,value STRING null,visible BOOLEAN,lastPublishDate DATE null,primary key (CPDSpecificationOptionValueId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table CPDSpecificationOptionValue";
@@ -1614,4 +1614,4 @@ public class CPDefinitionSpecificationOptionValueModelImpl
 	private CPDefinitionSpecificationOptionValue _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:131126215
+// LIFERAY-SERVICE-BUILDER-HASH:2078741264

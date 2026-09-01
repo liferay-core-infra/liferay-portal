@@ -93,7 +93,9 @@
 	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry">
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="ercCompanyEntryId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -102,7 +104,9 @@
 	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.model.ERCGroupEntry">
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="ercGroupEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -110,7 +114,9 @@
 	<model name="com.liferay.portal.tools.service.builder.test.model.ERCVersionedEntry">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="headId" type="long" />
 		<field name="ercVersionedEntryId" type="long" />
 		<field name="groupId" type="long" />
@@ -121,7 +127,9 @@
 		<field name="ercVersionedEntryVersionId" type="long" />
 		<field name="version" type="int" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="ercVersionedEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -135,7 +143,9 @@
 	<model name="com.liferay.portal.tools.service.builder.test.model.IndexEntry">
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="indexEntryId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="ownerId" type="long" />

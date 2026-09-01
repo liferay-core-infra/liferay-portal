@@ -104,7 +104,7 @@ public class KBFolderModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table KBFolder (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,kbFolderId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentKBFolderId LONG,name VARCHAR(75) null,urlTitle VARCHAR(75) null,description STRING null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,primary key (kbFolderId, ctCollectionId))";
+		"create table KBFolder (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,kbFolderId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentKBFolderId LONG,name VARCHAR(75) null,urlTitle VARCHAR(75) null,description STRING null,lastPublishDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,primary key (kbFolderId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table KBFolder";
 
@@ -1485,4 +1485,4 @@ public class KBFolderModelImpl
 	private KBFolder _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1615446227
+// LIFERAY-SERVICE-BUILDER-HASH:-352280814

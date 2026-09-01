@@ -100,7 +100,7 @@ public class ListTypeDefinitionModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ListTypeDefinition (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,listTypeDefinitionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,system_ BOOLEAN,status INTEGER)";
+		"create table ListTypeDefinition (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,listTypeDefinitionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name STRING null,system_ BOOLEAN,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table ListTypeDefinition";
 
@@ -1213,4 +1213,4 @@ public class ListTypeDefinitionModelImpl
 	private ListTypeDefinition _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1852205460
+// LIFERAY-SERVICE-BUILDER-HASH:255223123

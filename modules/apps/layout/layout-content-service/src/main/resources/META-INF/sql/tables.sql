@@ -1,6 +1,6 @@
 create table LayoutContentVersion (
 	mvccVersion LONG default 0 not null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	layoutContentVersionId LONG not null primary key,
 	groupId LONG,
 	companyId LONG,
@@ -32,5 +32,5 @@ create table LayoutContentVersionPreview (
 	layoutContentVersionId LONG,
 	html TEXT null,
 	languageId VARCHAR(75) null,
-	segmentsExperienceERC VARCHAR(75) null
+	segmentsExperienceERC VARCHAR(500) null
 );

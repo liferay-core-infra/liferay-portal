@@ -1,7 +1,7 @@
 create index IX_745E04FA on JournalArticle (DDMStructureId);
 create index IX_75CCA4D1 on JournalArticle (DDMTemplateKey[$COLUMN_LENGTH:75$]);
 create index IX_3D070845 on JournalArticle (companyId, version);
-create index IX_A2D2CDB8 on JournalArticle (externalReferenceCode[$COLUMN_LENGTH:75$]);
+create index IX_A2D2CDB8 on JournalArticle (externalReferenceCode[$COLUMN_LENGTH:500$]);
 create index IX_3048AF7A on JournalArticle (groupId, DDMStructureId);
 create index IX_31B74F51 on JournalArticle (groupId, DDMTemplateKey[$COLUMN_LENGTH:75$]);
 create unique index IX_D3ACAD4A on JournalArticle (groupId, articleId[$COLUMN_LENGTH:75$], version, ctCollectionId);
@@ -19,7 +19,7 @@ create index IX_CF8F8F68 on JournalArticle (groupId, status, urlTitle[$COLUMN_LE
 create index IX_22882D02 on JournalArticle (groupId, urlTitle[$COLUMN_LENGTH:255$]);
 create index IX_D19C1B9F on JournalArticle (groupId, userId);
 create unique index IX_F73C7E0D on JournalArticle (groupId, uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
-create unique index IX_FE3DB4F8 on JournalArticle (groupId, version, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_FE3DB4F8 on JournalArticle (groupId, version, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
 create index IX_3F1EA19E on JournalArticle (layoutUuid[$COLUMN_LENGTH:75$]);
 create index IX_89FF8B06 on JournalArticle (resourcePrimKey, indexable);
 create index IX_EF9B7028 on JournalArticle (smallImageId);
@@ -44,7 +44,7 @@ create unique index IX_53294B1A on JournalFeed (groupId, feedId[$COLUMN_LENGTH:7
 create unique index IX_800F33AF on JournalFeed (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);
 
 create index IX_E6E2725D on JournalFolder (companyId);
-create unique index IX_D67689C on JournalFolder (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_D67689C on JournalFolder (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
 create index IX_E988689E on JournalFolder (groupId, name[$COLUMN_LENGTH:100$]);
 create unique index IX_A2109363 on JournalFolder (groupId, parentFolderId, name[$COLUMN_LENGTH:100$], ctCollectionId);
 create index IX_EFD9CAC on JournalFolder (groupId, parentFolderId, status);

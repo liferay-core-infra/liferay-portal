@@ -1,7 +1,7 @@
 create table AssetCategoryProperty (
 	mvccVersion LONG default 0 not null,
 	ctCollectionId LONG default 0 not null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	categoryPropertyId LONG not null,
 	companyId LONG,
 	userId LONG,

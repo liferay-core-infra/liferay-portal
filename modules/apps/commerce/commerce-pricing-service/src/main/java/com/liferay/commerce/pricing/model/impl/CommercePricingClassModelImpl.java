@@ -103,7 +103,7 @@ public class CommercePricingClassModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CommercePricingClass (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,commercePricingClassId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title STRING null,description STRING null,lastPublishDate DATE null,status INTEGER,primary key (commercePricingClassId, ctCollectionId))";
+		"create table CommercePricingClass (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,commercePricingClassId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title STRING null,description STRING null,lastPublishDate DATE null,status INTEGER,primary key (commercePricingClassId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table CommercePricingClass";
@@ -1396,4 +1396,4 @@ public class CommercePricingClassModelImpl
 	private CommercePricingClass _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-730806093
+// LIFERAY-SERVICE-BUILDER-HASH:559466568

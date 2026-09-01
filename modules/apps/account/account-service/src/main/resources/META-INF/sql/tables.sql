@@ -1,7 +1,7 @@
 create table AccountEntry (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	accountEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -46,7 +46,7 @@ create table AccountEntryUserRel (
 create table AccountGroup (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	accountGroupId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -75,7 +75,7 @@ create table AccountGroupRel (
 
 create table AccountRole (
 	mvccVersion LONG default 0 not null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	accountRoleId LONG not null primary key,
 	companyId LONG,
 	accountEntryId LONG,

@@ -82,7 +82,7 @@ public class DLFileEntryMetadataModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table DLFileEntryMetadata (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,fileEntryMetadataId LONG not null,companyId LONG,DDMStorageId LONG,DDMStructureId LONG,fileEntryId LONG,fileVersionId LONG,primary key (fileEntryMetadataId, ctCollectionId))";
+		"create table DLFileEntryMetadata (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,fileEntryMetadataId LONG not null,companyId LONG,DDMStorageId LONG,DDMStructureId LONG,fileEntryId LONG,fileVersionId LONG,primary key (fileEntryMetadataId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table DLFileEntryMetadata";
@@ -935,4 +935,4 @@ public class DLFileEntryMetadataModelImpl
 	private DLFileEntryMetadata _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1883637741
+// LIFERAY-SERVICE-BUILDER-HASH:-1545712998

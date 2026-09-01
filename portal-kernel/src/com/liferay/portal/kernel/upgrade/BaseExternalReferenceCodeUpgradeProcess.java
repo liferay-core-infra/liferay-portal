@@ -74,7 +74,7 @@ public abstract class BaseExternalReferenceCodeUpgradeProcess
 
 		if (!hasColumn(tableName, "externalReferenceCode")) {
 			alterTableAddColumn(
-				tableName, "externalReferenceCode", "VARCHAR(75)");
+				tableName, "externalReferenceCode", "VARCHAR(500)");
 		}
 
 		String primaryKeyColumnName = getPrimaryKeyColumnName(tableName);

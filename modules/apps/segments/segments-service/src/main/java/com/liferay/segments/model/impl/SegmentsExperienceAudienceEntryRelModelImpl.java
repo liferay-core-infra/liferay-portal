@@ -95,7 +95,7 @@ public class SegmentsExperienceAudienceEntryRelModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SExperienceAudienceEntryRel (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,sExperienceAudienceEntryRelId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,audienceEntryERC VARCHAR(75) null,priority INTEGER,segmentsExperienceERC VARCHAR(75) null,primary key (sExperienceAudienceEntryRelId, ctCollectionId))";
+		"create table SExperienceAudienceEntryRel (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,sExperienceAudienceEntryRelId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,audienceEntryERC VARCHAR(500) null,priority INTEGER,segmentsExperienceERC VARCHAR(500) null,primary key (sExperienceAudienceEntryRelId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table SExperienceAudienceEntryRel";
@@ -1151,4 +1151,4 @@ public class SegmentsExperienceAudienceEntryRelModelImpl
 	private SegmentsExperienceAudienceEntryRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-981159527
+// LIFERAY-SERVICE-BUILDER-HASH:111840971

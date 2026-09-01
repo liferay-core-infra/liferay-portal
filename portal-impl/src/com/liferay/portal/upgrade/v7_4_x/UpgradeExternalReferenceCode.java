@@ -50,7 +50,7 @@ public class UpgradeExternalReferenceCode extends UpgradeProcess {
 
 		if (!hasColumn(tableName, "externalReferenceCode")) {
 			alterTableAddColumn(
-				tableName, "externalReferenceCode", "VARCHAR(75)");
+				tableName, "externalReferenceCode", "VARCHAR(500)");
 		}
 
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {

@@ -25,7 +25,15 @@
 
 					name="${entityColumn.modelHintsName}" type="${entityColumn.type}"
 
-					<#assign closeField = false />
+					<#assign
+						closeField = false
+
+						defaultMaxLengthHint = serviceBuilder.getDefaultMaxLengthHint(entity.name, entityColumn)
+					/>
+
+					<#if defaultMaxLengthHint gt 0>
+						<#assign closeField = true />
+					</#if>
 
 					<#if modelHintsUtil.getFieldsElement(modelName, entityColumn.modelHintsName)??>
 						<#assign
@@ -49,6 +57,10 @@
 
 					<#if closeField>
 						>
+
+						<#if defaultMaxLengthHint gt 0>
+							<hint name="max-length">${defaultMaxLengthHint}</hint>
+						</#if>
 
 						<#if modelHintsUtil.getFieldsElement(modelName, entityColumn.modelHintsName)??>
 							<#assign

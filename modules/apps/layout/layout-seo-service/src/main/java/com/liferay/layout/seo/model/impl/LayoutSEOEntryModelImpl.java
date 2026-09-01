@@ -117,7 +117,7 @@ public class LayoutSEOEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LayoutSEOEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,layoutSEOEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,privateLayout BOOLEAN,layoutId LONG,canonicalURL STRING null,canonicalURLEnabled BOOLEAN,openGraphDescription STRING null,openGraphDescriptionEnabled BOOLEAN,openGraphImageAlt STRING null,openGraphImageFileEntryERC VARCHAR(75) null,openGraphImageFileEntrySERC VARCHAR(75) null,openGraphTitle STRING null,openGraphTitleEnabled BOOLEAN,lastPublishDate DATE null,primary key (layoutSEOEntryId, ctCollectionId))";
+		"create table LayoutSEOEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,layoutSEOEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,privateLayout BOOLEAN,layoutId LONG,canonicalURL STRING null,canonicalURLEnabled BOOLEAN,openGraphDescription STRING null,openGraphDescriptionEnabled BOOLEAN,openGraphImageAlt STRING null,openGraphImageFileEntryERC VARCHAR(500) null,openGraphImageFileEntrySERC VARCHAR(500) null,openGraphTitle STRING null,openGraphTitleEnabled BOOLEAN,lastPublishDate DATE null,primary key (layoutSEOEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table LayoutSEOEntry";
 
@@ -2001,4 +2001,4 @@ public class LayoutSEOEntryModelImpl
 	private LayoutSEOEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1022647819
+// LIFERAY-SERVICE-BUILDER-HASH:-977593063

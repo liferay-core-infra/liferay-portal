@@ -115,7 +115,7 @@ public class CountryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Country (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,defaultLanguageId VARCHAR(75) null,countryId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,a2 VARCHAR(75) null,a3 VARCHAR(75) null,active_ BOOLEAN,billingAllowed BOOLEAN,groupFilterEnabled BOOLEAN,idd_ VARCHAR(75) null,name VARCHAR(75) null,number_ VARCHAR(75) null,position DOUBLE,shippingAllowed BOOLEAN,subjectToVAT BOOLEAN,zipRequired BOOLEAN,lastPublishDate DATE null,status INTEGER,primary key (countryId, ctCollectionId))";
+		"create table Country (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,defaultLanguageId VARCHAR(75) null,countryId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,a2 VARCHAR(75) null,a3 VARCHAR(75) null,active_ BOOLEAN,billingAllowed BOOLEAN,groupFilterEnabled BOOLEAN,idd_ VARCHAR(75) null,name VARCHAR(75) null,number_ VARCHAR(75) null,position DOUBLE,shippingAllowed BOOLEAN,subjectToVAT BOOLEAN,zipRequired BOOLEAN,lastPublishDate DATE null,status INTEGER,primary key (countryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table Country";
 
@@ -1683,4 +1683,4 @@ public class CountryModelImpl
 	private Country _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:118041249
+// LIFERAY-SERVICE-BUILDER-HASH:1635484108

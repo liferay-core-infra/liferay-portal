@@ -4,7 +4,9 @@
 	<model name="com.liferay.object.model.ObjectAction">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectActionId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -35,7 +37,9 @@
 	<model name="com.liferay.object.model.ObjectDefinition">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectDefinitionId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -133,7 +137,9 @@
 	<model name="com.liferay.object.model.ObjectEntryFolder">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectEntryFolderId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -178,7 +184,9 @@
 	<model name="com.liferay.object.model.ObjectField">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectFieldId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -238,7 +246,9 @@
 	<model name="com.liferay.object.model.ObjectFolder">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectFolderId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -334,7 +344,9 @@
 	<model name="com.liferay.object.model.ObjectRelationship">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectRelationshipId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -393,7 +405,9 @@
 	<model name="com.liferay.object.model.ObjectValidationRule">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectValidationRuleId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -429,7 +443,9 @@
 	<model name="com.liferay.object.model.ObjectView">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="objectViewId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />

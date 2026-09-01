@@ -5,7 +5,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fragmentCollectionId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -27,7 +29,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fragmentCompositionId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -56,7 +60,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="headId" type="long" />
 		<field name="fragmentEntryId" type="long" />
 		<field name="groupId" type="long" />
@@ -101,7 +107,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fragmentEntryLinkId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -109,9 +117,15 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="originalFragmentEntryLinkERC" type="String" />
-		<field name="fragmentEntryERC" type="String" />
-		<field name="fragmentEntryScopeERC" type="String" />
+		<field name="originalFragmentEntryLinkERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="fragmentEntryERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="fragmentEntryScopeERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="segmentsExperienceId" type="long" />
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
@@ -147,7 +161,9 @@
 		<field name="fragmentEntryVersionId" type="long" />
 		<field name="version" type="int" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fragmentEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />

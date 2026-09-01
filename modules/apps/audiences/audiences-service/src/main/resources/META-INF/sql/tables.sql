@@ -1,6 +1,6 @@
 create table AudiencesEntry (
 	mvccVersion LONG default 0 not null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	audiencesEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

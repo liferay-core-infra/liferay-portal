@@ -91,7 +91,7 @@ public class CTEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CTEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,ctEntryId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,ctCollectionId LONG,modelClassNameId LONG,modelClassPK LONG,modelMvccVersion LONG,changeType INTEGER)";
+		"create table CTEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,ctEntryId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,ctCollectionId LONG,modelClassNameId LONG,modelClassPK LONG,modelMvccVersion LONG,changeType INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table CTEntry";
 
@@ -1039,4 +1039,4 @@ public class CTEntryModelImpl
 	private CTEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1166813157
+// LIFERAY-SERVICE-BUILDER-HASH:1744488560

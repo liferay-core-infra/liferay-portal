@@ -13,7 +13,7 @@ create table CDiscountCAccountGroupRel (
 create table CommerceDiscount (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	commerceDiscountId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

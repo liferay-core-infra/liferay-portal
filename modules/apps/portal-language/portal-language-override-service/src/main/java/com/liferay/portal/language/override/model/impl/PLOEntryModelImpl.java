@@ -86,7 +86,7 @@ public class PLOEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table PLOEntry (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(75) null,ploEntryId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,key_ VARCHAR(1000) null,languageId VARCHAR(75) null,value TEXT null)";
+		"create table PLOEntry (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(500) null,ploEntryId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,key_ VARCHAR(1000) null,languageId VARCHAR(75) null,value TEXT null)";
 
 	public static final String TABLE_SQL_DROP = "drop table PLOEntry";
 
@@ -918,4 +918,4 @@ public class PLOEntryModelImpl
 	private PLOEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1109188638
+// LIFERAY-SERVICE-BUILDER-HASH:-868084831

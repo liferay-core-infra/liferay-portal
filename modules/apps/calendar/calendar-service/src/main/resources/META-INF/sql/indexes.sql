@@ -5,7 +5,7 @@ create unique index IX_BD5AA0AC on CalendarBooking (calendarId, parentCalendarBo
 create index IX_470170B4 on CalendarBooking (calendarId, status);
 create unique index IX_8AE4D46C on CalendarBooking (calendarId, vEventUid[$COLUMN_LENGTH:255$], ctCollectionId);
 create index IX_B198FFC on CalendarBooking (calendarResourceId);
-create unique index IX_521307D2 on CalendarBooking (groupId, externalReferenceCode[$COLUMN_LENGTH:75$], ctCollectionId);
+create unique index IX_521307D2 on CalendarBooking (groupId, externalReferenceCode[$COLUMN_LENGTH:500$], ctCollectionId);
 create index IX_F7B8A941 on CalendarBooking (parentCalendarBookingId, status);
 create index IX_14ADC52E on CalendarBooking (recurringCalendarBookingId);
 create unique index IX_1554DFF5 on CalendarBooking (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);

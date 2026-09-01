@@ -13,7 +13,7 @@ create table CTAutoResolutionInfo (
 create table CTCollection (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ctCollectionId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -57,7 +57,7 @@ create table CTComment (
 create table CTEntry (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ctEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

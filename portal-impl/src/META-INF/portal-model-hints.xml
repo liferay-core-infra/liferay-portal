@@ -83,7 +83,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="categoryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -154,7 +156,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="tagId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -181,7 +185,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="vocabularyId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -224,7 +230,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fileEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -277,7 +285,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fileEntryMetadataId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="DDMStorageId" type="long" />
@@ -289,7 +299,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fileEntryTypeId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -313,7 +325,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="fileShortcutId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -391,7 +405,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="folderId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -502,7 +518,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="addressId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -642,7 +660,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="defaultLanguageId" type="String" />
 		<field name="countryId" type="long" />
 		<field name="companyId" type="long" />
@@ -688,7 +708,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="emailAddressId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -709,7 +731,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="creatorUserId" type="long" />
@@ -761,7 +785,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="plid" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -809,19 +835,35 @@
 		<field name="iconImageId" type="long" />
 		<field name="themeId" type="String" />
 		<field name="colorSchemeId" type="String" />
-		<field name="styleBookEntryERC" type="String" />
-		<field name="styleBookEntryScopeERC" type="String" />
+		<field name="styleBookEntryERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="styleBookEntryScopeERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="css" type="String">
 			<hint-collection name="CLOB" />
 		</field>
 		<field name="priority" type="int" />
-		<field name="faviconFileEntryERC" type="String" />
-		<field name="faviconFileEntryScopeERC" type="String" />
-		<field name="masterLayoutPageTemplateEntryERC" type="String" />
-		<field name="portletLayoutPageTemplateEntryERC" type="String" />
-		<field name="portletLayoutPageTemplateEntryScopeERC" type="String" />
+		<field name="faviconFileEntryERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="faviconFileEntryScopeERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="masterLayoutPageTemplateEntryERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="portletLayoutPageTemplateEntryERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
+		<field name="portletLayoutPageTemplateEntryScopeERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="portletLayoutPageTemplateEntryLinkEnabled" type="boolean" />
-		<field name="layoutSetPrototypeLayoutERC" type="String" />
+		<field name="layoutSetPrototypeLayoutERC" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="publishDate" type="Date" />
 		<field name="lastPublishDate" type="Date" />
 		<field name="status" type="int" />
@@ -1038,7 +1080,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="organizationId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -1169,7 +1213,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="phoneId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -1314,7 +1360,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="defaultLanguageId" type="String" />
 		<field name="regionId" type="long" />
 		<field name="companyId" type="long" />
@@ -1376,7 +1424,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="repositoryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -1449,7 +1499,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="roleId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -1564,7 +1616,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="userId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="createDate" type="Date" />
@@ -1632,7 +1686,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="userGroupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -1766,7 +1822,9 @@
 	<model name="com.liferay.portal.kernel.model.Website">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="websiteId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -1788,7 +1846,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="workflowDefinitionLinkId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />

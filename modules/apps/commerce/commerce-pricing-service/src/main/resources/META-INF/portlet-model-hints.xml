@@ -5,7 +5,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commercePriceModifierId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -45,7 +47,9 @@
 		<field name="mvccVersion" type="long" />
 		<field name="ctCollectionId" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commercePricingClassId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />

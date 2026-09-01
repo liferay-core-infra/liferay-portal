@@ -93,7 +93,7 @@ public class CProductModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CProduct (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,CProductId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,publishedCPDefinitionId LONG,latestVersion INTEGER,primary key (CProductId, ctCollectionId))";
+		"create table CProduct (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,CProductId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,publishedCPDefinitionId LONG,latestVersion INTEGER,primary key (CProductId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table CProduct";
 
@@ -1009,4 +1009,4 @@ public class CProductModelImpl
 	private CProduct _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-378865258
+// LIFERAY-SERVICE-BUILDER-HASH:1956236799

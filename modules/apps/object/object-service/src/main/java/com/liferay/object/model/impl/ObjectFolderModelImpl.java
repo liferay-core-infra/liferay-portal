@@ -99,7 +99,7 @@ public class ObjectFolderModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ObjectFolder (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,objectFolderId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,label STRING null,name VARCHAR(75) null,status INTEGER)";
+		"create table ObjectFolder (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,objectFolderId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,label STRING null,name VARCHAR(75) null,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table ObjectFolder";
 
@@ -1189,4 +1189,4 @@ public class ObjectFolderModelImpl
 	private ObjectFolder _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1829293429
+// LIFERAY-SERVICE-BUILDER-HASH:-1712931230

@@ -87,7 +87,7 @@ public class AudiencesEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AudiencesEntry (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(75) null,audiencesEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,json TEXT null,name VARCHAR(75) null)";
+		"create table AudiencesEntry (mvccVersion LONG default 0 not null,externalReferenceCode VARCHAR(500) null,audiencesEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,json TEXT null,name VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table AudiencesEntry";
 
@@ -925,4 +925,4 @@ public class AudiencesEntryModelImpl
 	private AudiencesEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2018850659
+// LIFERAY-SERVICE-BUILDER-HASH:-2140510678

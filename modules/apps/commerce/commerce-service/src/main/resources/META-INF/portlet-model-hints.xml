@@ -3,7 +3,9 @@
 <model-hints>
 	<model name="com.liferay.commerce.model.CommerceAddress">
 		<field name="mvccVersion" type="long" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceAddressId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -62,7 +64,9 @@
 	<model name="com.liferay.commerce.model.CommerceAvailabilityEstimate">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceAvailabilityEstimateId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -81,7 +85,9 @@
 	<model name="com.liferay.commerce.model.CommerceOrder">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceOrderId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -173,7 +179,9 @@
 	<model name="com.liferay.commerce.model.CommerceOrderAttachment">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceOrderAttachmentId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -191,7 +199,9 @@
 	<model name="com.liferay.commerce.model.CommerceOrderItem">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceOrderItemId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -265,7 +275,9 @@
 	<model name="com.liferay.commerce.model.CommerceOrderNote">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceOrderNoteId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -299,7 +311,9 @@
 	<model name="com.liferay.commerce.model.CommerceOrderType">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceOrderTypeId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -321,7 +335,9 @@
 	<model name="com.liferay.commerce.model.CommerceOrderTypeRel">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceOrderTypeRelId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -335,7 +351,9 @@
 	<model name="com.liferay.commerce.model.CommerceShipment">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceShipmentId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
@@ -361,7 +379,9 @@
 	<model name="com.liferay.commerce.model.CommerceShipmentItem">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="commerceShipmentItemId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />

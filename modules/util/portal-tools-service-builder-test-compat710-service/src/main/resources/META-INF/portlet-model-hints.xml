@@ -37,7 +37,9 @@
 	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.compat710.model.ERCCompanyEntry">
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="ercCompanyEntryId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -46,14 +48,18 @@
 	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.compat710.model.ERCGroupEntry">
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="ercGroupEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.compat710.model.ERCVersionedEntry">
 		<field name="uuid" type="String" />
-		<field name="externalReferenceCode" type="String" />
+		<field name="externalReferenceCode" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="ercVersionedEntryId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />

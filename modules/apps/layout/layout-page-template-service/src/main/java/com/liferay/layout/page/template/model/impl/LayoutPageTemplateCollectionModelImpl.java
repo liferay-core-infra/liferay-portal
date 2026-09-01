@@ -101,7 +101,7 @@ public class LayoutPageTemplateCollectionModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LayoutPageTemplateCollection (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,layoutPageTemplateCollectionId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentLPTCollectionId LONG,lptCollectionKey VARCHAR(75) null,name VARCHAR(75) null,description STRING null,type_ INTEGER,lastPublishDate DATE null,primary key (layoutPageTemplateCollectionId, ctCollectionId))";
+		"create table LayoutPageTemplateCollection (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,layoutPageTemplateCollectionId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentLPTCollectionId LONG,lptCollectionKey VARCHAR(75) null,name VARCHAR(75) null,description STRING null,type_ INTEGER,lastPublishDate DATE null,primary key (layoutPageTemplateCollectionId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table LayoutPageTemplateCollection";
@@ -1346,4 +1346,4 @@ public class LayoutPageTemplateCollectionModelImpl
 	private LayoutPageTemplateCollection _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:844387370
+// LIFERAY-SERVICE-BUILDER-HASH:250713099

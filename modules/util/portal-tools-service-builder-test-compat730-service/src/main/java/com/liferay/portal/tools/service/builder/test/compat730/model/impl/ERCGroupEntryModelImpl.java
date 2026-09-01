@@ -74,7 +74,7 @@ public class ERCGroupEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ERCGroupEntry (uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,ercGroupEntryId LONG not null primary key,groupId LONG,companyId LONG)";
+		"create table ERCGroupEntry (uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,ercGroupEntryId LONG not null primary key,groupId LONG,companyId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table ERCGroupEntry";
 
@@ -732,4 +732,4 @@ public class ERCGroupEntryModelImpl
 	private ERCGroupEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1969465715
+// LIFERAY-SERVICE-BUILDER-HASH:-1587493066

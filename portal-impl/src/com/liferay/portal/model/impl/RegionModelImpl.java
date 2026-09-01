@@ -104,7 +104,7 @@ public class RegionModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Region (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,defaultLanguageId VARCHAR(75) null,regionId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,active_ BOOLEAN,name VARCHAR(75) null,position DOUBLE,regionCode VARCHAR(75) null,lastPublishDate DATE null,status INTEGER,primary key (regionId, ctCollectionId))";
+		"create table Region (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,defaultLanguageId VARCHAR(75) null,regionId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,active_ BOOLEAN,name VARCHAR(75) null,position DOUBLE,regionCode VARCHAR(75) null,lastPublishDate DATE null,status INTEGER,primary key (regionId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table Region";
 
@@ -1333,4 +1333,4 @@ public class RegionModelImpl
 	private Region _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1329870326
+// LIFERAY-SERVICE-BUILDER-HASH:-1135612715

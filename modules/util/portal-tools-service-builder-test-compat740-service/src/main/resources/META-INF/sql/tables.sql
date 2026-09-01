@@ -41,7 +41,7 @@ create table ConvertNullEntry (
 
 create table ERCCompanyEntry (
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ercCompanyEntryId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -51,7 +51,7 @@ create table ERCCompanyEntry (
 
 create table ERCGroupEntry (
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ercGroupEntryId LONG not null primary key,
 	groupId LONG,
 	companyId LONG
@@ -60,7 +60,7 @@ create table ERCGroupEntry (
 create table ERCVersionedEntry (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	headId LONG,
 	head BOOLEAN,
 	ercVersionedEntryId LONG not null primary key,
@@ -72,7 +72,7 @@ create table ERCVersionedEntryVersion (
 	ercVersionedEntryVersionId LONG not null primary key,
 	version INTEGER,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	ercVersionedEntryId LONG,
 	groupId LONG,
 	companyId LONG

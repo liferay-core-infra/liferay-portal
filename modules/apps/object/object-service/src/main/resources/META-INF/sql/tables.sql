@@ -1,7 +1,7 @@
 create table ObjectAction (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectActionId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -25,7 +25,7 @@ create table ObjectAction (
 create table ObjectDefinition (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectDefinitionId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -112,7 +112,7 @@ create table ObjectEntry (
 create table ObjectEntryFolder (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectEntryFolderId LONG not null primary key,
 	groupId LONG,
 	companyId LONG,
@@ -153,7 +153,7 @@ create table ObjectEntryVersion (
 create table ObjectField (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectFieldId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -212,7 +212,7 @@ create table ObjectFilter (
 create table ObjectFolder (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectFolderId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -315,7 +315,7 @@ create table ObjectLayoutTab (
 create table ObjectRelationship (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectRelationshipId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -378,7 +378,7 @@ create table ObjectStateTransition (
 create table ObjectValidationRule (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectValidationRuleId LONG not null primary key,
 	companyId LONG,
 	userId LONG,
@@ -412,7 +412,7 @@ create table ObjectValidationRuleSetting (
 create table ObjectView (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
-	externalReferenceCode VARCHAR(75) null,
+	externalReferenceCode VARCHAR(500) null,
 	objectViewId LONG not null primary key,
 	companyId LONG,
 	userId LONG,

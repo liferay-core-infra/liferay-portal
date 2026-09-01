@@ -100,7 +100,7 @@ public class SharingEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SharingEntry (uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,sharingEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,toTicketId LONG,toUserGroupId LONG,toUserId LONG,classNameId LONG,classPK LONG,shareable BOOLEAN,actionIds LONG,expirationDate DATE null)";
+		"create table SharingEntry (uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(500) null,sharingEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,toTicketId LONG,toUserGroupId LONG,toUserId LONG,classNameId LONG,classPK LONG,shareable BOOLEAN,actionIds LONG,expirationDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SharingEntry";
 
@@ -1314,4 +1314,4 @@ public class SharingEntryModelImpl
 	private SharingEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-480170587
+// LIFERAY-SERVICE-BUILDER-HASH:-688585918

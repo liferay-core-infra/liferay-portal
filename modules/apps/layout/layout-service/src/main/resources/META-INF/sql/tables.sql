@@ -7,7 +7,7 @@ create table LayoutClassedModelUsage (
 	companyId LONG,
 	createDate DATE null,
 	modifiedDate DATE null,
-	classExternalReferenceCode VARCHAR(75) null,
+	classExternalReferenceCode VARCHAR(500) null,
 	classNameId LONG,
 	classPK LONG,
 	containerKey VARCHAR(200) null,

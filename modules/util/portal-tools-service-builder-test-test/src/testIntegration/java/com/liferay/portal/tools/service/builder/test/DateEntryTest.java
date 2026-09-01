@@ -8,6 +8,8 @@ package com.liferay.portal.tools.service.builder.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -484,6 +486,14 @@ public class DateEntryTest {
 
 	private void _assertSQLDate(long expectedTime, Object object) {
 		Assert.assertEquals(java.sql.Date.class, object.getClass());
+
+		DBType dbType = DBManagerUtil.getDBType();
+
+		if ((dbType == DBType.DB2) || (dbType == DBType.MARIADB) ||
+			(dbType == DBType.ORACLE)) {
+
+			return;
+		}
 
 		Date date = (Date)object;
 

@@ -102,6 +102,7 @@ import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.service.persistence.CompanyInfoPersistence;
+import com.liferay.portal.kernel.service.persistence.CompanyUtil;
 import com.liferay.portal.kernel.service.persistence.ContactPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypePersistence;
@@ -242,19 +243,18 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setUserName(StringPool.BLANK);
 		company.setCreateDate(new Date());
 		company.setModifiedDate(new Date());
+		company.setWebId(webId);
+		company.setMx(mx);
+		company.setMaxUsers(maxUsers);
+		company.setActive(active);
 
 		if (webId.equals(PropsValues.COMPANY_DEFAULT_WEB_ID)) {
 			DBPartitionUtil.setDefaultCompanyId(company.getCompanyId());
 		}
 
-		boolean newDBPartitionAdded = DBPartitionUtil.addDBPartition(companyId);
+		boolean newDBPartitionAdded = DBPartitionUtil.addDBPartition(company);
 
 		Callable<Company> callable = () -> {
-			company.setWebId(webId);
-			company.setMx(mx);
-			company.setMaxUsers(maxUsers);
-			company.setActive(active);
-
 			String name = webId;
 
 			if (webId.equals(PropsValues.COMPANY_DEFAULT_WEB_ID)) {
@@ -341,12 +341,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			LastSessionRecorderHelperUtil.syncLastSessionState(false);
 		}
 
+		Company addedCompany;
+
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setRawCompanyIdWithSafeCloseable(
 					companyId)) {
 
 			if (PropsValues.DATABASE_PARTITION_ENABLED) {
-				Company addedCompany = TransactionInvokerUtil.invoke(
+				addedCompany = TransactionInvokerUtil.invoke(
 					_transactionConfig, callable);
 
 				// Commit callbacks must flush before this scope restores the
@@ -354,11 +356,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				// caller's partition
 
 				LastSessionRecorderHelperUtil.syncLastSessionState(false);
-
-				return addedCompany;
 			}
-
-			return callable.call();
+			else {
+				return callable.call();
+			}
 		}
 		catch (Throwable throwable) {
 			if (newDBPartitionAdded) {
@@ -367,6 +368,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			throw new PortalException(throwable);
 		}
+
+		companyPersistence.clearCache();
+
+		return addedCompany;
 	}
 
 	@Override
@@ -390,7 +395,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				PortalInstances.setImportInProcessCompanyIdWithSafeCloseable(
 					companyId)) {
 
-			DBPartitionUtil.importDBPartition(companyId);
+			if (Validator.isNotNull(webId)) {
+				validateWebId(webId);
+			}
+
+			DBPartitionUtil.importDBPartition(companyId, webId);
+
+			Company registeredCompany;
 
 			try (SafeCloseable safeCloseable2 =
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
@@ -438,8 +449,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 						if (Validator.isNotNull(webId) &&
 							!StringUtil.equals(company.getWebId(), webId)) {
 
-							validateWebId(webId);
-
 							company.setWebId(webId);
 
 							company = companyPersistence.update(company);
@@ -448,13 +457,18 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 						return _addDBPartitionCompany(company);
 					});
 
-				return _registerDBPartitionCompany(dbPartitionCompany);
+				registeredCompany = _registerDBPartitionCompany(
+					dbPartitionCompany);
 			}
 			catch (Throwable throwable) {
 				_removeDBPartition(companyId, true);
 
 				throw new PortalException(throwable);
 			}
+
+			companyPersistence.clearCache();
+
+			return registeredCompany;
 		}
 	}
 
@@ -632,13 +646,21 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		validateWebId(webId);
 
+		Company copiedCompany = fromCompany.cloneWithOriginalValues();
+
+		copiedCompany.setCompanyId(toCompanyId);
+		copiedCompany.setWebId(webId);
+		copiedCompany.setNew(true);
+
 		try (SafeCloseable safeCloseable1 =
 				PortalInstances.setCopyInProcessCompanyIdWithSafeCloseable(
 					fromCompanyId)) {
 
-			DBPartitionUtil.copyDBPartition(fromCompanyId, toCompanyId);
+			DBPartitionUtil.copyDBPartition(copiedCompany, fromCompanyId);
 
 			long companyId = toCompanyId;
+
+			Company registeredCompany;
 
 			try (SafeCloseable safeCloseable2 =
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
@@ -647,16 +669,13 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				Company dbPartitionCompany = TransactionInvokerUtil.invoke(
 					_transactionConfig,
 					() -> {
-						Company company = fromCompany.cloneWithOriginalValues();
+						copiedCompany.setName(name);
 
-						company.setCompanyId(companyId);
-						company.setWebId(webId);
-						company.setName(name);
-						company.setNew(true);
+						CompanyInfo companyInfo =
+							copiedCompany.getCompanyInfo();
 
-						CompanyInfo companyInfo = company.getCompanyInfo();
-
-						company = companyPersistence.update(company);
+						Company company = companyPersistence.update(
+							copiedCompany);
 
 						company = updateVirtualHostname(
 							company.getCompanyId(), lowerCaseVirtualHostname);
@@ -666,13 +685,18 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 						return _addDBPartitionCompany(company);
 					});
 
-				return _registerDBPartitionCompany(dbPartitionCompany);
+				registeredCompany = _registerDBPartitionCompany(
+					dbPartitionCompany);
 			}
 			catch (Throwable throwable) {
 				_removeDBPartition(companyId, false);
 
 				throw new PortalException(throwable);
 			}
+
+			companyPersistence.clearCache();
+
+			return registeredCompany;
 		}
 	}
 
@@ -1195,7 +1219,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setMaxUsers(maxUsers);
 		company.setActive(active);
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
+
+		_syncDBPartitionCompany(company);
 
 		// Virtual host
 
@@ -1270,7 +1296,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		CompanyInfo companyInfo = company.getCompanyInfo();
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
+
+		_syncDBPartitionCompany(company);
 
 		company = updateVirtualHostname(companyId, virtualHostname);
 
@@ -1662,8 +1690,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 							CompanyThreadLocal.setRawCompanyIdWithSafeCloseable(
 								CompanyConstants.SYSTEM)) {
 
-						EntityCacheUtil.removeResult(
-							company.getClass(), company.getPrimaryKeyObj());
+						companyPersistence.clearCache();
 
 						if (virtualHost != null) {
 							EntityCacheUtil.removeResult(
@@ -2303,6 +2330,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	}
 
 	private static void _doSynchronizePortalInstances() {
+		CompanyUtil.clearCache();
+
 		CompanyLocalService companyLocalService =
 			(CompanyLocalService)
 				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
@@ -2544,7 +2573,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				_transactionConfig,
 				() -> {
 					if (export) {
-						exportCompany(companyId);
+						DBPartitionUtil.exportDBPartition(companyId);
 					}
 
 					DBPartitionUtil.removeDBPartition(companyId);
@@ -2554,6 +2583,35 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 		catch (Throwable throwable) {
 			throw new PortalException(throwable);
+		}
+	}
+
+	private void _syncDBPartitionCompany(Company company) {
+		if (!PropsValues.DATABASE_PARTITION_ENABLED) {
+			return;
+		}
+
+		long companyId = company.getCompanyId();
+
+		if (companyId == PortalInstancePool.getDefaultCompanyId()) {
+			return;
+		}
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId)) {
+
+			Company partitionCompany = companyPersistence.fetchByPrimaryKey(
+				companyId);
+
+			if (partitionCompany == null) {
+				return;
+			}
+
+			partitionCompany.setMx(company.getMx());
+			partitionCompany.setMaxUsers(company.getMaxUsers());
+			partitionCompany.setActive(company.isActive());
+
+			companyPersistence.update(partitionCompany);
 		}
 	}
 

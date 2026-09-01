@@ -6,6 +6,7 @@
 package com.liferay.portal.db.partition.upgrade.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.test.util.BaseDBPartitionTestCase;
@@ -40,12 +41,19 @@ public class UpgradePartitionedControlTableTest
 	public static void setUpClass() throws Exception {
 		BaseDBPartitionTestCase.setUpClass();
 
+		_safeCloseable = CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+			PortalInstancePool.getDefaultCompanyId());
+
 		BaseDBPartitionTestCase.setUpDBPartitions();
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		BaseDBPartitionTestCase.tearDownDBPartitions();
+
+		if (_safeCloseable != null) {
+			_safeCloseable.close();
+		}
 	}
 
 	@Test
@@ -105,16 +113,15 @@ public class UpgradePartitionedControlTableTest
 		finally {
 			DBPartitionUtil.forEachCompanyId(
 				companyId -> dropTable(TEST_TABLE_NAME));
+
+			dropControlTable(TEST_TABLE_NAME);
 		}
 	}
 
 	private void _createViewSQL(String viewName) throws Exception {
 		DataSource dataSource = InfrastructureUtil.getDataSource();
 
-		try (Connection connection = dataSource.getConnection();
-
-			Statement statement = connection.createStatement()) {
-
+		try (Connection connection = dataSource.getConnection()) {
 			String defaultSchemaName = dbPartitionDB.getDefaultPartitionName(
 				connection);
 
@@ -126,13 +133,22 @@ public class UpgradePartitionedControlTableTest
 						return;
 					}
 
-					statement.execute(
-						StringBundler.concat(
-							"create or replace view ", viewName,
-							" as select * from ", defaultSchemaName,
-							StringPool.PERIOD, viewName));
+					try (Connection partitionConnection =
+							dataSource.getConnection();
+
+						Statement statement =
+							partitionConnection.createStatement()) {
+
+						statement.execute(
+							StringBundler.concat(
+								"create or replace view ", viewName,
+								" as select * from ", defaultSchemaName,
+								StringPool.PERIOD, viewName));
+					}
 				});
 		}
 	}
+
+	private static SafeCloseable _safeCloseable;
 
 }

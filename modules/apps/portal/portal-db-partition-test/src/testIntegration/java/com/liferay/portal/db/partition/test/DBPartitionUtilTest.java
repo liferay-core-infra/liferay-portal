@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.test.rule.CompanyProviderClassTestRule;
 import com.liferay.portal.kernel.test.util.PropsValuesTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.model.impl.CompanyImpl;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -152,8 +154,11 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 	@Test
 	@TestInfo("LPS-108239")
 	public void testAddDefaultDBPartition() throws PortalException {
-		Assert.assertFalse(
-			DBPartitionUtil.addDBPartition(portal.getDefaultCompanyId()));
+		Company company = new CompanyImpl();
+
+		company.setCompanyId(portal.getDefaultCompanyId());
+
+		Assert.assertFalse(DBPartitionUtil.addDBPartition(company));
 	}
 
 	@Test
@@ -184,8 +189,13 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 				_populateResourcePermissionTable(COMPANY_IDS[0]);
 			}
 
+			Company company = new CompanyImpl();
+
+			company.setCompanyId(companyId);
+			company.setWebId("Test" + companyId);
+
 			Assert.assertTrue(
-				DBPartitionUtil.copyDBPartition(COMPANY_IDS[0], companyId));
+				DBPartitionUtil.copyDBPartition(company, COMPANY_IDS[0]));
 
 			List<String> fromTableNames = _getObjectNames(
 				"TABLE", getPartitionName(COMPANY_IDS[0]));
@@ -214,6 +224,12 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 			Assert.assertEquals(
 				_getObjectNames("VIEW", getPartitionName(COMPANY_IDS[0])),
 				_getObjectNames("VIEW", getPartitionName(companyId)));
+
+			String companyTableName = dbInspector.normalizeName("Company");
+
+			Assert.assertTrue(fromTableNames.remove(companyTableName));
+
+			Assert.assertEquals(0, _getCount(companyId, companyTableName));
 
 			for (String fromTableName : fromTableNames) {
 				String toTableName = fromTableName;
@@ -595,6 +611,41 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 		}
 
 		Assert.assertEquals(_JOBS_COUNT, _getJobsCount(defaultPartitionName));
+	}
+
+	@Test
+	@TestInfo("LPD-96720")
+	public void testReplaceByTableWithoutCopyData() throws Exception {
+		createControlTable(TEST_CONTROL_TABLE_NAME);
+
+		long companyId = COMPANY_IDS[0];
+
+		String partitionName = getPartitionName(companyId);
+
+		try {
+			db.runSQL(
+				dbPartitionDB.getCreateViewSQL(
+					defaultPartitionName, partitionName,
+					TEST_CONTROL_TABLE_NAME));
+
+			DBPartitionUtil.replaceByTable(
+				connection, companyId, TEST_CONTROL_TABLE_NAME, false);
+
+			db.runSQL(
+				StringBundler.concat(
+					"insert into ", partitionName, StringPool.PERIOD,
+					TEST_CONTROL_TABLE_NAME, " values (",
+					RandomTestUtil.randomLong(), ")"));
+
+			DBPartitionUtil.replaceByTable(
+				connection, companyId, TEST_CONTROL_TABLE_NAME, false);
+
+			Assert.assertEquals(
+				1, _getCount(companyId, TEST_CONTROL_TABLE_NAME));
+		}
+		finally {
+			dropControlTable(TEST_CONTROL_TABLE_NAME);
+		}
 	}
 
 	private void _assertJobMessage(long companyId, String jobName)

@@ -14,15 +14,19 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import org.apache.felix.cm.PersistenceManager;
 
@@ -105,8 +109,22 @@ public class CompanyLocalServiceTestUtil {
 	}
 
 	public static long[] getCompanyIdsBySQL() {
-		return ReflectionTestUtil.invoke(
-			PortalInstancePool.class, "_getCompanyIdsBySQL", null, null);
+		return getCompanyIdsBySQL(PortalInstancePool.getDefaultCompanyId());
+	}
+
+	public static long[] getCompanyIdsBySQL(long companyId) {
+		DataSource dataSource = InfrastructureUtil.getDataSource();
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId);
+
+			Connection connection = dataSource.getConnection()) {
+
+			return PortalInstancePool.getCompanyIdsBySQL(connection);
+		}
+		catch (SQLException sqlException) {
+			throw new RuntimeException(sqlException);
+		}
 	}
 
 	public static String getExportedPartitionName(long companyId) {

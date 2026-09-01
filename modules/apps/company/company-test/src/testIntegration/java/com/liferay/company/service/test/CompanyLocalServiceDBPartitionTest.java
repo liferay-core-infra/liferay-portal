@@ -174,6 +174,10 @@ public class CompanyLocalServiceDBPartitionTest
 			ArrayUtil.contains(
 				CompanyLocalServiceTestUtil.getCompanyIdsBySQL(),
 				_company1.getCompanyId()));
+		Assert.assertArrayEquals(
+			new long[] {_company1.getCompanyId()},
+			CompanyLocalServiceTestUtil.getCompanyIdsBySQL(
+				_company1.getCompanyId()));
 
 		Assert.assertEquals(dbPartitionsCount + 1, _getDBPartitionsCount());
 		Assert.assertEquals(
@@ -894,6 +898,32 @@ public class CompanyLocalServiceDBPartitionTest
 	}
 
 	@Test
+	public void testFetchCompany() throws Exception {
+		_company1 = CompanyTestUtil.addCompany();
+		_company2 = CompanyTestUtil.addCompany();
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_company1.getCompanyId())) {
+
+			Assert.assertNotNull(
+				companyLocalService.fetchCompany(_company1.getCompanyId()));
+			Assert.assertNull(
+				companyLocalService.fetchCompany(_company2.getCompanyId()));
+		}
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_defaultCompanyId)) {
+
+			Assert.assertNotNull(
+				companyLocalService.fetchCompany(_company1.getCompanyId()));
+			Assert.assertNotNull(
+				companyLocalService.fetchCompany(_company2.getCompanyId()));
+		}
+	}
+
+	@Test
 	public void testForEachCompanyIdSkipsGoneOrInDeletionCompanies()
 		throws Exception {
 
@@ -941,6 +971,29 @@ public class CompanyLocalServiceDBPartitionTest
 	}
 
 	@Test
+	public void testGetCompanies() throws Exception {
+		int companiesCount = companyLocalService.getCompaniesCount();
+
+		_company1 = CompanyTestUtil.addCompany();
+
+		Assert.assertEquals(
+			companiesCount + 1, companyLocalService.getCompaniesCount());
+
+		List<Company> companies = companyLocalService.getCompanies();
+
+		Assert.assertTrue(
+			companies.toString(),
+			ArrayUtil.contains(
+				ListUtil.toLongArray(companies, Company.COMPANY_ID_ACCESSOR),
+				_company1.getCompanyId()));
+
+		companyLocalService.deleteCompany(_company1);
+
+		Assert.assertEquals(
+			companiesCount, companyLocalService.getCompaniesCount());
+	}
+
+	@Test
 	public void testIsCurrentCompanyRestricted() throws Exception {
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
@@ -982,10 +1035,7 @@ public class CompanyLocalServiceDBPartitionTest
 				_company1.getMaxUsers(), _company1.isActive());
 		}
 
-		Company company = companyLocalService.getCompany(
-			_company1.getCompanyId());
-
-		Assert.assertEquals(mx, company.getMx());
+		Assert.assertEquals(mx, _getDBPartitionCompanyMx());
 
 		String updatedMx =
 			StringUtil.toLowerCase(RandomTestUtil.randomString()) + ".com";
@@ -999,9 +1049,10 @@ public class CompanyLocalServiceDBPartitionTest
 				updatedMx, _company1.getMaxUsers(), _company1.isActive());
 		}
 
-		company = companyLocalService.getCompany(_company1.getCompanyId());
+		Assert.assertEquals(updatedMx, _getDBPartitionCompanyMx());
 
-		Assert.assertEquals(updatedMx, company.getMx());
+		Company company = companyLocalService.getCompany(
+			_company1.getCompanyId());
 
 		String legalName = RandomTestUtil.randomString();
 		String name = RandomTestUtil.randomString();
@@ -1022,8 +1073,9 @@ public class CompanyLocalServiceDBPartitionTest
 		company = companyLocalService.getCompany(_company1.getCompanyId());
 
 		Assert.assertEquals(legalName, company.getLegalName());
-		Assert.assertEquals(updatedMx, company.getMx());
 		Assert.assertEquals(name, company.getName());
+
+		Assert.assertEquals(updatedMx, _getDBPartitionCompanyMx());
 
 		updatedMx =
 			StringUtil.toLowerCase(RandomTestUtil.randomString()) + ".com";
@@ -1040,9 +1092,34 @@ public class CompanyLocalServiceDBPartitionTest
 				company.getIndustry(), company.getType(), company.getSize());
 		}
 
-		company = companyLocalService.getCompany(_company1.getCompanyId());
+		Assert.assertEquals(updatedMx, _getDBPartitionCompanyMx());
+	}
 
-		Assert.assertEquals(updatedMx, company.getMx());
+	@Test
+	public void testUpdateCompanySyncsDBPartitionCompany() throws Exception {
+		_company1 = CompanyTestUtil.addCompany();
+
+		int maxUsers = RandomTestUtil.randomInt();
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_defaultCompanyId)) {
+
+			companyLocalService.updateCompany(
+				_company1.getCompanyId(), _company1.getVirtualHostname(),
+				_company1.getMx(), maxUsers, false);
+		}
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_company1.getCompanyId())) {
+
+			Company company = companyLocalService.getCompany(
+				_company1.getCompanyId());
+
+			Assert.assertEquals(maxUsers, company.getMaxUsers());
+			Assert.assertFalse(company.isActive());
+		}
 	}
 
 	private void _addCopyDBPartitionCompanyCache(long companyId) {
@@ -1363,6 +1440,18 @@ public class CompanyLocalServiceDBPartitionTest
 			preparedStatement.setLong(1, companyId);
 
 			preparedStatement.executeUpdate();
+		}
+	}
+
+	private String _getDBPartitionCompanyMx() throws Exception {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_company1.getCompanyId())) {
+
+			Company company = companyLocalService.getCompany(
+				_company1.getCompanyId());
+
+			return company.getMx();
 		}
 	}
 

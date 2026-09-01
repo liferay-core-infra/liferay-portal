@@ -180,9 +180,9 @@ public class DatabaseUtilTest extends BaseTestCase {
 
 		List<String> tableNames = liferayDatabase.getTableNames();
 
-		Assert.assertEquals(tableNames.toString(), 2, tableNames.size());
-		Assert.assertFalse(tableNames.contains("Company"));
+		Assert.assertEquals(tableNames.toString(), 3, tableNames.size());
 		Assert.assertFalse(tableNames.contains("Object_x_25000"));
+		Assert.assertTrue(tableNames.contains("Company"));
 		Assert.assertTrue(tableNames.contains("Table1"));
 		Assert.assertTrue(tableNames.contains("Table2"));
 

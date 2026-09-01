@@ -9,11 +9,13 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
+import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.Group;
@@ -151,13 +153,17 @@ public class DDMStorageLinkDataCleanupPreupgradeProcessTest
 
 		DDMStructure ddmStructure = journalArticle.getDDMStructure();
 
-		Assert.assertNotNull(
-			_ddmFieldLocalService.getDDMFormValues(
-				ddmStructure.getDDMForm(), journalArticle.getId()));
+		DDMFormValues ddmFormValues = _ddmFieldLocalService.getDDMFormValues(
+			ddmStructure.getDDMForm(), journalArticle.getId());
+
+		Assert.assertNotNull(ddmFormValues);
 
 		upgrade();
 
-		Assert.assertNotNull(
+		CacheRegistryUtil.clear();
+
+		Assert.assertEquals(
+			ddmFormValues,
 			_ddmFieldLocalService.getDDMFormValues(
 				ddmStructure.getDDMForm(), journalArticle.getId()));
 

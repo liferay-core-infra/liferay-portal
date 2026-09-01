@@ -47,6 +47,7 @@ import java.util.Objects;
 
 import javax.sql.DataSource;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -79,6 +80,16 @@ public class UpgradePartitionedConfigurationTableTest
 		_companyId = PortalInstancePool.getDefaultCompanyId();
 
 		_dataSource = InfrastructureUtil.getDataSource();
+
+		_safeCloseable = CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+			_companyId);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		if (_safeCloseable != null) {
+			_safeCloseable.close();
+		}
 	}
 
 	@Test
@@ -290,6 +301,7 @@ public class UpgradePartitionedConfigurationTableTest
 
 	private static long _companyId;
 	private static DataSource _dataSource;
+	private static SafeCloseable _safeCloseable;
 
 	private class ConfigurationEntry {
 

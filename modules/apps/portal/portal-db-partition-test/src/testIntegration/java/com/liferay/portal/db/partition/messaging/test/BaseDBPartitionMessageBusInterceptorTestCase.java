@@ -7,6 +7,7 @@ package com.liferay.portal.db.partition.messaging.test;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.db.partition.test.util.BaseDBPartitionTestCase;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -208,7 +209,7 @@ public abstract class BaseDBPartitionMessageBusInterceptorTestCase {
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-					_company.getCompanyId())) {
+					PortalInstancePool.getDefaultCompanyId())) {
 
 			message = new Message();
 
@@ -222,6 +223,24 @@ public abstract class BaseDBPartitionMessageBusInterceptorTestCase {
 		}
 
 		// Test 3
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_company.getCompanyId())) {
+
+			message = new Message();
+
+			message.put("companyId", CompanyConstants.SYSTEM);
+
+			_countDownLatch = new CountDownLatch(1);
+
+			_messageBus.sendMessage(_DESTINATION_NAME, message);
+
+			_testDBPartitionMessageListener.assertCollected(
+				_company.getCompanyId());
+		}
+
+		// Test 4
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setCompanyIdWithSafeCloseable(

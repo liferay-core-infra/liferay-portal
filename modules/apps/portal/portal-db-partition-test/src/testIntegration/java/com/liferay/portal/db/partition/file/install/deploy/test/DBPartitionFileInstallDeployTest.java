@@ -58,6 +58,9 @@ public class DBPartitionFileInstallDeployTest extends BaseDBPartitionTestCase {
 	public static void setUpClass() throws Exception {
 		BaseDBPartitionTestCase.setUpClass();
 
+		_safeCloseable = CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+			PortalInstancePool.getDefaultCompanyId());
+
 		BaseDBPartitionTestCase.setUpDBPartitions();
 
 		Bundle bundle = FrameworkUtil.getBundle(
@@ -95,6 +98,10 @@ public class DBPartitionFileInstallDeployTest extends BaseDBPartitionTestCase {
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		BaseDBPartitionTestCase.tearDownDBPartitions();
+
+		if (_safeCloseable != null) {
+			_safeCloseable.close();
+		}
 	}
 
 	@Test
@@ -401,5 +408,7 @@ public class DBPartitionFileInstallDeployTest extends BaseDBPartitionTestCase {
 
 	@Inject
 	private static GroupLocalService _groupLocalService;
+
+	private static SafeCloseable _safeCloseable;
 
 }

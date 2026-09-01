@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -73,23 +74,34 @@ public class UpgradeCompanyInfoTest {
 		DB db = DBManagerUtil.getDB();
 
 		try {
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-						PortalInstancePool.getDefaultCompanyId());
+			for (long companyId : companyIds) {
+				try (SafeCloseable safeCloseable =
+						CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+							companyId);
 
-				Connection connection = DataAccess.getConnection()) {
+					Connection connection = DataAccess.getConnection()) {
 
-				db.alterTableAddColumn(connection, "Company", "logoId", "LONG");
+					DBInspector dbInspector = new DBInspector(connection);
 
-				for (String columnDefinition :
-						_COMPANY_INFO_COLUMN_DEFINITIONS) {
+					if (!dbInspector.hasColumn("Company", "logoId")) {
+						db.alterTableAddColumn(
+							connection, "Company", "logoId", "LONG");
+					}
 
-					int index = columnDefinition.indexOf(StringPool.SPACE);
+					for (String columnDefinition :
+							_COMPANY_INFO_COLUMN_DEFINITIONS) {
 
-					db.alterTableAddColumn(
-						connection, "Company",
-						columnDefinition.substring(0, index),
-						columnDefinition.substring(index + 1));
+						int index = columnDefinition.indexOf(StringPool.SPACE);
+
+						String columnName = columnDefinition.substring(
+							0, index);
+
+						if (!dbInspector.hasColumn("Company", columnName)) {
+							db.alterTableAddColumn(
+								connection, "Company", columnName,
+								columnDefinition.substring(index + 1));
+						}
+					}
 				}
 			}
 
@@ -121,25 +133,26 @@ public class UpgradeCompanyInfoTest {
 
 				try (SafeCloseable safeCloseable =
 						CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-							PortalInstancePool.getDefaultCompanyId())) {
+							companyId)) {
 
 					_updateValues(
 						companyId, "Company", expectedCompanyInfoValues);
-				}
-
-				try (SafeCloseable safeCloseable =
-						CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-							companyId)) {
-
 					_updateValues(
 						companyId, "CompanyInfo", clearedCompanyInfoValues);
 				}
 			}
 
-			UpgradeProcess upgradeProcess = new UpgradeCompanyInfo();
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						PortalInstancePool.getDefaultCompanyId())) {
 
-			for (UpgradeStep upgradeStep : upgradeProcess.getUpgradeSteps()) {
-				upgradeStep.upgrade();
+				UpgradeProcess upgradeProcess = new UpgradeCompanyInfo();
+
+				for (UpgradeStep upgradeStep :
+						upgradeProcess.getUpgradeSteps()) {
+
+					upgradeStep.upgrade();
+				}
 			}
 
 			for (long companyId : companyIds) {
@@ -162,22 +175,25 @@ public class UpgradeCompanyInfoTest {
 			}
 		}
 		finally {
-			try (SafeCloseable safeCloseable =
-					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-						PortalInstancePool.getDefaultCompanyId());
+			for (long companyId : companyIds) {
+				try (SafeCloseable safeCloseable =
+						CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+							companyId);
 
-				Connection connection = DataAccess.getConnection()) {
+					Connection connection = DataAccess.getConnection()) {
 
-				DBInspector dbInspector = new DBInspector(connection);
+					DBInspector dbInspector = new DBInspector(connection);
 
-				if (dbInspector.hasColumn("Company", "logoId")) {
-					db.alterTableDropColumn(connection, "Company", "logoId");
-				}
-
-				for (String columnName : _COMPANY_INFO_COLUMN_NAMES) {
-					if (dbInspector.hasColumn("Company", columnName)) {
+					if (dbInspector.hasColumn("Company", "logoId")) {
 						db.alterTableDropColumn(
-							connection, "Company", columnName);
+							connection, "Company", "logoId");
+					}
+
+					for (String columnName : _COMPANY_INFO_COLUMN_NAMES) {
+						if (dbInspector.hasColumn("Company", columnName)) {
+							db.alterTableDropColumn(
+								connection, "Company", columnName);
+						}
 					}
 				}
 			}
@@ -205,15 +221,25 @@ public class UpgradeCompanyInfoTest {
 		Company company = _companyLocalService.getCompany(
 			TestPropsValues.getCompanyId());
 
+		Map<String, Object> modelAttributes = company.getModelAttributes();
+
 		String name = company.getName();
 
-		UpgradeProcess upgradeProcess = new UpgradeCompanyInfo();
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
 
-		upgradeProcess.upgrade();
+			UpgradeProcess upgradeProcess = new UpgradeCompanyInfo();
+
+			upgradeProcess.upgrade();
+		}
+
+		_multiVMPool.clear();
 
 		company = _companyLocalService.getCompany(
 			TestPropsValues.getCompanyId());
 
+		Assert.assertEquals(modelAttributes, company.getModelAttributes());
 		Assert.assertEquals(name, company.getName());
 	}
 
@@ -321,5 +347,8 @@ public class UpgradeCompanyInfoTest {
 
 	@Inject
 	private CompanyLocalService _companyLocalService;
+
+	@Inject
+	private MultiVMPool _multiVMPool;
 
 }

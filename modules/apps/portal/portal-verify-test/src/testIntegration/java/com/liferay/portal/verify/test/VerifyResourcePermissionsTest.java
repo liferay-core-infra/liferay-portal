@@ -6,6 +6,8 @@
 package com.liferay.portal.verify.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
@@ -14,9 +16,9 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -33,6 +35,8 @@ import com.liferay.portal.verify.VerifyResourcePermissions;
 import com.liferay.portal.verify.model.GroupVerifiableResourcedModel;
 import com.liferay.portal.verify.model.RoleVerifiableModel;
 import com.liferay.portal.verify.test.util.BaseVerifyProcessTestCase;
+
+import java.sql.Connection;
 
 import java.util.List;
 
@@ -65,8 +69,16 @@ public class VerifyResourcePermissionsTest extends BaseVerifyProcessTestCase {
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
-			long[] companyIds = (long[])ReflectionTestUtil.invoke(
-				PortalInstancePool.class, "_getCompanyIdsBySQL", null, null);
+			long[] companyIds;
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						PortalInstancePool.getDefaultCompanyId());
+
+				Connection connection = DataAccess.getConnection()) {
+
+				companyIds = PortalInstancePool.getCompanyIdsBySQL(connection);
+			}
 
 			Assert.assertEquals(
 				logEntries.toString(), 2 * companyIds.length,

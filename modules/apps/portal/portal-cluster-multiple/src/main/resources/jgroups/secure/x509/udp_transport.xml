@@ -1,7 +1,7 @@
 <config
 	xmlns="urn:org:jgroups"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-4.1.xsd"
+	xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-5.5.xsd"
 >
 	<UDP
 		bind_addr="${cluster.link.bind.addr[&quot;cluster-link-udp&quot;]}"
@@ -53,19 +53,18 @@
 		xmit_table_num_rows="100"
 	/>
 	<pbcast.STABLE desired_avg_gossip="50000"
-				   max_bytes="4M"
-				   stability_delay="1000" />
+				   max_bytes="4M" />
 	<AUTH
 		auth_class="org.jgroups.auth.X509Token"
-		auth_value="${cluster.link.auth.value}"
-		cert_alias="${cluster.link.auth.cert.alias}"
-		cert_password="${cluster.link.auth.cert.password}"
-		cipher_type="${cluster.link.auth.cipher.type}"
-		keystore_password="${cluster.link.auth.keystore.password}"
-		keystore_path="${cluster.link.auth.keystore.path}"
-		keystore_type="${cluster.link.auth.keystore.type}"
+		auth_token.auth_value="${cluster.link.auth.value}"
+		auth_token.cert_alias="${cluster.link.auth.cert.alias}"
+		auth_token.cert_password="${cluster.link.auth.cert.password}"
+		auth_token.cipher_type="${cluster.link.auth.cipher.type}"
+		auth_token.keystore_password="${cluster.link.auth.keystore.password}"
+		auth_token.keystore_path="${cluster.link.auth.keystore.path}"
+		auth_token.keystore_type="${cluster.link.auth.keystore.type}"
 	/>
-	<pbcast.GMS join_timeout="2000" print_local_addr="true" view_bundling="true" />
+	<pbcast.GMS join_timeout="2000" print_local_addr="true" />
 	<UFC
 		max_credits="2M"
 		min_threshold="0.4"

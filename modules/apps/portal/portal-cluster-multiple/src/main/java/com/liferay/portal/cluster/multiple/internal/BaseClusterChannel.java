@@ -35,7 +35,7 @@ public abstract class BaseClusterChannel implements ClusterChannel {
 		}
 
 		try {
-			_executorService.execute(() -> doSendMessage(message, null));
+			_executorService.execute(() -> _doSendMessage(message, null));
 		}
 		catch (RejectedExecutionException rejectedExecutionException) {
 			_log.error(
@@ -55,7 +55,7 @@ public abstract class BaseClusterChannel implements ClusterChannel {
 		}
 
 		try {
-			_executorService.execute(() -> doSendMessage(message, address));
+			_executorService.execute(() -> _doSendMessage(message, address));
 		}
 		catch (RejectedExecutionException rejectedExecutionException) {
 			_log.error(
@@ -68,6 +68,17 @@ public abstract class BaseClusterChannel implements ClusterChannel {
 
 	protected abstract void doSendMessage(
 		Serializable message, Address address);
+
+	private void _doSendMessage(Serializable message, Address address) {
+		try {
+			doSendMessage(message, address);
+		}
+		catch (Throwable throwable) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to send message " + message, throwable);
+			}
+		}
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseClusterChannel.class);

@@ -27,7 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -72,25 +71,26 @@ public class UserNotificationManagerUtil {
 		return _getUserNotificationDefinitions(false);
 	}
 
-	public static Map<String, Map<String, UserNotificationHandler>>
+	public static Map<String, UserNotificationHandler>
 		getUserNotificationHandlers() {
 
-		return Collections.unmodifiableMap(_userNotificationHandlers);
+		Map<String, UserNotificationHandler> userNotificationHandlersMap =
+			new HashMap<>();
+
+		for (String key : _userNotificationHandlers.keySet()) {
+			userNotificationHandlersMap.put(
+				key, _userNotificationHandlers.getService(key));
+		}
+
+		return Collections.unmodifiableMap(userNotificationHandlersMap);
 	}
 
 	public static boolean hasPermission(
 			long classPK, String portletId, String selector, User user)
 		throws PortalException {
 
-		Map<String, UserNotificationHandler> userNotificationHandlers =
-			_userNotificationHandlers.get(selector);
-
-		if (userNotificationHandlers == null) {
-			return false;
-		}
-
 		UserNotificationHandler userNotificationHandler =
-			userNotificationHandlers.get(portletId);
+			_userNotificationHandlers.getService(_getKey(selector, portletId));
 
 		if (userNotificationHandler == null) {
 			return false;
@@ -104,15 +104,9 @@ public class UserNotificationManagerUtil {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		Map<String, UserNotificationHandler> userNotificationHandlers =
-			_userNotificationHandlers.get(selector);
-
-		if (userNotificationHandlers == null) {
-			return null;
-		}
-
 		UserNotificationHandler userNotificationHandler =
-			userNotificationHandlers.get(userNotificationEvent.getType());
+			_userNotificationHandlers.getService(
+				_getKey(selector, userNotificationEvent.getType()));
 
 		if (userNotificationHandler == null) {
 			if (_log.isWarnEnabled()) {
@@ -147,6 +141,10 @@ public class UserNotificationManagerUtil {
 			deliveryType, serviceContext);
 	}
 
+	private static String _getKey(String selector, String portletId) {
+		return selector + StringPool.POUND + portletId;
+	}
+
 	private static Map<String, List<UserNotificationDefinition>>
 		_getUserNotificationDefinitions(boolean active) {
 
@@ -176,15 +174,8 @@ public class UserNotificationManagerUtil {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		Map<String, UserNotificationHandler> userNotificationHandlers =
-			_userNotificationHandlers.get(selector);
-
-		if (userNotificationHandlers == null) {
-			return false;
-		}
-
 		UserNotificationHandler userNotificationHandler =
-			userNotificationHandlers.get(portletId);
+			_userNotificationHandlers.getService(_getKey(selector, portletId));
 
 		if (userNotificationHandler == null) {
 			if (deliveryType == UserNotificationDeliveryConstants.TYPE_EMAIL) {
@@ -210,75 +201,46 @@ public class UserNotificationManagerUtil {
 				ServiceTrackerMapFactory.openMultiValueMap(
 					_bundleContext, UserNotificationDefinition.class,
 					"jakarta.portlet.name");
-	private static final Map<String, Map<String, UserNotificationHandler>>
-		_userNotificationHandlers = new ConcurrentHashMap<>();
-	private static final ServiceTracker
-		<UserNotificationHandler, UserNotificationHandler>
-			_userNotificationHandlerServiceTracker;
 
-	private static class UserNotificationHandlerServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer
-			<UserNotificationHandler, UserNotificationHandler> {
+	private static final ServiceTrackerMap<String, UserNotificationHandler>
+		_userNotificationHandlers = ServiceTrackerMapFactory.openSingleValueMap(
+			_bundleContext, UserNotificationHandler.class, null,
+			(serviceReference, emitter) -> {
+				UserNotificationHandler userNotificationHandler =
+					_bundleContext.getService(serviceReference);
 
-		@Override
-		public UserNotificationHandler addingService(
-			ServiceReference<UserNotificationHandler> serviceReference) {
+				if (userNotificationHandler != null) {
+					emitter.emit(
+						_getKey(
+							userNotificationHandler.getSelector(),
+							userNotificationHandler.getPortletId()));
+				}
+			},
+			new ServiceTrackerCustomizer
+				<UserNotificationHandler, UserNotificationHandler>() {
 
-			UserNotificationHandler userNotificationHandler =
-				_bundleContext.getService(serviceReference);
+				@Override
+				public UserNotificationHandler addingService(
+					ServiceReference<UserNotificationHandler>
+						serviceReference) {
 
-			String selector = userNotificationHandler.getSelector();
+					return _bundleContext.getService(serviceReference);
+				}
 
-			Map<String, UserNotificationHandler> userNotificationHandlers =
-				_userNotificationHandlers.get(selector);
+				@Override
+				public void modifiedService(
+					ServiceReference<UserNotificationHandler> serviceReference,
+					UserNotificationHandler userNotificationHandler) {
+				}
 
-			if (userNotificationHandlers == null) {
-				userNotificationHandlers = new HashMap<>();
+				@Override
+				public void removedService(
+					ServiceReference<UserNotificationHandler> serviceReference,
+					UserNotificationHandler userNotificationHandler) {
 
-				_userNotificationHandlers.put(
-					selector, userNotificationHandlers);
-			}
+					_bundleContext.ungetService(serviceReference);
+				}
 
-			userNotificationHandlers.put(
-				userNotificationHandler.getPortletId(),
-				userNotificationHandler);
-
-			return userNotificationHandler;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<UserNotificationHandler> serviceReference,
-			UserNotificationHandler userNotificationHandler) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<UserNotificationHandler> serviceReference,
-			UserNotificationHandler userNotificationHandler) {
-
-			_bundleContext.ungetService(serviceReference);
-
-			Map<String, UserNotificationHandler> userNotificationHandlers =
-				_userNotificationHandlers.get(
-					userNotificationHandler.getSelector());
-
-			if (userNotificationHandlers == null) {
-				return;
-			}
-
-			userNotificationHandlers.remove(
-				userNotificationHandler.getPortletId());
-		}
-
-	}
-
-	static {
-		_userNotificationHandlerServiceTracker = new ServiceTracker<>(
-			_bundleContext, UserNotificationHandler.class,
-			new UserNotificationHandlerServiceTrackerCustomizer());
-
-		_userNotificationHandlerServiceTracker.open();
-	}
+			});
 
 }

@@ -27,7 +27,7 @@ import com.liferay.portal.lock.exception.NoSuchLockException;
 import com.liferay.portal.lock.model.Lock;
 import com.liferay.portal.lock.service.base.LockLocalServiceBaseImpl;
 
-import jakarta.persistence.PersistenceException;
+import jakarta.persistence.PessimisticLockException;
 
 import java.util.Date;
 import java.util.List;
@@ -293,14 +293,13 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			catch (Throwable throwable) {
 				Throwable causeThrowable = throwable;
 
-				if (throwable instanceof ORMException ||
-					throwable instanceof PersistenceException) {
-
+				if (throwable instanceof ORMException) {
 					causeThrowable = throwable.getCause();
 				}
 
 				if (causeThrowable instanceof ConstraintViolationException ||
-					causeThrowable instanceof LockAcquisitionException) {
+					causeThrowable instanceof LockAcquisitionException ||
+					causeThrowable instanceof PessimisticLockException) {
 
 					if (_log.isInfoEnabled()) {
 						_log.info("Unable to acquire lock, retrying");
@@ -403,7 +402,8 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 				}
 
 				if (causeThrowable instanceof ConstraintViolationException ||
-					causeThrowable instanceof LockAcquisitionException) {
+					causeThrowable instanceof LockAcquisitionException ||
+					causeThrowable instanceof PessimisticLockException) {
 
 					if (_log.isInfoEnabled()) {
 						_log.info("Unable to remove lock, retrying");

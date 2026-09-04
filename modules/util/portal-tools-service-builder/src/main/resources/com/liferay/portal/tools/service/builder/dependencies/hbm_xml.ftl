@@ -154,7 +154,7 @@
 				<one-to-one
 					<#if serviceBuilder.isVersionGTE_7_4_0()>
 						access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor"
-						cascade="merge,persist,save-update"
+						cascade="merge,persist"
 					<#else>
 						access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor"
 						cascade="save-update"
@@ -211,13 +211,21 @@
 					</composite-id>
 				<#else>
 					<id column="${entityColumn.DBName}" name="${entityColumn.name}">
-						<generator class="foreign">
-							<param name="property">${packagePath}.model.impl.${entity.name}Impl</param>
-						</generator>
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							<generator class="assigned" />
+						<#else>
+							<generator class="foreign">
+								<param name="property">${packagePath}.model.impl.${entity.name}Impl</param>
+							</generator>
+						</#if>
 					</id>
 				</#if>
 
 				<property column="${blobEntityColumn.DBName}" name="${blobEntityColumn.name}Blob" type="blob" />
+
+				<#if serviceBuilder.isVersionGTE_7_4_0() && !entity.hasCompoundPK()>
+					<sql-insert>UPDATE ${entity.table} SET ${blobEntityColumn.DBName} = ? WHERE ${entityColumn.DBName} = ?</sql-insert>
+				</#if>
 			</class>
 		</#if>
 	</#list>

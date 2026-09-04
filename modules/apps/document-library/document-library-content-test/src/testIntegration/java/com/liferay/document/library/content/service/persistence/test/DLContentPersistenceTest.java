@@ -556,4 +556,4 @@ public class DLContentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:289783635
+// LIFERAY-SERVICE-BUILDER-HASH:1649506957

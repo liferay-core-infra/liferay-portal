@@ -860,4 +860,4 @@ public class StyleBookEntryVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1722767333
+// LIFERAY-SERVICE-BUILDER-HASH:-1659602603

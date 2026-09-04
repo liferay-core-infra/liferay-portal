@@ -1835,7 +1835,7 @@ public class PreupgradeVerifyProperties extends PreupgradeVerifyProcess {
 		"hibernate.cache.use_minimal_puts", "hibernate.cache.use_query_cache",
 		"hibernate.cache.use_second_level_cache",
 		"hibernate.cache.use_structured_entries",
-		"hibernate.connection.release_mode",
+		"hibernate.connection.release_mode", "hibernate.schema_name_resolver",
 		"hibernate.session.factory.imported.class.name.regexp", "icq.jar",
 		"icq.login", "icq.password", "image.hook.impl",
 		"image.hook.file.system.root.dir", "index.dump.compression.enabled",

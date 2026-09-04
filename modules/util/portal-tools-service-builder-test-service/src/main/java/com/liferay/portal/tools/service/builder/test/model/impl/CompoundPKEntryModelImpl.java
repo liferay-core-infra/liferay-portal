@@ -78,7 +78,7 @@ public class CompoundPKEntryModelImpl
 	public static final String ENTITY_ALIAS = "compoundPKEntry";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY compoundPKEntry.id.companyId ASC, compoundPKEntry.id.classNameId ASC";
+		" ORDER BY compoundPKEntry.primaryKey.companyId ASC, compoundPKEntry.primaryKey.classNameId ASC";
 
 	public static final String ORDER_BY_SQL =
 		" ORDER BY CompoundPKEntry.companyId ASC, CompoundPKEntry.classNameId ASC";
@@ -596,4 +596,4 @@ public class CompoundPKEntryModelImpl
 	private CompoundPKEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1510107849
+// LIFERAY-SERVICE-BUILDER-HASH:-1654372091

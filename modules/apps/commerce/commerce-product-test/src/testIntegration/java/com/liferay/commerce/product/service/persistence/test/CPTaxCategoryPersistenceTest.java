@@ -581,4 +581,4 @@ public class CPTaxCategoryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1675628399
+// LIFERAY-SERVICE-BUILDER-HASH:-19518645

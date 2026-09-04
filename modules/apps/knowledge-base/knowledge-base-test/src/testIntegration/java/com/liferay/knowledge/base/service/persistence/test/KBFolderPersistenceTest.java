@@ -703,4 +703,4 @@ public class KBFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-238358516
+// LIFERAY-SERVICE-BUILDER-HASH:526319762

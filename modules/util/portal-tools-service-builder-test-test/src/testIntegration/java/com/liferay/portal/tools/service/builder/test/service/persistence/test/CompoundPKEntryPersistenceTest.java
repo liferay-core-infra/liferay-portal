@@ -270,10 +270,10 @@ public class CompoundPKEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.companyId", newCompoundPKEntry.getCompanyId()));
+				"primaryKey.companyId", newCompoundPKEntry.getCompanyId()));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classNameId", newCompoundPKEntry.getClassNameId()));
+				"primaryKey.classNameId", newCompoundPKEntry.getClassNameId()));
 
 		List<CompoundPKEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -292,10 +292,10 @@ public class CompoundPKEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.companyId", RandomTestUtil.nextLong()));
+				"primaryKey.companyId", RandomTestUtil.nextLong()));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classNameId", RandomTestUtil.nextLong()));
+				"primaryKey.classNameId", RandomTestUtil.nextLong()));
 
 		List<CompoundPKEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -311,13 +311,13 @@ public class CompoundPKEntryPersistenceTest {
 			CompoundPKEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("id.companyId"));
+			ProjectionFactoryUtil.property("primaryKey.companyId"));
 
 		Object newCompanyId = newCompoundPKEntry.getCompanyId();
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"id.companyId", new Object[] {newCompanyId}));
+				"primaryKey.companyId", new Object[] {newCompanyId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -334,11 +334,12 @@ public class CompoundPKEntryPersistenceTest {
 			CompoundPKEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("id.companyId"));
+			ProjectionFactoryUtil.property("primaryKey.companyId"));
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"id.companyId", new Object[] {RandomTestUtil.nextLong()}));
+				"primaryKey.companyId",
+				new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -364,4 +365,4 @@ public class CompoundPKEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1078125304
+// LIFERAY-SERVICE-BUILDER-HASH:-1880135622

@@ -363,4 +363,4 @@ public class ReassociateEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1094575834
+// LIFERAY-SERVICE-BUILDER-HASH:-776731356

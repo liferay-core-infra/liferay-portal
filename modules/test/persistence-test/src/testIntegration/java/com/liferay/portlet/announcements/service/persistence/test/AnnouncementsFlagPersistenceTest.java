@@ -520,4 +520,4 @@ public class AnnouncementsFlagPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2037807564
+// LIFERAY-SERVICE-BUILDER-HASH:503402734

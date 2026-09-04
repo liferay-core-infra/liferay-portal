@@ -453,4 +453,4 @@ public class CTScorePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-763148773
+// LIFERAY-SERVICE-BUILDER-HASH:-1267939235

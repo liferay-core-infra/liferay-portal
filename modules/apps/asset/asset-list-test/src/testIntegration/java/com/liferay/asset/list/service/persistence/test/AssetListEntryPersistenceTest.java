@@ -803,4 +803,4 @@ public class AssetListEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2108673667
+// LIFERAY-SERVICE-BUILDER-HASH:706595773

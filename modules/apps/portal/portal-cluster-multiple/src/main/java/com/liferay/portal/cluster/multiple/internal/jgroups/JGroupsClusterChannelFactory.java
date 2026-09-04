@@ -198,18 +198,19 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 			String channelPropertiesLocation)
 		throws Exception {
 
-		if (channelPropertiesLocation.startsWith("jgroups/secure/md5/") &&
-			_log.isWarnEnabled() && _defaultMD5Warning) {
+		if (channelPropertiesLocation.startsWith("jgroups/secure/sym/") &&
+			_log.isWarnEnabled() && _defaultSymWarning) {
 
 			_log.warn(
 				StringBundler.concat(
-					"Clustering authentication is using MD5 default ",
-					"implementation. Please note that this implementation is ",
-					"not secure enough to be used in production. Refer to the ",
+					"Clustering encryption is using the default SYM_ENCRYPT ",
+					"implementation using an auto-generated shared key. ",
+					"Please note that this implementation is not secure ",
+					"enough to be used in production. Refer to the ",
 					"documentation for details on configuring secure JGroups ",
 					"connections."));
 
-			_defaultMD5Warning = false;
+			_defaultSymWarning = false;
 		}
 
 		try (InputStream inputStream = _getInputStream(
@@ -300,8 +301,8 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		JGroupsClusterChannelFactory.class);
 
-	private static boolean _defaultMD5Warning = true;
 	private static boolean _defaultSecretWarning = true;
+	private static boolean _defaultSymWarning = true;
 
 	private InetAddress _bindInetAddress;
 	private NetworkInterface _bindNetworkInterface;

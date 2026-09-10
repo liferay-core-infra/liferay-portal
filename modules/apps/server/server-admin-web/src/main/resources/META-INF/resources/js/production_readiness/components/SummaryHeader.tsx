@@ -64,6 +64,17 @@ const SummaryHeader: React.FC<Props> = ({failed, ignored, passed, total}) => {
 					{Liferay.Language.get('ignored')}
 				</span>
 			</div>
+
+			<div className="mt-2">
+				<a
+					className="text-primary"
+					href="https://www.liferay.com/resources/product-info/Liferay+DXP+Go+Live+Checklist"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					{Liferay.Language.get('learn-more-abour-liferay-settings')}
+				</a>
+			</div>
 		</div>
 	);
 };

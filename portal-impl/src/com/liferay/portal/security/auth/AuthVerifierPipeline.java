@@ -5,6 +5,8 @@
 
 package com.liferay.portal.security.auth;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.url.pattern.mapper.URLPatternMapper;
@@ -42,7 +44,6 @@ import java.util.function.Consumer;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -71,12 +72,17 @@ public class AuthVerifierPipeline {
 		List<AuthVerifierConfiguration> authVerifierConfigurations,
 		String contextPath) {
 
-		_authVerifierConfigurations = new ArrayList<>(
-			authVerifierConfigurations);
-
 		_contextPath = contextPath;
 
-		_buildURLPatternMapper();
+		_authVerifierConfigurations = null;
+
+		_buildURLPatternMapper(new ArrayList<>(authVerifierConfigurations));
+	}
+
+	public void close() {
+		if (_authVerifierConfigurations != null) {
+			_authVerifierConfigurations.close();
+		}
 	}
 
 	public AuthVerifierResult verifyRequest(
@@ -125,22 +131,72 @@ public class AuthVerifierPipeline {
 		return authVerifierConfigurations;
 	}
 
-	private synchronized void _addAuthVerifierConfiguration(
-		AuthVerifierConfiguration authVerifierConfiguration) {
+	private AuthVerifierPipeline(
+		BundleContext bundleContext, String contextPath) {
 
-		_authVerifierConfigurations.add(authVerifierConfiguration);
+		_contextPath = contextPath;
 
-		_buildURLPatternMapper();
+		_authVerifierConfigurations = ServiceTrackerListFactory.open(
+			bundleContext, AuthVerifierConfiguration.class, null,
+			new ServiceTrackerCustomizer
+				<AuthVerifierConfiguration, AuthVerifierConfiguration>() {
+
+				@Override
+				public AuthVerifierConfiguration addingService(
+					ServiceReference<AuthVerifierConfiguration>
+						serviceReference) {
+
+					AuthVerifierConfiguration authVerifierConfiguration =
+						bundleContext.getService(serviceReference);
+
+					if (_initialized && (authVerifierConfiguration != null)) {
+						_buildURLPatternMapper(_authVerifierConfigurations);
+					}
+
+					return authVerifierConfiguration;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<AuthVerifierConfiguration>
+						serviceReference,
+					AuthVerifierConfiguration authVerifierConfiguration) {
+
+					if (_initialized) {
+						_buildURLPatternMapper(_authVerifierConfigurations);
+					}
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<AuthVerifierConfiguration>
+						serviceReference,
+					AuthVerifierConfiguration authVerifierConfiguration) {
+
+					if (_initialized) {
+						_buildURLPatternMapper(_authVerifierConfigurations);
+					}
+
+					bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_initialized = true;
+
+		_buildURLPatternMapper(_authVerifierConfigurations);
 	}
 
-	private void _buildURLPatternMapper() {
+	private synchronized void _buildURLPatternMapper(
+		Iterable<AuthVerifierConfiguration> authVerifierConfigurations) {
+
 		Map<String, List<AuthVerifierConfiguration>>
 			excludeAuthVerifierConfigurationsMap = new HashMap<>();
 		Map<String, List<AuthVerifierConfiguration>>
 			includeAuthVerifierConfigurationsMap = new HashMap<>();
 
 		for (AuthVerifierConfiguration authVerifierConfiguration :
-				_authVerifierConfigurations) {
+				authVerifierConfigurations) {
 
 			Properties properties = authVerifierConfiguration.getProperties();
 
@@ -215,14 +271,6 @@ public class AuthVerifierPipeline {
 		return urlPattern.substring(0, urlPattern.length() - 1) + "/*";
 	}
 
-	private synchronized void _removeAuthVerifierConfiguration(
-		AuthVerifierConfiguration authVerifierConfiguration) {
-
-		_authVerifierConfigurations.remove(authVerifierConfiguration);
-
-		_buildURLPatternMapper();
-	}
-
 	private static final String[] _SUPREME_AUTH_VERIFIER_KEYS = {
 		"basic_auth", "digest_auth"
 	};
@@ -230,12 +278,14 @@ public class AuthVerifierPipeline {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AuthVerifierPipeline.class);
 
-	private final List<AuthVerifierConfiguration> _authVerifierConfigurations;
+	private final ServiceTrackerList<AuthVerifierConfiguration>
+		_authVerifierConfigurations;
 	private final String _contextPath;
 	private volatile URLPatternMapper<List<AuthVerifierConfiguration>>
 		_excludeURLPatternMapper;
 	private volatile URLPatternMapper<List<AuthVerifierConfiguration>>
 		_includeURLPatternMapper;
+	private volatile boolean _initialized;
 
 	private static class AuthVerifierConfigurationConsumer
 		implements Consumer<List<AuthVerifierConfiguration>> {
@@ -463,69 +513,9 @@ public class AuthVerifierPipeline {
 	private static class PortalAuthVerifierPipelineHolder {
 
 		private static final AuthVerifierPipeline
-			_PORTAL_AUTH_VERIFIER_PIPELINE;
-
-		static {
-			AuthVerifierPipeline portalAuthVerifierPipeline =
-				new AuthVerifierPipeline(
-					Collections.emptyList(),
-					PortalContextLoaderListener.getPortalServletContextPath());
-
-			BundleContext bundleContext = SystemBundleUtil.getBundleContext();
-
-			ServiceTracker<AuthVerifierConfiguration, AuthVerifierConfiguration>
-				serviceTracker = new ServiceTracker<>(
-					bundleContext, AuthVerifierConfiguration.class,
-					new ServiceTrackerCustomizer
-						<AuthVerifierConfiguration,
-						 AuthVerifierConfiguration>() {
-
-						@Override
-						public AuthVerifierConfiguration addingService(
-							ServiceReference<AuthVerifierConfiguration>
-								serviceReference) {
-
-							AuthVerifierConfiguration
-								authVerifierConfiguration =
-									bundleContext.getService(serviceReference);
-
-							if (authVerifierConfiguration != null) {
-								portalAuthVerifierPipeline.
-									_addAuthVerifierConfiguration(
-										authVerifierConfiguration);
-							}
-
-							return authVerifierConfiguration;
-						}
-
-						@Override
-						public void modifiedService(
-							ServiceReference<AuthVerifierConfiguration>
-								serviceReference,
-							AuthVerifierConfiguration
-								authVerifierConfiguration) {
-						}
-
-						@Override
-						public void removedService(
-							ServiceReference<AuthVerifierConfiguration>
-								serviceReference,
-							AuthVerifierConfiguration
-								authVerifierConfiguration) {
-
-							portalAuthVerifierPipeline.
-								_removeAuthVerifierConfiguration(
-									authVerifierConfiguration);
-
-							bundleContext.ungetService(serviceReference);
-						}
-
-					});
-
-			serviceTracker.open();
-
-			_PORTAL_AUTH_VERIFIER_PIPELINE = portalAuthVerifierPipeline;
-		}
+			_PORTAL_AUTH_VERIFIER_PIPELINE = new AuthVerifierPipeline(
+				SystemBundleUtil.getBundleContext(),
+				PortalContextLoaderListener.getPortalServletContextPath());
 
 	}
 

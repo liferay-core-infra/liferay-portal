@@ -267,9 +267,11 @@ public class RepositoryClassDefinitionCatalogImpl
 							repositoryFactoryServiceReference.getProperty(
 								"companyId")));
 
-			companyRepositoryClassDefinitions.remove(
-				(String)repositoryFactoryServiceReference.getProperty(
-					"class.name"));
+			if (companyRepositoryClassDefinitions != null) {
+				companyRepositoryClassDefinitions.remove(
+					(String)repositoryFactoryServiceReference.getProperty(
+						"class.name"));
+			}
 
 			serviceRegistration.unregister();
 		}

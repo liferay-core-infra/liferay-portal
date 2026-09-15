@@ -26,6 +26,7 @@ import jakarta.portlet.Portlet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -41,6 +42,7 @@ import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Mikel Lorza
+ * @author Debora Buriti
  */
 @RunWith(Arquillian.class)
 public class PortletLocalServiceTest {
@@ -57,6 +59,32 @@ public class PortletLocalServiceTest {
 
 			serviceRegistration.unregister();
 		}
+	}
+
+	@Test
+	public void testCachedPortletIsNotMutable() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		String portletName = RandomTestUtil.randomString();
+
+		_serviceRegistrations.add(
+			bundleContext.registerService(
+				Portlet.class, new TestPortlet(),
+				MapUtil.singletonDictionary(
+					"jakarta.portlet.name", portletName)));
+
+		long companyId = TestPropsValues.getCompanyId();
+		String portletId = PortletIdCodec.encode(portletName, 0, null);
+
+		_testCachedPortletIsNotMutable(
+			() -> _portletLocalService.getPortletById(companyId, portletId));
+		_testCachedPortletIsNotMutable(
+			() -> _portletLocalService.getPortletById(portletId));
+		_testCachedPortletIsNotMutable(
+			() -> _getPortletById(
+				_portletLocalService.getPortlets(), portletId));
 	}
 
 	@Test
@@ -156,6 +184,39 @@ public class PortletLocalServiceTest {
 		Assert.assertEquals(
 			customAttributesDisplays.toString(), 2,
 			customAttributesDisplays.size());
+	}
+
+	private com.liferay.portal.kernel.model.Portlet _getPortletById(
+		List<com.liferay.portal.kernel.model.Portlet> portlets,
+		String portletId) {
+
+		for (com.liferay.portal.kernel.model.Portlet portlet : portlets) {
+			if (portletId.equals(portlet.getPortletId())) {
+				return portlet;
+			}
+		}
+
+		return null;
+	}
+
+	private void _testCachedPortletIsNotMutable(
+		Supplier<com.liferay.portal.kernel.model.Portlet> portletSupplier) {
+
+		com.liferay.portal.kernel.model.Portlet portlet1 =
+			portletSupplier.get();
+
+		String multipartLocation = portlet1.getMultipartLocation();
+
+		try {
+			portlet1.setMultipartLocation(RandomTestUtil.randomString());
+		}
+		catch (UnsupportedOperationException unsupportedOperationException) {
+		}
+
+		com.liferay.portal.kernel.model.Portlet portlet2 =
+			portletSupplier.get();
+
+		Assert.assertEquals(multipartLocation, portlet2.getMultipartLocation());
 	}
 
 	private void _testFetchPortletById(

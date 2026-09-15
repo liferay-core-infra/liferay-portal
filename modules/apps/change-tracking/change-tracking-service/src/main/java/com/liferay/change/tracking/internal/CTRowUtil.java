@@ -30,7 +30,7 @@ import java.util.Set;
  */
 public class CTRowUtil {
 
-	public static int copyCTRows(
+	public static void copyCTRows(
 			CTPersistence<?> ctPersistence, Connection connection,
 			String selectSQL)
 		throws SQLException {
@@ -88,13 +88,9 @@ public class CTRowUtil {
 					preparedStatement2.addBatch();
 				}
 
-				int result = 0;
+				preparedStatement2.executeBatch();
 
-				for (int count : preparedStatement2.executeBatch()) {
-					result += count;
-				}
-
-				return result;
+				return;
 			}
 		}
 
@@ -116,7 +112,7 @@ public class CTRowUtil {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString())) {
 
-			return preparedStatement.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 	}
 

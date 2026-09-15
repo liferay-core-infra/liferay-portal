@@ -1142,7 +1142,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 			<if>
 				<not>
-					<equals arg1="${test.deploy.license}" arg2="false" />
+					<equals arg1="${license.not.present}" arg2="true" />
 				</not>
 				<then>
 					<antcall target="deploy-license-xml" />
@@ -2997,6 +2997,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							<antcall inheritAll="false" target="start-app-server-preserve-liferay-home">
 								<param name="app.server.start.executable.arg.line" value="${test.batch.app.server.start.executable.arg.line}" />
+								<param name="license.not.present" value="${license.not.present}" />
 							</antcall>
 
 							<deploy-release-dependency-modules-post-startup />
@@ -8716,9 +8717,9 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="integration-license-postgresql163">
-		<local name="test.deploy.license" />
+		<local name="license.not.present" />
 
-		<property name="test.deploy.license" value="false" />
+		<property name="license.not.present" value="true" />
 
 		<run-modules-integration-test
 			database.type="postgresql"

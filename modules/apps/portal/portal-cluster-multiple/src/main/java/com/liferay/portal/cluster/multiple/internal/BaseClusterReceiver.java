@@ -185,6 +185,17 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 	protected abstract void doReceive(
 		Object messagePayload, Address srcAddress);
 
+	private void _run(Runnable runnable) {
+		try {
+			runnable.run();
+		}
+		catch (Throwable throwable) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to run cluster receiver task", throwable);
+			}
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseClusterReceiver.class);
 
@@ -199,7 +210,7 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
-			doAddressesUpdated(_oldAddresses, _newAddresses);
+			_run(() -> doAddressesUpdated(_oldAddresses, _newAddresses));
 		}
 
 		private AddressesUpdatedRunnable(
@@ -218,8 +229,9 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
-			doCoordinatorAddressUpdated(
-				_oldCoordinatorAddress, _newCoordinatorAddress);
+			_run(
+				() -> doCoordinatorAddressUpdated(
+					_oldCoordinatorAddress, _newCoordinatorAddress));
 		}
 
 		private CoordinatorAddressUpdatedRunnable(
@@ -238,7 +250,7 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
-			doReceive(_messagePayload, _srcAddress);
+			_run(() -> doReceive(_messagePayload, _srcAddress));
 		}
 
 		private ReceiveRunnable(Object messagePayload, Address srcAddress) {

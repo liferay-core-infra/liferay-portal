@@ -229,6 +229,12 @@ public class PropertiesConfiguration extends AbstractFileConfiguration
     /** Allow file inclusion or not */
     private boolean includesAllowed = true;
 
+    /** Current include recursion depth */
+    private int includeDepth;
+
+    /** Maximum include recursion depth before aborting */
+    private static final int MAX_INCLUDE_DEPTH = 50;
+
     /**
      * Creates an empty PropertyConfiguration object which can be
      * used to synthesize a new Properties file by adding values and
@@ -1493,22 +1499,35 @@ public class PropertiesConfiguration extends AbstractFileConfiguration
      */
     private void loadIncludeFile(String fileName) throws ConfigurationException
     {
-        URL url = ConfigurationUtils.locate(getFileSystem(), getBasePath(), fileName);
-        if (url == null)
+        if (++includeDepth > MAX_INCLUDE_DEPTH)
         {
-            URL baseURL = getURL();
-            if (baseURL != null)
+            includeDepth--;
+            throw new ConfigurationException("Maximum include depth "
+                    + MAX_INCLUDE_DEPTH + " exceeded");
+        }
+        try
+        {
+            URL url = ConfigurationUtils.locate(getFileSystem(), getBasePath(), fileName);
+            if (url == null)
             {
-                url = ConfigurationUtils.locate(getFileSystem(), baseURL.toString(), fileName);
+                URL baseURL = getURL();
+                if (baseURL != null)
+                {
+                    url = ConfigurationUtils.locate(getFileSystem(), baseURL.toString(), fileName);
+                }
             }
-        }
 
-        if (url == null)
-        {
-            throw new ConfigurationException("Cannot resolve include file "
-                    + fileName);
+            if (url == null)
+            {
+                throw new ConfigurationException("Cannot resolve include file "
+                        + fileName);
+            }
+            load(url);
         }
-        load(url);
+        finally
+        {
+            includeDepth--;
+        }
     }
 }
 /* @generated */

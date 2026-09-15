@@ -1,0 +1,117 @@
+diff --git a/org/apache/commons/configuration/AbstractConfiguration.java b/org/apache/commons/configuration/AbstractConfiguration.java
+index eb4fa8a..993b618 100644
+--- a/org/apache/commons/configuration/AbstractConfiguration.java
++++ b/org/apache/commons/configuration/AbstractConfiguration.java
+@@ -36,6 +36,7 @@ import org.apache.commons.configuration.interpol.ConfigurationInterpolator;
+ import org.apache.commons.lang.BooleanUtils;
+ import org.apache.commons.lang.ClassUtils;
+ import org.apache.commons.lang.ObjectUtils;
++import org.apache.commons.lang.text.StrBuilder;
+ import org.apache.commons.lang.text.StrLookup;
+ import org.apache.commons.lang.text.StrSubstitutor;
+ import org.apache.commons.logging.Log;
+@@ -142,6 +143,9 @@ public abstract class AbstractConfiguration extends EventSource implements Confi
+      */
+     private boolean throwExceptionOnMissing;
+ 
++    /** Maximum length a single interpolation may expand to before aborting.*/
++    private static final int MAX_INTERPOLATION_LENGTH = 5000000;
++
+     /** Stores a reference to the object that handles variable interpolation.*/
+     private StrSubstitutor substitutor;
+ 
+@@ -291,7 +295,24 @@ public abstract class AbstractConfiguration extends EventSource implements Confi
+     {
+         if (substitutor == null)
+         {
+-            substitutor = new StrSubstitutor(createInterpolator());
++            substitutor = new StrSubstitutor(createInterpolator())
++            {
++                @Override
++                protected String resolveVariable(
++                    String variableName, StrBuilder buf, int startPos,
++                    int endPos)
++                {
++                    if (buf.length() > MAX_INTERPOLATION_LENGTH)
++                    {
++                        throw new IllegalStateException(
++                            "Interpolation exceeded maximum length " +
++                                MAX_INTERPOLATION_LENGTH);
++                    }
++
++                    return super.resolveVariable(
++                        variableName, buf, startPos, endPos);
++                }
++            };
+         }
+         return substitutor;
+     }
+@@ -1307,3 +1328,4 @@ public abstract class AbstractConfiguration extends EventSource implements Confi
+         return c;
+     }
+ }
++/* @generated */
+diff --git a/org/apache/commons/configuration/PropertiesConfiguration.java b/org/apache/commons/configuration/PropertiesConfiguration.java
+index 144c1d1..33e5ce8 100644
+--- a/org/apache/commons/configuration/PropertiesConfiguration.java
++++ b/org/apache/commons/configuration/PropertiesConfiguration.java
+@@ -229,6 +229,12 @@ public class PropertiesConfiguration extends AbstractFileConfiguration
+     /** Allow file inclusion or not */
+     private boolean includesAllowed = true;
+ 
++    /** Current include recursion depth */
++    private int includeDepth;
++
++    /** Maximum include recursion depth before aborting */
++    private static final int MAX_INCLUDE_DEPTH = 50;
++
+     /**
+      * Creates an empty PropertyConfiguration object which can be
+      * used to synthesize a new Properties file by adding values and
+@@ -1493,22 +1499,35 @@ public class PropertiesConfiguration extends AbstractFileConfiguration
+      */
+     private void loadIncludeFile(String fileName) throws ConfigurationException
+     {
+-        URL url = ConfigurationUtils.locate(getFileSystem(), getBasePath(), fileName);
+-        if (url == null)
++        if (++includeDepth > MAX_INCLUDE_DEPTH)
++        {
++            includeDepth--;
++            throw new ConfigurationException("Maximum include depth "
++                    + MAX_INCLUDE_DEPTH + " exceeded");
++        }
++        try
+         {
+-            URL baseURL = getURL();
+-            if (baseURL != null)
++            URL url = ConfigurationUtils.locate(getFileSystem(), getBasePath(), fileName);
++            if (url == null)
++            {
++                URL baseURL = getURL();
++                if (baseURL != null)
++                {
++                    url = ConfigurationUtils.locate(getFileSystem(), baseURL.toString(), fileName);
++                }
++            }
++
++            if (url == null)
+             {
+-                url = ConfigurationUtils.locate(getFileSystem(), baseURL.toString(), fileName);
++                throw new ConfigurationException("Cannot resolve include file "
++                        + fileName);
+             }
++            load(url);
+         }
+-
+-        if (url == null)
++        finally
+         {
+-            throw new ConfigurationException("Cannot resolve include file "
+-                    + fileName);
++            includeDepth--;
+         }
+-        load(url);
+     }
+ }
+ /* @generated */
+\ No newline at end of file

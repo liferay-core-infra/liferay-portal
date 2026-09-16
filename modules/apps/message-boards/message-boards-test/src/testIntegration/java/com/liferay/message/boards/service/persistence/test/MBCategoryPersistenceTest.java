@@ -805,4 +805,4 @@ public class MBCategoryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1220467320
+// LIFERAY-SERVICE-BUILDER-HASH:1165405070

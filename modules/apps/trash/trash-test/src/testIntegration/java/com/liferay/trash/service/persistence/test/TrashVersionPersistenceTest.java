@@ -514,4 +514,4 @@ public class TrashVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-430636691
+// LIFERAY-SERVICE-BUILDER-HASH:-918002317

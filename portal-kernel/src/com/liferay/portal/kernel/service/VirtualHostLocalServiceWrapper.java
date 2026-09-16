@@ -332,6 +332,21 @@ public class VirtualHostLocalServiceWrapper
 			excludedLayoutSetId, virtualHostNames);
 	}
 
+	@Override
+	public void registerVirtualHost(String hostname, long companyId) {
+		_virtualHostLocalService.registerVirtualHost(hostname, companyId);
+	}
+
+	@Override
+	public void unregisterVirtualHost(String hostname) {
+		_virtualHostLocalService.unregisterVirtualHost(hostname);
+	}
+
+	@Override
+	public void unregisterVirtualHosts(long companyId) {
+		_virtualHostLocalService.unregisterVirtualHosts(companyId);
+	}
+
 	/**
 	 * Updates the virtual host in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -396,4 +411,4 @@ public class VirtualHostLocalServiceWrapper
 	private VirtualHostLocalService _virtualHostLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1070851949
+// LIFERAY-SERVICE-BUILDER-HASH:-1303334425

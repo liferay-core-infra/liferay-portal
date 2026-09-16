@@ -8,14 +8,16 @@ package com.liferay.portal.upgrade.v7_4_x.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.change.tracking.test.util.BaseCTUpgradeProcessTestCase;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.model.change.tracking.CTModel;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.service.change.tracking.CTService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -43,11 +45,14 @@ public class UpgradeVirtualHostTest extends BaseCTUpgradeProcessTestCase {
 
 	@Override
 	protected CTModel<?> addCTModel() throws Exception {
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
 		List<VirtualHost> virtualHosts =
 			_virtualHostLocalService.updateVirtualHosts(
-				PortalUtil.getDefaultCompanyId(), 0,
+				company.getCompanyId(), 0,
 				TreeMapBuilder.put(
-					"localhost", StringPool.BLANK
+					company.getVirtualHostname(), StringPool.BLANK
 				).build());
 
 		return virtualHosts.get(0);
@@ -77,6 +82,9 @@ public class UpgradeVirtualHostTest extends BaseCTUpgradeProcessTestCase {
 
 		return _virtualHostLocalService.updateVirtualHost(virtualHost);
 	}
+
+	@Inject
+	private CompanyLocalService _companyLocalService;
 
 	@Inject
 	private VirtualHostLocalService _virtualHostLocalService;

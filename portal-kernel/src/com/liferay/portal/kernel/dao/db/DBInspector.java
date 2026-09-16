@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -231,6 +232,55 @@ public class DBInspector {
 
 			return true;
 		}
+	}
+
+	public boolean hasDBPartitionView(String viewName) throws Exception {
+		if (!PropsValues.DATABASE_PARTITION_ENABLED) {
+			return false;
+		}
+
+		if (hasView(viewName)) {
+			return true;
+		}
+
+		DatabaseMetaData databaseMetaData = _connection.getMetaData();
+
+		viewName = normalizeName(viewName, databaseMetaData);
+
+		DB db = DBManagerUtil.getDB();
+
+		long defaultCompanyId = PortalInstancePool.getDefaultCompanyIdBySQL(
+			_connection);
+
+		for (long companyId :
+				PortalInstancePool.getCompanyIdsBySQL(_connection)) {
+
+			if (companyId == defaultCompanyId) {
+				continue;
+			}
+
+			String partitionName =
+				PropsValues.DATABASE_PARTITION_SCHEMA_NAME_PREFIX + companyId;
+
+			String catalog = partitionName;
+
+			String schemaPattern = null;
+
+			if (db.getDBType() == DBType.POSTGRESQL) {
+				catalog = null;
+				schemaPattern = partitionName;
+			}
+
+			try (ResultSet resultSet = databaseMetaData.getTables(
+					catalog, schemaPattern, viewName, new String[] {"VIEW"})) {
+
+				if (resultSet.next()) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public boolean hasIndex(String tableName, String indexName)
@@ -625,8 +675,7 @@ public class DBInspector {
 	private static final Map<String, Integer> _columnTypes =
 		new ConcurrentHashMap<>();
 	private static final Set<String> _controlTableNames = new HashSet<>(
-		Arrays.asList(
-			"company", "release_", "servicecomponent", "virtualhost"));
+		Arrays.asList("company", "release_", "servicecomponent"));
 	private static final Set<String> _partitionedControlTableNames =
 		new HashSet<>(Arrays.asList("classname_", "counter", "resourceaction"));
 	private static final Map<String, Set<String>> _tableNamesMap =

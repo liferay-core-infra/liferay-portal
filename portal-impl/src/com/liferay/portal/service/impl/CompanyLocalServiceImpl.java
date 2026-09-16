@@ -798,13 +798,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		virtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 			virtualHostname);
-
-		if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-			virtualHost = _virtualHostPersistence.fetchByHostname(
-				IDN.toUnicode(virtualHostname));
-		}
 
 		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
 			return null;
@@ -1962,11 +1957,20 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				virtualHostname);
 
 			if (virtualHost == null) {
-				_virtualHostLocalService.updateVirtualHosts(
-					companyId, 0,
-					TreeMapBuilder.put(
-						virtualHostname, StringPool.BLANK
-					).build());
+				try {
+					_virtualHostLocalService.updateVirtualHosts(
+						companyId, 0,
+						TreeMapBuilder.put(
+							virtualHostname, StringPool.BLANK
+						).build());
+				}
+				catch (DuplicateVirtualHostnameException
+							duplicateVirtualHostnameException) {
+
+					throw new CompanyVirtualHostException(
+						duplicateVirtualHostnameException.getMessage(),
+						duplicateVirtualHostnameException);
+				}
 			}
 			else {
 				if ((virtualHost.getCompanyId() != companyId) ||

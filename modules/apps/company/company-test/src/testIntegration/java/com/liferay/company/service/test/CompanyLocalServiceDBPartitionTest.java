@@ -28,6 +28,7 @@ import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.ClassName;
@@ -258,25 +259,6 @@ public class CompanyLocalServiceDBPartitionTest
 	}
 
 	@Test
-	public void testAddCompanyUsesVirtualHostCounter() throws Exception {
-		long counter = _counterLocalService.increment();
-
-		_company1 = CompanyTestUtil.addCompany();
-
-		VirtualHost virtualHost = _virtualHostLocalService.getVirtualHost(
-			_company1.getVirtualHostname());
-
-		Assert.assertEquals(counter + 1, virtualHost.getVirtualHostId());
-
-		_company2 = CompanyTestUtil.addCompany();
-
-		virtualHost = _virtualHostLocalService.getVirtualHost(
-			_company2.getVirtualHostname());
-
-		Assert.assertEquals(counter + 2, virtualHost.getVirtualHostId());
-	}
-
-	@Test
 	public void testAddCompanyWhenCompanyLocalServiceFails() throws Exception {
 		long[] companyIds = CompanyLocalServiceTestUtil.getCompanyIdsBySQL();
 		int dbPartitionsCount = _getDBPartitionsCount();
@@ -499,7 +481,7 @@ public class CompanyLocalServiceDBPartitionTest
 								if (Objects.equals(
 										method.getName(), "getCreateViewSQL") &&
 									StringUtil.equalsIgnoreCase(
-										(String)args[2], "VirtualHost")) {
+										(String)args[2], "ServiceComponent")) {
 
 									throw new Exception();
 								}
@@ -725,9 +707,9 @@ public class CompanyLocalServiceDBPartitionTest
 						new Class<?>[] {DBPartitionDB.class},
 						(proxy, method, args) -> {
 							if (Objects.equals(
-									method.getName(), "getCreateViewSQL") &&
+									method.getName(), "getCreateTableSQL") &&
 								StringUtil.equalsIgnoreCase(
-									(String)args[2], "VirtualHost")) {
+									(String)args[3], "VirtualHost")) {
 
 								throw new Exception();
 							}
@@ -817,6 +799,21 @@ public class CompanyLocalServiceDBPartitionTest
 	}
 
 	@Test
+	public void testDeleteCompanyDeletesVirtualHost() throws Exception {
+		_company1 = CompanyTestUtil.addCompany();
+
+		String virtualHostname = _company1.getVirtualHostname();
+
+		Assert.assertEquals(
+			_company1.getCompanyId(),
+			_fetchVirtualHostCompanyId(virtualHostname));
+
+		companyLocalService.deleteCompany(_company1);
+
+		Assert.assertEquals(0, _fetchVirtualHostCompanyId(virtualHostname));
+	}
+
+	@Test
 	public void testDeleteCompanyWhenDBPartitionUtilFails() throws Exception {
 		_company1 = CompanyTestUtil.addCompany();
 
@@ -845,6 +842,22 @@ public class CompanyLocalServiceDBPartitionTest
 				ArrayUtil.contains(
 					CompanyLocalServiceTestUtil.getCompanyIdsBySQL(),
 					_company1.getCompanyId()));
+		}
+	}
+
+	@Test
+	public void testFetchCompanyByVirtualHost() throws Exception {
+		_company1 = CompanyTestUtil.addCompany();
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
+			Company company = companyLocalService.fetchCompanyByVirtualHost(
+				_company1.getVirtualHostname());
+
+			Assert.assertEquals(
+				_company1.getCompanyId(), company.getCompanyId());
 		}
 	}
 
@@ -919,6 +932,26 @@ public class CompanyLocalServiceDBPartitionTest
 
 			Assert.assertTrue(DBPartition.isCurrentCompanyRestricted());
 		}
+	}
+
+	@Test
+	public void testUpdateCompanyMovesVirtualHost() throws Exception {
+		_company1 = CompanyTestUtil.addCompany();
+
+		String virtualHostname = _company1.getVirtualHostname();
+
+		String newVirtualHostname = StringUtil.toLowerCase(
+			RandomTestUtil.randomString() + StringPool.PERIOD +
+				RandomTestUtil.randomString(3));
+
+		companyLocalService.updateCompany(
+			_company1.getCompanyId(), newVirtualHostname, _company1.getMx(),
+			_company1.getMaxUsers(), _company1.isActive());
+
+		Assert.assertEquals(0, _fetchVirtualHostCompanyId(virtualHostname));
+		Assert.assertEquals(
+			_company1.getCompanyId(),
+			_fetchVirtualHostCompanyId(newVirtualHostname));
 	}
 
 	@Test
@@ -998,6 +1031,19 @@ public class CompanyLocalServiceDBPartitionTest
 		company = companyLocalService.getCompany(_company1.getCompanyId());
 
 		Assert.assertEquals(updatedMx, company.getMx());
+	}
+
+	@Test(expected = CompanyVirtualHostException.class)
+	public void testUpdateCompanyWhenVirtualHostnameIsDuplicate()
+		throws Exception {
+
+		_company1 = CompanyTestUtil.addCompany();
+
+		_company2 = CompanyTestUtil.addCompany();
+
+		companyLocalService.updateCompany(
+			_company2.getCompanyId(), _company1.getVirtualHostname(),
+			_company2.getMx(), _company2.getMaxUsers(), _company2.isActive());
 	}
 
 	private void _addCopyDBPartitionCompanyCache(long companyId) {
@@ -1107,7 +1153,12 @@ public class CompanyLocalServiceDBPartitionTest
 		Assert.assertEquals(virtualHostname, company.getVirtualHostname());
 		Assert.assertEquals(webId, company.getWebId());
 
-		_virtualHostLocalService.getVirtualHost(virtualHostname);
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
+			_virtualHostLocalService.getVirtualHost(virtualHostname);
+		}
 	}
 
 	private void _assertCopyDBPartitionCompanyCache(long companyId) {
@@ -1318,6 +1369,22 @@ public class CompanyLocalServiceDBPartitionTest
 			preparedStatement.setLong(1, companyId);
 
 			preparedStatement.executeUpdate();
+		}
+	}
+
+	private long _fetchVirtualHostCompanyId(String hostname) {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					PortalInstancePool.getDefaultCompanyId())) {
+
+			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+				hostname);
+
+			if (virtualHost == null) {
+				return 0;
+			}
+
+			return virtualHost.getCompanyId();
 		}
 	}
 

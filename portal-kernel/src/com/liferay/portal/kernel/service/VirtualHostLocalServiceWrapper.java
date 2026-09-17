@@ -338,6 +338,11 @@ public class VirtualHostLocalServiceWrapper
 	}
 
 	@Override
+	public void reloadVirtualHosts() {
+		_virtualHostLocalService.reloadVirtualHosts();
+	}
+
+	@Override
 	public void unregisterVirtualHost(String hostname) {
 		_virtualHostLocalService.unregisterVirtualHost(hostname);
 	}
@@ -411,4 +416,4 @@ public class VirtualHostLocalServiceWrapper
 	private VirtualHostLocalService _virtualHostLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:138208115
+// LIFERAY-SERVICE-BUILDER-HASH:-1608422844

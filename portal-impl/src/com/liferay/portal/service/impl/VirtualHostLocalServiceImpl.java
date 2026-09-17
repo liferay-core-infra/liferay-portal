@@ -5,9 +5,12 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
+import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.AvailableLocaleException;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
@@ -19,14 +22,17 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.VirtualHost;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPersistence;
 import com.liferay.portal.kernel.transaction.TransactionCallbackUtil;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.impl.LayoutSetImpl;
 import com.liferay.portal.service.base.VirtualHostLocalServiceBaseImpl;
@@ -106,6 +112,101 @@ public class VirtualHostLocalServiceImpl
 			}
 		}
 
+		long companyId = _virtualHostRegistry.fetchCompanyId(hostname);
+
+		if (companyId != 0) {
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						companyId,
+						CTCollectionThreadLocal.getCTCollectionId())) {
+
+				return _fetchVirtualHost(hostname);
+			}
+		}
+
+		return _fetchVirtualHost(hostname);
+	}
+
+	@Override
+	public VirtualHost getVirtualHost(String hostname) throws PortalException {
+		long companyId = _virtualHostRegistry.fetchCompanyId(hostname);
+
+		if (companyId != 0) {
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						companyId,
+						CTCollectionThreadLocal.getCTCollectionId())) {
+
+				return _getVirtualHost(hostname);
+			}
+		}
+
+		return _getVirtualHost(hostname);
+	}
+
+	@Override
+	public List<VirtualHost> getVirtualHosts(long companyId) {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					companyId, CTCollectionThreadLocal.getCTCollectionId())) {
+
+			return virtualHostPersistence.findByCompanyId(companyId);
+		}
+	}
+
+	@Override
+	public List<VirtualHost> getVirtualHosts(long companyId, long layoutSetId) {
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					companyId, CTCollectionThreadLocal.getCTCollectionId())) {
+
+			return _getVirtualHosts(companyId, layoutSetId);
+		}
+	}
+
+	@Override
+	public long getVirtualHostsCount(
+		long excludedLayoutSetId, String[] virtualHostNames) {
+
+		return virtualHostPersistence.countByNotL_H(
+			excludedLayoutSetId, virtualHostNames);
+	}
+
+	@Clusterable
+	@Override
+	@Transactional(enabled = false)
+	public void registerVirtualHost(long companyId, String hostname) {
+		_virtualHostRegistry.register(companyId, hostname);
+	}
+
+
+	@Clusterable
+	@Override
+	@Transactional(enabled = false)
+	public void unregisterVirtualHost(String hostname) {
+		_virtualHostRegistry.unregister(hostname);
+	}
+
+	@Clusterable
+	@Override
+	@Transactional(enabled = false)
+	public void unregisterVirtualHosts(long companyId) {
+		_virtualHostRegistry.unregister(companyId);
+	}
+
+	@Override
+	public List<VirtualHost> updateVirtualHosts(
+		long companyId, long layoutSetId, TreeMap<String, String> hostnames) {
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					companyId, CTCollectionThreadLocal.getCTCollectionId())) {
+
+			return _updateVirtualHosts(companyId, layoutSetId, hostnames);
+		}
+	}
+
+	private VirtualHost _fetchVirtualHost(String hostname) {
 		VirtualHost virtualHost = virtualHostPersistence.fetchByHostname(
 			hostname);
 
@@ -117,8 +218,9 @@ public class VirtualHostLocalServiceImpl
 		return virtualHost;
 	}
 
-	@Override
-	public VirtualHost getVirtualHost(String hostname) throws PortalException {
+	private VirtualHost _getVirtualHost(String hostname)
+		throws PortalException {
+
 		try {
 			return virtualHostPersistence.findByHostname(hostname);
 		}
@@ -132,13 +234,9 @@ public class VirtualHostLocalServiceImpl
 		}
 	}
 
-	@Override
-	public List<VirtualHost> getVirtualHosts(long companyId) {
-		return virtualHostPersistence.findByCompanyId(companyId);
-	}
+	private List<VirtualHost> _getVirtualHosts(
+		long companyId, long layoutSetId) {
 
-	@Override
-	public List<VirtualHost> getVirtualHosts(long companyId, long layoutSetId) {
 		if (_cacheableQueryLimitLPD27353 <= 0) {
 			return virtualHostPersistence.findByC_L(companyId, layoutSetId);
 		}
@@ -153,13 +251,15 @@ public class VirtualHostLocalServiceImpl
 		List<VirtualHost> filteredVirtualHosts = null;
 
 		for (VirtualHost virtualHost : virtualHosts) {
-			if (virtualHost.getLayoutSetId() == layoutSetId) {
-				if (filteredVirtualHosts == null) {
-					filteredVirtualHosts = new ArrayList<>(virtualHosts.size());
-				}
-
-				filteredVirtualHosts.add(virtualHost);
+			if (virtualHost.getLayoutSetId() != layoutSetId) {
+				continue;
 			}
+
+			if (filteredVirtualHosts == null) {
+				filteredVirtualHosts = new ArrayList<>(virtualHosts.size());
+			}
+
+			filteredVirtualHosts.add(virtualHost);
 		}
 
 		if (filteredVirtualHosts == null) {
@@ -169,16 +269,7 @@ public class VirtualHostLocalServiceImpl
 		return filteredVirtualHosts;
 	}
 
-	@Override
-	public long getVirtualHostsCount(
-		long excludedLayoutSetId, String[] virtualHostNames) {
-
-		return virtualHostPersistence.countByNotL_H(
-			excludedLayoutSetId, virtualHostNames);
-	}
-
-	@Override
-	public List<VirtualHost> updateVirtualHosts(
+	private List<VirtualHost> _updateVirtualHosts(
 		long companyId, long layoutSetId, TreeMap<String, String> hostnames) {
 
 		LayoutSet layoutSet = _layoutSetPersistence.fetchByPrimaryKey(
@@ -194,6 +285,20 @@ public class VirtualHostLocalServiceImpl
 		List<VirtualHost> virtualHosts = new ArrayList<>(
 			virtualHostPersistence.findByC_L(companyId, layoutSetId));
 
+		List<String> reservedHostnames = new ArrayList<>();
+
+		if (_virtualHostRegistry.isEnabled()) {
+			TransactionCallbackUtil.registerRollbackCallback(
+				() -> {
+					for (String reservedHostname : reservedHostnames) {
+						virtualHostLocalService.unregisterVirtualHost(
+							reservedHostname);
+					}
+
+					return null;
+				});
+		}
+
 		boolean first = true;
 
 		for (String curHostname : hostnames.navigableKeySet()) {
@@ -208,6 +313,26 @@ public class VirtualHostLocalServiceImpl
 			}
 
 			if (virtualHost == null) {
+				if (_virtualHostRegistry.isEnabled()) {
+					Long virtualHostCompanyId =
+						_virtualHostRegistry.registerIfAbsent(
+							companyId, curHostname);
+
+					if ((virtualHostCompanyId != null) &&
+						(virtualHostCompanyId != companyId)) {
+
+						throw new DuplicateVirtualHostnameException(
+							curHostname);
+					}
+
+					if (virtualHostCompanyId == null) {
+						reservedHostnames.add(curHostname);
+
+						virtualHostLocalService.registerVirtualHost(
+							companyId, curHostname);
+					}
+				}
+
 				long virtualHostId = DBPartitionUtil.incrementCounter();
 
 				virtualHost = virtualHostPersistence.create(virtualHostId);
@@ -240,6 +365,8 @@ public class VirtualHostLocalServiceImpl
 			virtualHostPersistence.update(virtualHost);
 		}
 
+		List<String> removedHostnames = new ArrayList<>();
+
 		Iterator<VirtualHost> iterator = virtualHosts.iterator();
 
 		while (iterator.hasNext()) {
@@ -248,11 +375,25 @@ public class VirtualHostLocalServiceImpl
 			if (!hostnames.containsKey(virtualHost.getHostname())) {
 				iterator.remove();
 
+				removedHostnames.add(virtualHost.getHostname());
+
 				virtualHostPersistence.remove(virtualHost);
 			}
 		}
 
 		virtualHostPersistence.cacheResult(virtualHosts);
+
+		if (_virtualHostRegistry.isEnabled()) {
+			TransactionCallbackUtil.registerCommitCallback(
+				() -> {
+					for (String removedHostname : removedHostnames) {
+						virtualHostLocalService.unregisterVirtualHost(
+							removedHostname);
+					}
+
+					return null;
+				});
+		}
 
 		Company company = _companyPersistence.fetchByPrimaryKey(companyId);
 
@@ -301,6 +442,7 @@ public class VirtualHostLocalServiceImpl
 	private volatile int _cacheableQueryLimitLPD27353 = GetterUtil.getInteger(
 		PropsUtil.get("cacheable.query.limit.LPD-27353"));
 
+
 	@BeanReference(type = CompanyPersistence.class)
 	private CompanyPersistence _companyPersistence;
 
@@ -309,5 +451,8 @@ public class VirtualHostLocalServiceImpl
 
 	@BeanReference(type = LayoutSetPersistence.class)
 	private LayoutSetPersistence _layoutSetPersistence;
+
+	private final VirtualHostRegistry _virtualHostRegistry =
+		new VirtualHostRegistry();
 
 }

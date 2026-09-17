@@ -1957,11 +1957,20 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				virtualHostname);
 
 			if (virtualHost == null) {
-				_virtualHostLocalService.updateVirtualHosts(
-					companyId, 0,
-					TreeMapBuilder.put(
-						virtualHostname, StringPool.BLANK
-					).build());
+				try {
+					_virtualHostLocalService.updateVirtualHosts(
+						companyId, 0,
+						TreeMapBuilder.put(
+							virtualHostname, StringPool.BLANK
+						).build());
+				}
+				catch (DuplicateVirtualHostnameException
+							duplicateVirtualHostnameException) {
+
+					throw new CompanyVirtualHostException(
+						duplicateVirtualHostnameException.getMessage(),
+						duplicateVirtualHostnameException);
+				}
 			}
 			else {
 				if ((virtualHost.getCompanyId() != companyId) ||

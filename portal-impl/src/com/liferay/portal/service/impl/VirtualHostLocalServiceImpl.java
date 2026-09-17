@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPersistence;
@@ -44,9 +45,11 @@ import java.net.UnknownHostException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -179,6 +182,30 @@ public class VirtualHostLocalServiceImpl
 		_virtualHostRegistry.register(companyId, hostname);
 	}
 
+	@Clusterable
+	@Override
+	@Transactional(enabled = false)
+	public void reloadVirtualHosts() {
+		if (!_virtualHostRegistry.isEnabled()) {
+			return;
+		}
+
+		Map<String, Long> companyIdsByHostnameMap = new HashMap<>();
+
+		_companyLocalService.forEachCompany(
+			company -> {
+				for (VirtualHost virtualHost :
+						virtualHostLocalService.getVirtualHosts(
+							company.getCompanyId())) {
+
+					companyIdsByHostnameMap.put(
+						StringUtil.toLowerCase(virtualHost.getHostname()),
+						virtualHost.getCompanyId());
+				}
+			});
+
+		_virtualHostRegistry.reset(companyIdsByHostnameMap);
+	}
 
 	@Clusterable
 	@Override
@@ -442,6 +469,8 @@ public class VirtualHostLocalServiceImpl
 	private volatile int _cacheableQueryLimitLPD27353 = GetterUtil.getInteger(
 		PropsUtil.get("cacheable.query.limit.LPD-27353"));
 
+	@BeanReference(type = CompanyLocalService.class)
+	private CompanyLocalService _companyLocalService;
 
 	@BeanReference(type = CompanyPersistence.class)
 	private CompanyPersistence _companyPersistence;

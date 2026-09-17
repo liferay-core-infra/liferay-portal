@@ -538,9 +538,9 @@ public class EditServerMVCActionCommandTest {
 		"cleanUpOrphanedPortletPreferences", "convertProcess.",
 		"dlDeletePreviews", "dlGenerateAudioPreviews",
 		"dlGenerateOpenOfficePreviews", "dlGeneratePDFPreviews",
-		"dlGenerateVideoPreviews", "gc", "runScript", "shutdown", "threadDump",
-		"updateExternalServices", "updateLogLevels", "updatePortalProperties",
-		"updatePortalProperties"
+		"dlGenerateVideoPreviews", "gc", "reloadVirtualHosts", "runScript",
+		"shutdown", "threadDump", "updateExternalServices", "updateLogLevels",
+		"updatePortalProperties", "updatePortalProperties"
 	};
 
 	@Inject

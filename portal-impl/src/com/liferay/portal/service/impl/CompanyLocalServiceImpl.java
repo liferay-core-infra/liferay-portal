@@ -798,13 +798,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		virtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 			virtualHostname);
-
-		if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-			virtualHost = _virtualHostPersistence.fetchByHostname(
-				IDN.toUnicode(virtualHostname));
-		}
 
 		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
 			return null;

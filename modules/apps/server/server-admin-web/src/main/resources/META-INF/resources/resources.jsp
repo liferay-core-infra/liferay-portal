@@ -12,6 +12,8 @@
 <liferay-ui:error exception="<%= CaptchaTextException.class %>" message="text-verification-failed" />
 
 <%
+ServerDisplayContext serverDisplayContext = (ServerDisplayContext)request.getAttribute(ServerAdminWebKeys.SERVER_DISPLAY_CONTEXT);
+
 String[] installedPatches = PatcherValues.INSTALLED_PATCH_NAMES;
 
 Date modifiedDate = PortalUtil.getUptime();
@@ -182,6 +184,20 @@ long usedMemory = totalMemory - runtime.freeMemory();
 						<aui:button cssClass="save-server-button" data-cmd="cacheServlet" value="execute" />
 					</div>
 				</li>
+
+				<c:if test="<%= serverDisplayContext.isDatabasePartitionEnabled() %>">
+					<li class="list-group-item list-group-item-flex">
+						<div class="autofit-col autofit-col-expand">
+							<p class="list-group-title text-truncate">
+								<liferay-ui:message key="reload-the-virtual-hosts" />
+							</p>
+						</div>
+
+						<div class="autofit-col">
+							<aui:button cssClass="save-server-button" data-cmd="reloadVirtualHosts" value="execute" />
+						</div>
+					</li>
+				</c:if>
 			</ul>
 		</aui:fieldset>
 

@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import jakarta.portlet.RenderRequest;
@@ -139,6 +140,10 @@ public class ServerDisplayContext {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	public boolean isDatabasePartitionEnabled() {
+		return PropsValues.DATABASE_PARTITION_ENABLED;
 	}
 
 	private static final String[] _TABS1_NAMES = {

@@ -85,6 +85,7 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.servlet.DirectServletRegistryUtil;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -269,6 +270,9 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		}
 		else if (cmd.equals("gc")) {
 			_gc();
+		}
+		else if (cmd.equals("reloadVirtualHosts")) {
+			_reloadVirtualHosts();
 		}
 		else if (cmd.equals("runScript")) {
 			_runScript(actionRequest, actionResponse);
@@ -711,6 +715,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
+	private void _reloadVirtualHosts() {
+		_virtualHostLocalService.reloadVirtualHosts();
+	}
+
 	private void _runScript(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -979,5 +987,8 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference(target = "(type=" + DLProcessorConstants.VIDEO_PROCESSOR + ")")
 	private DLProcessor _videoDLProcessor;
+
+	@Reference
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

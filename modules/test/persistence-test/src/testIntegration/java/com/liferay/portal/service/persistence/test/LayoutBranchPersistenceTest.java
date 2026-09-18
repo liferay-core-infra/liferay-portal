@@ -551,4 +551,4 @@ public class LayoutBranchPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:883415761
+// LIFERAY-SERVICE-BUILDER-HASH:-1511224693

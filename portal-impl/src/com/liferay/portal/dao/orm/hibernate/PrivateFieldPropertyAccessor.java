@@ -14,12 +14,13 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
+import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 import java.util.Map;
 
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.property.access.spi.Getter;
 import org.hibernate.property.access.spi.PropertyAccess;
@@ -41,7 +42,7 @@ public class PrivateFieldPropertyAccessor implements PropertyAccessStrategy {
 
 	@Override
 	public PropertyAccess buildPropertyAccess(
-		Class clazz, String propertyName) {
+		Class clazz, String propertyName, boolean setterRequired) {
 
 		String fieldName;
 
@@ -85,7 +86,7 @@ public class PrivateFieldPropertyAccessor implements PropertyAccessStrategy {
 
 		@Override
 		public Member getMember() {
-			return null;
+			return _varHandleHolder.getField();
 		}
 
 		@Override
@@ -99,10 +100,17 @@ public class PrivateFieldPropertyAccessor implements PropertyAccessStrategy {
 		}
 
 		@Override
-		public Class getReturnType() {
-			VarHandle verHandle = _varHandleHolder.getVarHandle();
+		public Type getReturnType() {
+			VarHandle varHandle = _varHandleHolder.getVarHandle();
 
-			return verHandle.varType();
+			return varHandle.varType();
+		}
+
+		@Override
+		public Class<?> getReturnTypeClass() {
+			VarHandle varHandle = _varHandleHolder.getVarHandle();
+
+			return varHandle.varType();
 		}
 
 		private FieldGetter(VarHandleHolder varHandleHolder) {
@@ -126,10 +134,7 @@ public class PrivateFieldPropertyAccessor implements PropertyAccessStrategy {
 		}
 
 		@Override
-		public void set(
-			Object target, Object value,
-			SessionFactoryImplementor sessionFactoryImplementor) {
-
+		public void set(Object target, Object value) {
 			VarHandle varHandle = _varHandleHolder.getVarHandle();
 
 			varHandle.set(target, value);
@@ -145,32 +150,17 @@ public class PrivateFieldPropertyAccessor implements PropertyAccessStrategy {
 
 	private static class VarHandleHolder {
 
+		public Field getField() {
+			if (_field == null) {
+				_initialize();
+			}
+
+			return _field;
+		}
+
 		public VarHandle getVarHandle() {
 			if (_varHandle == null) {
-				Class<?> modelClass = _containerJavaType;
-
-				if (BaseModelImpl.class.isAssignableFrom(modelClass)) {
-					Class<?> superClass = modelClass.getSuperclass();
-
-					while (BaseModelImpl.class != superClass) {
-						modelClass = superClass;
-
-						superClass = modelClass.getSuperclass();
-					}
-				}
-
-				MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
-
-				try {
-					_varHandle = lookup.unreflectVarHandle(
-						modelClass.getDeclaredField(_propertyName));
-				}
-				catch (ReflectiveOperationException
-							reflectiveOperationException) {
-
-					return ReflectionUtil.throwException(
-						reflectiveOperationException);
-				}
+				_initialize();
 			}
 
 			return _varHandle;
@@ -183,7 +173,33 @@ public class PrivateFieldPropertyAccessor implements PropertyAccessStrategy {
 			_propertyName = propertyName;
 		}
 
+		private void _initialize() {
+			Class<?> modelClass = _containerJavaType;
+
+			if (BaseModelImpl.class.isAssignableFrom(modelClass)) {
+				Class<?> superClass = modelClass.getSuperclass();
+
+				while (BaseModelImpl.class != superClass) {
+					modelClass = superClass;
+
+					superClass = modelClass.getSuperclass();
+				}
+			}
+
+			MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
+
+			try {
+				_field = modelClass.getDeclaredField(_propertyName);
+
+				_varHandle = lookup.unreflectVarHandle(_field);
+			}
+			catch (ReflectiveOperationException reflectiveOperationException) {
+				ReflectionUtil.throwException(reflectiveOperationException);
+			}
+		}
+
 		private final Class<?> _containerJavaType;
+		private Field _field;
 		private final String _propertyName;
 		private VarHandle _varHandle;
 

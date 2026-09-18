@@ -1170,4 +1170,4 @@ public class FragmentEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1163124556
+// LIFERAY-SERVICE-BUILDER-HASH:-356585978

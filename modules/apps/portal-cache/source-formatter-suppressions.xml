@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
 <suppressions>
+	<checkstyle>
+		<suppress checks="TestClassStaticVariableCheck" files="portal-cache-test/src/testIntegration/java/com/liferay/portal/cache/internal/test/ClusterLinkTest\.java" />
+	</checkstyle>
 	<source-check>
 		<suppress checks="JavaCompanyThreadLocalCheck" files="portal-cache-impl/src/main/java/com/liferay/portal/cache/internal/dao/orm/EntityCacheImpl\.java" />
 		<suppress checks="JavaCompanyThreadLocalCheck" files="portal-cache-multiple/src/main/java/com/liferay/portal/cache/multiple/internal/cluster/link/messaging/ClusterLinkPortalCacheClusterListener\.java" />

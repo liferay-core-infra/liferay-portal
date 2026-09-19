@@ -182,7 +182,10 @@ public interface ObjectDefinitionLocalService
 	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
+	@SystemEvent(
+		action = SystemEventConstants.ACTION_SKIP,
+		type = SystemEventConstants.TYPE_DELETE
+	)
 	public ObjectDefinition deleteObjectDefinition(
 			ObjectDefinition objectDefinition)
 		throws PortalException;
@@ -532,4 +535,4 @@ public interface ObjectDefinitionLocalService
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1406267445
+// LIFERAY-SERVICE-BUILDER-HASH:-692896154

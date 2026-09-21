@@ -40,6 +40,7 @@ import java.nio.ByteBuffer;
 
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -53,11 +54,19 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.hibernate.boot.jaxb.internal.InputStreamXmlSource;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
+import org.hibernate.bytecode.enhance.spi.EnhancementContext;
+import org.hibernate.bytecode.enhance.spi.Enhancer;
+import org.hibernate.bytecode.internal.BytecodeProviderInitiator;
+import org.hibernate.bytecode.spi.BytecodeProvider;
+import org.hibernate.bytecode.spi.ProxyFactoryFactory;
+import org.hibernate.bytecode.spi.ReflectionOptimizer;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.property.access.spi.PropertyAccess;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
 
 import org.osgi.framework.Bundle;
@@ -136,6 +145,12 @@ public class PortalHibernateConfiguration
 			new MetadataSources(bootstrapServiceRegistryBuilder.build()));
 
 		SQLTransformer.populateSQLFunctions(configuration);
+
+		StandardServiceRegistryBuilder standardServiceRegistryBuilder =
+			configuration.getStandardServiceRegistryBuilder();
+
+		standardServiceRegistryBuilder.addService(
+			BytecodeProvider.class, new LiferayBytecodeProvider());
 
 		if (_mvccEnabled) {
 			configuration.setStatementInspector(new CTSQLInterceptor());
@@ -397,6 +412,43 @@ public class PortalHibernateConfiguration
 	private DataSource _dataSource;
 	private boolean _mvccEnabled = true;
 	private SessionFactory _sessionFactory;
+
+	private static class LiferayBytecodeProvider implements BytecodeProvider {
+
+		@Override
+		public Enhancer getEnhancer(EnhancementContext enhancementContext) {
+			return _bytecodeProvider.getEnhancer(enhancementContext);
+		}
+
+		@Override
+		public ProxyFactoryFactory getProxyFactoryFactory() {
+			return _bytecodeProvider.getProxyFactoryFactory();
+		}
+
+		@Override
+		public ReflectionOptimizer getReflectionOptimizer(
+			Class clazz, String[] getterNames, String[] setterNames,
+			Class[] types) {
+
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public ReflectionOptimizer getReflectionOptimizer(
+			Class<?> clazz, Map<String, PropertyAccess> propertyAccessMap) {
+
+			return null;
+		}
+
+		@Override
+		public void resetCaches() {
+			_bytecodeProvider.resetCaches();
+		}
+
+		private static final BytecodeProvider _bytecodeProvider =
+			BytecodeProviderInitiator.buildDefaultBytecodeProvider();
+
+	}
 
 	private static class SharedJavaServicesClassLoaderService
 		extends ClassLoaderServiceImpl {

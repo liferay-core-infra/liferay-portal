@@ -38,7 +38,6 @@ import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Properties;
@@ -64,7 +63,6 @@ import org.osgi.framework.BundleContext;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
-import org.springframework.util.ClassUtils;
 
 /**
  * @author Brian Wing Shun Chan
@@ -102,6 +100,10 @@ public class PortalHibernateConfiguration
 			PortalCurrentSessionContext.class.getName());
 		properties.setProperty(
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
+		properties.setProperty(
+			"hibernate.jpa.static_metamodel.population", "disabled");
+		properties.setProperty(
+			"hibernate.query.native.prefer_jdbc_datetime_types", "true");
 
 		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
 			Class<?> clazz = dialect.getClass();
@@ -139,10 +141,6 @@ public class PortalHibernateConfiguration
 		configuration.addProperties(properties);
 
 		properties = configuration.getProperties();
-
-		properties.put(
-			"hibernate.classLoaders",
-			Collections.singleton(ClassUtils.getDefaultClassLoader()));
 
 		if (_dataSource != null) {
 			properties.put("hibernate.connection.datasource", _dataSource);
@@ -232,22 +230,15 @@ public class PortalHibernateConfiguration
 	private SessionFactory _buildSessionFactory(Configuration configuration)
 		throws HibernateException {
 
-		try {
-			String[] resources = getConfigurationResources();
-
-			for (String resource : resources) {
-				try {
-					_readResource(configuration, resource);
-				}
-				catch (Exception exception) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(exception);
-					}
+		for (String resource : getConfigurationResources()) {
+			try {
+				_readResource(configuration, resource);
+			}
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(exception);
 				}
 			}
-		}
-		catch (Exception exception) {
-			_log.error(exception);
 		}
 
 		return configuration.buildSessionFactory();

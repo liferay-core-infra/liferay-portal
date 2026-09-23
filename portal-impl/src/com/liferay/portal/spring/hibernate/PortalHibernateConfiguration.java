@@ -101,6 +101,7 @@ public class PortalHibernateConfiguration
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
 		properties.setProperty(
 			"hibernate.jpa.static_metamodel.population", "disabled");
+		properties.setProperty("hibernate.jpa_callbacks.enabled", "false");
 		properties.setProperty(
 			"hibernate.query.native.prefer_jdbc_datetime_types", "true");
 

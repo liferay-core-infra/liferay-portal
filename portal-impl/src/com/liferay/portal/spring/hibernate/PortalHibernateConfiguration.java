@@ -457,6 +457,17 @@ public class PortalHibernateConfiguration
 		extends ClassLoaderServiceImpl {
 
 		@Override
+		public <T> Class<T> classForName(String className) {
+			if (className.startsWith("jakarta.persistence.") ||
+				className.startsWith("org.hibernate.")) {
+
+				return _classLoaderService.classForName(className);
+			}
+
+			return super.classForName(className);
+		}
+
+		@Override
 		public <S> Collection<S> loadJavaServices(Class<S> serviceContract) {
 			return _classLoaderService.loadJavaServices(serviceContract);
 		}

@@ -5,6 +5,7 @@
 
 package com.liferay.portal.security.audit.rest.internal.resource.v1_0;
 
+import com.liferay.headless.delivery.dto.v1_0.Creator;
 import com.liferay.headless.delivery.dto.v1_0.util.CreatorUtil;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -84,10 +85,10 @@ public class AuditEventResourceImpl extends BaseAuditEventResourceImpl {
 				setContextName(serviceBuilderAuditEvent::getContextName);
 				setCorrelationId(serviceBuilderAuditEvent::getCorrelationId);
 				setCreator(
-					() -> CreatorUtil.toCreator(
-						null, _portal,
-						_userLocalService.fetchUser(
-							serviceBuilderAuditEvent.getUserId())));
+					() -> _toCreator(
+						serviceBuilderAuditEvent.isPseudonymized(),
+						serviceBuilderAuditEvent.getUserId(),
+						serviceBuilderAuditEvent.getUserName()));
 				setDateCreated(serviceBuilderAuditEvent::getCreateDate);
 				setEntityId(
 					() -> GetterUtil.getLong(
@@ -99,10 +100,10 @@ public class AuditEventResourceImpl extends BaseAuditEventResourceImpl {
 				setId(serviceBuilderAuditEvent::getAuditEventId);
 				setImpersonated(serviceBuilderAuditEvent::isImpersonated);
 				setImpersonatedCreator(
-					() -> CreatorUtil.toCreator(
-						null, _portal,
-						_userLocalService.fetchUser(
-							serviceBuilderAuditEvent.getImpersonatedUserId())));
+					() -> _toCreator(
+						serviceBuilderAuditEvent.isPseudonymized(),
+						serviceBuilderAuditEvent.getImpersonatedUserId(),
+						serviceBuilderAuditEvent.getImpersonatedUserName()));
 				setObjectName(serviceBuilderAuditEvent::getObjectName);
 				setRequestId(serviceBuilderAuditEvent::getRequestId);
 				setRequestIdGenerated(
@@ -112,6 +113,26 @@ public class AuditEventResourceImpl extends BaseAuditEventResourceImpl {
 				setRoles(serviceBuilderAuditEvent::getRoles);
 				setServerName(serviceBuilderAuditEvent::getServerName);
 				setUserAgent(serviceBuilderAuditEvent::getUserAgent);
+			}
+		};
+	}
+
+	private Creator _toCreator(
+		boolean pseudonymized, long userId, String userName) {
+
+		if (!pseudonymized) {
+			return CreatorUtil.toCreator(
+				null, _portal, _userLocalService.fetchUser(userId));
+		}
+
+		if ((userId <= 0) && Validator.isBlank(userName)) {
+			return null;
+		}
+
+		return new Creator() {
+			{
+				setId(() -> userId);
+				setName(() -> userName);
 			}
 		};
 	}

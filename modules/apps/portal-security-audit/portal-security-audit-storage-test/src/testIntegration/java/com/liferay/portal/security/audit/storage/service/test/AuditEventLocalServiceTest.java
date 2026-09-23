@@ -8,8 +8,11 @@ package com.liferay.portal.security.audit.storage.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.audit.AuditMessage;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.security.audit.constants.AuditEventConstants;
 import com.liferay.portal.security.audit.event.generators.util.AuditMessageBuilder;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
@@ -18,6 +21,7 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -66,6 +70,8 @@ public class AuditEventLocalServiceTest {
 
 		AuditEvent auditEvent = _auditEventLocalService.addAuditEvent(
 			auditMessage);
+
+		_auditEvents.add(auditEvent);
 
 		Assert.assertEquals(
 			auditEvent.getAccountEntryId(), auditMessage.getAccountEntryId());
@@ -116,6 +122,60 @@ public class AuditEventLocalServiceTest {
 		_testAddAuditEvent(null);
 	}
 
+	@Test
+	public void testGetAuditEvents() {
+		long companyId = RandomTestUtil.randomLong();
+		String value = RandomTestUtil.randomString();
+
+		_addAuditEvent(companyId, true, value + RandomTestUtil.randomString());
+
+		AuditEvent auditEvent1 = _addAuditEvent(
+			companyId, false,
+			RandomTestUtil.randomString() + value +
+				RandomTestUtil.randomString());
+		AuditEvent auditEvent2 = _addAuditEvent(
+			companyId, false, value + RandomTestUtil.randomString());
+		AuditEvent auditEvent3 = _addAuditEvent(companyId, true, value);
+
+		_testGetAuditEvents(
+			false, null, null, companyId, value, auditEvent1, auditEvent2,
+			auditEvent3);
+		_testGetAuditEvents(
+			false, null, value, companyId, null, auditEvent1, auditEvent2,
+			auditEvent3);
+		_testGetAuditEvents(
+			false, value, null, companyId, null, auditEvent1, auditEvent2,
+			auditEvent3);
+		_testGetAuditEvents(
+			true, null, null, companyId, value, auditEvent1, auditEvent2,
+			auditEvent3);
+		_testGetAuditEvents(
+			true, null, value, companyId, null, auditEvent1, auditEvent2,
+			auditEvent3);
+		_testGetAuditEvents(
+			true, value, null, companyId, null, auditEvent1, auditEvent2,
+			auditEvent3);
+	}
+
+	private AuditEvent _addAuditEvent(
+		long companyId, boolean pseudonymized, String value) {
+
+		AuditMessage auditMessage = new AuditMessage(
+			companyId, RandomTestUtil.randomLong(), value,
+			RandomTestUtil.randomString());
+
+		auditMessage.setClientHost(value);
+		auditMessage.setClientIP(value);
+		auditMessage.setPseudonymized(pseudonymized);
+
+		AuditEvent auditEvent = _auditEventLocalService.addAuditEvent(
+			auditMessage);
+
+		_auditEvents.add(auditEvent);
+
+		return auditEvent;
+	}
+
 	private void _testAddAuditEvent(String contextName) {
 		AuditMessage auditMessage = AuditMessageBuilder.buildAuditMessage(
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString(),
@@ -127,12 +187,35 @@ public class AuditEventLocalServiceTest {
 		AuditEvent auditEvent = _auditEventLocalService.addAuditEvent(
 			auditMessage);
 
+		_auditEvents.add(auditEvent);
+
 		Assert.assertEquals(
 			AuditEventConstants.CONTEXT_NAME_INSTANCE,
 			auditEvent.getContextName());
 	}
 
+	private void _testGetAuditEvents(
+		boolean andSearch, String clientHost, String clientIP, long companyId,
+		String userName, AuditEvent... expectedAuditEvents) {
+
+		Assert.assertEquals(
+			SetUtil.fromArray(expectedAuditEvents),
+			SetUtil.fromList(
+				_auditEventLocalService.getAuditEvents(
+					companyId, 0, 0, userName, null, null, null, null, null,
+					clientHost, clientIP, null, null, null, 0, null, andSearch,
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS)));
+		Assert.assertEquals(
+			expectedAuditEvents.length,
+			_auditEventLocalService.getAuditEventsCount(
+				companyId, 0, 0, userName, null, null, null, null, null,
+				clientHost, clientIP, null, null, null, 0, null, andSearch));
+	}
+
 	@Inject
 	private AuditEventLocalService _auditEventLocalService;
+
+	@DeleteAfterTestRun
+	private final List<AuditEvent> _auditEvents = new ArrayList<>();
 
 }

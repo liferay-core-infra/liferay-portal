@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -47,27 +48,10 @@ public class ExportAuditEventsMVCResourceCommandTest {
 
 	@Test
 	public void testBuildCSV() throws Exception {
-		AuditEvent auditEvent = (AuditEvent)ProxyUtil.newProxyInstance(
-			AuditEvent.class.getClassLoader(),
-			new Class<?>[] {AuditEvent.class},
-			(proxy, method, arguments) -> {
-				Class<?> returnType = method.getReturnType();
-
-				if (returnType == int.class) {
-					return 0;
-				}
-
-				if (returnType == long.class) {
-					return 0L;
-				}
-
-				return null;
-			});
-
 		String csv = ReflectionTestUtil.invoke(
 			_mvcResourceCommand, "_buildCSV",
 			new Class<?>[] {List.class, String[].class, ProgressTracker.class},
-			ListUtil.fromArray(auditEvent),
+			ListUtil.fromArray(_createAuditEvent(false, null, 0)),
 			_getColumns(TestPropsValues.getCompanyId()), null);
 
 		String[] lines = StringUtil.split(csv, CharPool.NEW_LINE);
@@ -110,10 +94,88 @@ public class ExportAuditEventsMVCResourceCommandTest {
 		}
 	}
 
+	@Test
+	public void testGetEmailAddress() throws Exception {
+		User user = TestPropsValues.getUser();
+		String userEmailAddress = RandomTestUtil.randomString();
+
+		AuditEvent auditEvent = _createAuditEvent(
+			false, userEmailAddress, user.getUserId());
+
+		Assert.assertEquals(
+			user.getEmailAddress(), _getEmailAddress(auditEvent));
+
+		auditEvent = _createAuditEvent(
+			true, userEmailAddress, user.getUserId());
+
+		Assert.assertEquals(userEmailAddress, _getEmailAddress(auditEvent));
+	}
+
+	@Test
+	public void testGetScreenName() throws Exception {
+		User user = TestPropsValues.getUser();
+
+		AuditEvent auditEvent = _createAuditEvent(
+			false, null, user.getUserId());
+
+		Assert.assertEquals(user.getScreenName(), _getScreenName(auditEvent));
+
+		auditEvent = _createAuditEvent(true, null, user.getUserId());
+
+		Assert.assertEquals(StringPool.BLANK, _getScreenName(auditEvent));
+	}
+
+	private AuditEvent _createAuditEvent(
+		boolean pseudonymized, String userEmailAddress, long userId) {
+
+		return (AuditEvent)ProxyUtil.newProxyInstance(
+			AuditEvent.class.getClassLoader(),
+			new Class<?>[] {AuditEvent.class},
+			(proxy, method, arguments) -> {
+				String methodName = method.getName();
+
+				if (methodName.equals("getUserEmailAddress")) {
+					return userEmailAddress;
+				}
+
+				if (methodName.equals("getUserId")) {
+					return userId;
+				}
+
+				if (methodName.equals("isPseudonymized")) {
+					return pseudonymized;
+				}
+
+				Class<?> returnType = method.getReturnType();
+
+				if (returnType == int.class) {
+					return 0;
+				}
+
+				if (returnType == long.class) {
+					return 0L;
+				}
+
+				return null;
+			});
+	}
+
 	private String[] _getColumns(long companyId) {
 		return ReflectionTestUtil.invoke(
 			_mvcResourceCommand, "_getColumns", new Class<?>[] {long.class},
 			companyId);
+	}
+
+	private String _getEmailAddress(AuditEvent auditEvent) {
+		return ReflectionTestUtil.invoke(
+			_mvcResourceCommand, "_getEmailAddress",
+			new Class<?>[] {AuditEvent.class}, auditEvent);
+	}
+
+	private String _getScreenName(AuditEvent auditEvent) {
+		return ReflectionTestUtil.invoke(
+			_mvcResourceCommand, "_getScreenName",
+			new Class<?>[] {AuditEvent.class}, auditEvent);
 	}
 
 	private static final String[] _COLUMNS_DEFAULT = {

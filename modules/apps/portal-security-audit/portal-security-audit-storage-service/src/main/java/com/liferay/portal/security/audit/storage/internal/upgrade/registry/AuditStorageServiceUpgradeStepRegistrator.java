@@ -78,6 +78,14 @@ public class AuditStorageServiceUpgradeStepRegistrator
 			UpgradeProcessFactory.runSQL(
 				"update Audit_AuditEvent set contextName = 'INSTANCE' where " +
 					"contextName is null or contextName = ''"));
+
+		registry.register(
+			"2.5.0", "2.6.0",
+			UpgradeProcessFactory.addColumns(
+				"Audit_AuditEvent", "pseudonymized BOOLEAN"),
+			UpgradeProcessFactory.runSQL(
+				"update Audit_AuditEvent set pseudonymized = [$FALSE$] where " +
+					"pseudonymized is null"));
 	}
 
 	@Reference

@@ -273,6 +273,10 @@ public class AuditMessage implements Serializable {
 			_objectName = jsonObject.getString(_OBJECT_NAME);
 		}
 
+		if (jsonObject.has(_PSEUDONYMIZED)) {
+			_pseudonymized = jsonObject.getBoolean(_PSEUDONYMIZED);
+		}
+
 		if (jsonObject.has(_REQUEST_ID)) {
 			_requestId = jsonObject.getString(_REQUEST_ID);
 		}
@@ -446,6 +450,10 @@ public class AuditMessage implements Serializable {
 		return _impersonated;
 	}
 
+	public boolean isPseudonymized() {
+		return _pseudonymized;
+	}
+
 	public boolean isRequestIdGenerated() {
 		return _requestIdGenerated;
 	}
@@ -530,6 +538,10 @@ public class AuditMessage implements Serializable {
 
 	public void setObjectName(String objectName) {
 		_objectName = objectName;
+	}
+
+	public void setPseudonymized(boolean pseudonymized) {
+		_pseudonymized = pseudonymized;
 	}
 
 	public void setRequestId(String requestId) {
@@ -630,6 +642,8 @@ public class AuditMessage implements Serializable {
 		).put(
 			_OBJECT_NAME, _objectName
 		).put(
+			_PSEUDONYMIZED, _pseudonymized
+		).put(
 			_REQUEST_ID, _requestId
 		).put(
 			_REQUEST_ID_GENERATED, _requestIdGenerated
@@ -708,6 +722,8 @@ public class AuditMessage implements Serializable {
 
 	private static final String _OBJECT_NAME = "objectName";
 
+	private static final String _PSEUDONYMIZED = "pseudonymized";
+
 	private static final String _REQUEST_ID = "requestId";
 
 	private static final String _REQUEST_ID_GENERATED = "requestIdGenerated";
@@ -757,6 +773,7 @@ public class AuditMessage implements Serializable {
 	private String _impersonatedUserName;
 	private String _message;
 	private String _objectName;
+	private boolean _pseudonymized;
 	private String _requestId;
 	private boolean _requestIdGenerated;
 	private String _resourceAction;

@@ -1,5 +1,5 @@
 dependencies {
-	testIntegrationImplementation group: "org.hibernate.orm", name: "hibernate-core", version: "7.4.10.Final"
+	testIntegrationImplementation group: "com.liferay", name: "org.hibernate.core", version: "7.4.10.LIFERAY-PATCHED-1"
 	testIntegrationImplementation project(":apps:portal-lock:portal-lock-api")
 	testIntegrationImplementation project(":apps:portal-lock:portal-lock-service")
 	testIntegrationImplementation project(":test:arquillian-extension-junit-bridge")

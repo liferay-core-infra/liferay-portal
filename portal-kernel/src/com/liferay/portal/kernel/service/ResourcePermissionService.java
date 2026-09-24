@@ -192,4 +192,4 @@ public interface ResourcePermissionService extends BaseService {
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:728193349
+// LIFERAY-SERVICE-BUILDER-HASH:3724273

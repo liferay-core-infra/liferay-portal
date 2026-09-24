@@ -1,0 +1,58 @@
+diff --git a/org/hibernate/boot/internal/BootstrapContextImpl.java b/org/hibernate/boot/internal/BootstrapContextImpl.java
+index 7f098c8..9134e8d 100644
+--- a/org/hibernate/boot/internal/BootstrapContextImpl.java
++++ b/org/hibernate/boot/internal/BootstrapContextImpl.java
+@@ -13,8 +13,6 @@ import org.hibernate.boot.archive.scan.spi.Scanner;
+ import org.hibernate.boot.archive.spi.ArchiveDescriptorFactory;
+ import org.hibernate.boot.model.convert.spi.ConverterDescriptor;
+ import org.hibernate.boot.model.relational.AuxiliaryDatabaseObject;
+-import org.hibernate.boot.models.internal.ClassLoaderServiceLoading;
+-import org.hibernate.boot.models.internal.ModelsHelper;
+ import org.hibernate.boot.registry.StandardServiceRegistry;
+ import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
+ import org.hibernate.boot.registry.selector.spi.StrategySelector;
+@@ -27,7 +25,8 @@ import org.hibernate.jpa.internal.MutableJpaComplianceImpl;
+ import org.hibernate.jpa.spi.MutableJpaCompliance;
+ import org.hibernate.metamodel.internal.ManagedTypeRepresentationResolverStandard;
+ import org.hibernate.metamodel.spi.ManagedTypeRepresentationResolver;
+-import org.hibernate.models.spi.ModelsConfiguration;
++import org.hibernate.models.spi.AnnotationDescriptorRegistry;
++import org.hibernate.models.spi.ClassDetailsRegistry;
+ import org.hibernate.models.spi.ModelsContext;
+ import org.hibernate.query.sqm.function.SqmFunctionDescriptor;
+ import org.hibernate.query.sqm.function.SqmFunctionRegistry;
+@@ -39,6 +38,7 @@ import org.hibernate.type.descriptor.jdbc.JdbcType;
+ import org.hibernate.type.internal.BasicTypeImpl;
+ import org.hibernate.type.spi.TypeConfiguration;
+ 
++import java.lang.reflect.Proxy;
+ import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.HashMap;
+@@ -376,15 +376,15 @@ public class BootstrapContextImpl implements BootstrapContext {
+ 	public static ModelsContext createModelBuildingContext(
+ 			ClassLoaderService classLoaderService,
+ 			ConfigurationService configService) {
+-		final var classLoading = new ClassLoaderServiceLoading( classLoaderService );
+-		final var modelsConfiguration = new ModelsConfiguration();
+-		modelsConfiguration.setClassLoading( classLoading );
+-		modelsConfiguration.setRegistryPrimer( ModelsHelper::preFillRegistries );
+-		configService.getSettings().forEach( (key, value) -> {
+-			if ( key.startsWith( "hibernate.models." ) ) {
+-				modelsConfiguration.configValue( key, value );
+-			}
+-		} );
+-		return modelsConfiguration.bootstrap();
++		return (ModelsContext) Proxy.newProxyInstance(
++				ModelsContext.class.getClassLoader(),
++				new Class<?>[] { ModelsContext.class, ClassDetailsRegistry.class, AnnotationDescriptorRegistry.class },
++				(proxy, method, args) -> {
++					if ( method.getDeclaringClass() == ModelsContext.class ) {
++						return proxy;
++					}
++					throw new UnsupportedOperationException( method.toString() );
++				} );
+ 	}
+ }
++/* @generated */
+\ No newline at end of file

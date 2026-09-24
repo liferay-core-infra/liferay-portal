@@ -5,17 +5,15 @@
 
 package com.liferay.aspectj.hibernate.unexpected.row.count;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.lang.reflect.Field;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
-import org.hibernate.engine.jdbc.batch.internal.BatchingBatch;
+import org.hibernate.engine.jdbc.batch.internal.BatchImpl;
+import org.hibernate.engine.jdbc.mutation.group.PreparedStatementGroup;
 
 /**
  * @author Preston Crary
@@ -26,36 +24,30 @@ public class HibernateUnexpectedRowCountAspect {
 
 	@Before(
 		"handler(java.lang.RuntimeException) &&" +
-			"withincode(void org.hibernate.engine.jdbc.batch.internal.BatchingBatch." +
-				"doExecuteBatch()) && args(runtimeException) && this(batchingBatch)"
+			"within(org.hibernate.engine.jdbc.batch.internal.BatchImpl) &&" +
+				"args(runtimeException) && this(batchImpl)"
 	)
 	public void logUpdateSQL(
-		BatchingBatch batchingBatch, RuntimeException runtimeException) {
+		BatchImpl batchImpl, RuntimeException runtimeException) {
 
-		try {
-			_log.error(
-				"currentStatementSql = " +
-					_currentStatementSQLField.get(batchingBatch),
-				runtimeException);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			runtimeException.addSuppressed(reflectiveOperationException);
-		}
+		PreparedStatementGroup preparedStatementGroup =
+			batchImpl.getStatementGroup();
+
+		StringBuilder sb = new StringBuilder();
+
+		preparedStatementGroup.forEachStatement(
+			(sql, preparedStatementDetails) -> {
+				if (sb.length() > 0) {
+					sb.append(", ");
+				}
+
+				sb.append(preparedStatementDetails.getSqlString());
+			});
+
+		_log.error("Batch statements = " + sb, runtimeException);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		HibernateUnexpectedRowCountAspect.class);
-
-	private static final Field _currentStatementSQLField;
-
-	static {
-		try {
-			_currentStatementSQLField = ReflectionUtil.getDeclaredField(
-				BatchingBatch.class, "currentStatementSql");
-		}
-		catch (Exception exception) {
-			throw new ExceptionInInitializerError(exception);
-		}
-	}
 
 }

@@ -1,5 +1,42 @@
-apply from: "../../build-jakarta-transformer.gradle"
+import com.liferay.gradle.plugins.patcher.PatchTask
+
+apply plugin: "com.liferay.patcher"
+
+task deployJar(type: Copy)
+task patch(type: PatchTask)
 
 dependencies {
-	compileOnly group: "com.liferay", name: "org.hibernate.core", transitive: false, version: "5.6.7.LIFERAY-PATCHED-2"
+	compileOnly group: "org.hibernate.models", name: "hibernate-models", version: "1.1.2"
+	compileOnly group: "org.hibernate.orm", name: "hibernate-core", version: "7.4.10.Final"
+	compileOnly group: "org.jboss.logging", name: "jboss-logging", version: "3.6.1.Final"
+}
+
+deploy {
+	finalizedBy deployJar
+}
+
+deployJar {
+	ext {
+		autoClean = false
+	}
+
+	from jar
+	into "../../../lib/portal"
+
+	rename {
+		"hibernate-core.jar"
+	}
+}
+
+jarSources {
+	mustRunAfter patch
+}
+
+patch {
+	ext {
+		autoClean = false
+	}
+
+	fileNames "org/hibernate/boot/internal/BootstrapContextImpl.java"
+	originalLibModuleName = "hibernate-core"
 }

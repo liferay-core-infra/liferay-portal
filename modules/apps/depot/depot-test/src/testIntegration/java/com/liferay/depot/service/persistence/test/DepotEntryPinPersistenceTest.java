@@ -548,4 +548,4 @@ public class DepotEntryPinPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1583096901
+// LIFERAY-SERVICE-BUILDER-HASH:-190810395

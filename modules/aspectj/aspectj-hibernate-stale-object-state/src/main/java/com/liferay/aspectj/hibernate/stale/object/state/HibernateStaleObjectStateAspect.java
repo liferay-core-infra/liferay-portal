@@ -21,11 +21,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import org.hibernate.HibernateException;
-import org.hibernate.ObjectDeletedException;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.event.spi.DeleteEvent;
 import org.hibernate.event.spi.MergeEvent;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 
 /**
  * @author Preston Crary
@@ -46,18 +44,6 @@ public class HibernateStaleObjectStateAspect {
 			mergeEvent.getOriginal(), staleObjectStateException);
 	}
 
-	@AfterThrowing(
-		throwing = "objectDeletedException",
-		value = "execution(void org.hibernate.event.spi.SaveOrUpdateEventListener.onSaveOrUpdate(org.hibernate.event.spi.SaveOrUpdateEvent)) && args(saveOrUpdateEvent)"
-	)
-	public void suppressUpdateFailureCause(
-		SaveOrUpdateEvent saveOrUpdateEvent,
-		ObjectDeletedException objectDeletedException) {
-
-		_suppressFailureCause(
-			saveOrUpdateEvent.getObject(), objectDeletedException);
-	}
-
 	@AfterReturning(
 		"execution(void org.hibernate.event.spi.DeleteEventListener.onDelete(" +
 			"org.hibernate.event.spi.DeleteEvent)) && args(deleteEvent)"
@@ -72,15 +58,6 @@ public class HibernateStaleObjectStateAspect {
 	)
 	public void trackMergeEvent(MergeEvent mergeEvent) {
 		_trackEvent("Merge", mergeEvent.getOriginal());
-	}
-
-	@AfterReturning(
-		"execution(void org.hibernate.event.spi.SaveOrUpdateEventListener." +
-			"onSaveOrUpdate(org.hibernate.event.spi.SaveOrUpdateEvent)) &&" +
-				"args(saveOrUpdateEvent)"
-	)
-	public void trackSaveOrUpdateEvent(SaveOrUpdateEvent saveOrUpdateEvent) {
-		_trackEvent("SaveOrUpdate", saveOrUpdateEvent.getObject());
 	}
 
 	private void _suppressFailureCause(

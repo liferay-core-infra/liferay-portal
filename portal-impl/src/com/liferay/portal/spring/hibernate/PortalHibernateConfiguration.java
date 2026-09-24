@@ -5,16 +5,14 @@
 
 package com.liferay.portal.spring.hibernate;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.io.Deserializer;
 import com.liferay.petra.io.Serializer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.internal.change.tracking.hibernate.CTSQLInterceptor;
-import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
@@ -23,7 +21,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -35,16 +32,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import java.lang.reflect.Field;
-
 import java.net.URL;
 import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -59,14 +53,20 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.hibernate.boot.jaxb.internal.InputStreamXmlSource;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
+import org.hibernate.bytecode.enhance.spi.EnhancementContext;
+import org.hibernate.bytecode.enhance.spi.Enhancer;
+import org.hibernate.bytecode.internal.BytecodeProviderInitiator;
+import org.hibernate.bytecode.spi.BytecodeProvider;
+import org.hibernate.bytecode.spi.ProxyFactoryFactory;
+import org.hibernate.bytecode.spi.ReflectionOptimizer;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.property.access.spi.PropertyAccess;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
-import org.hibernate.type.spi.TypeConfiguration;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -74,7 +74,6 @@ import org.osgi.framework.BundleContext;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
-import org.springframework.util.ClassUtils;
 
 /**
  * @author Brian Wing Shun Chan
@@ -88,19 +87,7 @@ public class PortalHibernateConfiguration
 	public void afterPropertiesSet() throws IOException {
 		Dialect dialect = DialectDetector.getDialect(_dataSource);
 
-		if (DBManagerUtil.getDBType(dialect) == DBType.ORACLE) {
-
-			// This must be done before the instantiating Configuration to
-			// ensure that org.hibernate.cfg.Environment's static init block can
-			// see it
-
-			System.setProperty(
-				PropsKeys.HIBERNATE_JDBC_USE_STREAMS_FOR_BINARY, "true");
-		}
-
 		Properties properties = PropsUtil.getProperties();
-
-		properties.remove("hibernate.cache.region.factory_class");
 
 		properties.setProperty(
 			"hibernate.allow_update_outside_transaction", "true");
@@ -112,6 +99,11 @@ public class PortalHibernateConfiguration
 			PortalCurrentSessionContext.class.getName());
 		properties.setProperty(
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
+		properties.setProperty(
+			"hibernate.jpa.static_metamodel.population", "disabled");
+		properties.setProperty("hibernate.jpa_callbacks.enabled", "false");
+		properties.setProperty(
+			"hibernate.query.native.prefer_jdbc_datetime_types", "true");
 
 		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
 			Class<?> clazz = dialect.getClass();
@@ -124,8 +116,8 @@ public class PortalHibernateConfiguration
 		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
 			new BootstrapServiceRegistryBuilder();
 
-		bootstrapServiceRegistryBuilder.applyClassLoader(
-			getConfigurationClassLoader());
+		bootstrapServiceRegistryBuilder.applyClassLoaderService(
+			_getClassLoaderService());
 
 		bootstrapServiceRegistryBuilder.applyIntegrator(
 			GlobalEventListenerIntegrator.INSTANCE);
@@ -142,17 +134,21 @@ public class PortalHibernateConfiguration
 
 		SQLTransformer.populateSQLFunctions(configuration);
 
+		StandardServiceRegistryBuilder standardServiceRegistryBuilder =
+			configuration.getStandardServiceRegistryBuilder();
+
+		standardServiceRegistryBuilder.addService(
+			BytecodeProvider.class,
+			_liferayBytecodeProviderDCLSingleton.getSingleton(
+				LiferayBytecodeProvider::new));
+
 		if (_mvccEnabled) {
-			configuration.setInterceptor(new CTSQLInterceptor());
+			configuration.setStatementInspector(new CTSQLInterceptor());
 		}
 
 		configuration.addProperties(properties);
 
 		properties = configuration.getProperties();
-
-		properties.put(
-			"hibernate.classLoaders",
-			Collections.singleton(ClassUtils.getDefaultClassLoader()));
 
 		if (_dataSource != null) {
 			properties.put("hibernate.connection.datasource", _dataSource);
@@ -242,53 +238,18 @@ public class PortalHibernateConfiguration
 	private SessionFactory _buildSessionFactory(Configuration configuration)
 		throws HibernateException {
 
-		try {
-			String[] resources = getConfigurationResources();
-
-			for (String resource : resources) {
-				try {
-					_readResource(configuration, resource);
-				}
-				catch (Exception exception) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(exception);
-					}
+		for (String resource : getConfigurationResources()) {
+			try {
+				_readResource(configuration, resource);
+			}
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(exception);
 				}
 			}
 		}
-		catch (Exception exception) {
-			_log.error(exception);
-		}
 
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
-
-		SessionFactoryImplementor sessionFactoryImplementor =
-			(SessionFactoryImplementor)sessionFactory;
-
-		MetamodelImplementor metamodelImplementor =
-			sessionFactoryImplementor.getMetamodel();
-
-		TypeConfiguration typeConfiguration =
-			metamodelImplementor.getTypeConfiguration();
-
-		try {
-			_META_MODEL_FIELD.set(
-				sessionFactory,
-				ProxyUtil.newDelegateProxyInstance(
-					MetamodelImplementor.class.getClassLoader(),
-					MetamodelImplementor.class,
-					new SessionFactoryDelegate(
-						typeConfiguration.getImportMap()),
-					metamodelImplementor));
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to inject optimized query plan cache", exception);
-			}
-		}
-
-		return sessionFactory;
+		return configuration.buildSessionFactory();
 	}
 
 	private File _getCacheFile(URL url) {
@@ -316,6 +277,19 @@ public class PortalHibernateConfiguration
 				new char[] {
 					CharPool.UNDERLINE, CharPool.UNDERLINE, CharPool.UNDERLINE
 				}));
+	}
+
+	private ClassLoaderService _getClassLoaderService() {
+		ClassLoader classLoader = getConfigurationClassLoader();
+
+		if (classLoader ==
+				PortalHibernateConfiguration.class.getClassLoader()) {
+
+			return _portalClassLoaderService;
+		}
+
+		return new SharedJavaServicesClassLoaderService(
+			classLoader, _portalClassLoaderService);
 	}
 
 	private Binding<?> _loadBinding(Configuration configuration, URL url)
@@ -356,10 +330,10 @@ public class PortalHibernateConfiguration
 		XmlMappingBinderAccess xmlMappingBinderAccess =
 			configuration.getXmlMappingBinderAccess();
 
-		Binding<?> binding = InputStreamXmlSource.doBind(
-			xmlMappingBinderAccess.getMappingBinder(),
+		Binding<?> binding = InputStreamXmlSource.fromStream(
 			urlConnection.getInputStream(),
-			new Origin(SourceType.URL, url.toExternalForm()), true);
+			new Origin(SourceType.URL, url.toExternalForm()), true,
+			xmlMappingBinderAccess.getMappingBinder());
 
 		if (PropsValues.HIBERNATE_HBM_JAXB_CACHE) {
 			Serializer serializer = new Serializer();
@@ -415,41 +389,98 @@ public class PortalHibernateConfiguration
 		}
 	}
 
-	private static final Field _META_MODEL_FIELD;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalHibernateConfiguration.class);
 
-	private static final BundleContext _bundleContext;
-
-	static {
-		_bundleContext = SystemBundleUtil.getBundleContext();
-
-		try {
-			_META_MODEL_FIELD = ReflectionUtil.getDeclaredField(
-				SessionFactoryImpl.class, "metamodel");
-		}
-		catch (Exception exception) {
-			throw new ExceptionInInitializerError(exception);
-		}
-	}
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
+	private static final DCLSingleton<LiferayBytecodeProvider>
+		_liferayBytecodeProviderDCLSingleton = new DCLSingleton<>();
+	private static final ClassLoaderService _portalClassLoaderService =
+		new ClassLoaderServiceImpl(
+			PortalHibernateConfiguration.class.getClassLoader());
 
 	private String[] _configurationResources;
 	private DataSource _dataSource;
 	private boolean _mvccEnabled = true;
 	private SessionFactory _sessionFactory;
 
-	private static class SessionFactoryDelegate {
+	private static class LiferayBytecodeProvider implements BytecodeProvider {
 
-		public String getImportedClassName(String className) {
-			return _imports.get(className);
+		@Override
+		public Enhancer getEnhancer(EnhancementContext enhancementContext) {
+			BytecodeProvider bytecodeProvider = _getBytecodeProvider();
+
+			return bytecodeProvider.getEnhancer(enhancementContext);
 		}
 
-		private SessionFactoryDelegate(Map<String, String> imports) {
-			_imports = new HashMap<>(imports);
+		@Override
+		public ProxyFactoryFactory getProxyFactoryFactory() {
+			BytecodeProvider bytecodeProvider = _getBytecodeProvider();
+
+			return bytecodeProvider.getProxyFactoryFactory();
 		}
 
-		private final Map<String, String> _imports;
+		@Override
+		public ReflectionOptimizer getReflectionOptimizer(
+			Class clazz, String[] getterNames, String[] setterNames,
+			Class[] types) {
+
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public ReflectionOptimizer getReflectionOptimizer(
+			Class<?> clazz, Map<String, PropertyAccess> propertyAccessMap) {
+
+			return null;
+		}
+
+		@Override
+		public void resetCaches() {
+			BytecodeProvider bytecodeProvider = _getBytecodeProvider();
+
+			bytecodeProvider.resetCaches();
+		}
+
+		private BytecodeProvider _getBytecodeProvider() {
+			return _bytecodeProviderDCLSingleton.getSingleton(
+				BytecodeProviderInitiator::buildDefaultBytecodeProvider);
+		}
+
+		private final DCLSingleton<BytecodeProvider>
+			_bytecodeProviderDCLSingleton = new DCLSingleton<>();
+
+	}
+
+	private static class SharedJavaServicesClassLoaderService
+		extends ClassLoaderServiceImpl {
+
+		@Override
+		public <T> Class<T> classForName(String className) {
+			if (className.startsWith("jakarta.persistence.") ||
+				className.startsWith("org.hibernate.")) {
+
+				return _classLoaderService.classForName(className);
+			}
+
+			return super.classForName(className);
+		}
+
+		@Override
+		public <S> Collection<S> loadJavaServices(Class<S> serviceContract) {
+			return _classLoaderService.loadJavaServices(serviceContract);
+		}
+
+		private SharedJavaServicesClassLoaderService(
+			ClassLoader classLoader, ClassLoaderService classLoaderService) {
+
+			super(classLoader);
+
+			_classLoaderService = classLoaderService;
+		}
+
+		private final ClassLoaderService _classLoaderService;
 
 	}
 

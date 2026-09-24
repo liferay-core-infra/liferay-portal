@@ -9,10 +9,13 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.service.PermissionService;
 import com.liferay.portal.service.base.ResourcePermissionServiceBaseImpl;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Provides the remote service for adding, granting, and revoking resource
@@ -168,6 +171,10 @@ public class ResourcePermissionServiceImpl
 			long roleId, String[] actionIds)
 		throws PortalException {
 
+		if (!_isGroupResource(groupId, name, primKey)) {
+			groupId = 0;
+		}
+
 		_permissionService.checkPermission(groupId, name, primKey);
 
 		resourcePermissionLocalService.setResourcePermissions(
@@ -204,11 +211,31 @@ public class ResourcePermissionServiceImpl
 			Map<Long, String[]> roleIdsToActionIds)
 		throws PortalException {
 
+		if (!_isGroupResource(groupId, name, primKey)) {
+			groupId = 0;
+		}
+
 		_permissionService.checkPermission(groupId, name, primKey);
 
 		resourcePermissionLocalService.setResourcePermissions(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
 			roleIdsToActionIds);
+	}
+
+	private boolean _isGroupResource(
+		long groupId, String name, String primKey) {
+
+		ModelResourcePermission<?> modelResourcePermission =
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				name);
+
+		if ((modelResourcePermission != null) ||
+			Objects.equals(primKey, String.valueOf(groupId))) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@BeanReference(type = PermissionService.class)

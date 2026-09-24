@@ -6,7 +6,9 @@ task deployJar(type: Copy)
 task patch(type: PatchTask)
 
 dependencies {
+	compileOnly group: "org.hibernate.models", name: "hibernate-models", version: "1.1.2"
 	compileOnly group: "org.hibernate.orm", name: "hibernate-core", version: "7.4.10.Final"
+	compileOnly group: "org.jboss.logging", name: "jboss-logging", version: "3.6.1.Final"
 }
 
 deploy {
@@ -35,5 +37,6 @@ patch {
 		autoClean = false
 	}
 
+	fileNames "org/hibernate/boot/internal/BootstrapContextImpl.java"
 	originalLibModuleName = "hibernate-core"
 }

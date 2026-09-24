@@ -808,4 +808,4 @@ public class AssetCategoryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-652744945
+// LIFERAY-SERVICE-BUILDER-HASH:884873161

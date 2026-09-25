@@ -321,6 +321,19 @@ public class Log4jConfigUtilTest {
 	}
 
 	@Test
+	public void testGetPriority() {
+		String loggerName = StringUtil.randomString();
+
+		Assert.assertNull(Log4jConfigUtil.getPriority(loggerName));
+
+		Log4jConfigUtil.configureLog4J(
+			_generateXMLConfigurationContent(loggerName, _PRIORITY_WARN));
+
+		Assert.assertEquals(
+			_PRIORITY_WARN, Log4jConfigUtil.getPriority(loggerName));
+	}
+
+	@Test
 	public void testMisc() {
 		new Log4jConfigUtil();
 	}

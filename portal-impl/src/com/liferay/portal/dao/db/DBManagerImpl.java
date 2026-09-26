@@ -9,7 +9,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.dao.jdbc.util.DBInfo;
 import com.liferay.portal.dao.jdbc.util.DBInfoUtil;
 import com.liferay.portal.dao.orm.hibernate.DialectImpl;
-import com.liferay.portal.dao.orm.hibernate.MariaDBDialect;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactory;
@@ -31,10 +30,10 @@ import javax.sql.DataSource;
 
 import org.hibernate.dialect.DB2Dialect;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.Oracle8iDialect;
-import org.hibernate.dialect.Oracle9Dialect;
-import org.hibernate.dialect.PostgreSQL82Dialect;
+import org.hibernate.dialect.OracleDialect;
+import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
 
 /**
@@ -145,13 +144,11 @@ public class DBManagerImpl implements DBManager {
 			return DBType.MYSQL;
 		}
 
-		if (dialect instanceof Oracle8iDialect ||
-			dialect instanceof Oracle9Dialect) {
-
+		if (dialect instanceof OracleDialect) {
 			return DBType.ORACLE;
 		}
 
-		if (dialect instanceof PostgreSQL82Dialect) {
+		if (dialect instanceof PostgreSQLDialect) {
 			return DBType.POSTGRESQL;
 		}
 

@@ -98,9 +98,7 @@ public class PortalHibernateConfiguration
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
 
 		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
-			Class<?> clazz = dialect.getClass();
-
-			properties.setProperty("hibernate.dialect", clazz.getName());
+			properties.put("hibernate.dialect", dialect);
 		}
 
 		properties.setProperty("jakarta.persistence.validation.mode", "none");

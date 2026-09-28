@@ -123,6 +123,9 @@ public interface WebKeys {
 
 	public static final String DIFF_VERSION = "DIFF_VERSION";
 
+	public static final String DISABLE_PORTLET_RENDER =
+		"DISABLE_PORTLET_RENDER";
+
 	public static final String DOCUMENT_LIBRARY_DYNAMIC_DATA_MAPPING_STRUCTURE =
 		"DOCUMENT_LIBRARY_DYNAMIC_DATA_MAPPING_STRUCTURE";
 

@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -188,6 +189,17 @@ public class FreeMarkerFragmentEntryProcessor
 
 		template.prepare(fragmentEntryProcessorContext.getHttpServletRequest());
 
+		HttpServletRequest httpServletRequest =
+			fragmentEntryProcessorContext.getHttpServletRequest();
+
+		Object disablePortletRender = httpServletRequest.getAttribute(
+			WebKeys.DISABLE_PORTLET_RENDER);
+
+		if (fragmentEntryProcessorContext.isDisablePortletRender()) {
+			httpServletRequest.setAttribute(
+				WebKeys.DISABLE_PORTLET_RENDER, Boolean.TRUE);
+		}
+
 		try {
 			template.processTemplate(unsyncStringWriter);
 		}
@@ -197,6 +209,10 @@ public class FreeMarkerFragmentEntryProcessor
 					templateException,
 					fragmentEntryProcessorContext.getLocale()),
 				templateException);
+		}
+		finally {
+			httpServletRequest.setAttribute(
+				WebKeys.DISABLE_PORTLET_RENDER, disablePortletRender);
 		}
 
 		return unsyncStringWriter.toString();

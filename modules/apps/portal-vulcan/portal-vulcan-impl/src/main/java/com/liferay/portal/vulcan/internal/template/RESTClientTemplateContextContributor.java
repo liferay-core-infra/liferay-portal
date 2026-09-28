@@ -5,12 +5,15 @@
 
 package com.liferay.portal.vulcan.internal.template;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.http.VulcanRequestForwarder;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,6 +65,13 @@ public class RESTClientTemplateContextContributor
 		}
 
 		private Object _get(String path) throws Exception {
+			if (GetterUtil.getBoolean(
+					_httpServletRequest.getAttribute(
+						WebKeys.DISABLE_PORTLET_RENDER))) {
+
+				return StringPool.BLANK;
+			}
+
 			VulcanRequestForwarder.Response response =
 				_vulcanRequestForwarder.forward(
 					_httpServletRequest,

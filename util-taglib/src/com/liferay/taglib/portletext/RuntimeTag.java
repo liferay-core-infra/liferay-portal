@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -161,6 +162,13 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws Exception {
+
+		if (GetterUtil.getBoolean(
+				httpServletRequest.getAttribute(
+					WebKeys.DISABLE_PORTLET_RENDER))) {
+
+			return;
+		}
 
 		instanceId = PortalUtil.getJsSafePortletId(instanceId);
 

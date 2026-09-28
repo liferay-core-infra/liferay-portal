@@ -13,8 +13,6 @@ import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.internal.change.tracking.hibernate.CTSQLInterceptor;
-import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
@@ -42,7 +40,6 @@ import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +71,6 @@ import org.osgi.framework.BundleContext;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
-import org.springframework.util.ClassUtils;
 
 /**
  * @author Brian Wing Shun Chan
@@ -88,19 +84,7 @@ public class PortalHibernateConfiguration
 	public void afterPropertiesSet() throws IOException {
 		Dialect dialect = DialectDetector.getDialect(_dataSource);
 
-		if (DBManagerUtil.getDBType(dialect) == DBType.ORACLE) {
-
-			// This must be done before the instantiating Configuration to
-			// ensure that org.hibernate.cfg.Environment's static init block can
-			// see it
-
-			System.setProperty(
-				PropsKeys.HIBERNATE_JDBC_USE_STREAMS_FOR_BINARY, "true");
-		}
-
 		Properties properties = PropsUtil.getProperties();
-
-		properties.remove("hibernate.cache.region.factory_class");
 
 		properties.setProperty(
 			"hibernate.allow_update_outside_transaction", "true");
@@ -149,10 +133,6 @@ public class PortalHibernateConfiguration
 		configuration.addProperties(properties);
 
 		properties = configuration.getProperties();
-
-		properties.put(
-			"hibernate.classLoaders",
-			Collections.singleton(ClassUtils.getDefaultClassLoader()));
 
 		if (_dataSource != null) {
 			properties.put("hibernate.connection.datasource", _dataSource);

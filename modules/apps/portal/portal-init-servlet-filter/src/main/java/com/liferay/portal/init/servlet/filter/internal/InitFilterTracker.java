@@ -30,7 +30,7 @@ public class InitFilterTracker {
 		_serviceRegistration = bundleContext.registerService(
 			Filter.class, initFilter,
 			HashMapDictionaryBuilder.<String, Object>put(
-				"dispatcher", new String[] {"FORWARD", "REQUEST"}
+				"dispatcher", new String[] {"REQUEST"}
 			).put(
 				"servlet-context-name", ""
 			).put(

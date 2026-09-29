@@ -1079,6 +1079,10 @@ public class CompanyLocalServiceTest {
 				company,
 				_companyLocalService.getCompanyByVirtualHost(
 					"0:0:0:0:0:0:0:1"));
+			Assert.assertThrows(
+				CompanyVirtualHostException.class,
+				() -> _companyLocalService.getCompanyByVirtualHost(
+					RandomTestUtil.randomString()));
 		}
 		finally {
 			_companyLocalService.deleteCompany(company);

@@ -5,9 +5,12 @@
 
 package com.liferay.portal.test.rule;
 
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -33,8 +36,15 @@ public class DBPartitionTestRule implements TestRule {
 		}
 
 		try {
-			Company company = CompanyLocalServiceUtil.fetchCompanyByVirtualHost(
-				TestPropsValues.COMPANY_WEB_ID);
+			Company company = null;
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						PortalInstancePool.getDefaultCompanyId())) {
+
+				company = CompanyLocalServiceUtil.fetchCompanyByVirtualHost(
+					TestPropsValues.COMPANY_WEB_ID);
+			}
 
 			if (company != null) {
 				return statement;

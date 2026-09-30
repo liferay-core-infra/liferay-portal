@@ -323,19 +323,6 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 	}
 
 	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param  virtualHost the company's virtual host name
-	 * @return Returns the company with the virtual host name
-	 */
-	@Override
-	public Company getCompanyByVirtualHost(String virtualHost)
-		throws PortalException {
-
-		return companyLocalService.getCompanyByVirtualHost(virtualHost);
-	}
-
-	/**
 	 * Returns the company with the web domain.
 	 *
 	 * @param  webId the company's web domain

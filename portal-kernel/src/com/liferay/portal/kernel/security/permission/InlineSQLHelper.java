@@ -26,6 +26,9 @@ public interface InlineSQLHelper {
 	public <T extends BaseModel<T>> List<T> filter(
 		List<T> list, long... groupIds);
 
+	public <T extends BaseModel<T>> List<T> filter(
+		List<T> list, String filterPKColumnName, long... groupIds);
+
 	public <T extends Table<T>> Predicate getPermissionWherePredicate(
 		Class<?> modelClass, Column<T, Long> classPKColumn, long... groupIds);
 

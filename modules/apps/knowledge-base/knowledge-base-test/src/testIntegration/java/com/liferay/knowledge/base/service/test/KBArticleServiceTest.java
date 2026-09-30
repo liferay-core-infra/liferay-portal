@@ -17,18 +17,25 @@ import com.liferay.knowledge.base.util.comparator.KBArticlePriorityComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.constants.TestDataConstants;
 import com.liferay.portal.kernel.test.context.ContextUserReplace;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -161,6 +168,56 @@ public class KBArticleServiceTest {
 			QueryUtil.ALL_POS, KBArticlePriorityComparator.getInstance(true));
 
 		Assert.assertEquals(kbArticles.toString(), 1, kbArticles.size());
+	}
+
+	@Test
+	public void testGetKBArticlesWithViewPermissionOnResourcePrimKey()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group, TestPropsValues.getUserId());
+
+		serviceContext.setAddGroupPermissions(false);
+		serviceContext.setAddGuestPermissions(false);
+		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
+
+		KBArticle kbArticle1 = _addKbArticle(new Date(), serviceContext);
+		KBArticle kbArticle2 = _addKbArticle(new Date(), serviceContext);
+		KBArticle kbArticle3 = _addKbArticle(new Date(), serviceContext);
+
+		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
+
+		_userLocalService.addRoleUser(_role.getRoleId(), _user.getUserId());
+
+		for (KBArticle kbArticle : new KBArticle[] {kbArticle1, kbArticle2}) {
+			_resourcePermissionLocalService.setResourcePermissions(
+				kbArticle.getCompanyId(), KBArticle.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(kbArticle.getResourcePrimKey()),
+				_role.getRoleId(), new String[] {ActionKeys.VIEW});
+		}
+
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				_user)) {
+
+			List<KBArticle> kbArticles = _kbArticleService.getKBArticles(
+				_group.getGroupId(), KBFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS,
+				KBArticlePriorityComparator.getInstance(true));
+
+			Assert.assertEquals(kbArticles.toString(), 2, kbArticles.size());
+			Assert.assertFalse(
+				kbArticles.toString(), kbArticles.contains(kbArticle3));
+
+			Assert.assertEquals(
+				2,
+				_kbArticleService.getKBArticlesCount(
+					_group.getGroupId(),
+					KBFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+					WorkflowConstants.STATUS_APPROVED));
+		}
 	}
 
 	@Test
@@ -475,6 +532,13 @@ public class KBArticleServiceTest {
 	private KBArticleService _kbArticleService;
 
 	private long _kbFolderClassNameId;
+
+	@Inject
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@DeleteAfterTestRun
+	private Role _role;
+
 	private ServiceContext _serviceContext;
 
 	@DeleteAfterTestRun
@@ -484,5 +548,8 @@ public class KBArticleServiceTest {
 
 	@DeleteAfterTestRun
 	private User _user;
+
+	@Inject
+	private UserLocalService _userLocalService;
 
 }

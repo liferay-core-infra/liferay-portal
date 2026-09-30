@@ -44,8 +44,10 @@ public class FilterCollectionPersistenceFinder
 
 		String entityAlias = basePersistenceImpl.getEntityAlias();
 
+		_filterPKColumnName = basePersistenceImpl.getFilterPKColumnName();
+
 		_filterPKColumn = StringBundler.concat(
-			entityAlias, ".", basePersistenceImpl.getFilterPKColumnName());
+			entityAlias, ".", _filterPKColumnName);
 
 		String tableName = basePersistenceImpl.getTableName();
 
@@ -234,7 +236,8 @@ public class FilterCollectionPersistenceFinder
 				finderCache, values, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
 				true);
 
-			list = InlineSQLHelperUtil.filter(list, groupIds);
+			list = InlineSQLHelperUtil.filter(
+				list, _filterPKColumnName, groupIds);
 
 			return list.size();
 		}
@@ -282,7 +285,8 @@ public class FilterCollectionPersistenceFinder
 				finderCache, values, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				orderByComparator, true);
 
-			return InlineSQLHelperUtil.filter(list, groupIds);
+			return InlineSQLHelperUtil.filter(
+				list, _filterPKColumnName, groupIds);
 		}
 
 		normalizeValues(values);
@@ -342,6 +346,7 @@ public class FilterCollectionPersistenceFinder
 	private static final long[] _EMPTY_GROUP_IDS = new long[0];
 
 	private final String _filterPKColumn;
+	private final String _filterPKColumnName;
 	private final String _filterSqlCountWhere;
 	private final String _filterSqlSelectNoInlineDistinctWhere1;
 	private final String _filterSqlSelectNoInlineDistinctWhere2;

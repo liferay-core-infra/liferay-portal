@@ -29,6 +29,15 @@ public class InlineSQLHelperUtil {
 		return inlineSQLPermission.filter(list, groupIds);
 	}
 
+	public static <T extends BaseModel<T>> List<T> filter(
+		List<T> list, String filterPKColumnName, long... groupIds) {
+
+		InlineSQLHelper inlineSQLPermission =
+			_inlineSQLPermissionSnapshot.get();
+
+		return inlineSQLPermission.filter(list, filterPKColumnName, groupIds);
+	}
+
 	public static <T extends Table<T>> Predicate getPermissionWherePredicate(
 		Class<?> modelClass, Column<T, Long> classPKColumn, long... groupIds) {
 

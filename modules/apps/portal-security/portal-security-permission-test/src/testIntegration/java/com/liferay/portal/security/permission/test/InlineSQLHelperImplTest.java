@@ -6,6 +6,8 @@
 package com.liferay.portal.security.permission.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -41,6 +43,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -54,6 +57,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
@@ -137,6 +141,44 @@ public class InlineSQLHelperImplTest {
 		Assert.assertSame(_SQL_PLAIN, sql);
 
 		Assert.assertTrue(_inlineSQLHelper.isEnabled(_groupOne.getGroupId()));
+	}
+
+	@Test
+	public void testFilterByFilterPrimaryKey() throws Exception {
+		JournalArticle journalArticle1 = _createJournalArticle();
+		JournalArticle journalArticle2 = _createJournalArticle();
+
+		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
+
+		_userLocalService.addRoleUser(_role.getRoleId(), _user.getUserId());
+
+		_resourcePermissionLocalService.setResourcePermissions(
+			TestPropsValues.getCompanyId(), JournalArticle.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(journalArticle1.getId()), _role.getRoleId(),
+			new String[] {ActionKeys.VIEW});
+		_resourcePermissionLocalService.setResourcePermissions(
+			TestPropsValues.getCompanyId(), JournalArticle.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(journalArticle2.getResourcePrimKey()),
+			_role.getRoleId(), new String[] {ActionKeys.VIEW});
+
+		_setPermissionChecker();
+
+		List<JournalArticle> journalArticles = Arrays.asList(
+			journalArticle1, journalArticle2);
+
+		Assert.assertEquals(
+			Collections.singletonList(journalArticle1),
+			_inlineSQLHelper.filter(journalArticles, _groupOne.getGroupId()));
+		Assert.assertEquals(
+			Collections.singletonList(journalArticle1),
+			_inlineSQLHelper.filter(
+				journalArticles, "noSuchColumn", _groupOne.getGroupId()));
+		Assert.assertEquals(
+			Collections.singletonList(journalArticle2),
+			_inlineSQLHelper.filter(
+				journalArticles, "resourcePrimKey", _groupOne.getGroupId()));
 	}
 
 	@Test
@@ -582,6 +624,17 @@ public class InlineSQLHelperImplTest {
 		_assertValidSql(sql);
 	}
 
+	private JournalArticle _createJournalArticle() {
+		JournalArticle journalArticle =
+			_journalArticleLocalService.createJournalArticle(
+				RandomTestUtil.randomLong());
+
+		journalArticle.setResourcePrimKey(RandomTestUtil.randomLong());
+		journalArticle.setGroupId(_groupOne.getGroupId());
+
+		return journalArticle;
+	}
+
 	private String _replacePermissionCheckJoin(String sql, long... groupIds) {
 		return _inlineSQLHelper.replacePermissionCheck(
 			sql, _CLASS_NAME, _CLASS_PK_FIELD, groupIds);
@@ -635,6 +688,9 @@ public class InlineSQLHelperImplTest {
 
 	@Inject
 	private InlineSQLHelper _inlineSQLHelper;
+
+	@Inject
+	private JournalArticleLocalService _journalArticleLocalService;
 
 	private PermissionChecker _originalPermissionChecker;
 

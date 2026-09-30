@@ -17,13 +17,19 @@ import com.liferay.message.boards.service.MBMessageServiceUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.test.constants.ServiceTestConstants;
@@ -32,10 +38,12 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -46,6 +54,7 @@ import com.liferay.portal.test.security.permission.DoAsUserThread;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
@@ -239,10 +248,98 @@ public class MBMessageServiceTest {
 		}
 	}
 
+	@Test
+	public void testGetThreadMessagesWithViewPermissionOnRootMessage()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group, TestPropsValues.getUserId());
+
+		serviceContext.setAddGroupPermissions(false);
+		serviceContext.setAddGuestPermissions(false);
+		serviceContext.setModelPermissions(
+			ModelPermissionsFactory.create(
+				new String[0], new String[0], MBMessage.class.getName()));
+
+		MBMessage rootMBMessage = _addMBMessage(serviceContext);
+
+		MBMessage replyMBMessage = MBMessageLocalServiceUtil.addMessage(
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+			_group.getGroupId(), _category.getCategoryId(),
+			rootMBMessage.getThreadId(), rootMBMessage.getMessageId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			MBMessageConstants.DEFAULT_FORMAT, Collections.emptyList(), false,
+			0.0, false, serviceContext);
+
+		MBMessage unpermittedMBMessage = _addMBMessage(serviceContext);
+
+		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
+		_user = UserTestUtil.addUser();
+
+		UserLocalServiceUtil.addRoleUser(_role.getRoleId(), _user.getUserId());
+
+		ResourcePermissionLocalServiceUtil.setResourcePermissions(
+			rootMBMessage.getCompanyId(), MBMessage.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(rootMBMessage.getMessageId()), _role.getRoleId(),
+			new String[] {ActionKeys.VIEW});
+
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				_user)) {
+
+			List<MBMessage> mbMessages = MBMessageServiceUtil.getThreadMessages(
+				_group.getGroupId(), _category.getCategoryId(),
+				rootMBMessage.getThreadId(), WorkflowConstants.STATUS_ANY,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			Assert.assertEquals(mbMessages.toString(), 2, mbMessages.size());
+			Assert.assertTrue(
+				mbMessages.toString(), mbMessages.contains(rootMBMessage));
+			Assert.assertTrue(
+				mbMessages.toString(), mbMessages.contains(replyMBMessage));
+
+			Assert.assertEquals(
+				2,
+				MBMessageServiceUtil.getThreadMessagesCount(
+					_group.getGroupId(), _category.getCategoryId(),
+					rootMBMessage.getThreadId(), WorkflowConstants.STATUS_ANY));
+
+			mbMessages = MBMessageServiceUtil.getThreadMessages(
+				_group.getGroupId(), _category.getCategoryId(),
+				unpermittedMBMessage.getThreadId(),
+				WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS);
+
+			Assert.assertEquals(mbMessages.toString(), 0, mbMessages.size());
+
+			Assert.assertEquals(
+				2,
+				MBMessageServiceUtil.getGroupMessagesCount(
+					_group.getGroupId(), WorkflowConstants.STATUS_ANY));
+		}
+	}
+
+	private MBMessage _addMBMessage(ServiceContext serviceContext)
+		throws Exception {
+
+		return MBMessageLocalServiceUtil.addMessage(
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+			_group.getGroupId(), _category.getCategoryId(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			serviceContext);
+	}
+
 	private MBCategory _category;
 
 	@DeleteAfterTestRun
 	private Group _group;
+
+	@DeleteAfterTestRun
+	private Role _role;
+
+	@DeleteAfterTestRun
+	private User _user;
 
 	@DeleteAfterTestRun
 	private User[] _users;

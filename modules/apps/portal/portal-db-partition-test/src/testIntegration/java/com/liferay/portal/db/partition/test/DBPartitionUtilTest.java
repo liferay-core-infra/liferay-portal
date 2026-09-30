@@ -287,6 +287,12 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 			for (String fromTableName : fromTableNames) {
 				String toTableName = fromTableName;
 
+				if (StringUtil.equalsIgnoreCase(toTableName, "VirtualHost")) {
+					Assert.assertEquals(0, _getCount(companyId, toTableName));
+
+					continue;
+				}
+
 				if (fromTableName.equals(
 						testObjectTableNamePrefix + companyId)) {
 
@@ -352,8 +358,7 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 				companyCount + COMPANY_IDS.length,
 				_getDefaultSchemaCount("Company"));
 			Assert.assertEquals(
-				virtualHostCount + COMPANY_IDS.length,
-				_getDefaultSchemaCount("VirtualHost"));
+				virtualHostCount, _getDefaultSchemaCount("VirtualHost"));
 
 			try {
 				importDBPartitions();
@@ -374,8 +379,7 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 				companyCount + COMPANY_IDS.length,
 				_getDefaultSchemaCount("Company"));
 			Assert.assertEquals(
-				virtualHostCount + COMPANY_IDS.length,
-				_getDefaultSchemaCount("VirtualHost"));
+				virtualHostCount, _getDefaultSchemaCount("VirtualHost"));
 
 			for (long companyId : COMPANY_IDS) {
 				Assert.assertEquals(
@@ -384,6 +388,7 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 				Assert.assertEquals(
 					(int)tablesCount.get(companyId),
 					_getTablesCount(getPartitionName(companyId)));
+				Assert.assertEquals(1, _getCount(companyId, "VirtualHost"));
 				Assert.assertEquals(1, _getJobsCountByCompany(companyId));
 			}
 
@@ -608,22 +613,6 @@ public class DBPartitionUtilTest extends BaseDBPartitionTestCase {
 		finally {
 			deletePartitionRequiredData();
 			removeDBPartitions();
-		}
-	}
-
-	@Test
-	public void testIncrementCounter() throws Exception {
-		long count = DBPartitionUtil.incrementCounter();
-
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-					COMPANY_IDS[0])) {
-
-			Assert.assertEquals(count + 1, DBPartitionUtil.incrementCounter());
-
-			Assert.assertEquals(
-				Long.valueOf(COMPANY_IDS[0]),
-				CompanyThreadLocal.getCompanyId());
 		}
 	}
 

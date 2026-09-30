@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.RetryAcceptor;
 import com.liferay.portal.kernel.service.SQLStateAcceptor;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.Connection;
@@ -205,19 +206,33 @@ public class OrphanReferencesDataCleanupUtil {
 			(sourceAdditionalWhereClause != null) ?
 				" and " + sourceAdditionalWhereClause : "");
 
+		boolean filterByCompanyId = false;
+
+		if (StringUtil.equalsIgnoreCase("Company", targetTableName) &&
+			PropsValues.DATABASE_PARTITION_ENABLED &&
+			!dbInspector.isControlTable(sourceTableName)) {
+
+			filterByCompanyId = true;
+
+			if (_migratedViewTableNames.contains(
+					StringUtil.toLowerCase(sourceTableName)) &&
+				dbInspector.hasDBPartitionView(sourceTableName)) {
+
+				filterByCompanyId = false;
+			}
+		}
+
 		if ((db.getDBType() == DBType.MARIADB) ||
 			(db.getDBType() == DBType.MYSQL)) {
 
 			whereClause = _getMySQLWhereClause(
-				additionalWhereClause, customJoinClauses, dbInspector,
-				sourceColumnName, sourceTableName, targetColumnNames,
-				targetTableName);
+				additionalWhereClause, customJoinClauses, filterByCompanyId,
+				sourceColumnName, targetColumnNames, targetTableName);
 		}
 		else {
 			whereClause = _getOtherDBsWhereClause(
-				additionalWhereClause, customJoinClauses, dbInspector,
-				sourceColumnName, sourceTableName, targetColumnNames,
-				targetTableName);
+				additionalWhereClause, customJoinClauses, filterByCompanyId,
+				sourceColumnName, targetColumnNames, targetTableName);
 		}
 
 		return StringUtil.replace(
@@ -328,9 +343,8 @@ public class OrphanReferencesDataCleanupUtil {
 
 	private static String _getMySQLWhereClause(
 		String additionalWhereClause, String[] customJoinClauses,
-		DBInspector dbInspector, String sourceColumnName,
-		String sourceTableName, String[] targetColumnNames,
-		String targetTableName) {
+		boolean filterByCompanyId, String sourceColumnName,
+		String[] targetColumnNames, String targetTableName) {
 
 		int index = 0;
 		StringBundler sb = new StringBundler(
@@ -371,10 +385,7 @@ public class OrphanReferencesDataCleanupUtil {
 				sb.append(sourceColumnName);
 			}
 
-			if (StringUtil.equalsIgnoreCase("Company", targetTableName) &&
-				PropsValues.DATABASE_PARTITION_ENABLED &&
-				!dbInspector.isControlTable(sourceTableName)) {
-
+			if (filterByCompanyId) {
 				sb.append(" and ");
 				sb.append(aliasTableName);
 				sb.append(".companyId = ");
@@ -407,9 +418,8 @@ public class OrphanReferencesDataCleanupUtil {
 
 	private static String _getOtherDBsWhereClause(
 		String additionalWhereClause, String[] customJoinClauses,
-		DBInspector dbInspector, String sourceColumnName,
-		String sourceTableName, String[] targetColumnNames,
-		String targetTableName) {
+		boolean filterByCompanyId, String sourceColumnName,
+		String[] targetColumnNames, String targetTableName) {
 
 		StringBundler sb = new StringBundler(
 			(8 * targetColumnNames.length) + 10);
@@ -450,10 +460,7 @@ public class OrphanReferencesDataCleanupUtil {
 		sb.setIndex(sb.index() - 1);
 		sb.append(")");
 
-		if (StringUtil.equalsIgnoreCase("Company", targetTableName) &&
-			PropsValues.DATABASE_PARTITION_ENABLED &&
-			!dbInspector.isControlTable(sourceTableName)) {
-
+		if (filterByCompanyId) {
 			sb.append(" and companyId = ");
 			sb.append(CompanyThreadLocal.getCompanyId());
 		}
@@ -475,6 +482,8 @@ public class OrphanReferencesDataCleanupUtil {
 	private static final List<String> _excludedTableNames = new ArrayList<>(
 		Arrays.asList(
 			"Audit_AuditEvent", "CyrusUser", "CyrusVirtual", "SystemEvent"));
+	private static final Set<String> _migratedViewTableNames =
+		SetUtil.fromArray("virtualhost");
 	private static final List<String> _normalizedExcludedTableNames =
 		new ArrayList<>();
 	private static final RetryAcceptor _retryAcceptor = new SQLStateAcceptor();

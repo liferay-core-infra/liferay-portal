@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.exception.CompanyNameException;
 import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.CompanyWebIdException;
 import com.liferay.portal.kernel.exception.LocaleException;
-import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredCompanyException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -150,7 +149,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.net.IDN;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -165,6 +163,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -794,13 +793,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		virtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 			virtualHostname);
-
-		if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-			virtualHost = _virtualHostPersistence.fetchByHostname(
-				IDN.toUnicode(virtualHostname));
-		}
 
 		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
 			return null;
@@ -978,30 +972,24 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	public Company getCompanyByVirtualHost(String virtualHostname)
 		throws PortalException {
 
-		try {
-			virtualHostname = StringUtil.toLowerCase(
-				StringUtil.trim(virtualHostname));
+		virtualHostname = StringUtil.toLowerCase(
+			StringUtil.trim(virtualHostname));
 
-			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
-				virtualHostname);
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			virtualHostname);
 
-			if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-				virtualHost = _virtualHostPersistence.findByHostname(
-					IDN.toUnicode(virtualHostname));
-			}
-
-			if (virtualHost.getLayoutSetId() != 0) {
-				throw new CompanyVirtualHostException(
-					"Virtual host is associated with layout set " +
-						virtualHost.getLayoutSetId());
-			}
-
-			return companyPersistence.findByPrimaryKey(
-				virtualHost.getCompanyId());
+		if (virtualHost == null) {
+			throw new CompanyVirtualHostException(
+				"No virtual host exists with hostname " + virtualHostname);
 		}
-		catch (NoSuchVirtualHostException noSuchVirtualHostException) {
-			throw new CompanyVirtualHostException(noSuchVirtualHostException);
+
+		if (virtualHost.getLayoutSetId() != 0) {
+			throw new CompanyVirtualHostException(
+				"Virtual host is associated with layout set " +
+					virtualHost.getLayoutSetId());
 		}
+
+		return companyPersistence.findByPrimaryKey(virtualHost.getCompanyId());
 	}
 
 	/**
@@ -1650,7 +1638,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		preunregisterCompany(company);
 
 		if (PropsValues.DATABASE_PARTITION_ENABLED) {
-			VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
+			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 				company.getVirtualHostname());
 
 			TransactionCallbackUtil.registerCommitCallback(
@@ -1954,7 +1942,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					"Virtual hostname is not a valid IPv6 address");
 			}
 
-			VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
+			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 				virtualHostname);
 
 			if (virtualHost == null) {
@@ -1973,14 +1961,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			}
 		}
 		else {
-			List<VirtualHost> virtualHosts = _virtualHostPersistence.findByC_L(
-				companyId, 0);
-
-			if (!virtualHosts.isEmpty()) {
-				for (VirtualHost virtualHost : virtualHosts) {
-					_virtualHostPersistence.remove(virtualHost);
-				}
-			}
+			_virtualHostLocalService.updateVirtualHosts(
+				companyId, 0, new TreeMap<>());
 		}
 
 		return companyPersistence.fetchByPrimaryKey(companyId);

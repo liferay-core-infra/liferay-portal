@@ -11,7 +11,6 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.LayoutSetJavaScriptException;
 import com.liferay.portal.kernel.exception.LayoutSetVirtualHostException;
 import com.liferay.portal.kernel.exception.NoSuchImageException;
-import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -31,7 +30,6 @@ import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
-import com.liferay.portal.kernel.service.persistence.VirtualHostPersistence;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -50,8 +48,6 @@ import com.liferay.sites.kernel.util.Sites;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
-import java.net.IDN;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -141,8 +137,9 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 		// Virtual host
 
-		_virtualHostPersistence.removeByC_L(
-			layoutSet.getCompanyId(), layoutSet.getLayoutSetId());
+		_virtualHostLocalService.updateVirtualHosts(
+			layoutSet.getCompanyId(), layoutSet.getLayoutSetId(),
+			new TreeMap<>());
 	}
 
 	@Override
@@ -155,13 +152,8 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		virtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 			virtualHostname);
-
-		if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-			virtualHost = _virtualHostPersistence.fetchByHostname(
-				IDN.toUnicode(virtualHostname));
-		}
 
 		if ((virtualHost == null) || (virtualHost.getLayoutSetId() == 0)) {
 			return null;
@@ -207,21 +199,8 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		virtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		VirtualHost virtualHost = null;
-
-		try {
-			virtualHost = _virtualHostPersistence.findByHostname(
-				virtualHostname);
-		}
-		catch (NoSuchVirtualHostException noSuchVirtualHostException) {
-			if (virtualHostname.contains("xn--")) {
-				virtualHost = _virtualHostPersistence.findByHostname(
-					IDN.toUnicode(virtualHostname));
-			}
-			else {
-				throw noSuchVirtualHostException;
-			}
-		}
+		VirtualHost virtualHost = _virtualHostLocalService.getVirtualHost(
+			virtualHostname);
 
 		if (virtualHost.getLayoutSetId() == 0) {
 			throw new LayoutSetVirtualHostException(
@@ -561,23 +540,27 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			groupId, privateLayout);
 
 		if (!virtualHostnames.isEmpty()) {
-			long virtualHostsCount = _virtualHostPersistence.countByNotL_H(
-				layoutSet.getLayoutSetId(),
-				ArrayUtil.toStringArray(virtualHostnames.keySet()));
+			long virtualHostsCount =
+				_virtualHostLocalService.getVirtualHostsCount(
+					layoutSet.getLayoutSetId(),
+					ArrayUtil.toStringArray(virtualHostnames.keySet()));
 
 			if (virtualHostsCount > 0) {
 				throw new LayoutSetVirtualHostException();
 			}
+		}
 
+		try {
 			_virtualHostLocalService.updateVirtualHosts(
 				layoutSet.getCompanyId(), layoutSet.getLayoutSetId(),
 				virtualHostnames);
 		}
-		else {
-			_virtualHostPersistence.removeByC_L(
-				layoutSet.getCompanyId(), layoutSet.getLayoutSetId());
+		catch (DuplicateVirtualHostnameException
+					duplicateVirtualHostnameException) {
 
-			layoutSetPersistence.clearCache(layoutSet);
+			throw new LayoutSetVirtualHostException(
+				duplicateVirtualHostnameException.getMessage(),
+				duplicateVirtualHostnameException);
 		}
 
 		return layoutSet;
@@ -709,8 +692,5 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 	@BeanReference(type = VirtualHostLocalService.class)
 	private VirtualHostLocalService _virtualHostLocalService;
-
-	@BeanReference(type = VirtualHostPersistence.class)
-	private VirtualHostPersistence _virtualHostPersistence;
 
 }

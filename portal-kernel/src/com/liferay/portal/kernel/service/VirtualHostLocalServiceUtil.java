@@ -299,6 +299,22 @@ public class VirtualHostLocalServiceUtil {
 			excludedLayoutSetId, virtualHostNames);
 	}
 
+	public static void registerVirtualHost(long companyId, String hostname) {
+		getService().registerVirtualHost(companyId, hostname);
+	}
+
+	public static void reloadVirtualHosts() {
+		getService().reloadVirtualHosts();
+	}
+
+	public static void unregisterVirtualHost(String hostname) {
+		getService().unregisterVirtualHost(hostname);
+	}
+
+	public static void unregisterVirtualHosts(long companyId) {
+		getService().unregisterVirtualHosts(companyId);
+	}
+
 	/**
 	 * Updates the virtual host in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -332,4 +348,4 @@ public class VirtualHostLocalServiceUtil {
 	private static volatile VirtualHostLocalService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-219097511
+// LIFERAY-SERVICE-BUILDER-HASH:1406783864

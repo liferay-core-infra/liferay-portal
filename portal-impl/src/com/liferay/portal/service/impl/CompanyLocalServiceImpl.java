@@ -968,24 +968,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	public Company getCompanyByVirtualHost(String virtualHostname)
 		throws PortalException {
 
-		virtualHostname = StringUtil.toLowerCase(
-			StringUtil.trim(virtualHostname));
+		Company company = fetchCompanyByVirtualHost(virtualHostname);
 
-		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
-			virtualHostname);
-
-		if (virtualHost == null) {
+		if (company == null) {
 			throw new CompanyVirtualHostException(
-				"No virtual host exists with hostname " + virtualHostname);
+				"No company exists with virtual host " + virtualHostname);
 		}
 
-		if (virtualHost.getLayoutSetId() != 0) {
-			throw new CompanyVirtualHostException(
-				"Virtual host is associated with layout set " +
-					virtualHost.getLayoutSetId());
-		}
-
-		return companyPersistence.findByPrimaryKey(virtualHost.getCompanyId());
+		return company;
 	}
 
 	/**

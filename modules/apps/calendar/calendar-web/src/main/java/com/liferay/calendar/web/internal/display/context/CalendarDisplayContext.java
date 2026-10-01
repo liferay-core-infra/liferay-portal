@@ -53,7 +53,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
-import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -268,7 +268,9 @@ public class CalendarDisplayContext {
 		_groupSearchContainer.setResultsAndTotal(
 			() -> GroupServiceUtil.search(
 				_themeDisplay.getCompanyId(), _getClassNameIds(), getKeywords(),
-				MapUtil.toLinkedHashMap(new String[] {"site:true:boolean"}),
+				LinkedHashMapBuilder.<String, Object>put(
+					"site", Boolean.TRUE
+				).build(),
 				_groupSearchContainer.getStart(),
 				_groupSearchContainer.getEnd(),
 				_groupSearchContainer.getOrderByComparator()),

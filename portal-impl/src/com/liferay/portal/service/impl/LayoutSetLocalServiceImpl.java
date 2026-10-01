@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.VirtualHostPersistence;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -141,8 +140,7 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 
 		// Virtual host
 
-		_virtualHostPersistence.removeByC_L(
-			layoutSet.getCompanyId(), layoutSet.getLayoutSetId());
+		_virtualHostLocalService.updateVirtualHosts(layoutSet, new TreeMap<>());
 	}
 
 	@Override
@@ -560,27 +558,11 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
 			groupId, privateLayout);
 
-		if (!virtualHostnames.isEmpty()) {
-			long virtualHostsCount = _virtualHostPersistence.countByNotL_H(
-				layoutSet.getLayoutSetId(),
-				ArrayUtil.toStringArray(virtualHostnames.keySet()));
+		_virtualHostLocalService.updateVirtualHosts(
+			layoutSet, virtualHostnames);
 
-			if (virtualHostsCount > 0) {
-				throw new LayoutSetVirtualHostException();
-			}
-
-			_virtualHostLocalService.updateVirtualHosts(
-				layoutSet.getCompanyId(), layoutSet.getLayoutSetId(),
-				virtualHostnames);
-		}
-		else {
-			_virtualHostPersistence.removeByC_L(
-				layoutSet.getCompanyId(), layoutSet.getLayoutSetId());
-
-			layoutSetPersistence.clearCache(layoutSet);
-		}
-
-		return layoutSet;
+		return layoutSetPersistence.fetchByPrimaryKey(
+			layoutSet.getLayoutSetId());
 	}
 
 	protected LayoutSet initLayoutSet(LayoutSet layoutSet)

@@ -6,6 +6,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -212,6 +213,58 @@ public class VirtualHostLocalServiceImpl
 
 		return virtualHostPersistence.countByNotL_H(
 			excludedLayoutSetId, virtualHostNames);
+	}
+
+	@Override
+	public VirtualHost updateCompanyVirtualHost(
+		long companyId, String hostname) {
+
+		List<VirtualHost> virtualHosts = virtualHostPersistence.findByC_L(
+			companyId, 0);
+
+		VirtualHost virtualHost = null;
+
+		if (virtualHosts.isEmpty()) {
+			virtualHost = virtualHostPersistence.create(
+				DBPartitionUtil.incrementCounter());
+
+			virtualHost.setCompanyId(companyId);
+		}
+		else {
+			virtualHost = virtualHosts.get(0);
+
+			for (int i = 1; i < virtualHosts.size(); i++) {
+				virtualHostPersistence.remove(virtualHosts.get(i));
+			}
+		}
+
+		virtualHost.setHostname(hostname);
+		virtualHost.setDefaultVirtualHost(true);
+		virtualHost.setLanguageId(StringPool.BLANK);
+
+		virtualHost = virtualHostPersistence.update(virtualHost);
+
+		Company company = _companyPersistence.fetchByPrimaryKey(companyId);
+
+		if (company != null) {
+			_companyPersistence.clearCache(company);
+		}
+
+		if (Validator.isNotNull(PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+			Group group = _groupPersistence.fetchByC_GK(
+				companyId, PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME);
+
+			if (group != null) {
+				LayoutSet layoutSet = _layoutSetPersistence.fetchByG_P(
+					group.getGroupId(), false);
+
+				if (layoutSet != null) {
+					_layoutSetPersistence.clearCache(layoutSet);
+				}
+			}
+		}
+
+		return virtualHost;
 	}
 
 	@Override

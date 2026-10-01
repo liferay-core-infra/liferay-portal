@@ -134,7 +134,6 @@ import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
-import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -1879,6 +1878,19 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			long companyId, String virtualHostname)
 		throws CompanyVirtualHostException {
 
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			virtualHostname);
+
+		if (virtualHost != null) {
+			if ((virtualHost.getCompanyId() != companyId) ||
+				(virtualHost.getLayoutSetId() != 0)) {
+
+				throw new CompanyVirtualHostException();
+			}
+
+			return companyPersistence.fetchByPrimaryKey(companyId);
+		}
+
 		try {
 			if (Validator.isIPv6Address(virtualHostname)) {
 				Inet6Address address = (Inet6Address)InetAddress.getByName(
@@ -1896,23 +1908,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				"Virtual hostname is not a valid IPv6 address");
 		}
 
-		VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
-			virtualHostname);
-
-		if (virtualHost == null) {
-			_virtualHostLocalService.updateVirtualHosts(
-				companyId, 0,
-				TreeMapBuilder.put(
-					virtualHostname, StringPool.BLANK
-				).build());
-		}
-		else {
-			if ((virtualHost.getCompanyId() != companyId) ||
-				(virtualHost.getLayoutSetId() != 0)) {
-
-				throw new CompanyVirtualHostException();
-			}
-		}
+		_virtualHostLocalService.updateVirtualHost(companyId, virtualHostname);
 
 		return companyPersistence.fetchByPrimaryKey(companyId);
 	}

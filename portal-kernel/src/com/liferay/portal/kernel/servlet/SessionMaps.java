@@ -11,10 +11,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -39,55 +41,28 @@ public class SessionMaps {
 	public boolean contains(
 		HttpSession httpSession, String mapKey, String key) {
 
-		Map<String, Object> map = _getMap(httpSession, mapKey);
-
-		if (map == null) {
-			return false;
-		}
-
-		return map.containsKey(key);
+		return _readMap(
+			httpSession, mapKey, false, map -> map.containsKey(key));
 	}
 
 	public Object get(HttpSession httpSession, String mapKey, String key) {
-		Map<String, Object> map = _getMap(httpSession, mapKey);
-
-		if (map == null) {
-			return null;
-		}
-
-		return map.get(key);
+		return _readMap(httpSession, mapKey, null, map -> map.get(key));
 	}
 
 	public boolean isEmpty(HttpSession httpSession, String mapKey) {
-		Map<String, Object> map = _getMap(httpSession, mapKey);
-
-		if (map == null) {
-			return true;
-		}
-
-		return map.isEmpty();
+		return _readMap(httpSession, mapKey, true, Map::isEmpty);
 	}
 
 	public Iterator<String> iterator(HttpSession httpSession, String mapKey) {
-		Map<String, Object> map = _getMap(httpSession, mapKey);
-
-		if (map == null) {
-			return Collections.emptyIterator();
-		}
-
-		Set<String> keySet = Collections.unmodifiableSet(map.keySet());
+		Set<String> keySet = keySet(httpSession, mapKey);
 
 		return keySet.iterator();
 	}
 
 	public Set<String> keySet(HttpSession httpSession, String mapKey) {
-		Map<String, Object> map = _getMap(httpSession, mapKey);
-
-		if (map == null) {
-			return Collections.emptySet();
-		}
-
-		return Collections.unmodifiableSet(map.keySet());
+		return _readMap(
+			httpSession, mapKey, Collections.emptySet(),
+			map -> Collections.unmodifiableSet(new HashSet<>(map.keySet())));
 	}
 
 	public void remove(HttpSession httpSession, String mapKey, String key) {
@@ -95,13 +70,7 @@ public class SessionMaps {
 	}
 
 	public int size(HttpSession httpSession, String mapKey) {
-		Map<String, Object> map = _getMap(httpSession, mapKey);
-
-		if (map == null) {
-			return 0;
-		}
-
-		return map.size();
+		return _readMap(httpSession, mapKey, 0, Map::size);
 	}
 
 	private Map<String, Object> _getMap(
@@ -125,6 +94,25 @@ public class SessionMaps {
 		}
 	}
 
+	private <T> T _readMap(
+		HttpSession httpSession, String mapKey, T defaultValue,
+		Function<Map<String, Object>, T> function) {
+
+		Map<String, Object> map = _getMap(httpSession, mapKey);
+
+		if (map == null) {
+			return defaultValue;
+		}
+
+		T value;
+
+		synchronized (map) {
+			value = function.apply(map);
+		}
+
+		return value;
+	}
+
 	private void _updateMap(
 		HttpSession httpSession, String mapKey, boolean createIfAbsent,
 		Consumer<Map<String, Object>> consumer) {
@@ -140,12 +128,22 @@ public class SessionMaps {
 				return;
 			}
 
-			map = _mapSupplier.get();
+			synchronized (httpSession) {
+				map = _getMap(httpSession, mapKey);
+
+				if (map == null) {
+					map = _mapSupplier.get();
+
+					httpSession.setAttribute(mapKey, map);
+				}
+			}
 		}
 
-		consumer.accept(map);
+		synchronized (map) {
+			consumer.accept(map);
 
-		httpSession.setAttribute(mapKey, map);
+			httpSession.setAttribute(mapKey, map);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(SessionMaps.class);

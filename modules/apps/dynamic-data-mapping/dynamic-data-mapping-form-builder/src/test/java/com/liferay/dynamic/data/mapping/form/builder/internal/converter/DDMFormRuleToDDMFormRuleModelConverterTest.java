@@ -142,7 +142,7 @@ public class DDMFormRuleToDDMFormRuleModelConverterTest
 			actualCallFunctionParameters.get(1);
 
 		_assertCallFunctionParametersExpression(
-			expectedInputParametersExpression, actualInputParametersExpression);
+			actualInputParametersExpression, expectedInputParametersExpression);
 
 		String expectedOutputParametersExpression =
 			expectedCallFunctionParameters.get(2);
@@ -151,8 +151,8 @@ public class DDMFormRuleToDDMFormRuleModelConverterTest
 			actualCallFunctionParameters.get(2);
 
 		_assertCallFunctionParametersExpression(
-			expectedOutputParametersExpression,
-			actualOutputParametersExpression);
+			actualOutputParametersExpression,
+			expectedOutputParametersExpression);
 	}
 
 	@Test
@@ -350,8 +350,8 @@ public class DDMFormRuleToDDMFormRuleModelConverterTest
 	}
 
 	private void _assertCallFunctionParametersExpression(
-		String expectedParametersExpression,
-		String actualParametersExpression) {
+		String actualParametersExpression,
+		String expectedParametersExpression) {
 
 		Map<String, String> expectedParametersExpressionMap =
 			MapUtil.toLinkedHashMap(

@@ -118,17 +118,13 @@ public class VirtualHostLocalServiceImpl
 
 	@Override
 	public VirtualHost getVirtualHost(String hostname) throws PortalException {
-		try {
-			return virtualHostPersistence.findByHostname(hostname);
-		}
-		catch (NoSuchVirtualHostException noSuchVirtualHostException) {
-			if (hostname.contains("xn--")) {
-				return virtualHostPersistence.findByHostname(
-					IDN.toUnicode(hostname));
-			}
+		VirtualHost virtualHost = fetchVirtualHost(hostname);
 
-			throw noSuchVirtualHostException;
+		if (virtualHost == null) {
+			throw new NoSuchVirtualHostException("{hostname=" + hostname + "}");
 		}
+
+		return virtualHost;
 	}
 
 	@Override

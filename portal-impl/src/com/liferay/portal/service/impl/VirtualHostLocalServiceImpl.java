@@ -9,8 +9,8 @@ import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.AvailableLocaleException;
+import com.liferay.portal.kernel.exception.LayoutSetVirtualHostException;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPersistence;
-import com.liferay.portal.kernel.transaction.TransactionCallbackUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -170,10 +170,10 @@ public class VirtualHostLocalServiceImpl
 
 	@Override
 	public long getVirtualHostsCount(
-		long excludedLayoutSetId, String[] virtualHostNames) {
+		long excludedLayoutSetId, String[] virtualHostnames) {
 
 		return virtualHostPersistence.countByNotL_H(
-			excludedLayoutSetId, virtualHostNames);
+			excludedLayoutSetId, virtualHostnames);
 	}
 
 	@Override
@@ -230,24 +230,36 @@ public class VirtualHostLocalServiceImpl
 
 	@Override
 	public List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId, TreeMap<String, String> hostnames) {
+			LayoutSet layoutSet, TreeMap<String, String> virtualHostnames)
+		throws PortalException {
 
-		LayoutSet layoutSet = _layoutSetPersistence.fetchByPrimaryKey(
-			layoutSetId);
+		if (virtualHostnames.isEmpty()) {
+			virtualHostPersistence.removeByC_L(
+				layoutSet.getCompanyId(), layoutSet.getLayoutSetId());
 
-		Set<Locale> availableLocales = LanguageUtil.getAvailableLocales();
+			_layoutSetPersistence.clearCache(layoutSet);
 
-		if (layoutSet != null) {
-			availableLocales = LanguageUtil.getAvailableLocales(
-				layoutSet.getGroupId());
+			return Collections.emptyList();
 		}
 
+		long count = virtualHostPersistence.countByNotL_H(
+			layoutSet.getLayoutSetId(),
+			ArrayUtil.toStringArray(virtualHostnames.keySet()));
+
+		if (count > 0) {
+			throw new LayoutSetVirtualHostException();
+		}
+
+		Set<Locale> availableLocales = LanguageUtil.getAvailableLocales(
+			layoutSet.getGroupId());
+
 		List<VirtualHost> virtualHosts = new ArrayList<>(
-			virtualHostPersistence.findByC_L(companyId, layoutSetId));
+			virtualHostPersistence.findByC_L(
+				layoutSet.getCompanyId(), layoutSet.getLayoutSetId()));
 
 		boolean first = true;
 
-		for (String curHostname : hostnames.navigableKeySet()) {
+		for (String curHostname : virtualHostnames.navigableKeySet()) {
 			VirtualHost virtualHost = null;
 
 			for (VirtualHost curVirtualHost : virtualHosts) {
@@ -263,14 +275,14 @@ public class VirtualHostLocalServiceImpl
 
 				virtualHost = virtualHostPersistence.create(virtualHostId);
 
-				virtualHost.setCompanyId(companyId);
-				virtualHost.setLayoutSetId(layoutSetId);
+				virtualHost.setCompanyId(layoutSet.getCompanyId());
+				virtualHost.setLayoutSetId(layoutSet.getLayoutSetId());
 				virtualHost.setHostname(curHostname);
 
 				virtualHosts.add(virtualHost);
 			}
 
-			String languageId = hostnames.get(curHostname);
+			String languageId = virtualHostnames.get(curHostname);
 
 			Locale locale = LocaleUtil.fromLanguageId(languageId, true, false);
 
@@ -296,7 +308,7 @@ public class VirtualHostLocalServiceImpl
 		while (iterator.hasNext()) {
 			VirtualHost virtualHost = iterator.next();
 
-			if (!hostnames.containsKey(virtualHost.getHostname())) {
+			if (!virtualHostnames.containsKey(virtualHost.getHostname())) {
 				iterator.remove();
 
 				virtualHostPersistence.remove(virtualHost);
@@ -305,35 +317,7 @@ public class VirtualHostLocalServiceImpl
 
 		virtualHostPersistence.cacheResult(virtualHosts);
 
-		Company company = _companyPersistence.fetchByPrimaryKey(companyId);
-
-		if (company != null) {
-			TransactionCallbackUtil.registerCommitCallback(
-				() -> {
-					EntityCacheUtil.removeResult(
-						company.getClass(), company.getPrimaryKeyObj());
-
-					return null;
-				});
-
-			_companyPersistence.clearCache(company);
-		}
-
-		if ((layoutSet == null) &&
-			Validator.isNotNull(PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
-
-			Group group = _groupPersistence.fetchByC_GK(
-				companyId, PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME);
-
-			if (group != null) {
-				layoutSet = _layoutSetPersistence.fetchByG_P(
-					group.getGroupId(), false);
-			}
-		}
-
-		if (layoutSet != null) {
-			_layoutSetPersistence.clearCache(layoutSet);
-		}
+		_layoutSetPersistence.clearCache(layoutSet);
 
 		return virtualHosts;
 	}

@@ -226,8 +226,8 @@ public class VirtualHostLocalServiceWrapper
 	}
 
 	@Override
-	public VirtualHost fetchVirtualHost(String hostname) {
-		return _virtualHostLocalService.fetchVirtualHost(hostname);
+	public VirtualHost fetchVirtualHost(String virtualHostname) {
+		return _virtualHostLocalService.fetchVirtualHost(virtualHostname);
 	}
 
 	@Override
@@ -280,10 +280,10 @@ public class VirtualHostLocalServiceWrapper
 	}
 
 	@Override
-	public VirtualHost getVirtualHost(String hostname)
+	public VirtualHost getVirtualHost(String virtualHostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _virtualHostLocalService.getVirtualHost(hostname);
+		return _virtualHostLocalService.getVirtualHost(virtualHostname);
 	}
 
 	/**
@@ -326,10 +326,18 @@ public class VirtualHostLocalServiceWrapper
 
 	@Override
 	public long getVirtualHostsCount(
-		long excludedLayoutSetId, String[] virtualHostNames) {
+		long excludedLayoutSetId, String[] virtualHostnames) {
 
 		return _virtualHostLocalService.getVirtualHostsCount(
-			excludedLayoutSetId, virtualHostNames);
+			excludedLayoutSetId, virtualHostnames);
+	}
+
+	@Override
+	public VirtualHost updateCompanyVirtualHost(
+		long companyId, String virtualHostname) {
+
+		return _virtualHostLocalService.updateCompanyVirtualHost(
+			companyId, virtualHostname);
 	}
 
 	/**
@@ -349,11 +357,12 @@ public class VirtualHostLocalServiceWrapper
 
 	@Override
 	public java.util.List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId,
-		java.util.TreeMap<String, String> hostnames) {
+			com.liferay.portal.kernel.model.LayoutSet layoutSet,
+			java.util.TreeMap<String, String> virtualHostnames)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _virtualHostLocalService.updateVirtualHosts(
-			companyId, layoutSetId, hostnames);
+			layoutSet, virtualHostnames);
 	}
 
 	@Override
@@ -396,4 +405,4 @@ public class VirtualHostLocalServiceWrapper
 	private VirtualHostLocalService _virtualHostLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1070851949
+// LIFERAY-SERVICE-BUILDER-HASH:229364354

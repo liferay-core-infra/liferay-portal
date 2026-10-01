@@ -204,8 +204,8 @@ public class VirtualHostLocalServiceUtil {
 		return getService().fetchVirtualHost(virtualHostId);
 	}
 
-	public static VirtualHost fetchVirtualHost(String hostname) {
-		return getService().fetchVirtualHost(hostname);
+	public static VirtualHost fetchVirtualHost(String virtualHostname) {
+		return getService().fetchVirtualHost(virtualHostname);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -252,10 +252,10 @@ public class VirtualHostLocalServiceUtil {
 		return getService().getVirtualHost(virtualHostId);
 	}
 
-	public static VirtualHost getVirtualHost(String hostname)
+	public static VirtualHost getVirtualHost(String virtualHostname)
 		throws PortalException {
 
-		return getService().getVirtualHost(hostname);
+		return getService().getVirtualHost(virtualHostname);
 	}
 
 	/**
@@ -293,10 +293,17 @@ public class VirtualHostLocalServiceUtil {
 	}
 
 	public static long getVirtualHostsCount(
-		long excludedLayoutSetId, String[] virtualHostNames) {
+		long excludedLayoutSetId, String[] virtualHostnames) {
 
 		return getService().getVirtualHostsCount(
-			excludedLayoutSetId, virtualHostNames);
+			excludedLayoutSetId, virtualHostnames);
+	}
+
+	public static VirtualHost updateCompanyVirtualHost(
+		long companyId, String virtualHostname) {
+
+		return getService().updateCompanyVirtualHost(
+			companyId, virtualHostname);
 	}
 
 	/**
@@ -314,11 +321,11 @@ public class VirtualHostLocalServiceUtil {
 	}
 
 	public static List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId,
-		java.util.TreeMap<String, String> hostnames) {
+			com.liferay.portal.kernel.model.LayoutSet layoutSet,
+			java.util.TreeMap<String, String> virtualHostnames)
+		throws PortalException {
 
-		return getService().updateVirtualHosts(
-			companyId, layoutSetId, hostnames);
+		return getService().updateVirtualHosts(layoutSet, virtualHostnames);
 	}
 
 	public static VirtualHostLocalService getService() {
@@ -332,4 +339,4 @@ public class VirtualHostLocalServiceUtil {
 	private static volatile VirtualHostLocalService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-219097511
+// LIFERAY-SERVICE-BUILDER-HASH:-2016397565

@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.search.Indexable;
@@ -273,6 +274,9 @@ public interface VirtualHostLocalService
 	public long getVirtualHostsCount(
 		long excludedLayoutSetId, String[] virtualHostNames);
 
+	public VirtualHost updateCompanyVirtualHost(
+		long companyId, String hostname);
+
 	/**
 	 * Updates the virtual host in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -287,7 +291,8 @@ public interface VirtualHostLocalService
 	public VirtualHost updateVirtualHost(VirtualHost virtualHost);
 
 	public List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId, TreeMap<String, String> hostnames);
+			LayoutSet layoutSet, TreeMap<String, String> hostnames)
+		throws PortalException;
 
 	@Override
 	@Transactional(enabled = false)
@@ -305,4 +310,4 @@ public interface VirtualHostLocalService
 		throws E;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-829312250
+// LIFERAY-SERVICE-BUILDER-HASH:909266665

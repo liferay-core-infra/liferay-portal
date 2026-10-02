@@ -11,20 +11,44 @@ import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.repository.DispatchFileRepository;
 import com.liferay.dispatch.repository.DispatchFileValidator;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
+import com.liferay.document.library.kernel.exception.NoSuchFolderException;
+import com.liferay.document.library.kernel.model.DLFolder;
+import com.liferay.document.library.kernel.model.DLFolderConstants;
+import com.liferay.document.library.kernel.service.DLFolderLocalService;
+import com.liferay.document.library.kernel.util.DLAppHelperThreadLocal;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Repository;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.repository.LocalRepository;
+import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.RepositoryLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.repository.portletrepository.PortletRepository;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.osgi.framework.BundleContext;
@@ -73,20 +97,35 @@ public class DispatchFileRepositoryImpl implements DispatchFileRepository {
 			Company company = _companyLocalService.getCompany(
 				dispatchTrigger.getCompanyId());
 
-			Folder folder = _getFolder(
-				company.getGroupId(), dispatchTrigger.getUserId());
+			Repository repository = _repositoryLocalService.fetchRepository(
+				company.getGroupId(), DispatchPortletKeys.DISPATCH);
 
-			return _portletFileRepository.fetchPortletFileEntry(
-				company.getGroupId(), folder.getFolderId(),
-				String.valueOf(dispatchTriggerId));
+			if (repository == null) {
+				return null;
+			}
+
+			DLFolder dlFolder = _dlFolderLocalService.fetchFolder(
+				company.getGroupId(), repository.getDlFolderId(),
+				DispatchConstants.REPOSITORY_FOLDER_NAME);
+
+			if (dlFolder == null) {
+				return null;
+			}
+
+			LocalRepository localRepository =
+				_repositoryProvider.getLocalRepository(
+					repository.getRepositoryId());
+
+			return localRepository.fetchFileEntry(
+				dlFolder.getFolderId(), String.valueOf(dispatchTriggerId));
 		}
 		catch (PortalException portalException) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to fetch file entry", portalException);
 			}
-		}
 
-		return null;
+			return null;
+		}
 	}
 
 	@Override
@@ -119,19 +158,64 @@ public class DispatchFileRepositoryImpl implements DispatchFileRepository {
 
 		Folder folder = _getFolder(groupId, userId);
 
-		FileEntry fileEntry = _portletFileRepository.fetchPortletFileEntry(
-			groupId, folder.getFolderId(), String.valueOf(dispatchTriggerId));
+		LocalRepository localRepository =
+			_repositoryProvider.getLocalRepository(folder.getRepositoryId());
+
+		String title = String.valueOf(dispatchTriggerId);
+
+		FileEntry fileEntry = localRepository.fetchFileEntry(
+			folder.getFolderId(), title);
 
 		if (fileEntry != null) {
-			_portletFileRepository.deletePortletFileEntry(
-				fileEntry.getFileEntryId());
+			try (SafeCloseable safeCloseable =
+					DLAppHelperThreadLocal.setEnabledWithSafeCloseable(false)) {
+
+				SystemEventHierarchyEntryThreadLocal.push(FileEntry.class);
+
+				localRepository.deleteFileEntry(fileEntry.getFileEntryId());
+			}
+			finally {
+				SystemEventHierarchyEntryThreadLocal.pop(FileEntry.class);
+			}
 		}
 
-		return _portletFileRepository.addPortletFileEntry(
-			null, groupId, userId, DispatchTrigger.class.getName(),
-			dispatchTriggerId, DispatchPortletKeys.DISPATCH,
-			folder.getFolderId(), inputStream,
-			String.valueOf(dispatchTriggerId), contentType, false);
+		File file = null;
+
+		try (SafeCloseable safeCloseable =
+				DLAppHelperThreadLocal.setEnabledWithSafeCloseable(false)) {
+
+			file = FileUtil.createTempFile(inputStream);
+
+			return localRepository.addFileEntry(
+				null, userId, folder.getFolderId(), title, contentType, title,
+				title, StringPool.BLANK, StringPool.BLANK, file, null, null,
+				null,
+				_createServiceContext(
+					DispatchTrigger.class, dispatchTriggerId));
+		}
+		catch (IOException ioException) {
+			throw new SystemException(
+				"Unable to write temporary file", ioException);
+		}
+		finally {
+			FileUtil.delete(file);
+		}
+	}
+
+	private ServiceContext _createServiceContext(Class<?> clazz, long classPK) {
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(false);
+		serviceContext.setAddGuestPermissions(false);
+
+		if (clazz != null) {
+			serviceContext.setAttribute("className", clazz.getName());
+			serviceContext.setAttribute("classPK", String.valueOf(classPK));
+		}
+
+		serviceContext.setIndexingEnabled(false);
+
+		return serviceContext;
 	}
 
 	private DispatchFileValidator _getDispatchFileValidator(
@@ -147,18 +231,87 @@ public class DispatchFileRepositoryImpl implements DispatchFileRepository {
 	private Folder _getFolder(long groupId, long userId)
 		throws PortalException {
 
-		ServiceContext serviceContext = new ServiceContext();
+		Repository repository = _getRepository(groupId, userId);
 
-		serviceContext.setAddGroupPermissions(true);
-		serviceContext.setAddGuestPermissions(true);
+		LocalRepository localRepository =
+			_repositoryProvider.getLocalRepository(
+				repository.getRepositoryId());
 
-		Repository repository = _portletFileRepository.addPortletRepository(
-			groupId, DispatchPortletKeys.DISPATCH, serviceContext);
+		try (SafeCloseable safeCloseable =
+				DLAppHelperThreadLocal.setEnabledWithSafeCloseable(false)) {
 
-		return _portletFileRepository.addPortletFolder(
-			userId, repository.getRepositoryId(),
-			DispatchConstants.REPOSITORY_DEFAULT_PARENT_FOLDER_ID,
-			DispatchConstants.REPOSITORY_FOLDER_NAME, serviceContext);
+			return localRepository.getFolder(
+				DispatchConstants.REPOSITORY_DEFAULT_PARENT_FOLDER_ID,
+				DispatchConstants.REPOSITORY_FOLDER_NAME);
+		}
+		catch (NoSuchFolderException noSuchFolderException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchFolderException);
+			}
+
+			Group group = _groupLocalService.getGroup(groupId);
+
+			try (SafeCloseable safeCloseable =
+					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+						group.getCtCollectionId())) {
+
+				Folder folder = localRepository.addFolder(
+					null, userId,
+					DispatchConstants.REPOSITORY_DEFAULT_PARENT_FOLDER_ID,
+					DispatchConstants.REPOSITORY_FOLDER_NAME, StringPool.BLANK,
+					_createServiceContext(null, 0L));
+
+				Role role = _roleLocalService.getRole(
+					group.getCompanyId(), RoleConstants.OWNER);
+
+				_resourcePermissionLocalService.setResourcePermissions(
+					group.getCompanyId(), DLFolder.class.getName(),
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(folder.getFolderId()), role.getRoleId(),
+					new String[0]);
+
+				return folder;
+			}
+		}
+	}
+
+	private Repository _getRepository(long groupId, long userId)
+		throws PortalException {
+
+		Repository repository = _repositoryLocalService.fetchRepository(
+			groupId, DispatchPortletKeys.DISPATCH);
+
+		if (repository != null) {
+			return repository;
+		}
+
+		Group group = _groupLocalService.getGroup(groupId);
+
+		try (SafeCloseable safeCloseable1 =
+				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
+					group.getCtCollectionId());
+			SafeCloseable safeCloseable2 =
+				DLAppHelperThreadLocal.setEnabledWithSafeCloseable(false)) {
+
+			repository = _repositoryLocalService.addRepository(
+				null, userId, groupId,
+				_portal.getClassNameId(PortletRepository.class.getName()),
+				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+				DispatchPortletKeys.DISPATCH, StringPool.BLANK,
+				DispatchPortletKeys.DISPATCH, new UnicodeProperties(), true,
+				_createServiceContext(null, 0L));
+
+			Role role = _roleLocalService.getRole(
+				group.getCompanyId(), RoleConstants.OWNER);
+
+			_resourcePermissionLocalService.setResourcePermissions(
+				group.getCompanyId(), DLFolder.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(repository.getDlFolderId()), role.getRoleId(),
+				new String[0]);
+
+			return repository;
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -170,11 +323,26 @@ public class DispatchFileRepositoryImpl implements DispatchFileRepository {
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
 
-	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
-	private ModuleServiceLifecycle _moduleServiceLifecycle;
+	@Reference
+	private DLFolderLocalService _dlFolderLocalService;
 
 	@Reference
-	private PortletFileRepository _portletFileRepository;
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private RepositoryLocalService _repositoryLocalService;
+
+	@Reference
+	private RepositoryProvider _repositoryProvider;
+
+	@Reference
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
 
 	private ServiceTrackerMap<String, DispatchFileValidator> _serviceTrackerMap;
 

@@ -8,7 +8,9 @@ package com.liferay.portal.test.rule;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -33,10 +35,11 @@ public class DBPartitionTestRule implements TestRule {
 		}
 
 		try {
-			Company company = CompanyLocalServiceUtil.fetchCompanyByVirtualHost(
-				TestPropsValues.COMPANY_WEB_ID);
+			VirtualHost virtualHost =
+				VirtualHostLocalServiceUtil.fetchVirtualHost(
+					TestPropsValues.COMPANY_WEB_ID);
 
-			if (company != null) {
+			if (virtualHost != null) {
 				return statement;
 			}
 
@@ -50,14 +53,11 @@ public class DBPartitionTestRule implements TestRule {
 				companyWebId = TestPropsValues.COMPANY_WEB_ID;
 			}
 
-			PortalInstances.addCompany(
+			Company company = PortalInstances.addCompany(
 				"",
 				() -> CompanyLocalServiceUtil.addCompany(
 					null, companyWebId, companyWebId, companyWebId, 0, true,
 					true, null, null, null, null, null, null));
-
-			company = CompanyLocalServiceUtil.fetchCompanyByVirtualHost(
-				companyWebId);
 
 			if (TestPropsValues.DATABASE_PARTITION_COPY) {
 				CompanyLocalServiceUtil.copyDBPartitionCompany(

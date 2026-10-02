@@ -1327,8 +1327,6 @@ public class PortalImpl implements Portal {
 
 		List<LayoutFriendlyURL> layoutFriendlyURLs = null;
 
-		String groupFriendlyURLPrefix = null;
-
 		if (replaceFriendlyURL) {
 			layoutFriendlyURLs =
 				LayoutFriendlyURLLocalServiceUtil.getLayoutFriendlyURLs(
@@ -1338,12 +1336,6 @@ public class PortalImpl implements Portal {
 				VirtualLayout virtualLayout = (VirtualLayout)layout;
 
 				layout = virtualLayout.getSourceLayout();
-
-				Group group = layout.getGroup();
-
-				groupFriendlyURLPrefix =
-					VirtualLayoutConstants.CANONICAL_URL_SEPARATOR.concat(
-						group.getFriendlyURL());
 			}
 		}
 
@@ -1377,7 +1369,10 @@ public class PortalImpl implements Portal {
 					FriendlyURLResolverRegistryUtil.getURLSeparators();
 
 				for (String urlSeparator : urlSeparators) {
-					if (!currentURL.startsWith(urlSeparator)) {
+					if (!currentURL.startsWith(urlSeparator) ||
+						urlSeparator.equals(
+							VirtualLayoutConstants.CANONICAL_URL_SEPARATOR)) {
+
 						continue;
 					}
 
@@ -1432,16 +1427,11 @@ public class PortalImpl implements Portal {
 
 						friendlyURL = layoutFriendlyURL.getFriendlyURL();
 
-						if (groupFriendlyURLPrefix != null) {
-							friendlyURL = groupFriendlyURLPrefix.concat(
-								friendlyURL);
-						}
-
 						break;
 					}
 
 					if (friendlyURL != null) {
-						alternateURLSuffix = StringUtil.replaceFirst(
+						alternateURLSuffix = StringUtil.replaceLast(
 							alternateURLSuffix, layout.getFriendlyURL(),
 							friendlyURL);
 					}
@@ -6908,8 +6898,6 @@ public class PortalImpl implements Portal {
 		String portletCategory = portlet.getControlPanelEntryCategory();
 
 		if (portletCategory.equals(PortletCategoryKeys.CONTROL_PANEL_APPS) ||
-			portletCategory.equals(
-				PortletCategoryKeys.CONTROL_PANEL_CONFIGURATION) ||
 			portletCategory.equals(
 				PortletCategoryKeys.CONTROL_PANEL_INSTANCE) ||
 			portletCategory.equals(PortletCategoryKeys.CONTROL_PANEL_SITES) ||

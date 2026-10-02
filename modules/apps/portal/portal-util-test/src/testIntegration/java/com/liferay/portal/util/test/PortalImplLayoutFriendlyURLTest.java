@@ -128,7 +128,7 @@ public class PortalImplLayoutFriendlyURLTest {
 				_group.getFriendlyURL() + _layout.getFriendlyURL());
 	}
 
-	private String _setLayoutSetVirtualHost() {
+	private String _setLayoutSetVirtualHost() throws Exception {
 		LayoutSet layoutSet = _group.getPublicLayoutSet();
 
 		String hostname =
@@ -136,7 +136,7 @@ public class PortalImplLayoutFriendlyURLTest {
 				RandomTestUtil.randomString(3);
 
 		_virtualHostLocalService.updateVirtualHosts(
-			_company.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				hostname, StringPool.BLANK
 			).build());

@@ -179,11 +179,10 @@ public class LayoutSEOLinkManagerImpl implements LayoutSEOLinkManager {
 		Locale siteDefaultLocale) {
 
 		LayoutSEOEntry layoutSEOEntry =
-			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId());
+			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(layout);
 
 		if ((layoutSEOEntry == null) ||
+			(layoutSEOEntry.getGroupId() != layout.getGroupId()) ||
 			!layoutSEOEntry.isCanonicalURLEnabled() ||
 			MapUtil.isEmpty(layoutSEOEntry.getCanonicalURLMap())) {
 

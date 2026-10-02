@@ -196,61 +196,63 @@ export default function MultipleFileUploader({
 		const uploadedFiles: string[] = [];
 
 		for (const uploadBatch of uploadBatches(filesToUpload)) {
-			await Promise.allSettled(
+			const responses = await Promise.allSettled(
 				uploadBatch.map(async (fileData: FileData) => {
-					try {
-						const response = await uploadRequest({fileData});
-
-						if (
-							'error' in response &&
-							typeof response.error === 'string'
-						) {
-							failedFiles.push({
-								...fileData,
-								errorMessage: response.error,
-								failed: true,
-							});
-						}
-						else if ('multipleErrors' in response) {
-							response.errors.map((item) => {
-								failedFiles.push({
-									...item,
-									failed: true,
-								});
-							});
-						}
-						else {
-							uploadedFiles.push(fileData.name);
-						}
-					}
-					catch (error) {
-						let errorMessage = Liferay.Language.get(
-							'there-was-an-unknown-error'
-						);
-
-						if (error instanceof Error) {
-							errorMessage = error.message;
-						}
-
-						failedFiles.push({
-							...fileData,
-							errorMessage,
-							failed: true,
-						});
-					}
+					return uploadRequest({fileData});
 				})
-			).then(() => {
-				setIsLoading(false);
+			);
 
-				setFilesToUpload([]);
-				setFailedFiles(failedFiles);
+			responses.forEach((response, index) => {
+				const fileData = uploadBatch[index];
 
-				if (onUploadComplete) {
-					onUploadComplete({
-						failedFiles: failedFiles.map((file) => file.name),
-						successFiles: uploadedFiles,
+				if (response.status === 'rejected') {
+					let errorMessage = Liferay.Language.get(
+						'there-was-an-unknown-error'
+					);
+
+					if (response.reason instanceof Error) {
+						errorMessage = response.reason.message;
+					}
+
+					failedFiles.push({
+						...fileData,
+						errorMessage,
+						failed: true,
 					});
 				}
+				else if (
+					'error' in response.value &&
+					typeof response.value.error === 'string'
+				) {
+					failedFiles.push({
+						...fileData,
+						errorMessage: response.value.error,
+						failed: true,
+					});
+				}
+				else if ('multipleErrors' in response.value) {
+					failedFiles.push(
+						...response.value.errors.map((fileItem) => ({
+							...fileItem,
+							failed: true,
+						}))
+					);
+				}
+				else {
+					uploadedFiles.push(fileData.name);
+				}
+			});
+		}
+
+		setIsLoading(false);
+
+		setFilesToUpload([]);
+		setFailedFiles(failedFiles);
+
+		if (onUploadComplete) {
+			onUploadComplete({
+				failedFiles: failedFiles.map((file) => file.name),
+				successFiles: uploadedFiles,
 			});
 		}
 	};

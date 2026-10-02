@@ -17,6 +17,27 @@ tests:
             cloudProvider: azure
     -   asserts:
             -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: completed = iff\(finished, endTime, datetime\(null\)\)\\n\| where \$__timeFilter\(\$\{timeField\}\)
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"label\": \"Time Range Applies To\",\\s+\"name\": \"timeField\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"query\": \"Start time : triggered,Completion time : completed\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"from\": \"now-14d\""
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Filters the backups to the time range by when they were triggered or completed as the operator picks
+        set:
+            azure.resourceGroupName: liferay-test
+            azure.subscriptionId: 00000000-0000-0000-0000-000000000000
+            cloudProvider: azure
+    -   asserts:
+            -   matchRegex:
                     path: data["databases.json"]
                     pattern: "\"query\": \"aws\""
             -   notMatchRegex:
@@ -40,6 +61,114 @@ tests:
             value: RELEASE-NAME-observability-dashboard-databases
         it: Injects the cloud provider into the databases dashboard constant when the cloud provider is Azure
         set:
+            cloudProvider: azure
+    -   asserts:
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: pack_array\(tolower\(tostring\(properties.dataSourceId\)\), tostring\(split\(tolower\(id\), ./backupjobs/.\)\[0\]\)\)
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: join kind=leftouter \(\\n\\tresources\\n\\t\| where type in \(.microsoft.dataprotection/backupvaults., .microsoft.storage/storageaccounts.\)
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: join kind=inner
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Keeps listing the backups of a storage account a restore deleted by scoping them through their vault
+        set:
+            azure.resourceGroupName: liferay-test
+            azure.subscriptionId: 00000000-0000-0000-0000-000000000000
+            cloudProvider: azure
+    -   asserts:
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: AWS Backup Dashboard
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: grafana-azure-monitor-datasource
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Keeps the AWS Backup console links when the cloud provider is AWS
+        set:
+            aws.region: us-east-1
+            cloudProvider: aws
+    -   asserts:
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: kube_customresource_liferay_backup_status_condition
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: grafana-azure-monitor-datasource
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Keeps the LiferayBackup metrics when the cloud provider is GCP
+        set:
+            cloudProvider: gcp
+    -   asserts:
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"type\": \"grafana-azure-monitor-datasource\",\\s+\"uid\": \"azure-monitor\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"queryType\": \"Azure Resource Graph\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: resourceGroup =~ .liferay-test.
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"subscriptions\": \\[\\s+\"00000000-0000-0000-0000-000000000000\"\\s+\\]"
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"title\": \"Backups\",\\s+\"transformations\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: \[.Backup Triggered.\] = triggered
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"IN PROGRESS\": \\{\\s+\"index\": 1,\\s+\"text\": \"🟡 IN PROGRESS\""
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: resourceGroups/liferay-test/providers/Microsoft.Storage/storageAccounts/\$\{__value.raw\}/overview
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: "\"id\": \"links\",\\s+\"value\": \\[\\s+\\]"
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: \$\{AZURE_
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: kube_customresource_liferay_backup
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: resourceGroups/liferay-test/overview
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Lists the backups from Azure Resource Graph when the cloud provider is Azure
+        set:
+            azure.resourceGroupName: liferay-test
+            azure.subscriptionId: 00000000-0000-0000-0000-000000000000
+            cloudProvider: azure
+    -   asserts:
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: \[.Data Plane.\] = dataPlane
+            -   matchRegex:
+                    path: data["backups.json"]
+                    pattern: dataPlane = tostring\(tags\[.data-plane.\]\)
+            -   notMatchRegex:
+                    path: data["backups.json"]
+                    pattern: backupInstanceFriendlyName
+        documentSelector:
+            path: metadata.name
+            value: RELEASE-NAME-observability-dashboard-backups
+        it: Reads the data plane from the storage account tag so a restored generation keeps it
+        set:
+            azure.resourceGroupName: liferay-test
+            azure.subscriptionId: 00000000-0000-0000-0000-000000000000
             cloudProvider: azure
     -   asserts:
             -   matchRegex:

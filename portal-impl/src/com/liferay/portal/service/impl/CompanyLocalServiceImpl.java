@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.db.partition.DBPartition;
+import com.liferay.portal.kernel.encryptor.CompanyKeyResolverUtil;
 import com.liferay.portal.kernel.encryptor.EncryptorException;
 import com.liferay.portal.kernel.encryptor.EncryptorUtil;
 import com.liferay.portal.kernel.exception.CompanyMaxUsersException;
@@ -40,7 +41,6 @@ import com.liferay.portal.kernel.exception.CompanyNameException;
 import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.CompanyWebIdException;
 import com.liferay.portal.kernel.exception.LocaleException;
-import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredCompanyException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -134,7 +134,6 @@ import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
-import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -150,7 +149,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.net.IDN;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -226,10 +224,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		String lowerCaseVirtualHostname = StringUtil.toLowerCase(
 			StringUtil.trim(virtualHostname));
 
-		validateWebId(webId);
-		validateVirtualHost(webId, lowerCaseVirtualHostname);
-		validateMx(-1, mx);
-		validateMaxUsers(maxUsers);
+		validateCompany(webId, lowerCaseVirtualHostname, mx, maxUsers);
 
 		if ((companyId == null) || (companyId == 0)) {
 			companyId = _getNextCompanyId();
@@ -246,6 +241,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			DBPartitionUtil.setDefaultCompanyId(company.getCompanyId());
 		}
 
+		String keyString = _generateKey(companyId);
 		boolean newDBPartitionAdded = DBPartitionUtil.addDBPartition(companyId);
 
 		Callable<Company> callable = () -> {
@@ -278,13 +274,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			// Company info
 
-			try {
-				updatedCompany.setKey(
-					EncryptorUtil.serializeKey(EncryptorUtil.generateKey()));
-			}
-			catch (EncryptorException encryptorException) {
-				throw new SystemException(encryptorException);
-			}
+			updatedCompany.setKey(keyString);
 
 			_companyInfoPersistence.update(updatedCompany.getCompanyInfo());
 
@@ -561,13 +551,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	public void checkCompanyKey(long companyId) throws PortalException {
 		Company company = companyPersistence.findByPrimaryKey(companyId);
 
-		if (company.getKeyObj() != null) {
+		if (Validator.isNotNull(company.getKey())) {
 			return;
 		}
 
 		try {
 			company.setKey(
-				EncryptorUtil.serializeKey(EncryptorUtil.generateKey()));
+				CompanyKeyResolverUtil.wrapKey(
+					companyId, EncryptorUtil.generateKey()));
 		}
 		catch (EncryptorException encryptorException) {
 			throw new SystemException(encryptorException);
@@ -782,33 +773,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		return companyPersistence.fetchByPrimaryKey(companyId);
 	}
 
-	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param  virtualHostname the virtual host name
-	 * @return the company with the virtual host name, <code>null</code> if a
-	 *         company with the virtual host could not be found
-	 */
-	@Override
-	public Company fetchCompanyByVirtualHost(String virtualHostname) {
-		virtualHostname = StringUtil.toLowerCase(
-			StringUtil.trim(virtualHostname));
-
-		VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
-			virtualHostname);
-
-		if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-			virtualHost = _virtualHostPersistence.fetchByHostname(
-				IDN.toUnicode(virtualHostname));
-		}
-
-		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
-			return null;
-		}
-
-		return companyPersistence.fetchByPrimaryKey(virtualHost.getCompanyId());
-	}
-
 	@Override
 	@Transactional(enabled = false)
 	public <E extends Exception> void forEachCompany(
@@ -966,42 +930,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	@Override
 	public Company getCompanyById(long companyId) throws PortalException {
 		return companyPersistence.findByPrimaryKey(companyId);
-	}
-
-	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param  virtualHostname the company's virtual host name
-	 * @return the company with the virtual host name
-	 */
-	@Override
-	public Company getCompanyByVirtualHost(String virtualHostname)
-		throws PortalException {
-
-		try {
-			virtualHostname = StringUtil.toLowerCase(
-				StringUtil.trim(virtualHostname));
-
-			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
-				virtualHostname);
-
-			if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-				virtualHost = _virtualHostPersistence.findByHostname(
-					IDN.toUnicode(virtualHostname));
-			}
-
-			if (virtualHost.getLayoutSetId() != 0) {
-				throw new CompanyVirtualHostException(
-					"Virtual host is associated with layout set " +
-						virtualHost.getLayoutSetId());
-			}
-
-			return companyPersistence.findByPrimaryKey(
-				virtualHost.getCompanyId());
-		}
-		catch (NoSuchVirtualHostException noSuchVirtualHostException) {
-			throw new CompanyVirtualHostException(noSuchVirtualHostException);
-		}
 	}
 
 	/**
@@ -1598,6 +1526,20 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 	}
 
+	@Override
+	public void validateCompany(
+			String webId, String virtualHostname, String mx, int maxUsers)
+		throws PortalException {
+
+		String lowerCaseVirtualHostname = StringUtil.toLowerCase(
+			StringUtil.trim(virtualHostname));
+
+		validateWebId(webId);
+		validateVirtualHost(webId, lowerCaseVirtualHostname);
+		validateMx(-1, mx);
+		validateMaxUsers(maxUsers);
+	}
+
 	protected Company checkLogo(long companyId) throws PortalException {
 		Company company = companyPersistence.findByPrimaryKey(companyId);
 
@@ -1936,7 +1878,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			long companyId, String virtualHostname)
 		throws CompanyVirtualHostException {
 
-		if (Validator.isNotNull(virtualHostname)) {
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			virtualHostname);
+
+		if (virtualHost == null) {
 			try {
 				if (Validator.isIPv6Address(virtualHostname)) {
 					Inet6Address address = (Inet6Address)InetAddress.getByName(
@@ -1954,33 +1899,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					"Virtual hostname is not a valid IPv6 address");
 			}
 
-			VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
-				virtualHostname);
-
-			if (virtualHost == null) {
-				_virtualHostLocalService.updateVirtualHosts(
-					companyId, 0,
-					TreeMapBuilder.put(
-						virtualHostname, StringPool.BLANK
-					).build());
-			}
-			else {
-				if ((virtualHost.getCompanyId() != companyId) ||
-					(virtualHost.getLayoutSetId() != 0)) {
-
-					throw new CompanyVirtualHostException();
-				}
-			}
+			virtualHost = _virtualHostLocalService.updateCompanyVirtualHost(
+				companyId, virtualHostname);
 		}
-		else {
-			List<VirtualHost> virtualHosts = _virtualHostPersistence.findByC_L(
-				companyId, 0);
 
-			if (!virtualHosts.isEmpty()) {
-				for (VirtualHost virtualHost : virtualHosts) {
-					_virtualHostPersistence.remove(virtualHost);
-				}
-			}
+		if ((virtualHost.getCompanyId() != companyId) ||
+			(virtualHost.getLayoutSetId() != 0)) {
+
+			throw new CompanyVirtualHostException();
 		}
 
 		return companyPersistence.fetchByPrimaryKey(companyId);
@@ -2487,6 +2413,16 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 				return null;
 			});
+	}
+
+	private String _generateKey(long companyId) {
+		try {
+			return CompanyKeyResolverUtil.wrapKey(
+				companyId, EncryptorUtil.generateKey());
+		}
+		catch (EncryptorException encryptorException) {
+			throw new SystemException(encryptorException);
+		}
 	}
 
 	private long _getNextCompanyId() {

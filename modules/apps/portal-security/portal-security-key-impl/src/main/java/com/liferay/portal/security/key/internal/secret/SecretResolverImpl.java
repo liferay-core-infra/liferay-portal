@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -88,14 +87,7 @@ public class SecretResolverImpl implements SecretResolver {
 				return resolvedValue;
 			}
 
-			SecretManager secretManager = _secretManagerSnapshot.get();
-
-			if (secretManager == null) {
-				throw new IllegalStateException(
-					"Secret manager is unavailable");
-			}
-
-			try (Secret secret = secretManager.getSecret(
+			try (Secret secret = _secretManager.getSecret(
 					companyId, keyReference)) {
 
 				resolvedValue = new String(secret.getChars());
@@ -111,36 +103,58 @@ public class SecretResolverImpl implements SecretResolver {
 	}
 
 	@Override
-	public String store(
-		long companyId, String key, String scope, String value) {
-
+	public String store(long companyId, String identifier, String value) {
 		if (!PropsValues.FIPS_ENABLED || Validator.isNull(value)) {
 			return value;
 		}
 
+		if (!identifier.startsWith("config/") &&
+			!identifier.startsWith(_IDENTIFIER_PREFIX_PREFERENCE)) {
+
+			throw new IllegalArgumentException(
+				StringBundler.concat(
+					"Unable to store \"", identifier,
+					"\" because its namespace is not supported"));
+		}
+
 		try {
 			if (KeyReferenceUtil.isKeyReference(value)) {
-				_validateKeyReference(key, value);
+				KeyReference keyReference = KeyReferenceUtil.parseKeyReference(
+					value);
 
-				return value;
-			}
+				if (keyReference == null) {
+					throw new SecretException(
+						"Unable to parse the key reference");
+				}
 
-			SecretManager secretManager = _secretManagerSnapshot.get();
+				String keyReferenceIdentifier = keyReference.getIdentifier();
 
-			if (secretManager == null) {
-				throw new IllegalStateException(
-					"Secret manager is unavailable");
+				if (Objects.equals(identifier, keyReferenceIdentifier) ||
+					(identifier.startsWith(_IDENTIFIER_PREFIX_PREFERENCE) &&
+					 keyReferenceIdentifier.startsWith(
+						 _IDENTIFIER_PREFIX_PREFERENCE) &&
+					 Objects.equals(
+						 StringUtil.extractLast(identifier, CharPool.SLASH),
+						 StringUtil.extractLast(
+							 keyReferenceIdentifier, CharPool.SLASH)))) {
+
+					return value;
+				}
+
+				throw new SecretException(
+					StringBundler.concat(
+						"Unable to store \"", identifier,
+						"\" because it references \"", keyReferenceIdentifier,
+						"\""));
 			}
 
 			try (Secret secret = new Secret(
 					new KeyReference(
-						StringBundler.concat(
-							_IDENTIFIER_PREFIX, scope, StringPool.SLASH, key),
-						StringPool.STAR, KeyReference.Type.SECRET),
+						identifier, StringPool.STAR, KeyReference.Type.SECRET),
 					value)) {
 
 				return KeyReferenceUtil.toKeyReferenceString(
-					secretManager.putSecret(companyId, secret));
+					_secretManager.putSecret(companyId, secret));
 			}
 		}
 		catch (SecretException secretException) {
@@ -160,39 +174,14 @@ public class SecretResolverImpl implements SecretResolver {
 			PortalCacheManagerNames.SINGLE_VM, PORTAL_CACHE_NAME);
 	}
 
-	private void _validateKeyReference(String key, String value)
-		throws SecretException {
-
-		KeyReference keyReference = KeyReferenceUtil.parseKeyReference(value);
-
-		if (keyReference == null) {
-			throw new SecretException("Unable to parse the key reference");
-		}
-
-		String identifier = keyReference.getIdentifier();
-
-		if (identifier.startsWith(_IDENTIFIER_PREFIX) &&
-			Objects.equals(
-				key, StringUtil.extractLast(identifier, CharPool.SLASH))) {
-
-			return;
-		}
-
-		throw new SecretException(
-			StringBundler.concat(
-				"Key \"", key, "\" cannot reference a value belonging to \"",
-				identifier, "\""));
-	}
-
-	private static final String _IDENTIFIER_PREFIX = "preference/";
-
-	private static final Snapshot<SecretManager> _secretManagerSnapshot =
-		new Snapshot<>(
-			SecretResolverImpl.class, SecretManager.class, null, true);
+	private static final String _IDENTIFIER_PREFIX_PREFERENCE = "preference/";
 
 	@Reference
 	private KeyManagerProfileRegistry _keyManagerProfileRegistry;
 
 	private PortalCache<String, String> _portalCache;
+
+	@Reference
+	private SecretManager _secretManager;
 
 }

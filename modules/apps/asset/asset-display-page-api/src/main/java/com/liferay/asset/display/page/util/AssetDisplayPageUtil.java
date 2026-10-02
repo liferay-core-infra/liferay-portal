@@ -10,13 +10,14 @@ import com.liferay.asset.display.page.info.display.contributor.LayoutDisplayPage
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalServiceUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.design.library.util.DesignLibraryUtil;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
-import com.liferay.layout.page.template.service.LayoutPageTemplateEntryServiceUtil;
+import com.liferay.layout.page.template.util.LayoutPageTemplateEntryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -52,10 +53,11 @@ public class AssetDisplayPageUtil {
 		}
 
 		LayoutPageTemplateEntry defaultLayoutPageTemplateEntry =
-			LayoutPageTemplateEntryServiceUtil.
-				fetchDefaultLayoutPageTemplateEntry(
-					groupId, layoutDisplayPageObjectProvider.getClassNameId(),
-					layoutDisplayPageObjectProvider.getClassTypeId());
+			LayoutPageTemplateEntryUtil.fetchDefaultLayoutPageTemplateEntry(
+				layoutDisplayPageObjectProvider.getClassNameId(),
+				layoutDisplayPageObjectProvider.getClassTypeId(),
+				DesignLibraryUtil.fetchConnectedDesignLibraryGroupIds(groupId),
+				groupId);
 
 		return _getAssetDisplayPage(
 			groupId, layoutDisplayPageObjectProvider.getClassNameId(),
@@ -68,9 +70,10 @@ public class AssetDisplayPageUtil {
 			long groupId, long classNameId, long classPK, long classTypeId) {
 
 		LayoutPageTemplateEntry defaultLayoutPageTemplateEntry =
-			LayoutPageTemplateEntryServiceUtil.
-				fetchDefaultLayoutPageTemplateEntry(
-					groupId, classNameId, classTypeId);
+			LayoutPageTemplateEntryUtil.fetchDefaultLayoutPageTemplateEntry(
+				classNameId, classTypeId,
+				DesignLibraryUtil.fetchConnectedDesignLibraryGroupIds(groupId),
+				groupId);
 
 		LayoutDisplayPageProviderRegistry layoutDisplayPageProviderRegistry =
 			LayoutDisplayPageProviderRegistryUtil.

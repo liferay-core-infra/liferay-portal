@@ -829,9 +829,6 @@ const FrontendDataSetContent = ({
 
 		const configInURL: Partial<IConfigInURL> | null = readConfigFromURL(id);
 
-		const globalFDSStateSearchQuery = globalFDSState.search.query;
-		const urlSearchQuery = configInURL?.q;
-
 		const hasActiveFilterInURL = Boolean(configInURL?.filters?.length);
 		const hasActiveFilterInState = globalFDSState.filters.some(
 			(filter: IBaseFilterState) => filter.active
@@ -851,10 +848,6 @@ const FrontendDataSetContent = ({
 
 				return false;
 			});
-
-		const shouldUpdateSearch =
-			(urlSearchQuery ?? '') !== (globalFDSStateSearchQuery ?? '') &&
-			(urlSearchQuery || globalFDSStateSearchQuery);
 
 		const updateConfig: Partial<IConfigInURL> = {};
 
@@ -878,13 +871,34 @@ const FrontendDataSetContent = ({
 				: undefined;
 		}
 
-		if (shouldUpdateSearch) {
+		const globalFDSStateSearchQuery = globalFDSState.search.query;
+		const urlSearchQuery = configInURL?.q;
+
+		const shouldUpdateSearch =
+			(urlSearchQuery ?? '') !== (globalFDSStateSearchQuery ?? '') &&
+			(urlSearchQuery || globalFDSStateSearchQuery);
+
+		const overrideConfigInURLBehaviorForSearch =
+			searchAsYouType &&
+			configInURLBehavior === EConfigInURLBehavior.PUSH;
+
+		if (shouldUpdateSearch && !overrideConfigInURLBehaviorForSearch) {
 			updateConfig[EConfigInURLKeys.SEARCH_PARAM] =
 				globalFDSState.search.query;
 		}
 
 		if (Object.keys(updateConfig).length) {
 			updateConfigInURL(updateConfig);
+		}
+
+		if (shouldUpdateSearch && overrideConfigInURLBehaviorForSearch) {
+			updateConfigInURL(
+				{
+					[EConfigInURLKeys.SEARCH_PARAM]:
+						globalFDSState.search.query,
+				},
+				EConfigInURLBehavior.REPLACE
+			);
 		}
 
 		if (skipSnapshotsUpdatedChangeRef.current) {
@@ -898,11 +912,13 @@ const FrontendDataSetContent = ({
 		}
 	}, [
 		appliedCustomConfigs,
+		configInURLBehavior,
 		connectionFilters,
 		filteringOwnerAppId,
 		globalFDSState,
 		globalFDSStateInitialized,
 		id,
+		searchAsYouType,
 		updateConfigInURL,
 		viewsDispatch,
 	]);

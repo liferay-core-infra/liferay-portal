@@ -68,6 +68,7 @@ import {
 	openScheduleDateModal,
 } from './utils/createScheduleDateModalOpener';
 import {executeAsyncItemAction} from './utils/executeAsyncItemAction';
+import styleDeleteAction from './utils/styleDeleteAction';
 import transformFDSBulkActions from './utils/transformFDSBulkActions';
 import transformViewsItemsProps from './utils/transformViewsItemProps';
 import GalleryView from './views/GalleryView';
@@ -186,6 +187,8 @@ export default function AssetsFDSPropsTransformer({
 	hideManagementBarInEmptyState?: boolean;
 	id?: string;
 	itemsActions?: any[];
+	searchAsYouType?: boolean;
+	searchSuggestionsEnabled?: boolean;
 	views: IView[];
 }) {
 	refreshOnContentChanged(otherProps?.id);
@@ -453,7 +456,7 @@ export default function AssetsFDSPropsTransformer({
 				};
 			}
 
-			return action;
+			return styleDeleteAction(action);
 		}),
 		async onActionDropdownItemClick({
 			action,
@@ -943,8 +946,8 @@ export default function AssetsFDSPropsTransformer({
 				});
 			}
 		},
-		searchAsYouType: true,
-		searchSuggestionsEnabled: true,
+		searchAsYouType: otherProps.searchAsYouType ?? true,
+		searchSuggestionsEnabled: otherProps.searchSuggestionsEnabled ?? true,
 		snapshotsEnabled: true,
 		views: transformViewsItemsProps({
 			fileMimeTypeCssClasses: additionalProps.fileMimeTypeCssClasses,

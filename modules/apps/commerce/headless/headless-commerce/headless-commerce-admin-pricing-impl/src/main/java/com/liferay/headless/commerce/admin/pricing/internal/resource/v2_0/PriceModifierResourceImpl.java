@@ -6,6 +6,8 @@
 package com.liferay.headless.commerce.admin.pricing.internal.resource.v2_0;
 
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.commerce.currency.service.CommerceCurrencyService;
 import com.liferay.commerce.price.list.exception.NoSuchPriceListException;
 import com.liferay.commerce.price.list.model.CommercePriceList;
 import com.liferay.commerce.price.list.service.CommercePriceListService;
@@ -14,7 +16,10 @@ import com.liferay.commerce.pricing.model.CommercePriceModifier;
 import com.liferay.commerce.pricing.service.CommercePriceModifierRelService;
 import com.liferay.commerce.pricing.service.CommercePriceModifierService;
 import com.liferay.commerce.pricing.service.CommercePricingClassService;
+import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CProductLocalService;
+import com.liferay.commerce.product.service.CommerceCatalogService;
+import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceList;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceModifier;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.PriceModifierUtil;
 import com.liferay.headless.commerce.admin.pricing.resource.v2_0.PriceModifierResource;
@@ -26,9 +31,11 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
+import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -46,7 +53,8 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v2_0/price-modifier.properties",
-	scope = ServiceScope.PROTOTYPE, service = PriceModifierResource.class
+	property = "nested.field.support=true", scope = ServiceScope.PROTOTYPE,
+	service = PriceModifierResource.class
 )
 public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 
@@ -106,6 +114,7 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 			_toPriceModifiers(commercePriceModifiers), pagination, totalCount);
 	}
 
+	@NestedField(parentClass = PriceList.class, value = "priceModifiers")
 	@Override
 	public Page<PriceModifier> getPriceListIdPriceModifiersPage(
 			Long id, String search, Filter filter, Pagination pagination,
@@ -238,10 +247,15 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 		DateConfig expirationDateConfig = DateConfig.toExpirationDateConfig(
 			priceModifier.getExpirationDate(), serviceContext.getTimeZone());
 
+		long priceModifierId = 0;
+
+		if (Validator.isNull(priceModifier.getExternalReferenceCode())) {
+			priceModifierId = GetterUtil.getLong(priceModifier.getId());
+		}
+
 		CommercePriceModifier commercePriceModifier =
 			_commercePriceModifierService.addOrUpdateCommercePriceModifier(
-				priceModifier.getExternalReferenceCode(),
-				GetterUtil.getLong(priceModifier.getId()),
+				priceModifier.getExternalReferenceCode(), priceModifierId,
 				commercePriceList.getGroupId(),
 				commercePriceList.getCommercePriceListId(),
 				priceModifier.getTitle(), priceModifier.getTarget(),
@@ -323,9 +337,11 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 
 		PriceModifierUtil.addOrUpdateCommercePriceModifierRels(
 			contextCompany.getGroupId(), _assetCategoryLocalService,
-			_commercePricingClassService, _cProductLocalService,
-			_commercePriceModifierRelService, priceModifier,
-			commercePriceModifier, _serviceContextHelper);
+			_assetCategoryService, _cProductLocalService,
+			_commerceCatalogService, _commerceCurrencyService,
+			_commercePriceModifierRelService, _commercePricingClassService,
+			_cpDefinitionService, priceModifier, commercePriceModifier,
+			_serviceContextHelper);
 	}
 
 	private CommercePriceModifier _updatePriceModifier(
@@ -368,7 +384,16 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
+	private AssetCategoryService _assetCategoryService;
+
+	@Reference
 	private CProductLocalService _cProductLocalService;
+
+	@Reference
+	private CommerceCatalogService _commerceCatalogService;
+
+	@Reference
+	private CommerceCurrencyService _commerceCurrencyService;
 
 	@Reference
 	private CommercePriceListService _commercePriceListService;
@@ -387,6 +412,9 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 
 	@Reference
 	private CommercePricingClassService _commercePricingClassService;
+
+	@Reference
+	private CPDefinitionService _cpDefinitionService;
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;

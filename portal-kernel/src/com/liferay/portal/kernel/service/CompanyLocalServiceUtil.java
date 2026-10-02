@@ -301,17 +301,6 @@ public class CompanyLocalServiceUtil {
 		return getService().fetchCompanyById(companyId);
 	}
 
-	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param virtualHostname the virtual host name
-	 * @return the company with the virtual host name, <code>null</code> if a
-	 company with the virtual host could not be found
-	 */
-	public static Company fetchCompanyByVirtualHost(String virtualHostname) {
-		return getService().fetchCompanyByVirtualHost(virtualHostname);
-	}
-
 	public static <E extends Exception> void forEachCompany(
 			com.liferay.petra.function.UnsafeConsumer<Company, E>
 				unsafeConsumer)
@@ -404,18 +393,6 @@ public class CompanyLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getCompanyById(companyId);
-	}
-
-	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param virtualHostname the company's virtual host name
-	 * @return the company with the virtual host name
-	 */
-	public static Company getCompanyByVirtualHost(String virtualHostname)
-		throws PortalException {
-
-		return getService().getCompanyByVirtualHost(virtualHostname);
 	}
 
 	/**
@@ -722,6 +699,13 @@ public class CompanyLocalServiceUtil {
 			strangersWithMx, strangersVerify, siteLogo);
 	}
 
+	public static void validateCompany(
+			String webId, String virtualHostname, String mx, int maxUsers)
+		throws PortalException {
+
+		getService().validateCompany(webId, virtualHostname, mx, maxUsers);
+	}
+
 	public static CompanyLocalService getService() {
 		return _service;
 	}
@@ -733,4 +717,4 @@ public class CompanyLocalServiceUtil {
 	private static volatile CompanyLocalService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-851174840
+// LIFERAY-SERVICE-BUILDER-HASH:1089887598

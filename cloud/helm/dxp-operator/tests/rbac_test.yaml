@@ -43,6 +43,23 @@ tests:
             serviceAccount.name: operator-sa
     -   asserts:
             -   equal:
+                    path: rules[?(@.resources[0]=="clientextensions")].verbs
+                    value:
+                        -   get
+                        -   list
+                        -   watch
+            -   equal:
+                    path: rules[?(@.resources[0]=="clientextensions/status")].verbs
+                    value:
+                        -   get
+                        -   patch
+                        -   update
+        documentSelector:
+            path: kind
+            value: ClusterRole
+        it: Grants the verbs each ClientExtension subresource needs
+    -   asserts:
+            -   equal:
                     path: rules[?(@.resources[0]=="liferayenvironments")].verbs
                     value:
                         -   get
@@ -108,7 +125,7 @@ tests:
         it: Omits the service account annotations by default
     -   asserts:
             -   lengthEqual:
-                    count: 8
+                    count: 12
                     path: rules
             -   contains:
                     content:
@@ -157,6 +174,30 @@ tests:
                             -   list
                             -   patch
                             -   update
+                            -   watch
+                    path: rules
+            -   contains:
+                    content:
+                        apiGroups:
+                            -   autoscaling
+                        resources:
+                            -   horizontalpodautoscalers
+                        verbs:
+                            -   get
+                            -   list
+                            -   patch
+                            -   watch
+                    path: rules
+            -   contains:
+                    content:
+                        apiGroups:
+                            -   keda.sh
+                        resources:
+                            -   scaledobjects
+                        verbs:
+                            -   get
+                            -   list
+                            -   patch
                             -   watch
                     path: rules
         documentSelector:

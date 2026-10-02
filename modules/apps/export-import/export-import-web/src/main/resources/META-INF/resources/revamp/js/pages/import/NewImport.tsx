@@ -18,6 +18,7 @@ import {toRequestPortletDataHandlers} from '../../utils/toRequestPortletDataHand
 import DataSelectionStep from './steps/DataSelectionStep';
 import FileSelectionStep from './steps/FileSelectionStep';
 import SettingsStep, {SETTINGS_STEP_INITIAL_VALUES} from './steps/SettingsStep';
+import SiteSelection from './steps/SiteSelection';
 
 export function NewImport({
 	backURL,
@@ -26,6 +27,7 @@ export function NewImport({
 	importProcessAPIURL,
 	lookAndFeelEnabled = false,
 	scope,
+	siteSelectionEnabled = false,
 }: {
 	backURL: string;
 	commentsAndRatingsEnabled?: boolean;
@@ -33,6 +35,7 @@ export function NewImport({
 	importProcessAPIURL: string;
 	lookAndFeelEnabled?: boolean;
 	scope: Scope;
+	siteSelectionEnabled?: boolean;
 }) {
 	const [importPreview, setImportPreview] = useState<
 		ImportPreview | undefined
@@ -69,14 +72,26 @@ export function NewImport({
 					contentSelection: undefined,
 					deletions: false,
 					permissions: false,
+					siteExternalReferenceCodes: [],
 				}}
-				isStepValid={(values) => !!values.contentSelection}
+				isStepValid={(values) =>
+					!!values.contentSelection ||
+					!!values.siteExternalReferenceCodes?.length
+				}
 				title={Liferay.Language.get('data-selection')}
 			>
 				<DataSelectionStep
 					commentsAndRatingsEnabled={commentsAndRatingsEnabled}
 					importPreview={importPreview}
 					lookAndFeelEnabled={lookAndFeelEnabled}
+					sitesSelection={
+						siteSelectionEnabled &&
+						!!importPreview?.previewSites?.length && (
+							<SiteSelection
+								previewSites={importPreview.previewSites}
+							/>
+						)
+					}
 				/>
 			</WizardStep>
 
@@ -123,6 +138,8 @@ export function NewImport({
 										[],
 									values.contentSelection
 								),
+							siteExternalReferenceCodes:
+								values.siteExternalReferenceCodes,
 							userIdStrategy:
 								values.userIdStrategy as UserIdStrategy,
 						},

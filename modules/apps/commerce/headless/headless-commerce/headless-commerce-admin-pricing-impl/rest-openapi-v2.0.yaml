@@ -458,6 +458,40 @@ components:
                     example: site
                     type: string
             type: object
+        Creator:
+            description:
+                User account that created the entity. Properties follow the [creator](https://schema.org/creator) specification; the batch engine uses `externalReferenceCode` and `id` to keep the original creator on import.
+            properties:
+                additionalName:
+                    readOnly: true
+                    type: string
+                contentType:
+                    readOnly: true
+                    type: string
+                externalReferenceCode:
+                    readOnly: true
+                    type: string
+                familyName:
+                    readOnly: true
+                    type: string
+                givenName:
+                    readOnly: true
+                    type: string
+                id:
+                    format: int64
+                    readOnly: true
+                    type: integer
+                image:
+                    format: uri
+                    readOnly: true
+                    type: string
+                name:
+                    readOnly: true
+                    type: string
+                profileURL:
+                    readOnly: true
+                    type: string
+            type: object
         Discount:
             description:
                 Promotional discount program scoped to a single company. Backed by discount; carries the target slice (subtotal, total, products, categories, skus, product-groups, order-types, or shipping), the limitation policy that caps reuse, an optional couponCode gate, the percentage tiers (or fixed-amount cap), and the cascading rel collections (account-group, account, category, channel, order-type, product, product-group, sku, rule). Workflow-aware -- the runtime only honours discounts whose status is approved (Approved).
@@ -486,6 +520,12 @@ components:
                         Optional coupon code that the buyer must supply at checkout when `useCouponCode` is true. Case-sensitive; ignored when `useCouponCode` is false.
                     example: SAVE20
                     type: string
+                creator:
+                    allOf:
+                        -   $ref: "#/components/schemas/Creator"
+                    description:
+                        User who created the discount. Read-only; embedded through the `creator` nested field.
+                    readOnly: true
                 customFields:
                     additionalProperties: true
                     description:
@@ -494,6 +534,20 @@ components:
                         priority: high
                         segment: B2B
                     type: object
+                dateCreated:
+                    description:
+                        Creation timestamp in ISO 8601 (UTC). Read-only; set when the discount is first persisted. Filterable and sortable via the OData query parameter.
+                    example: 2017-07-21T19:30:00Z
+                    format: date-time
+                    readOnly: true
+                    type: string
+                dateModified:
+                    description:
+                        Last modification timestamp in ISO 8601 (UTC). Read-only; updated on each save. Filterable and sortable via the OData query parameter.
+                    example: 2017-07-21T19:30:00Z
+                    format: date-time
+                    readOnly: true
+                    type: string
                 discountAccountGroups:
                     description:
                         Account-group bindings cascaded on upsert. Each entry attaches the discount to one AccountGroup; supplying this array on POST/PUT replaces the previous bindings.
@@ -541,6 +595,12 @@ components:
                         Validator rules cascaded on upsert. Each entry attaches a pre-qualification, post-qualification, or target validator; supplying this array on POST/PUT replaces the previous rules.
                     items:
                         $ref: "#/components/schemas/DiscountRule"
+                    type: array
+                discountSkus:
+                    description:
+                        SKU bindings cascaded on upsert. Each entry restricts the discount to one SKU; supplying this array on POST/PUT replaces the previous bindings.
+                    items:
+                        $ref: "#/components/schemas/DiscountSku"
                     type: array
                 displayDate:
                     description:
@@ -644,6 +704,10 @@ components:
                     format: bigdecimal
                     minimum: 0
                     type: number
+                permissions:
+                    items:
+                        type: permission
+                    type: array
                 rulesConjunction:
                     description:
                         When true, all attached discount rules must pass for the discount to apply; when false, any single passing rule activates the discount.
@@ -652,6 +716,11 @@ components:
                 target:
                     description:
                         Which order slice the discount applies to. One of `subtotal`, `total`, `products`, `categories`, `skus`, `product-groups`, `shipping`.
+                    example: subtotal
+                    type: string
+                targetKey:
+                    description:
+                        Key of the order slice the discount applies to. One of `subtotal`, `total`, `products`, `categories`, `skus`, `product-groups`, `shipping`. Takes precedence over `target` on input.
                     example: subtotal
                     type: string
                 title:
@@ -725,8 +794,6 @@ components:
                     minimum: 0
                     readOnly: true
                     type: integer
-            required:
-                -   accountId
             type: object
         DiscountAccountGroup:
             description:
@@ -777,8 +844,6 @@ components:
                     minimum: 0
                     readOnly: true
                     type: integer
-            required:
-                -   accountGroupId
             type: object
         DiscountCategory:
             description:
@@ -829,8 +894,6 @@ components:
                     minimum: 0
                     readOnly: true
                     type: integer
-            required:
-                -   categoryId
             type: object
         DiscountChannel:
             description:
@@ -881,8 +944,6 @@ components:
                     minimum: 0
                     readOnly: true
                     type: integer
-            required:
-                -   channelId
             type: object
         DiscountOrderType:
             description:
@@ -940,8 +1001,6 @@ components:
                     format: int32
                     minimum: 0
                     type: integer
-            required:
-                -   orderTypeId
             type: object
         DiscountProduct:
             description:
@@ -956,6 +1015,21 @@ components:
                         Map of HATEOAS actions available to the current user, keyed by action name. Each value carries the href template and HTTP method, computed dynamically from user permissions. Read-only.
                     readOnly: true
                     type: object
+                catalogCurrencyCode:
+                    description:
+                        Currency code of the catalog the referenced product belongs to. On read it mirrors that catalog's currency code; on write it is used only when the catalog does not yet exist, to create it with the right currency.
+                    example: USD
+                    type: string
+                catalogCurrencyExternalReferenceCode:
+                    description:
+                        External reference code of the catalog currency. On read it mirrors that currency's external reference code; on write it is resolved after `catalogCurrencyCode` and, when the currency has not been imported yet, used to create it as an empty stub.
+                    example: US_DOLLAR
+                    type: string
+                catalogExternalReferenceCode:
+                    description:
+                        External reference code of the catalog the referenced product belongs to. On read it mirrors that catalog's external reference code; on write it is used only when the product does not yet exist, to create it in the right catalog.
+                    example: CAT0111
+                    type: string
                 discountExternalReferenceCode:
                     description:
                         External reference code of the bound discount; alternative to `discountId` for lookup.
@@ -992,8 +1066,11 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   productId
+                productType:
+                    description:
+                        Product type name of the bound product. On read it mirrors that product's type; on write it is used only when the product does not yet exist, to create it with the right type, and is then required.
+                    example: simple
+                    type: string
             type: object
         DiscountProductGroup:
             description:
@@ -1044,8 +1121,6 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   productGroupId
             type: object
         DiscountRule:
             description:
@@ -1068,6 +1143,11 @@ components:
                     minimum: 0
                     readOnly: true
                     type: integer
+                externalReferenceCode:
+                    description:
+                        Idempotency key for create and update; must be unique within the company. On import it is what binds the payload to the discount rule already stored, so a repeated import updates that rule instead of adding another one.
+                    example: DR-0001
+                    type: string
                 id:
                     description:
                         Internal numeric identifier of the discountrule. Server-assigned and stable.
@@ -1091,6 +1171,11 @@ components:
                         Free-form JSON payload interpreted by the matching type handler at evaluation time.
                     example: "22.50"
                     type: string
+                typeSettingsValue:
+                    description:
+                        Value of the type settings for the rule type, without the type prefix the stored settings carry. Takes precedence over `typeSettings` on input.
+                    example: "22.50"
+                    type: string
             required:
                 -   type
             type: object
@@ -1107,6 +1192,21 @@ components:
                         Map of HATEOAS actions available to the current user, keyed by action name. Each value carries the href template and HTTP method, computed dynamically from user permissions. Read-only.
                     readOnly: true
                     type: object
+                catalogCurrencyCode:
+                    description:
+                        Currency code of the catalog the referenced product belongs to. On read it mirrors that catalog's currency code; on write it is used only when the catalog does not yet exist, to create it with the right currency.
+                    example: USD
+                    type: string
+                catalogCurrencyExternalReferenceCode:
+                    description:
+                        External reference code of the catalog currency. On read it mirrors that currency's external reference code; on write it is resolved after `catalogCurrencyCode` and, when the currency has not been imported yet, used to create it as an empty stub.
+                    example: US_DOLLAR
+                    type: string
+                catalogExternalReferenceCode:
+                    description:
+                        External reference code of the catalog the referenced product belongs to. On read it mirrors that catalog's external reference code; on write it is used only when the product does not yet exist, to create it in the right catalog.
+                    example: CAT0111
+                    type: string
                 discountExternalReferenceCode:
                     description:
                         External reference code of the bound discount; alternative to `discountId` for lookup.
@@ -1128,6 +1228,11 @@ components:
                     minimum: 0
                     readOnly: true
                     type: integer
+                productExternalReferenceCode:
+                    description:
+                        External reference code of the product the bound SKU belongs to. On read it mirrors that product's external reference code; on write it is used only when the SKU does not yet exist, to create it under that product.
+                    example: PROD0111
+                    type: string
                 productId:
                     description:
                         Reference to the product entity (FK identifier).
@@ -1145,6 +1250,11 @@ components:
                         hr_HR: Product Name HR
                         hu_HU: Product Name HU
                     type: object
+                productType:
+                    description:
+                        Product type name of the product the bound SKU belongs to. On read it mirrors that product's type; on write it is used only when neither the SKU nor its product exists yet, to create the product with the right type, and is then required.
+                    example: simple
+                    type: string
                 sku:
                     $ref: "#/components/schemas/Sku"
                     readOnly: true
@@ -1165,8 +1275,6 @@ components:
                         Unit-of-measure key for the SKU on this entry. Defaults to the SKU's primary unit-of-measure when omitted.
                     example: m
                     type: string
-            required:
-                -   skuId
             type: object
         Error:
             description:
@@ -1361,6 +1469,16 @@ components:
                 product:
                     $ref: "#/components/schemas/Product"
                     readOnly: true
+                productExternalReferenceCode:
+                    description:
+                        External reference code of the product the bound SKU belongs to. On read it mirrors that product's external reference code; on write it is used only when the SKU does not yet exist, to create it under that product.
+                    example: PROD0111
+                    type: string
+                productType:
+                    description:
+                        Product type name of the product the bound SKU belongs to. On read it mirrors that product's type; on write it is used only when neither the SKU nor its product exists yet, to create the product with the right type, and is then required.
+                    example: simple
+                    type: string
                 quantity:
                     description:
                         Quantity bound to this priceentry entry; used for tier resolution against the cart line quantity.
@@ -1395,8 +1513,6 @@ components:
                     type: string
             required:
                 -   price
-                -   priceListId
-                -   skuId
             type: object
         PriceList:
             description:
@@ -1426,6 +1542,16 @@ components:
                         When true, the price list is the catalog's base list and serves as the fallback when no other price list resolves.
                     example: true
                     type: boolean
+                catalogCurrencyCode:
+                    description:
+                        Currency code of the bound catalog. On read it mirrors that catalog's currency code; on write it is used only when the catalog does not yet exist, to create it with the right currency.
+                    example: USD
+                    type: string
+                catalogCurrencyExternalReferenceCode:
+                    description:
+                        External reference code of the catalog currency. On read it mirrors that currency's external reference code; on write it is resolved after `catalogCurrencyCode` and, when the currency has not been imported yet, used to create it as an empty stub.
+                    example: US_DOLLAR
+                    type: string
                 catalogExternalReferenceCode:
                     description:
                         External reference code of the bound catalog; alternative to `catalogId` for lookup.
@@ -1449,6 +1575,12 @@ components:
                     example: 2017-07-21
                     format: date
                     type: string
+                creator:
+                    allOf:
+                        -   $ref: "#/components/schemas/Creator"
+                    description:
+                        User who created the price list. Read-only; embedded through the `creator` nested field.
+                    readOnly: true
                 currencyCode:
                     description:
                         ISO 4217 currency code in which monetary values on this record are expressed.
@@ -1474,6 +1606,20 @@ components:
                         priority: high
                         segment: B2B
                     type: object
+                dateCreated:
+                    description:
+                        Creation timestamp in ISO 8601 (UTC). Read-only; set when the price list is first persisted. Filterable and sortable via the OData query parameter.
+                    example: 2017-07-21T19:30:00Z
+                    format: date-time
+                    readOnly: true
+                    type: string
+                dateModified:
+                    description:
+                        Last modification timestamp in ISO 8601 (UTC). Read-only; updated on each save. Filterable and sortable via the OData query parameter.
+                    example: 2017-07-21T19:30:00Z
+                    format: date-time
+                    readOnly: true
+                    type: string
                 displayDate:
                     description:
                         Date and time when this record becomes effective. ISO 8601.
@@ -1581,7 +1727,6 @@ components:
                     $ref: "#/components/schemas/Status"
                     readOnly: true
             required:
-                -   catalogId
                 -   currencyCode
                 -   name
                 -   type
@@ -1641,9 +1786,6 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   accountId
-                -   priceListId
             type: object
         PriceListAccountGroup:
             description:
@@ -1700,9 +1842,6 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   accountGroupId
-                -   priceListId
             type: object
         PriceListChannel:
             description:
@@ -1759,9 +1898,6 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   channelId
-                -   priceListId
             type: object
         PriceListDiscount:
             description:
@@ -1812,9 +1948,6 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   discountId
-                -   priceListId
             type: object
         PriceListOrderType:
             description:
@@ -1871,9 +2004,6 @@ components:
                     format: int32
                     minimum: 0
                     type: integer
-            required:
-                -   orderTypeId
-                -   priceListId
             type: object
         PriceModifier:
             description:
@@ -2033,9 +2163,6 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   categoryId
-                -   priceModifierId
             type: object
         PriceModifierProduct:
             description:
@@ -2050,6 +2177,21 @@ components:
                         Map of HATEOAS actions available to the current user, keyed by action name. Each value carries the href template and HTTP method, computed dynamically from user permissions. Read-only.
                     readOnly: true
                     type: object
+                catalogCurrencyCode:
+                    description:
+                        Currency code of the catalog the referenced product belongs to. On read it mirrors that catalog's currency code; on write it is used only when the catalog does not yet exist, to create it with the right currency.
+                    example: USD
+                    type: string
+                catalogCurrencyExternalReferenceCode:
+                    description:
+                        External reference code of the catalog currency. On read it mirrors that currency's external reference code; on write it is resolved after `catalogCurrencyCode` and, when the currency has not been imported yet, used to create it as an empty stub.
+                    example: US_DOLLAR
+                    type: string
+                catalogExternalReferenceCode:
+                    description:
+                        External reference code of the catalog the referenced product belongs to. On read it mirrors that catalog's external reference code; on write it is used only when the product does not yet exist, to create it in the right catalog.
+                    example: CAT0111
+                    type: string
                 priceModifierExternalReferenceCode:
                     description:
                         External reference code of the bound priceModifier; alternative to `priceModifierId` for lookup.
@@ -2085,9 +2227,11 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   priceModifierId
-                -   productId
+                productType:
+                    description:
+                        Product type name of the bound product. On read it mirrors that product's type; on write it is used only when the product does not yet exist, to create it with the right type, and is then required.
+                    example: simple
+                    type: string
             type: object
         PriceModifierProductGroup:
             description:
@@ -2137,9 +2281,6 @@ components:
                     format: int64
                     minimum: 0
                     type: integer
-            required:
-                -   priceModifierId
-                -   productGroupId
             type: object
         PricingAccountGroup:
             description:
@@ -2412,7 +2553,6 @@ components:
             required:
                 -   minimumQuantity
                 -   price
-                -   priceEntryId
             type: object
 info:
     contact:
@@ -5074,6 +5214,69 @@ paths:
                         Unexpected error
             summary: Creates or updates a Discount Sku.
             tags: ["DiscountSku"]
+    /discounts/{discountId}/permissions:
+        get:
+            description:
+                Lists the role permissions granted on the discount identified by ID. Requires the PERMISSIONS action on the discount.
+            operationId: getDiscountPermissionsPage
+            parameters:
+                -   in: path
+                    name: discountId
+                    required: true
+                    schema:
+                        description:
+                            Internal numeric identifier of the discount, the same `id` the discount payload carries.
+                        format: int64
+                        type: integer
+                -   in: query
+                    name: fields
+                    schema:
+                        type: string
+                -   in: query
+                    name: restrictFields
+                    schema:
+                        type: string
+                -   in: query
+                    name: roleNames
+                    schema:
+                        type: string
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+                    description:
+                        The role permissions of the discount.
+            summary: Lists the permissions of a discount by ID.
+            tags:
+                -   Discount
+        put:
+            description:
+                Replaces the role permissions granted on the discount identified by ID. Roles missing from the request lose their individual permissions. Requires the PERMISSIONS action on the discount.
+            operationId: putDiscountPermissionsPage
+            parameters:
+                -   in: path
+                    name: discountId
+                    required: true
+                    schema:
+                        description:
+                            Internal numeric identifier of the discount, the same `id` the discount payload carries.
+                        format: int64
+                        type: integer
+            requestBody:
+                content:
+                    application/json: {}
+                    application/xml: {}
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+                    description:
+                        The updated role permissions of the discount.
+            summary: Replaces the permissions of a discount by ID.
+            tags:
+                -   Discount
     /discounts/{id}:
         delete:
             description:
@@ -7866,8 +8069,7 @@ paths:
     /price-lists:
         get:
             description:
-                Pages price lists with search and OData filter via SearchUtil. Filterable field: name (from
-                PriceListEntityModel); sortable field: name.
+                Pages price lists with search and OData filter via SearchUtil. Filterable fields -- accountGroupId, accountId, catalogBasePriceList, catalogId, channelId, createDate, dateCreated, dateModified, externalReferenceCode, name, orderTypeId, type (from PriceListEntityModel); sortable fields -- createDate, dateCreated, dateModified, externalReferenceCode, name.
             operationId: getPriceListsPage
             parameters:
                 -   $ref: "#/components/parameters/filterQueryParam"

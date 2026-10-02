@@ -10,7 +10,13 @@ package com.liferay.portal.instances.constants;
  */
 public class PortalInstancesNotificationConstants {
 
+	public static final String OPERATION_TYPE_ADD = "ADD";
+
 	public static final String OPERATION_TYPE_DELETE = "DELETE";
+
+	public static final String OPERATION_TYPE_EXPORT = "EXPORT";
+
+	public static final String OPERATION_TYPE_IMPORT = "IMPORT";
 
 	public static final String STATUS_FAILED = "FAILED";
 

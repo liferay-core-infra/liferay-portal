@@ -19,6 +19,7 @@ export class CommerceThemeClassicCatalogPage {
 	readonly ordersTab: (orderTabName: string) => Locator;
 	readonly page: Page;
 	readonly productCard: (productName: string) => Locator;
+	readonly productCardAvailabilityLabel: (productName: string) => Locator;
 	readonly productCardImage: (productName: string) => Locator;
 	readonly productCardPrice: (
 		productName: string,
@@ -28,6 +29,7 @@ export class CommerceThemeClassicCatalogPage {
 		productName: string,
 		productSku: string
 	) => Locator;
+	readonly productCardViewAllVariantsButton: (productName: string) => Locator;
 	readonly productCardAddToCartButton: (productName: string) => Locator;
 	readonly productCardAddToWishListButton: (productName: string) => Locator;
 	readonly productCardLink: (productName: string) => Locator;
@@ -60,6 +62,10 @@ export class CommerceThemeClassicCatalogPage {
 		this.page = page;
 		this.productCard = (productName: string) =>
 			this.page.locator('.product-card').filter({hasText: productName});
+		this.productCardAvailabilityLabel = (productName: string) =>
+			this.productCard(productName).locator(
+				'[class*="availability-label"]'
+			);
 		this.productCardImage = (productName: string) =>
 			this.productCard(productName).locator('img.product-card-picture');
 		this.productCardPrice = (productName, productPrice) =>
@@ -68,6 +74,11 @@ export class CommerceThemeClassicCatalogPage {
 			});
 		this.productCardSku = (productName: string, productSku: string) =>
 			this.productCard(productName).getByText(productSku);
+		this.productCardViewAllVariantsButton = (productName: string) =>
+			this.productCard(productName).getByRole('button', {
+				exact: true,
+				name: 'View all variants',
+			});
 		this.productCardAddToCartButton = (productName: string) =>
 			this.productCard(productName).getByRole('button', {
 				exact: true,

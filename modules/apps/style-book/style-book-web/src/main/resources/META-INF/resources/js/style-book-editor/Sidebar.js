@@ -7,24 +7,39 @@ import ClayAlert from '@clayui/alert';
 import ClayButton from '@clayui/button';
 import ClayDropDown, {Align} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
+import {openModal} from 'frontend-js-components-web';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 import FrontendTokenSet from './FrontendTokenSet';
+import NewTokenModalContent from './NewTokenModalContent';
 import {config} from './config';
-import {useFrontendTokensValues} from './contexts/StyleBookEditorContext';
+import {
+	SET_CUSTOM_FRONTEND_TOKEN_DEFINITION,
+	SET_TOKEN_VALUES,
+} from './constants/actionTypes';
+import {
+	useCustomFrontendTokenDefinition,
+	useDispatch,
+	useFrontendTokensValues,
+} from './contexts/StyleBookEditorContext';
 
 export default React.memo(function Sidebar() {
 	const sidebarRef = useRef();
+
+	const customFrontendTokenDefinition = useCustomFrontendTokenDefinition();
+	const frontendTokenDefinitions = useMemo(
+		() => config.getFrontendTokenDefinitions(customFrontendTokenDefinition),
+		[customFrontendTokenDefinition]
+	);
+
 	const [activeDefinitionId, setActiveDefinitionId] = useState(
 		config.themeFrontendTokenDefinitionId
 	);
 
 	const activeDefinition = useMemo(
 		() =>
-			config.frontendTokenDefinitions.find(
-				(definition) => definition.id === activeDefinitionId
-			),
-		[activeDefinitionId]
+			frontendTokenDefinitions.find(({id}) => id === activeDefinitionId),
+		[activeDefinitionId, frontendTokenDefinitions]
 	);
 
 	return (
@@ -33,9 +48,10 @@ export default React.memo(function Sidebar() {
 				className="panel-group-sm style-book-editor__sidebar-content"
 				data-qa-id="styleBookEditorSidebarContent"
 			>
-				{!!config.frontendTokenDefinitions.length && (
+				{!!frontendTokenDefinitions.length && (
 					<TokenDefinitionSelector
-						activeDefinitionId={activeDefinitionId}
+						activeDefinition={activeDefinition}
+						frontendTokenDefinitions={frontendTokenDefinitions}
 						setActiveDefinitionId={setActiveDefinitionId}
 					/>
 				)}
@@ -44,6 +60,7 @@ export default React.memo(function Sidebar() {
 					<>
 						<FrontendTokenCategories
 							activeDefinition={activeDefinition}
+							key={activeDefinition.id}
 						/>
 						<UpdateStyle sidebarRef={sidebarRef} />
 					</>
@@ -59,12 +76,12 @@ export default React.memo(function Sidebar() {
 	);
 });
 
-function TokenDefinitionSelector({activeDefinitionId, setActiveDefinitionId}) {
+function TokenDefinitionSelector({
+	activeDefinition,
+	frontendTokenDefinitions,
+	setActiveDefinitionId,
+}) {
 	const [active, setActive] = useState(false);
-
-	const activeDefinition = config.frontendTokenDefinitions.find(
-		(definition) => definition.id === activeDefinitionId
-	);
 
 	if (!activeDefinition) {
 		return (
@@ -76,7 +93,7 @@ function TokenDefinitionSelector({activeDefinitionId, setActiveDefinitionId}) {
 		);
 	}
 
-	if (config.frontendTokenDefinitions.length === 1) {
+	if (frontendTokenDefinitions.length === 1) {
 		return (
 			<div className="mb-3 p-2">
 				<TokenDefinitionInformation
@@ -102,15 +119,16 @@ function TokenDefinitionSelector({activeDefinitionId, setActiveDefinitionId}) {
 					>
 						<TokenDefinitionInformation
 							activeDefinition={activeDefinition}
+							isDropdown
 							isDropdownOpen={active}
 						/>
 					</button>
 				}
 			>
 				<ClayDropDown.ItemList>
-					{config.frontendTokenDefinitions.map((definition) => (
+					{frontendTokenDefinitions.map((definition) => (
 						<ClayDropDown.Item
-							active={definition.id === activeDefinitionId}
+							active={definition.id === activeDefinition.id}
 							key={definition.id}
 							onClick={() => {
 								setActiveDefinitionId(definition.id);
@@ -148,7 +166,11 @@ function UpdateStyle({sidebarRef}) {
 	return null;
 }
 
-function TokenDefinitionInformation({activeDefinition, isDropdownOpen}) {
+function TokenDefinitionInformation({
+	activeDefinition,
+	isDropdown,
+	isDropdownOpen,
+}) {
 	return (
 		<div className="small text-secondary">
 			<div className="text-dark">
@@ -161,7 +183,7 @@ function TokenDefinitionInformation({activeDefinition, isDropdownOpen}) {
 				<p className="mb-0">
 					{getDefinitionName(activeDefinition)}
 
-					{config.frontendTokenDefinitions.length > 1 && (
+					{isDropdown && (
 						<span className="ml-1">
 							<ClayIcon
 								symbol={
@@ -185,6 +207,8 @@ function getDefinitionName({id, name}) {
 }
 
 function FrontendTokenCategories({activeDefinition}) {
+	const dispatch = useDispatch();
+	const customFrontendTokenDefinition = useCustomFrontendTokenDefinition();
 	const frontendTokensValues = useFrontendTokensValues();
 
 	const frontendTokenCategories = activeDefinition.frontendTokenCategories;
@@ -193,12 +217,13 @@ function FrontendTokenCategories({activeDefinition}) {
 		frontendTokenCategories[0]
 	);
 
-	useEffect(() => {
-		setSelectedCategory(frontendTokenCategories[0]);
-	}, [activeDefinition, frontendTokenCategories]);
+	const frontendTokens = useMemo(
+		() => config.getFrontendTokens(customFrontendTokenDefinition),
+		[customFrontendTokenDefinition]
+	);
 
 	const tokenValues = useMemo(() => {
-		const nextTokenValues = {...config.frontendTokens};
+		const nextTokenValues = {...frontendTokens};
 
 		for (const [name, {value}] of Object.entries(frontendTokensValues)) {
 			if (nextTokenValues[name]) {
@@ -210,7 +235,7 @@ function FrontendTokenCategories({activeDefinition}) {
 		}
 
 		return nextTokenValues;
-	}, [frontendTokensValues]);
+	}, [frontendTokens, frontendTokensValues]);
 
 	const frontendTokenCategoriesWithPrefix = useMemo(() => {
 		return frontendTokenCategories.map((category) => ({
@@ -219,12 +244,11 @@ function FrontendTokenCategories({activeDefinition}) {
 				...tokenSet,
 				frontendTokens: tokenSet.frontendTokens.map((token) => ({
 					...token,
-					name: `${activeDefinition.id}:${token.name}`,
-					tokenDefinitionId: activeDefinition.id,
+					name: `${token.tokenDefinitionId}:${token.name}`,
 				})),
 			})),
 		}));
-	}, [activeDefinition, frontendTokenCategories]);
+	}, [frontendTokenCategories]);
 
 	const activeSelectedCategory = useMemo(() => {
 		if (!selectedCategory) {
@@ -236,48 +260,98 @@ function FrontendTokenCategories({activeDefinition}) {
 		);
 	}, [selectedCategory, frontendTokenCategoriesWithPrefix]);
 
+	const handleNewToken = ({
+		customFrontendTokenDefinition,
+		frontendTokensValues,
+	}) => {
+		dispatch({
+			customFrontendTokenDefinition,
+			type: SET_CUSTOM_FRONTEND_TOKEN_DEFINITION,
+		});
+
+		dispatch({
+			tokens: frontendTokensValues,
+			type: SET_TOKEN_VALUES,
+		});
+	};
+
+	const openNewTokenModal = () => {
+		openModal({
+			contentComponent: ({closeModal}) => (
+				<NewTokenModalContent
+					addFrontendTokenURL={config.addFrontendTokenURL}
+					categoryLabel={activeSelectedCategory.label}
+					categoryName={activeSelectedCategory.name}
+					closeModal={closeModal}
+					namespace={config.namespace}
+					onSuccess={handleNewToken}
+					styleBookEntryId={config.styleBookEntryId}
+					tokenSets={activeSelectedCategory.frontendTokenSets}
+				/>
+			),
+		});
+	};
+
 	return (
 		<>
 			{activeSelectedCategory && (
-				<ClayDropDown
-					active={active}
-					alignmentPosition={Align.BottomLeft}
-					className="mb-4"
-					menuElementAttrs={{
-						containerProps: {
-							className: 'cadmin',
-						},
-					}}
-					onActiveChange={setActive}
-					trigger={
+				<div className="align-items-center d-flex mb-4">
+					<ClayDropDown
+						active={active}
+						alignmentPosition={Align.BottomLeft}
+						className="flex-grow-1 mr-2"
+						menuElementAttrs={{
+							containerProps: {
+								className: 'cadmin',
+							},
+						}}
+						onActiveChange={setActive}
+						trigger={
+							<ClayButton
+								className="form-control form-control-select form-control-sm text-left"
+								displayType="secondary"
+								size="sm"
+								type="button"
+							>
+								{activeSelectedCategory.label}
+							</ClayButton>
+						}
+					>
+						<ClayDropDown.ItemList>
+							{frontendTokenCategoriesWithPrefix.map(
+								(frontendTokenCategory, index) => (
+									<ClayDropDown.Item
+										key={index}
+										onClick={() => {
+											setSelectedCategory(
+												frontendTokenCategory
+											);
+											setActive(false);
+										}}
+									>
+										{frontendTokenCategory.label}
+									</ClayDropDown.Item>
+								)
+							)}
+						</ClayDropDown.ItemList>
+					</ClayDropDown>
+
+					{activeDefinition.id ===
+						config.themeFrontendTokenDefinitionId && (
 						<ClayButton
-							className="form-control form-control-select form-control-sm mb-3 text-left"
 							displayType="secondary"
+							onClick={openNewTokenModal}
 							size="sm"
-							type="button"
 						>
-							{activeSelectedCategory.label}
+							<ClayIcon
+								className="inline-item inline-item-before"
+								symbol="plus"
+							/>
+
+							{Liferay.Language.get('new-token')}
 						</ClayButton>
-					}
-				>
-					<ClayDropDown.ItemList>
-						{frontendTokenCategoriesWithPrefix.map(
-							(frontendTokenCategory, index) => (
-								<ClayDropDown.Item
-									key={index}
-									onClick={() => {
-										setSelectedCategory(
-											frontendTokenCategory
-										);
-										setActive(false);
-									}}
-								>
-									{frontendTokenCategory.label}
-								</ClayDropDown.Item>
-							)
-						)}
-					</ClayDropDown.ItemList>
-				</ClayDropDown>
+					)}
+				</div>
 			)}
 
 			{activeSelectedCategory?.frontendTokenSets.map(

@@ -332,6 +332,14 @@ public class VirtualHostLocalServiceWrapper
 			excludedLayoutSetId, virtualHostNames);
 	}
 
+	@Override
+	public VirtualHost updateCompanyVirtualHost(
+		long companyId, String hostname) {
+
+		return _virtualHostLocalService.updateCompanyVirtualHost(
+			companyId, hostname);
+	}
+
 	/**
 	 * Updates the virtual host in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -349,11 +357,12 @@ public class VirtualHostLocalServiceWrapper
 
 	@Override
 	public java.util.List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId,
-		java.util.TreeMap<String, String> hostnames) {
+			com.liferay.portal.kernel.model.LayoutSet layoutSet,
+			java.util.TreeMap<String, String> hostnames)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _virtualHostLocalService.updateVirtualHosts(
-			companyId, layoutSetId, hostnames);
+			layoutSet, hostnames);
 	}
 
 	@Override
@@ -396,4 +405,4 @@ public class VirtualHostLocalServiceWrapper
 	private VirtualHostLocalService _virtualHostLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1070851949
+// LIFERAY-SERVICE-BUILDER-HASH:2078780114

@@ -49,6 +49,10 @@ public class GradleTaskFailureMessageGenerator
 
 		Matcher javaErrorMatcher = _javaErrorPattern.matcher(consoleText);
 
+		int regionStart = _getRegionStart(consoleText);
+
+		javaErrorMatcher.region(regionStart, consoleText.length());
+
 		if (javaErrorMatcher.find()) {
 			String snippet = javaErrorMatcher.group();
 
@@ -60,6 +64,8 @@ public class GradleTaskFailureMessageGenerator
 		}
 
 		Matcher taskFailedMatcher = _taskFailedPattern.matcher(consoleText);
+
+		taskFailedMatcher.region(regionStart, consoleText.length());
 
 		if (taskFailedMatcher.find()) {
 			String snippet = taskFailedMatcher.group(1);
@@ -99,13 +105,32 @@ public class GradleTaskFailureMessageGenerator
 		return Dom4JUtil.toCodeSnippetElement(sb.toString());
 	}
 
+	protected static final int MAXIMUM_REGION_SIZE = 1024 * 1024 * 5;
+
+	private int _getRegionStart(String consoleText) {
+		int start = consoleText.length() - MAXIMUM_REGION_SIZE;
+
+		if (start <= 0) {
+			return 0;
+		}
+
+		int index = consoleText.indexOf("\n", start);
+
+		if (index != -1) {
+			return index;
+		}
+
+		return start;
+	}
+
 	private static final String _TOKEN_WHAT_WENT_WRONG = "* What went wrong:";
 
 	private static final String _TOKEN_WHERE = "* Where:";
 
 	private static final Pattern _javaErrorPattern = Pattern.compile(
-		"[^\\n]+\\.java:\\d+: error:[^\\n]+");
+		"^[^\\n]+?\\.java:\\d+: error:[^\\n]+",
+		Pattern.MULTILINE | Pattern.UNIX_LINES);
 	private static final Pattern _taskFailedPattern = Pattern.compile(
-		"\\n(\\s+\\[exec\\] > Task :[^ ]+ FAILED)");
+		"\\n([ \\t]+\\[exec\\] > Task :[^ ]+ FAILED)");
 
 }

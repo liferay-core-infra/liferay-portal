@@ -14,10 +14,13 @@ import com.liferay.commerce.price.list.service.CommercePriceListService;
 import com.liferay.commerce.price.list.service.CommerceTierPriceEntryService;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
+import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CPInstanceService;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceEntry;
+import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceList;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.TierPrice;
 import com.liferay.headless.commerce.admin.pricing.internal.odata.entity.v2_0.PriceEntryEntityModel;
+import com.liferay.headless.commerce.admin.pricing.internal.util.SkuUtil;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.TierPriceUtil;
 import com.liferay.headless.commerce.admin.pricing.resource.v2_0.PriceEntryResource;
 import com.liferay.headless.commerce.core.helper.ServiceContextHelper;
@@ -35,6 +38,7 @@ import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
+import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.SearchUtil;
@@ -54,7 +58,8 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v2_0/price-entry.properties",
-	scope = ServiceScope.PROTOTYPE, service = PriceEntryResource.class
+	property = "nested.field.support=true", scope = ServiceScope.PROTOTYPE,
+	service = PriceEntryResource.class
 )
 public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 
@@ -139,6 +144,7 @@ public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 			pagination, sorts);
 	}
 
+	@NestedField(parentClass = PriceList.class, value = "priceEntries")
 	@Override
 	public Page<PriceEntry> getPriceListIdPriceEntriesPage(
 			Long id, String search, Filter filter, Pagination pagination,
@@ -259,20 +265,14 @@ public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 
 		long cProductId = 0;
 		String cpInstanceUuid = null;
-		CPInstance cpInstance = null;
 
-		long skuId = GetterUtil.getLong(priceEntry.getSkuId());
-		String skuExternalReferenceCode =
-			priceEntry.getSkuExternalReferenceCode();
-
-		if (skuId > 0) {
-			cpInstance = _cpInstanceService.fetchCPInstance(skuId);
-		}
-		else if (Validator.isNotNull(skuExternalReferenceCode)) {
-			cpInstance =
-				_cpInstanceService.fetchCPInstanceByExternalReferenceCode(
-					skuExternalReferenceCode, serviceContext.getCompanyId());
-		}
+		CPInstance cpInstance = SkuUtil.fetchCPInstance(
+			_cpDefinitionService, _cpInstanceService,
+			commercePriceList.getGroupId(),
+			priceEntry.getProductExternalReferenceCode(),
+			priceEntry.getProductType(), serviceContext,
+			priceEntry.getSkuExternalReferenceCode(),
+			GetterUtil.getLong(priceEntry.getSkuId()));
 
 		if (cpInstance != null) {
 			CPDefinition cpDefinition = cpInstance.getCPDefinition();
@@ -287,10 +287,15 @@ public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 		DateConfig expirationDateConfig = DateConfig.toExpirationDateConfig(
 			priceEntry.getExpirationDate(), serviceContext.getTimeZone());
 
+		long priceEntryId = 0;
+
+		if (Validator.isNull(priceEntry.getExternalReferenceCode())) {
+			priceEntryId = GetterUtil.getLong(priceEntry.getPriceEntryId());
+		}
+
 		CommercePriceEntry commercePriceEntry =
 			_commercePriceEntryService.addOrUpdateCommercePriceEntry(
-				priceEntry.getExternalReferenceCode(),
-				GetterUtil.getLong(priceEntry.getPriceEntryId()), cProductId,
+				priceEntry.getExternalReferenceCode(), priceEntryId, cProductId,
 				cpInstanceUuid, commercePriceList.getCommercePriceListId(),
 				GetterUtil.getBoolean(priceEntry.getDiscountDiscovery(), true),
 				priceEntry.getDiscountLevel1(), priceEntry.getDiscountLevel2(),
@@ -445,6 +450,9 @@ public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 
 	@Reference
 	private CommerceTierPriceEntryService _commerceTierPriceEntryService;
+
+	@Reference
+	private CPDefinitionService _cpDefinitionService;
 
 	@Reference
 	private CPInstanceService _cpInstanceService;

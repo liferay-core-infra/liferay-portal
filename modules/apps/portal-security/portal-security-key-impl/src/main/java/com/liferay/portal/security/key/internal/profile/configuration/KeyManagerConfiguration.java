@@ -23,4 +23,10 @@ public interface KeyManagerConfiguration {
 	@Meta.AD(deflt = "custom", name = "active-profile-id", required = false)
 	public String activeProfileId();
 
+	@Meta.AD(
+		deflt = "", description = "company-kek-identifier-help",
+		name = "company-kek-identifier", required = false
+	)
+	public String companyKEKIdentifier();
+
 }

@@ -86,6 +86,141 @@
 				},
 				{
 					"defaultValue": {
+						"classPK": "${ASSET_LIST_ENTRY_ID}",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionByClassPK",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"externalReferenceCode": "collection-erc",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionByExternalReferenceCode",
+					"type": "collectionSelector",
+					"typeOptions": {
+						"itemSubtype": "BASIC-WEB-CONTENT",
+						"itemType": "com.liferay.journal.model.JournalArticle",
+						"numberOfItems": 5
+					}
+				},
+				{
+					"defaultValue": {
+						"externalReferenceCode": "collection-erc-and-other-site-scope-erc",
+						"scopeExternalReferenceCode": "${IRRELEVANT_GROUP_EXTERNAL_REFERENCE_CODE}",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionByExternalReferenceCodeAndOtherSiteScope",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"externalReferenceCode": "collection-erc-and-scope-erc",
+						"scopeExternalReferenceCode": "collection-scope-erc",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionByExternalReferenceCodeAndScope",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"classPK": "${NONEXISTENT_CLASS_PK}",
+						"externalReferenceCode": "collection-nonexistent-class-pk-erc",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionByNonexistentClassPKAndExternalReferenceCode",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"classPK": "#{ASSET_LIST_ENTRY_ID}",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionByNumericClassPK",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"externalReferenceCode": "${IRRELEVANT_GROUP_ASSET_LIST_ENTRY_ERC}",
+						"scopeExternalReferenceCode": "${IRRELEVANT_GROUP_EXTERNAL_REFERENCE_CODE}",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionByResolvableExternalReferenceCodeAndOtherSiteScope",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"key": "com.liferay.asset.internal.info.collection.provider.RecentContentInfoCollectionProvider",
+						"type": "com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType"
+					},
+					"name": "collectionProvider",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"key": "com.liferay.asset.internal.info.collection.provider.RelatedAssetsRelatedInfoItemCollectionProvider",
+						"type": "com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType"
+					},
+					"name": "collectionProviderRelatedItems",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"key": "${COLLECTION_PROVIDER_SINGLE_FORM_VARIATION_KEY}",
+						"type": "com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType"
+					},
+					"name": "collectionProviderSingleFormVariation",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"key": "com.liferay.nonexistent.info.collection.provider.NonexistentInfoCollectionProvider",
+						"type": "com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType"
+					},
+					"name": "collectionProviderUnregistered",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"fieldName": "repeatableField",
+						"itemSubtypeKey": "collection-subtype-erc",
+						"itemType": "com.liferay.nonexistent.model.NonexistentModel",
+						"key": "com.liferay.info.collection.provider.RepeatableFieldInfoItemCollectionProvider",
+						"type": "com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType"
+					},
+					"name": "collectionRepeatableFieldsProviderWithNonexistentItemType",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"fieldName": "repeatableField",
+						"itemSubtypeKey": "collection-nonexistent-subtype-erc",
+						"itemType": "com.liferay.journal.model.JournalArticle",
+						"key": "com.liferay.info.collection.provider.RepeatableFieldInfoItemCollectionProvider",
+						"type": "com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType"
+					},
+					"name": "collectionRepeatableFieldsProviderWithNonexistentSubtype",
+					"type": "collectionSelector"
+				},
+				{
+					"defaultValue": {
+						"externalReferenceCode": "collection-visible-erc",
+						"type": "com.liferay.item.selector.criteria.InfoListItemSelectorReturnType"
+					},
+					"name": "collectionVisibleWhenCheckboxTrue",
+					"type": "collectionSelector",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
 						"cssClass": "brand-color-1",
 						"rgbValue": "#0B5FFF"
 					},
@@ -288,6 +423,42 @@
 					}
 				},
 				{
+					"defaultValue": [
+						"collection-display-erc"
+					],
+					"name": "targetCollectionDisplay",
+					"type": "targetCollectionDisplay",
+					"typeOptions": {
+						"enableCompatibleCollections": true
+					}
+				},
+				{
+					"defaultValue": [
+						"collection-display-erc-1",
+						"collection-display-erc-2"
+					],
+					"name": "targetCollectionDisplayMultiple",
+					"type": "targetCollectionDisplay",
+					"typeOptions": {
+						"enableCompatibleCollections": false
+					}
+				},
+				{
+					"defaultValue": [
+						"collection-display-visible-erc"
+					],
+					"name": "targetCollectionDisplayVisibleWhenCheckboxTrue",
+					"type": "targetCollectionDisplay",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
 					"defaultValue": "Default text",
 					"name": "text",
 					"type": "text"
@@ -421,6 +592,62 @@
 							}
 						}
 					}
+				},
+				{
+					"defaultValue": {
+						"html": "<iframe src=\"https://www.youtube.com/embed/video1\"></iframe>",
+						"title": "Video 1",
+						"type": "com.liferay.item.selector.criteria.VideoEmbeddableHTMLItemSelectorReturnType"
+					},
+					"name": "videoSelector",
+					"type": "videoSelector"
+				},
+				{
+					"defaultValue": "{\"html\": \"<iframe src=\\\"https://www.youtube.com/embed/video2\\\"></iframe>\", \"title\": \"Video 2\", \"type\": \"com.liferay.item.selector.criteria.VideoEmbeddableHTMLItemSelectorReturnType\"}",
+					"name": "videoSelectorAsString",
+					"type": "videoSelector"
+				},
+				{
+					"defaultValue": {
+						"html": "<iframe src=\"https://www.youtube.com/embed/video3\"></iframe>",
+						"title": "Video 3",
+						"type": "com.liferay.item.selector.criteria.VideoEmbeddableHTMLItemSelectorReturnType"
+					},
+					"localizable": true,
+					"name": "videoSelectorLocalizable",
+					"type": "videoSelector"
+				},
+				{
+					"defaultValue": {
+						"html": "<iframe src=\"https://www.youtube.com/embed/video4\"></iframe>",
+						"title": "Video 4",
+						"type": "com.liferay.item.selector.criteria.VideoEmbeddableHTMLItemSelectorReturnType"
+					},
+					"name": "videoSelectorVisibleWhenCheckboxTrue",
+					"type": "videoSelector",
+					"typeOptions": {
+						"dependency": {
+							"checkboxTrue": {
+								"type": "equal",
+								"value": "true"
+							}
+						}
+					}
+				},
+				{
+					"defaultValue": {
+						"title": "Video without HTML"
+					},
+					"name": "videoSelectorWithoutHTML",
+					"type": "videoSelector"
+				},
+				{
+					"defaultValue": {
+						"html": "<iframe src=\"https://www.youtube.com/embed/video5\"></iframe>",
+						"type": "com.liferay.item.selector.criteria.VideoEmbeddableHTMLItemSelectorReturnType"
+					},
+					"name": "videoSelectorWithoutTitle",
+					"type": "videoSelector"
 				},
 				{
 					"defaultValue": {

@@ -54,7 +54,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.TreeMap;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -77,35 +76,27 @@ public class PortalImplCanonicalURLTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			false,
-			new ClassTestRule<TreeMap<String, String>>() {
+			new ClassTestRule<String>() {
 
 				@Override
 				public void afterClass(
-						Description description,
-						TreeMap<String, String> virtualHostnames)
+						Description description, String virtualHostname)
 					throws PortalException {
 
-					VirtualHostLocalServiceUtil.updateVirtualHosts(
-						TestPropsValues.getCompanyId(), 0, virtualHostnames);
+					VirtualHostLocalServiceUtil.updateVirtualHost(
+						TestPropsValues.getCompanyId(), virtualHostname);
 				}
 
 				@Override
-				public TreeMap<String, String> beforeClass(
-						Description description)
+				public String beforeClass(Description description)
 					throws PortalException {
 
-					TreeMap<String, String> virtualHostnames = new TreeMap<>();
+					VirtualHost virtualHost =
+						VirtualHostLocalServiceUtil.
+							fetchCompanyDefaultVirtualHost(
+								TestPropsValues.getCompanyId());
 
-					for (VirtualHost virtualHost :
-							VirtualHostLocalServiceUtil.getVirtualHosts(
-								TestPropsValues.getCompanyId(), 0)) {
-
-						virtualHostnames.put(
-							virtualHost.getHostname(),
-							GetterUtil.getString(virtualHost.getLanguageId()));
-					}
-
-					return virtualHostnames;
+					return virtualHost.getHostname();
 				}
 
 			},
@@ -128,11 +119,8 @@ public class PortalImplCanonicalURLTest {
 			LocaleUtil.US.getLanguage(), LocaleUtil.US.getCountry(),
 			LocaleUtil.US.getVariant());
 
-		_virtualHostLocalService.updateVirtualHosts(
-			TestPropsValues.getCompanyId(), 0,
-			TreeMapBuilder.put(
-				"localhost", StringPool.BLANK
-			).build());
+		_virtualHostLocalService.updateVirtualHost(
+			TestPropsValues.getCompanyId(), "localhost");
 
 		_group = GroupTestUtil.addGroup();
 

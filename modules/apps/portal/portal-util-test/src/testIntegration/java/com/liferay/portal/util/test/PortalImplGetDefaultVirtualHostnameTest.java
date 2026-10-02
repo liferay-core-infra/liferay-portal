@@ -9,7 +9,6 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.LayoutSet;
-import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.TestInfo;
@@ -67,15 +66,7 @@ public class PortalImplGetDefaultVirtualHostnameTest
 	public void testGetDefaultVirtualHostnameAfterCompanyVirtualHostUpdate()
 		throws Exception {
 
-		TreeMap<String, String> hostnames = new TreeMap<>();
-
-		for (VirtualHost virtualHost :
-				_virtualHostLocalService.getVirtualHosts(
-					company.getCompanyId(), 0)) {
-
-			hostnames.put(
-				virtualHost.getHostname(), virtualHost.getLanguageId());
-		}
+		String originalVirtualHostname = company.getVirtualHostname();
 
 		try (SafeCloseable safeCloseable =
 				PropsValuesTestUtil.swapWithSafeCloseable(
@@ -90,13 +81,8 @@ public class PortalImplGetDefaultVirtualHostnameTest
 
 			String virtualHostname = "a-" + RandomTestUtil.randomString();
 
-			_virtualHostLocalService.updateVirtualHosts(
-				company.getCompanyId(), 0,
-				TreeMapBuilder.putAll(
-					hostnames
-				).put(
-					virtualHostname, StringPool.BLANK
-				).build());
+			_virtualHostLocalService.updateVirtualHost(
+				company.getCompanyId(), virtualHostname);
 
 			Assert.assertEquals(
 				virtualHostname,
@@ -106,8 +92,8 @@ public class PortalImplGetDefaultVirtualHostnameTest
 						layoutSet.getLayoutSetId())));
 		}
 		finally {
-			_virtualHostLocalService.updateVirtualHosts(
-				company.getCompanyId(), 0, hostnames);
+			_virtualHostLocalService.updateVirtualHost(
+				company.getCompanyId(), originalVirtualHostname);
 		}
 	}
 
@@ -118,9 +104,7 @@ public class PortalImplGetDefaultVirtualHostnameTest
 		LayoutSet layoutSet = _layoutSetLocalService.getLayoutSet(
 			group.getGroupId(), false);
 
-		_virtualHostLocalService.updateVirtualHosts(
-			company.getCompanyId(), layoutSet.getLayoutSetId(),
-			new TreeMap<>());
+		_virtualHostLocalService.updateVirtualHosts(layoutSet, new TreeMap<>());
 
 		Assert.assertEquals(
 			expectedDefaultVirtualHostname,
@@ -132,7 +116,7 @@ public class PortalImplGetDefaultVirtualHostnameTest
 		String defaultVirtualHostname = "z-" + RandomTestUtil.randomString();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			company.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				"a-" + RandomTestUtil.randomString(),
 				LocaleUtil.toLanguageId(LocaleUtil.US)
@@ -148,7 +132,7 @@ public class PortalImplGetDefaultVirtualHostnameTest
 					layoutSet.getLayoutSetId())));
 
 		_virtualHostLocalService.updateVirtualHosts(
-			company.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				RandomTestUtil.randomString(),
 				LocaleUtil.toLanguageId(LocaleUtil.US)

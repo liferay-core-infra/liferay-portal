@@ -1940,9 +1940,6 @@ public class PropsValues {
 	public static final String RESOURCE_REPOSITORIES_ROOT = PropsUtil.get(
 		PropsKeys.RESOURCE_REPOSITORIES_ROOT);
 
-	public static final String[] REST_PROXY_URL_PREFIXES_ALLOWED =
-		PropsUtil.getArray(PropsKeys.REST_PROXY_URL_PREFIXES_ALLOWED);
-
 	public static final int RETRY_ADVICE_MAX_RETRIES = GetterUtil.getInteger(
 		PropsUtil.get(PropsKeys.RETRY_ADVICE_MAX_RETRIES));
 

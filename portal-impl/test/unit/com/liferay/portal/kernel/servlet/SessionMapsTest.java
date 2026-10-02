@@ -5,8 +5,10 @@
 
 package com.liferay.portal.kernel.servlet;
 
+import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -19,12 +21,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.springframework.mock.web.MockHttpSession;
 
 /**
  * @author Dante Wang
@@ -38,64 +43,43 @@ public class SessionMapsTest extends BaseSessionMapsTestCase {
 			CodeCoverageAssertor.INSTANCE, LiferayUnitTestRule.INSTANCE);
 
 	@Test
-	public void testAdd() {
-		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
-		_sessionMaps.add(httpSession, _MAP_KEY, KEY2, VALUE2);
+	@TestInfo("LPD-107817")
+	public void testAdd() throws Exception {
+		_testAdd();
+		_testAddConcurrently();
 
-		Assert.assertEquals(
-			VALUE1, _sessionMaps.get(httpSession, _MAP_KEY, KEY1));
-		Assert.assertEquals(
-			VALUE2, _sessionMaps.get(httpSession, _MAP_KEY, KEY2));
-
-		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE3);
-		_sessionMaps.add(httpSession, _MAP_KEY, KEY2, VALUE3);
-
-		Assert.assertEquals(
-			VALUE3, _sessionMaps.get(httpSession, _MAP_KEY, KEY1));
-		Assert.assertEquals(
-			VALUE3, _sessionMaps.get(httpSession, _MAP_KEY, KEY2));
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.add(
+				mockHttpSession, _MAP_KEY, KEY2, VALUE2));
 	}
 
 	@Test
-	public void testClear() {
-		_sessionMaps.clear(httpSession, _MAP_KEY);
+	@TestInfo("LPD-107817")
+	public void testClear() throws Exception {
+		_testClear();
 
-		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
-
-		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
-
-		Assert.assertNotNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
-
-		_sessionMaps.clear(httpSession, _MAP_KEY);
-
-		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.clear(mockHttpSession, _MAP_KEY));
 	}
 
 	@Test
-	public void testContains() {
-		Assert.assertFalse(
-			"SessionMaps should not contain " + KEY1,
-			_sessionMaps.contains(httpSession, _MAP_KEY, KEY1));
+	@TestInfo("LPD-107817")
+	public void testContains() throws Exception {
+		_testContains();
 
-		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
-
-		Assert.assertTrue(
-			"SessionMaps should contain " + KEY1,
-			_sessionMaps.contains(httpSession, _MAP_KEY, KEY1));
-		Assert.assertFalse(
-			"SessionMaps should not contain " + KEY2,
-			_sessionMaps.contains(httpSession, _MAP_KEY, KEY2));
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.contains(
+				mockHttpSession, _MAP_KEY, KEY1));
 	}
 
 	@Test
-	public void testGet() {
-		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+	@TestInfo("LPD-107817")
+	public void testGet() throws Exception {
+		_testGet();
 
-		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
-
-		Assert.assertEquals(
-			VALUE1, _sessionMaps.get(httpSession, _MAP_KEY, KEY1));
-		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY2));
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.get(
+				mockHttpSession, _MAP_KEY, KEY1));
 	}
 
 	@Test
@@ -128,7 +112,162 @@ public class SessionMapsTest extends BaseSessionMapsTestCase {
 	}
 
 	@Test
-	public void testIsEmpty() {
+	@TestInfo("LPD-107817")
+	public void testIsEmpty() throws Exception {
+		_testIsEmpty();
+
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.isEmpty(mockHttpSession, _MAP_KEY));
+	}
+
+	@Test
+	@TestInfo("LPD-107817")
+	public void testIteratorAndKeySet() throws Exception {
+		_testIteratorAndKeySet();
+		_testIteratorAndKeySetWithConcurrentModification();
+
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.iterator(
+				mockHttpSession, _MAP_KEY));
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.keySet(mockHttpSession, _MAP_KEY));
+	}
+
+	@Test
+	public void testNullSession() {
+		_sessionMaps.add(null, _MAP_KEY, KEY1, VALUE1);
+
+		Assert.assertNull(null, _sessionMaps.get(null, _MAP_KEY, KEY1));
+	}
+
+	@Test
+	@TestInfo("LPD-107817")
+	public void testRemove() throws Exception {
+		_testRemove();
+
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.remove(
+				mockHttpSession, _MAP_KEY, KEY1));
+	}
+
+	@Test
+	@TestInfo("LPD-107817")
+	public void testSize() throws Exception {
+		_testSize();
+
+		_assertWaitsForMapLock(
+			mockHttpSession -> _sessionMaps.size(mockHttpSession, _MAP_KEY));
+	}
+
+	private void _assertBlocked(Thread thread) {
+		while ((thread.getState() != Thread.State.BLOCKED) &&
+			   (thread.getState() != Thread.State.TERMINATED));
+
+		Assert.assertEquals(Thread.State.BLOCKED, thread.getState());
+	}
+
+	private void _assertWaitsForMapLock(Consumer<MockHttpSession> consumer)
+		throws Exception {
+
+		MockHttpSession mockHttpSession = new MockHttpSession();
+
+		_sessionMaps.add(mockHttpSession, _MAP_KEY, KEY1, VALUE1);
+
+		Thread thread = new Thread(() -> consumer.accept(mockHttpSession));
+
+		synchronized (mockHttpSession.getAttribute(_MAP_KEY)) {
+			thread.start();
+
+			_assertBlocked(thread);
+		}
+
+		thread.join();
+	}
+
+	private void _testAdd() {
+		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
+		_sessionMaps.add(httpSession, _MAP_KEY, KEY2, VALUE2);
+
+		Assert.assertEquals(
+			VALUE1, _sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+		Assert.assertEquals(
+			VALUE2, _sessionMaps.get(httpSession, _MAP_KEY, KEY2));
+
+		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE3);
+		_sessionMaps.add(httpSession, _MAP_KEY, KEY2, VALUE3);
+
+		Assert.assertEquals(
+			VALUE3, _sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+		Assert.assertEquals(
+			VALUE3, _sessionMaps.get(httpSession, _MAP_KEY, KEY2));
+	}
+
+	private void _testAddConcurrently() throws Exception {
+		MockHttpSession mockHttpSession = new MockHttpSession();
+
+		Thread thread = new Thread(
+			() -> _sessionMaps.add(mockHttpSession, _MAP_KEY, KEY1, VALUE1));
+
+		synchronized (mockHttpSession) {
+			thread.start();
+
+			_assertBlocked(thread);
+
+			mockHttpSession.setAttribute(
+				_MAP_KEY,
+				HashMapBuilder.<String, Object>put(
+					KEY2, VALUE2
+				).build());
+		}
+
+		thread.join();
+
+		Assert.assertEquals(
+			VALUE1, _sessionMaps.get(mockHttpSession, _MAP_KEY, KEY1));
+		Assert.assertEquals(
+			VALUE2, _sessionMaps.get(mockHttpSession, _MAP_KEY, KEY2));
+	}
+
+	private void _testClear() {
+		_sessionMaps.clear(httpSession, _MAP_KEY);
+
+		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+
+		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
+
+		Assert.assertNotNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+
+		_sessionMaps.clear(httpSession, _MAP_KEY);
+
+		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+	}
+
+	private void _testContains() {
+		Assert.assertFalse(
+			"SessionMaps should not contain " + KEY1,
+			_sessionMaps.contains(httpSession, _MAP_KEY, KEY1));
+
+		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
+
+		Assert.assertTrue(
+			"SessionMaps should contain " + KEY1,
+			_sessionMaps.contains(httpSession, _MAP_KEY, KEY1));
+		Assert.assertFalse(
+			"SessionMaps should not contain " + KEY2,
+			_sessionMaps.contains(httpSession, _MAP_KEY, KEY2));
+	}
+
+	private void _testGet() {
+		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+
+		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);
+
+		Assert.assertEquals(
+			VALUE1, _sessionMaps.get(httpSession, _MAP_KEY, KEY1));
+		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY2));
+	}
+
+	private void _testIsEmpty() {
 		Assert.assertTrue(
 			"The map should be empty when it does not exist in session",
 			_sessionMaps.isEmpty(httpSession, _MAP_KEY));
@@ -140,8 +279,7 @@ public class SessionMapsTest extends BaseSessionMapsTestCase {
 			_sessionMaps.isEmpty(httpSession, _MAP_KEY));
 	}
 
-	@Test
-	public void testIteratorAndKeySet() {
+	private void _testIteratorAndKeySet() {
 		Assert.assertEquals(
 			Collections.emptySet(), _sessionMaps.keySet(httpSession, _MAP_KEY));
 		Assert.assertEquals(
@@ -174,15 +312,23 @@ public class SessionMapsTest extends BaseSessionMapsTestCase {
 		Assert.assertEquals(expectedKeys, iteratorKeys);
 	}
 
-	@Test
-	public void testNullSession() {
-		_sessionMaps.add(null, _MAP_KEY, KEY1, VALUE1);
+	private void _testIteratorAndKeySetWithConcurrentModification() {
+		MockHttpSession mockHttpSession = new MockHttpSession();
 
-		Assert.assertNull(null, _sessionMaps.get(null, _MAP_KEY, KEY1));
+		_sessionMaps.add(mockHttpSession, _MAP_KEY, KEY1, VALUE1);
+
+		Iterator<String> iterator = _sessionMaps.iterator(
+			mockHttpSession, _MAP_KEY);
+		Set<String> keySet = _sessionMaps.keySet(mockHttpSession, _MAP_KEY);
+
+		_sessionMaps.add(mockHttpSession, _MAP_KEY, KEY2, VALUE2);
+
+		Assert.assertEquals(KEY1, iterator.next());
+		Assert.assertFalse(iterator.hasNext());
+		Assert.assertEquals(Collections.singleton(KEY1), keySet);
 	}
 
-	@Test
-	public void testRemove() {
+	private void _testRemove() {
 		_sessionMaps.remove(httpSession, _MAP_KEY, KEY1);
 
 		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
@@ -197,8 +343,7 @@ public class SessionMapsTest extends BaseSessionMapsTestCase {
 		Assert.assertNull(_sessionMaps.get(httpSession, _MAP_KEY, KEY1));
 	}
 
-	@Test
-	public void testSize() {
+	private void _testSize() {
 		Assert.assertEquals(0, _sessionMaps.size(httpSession, _MAP_KEY));
 
 		_sessionMaps.add(httpSession, _MAP_KEY, KEY1, VALUE1);

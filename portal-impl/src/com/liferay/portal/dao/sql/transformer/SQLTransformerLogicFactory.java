@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.dao.db.DBType;
 
 import java.util.function.Function;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.model.FunctionContributor;
 
 /**
  * @author Manuel de la Peña
@@ -43,12 +43,14 @@ public class SQLTransformerLogicFactory {
 		return new SQLTransformerLogic() {
 
 			@Override
-			public Function<String, String>[] getFunctions() {
-				return null;
+			public FunctionContributor getFunctionContributor() {
+				return functionContributions -> {
+				};
 			}
 
 			@Override
-			public void populateSQLFunctions(Configuration configuration) {
+			public Function<String, String>[] getFunctions() {
+				return null;
 			}
 
 		};

@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.function.Function;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.model.FunctionContributor;
 
 /**
  * @author Brian Wing Shun Chan
@@ -26,8 +26,8 @@ import org.hibernate.cfg.Configuration;
  */
 public class SQLTransformer {
 
-	public static void populateSQLFunctions(Configuration configuration) {
-		_sqlTransformerLogic.populateSQLFunctions(configuration);
+	public static FunctionContributor getFunctionContributor() {
+		return _sqlTransformerLogic.getFunctionContributor();
 	}
 
 	public static void reloadSQLTransformer() {

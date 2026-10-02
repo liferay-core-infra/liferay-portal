@@ -281,7 +281,8 @@ public class PortalImplGroupFriendlyURLTest {
 	}
 
 	private void _updateLayoutSetVirtualHostname(
-		Layout layout, String layoutHostname) {
+			Layout layout, String layoutHostname)
+		throws Exception {
 
 		LayoutSet layoutSet = layout.getLayoutSet();
 
@@ -290,8 +291,7 @@ public class PortalImplGroupFriendlyURLTest {
 		).build();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			_company.getCompanyId(), layoutSet.getLayoutSetId(),
-			virtualHostnames);
+			layoutSet, virtualHostnames);
 
 		layoutSet.setVirtualHostnames(virtualHostnames);
 

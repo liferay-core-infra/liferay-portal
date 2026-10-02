@@ -99,8 +99,6 @@ public class PortalHibernateConfiguration
 		Configuration configuration = new Configuration(
 			new MetadataSources(bootstrapServiceRegistryBuilder.build()));
 
-		SQLTransformer.populateSQLFunctions(configuration);
-
 		if (_mvccEnabled) {
 			configuration.setInterceptor(new CTSQLInterceptor());
 		}
@@ -122,6 +120,8 @@ public class PortalHibernateConfiguration
 			PhysicalConnectionHandlingMode.DELAYED_ACQUISITION_AND_HOLD);
 
 		_sessionFactory = _buildSessionFactory(configuration);
+
+		SQLTransformer.populateSQLFunctions(_sessionFactory);
 	}
 
 	public void destroy() {

@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.dao.db.DBType;
 
 import java.util.function.Function;
 
-import org.hibernate.cfg.Configuration;
+import org.hibernate.SessionFactory;
 
 /**
  * @author Manuel de la Peña
@@ -48,7 +48,7 @@ public class SQLTransformerLogicFactory {
 			}
 
 			@Override
-			public void populateSQLFunctions(Configuration configuration) {
+			public void populateSQLFunctions(SessionFactory sessionFactory) {
 			}
 
 		};

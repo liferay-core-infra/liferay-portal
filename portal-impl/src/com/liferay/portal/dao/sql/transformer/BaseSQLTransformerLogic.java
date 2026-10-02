@@ -15,9 +15,13 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.SessionFactory;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.query.spi.QueryEngine;
+import org.hibernate.query.sqm.function.SqmFunctionRegistry;
+import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.spi.TypeConfiguration;
 
 /**
  * @author Manuel de la Peña
@@ -31,15 +35,27 @@ public abstract class BaseSQLTransformerLogic implements SQLTransformerLogic {
 	}
 
 	@Override
-	public void populateSQLFunctions(Configuration configuration) {
+	public void populateSQLFunctions(SessionFactory sessionFactory) {
 		Function<String, String> castClobTextFunction =
 			getCastClobTextFunction();
 
-		configuration.addSqlFunction(
-			"CAST_CLOB_TEXT",
-			new SQLFunctionTemplate(
-				StandardBasicTypes.STRING,
-				castClobTextFunction.apply("CAST_CLOB_TEXT(?1)")));
+		SessionFactoryImplementor sessionFactoryImplementor =
+			sessionFactory.unwrap(SessionFactoryImplementor.class);
+
+		QueryEngine queryEngine = sessionFactoryImplementor.getQueryEngine();
+
+		SqmFunctionRegistry sqmFunctionRegistry =
+			queryEngine.getSqmFunctionRegistry();
+
+		TypeConfiguration typeConfiguration =
+			sessionFactoryImplementor.getTypeConfiguration();
+
+		BasicTypeRegistry basicTypeRegistry =
+			typeConfiguration.getBasicTypeRegistry();
+
+		sqmFunctionRegistry.registerPattern(
+			"CAST_CLOB_TEXT", castClobTextFunction.apply("CAST_CLOB_TEXT(?1)"),
+			basicTypeRegistry.resolve(StandardBasicTypes.STRING));
 	}
 
 	protected Function<String, String> getAggregationFunction() {

@@ -9,7 +9,6 @@ import com.liferay.petra.io.Deserializer;
 import com.liferay.petra.io.Serializer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.internal.change.tracking.hibernate.CTSQLInterceptor;
@@ -21,7 +20,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -33,16 +31,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import java.lang.reflect.Field;
-
 import java.net.URL;
 import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -59,11 +53,7 @@ import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.metamodel.spi.MetamodelImplementor;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
-import org.hibernate.type.spi.TypeConfiguration;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -126,7 +116,7 @@ public class PortalHibernateConfiguration
 			SQLTransformer.getFunctionContributor());
 
 		if (_mvccEnabled) {
-			configuration.setInterceptor(new CTSQLInterceptor());
+			configuration.setStatementInspector(new CTSQLInterceptor());
 		}
 
 		configuration.addProperties(properties);
@@ -239,35 +229,7 @@ public class PortalHibernateConfiguration
 			_log.error(exception);
 		}
 
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
-
-		SessionFactoryImplementor sessionFactoryImplementor =
-			(SessionFactoryImplementor)sessionFactory;
-
-		MetamodelImplementor metamodelImplementor =
-			sessionFactoryImplementor.getMetamodel();
-
-		TypeConfiguration typeConfiguration =
-			metamodelImplementor.getTypeConfiguration();
-
-		try {
-			_META_MODEL_FIELD.set(
-				sessionFactory,
-				ProxyUtil.newDelegateProxyInstance(
-					MetamodelImplementor.class.getClassLoader(),
-					MetamodelImplementor.class,
-					new SessionFactoryDelegate(
-						typeConfiguration.getImportMap()),
-					metamodelImplementor));
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to inject optimized query plan cache", exception);
-			}
-		}
-
-		return sessionFactory;
+		return configuration.buildSessionFactory();
 	}
 
 	private File _getCacheFile(URL url) {
@@ -335,10 +297,10 @@ public class PortalHibernateConfiguration
 		XmlMappingBinderAccess xmlMappingBinderAccess =
 			configuration.getXmlMappingBinderAccess();
 
-		Binding<?> binding = InputStreamXmlSource.doBind(
-			xmlMappingBinderAccess.getMappingBinder(),
+		Binding<?> binding = InputStreamXmlSource.fromStream(
 			urlConnection.getInputStream(),
-			new Origin(SourceType.URL, url.toExternalForm()), true);
+			new Origin(SourceType.URL, url.toExternalForm()), true,
+			xmlMappingBinderAccess.getMappingBinder());
 
 		if (PropsValues.HIBERNATE_HBM_JAXB_CACHE) {
 			Serializer serializer = new Serializer();
@@ -394,42 +356,15 @@ public class PortalHibernateConfiguration
 		}
 	}
 
-	private static final Field _META_MODEL_FIELD;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalHibernateConfiguration.class);
 
-	private static final BundleContext _bundleContext;
-
-	static {
-		_bundleContext = SystemBundleUtil.getBundleContext();
-
-		try {
-			_META_MODEL_FIELD = ReflectionUtil.getDeclaredField(
-				SessionFactoryImpl.class, "metamodel");
-		}
-		catch (Exception exception) {
-			throw new ExceptionInInitializerError(exception);
-		}
-	}
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
 
 	private String[] _configurationResources;
 	private DataSource _dataSource;
 	private boolean _mvccEnabled = true;
 	private SessionFactory _sessionFactory;
-
-	private static class SessionFactoryDelegate {
-
-		public String getImportedClassName(String className) {
-			return _imports.get(className);
-		}
-
-		private SessionFactoryDelegate(Map<String, String> imports) {
-			_imports = new HashMap<>(imports);
-		}
-
-		private final Map<String, String> _imports;
-
-	}
 
 }

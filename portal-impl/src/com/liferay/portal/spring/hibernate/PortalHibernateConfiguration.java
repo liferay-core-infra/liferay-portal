@@ -36,6 +36,7 @@ import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Properties;
@@ -50,6 +51,8 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.hibernate.boot.jaxb.internal.InputStreamXmlSource;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
@@ -86,6 +89,11 @@ public class PortalHibernateConfiguration
 			PortalCurrentSessionContext.class.getName());
 		properties.setProperty(
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
+		properties.setProperty(
+			"hibernate.jpa.static_metamodel.population", "disabled");
+		properties.setProperty("hibernate.jpa_callbacks.enabled", "false");
+		properties.setProperty(
+			"hibernate.query.native.prefer_jdbc_datetime_types", "true");
 
 		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
 			properties.put("hibernate.dialect", dialect);
@@ -96,8 +104,8 @@ public class PortalHibernateConfiguration
 		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
 			new BootstrapServiceRegistryBuilder();
 
-		bootstrapServiceRegistryBuilder.applyClassLoader(
-			getConfigurationClassLoader());
+		bootstrapServiceRegistryBuilder.applyClassLoaderService(
+			_getClassLoaderService());
 
 		bootstrapServiceRegistryBuilder.applyIntegrator(
 			GlobalEventListenerIntegrator.INSTANCE);
@@ -259,6 +267,19 @@ public class PortalHibernateConfiguration
 				}));
 	}
 
+	private ClassLoaderService _getClassLoaderService() {
+		ClassLoader classLoader = getConfigurationClassLoader();
+
+		if (classLoader ==
+				PortalHibernateConfiguration.class.getClassLoader()) {
+
+			return _portalClassLoaderService;
+		}
+
+		return new SharedJavaServicesClassLoaderService(
+			classLoader, _portalClassLoaderService);
+	}
+
 	private Binding<?> _loadBinding(Configuration configuration, URL url)
 		throws Exception {
 
@@ -361,10 +382,44 @@ public class PortalHibernateConfiguration
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
+	private static final ClassLoaderService _portalClassLoaderService =
+		new ClassLoaderServiceImpl(
+			PortalHibernateConfiguration.class.getClassLoader());
 
 	private String[] _configurationResources;
 	private DataSource _dataSource;
 	private boolean _mvccEnabled = true;
 	private SessionFactory _sessionFactory;
+
+	private static class SharedJavaServicesClassLoaderService
+		extends ClassLoaderServiceImpl {
+
+		@Override
+		public <T> Class<T> classForName(String className) {
+			if (className.startsWith("jakarta.persistence.") ||
+				className.startsWith("org.hibernate.")) {
+
+				return _classLoaderService.classForName(className);
+			}
+
+			return super.classForName(className);
+		}
+
+		@Override
+		public <S> Collection<S> loadJavaServices(Class<S> serviceContract) {
+			return _classLoaderService.loadJavaServices(serviceContract);
+		}
+
+		private SharedJavaServicesClassLoaderService(
+			ClassLoader classLoader, ClassLoaderService classLoaderService) {
+
+			super(classLoader);
+
+			_classLoaderService = classLoaderService;
+		}
+
+		private final ClassLoaderService _classLoaderService;
+
+	}
 
 }

@@ -22,11 +22,13 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.PrefsPropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -622,12 +624,15 @@ public class PortalInstanceResourceTest
 		}
 		finally {
 			for (PortalInstance portalInstance : portalInstances) {
-				Company company =
-					_companyLocalService.fetchCompanyByVirtualHost(
+				VirtualHost virtualHost =
+					_virtualHostLocalService.fetchVirtualHost(
 						portalInstance.getVirtualHost());
 
-				if (company != null) {
-					_deletePortalInstance(_toPortalInstance(company));
+				if (virtualHost != null) {
+					_deletePortalInstance(
+						_toPortalInstance(
+							_companyLocalService.getCompany(
+								virtualHost.getCompanyId())));
 				}
 			}
 		}
@@ -804,5 +809,8 @@ public class PortalInstanceResourceTest
 
 	@Inject
 	private UserLocalService _userLocalService;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

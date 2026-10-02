@@ -331,7 +331,7 @@ public class CommerceSitemapURLProviderTest {
 			_group.getGroupId(), false);
 
 		_virtualHostLocalService.updateVirtualHosts(
-			_company.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				StringBundler.concat(
 					"www.", RandomTestUtil.randomString(), ".test"),
@@ -355,8 +355,7 @@ public class CommerceSitemapURLProviderTest {
 		}
 		finally {
 			_virtualHostLocalService.updateVirtualHosts(
-				_company.getCompanyId(), layoutSet.getLayoutSetId(),
-				new TreeMap<>());
+				layoutSet, new TreeMap<>());
 		}
 	}
 

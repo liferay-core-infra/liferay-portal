@@ -83,7 +83,7 @@ public class UpgradePartitionedConfigurationTableTest
 
 	@Test
 	public void testUpgradeProcess() throws Exception {
-		Company company = companyLocalService.fetchCompanyByVirtualHost(
+		Company company = companyLocalService.getCompanyByWebId(
 			TestPropsValues.COMPANY_WEB_ID);
 
 		DBPartitionUtil.forEachCompanyId(

@@ -525,4 +525,4 @@ public class LazyBlobEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1473817262
+// LIFERAY-SERVICE-BUILDER-HASH:-292332968

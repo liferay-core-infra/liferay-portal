@@ -476,4 +476,4 @@ public class FinderWhereClauseEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1380175781
+// LIFERAY-SERVICE-BUILDER-HASH:-935261985

@@ -531,4 +531,4 @@ public class UserGroupRolePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1142107340
+// LIFERAY-SERVICE-BUILDER-HASH:1963692626

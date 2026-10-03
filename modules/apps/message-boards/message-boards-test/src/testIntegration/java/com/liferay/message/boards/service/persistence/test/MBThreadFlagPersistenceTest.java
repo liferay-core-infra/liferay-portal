@@ -575,4 +575,4 @@ public class MBThreadFlagPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-962790892
+// LIFERAY-SERVICE-BUILDER-HASH:547288858

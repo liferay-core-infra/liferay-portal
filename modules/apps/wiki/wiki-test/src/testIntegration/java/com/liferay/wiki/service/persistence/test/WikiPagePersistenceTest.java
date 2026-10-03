@@ -1003,4 +1003,4 @@ public class WikiPagePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1635274974
+// LIFERAY-SERVICE-BUILDER-HASH:-211553240

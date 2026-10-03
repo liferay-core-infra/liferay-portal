@@ -6,6 +6,8 @@ task deployJar(type: Copy)
 task patch(type: PatchTask)
 
 dependencies {
+	compileOnly group: "net.bytebuddy", name: "byte-buddy", version: "1.18.8"
+	compileOnly group: "org.checkerframework", name: "checker-qual", version: "3.33.0"
 	compileOnly group: "org.hibernate.orm", name: "hibernate-core", version: "7.4.10.Final"
 	compileOnly group: "org.jboss.logging", name: "jboss-logging", version: "3.6.1.Final"
 }
@@ -36,6 +38,7 @@ patch {
 		autoClean = false
 	}
 
+	fileNames "org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java"
 	fileNames "org/hibernate/metamodel/internal/AttributeFactory.java"
 	originalLibModuleName = "hibernate-core"
 }

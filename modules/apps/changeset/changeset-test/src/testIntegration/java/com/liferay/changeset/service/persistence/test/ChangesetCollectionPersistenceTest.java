@@ -535,4 +535,4 @@ public class ChangesetCollectionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-835143379
+// LIFERAY-SERVICE-BUILDER-HASH:-265123789

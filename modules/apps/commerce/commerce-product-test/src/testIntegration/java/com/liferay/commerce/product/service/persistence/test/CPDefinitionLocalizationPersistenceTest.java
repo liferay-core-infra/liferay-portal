@@ -570,4 +570,4 @@ public class CPDefinitionLocalizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:480022718
+// LIFERAY-SERVICE-BUILDER-HASH:-1730734524

@@ -515,4 +515,4 @@ public class SystemEventPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:847940466
+// LIFERAY-SERVICE-BUILDER-HASH:678759852

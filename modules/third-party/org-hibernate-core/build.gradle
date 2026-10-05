@@ -6,7 +6,8 @@ task deployJar(type: Copy)
 task patch(type: PatchTask)
 
 dependencies {
-	compileOnly group: "org.hibernate", name: "hibernate-core", version: "5.6.7.Final"
+	compileOnly group: "org.hibernate.orm", name: "hibernate-core", version: "7.4.10.Final"
+	compileOnly group: "org.jboss.logging", name: "jboss-logging", version: "3.6.1.Final"
 }
 
 deploy {

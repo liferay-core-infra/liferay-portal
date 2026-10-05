@@ -39,7 +39,6 @@ patch {
 	}
 
 	fileNames "org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java"
-	fileNames "org/hibernate/internal/SessionFactoryImpl.java"
 	fileNames "org/hibernate/metamodel/internal/AttributeFactory.java"
 	originalLibModuleName = "hibernate-core"
 }

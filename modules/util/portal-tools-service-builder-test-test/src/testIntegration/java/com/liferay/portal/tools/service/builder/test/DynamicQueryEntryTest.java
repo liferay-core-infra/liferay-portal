@@ -27,19 +27,24 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
+import com.liferay.portal.tools.service.builder.test.model.ColumnNameEntry;
 import com.liferay.portal.tools.service.builder.test.model.CompoundPKEntry;
 import com.liferay.portal.tools.service.builder.test.model.DynamicQueryEntry;
 import com.liferay.portal.tools.service.builder.test.service.DynamicQueryEntryLocalService;
+import com.liferay.portal.tools.service.builder.test.service.persistence.ColumnNameEntryPersistence;
+import com.liferay.portal.tools.service.builder.test.service.persistence.ColumnNameEntryUtil;
 import com.liferay.portal.tools.service.builder.test.service.persistence.CompoundPKEntryPK;
 import com.liferay.portal.tools.service.builder.test.service.persistence.CompoundPKEntryPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.CompoundPKEntryUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -430,6 +435,33 @@ public class DynamicQueryEntryTest {
 	}
 
 	@Test
+	public void testCriterionWithSqlRestrictionTypes() throws Exception {
+		Calendar calendar = Calendar.getInstance();
+
+		Date midnightDate = CalendarUtil.getGTDate(calendar);
+
+		String name = RandomTestUtil.randomString();
+
+		DynamicQueryEntry dynamicQueryEntry = _addDynamicQueryEntry(
+			500, midnightDate, null, midnightDate, name, 0);
+
+		try {
+			_testCriterion(
+				RestrictionsFactoryUtil.sqlRestriction(
+					"createDate = ?", calendar.getTime(), Type.DATE),
+				name);
+
+			_testCriterion(
+				RestrictionsFactoryUtil.sqlRestriction(
+					"createDate = ?", calendar.getTime(), Type.TIMESTAMP));
+		}
+		finally {
+			_dynamicQueryEntryLocalService.deleteDynamicQueryEntry(
+				dynamicQueryEntry);
+		}
+	}
+
+	@Test
 	public void testDynamicQueryWithAddOrderByComparator() {
 		DynamicQuery dynamicQuery =
 			_dynamicQueryEntryLocalService.dynamicQuery();
@@ -486,13 +518,82 @@ public class DynamicQueryEntryTest {
 					"primaryKey.classNameId",
 					compoundPKEntry.getClassNameId()));
 
-			List<CompoundPKEntry> compoundPKEntries =
-				compoundPKEntryPersistence.findWithDynamicQuery(dynamicQuery);
+			Assert.assertEquals(
+				Arrays.asList(compoundPKEntry),
+				compoundPKEntryPersistence.findWithDynamicQuery(dynamicQuery));
+
+			String alias = RandomTestUtil.randomString();
+
+			dynamicQuery = DynamicQueryFactoryUtil.forClass(
+				CompoundPKEntry.class, alias, clazz.getClassLoader());
+
+			dynamicQuery.add(
+				RestrictionsFactoryUtil.eq(
+					alias + ".primaryKey.classNameId",
+					compoundPKEntry.getClassNameId()));
+			dynamicQuery.setProjection(
+				ProjectionFactoryUtil.property(
+					alias + ".primaryKey.classNameId"));
 
 			Assert.assertEquals(
-				Arrays.asList(compoundPKEntry), compoundPKEntries);
+				Arrays.asList(compoundPKEntry.getClassNameId()),
+				compoundPKEntryPersistence.findWithDynamicQuery(dynamicQuery));
 		}
 		finally {
+			compoundPKEntryPersistence.remove(compoundPKEntry);
+		}
+	}
+
+	@Test
+	public void testDynamicQueryWithColumnName() {
+		ColumnNameEntryPersistence columnNameEntryPersistence =
+			ColumnNameEntryUtil.getPersistence();
+
+		ColumnNameEntry columnNameEntry = columnNameEntryPersistence.create(
+			RandomTestUtil.nextLong());
+
+		columnNameEntry = columnNameEntryPersistence.update(columnNameEntry);
+
+		CompoundPKEntryPersistence compoundPKEntryPersistence =
+			CompoundPKEntryUtil.getPersistence();
+
+		CompoundPKEntry compoundPKEntry = compoundPKEntryPersistence.create(
+			new CompoundPKEntryPK(
+				RandomTestUtil.nextLong(), RandomTestUtil.nextLong()));
+
+		compoundPKEntry = compoundPKEntryPersistence.update(compoundPKEntry);
+
+		try {
+			Class<?> clazz = columnNameEntryPersistence.getClass();
+
+			DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
+				ColumnNameEntry.class, clazz.getClassLoader());
+
+			dynamicQuery.add(
+				RestrictionsFactoryUtil.sqlRestriction(
+					"this_.cNameEntryId = ?",
+					columnNameEntry.getColumnNameEntryId(), Type.LONG));
+
+			Assert.assertEquals(
+				Arrays.asList(columnNameEntry),
+				columnNameEntryPersistence.findWithDynamicQuery(dynamicQuery));
+
+			clazz = compoundPKEntryPersistence.getClass();
+
+			dynamicQuery = DynamicQueryFactoryUtil.forClass(
+				CompoundPKEntry.class, clazz.getClassLoader());
+
+			dynamicQuery.add(
+				RestrictionsFactoryUtil.sqlRestriction(
+					"this_.classNameId = ?", compoundPKEntry.getClassNameId(),
+					Type.LONG));
+
+			Assert.assertEquals(
+				Arrays.asList(compoundPKEntry),
+				compoundPKEntryPersistence.findWithDynamicQuery(dynamicQuery));
+		}
+		finally {
+			columnNameEntryPersistence.remove(columnNameEntry);
 			compoundPKEntryPersistence.remove(compoundPKEntry);
 		}
 	}
@@ -615,6 +716,16 @@ public class DynamicQueryEntryTest {
 				"name AS sqlName", new String[] {"sqlName"},
 				new Type[] {Type.STRING}),
 			"alpha", "beta", "gamma", "delta");
+	}
+
+	@Test
+	public void testDynamicQueryWithProjectionSqlProjectionQuotedComma() {
+		_testDynamicQueryWithProjection(
+			OrderFactoryUtil.asc("amount"),
+			ProjectionFactoryUtil.sqlProjection(
+				"case when name = 'alpha' then 'a,b' else name end AS sqlName",
+				new String[] {"sqlName"}, new Type[] {Type.STRING}),
+			"a,b", "beta", "gamma", "delta");
 	}
 
 	@Test

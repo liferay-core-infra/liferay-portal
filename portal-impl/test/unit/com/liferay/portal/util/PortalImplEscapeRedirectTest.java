@@ -341,6 +341,8 @@ public class PortalImplEscapeRedirectTest {
 			_portalImpl.escapeRedirect("http://test.liferay.com.suffix"));
 		Assert.assertNull(
 			_portalImpl.escapeRedirect("http://prefixtest.liferay.com"));
+		Assert.assertNull(_portalImpl.escapeRedirect("http://test.liferay"));
+		Assert.assertNull(_portalImpl.escapeRedirect("http://test.liferay.co"));
 	}
 
 	private static final String _HOSTNAME_PORTAL_DOMAIN =

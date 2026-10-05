@@ -234,16 +234,35 @@ public class JenkinsMasterTest extends com.liferay.jenkins.results.parser.Test {
 	public void testGetQueueItem() throws Exception {
 		UrlReader urlReader = mockUrlReader();
 
+		String executableURL =
+			"https://" + RandomTestUtil.randomString() + "/job/" +
+				RandomTestUtil.randomString() + "/1/";
+
 		setUrlReaderOutput(
 			new JSONObject(
 			).put(
+				"cancelled", true
+			).put(
+				"executable",
+				new JSONObject(
+				).put(
+					"url", executableURL
+				)
+			).put(
 				"id", 7800
 			).toString(),
-			"http://test-9-1/queue/item/7800/api/json", urlReader);
+			JenkinsResultsParserUtil.combine(
+				"http://test-9-1/queue/item/7800/api/json?tree=",
+				"actions[parameters[name,value]],cancelled,executable[url],",
+				"id,inQueueSince,task[name,url],url,why"),
+			urlReader);
 
 		JenkinsMaster.QueueItem queueItem = _jenkinsMaster.getQueueItem(7800);
 
 		Assert.assertEquals(7800, queueItem.getId());
+		Assert.assertEquals(executableURL, queueItem.getExecutableURL());
+
+		Assert.assertTrue(queueItem.isCancelled());
 	}
 
 	@Test

@@ -110,6 +110,7 @@ import {config as frontendJsImageEditorWebConfig} from './tests/frontend-js-imag
 import {config as frontendJsItemSelectorWebConfig} from './tests/frontend-js-item-selector-web/main/config';
 import {config as frontendJsSpaWebConfig} from './tests/frontend-js-spa-web/main/config';
 import {config as frontendJsWebConfig} from './tests/frontend-js-web/main/config';
+import {config as frontendJsWebSessionTimeoutWarningConfig} from './tests/frontend-js-web/session-timeout-warning/config';
 import {config as frontendTaglibClayConfig} from './tests/frontend-taglib-clay/main/config';
 import {config as frontendTaglibConfig} from './tests/frontend-taglib/main/config';
 import {config as frontendTaglibSpaOffConfig} from './tests/frontend-taglib/spa-off/config';
@@ -118,6 +119,7 @@ import {config as headlessBuilderImplConfig} from './tests/headless-builder-impl
 import {config as headlessBuilderWebConfig} from './tests/headless-builder-web/main/config';
 import {config as headlessDiscoveryWebConfig} from './tests/headless-discovery-web/main/config';
 import {config as iframeWebConfig} from './tests/iframe-web/main/config';
+import {config as ipGeocoderSampleWebConfig} from './tests/ip-geocoder-sample-web/main/config';
 import {config as itemSelectorTaglibConfig} from './tests/item-selector-taglib/main/config';
 import {config as journalWebConfig} from './tests/journal-web/main/config';
 import {config as knowledgeBaseWebConfig} from './tests/knowledge-base-web/main/config';
@@ -390,6 +392,7 @@ export default defineConfig({
 		frontendJsItemSelectorWebConfig,
 		frontendJsSpaWebConfig,
 		frontendJsWebConfig,
+		frontendJsWebSessionTimeoutWarningConfig,
 		frontendTaglibClayConfig,
 		frontendTaglibConfig,
 		frontendTaglibSpaOffConfig,
@@ -398,6 +401,7 @@ export default defineConfig({
 		headlessBuilderWebConfig,
 		headlessDiscoveryWebConfig,
 		iframeWebConfig,
+		ipGeocoderSampleWebConfig,
 		itemSelectorTaglibConfig,
 		journalWebConfig,
 		knowledgeBaseWebConfig,

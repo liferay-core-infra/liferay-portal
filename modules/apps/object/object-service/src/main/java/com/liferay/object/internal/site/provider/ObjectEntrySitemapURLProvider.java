@@ -8,8 +8,10 @@ package com.liferay.object.internal.site.provider;
 import com.liferay.depot.constants.DepotConstants;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
+import com.liferay.design.library.util.DesignLibraryUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
+import com.liferay.layout.page.template.util.LayoutPageTemplateEntryUtil;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectDefinitionSettingConstants;
 import com.liferay.object.definition.setting.util.ObjectDefinitionSettingUtil;
@@ -33,6 +35,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
+import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -172,6 +175,9 @@ public class ObjectEntrySitemapURLProvider implements SitemapURLProvider {
 			Element element, LayoutSet layoutSet, ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		long[] designLibraryGroupIds =
+			DesignLibraryUtil.getConnectedDesignLibraryGroupIds(
+				layoutSet.getGroupId());
 		long[] groupIds = _getGroupIds(layoutSet.getGroupId());
 
 		for (ObjectDefinition objectDefinition :
@@ -179,12 +185,10 @@ public class ObjectEntrySitemapURLProvider implements SitemapURLProvider {
 					themeDisplay.getCompanyId())) {
 
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
-				_layoutPageTemplateEntryLocalService.
-					fetchDefaultLayoutPageTemplateEntry(
-						layoutSet.getGroupId(),
-						_classNameLocalService.getClassNameId(
-							objectDefinition.getClassName()),
-						0);
+				LayoutPageTemplateEntryUtil.fetchDefaultLayoutPageTemplateEntry(
+					_classNameLocalService.getClassNameId(
+						objectDefinition.getClassName()),
+					0, designLibraryGroupIds, layoutSet.getGroupId());
 
 			if ((layoutPageTemplateEntry == null) ||
 				!layoutPageTemplateEntry.isDefaultTemplate()) {
@@ -192,7 +196,8 @@ public class ObjectEntrySitemapURLProvider implements SitemapURLProvider {
 				continue;
 			}
 
-			Layout layout = _layoutLocalService.fetchLayout(
+			Layout layout = _fetchVisitedLayout(
+				designLibraryGroupIds, layoutSet.getGroupId(),
 				layoutPageTemplateEntry.getPlid());
 
 			if ((layout == null) || !layout.isTypeAssetDisplay() ||
@@ -204,6 +209,21 @@ public class ObjectEntrySitemapURLProvider implements SitemapURLProvider {
 			_visitObjectEntries(
 				element, groupIds, layout, objectDefinition, themeDisplay);
 		}
+	}
+
+	private Layout _fetchVisitedLayout(
+			long[] designLibraryGroupIds, long groupId, long plid)
+		throws PortalException {
+
+		Layout layout = _layoutLocalService.fetchLayout(plid);
+
+		if ((layout == null) || (layout.getGroupId() == groupId) ||
+			!ArrayUtil.contains(designLibraryGroupIds, layout.getGroupId())) {
+
+			return layout;
+		}
+
+		return new VirtualLayout(layout, _groupLocalService.getGroup(groupId));
 	}
 
 	private List<ObjectEntry> _getApprovedObjectEntries(

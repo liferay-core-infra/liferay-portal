@@ -9,6 +9,14 @@ rules:
     -   apiGroups:
             -   ""
         resources:
+            -   configmaps
+        verbs:
+            -   get
+            -   list
+            -   watch
+    -   apiGroups:
+            -   ""
+        resources:
             -   events
         verbs:
             -   create
@@ -44,6 +52,14 @@ rules:
             -   update
             -   watch
     -   apiGroups:
+            -   apiextensions.k8s.io
+        resources:
+            -   customresourcedefinitions
+        verbs:
+            -   get
+            -   list
+            -   watch
+    -   apiGroups:
             -   apps
         resources:
             -   statefulsets
@@ -52,6 +68,40 @@ rules:
             -   list
             -   patch
             -   update
+            -   watch
+    -   apiGroups:
+            -   autoscaling
+        resources:
+            -   horizontalpodautoscalers
+        verbs:
+            -   get
+            -   list
+            -   patch
+            -   watch
+    -   apiGroups:
+            -   cx.liferay.com
+        resources:
+            -   clientextensions
+        verbs:
+            -   get
+            -   list
+            -   watch
+    -   apiGroups:
+            -   cx.liferay.com
+        resources:
+            -   clientextensions/status
+        verbs:
+            -   get
+            -   patch
+            -   update
+    -   apiGroups:
+            -   keda.sh
+        resources:
+            -   scaledobjects
+        verbs:
+            -   get
+            -   list
+            -   patch
             -   watch
     -   apiGroups:
             -   licensing.liferay.com

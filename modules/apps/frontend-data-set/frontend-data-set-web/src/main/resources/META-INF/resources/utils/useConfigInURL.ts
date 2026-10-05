@@ -88,8 +88,18 @@ export function useUpdateConfig({
 	id: string;
 }): Function {
 	return useCallback(
-		(config: Partial<IConfigInURL>) =>
-			updateConfig({config, configInURLBehavior, id}),
+		(
+			config: Partial<IConfigInURL>,
+			configInURLBehaviorOverride?: EConfigInURLBehavior
+		) =>
+			updateConfig({
+				config,
+				configInURLBehavior:
+					configInURLBehavior === EConfigInURLBehavior.OFF
+						? configInURLBehavior
+						: configInURLBehaviorOverride ?? configInURLBehavior,
+				id,
+			}),
 		[id, configInURLBehavior]
 	);
 }

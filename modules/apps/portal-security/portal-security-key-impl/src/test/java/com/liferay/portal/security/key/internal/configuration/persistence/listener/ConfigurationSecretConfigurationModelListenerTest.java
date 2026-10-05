@@ -13,20 +13,22 @@ import com.liferay.portal.configuration.metatype.definitions.ExtendedMetaTypeSer
 import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
 import com.liferay.portal.kernel.model.CompanyConstants;
+import com.liferay.portal.kernel.security.fips.FIPSAuditEvent;
+import com.liferay.portal.kernel.security.fips.FIPSAuditUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.security.key.KeyReference;
 import com.liferay.portal.security.key.KeyReferenceUtil;
-import com.liferay.portal.security.key.secret.Secret;
 import com.liferay.portal.security.key.secret.SecretManager;
+import com.liferay.portal.security.key.secret.SecretResolver;
 import com.liferay.portal.security.key.secret.exception.SecretException;
 import com.liferay.portal.security.key.spi.profile.KeyManagerProfile;
 import com.liferay.portal.security.key.spi.profile.KeyManagerProfileRegistry;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Dictionary;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,7 +36,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
@@ -117,6 +121,9 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 		ReflectionTestUtil.setFieldValue(
 			_configurationSecretConfigurationModelListener, "_secretManager",
 			_secretManager);
+		ReflectionTestUtil.setFieldValue(
+			_configurationSecretConfigurationModelListener, "_secretResolver",
+			_secretResolver);
 	}
 
 	@Test
@@ -138,7 +145,7 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 	public void testOnBeforeSave() throws Exception {
 		_testOnBeforeSave();
 
-		Mockito.clearInvocations(_secretManager);
+		Mockito.clearInvocations(_secretResolver);
 
 		_testOnBeforeSaveWhenBundleIsInStaticRegion();
 
@@ -153,15 +160,65 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 
 		_setUpKeyManagerProfileRegistry(_keyManagerProfile);
 
-		_testOnBeforeSaveWhenReferenceIsNotAConfiguration();
-		_testOnBeforeSaveWhenReferenceNamesAnotherConfiguration();
+		_testOnBeforeSaveWhenReferenceIsRejected();
 		_testOnBeforeSaveWhenScopeIsCompany();
 		_testOnBeforeSaveWhenScopeIsGroup();
-		_testOnBeforeSaveWhenStoreIsUnavailable();
+		_testOnBeforeSaveWhenStoreFails();
+	}
 
-		Mockito.reset(_secretManager);
+	private void _assertOnBeforeSaveFails(String value) throws Exception {
+		SecretException secretException = new SecretException(
+			RandomTestUtil.randomString());
 
-		_testOnBeforeSaveWhenValueIsAlreadyStored();
+		Mockito.when(
+			_secretResolver.store(
+				Mockito.anyLong(), Mockito.anyString(), Mockito.eq(value))
+		).thenAnswer(
+			invocationOnMock -> {
+				throw secretException;
+			}
+		);
+
+		Dictionary<String, Object> properties =
+			HashMapDictionaryBuilder.<String, Object>put(
+				"credential", value
+			).build();
+
+		try (MockedStatic<FIPSAuditUtil> fipsAuditUtilMockedStatic =
+				Mockito.mockStatic(FIPSAuditUtil.class)) {
+
+			ConfigurationModelListenerException
+				configurationModelListenerException = Assert.assertThrows(
+					ConfigurationModelListenerException.class,
+					() ->
+						_configurationSecretConfigurationModelListener.
+							onBeforeSave(_PID, properties));
+
+			Assert.assertSame(
+				secretException,
+				configurationModelListenerException.getCause());
+
+			ArgumentCaptor<FIPSAuditEvent> argumentCaptor =
+				ArgumentCaptor.forClass(FIPSAuditEvent.class);
+
+			fipsAuditUtilMockedStatic.verify(
+				() -> FIPSAuditUtil.write(argumentCaptor.capture()));
+
+			FIPSAuditEvent fipsAuditEvent = argumentCaptor.getValue();
+
+			Assert.assertEquals(
+				"configuration-secret-store-failure",
+				fipsAuditEvent.getEventType());
+			Assert.assertEquals(
+				HashMapBuilder.<String, Object>put(
+					"configuration-pid", _PID
+				).put(
+					"property-id", "credential"
+				).build(),
+				fipsAuditEvent.getFields());
+		}
+
+		Assert.assertEquals(value, properties.get("credential"));
 	}
 
 	private ExtendedAttributeDefinition _createExtendedAttributeDefinition(
@@ -235,9 +292,7 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 
 	private void _testOnBeforeDeleteWhenDeleteFails() throws Exception {
 		KeyReference keyReference1 = new KeyReference(
-			_IDENTIFIER, "provider", KeyReference.Type.SECRET);
-		KeyReference keyReference2 = new KeyReference(
-			_IDENTIFIER_PREFIX + _PID + "/0/host", "provider",
+			"config/" + _PID + "/0/credential", "provider",
 			KeyReference.Type.SECRET);
 
 		Mockito.doThrow(
@@ -247,6 +302,9 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 		).deleteSecret(
 			CompanyConstants.SYSTEM, keyReference1
 		);
+
+		KeyReference keyReference2 = new KeyReference(
+			"config/" + _PID + "/0/host", "provider", KeyReference.Type.SECRET);
 
 		Mockito.when(
 			_configuration.getProperties()
@@ -325,8 +383,18 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 	}
 
 	private void _testOnBeforeSave() throws Exception {
-		String host = RandomTestUtil.randomString();
+		String storedValue = RandomTestUtil.randomString();
 		String value = RandomTestUtil.randomString();
+
+		Mockito.when(
+			_secretResolver.store(
+				CompanyConstants.SYSTEM, "config/" + _PID + "/0/credential",
+				value)
+		).thenReturn(
+			storedValue
+		);
+
+		String host = RandomTestUtil.randomString();
 
 		Dictionary<String, Object> properties =
 			HashMapDictionaryBuilder.<String, Object>put(
@@ -335,40 +403,11 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 				"host", host
 			).build();
 
-		KeyReference keyReference = new KeyReference(
-			_IDENTIFIER, "provider", KeyReference.Type.SECRET);
-
-		AtomicReference<Secret> atomicReference = new AtomicReference<>();
-
-		Mockito.when(
-			_secretManager.putSecret(
-				Mockito.eq(CompanyConstants.SYSTEM), Mockito.any())
-		).thenAnswer(
-			invocationOnMock -> {
-				atomicReference.set(invocationOnMock.getArgument(1));
-
-				return keyReference;
-			}
-		);
-
 		_configurationSecretConfigurationModelListener.onBeforeSave(
 			_PID, properties);
 
-		String keyReferenceString = KeyReferenceUtil.toKeyReferenceString(
-			keyReference);
-
+		Assert.assertEquals(storedValue, properties.get("credential"));
 		Assert.assertEquals(host, properties.get("host"));
-		Assert.assertEquals(keyReferenceString, properties.get("credential"));
-
-		Secret secret = atomicReference.get();
-
-		KeyReference secretKeyReference = secret.getKeyReference();
-
-		Assert.assertEquals(_IDENTIFIER, secretKeyReference.getIdentifier());
-		Assert.assertEquals(
-			StringPool.STAR, secretKeyReference.getProviderId());
-
-		Assert.assertTrue(secret.isDestroyed());
 	}
 
 	private void _testOnBeforeSaveWhenBundleIsInStaticRegion()
@@ -393,7 +432,7 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 
 		Assert.assertEquals(value, properties.get("credential"));
 
-		Mockito.verifyNoInteractions(_secretManager);
+		Mockito.verifyNoInteractions(_secretResolver);
 	}
 
 	private void _testOnBeforeSaveWhenConfigurationHasNoMetatype()
@@ -411,7 +450,7 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 
 		Assert.assertEquals(value, properties.get("credential"));
 
-		Mockito.verifyNoInteractions(_secretManager);
+		Mockito.verifyNoInteractions(_secretResolver);
 	}
 
 	private void _testOnBeforeSaveWhenKeyManagerProfileIsInactive()
@@ -431,56 +470,17 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 
 		Assert.assertEquals(value, properties.get("credential"));
 
-		Mockito.verifyNoInteractions(_secretManager);
+		Mockito.verifyNoInteractions(_secretResolver);
 	}
 
-	private void _testOnBeforeSaveWhenReferenceIsNotAConfiguration()
-		throws Exception {
-
-		Dictionary<String, Object> properties =
-			HashMapDictionaryBuilder.<String, Object>put(
-				"credential", "${secretRef:provider:oauth2/1234/clientSecret}"
-			).build();
-
-		Assert.assertThrows(
-			ConfigurationModelListenerException.class,
-			() -> _configurationSecretConfigurationModelListener.onBeforeSave(
-				_PID, properties));
-	}
-
-	private void _testOnBeforeSaveWhenReferenceNamesAnotherConfiguration()
-		throws Exception {
-
-		Dictionary<String, Object> properties =
-			HashMapDictionaryBuilder.<String, Object>put(
-				"credential",
-				"${secretRef:provider:config/com.liferay.other/0/credential}"
-			).build();
-
-		Assert.assertThrows(
-			ConfigurationModelListenerException.class,
-			() -> _configurationSecretConfigurationModelListener.onBeforeSave(
-				_PID, properties));
+	private void _testOnBeforeSaveWhenReferenceIsRejected() throws Exception {
+		_assertOnBeforeSaveFails(
+			"${secretRef:provider:config/com.liferay.other/0/credential}");
 	}
 
 	private void _testOnBeforeSaveWhenScopeIsCompany() throws Exception {
 		long companyId = RandomTestUtil.randomLong();
-
-		AtomicReference<Secret> atomicReference = new AtomicReference<>();
-
-		Mockito.when(
-			_secretManager.putSecret(Mockito.eq(companyId), Mockito.any())
-		).thenAnswer(
-			invocationOnMock -> {
-				atomicReference.set(invocationOnMock.getArgument(1));
-
-				return new KeyReference(
-					StringBundler.concat(
-						_IDENTIFIER_PREFIX, _PID, StringPool.SLASH, companyId,
-						"/credential"),
-					"provider", KeyReference.Type.SECRET);
-			}
-		);
+		String value = RandomTestUtil.randomString();
 
 		_configurationSecretConfigurationModelListener.onBeforeSave(
 			_PID + ".scoped~" + _FACTORY_SUFFIX,
@@ -489,90 +489,49 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 			).put(
 				"companyId", companyId
 			).put(
-				"credential", RandomTestUtil.randomString()
+				"credential", value
 			).build());
 
-		Secret secret = atomicReference.get();
-
-		KeyReference keyReference = secret.getKeyReference();
-
-		Assert.assertEquals(
+		Mockito.verify(
+			_secretResolver
+		).store(
+			companyId,
 			StringBundler.concat(
-				_IDENTIFIER_PREFIX, _PID, ".scoped/", _FACTORY_SUFFIX,
-				StringPool.SLASH, companyId, "/credential"),
-			keyReference.getIdentifier());
+				"config/", _PID, ".scoped/", _FACTORY_SUFFIX, StringPool.SLASH,
+				companyId, "/credential"),
+			value
+		);
 	}
 
 	private void _testOnBeforeSaveWhenScopeIsGroup() throws Exception {
 		long companyId = RandomTestUtil.randomLong();
-
-		Mockito.when(
-			_secretManager.putSecret(Mockito.eq(companyId), Mockito.any())
-		).thenReturn(
-			new KeyReference(_IDENTIFIER, "provider", KeyReference.Type.SECRET)
-		);
+		String value = RandomTestUtil.randomString();
 
 		_configurationSecretConfigurationModelListener.onBeforeSave(
 			_PID,
 			HashMapDictionaryBuilder.<String, Object>put(
 				"companyId", companyId
 			).put(
-				"credential", RandomTestUtil.randomString()
+				"credential", value
 			).put(
 				"groupId", RandomTestUtil.randomLong()
 			).build());
 
 		Mockito.verify(
-			_secretManager
-		).putSecret(
-			Mockito.eq(companyId), Mockito.any()
+			_secretResolver
+		).store(
+			companyId,
+			StringBundler.concat(
+				"config/", _PID, StringPool.SLASH, companyId, "/credential"),
+			value
 		);
 	}
 
-	private void _testOnBeforeSaveWhenStoreIsUnavailable() throws Exception {
-		Mockito.when(
-			_secretManager.putSecret(Mockito.anyLong(), Mockito.any())
-		).thenThrow(
-			new SecretException("Unable to put secret")
-		);
-
-		String value = RandomTestUtil.randomString();
-
-		Dictionary<String, Object> properties =
-			HashMapDictionaryBuilder.<String, Object>put(
-				"credential", value
-			).build();
-
-		Assert.assertThrows(
-			ConfigurationModelListenerException.class,
-			() -> _configurationSecretConfigurationModelListener.onBeforeSave(
-				_PID, properties));
-
-		Assert.assertEquals(value, properties.get("credential"));
-	}
-
-	private void _testOnBeforeSaveWhenValueIsAlreadyStored() throws Exception {
-		String value = "${secretRef:provider:config/" + _PID + "/0/credential}";
-
-		Dictionary<String, Object> properties =
-			HashMapDictionaryBuilder.<String, Object>put(
-				"credential", value
-			).build();
-
-		_configurationSecretConfigurationModelListener.onBeforeSave(
-			_PID, properties);
-
-		Assert.assertEquals(value, properties.get("credential"));
-
-		Mockito.verifyNoInteractions(_secretManager);
+	private void _testOnBeforeSaveWhenStoreFails() throws Exception {
+		_assertOnBeforeSaveFails(RandomTestUtil.randomString());
 	}
 
 	private static final String _FACTORY_SUFFIX = RandomTestUtil.randomString();
-
-	private static final String _IDENTIFIER =
-		"config/com.liferay.test.Configuration/0/credential";
-
-	private static final String _IDENTIFIER_PREFIX = "config/";
 
 	private static final String _PID = "com.liferay.test.Configuration";
 
@@ -606,5 +565,8 @@ public class ConfigurationSecretConfigurationModelListenerTest {
 
 	@Mock
 	private SecretManager _secretManager;
+
+	@Mock
+	private SecretResolver _secretResolver;
 
 }

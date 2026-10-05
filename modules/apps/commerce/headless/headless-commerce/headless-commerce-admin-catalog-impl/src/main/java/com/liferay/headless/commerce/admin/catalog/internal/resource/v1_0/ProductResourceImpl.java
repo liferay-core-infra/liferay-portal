@@ -24,7 +24,6 @@ import com.liferay.commerce.pricing.model.CommercePricingClassCPDefinitionRel;
 import com.liferay.commerce.pricing.service.CommercePricingClassCPDefinitionRelLocalService;
 import com.liferay.commerce.pricing.service.CommercePricingClassCPDefinitionRelService;
 import com.liferay.commerce.pricing.service.CommercePricingClassService;
-import com.liferay.commerce.product.configuration.CProductVersionConfiguration;
 import com.liferay.commerce.product.constants.CPAttachmentFileEntryConstants;
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.commerce.product.exception.CPDefinitionProductTypeNameException;
@@ -74,7 +73,10 @@ import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.exportimport.constants.ExportImportConstants;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.vulcan.batch.engine.ExportImportVulcanBatchEngineTaskItemDelegate;
+import com.liferay.friendly.url.model.FriendlyURLEntry;
+import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Attachment;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Category;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Diagram;
@@ -125,7 +127,6 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.change.tracking.CTAware;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.log.Log;
@@ -140,7 +141,6 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.BigDecimalUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
@@ -173,7 +173,6 @@ import java.math.BigDecimal;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -956,6 +955,10 @@ public class ProductResourceImpl
 			GetterUtil.getDouble(productShippingConfiguration.getWidth()),
 			productStatus, serviceContext);
 
+		if (ExportImportThreadLocal.isImportInProcess()) {
+			_setMainFriendlyURLEntry(cpDefinition, urlTitleMap);
+		}
+
 		if ((product.getActive() != null) && !product.getActive()) {
 			Map<String, Serializable> workflowContext = new HashMap<>();
 
@@ -995,7 +998,7 @@ public class ProductResourceImpl
 		CommerceCurrency commerceCurrency = _getCommerceCurrency(product);
 
 		return _commerceCatalogService.getOrAddEmptyCommerceCatalog(
-			catalogExternalReferenceCode, commerceCurrency.getCode());
+			catalogExternalReferenceCode, null, commerceCurrency.getCode());
 	}
 
 	private Map<String, Map<String, String>> _getActions(
@@ -1075,30 +1078,9 @@ public class ProductResourceImpl
 			(serviceContext.getWorkflowAction() ==
 				WorkflowConstants.ACTION_SAVE_DRAFT)) {
 
-			CProductVersionConfiguration cProductVersionConfiguration =
-				_configurationProvider.getConfiguration(
-					CProductVersionConfiguration.class,
-					new CompanyServiceSettingsLocator(
-						cpDefinition.getCompanyId(),
-						CProductVersionConfiguration.class.getName()));
-
-			if (cProductVersionConfiguration.enabled()) {
-				for (CPDefinition cProductCPDefinition :
-						_cpDefinitionService.getCProductCPDefinitions(
-							cpDefinition.getCProductId(),
-							WorkflowConstants.STATUS_DRAFT, QueryUtil.ALL_POS,
-							QueryUtil.ALL_POS)) {
-
-					_cpDefinitionService.updateStatus(
-						cProductCPDefinition.getCPDefinitionId(),
-						WorkflowConstants.STATUS_INCOMPLETE, serviceContext,
-						Collections.emptyMap());
-				}
-
-				cpDefinition = _cpDefinitionService.copyCPDefinition(
-					cpDefinition.getCPDefinitionId(), cpDefinition.getGroupId(),
-					WorkflowConstants.STATUS_DRAFT);
-			}
+			return _cpDefinitionService.copyCPDefinition(
+				cpDefinition.getCPDefinitionId(), cpDefinition.getGroupId(),
+				WorkflowConstants.STATUS_DRAFT);
 		}
 
 		return cpDefinition;
@@ -1274,6 +1256,49 @@ public class ProductResourceImpl
 		return productTaxConfiguration.getTaxable();
 	}
 
+	private void _setMainFriendlyURLEntry(
+		CPDefinition cpDefinition, Map<String, String> urlTitleMap) {
+
+		FriendlyURLEntry mainFriendlyURLEntry = null;
+
+		long classNameId = _classNameLocalService.getClassNameId(
+			CProduct.class);
+
+		if (urlTitleMap != null) {
+			mainFriendlyURLEntry =
+				_friendlyURLEntryLocalService.fetchFriendlyURLEntry(
+					contextCompany.getGroupId(), classNameId,
+					urlTitleMap.get(cpDefinition.getDefaultLanguageId()));
+		}
+
+		if ((mainFriendlyURLEntry != null) &&
+			(mainFriendlyURLEntry.getClassPK() !=
+				cpDefinition.getCProductId())) {
+
+			mainFriendlyURLEntry = null;
+		}
+
+		if (mainFriendlyURLEntry == null) {
+			for (FriendlyURLEntry friendlyURLEntry :
+					_friendlyURLEntryLocalService.getFriendlyURLEntries(
+						contextCompany.getGroupId(), classNameId,
+						cpDefinition.getCProductId())) {
+
+				if ((mainFriendlyURLEntry == null) ||
+					(friendlyURLEntry.getFriendlyURLEntryId() >
+						mainFriendlyURLEntry.getFriendlyURLEntryId())) {
+
+					mainFriendlyURLEntry = friendlyURLEntry;
+				}
+			}
+		}
+
+		if (mainFriendlyURLEntry != null) {
+			_friendlyURLEntryLocalService.setMainFriendlyURLEntry(
+				mainFriendlyURLEntry);
+		}
+	}
+
 	private Product _toProduct(Long cpDefinitionId) throws Exception {
 		CPDefinition cpDefinition = _cpDefinitionService.getCPDefinition(
 			cpDefinitionId);
@@ -1325,9 +1350,10 @@ public class ProductResourceImpl
 						masterCPConfigurationEntry.isBackOrders()),
 					ProductConfigurationUtil.getCommerceAvailabilityEstimateId(
 						_commerceAvailabilityEstimateService,
-						productConfiguration,
+						contextCompany.getCompanyId(),
 						masterCPConfigurationEntry.
-							getCommerceAvailabilityEstimateId()),
+							getCommerceAvailabilityEstimateId(),
+						productConfiguration),
 					GetterUtil.getString(
 						productConfiguration.getInventoryEngine(),
 						masterCPConfigurationEntry.
@@ -1391,8 +1417,8 @@ public class ProductResourceImpl
 
 			ProductConfigurationUtil.updateCPDAvailabilityEstimate(
 				_commerceAvailabilityEstimateService,
-				_cpdAvailabilityEstimateService, productConfiguration,
-				cpDefinition.getCPDefinitionId());
+				cpDefinition.getCompanyId(), _cpdAvailabilityEstimateService,
+				productConfiguration, cpDefinition.getCPDefinitionId());
 		}
 
 		// Product shipping configuration
@@ -1518,9 +1544,9 @@ public class ProductResourceImpl
 
 				CPInstance cpInstance = SkuUtil.addOrUpdateCPInstance(
 					cpDefinition, _cpDefinitionOptionRelService,
-					_cpDefinitionOptionValueRelService, _cpInstanceService,
-					_cpOptionService, sku.getExternalReferenceCode(), sku,
-					serviceContext);
+					_cpDefinitionOptionValueRelService, _cpDefinitionService,
+					_cpInstanceService, _cpOptionService,
+					sku.getExternalReferenceCode(), serviceContext, sku);
 
 				serviceContext.setExpandoBridgeAttributes(null);
 
@@ -2205,6 +2231,9 @@ public class ProductResourceImpl
 
 	@Reference
 	private ExpandoTableLocalService _expandoTableLocalService;
+
+	@Reference
+	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

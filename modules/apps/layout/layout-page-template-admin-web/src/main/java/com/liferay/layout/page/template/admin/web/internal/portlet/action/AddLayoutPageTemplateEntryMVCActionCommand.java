@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import jakarta.portlet.ActionRequest;
 import jakarta.portlet.ActionResponse;
 import jakarta.portlet.PortletRequest;
+import jakarta.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -109,32 +110,33 @@ public class AddLayoutPageTemplateEntryMVCActionCommand
 			LayoutPageTemplateEntry layoutPageTemplateEntry)
 		throws PortalException {
 
-		Layout draftLayout = _layoutLocalService.fetchDraftLayout(
-			layoutPageTemplateEntry.getPlid());
-
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		Group scopeGroup = themeDisplay.getScopeGroup();
 
+		PortletURL portletURL = null;
+
 		if (DesignLibraryUtil.isDesignLibraryScope(scopeGroup)) {
-			return HttpComponentsUtil.addParameters(
-				_portal.getLayoutFullURL(draftLayout, themeDisplay),
-				"p_l_back_url",
-				DesignLibraryUtil.getDesignLibraryResourcesURL(
-					scopeGroup, _portal.getHttpServletRequest(actionRequest)),
-				"p_l_back_url_title",
-				scopeGroup.getDescriptiveName(themeDisplay.getLocale()),
-				"p_l_mode", Constants.EDIT);
+			portletURL = _portal.getControlPanelPortletURL(
+				actionRequest, scopeGroup,
+				LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES, 0, 0,
+				PortletRequest.RENDER_PHASE);
 		}
+		else {
+			portletURL = PortletURLFactoryUtil.create(
+				actionRequest,
+				LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES,
+				PortletRequest.RENDER_PHASE);
+		}
+
+		Layout draftLayout = _layoutLocalService.fetchDraftLayout(
+			layoutPageTemplateEntry.getPlid());
 
 		return HttpComponentsUtil.addParameters(
 			_portal.getLayoutFullURL(draftLayout, themeDisplay), "p_l_back_url",
 			PortletURLBuilder.create(
-				PortletURLFactoryUtil.create(
-					actionRequest,
-					LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES,
-					PortletRequest.RENDER_PHASE)
+				portletURL
 			).setTabs1(
 				"page-templates"
 			).setParameter(

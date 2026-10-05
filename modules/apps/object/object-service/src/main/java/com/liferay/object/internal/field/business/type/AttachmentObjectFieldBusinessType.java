@@ -5,6 +5,7 @@
 
 package com.liferay.object.internal.field.business.type;
 
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.document.library.kernel.model.DLFolder;
@@ -12,7 +13,6 @@ import com.liferay.document.library.kernel.processor.PDFProcessorUtil;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.dynamic.data.mapping.model.DDMField;
 import com.liferay.dynamic.data.mapping.model.DDMFieldAttribute;
 import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
@@ -237,7 +237,7 @@ public class AttachmentObjectFieldBusinessType
 		throws PortalException {
 
 		if (objectField.isLocalized()) {
-			return getLocalizedValues(objectField, userId, values);
+			return getLocalizedValues(null, objectField, userId, values);
 		}
 
 		return super.getDisplayContextValue(objectField, userId, values);
@@ -250,11 +250,12 @@ public class AttachmentObjectFieldBusinessType
 
 	@Override
 	public Map<String, Object> getLocalizedValues(
-			ObjectField objectField, Long userId, Map<String, Object> values)
+			Long groupId, ObjectField objectField, Long userId,
+			Map<String, Object> values)
 		throws PortalException {
 
 		Map<String, Object> localizedValues = super.getLocalizedValues(
-			objectField, userId, values);
+			groupId, objectField, userId, values);
 
 		if (localizedValues == null) {
 			return null;

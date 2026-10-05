@@ -12,6 +12,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":apps:asset:asset-display-page-api")
 	compileOnly project(":apps:change-tracking:change-tracking-spi")
+	compileOnly project(":apps:design-library:design-library-api")
 	compileOnly project(":apps:export-import:export-import-api")
 	compileOnly project(":apps:info:info-api")
 	compileOnly project(":apps:layout:layout-api")
@@ -27,7 +28,6 @@ dependencies {
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
 	testImplementation project(":apps:depot:depot-api")
-	testImplementation project(":apps:design-library:design-library-api")
 	testImplementation project(":apps:friendly-url:friendly-url-api")
 	testImplementation project(":apps:layout:layout-seo-api")
 }

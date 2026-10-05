@@ -5,11 +5,12 @@
 
 package com.liferay.fragment.entry.processor.util;
 
-import java.util.HashMap;
+import com.liferay.fragment.processor.util.FragmentEntryHtmlParserUtil;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -20,9 +21,9 @@ import org.jsoup.select.Elements;
 public class EditableFragmentEntryProcessorUtil {
 
 	public static Map<String, String> getEditableTypes(String html) {
-		Map<String, String> editableTypes = new HashMap<>();
+		Map<String, String> editableTypes = new LinkedHashMap<>();
 
-		Document document = Jsoup.parse(html);
+		Document document = FragmentEntryHtmlParserUtil.parse(html);
 
 		Elements elements = document.getElementsByTag("lfr-editable");
 

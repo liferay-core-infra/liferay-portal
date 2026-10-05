@@ -30,6 +30,10 @@ import {
 	// eslint-disable-next-line lines-around-comment
 	// @ts-ignore
 } from '../../../src/main/resources/META-INF/resources/utilities/eventsDefinitions';
+import {
+	mockBundledProductMultiSku,
+	mockBundledProductSingleSku,
+} from '../fixtures/productFixtures';
 
 interface ILocators {
 	button: HTMLButtonElement;
@@ -364,6 +368,62 @@ describe('Add to Cart', () => {
 			expect(
 				Array.from(select.options).map((option) => option.value)
 			).toEqual(['2', '3', '6']);
+		});
+	});
+
+	describe('Bundled products', () => {
+		it('Must enable add-to-cart for a single-SKU bundled product', () => {
+			const addToCart = render(
+				<AddToCart {...mockBundledProductSingleSku()} />
+			);
+
+			const {button, input} = getLocators(addToCart);
+
+			expect(input).toBeInTheDocument();
+			expect(button).toBeInTheDocument();
+			expect(button).not.toBeDisabled();
+		});
+
+		it('Must enable add-to-cart for a static-price single-SKU bundled product', () => {
+			const addToCart = render(
+				<AddToCart
+					{...mockBundledProductSingleSku({
+						settings: {priceType: 'static'},
+					})}
+				/>
+			);
+
+			const {button, input} = getLocators(addToCart);
+
+			expect(input).toBeInTheDocument();
+			expect(button).toBeInTheDocument();
+			expect(button).not.toBeDisabled();
+		});
+
+		it('Must disable add-to-cart for a multi-SKU bundled product', () => {
+			const addToCart = render(
+				<AddToCart {...mockBundledProductMultiSku()} />
+			);
+
+			const {button} = getLocators(addToCart);
+
+			expect(button).toBeInTheDocument();
+			expect(button).toBeDisabled();
+		});
+
+		it('Must disable add-to-cart for a static-price multi-SKU bundled product', () => {
+			const addToCart = render(
+				<AddToCart
+					{...mockBundledProductMultiSku({
+						settings: {priceType: 'static'},
+					})}
+				/>
+			);
+
+			const {button} = getLocators(addToCart);
+
+			expect(button).toBeInTheDocument();
+			expect(button).toBeDisabled();
 		});
 	});
 });

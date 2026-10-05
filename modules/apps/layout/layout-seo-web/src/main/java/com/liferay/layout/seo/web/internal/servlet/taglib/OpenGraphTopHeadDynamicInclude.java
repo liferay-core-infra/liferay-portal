@@ -5,9 +5,9 @@
 
 package com.liferay.layout.seo.web.internal.servlet.taglib;
 
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.dynamic.data.mapping.service.DDMFieldLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.info.constants.InfoDisplayWebKeys;
@@ -136,9 +136,7 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 			}
 
 			LayoutSEOEntry layoutSEOEntry =
-				_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-					layout.getGroupId(), layout.isPrivateLayout(),
-					layout.getLayoutId());
+				_layoutSEOEntryLocalService.fetchLayoutSEOEntry(layout);
 
 			if (layoutSEOEntry != null) {
 				List<LayoutSEOEntryCustomMetaTag> layoutSEOEntryCustomMetaTags =

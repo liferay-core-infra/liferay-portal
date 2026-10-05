@@ -1,171 +1,73 @@
+// Clay reserves a fixed 320px for a pushing side panel regardless of its
+// `panelWidth`, so the content that follows the sidebar's slideout is offset
+// by the sidebar's own width instead. Below `lg` Clay overlays the panel and
+// stops pushing, which is left untouched.
+
+@media (min-width: 992px) {
+	.c-slideout:has(> .sidebar-root) + .c-slideout-push-start {
+		padding-left: $sidebarOpenWidth;
+	}
+}
+
 .sidebar-root {
-	background: $lightL1;
+	background-color: $lightL1;
 	border-right: 1px solid $cadmin-secondary-l2;
-	height: calc(100% - #{$toolbarHeight});
-	left: 0;
-	overflow: hidden;
-	position: fixed;
-	top: $toolbarHeight;
-	width: $sidebarOpenWidth;
-	z-index: 1000;
 
-	@media (prefers-reduced-motion: no-preference) {
-		transition:
-			visibility 0.5s ease,
-			width 0.5s ease;
-	}
+	// Clay sizes the primary menubar links through fixed values rather than
+	// custom properties, so the rows are reshaped here to keep their 40px
+	// height and the sidebar gutter.
 
-	&.collapsed {
-		visibility: hidden;
-		width: 0;
-	}
-
-	.sidebar-menu {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-		width: $sidebarOpenWidth;
-	}
-
-	.link {
+	.nav-link {
 		align-items: center;
-		border-radius: 0 !important;
-		border-width: 0;
-		color: $dark;
 		display: flex;
-		font-size: $fontSizeSmall;
-		font-weight: $fontWeightRegular;
 		height: 40px;
+		line-height: normal;
 		padding: 0 $sidebarGutter;
-		position: relative;
-		transition:
-			border-color 0.15s ease-out,
-			background-color 0.15s ease-out,
-			color 0.15s ease-out;
-		width: 100%;
 
-		&:active,
-		&:focus,
-		&:active:focus {
-			color: $dark;
-			text-decoration: none;
-		}
-
-		&:active,
-		&:focus {
-			background: $secondaryHover;
-		}
-
-		&:active:focus {
-			background: $lightL1;
-		}
+		// Hover matches the CMS sidebar: Clay's 2px highlight, recolored along
+		// with the background.
 
 		&:hover {
-			background: $secondaryHover;
-			color: $dark;
-			text-decoration: none;
-		}
-	}
+			background-color: $light;
 
-	.nav-list {
-		display: flex;
-		flex-direction: column;
-		list-style: none;
-		padding-left: 0;
-	}
-
-	.sidebar-body {
-		flex-grow: 1;
-		overflow-y: auto;
-		padding: 0;
-
-		.panel {
-			background: transparent;
-			border: none;
-			border-radius: 0;
-			margin-bottom: 24px;
-
-			.panel-header {
-				align-items: center;
-				display: flex;
-				height: auto;
-				padding: 8px $sidebarGutter;
-			}
-
-			.panel-body {
-				padding: 0;
-			}
-
-			.section-title {
-				align-items: center;
-				color: $dark;
-				display: flex;
-				font-size: $fontSizeExtraSmall;
-				font-weight: $fontWeightSemiBold;
-				justify-content: space-between;
-				letter-spacing: 0.5px;
-				text-transform: uppercase;
-				white-space: nowrap;
-				width: 100%;
-
-				.icon-root {
-					color: $mainLighten28;
-					font-size: 0.75rem;
-				}
+			&::before {
+				background-color: $secondary;
 			}
 		}
-	}
 
-	.sidebar-footer {
-		margin-bottom: 24px;
-		padding: 0;
+		&.active {
+			background-color: $light;
 
-		.divider {
-			margin-bottom: 16px;
-			padding: 0 16px;
-			width: 100%;
-
-			&:after {
-				background: $mainLighten28;
-				content: '';
-				display: block;
-				height: 1px;
-				opacity: 0.4;
+			&::before {
+				background-color: $primary;
+				width: 4px;
 			}
 		}
-	}
 
-	.sidebar-header {
-		align-items: center;
-		margin: 24px 0;
-		padding: 0 $sidebarGutter;
-	}
+		// Section headers keep the compact, letter-spaced look and leave the
+		// hover and expanded states unmarked.
 
-	.sidebar-item-root {
-		&.active .link {
-			background: $light;
-			border-left: 4px solid $primary;
-			color: $dark;
-			font-weight: $fontWeightSemiBold;
-			padding-left: calc(#{$sidebarGutter} - 4px);
+		&.collapse-icon {
+			height: auto;
+			letter-spacing: 0.5px;
+			line-height: 1.2;
+			padding: 8px $sidebarGutter;
 
 			&:hover {
-				color: $dark;
-				text-decoration: none;
+				background-color: transparent;
 			}
-		}
 
-		.icon-wrapper {
-			height: 32px;
-			justify-content: center;
-			margin-right: 8px;
-			width: 32px;
-		}
+			&::before {
+				content: none;
+			}
 
-		.icon-wrapper,
-		.link-content-wrapper {
-			align-items: center;
-			display: flex;
+			.collapse-icon-closed,
+			.collapse-icon-open {
+				color: $mainLighten28;
+				font-size: 0.75rem;
+				right: $sidebarGutter;
+				top: calc(50% - 0.5em);
+			}
 		}
 	}
 }

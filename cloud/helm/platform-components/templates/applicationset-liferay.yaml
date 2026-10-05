@@ -43,6 +43,14 @@ spec:
                     kind: StatefulSet
                     managedFieldsManagers:
                         -   liferay-dxp-operator
+                -   group: autoscaling
+                    kind: HorizontalPodAutoscaler
+                    managedFieldsManagers:
+                        -   liferay-dxp-operator
+                -   group: keda.sh
+                    kind: ScaledObject
+                    managedFieldsManagers:
+                        -   liferay-dxp-operator
             project: liferay-application
             sources:
                 -   {{- include "liferay-platform.chartSource" .Values.liferay | nindent 20 }}
@@ -51,7 +59,7 @@ spec:
                             -   name: global.deploymentName
                                 value: {{ .Values.deploymentContext.deploymentName | quote }}
                             -   name: global.liferayServiceAccount.create
-                                value: "true"
+                                value: "false"
                             -   name: global.liferayServiceAccount.name
                                 value: liferay-default
                             -   name: global.projectId

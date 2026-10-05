@@ -7,14 +7,18 @@ package com.liferay.headless.admin.fragment.client.serdes.v1_0;
 
 import com.liferay.headless.admin.fragment.client.dto.v1_0.CategoryTreeNodeSelectorField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.CheckboxField;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.CollectionSelectorField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.ColorPaletteField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.ColorPickerField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.Field;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.ItemSelectorField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.LengthField;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.NavigationMenuSelectorField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.SelectField;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.TargetCollectionDisplayField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.TextField;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.URLField;
+import com.liferay.headless.admin.fragment.client.dto.v1_0.VideoSelectorField;
 import com.liferay.headless.admin.fragment.client.json.BaseJSONParser;
 
 import jakarta.annotation.Generated;
@@ -64,6 +68,11 @@ public class FieldSerDes {
 				return CheckboxFieldSerDes.toJSON((CheckboxField)field);
 			}
 
+			if (typeString.equals("collectionSelector")) {
+				return CollectionSelectorFieldSerDes.toJSON(
+					(CollectionSelectorField)field);
+			}
+
 			if (typeString.equals("colorPalette")) {
 				return ColorPaletteFieldSerDes.toJSON((ColorPaletteField)field);
 			}
@@ -80,8 +89,18 @@ public class FieldSerDes {
 				return LengthFieldSerDes.toJSON((LengthField)field);
 			}
 
+			if (typeString.equals("navigationMenuSelector")) {
+				return NavigationMenuSelectorFieldSerDes.toJSON(
+					(NavigationMenuSelectorField)field);
+			}
+
 			if (typeString.equals("select")) {
 				return SelectFieldSerDes.toJSON((SelectField)field);
+			}
+
+			if (typeString.equals("targetCollectionDisplay")) {
+				return TargetCollectionDisplayFieldSerDes.toJSON(
+					(TargetCollectionDisplayField)field);
 			}
 
 			if (typeString.equals("text")) {
@@ -90,6 +109,11 @@ public class FieldSerDes {
 
 			if (typeString.equals("url")) {
 				return URLFieldSerDes.toJSON((URLField)field);
+			}
+
+			if (typeString.equals("videoSelector")) {
+				return VideoSelectorFieldSerDes.toJSON(
+					(VideoSelectorField)field);
 			}
 
 			throw new IllegalArgumentException("Unknown type " + typeString);
@@ -210,6 +234,10 @@ public class FieldSerDes {
 					return CheckboxField.toDTO(json);
 				}
 
+				if (typeString.equals("collectionSelector")) {
+					return CollectionSelectorField.toDTO(json);
+				}
+
 				if (typeString.equals("colorPalette")) {
 					return ColorPaletteField.toDTO(json);
 				}
@@ -226,8 +254,16 @@ public class FieldSerDes {
 					return LengthField.toDTO(json);
 				}
 
+				if (typeString.equals("navigationMenuSelector")) {
+					return NavigationMenuSelectorField.toDTO(json);
+				}
+
 				if (typeString.equals("select")) {
 					return SelectField.toDTO(json);
+				}
+
+				if (typeString.equals("targetCollectionDisplay")) {
+					return TargetCollectionDisplayField.toDTO(json);
 				}
 
 				if (typeString.equals("text")) {
@@ -236,6 +272,10 @@ public class FieldSerDes {
 
 				if (typeString.equals("url")) {
 					return URLField.toDTO(json);
+				}
+
+				if (typeString.equals("videoSelector")) {
+					return VideoSelectorField.toDTO(json);
 				}
 
 				throw new IllegalArgumentException(
@@ -370,4 +410,4 @@ public class FieldSerDes {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:1582338733
+// LIFERAY-REST-BUILDER-HASH:-67848259

@@ -4,6 +4,7 @@
  */
 
 import {
+	DisplayType,
 	IBulkActionItem,
 	IInternalRenderer,
 	IView,
@@ -22,6 +23,7 @@ import {
 	ISearchAssetObjectEntry,
 } from '../../common/types/AssetType';
 import {
+	ASSET_STATUS_TO_DISPLAY_TYPE,
 	CMSSiteInitializerFDSNames,
 	NO_VALUE,
 	OBJECT_ENTRY_CLASS_NAME,
@@ -40,6 +42,7 @@ import DefaultPermissionModalContent from '../default_permission/DefaultPermissi
 import openResetAssetPermissionModal from '../default_permission/ResetPermissionModalContent';
 import {handleFindAndReplace} from '../find_and_replace/utils/handleFindAndReplace';
 import AssetTypeInfoPanel from '../info_panel/AssetTypeInfoPanelContent';
+import EditImageModalContent from '../modal/EditImageModalContent';
 import ExportTranslationModalContent from '../modal/ExportTranslationModalContent';
 import AssetNavigationModalContent from '../modal/asset_navigation_view/AssetNavigationModalContent';
 import AddAssetsToProjectModalContent from '../projects/modal/AddAssetsToProjectModalContent';
@@ -68,6 +71,7 @@ import {
 	openScheduleDateModal,
 } from './utils/createScheduleDateModalOpener';
 import {executeAsyncItemAction} from './utils/executeAsyncItemAction';
+import styleDeleteAction from './utils/styleDeleteAction';
 import transformFDSBulkActions from './utils/transformFDSBulkActions';
 import transformViewsItemsProps from './utils/transformViewsItemProps';
 import GalleryView from './views/GalleryView';
@@ -157,6 +161,7 @@ export type AdditionalProps = {
 	collaboratorURLs: Record<string, string>;
 	contentViewURL: string;
 	defaultPermissionAdditionalProps?: any;
+	editableImageMIMETypes: string[];
 	fileMimeTypeCssClasses: Record<string, string>;
 	fileMimeTypeIcons: Record<string, string>;
 	filter?: string;
@@ -186,6 +191,8 @@ export default function AssetsFDSPropsTransformer({
 	hideManagementBarInEmptyState?: boolean;
 	id?: string;
 	itemsActions?: any[];
+	searchAsYouType?: boolean;
+	searchSuggestionsEnabled?: boolean;
 	views: IView[];
 }) {
 	refreshOnContentChanged(otherProps?.id);
@@ -209,6 +216,17 @@ export default function AssetsFDSPropsTransformer({
 			schema: {
 				description: 'description',
 				image: 'imageURL',
+				labels: [
+					{
+						displayTypeKey: 'embedded.status.label',
+						displayTypeValues:
+							ASSET_STATUS_TO_DISPLAY_TYPE as Record<
+								string,
+								DisplayType
+							>,
+						value: 'embedded.status.label_i18n',
+					},
+				],
 				link: '',
 				sticker: '',
 				symbol: '',
@@ -403,6 +421,16 @@ export default function AssetsFDSPropsTransformer({
 						Boolean(item?.embedded?.file?.link?.href),
 				};
 			}
+			else if (action?.data?.id === 'edit-image') {
+				return {
+					...action,
+					isVisible: (item: any) =>
+						Boolean(item?.embedded?.file?.link?.href) &&
+						additionalProps.editableImageMIMETypes.includes(
+							item?.embedded?.file?.mimeType
+						),
+				};
+			}
 			else if (
 				action?.data?.id === 'actionLink' ||
 				isScheduleDateActionId(action?.data?.id)
@@ -453,7 +481,7 @@ export default function AssetsFDSPropsTransformer({
 				};
 			}
 
-			return action;
+			return styleDeleteAction(action);
 		}),
 		async onActionDropdownItemClick({
 			action,
@@ -524,6 +552,24 @@ export default function AssetsFDSPropsTransformer({
 						`<strong>"${Liferay.Util.escapeHTML(itemData.title)}"</strong>`
 					),
 					url: href,
+				});
+			}
+			else if (action?.data?.id === 'edit-image') {
+				event?.preventDefault();
+
+				openCMSModal({
+					contentComponent: ({
+						closeModal,
+					}: {
+						closeModal: () => void;
+					}) =>
+						EditImageModalContent({
+							closeModal,
+							file: itemData.embedded.file,
+							loadData,
+							updateURL: itemData.actions.update.href,
+						}),
+					size: 'full-screen',
 				});
 			}
 			else if (
@@ -943,8 +989,8 @@ export default function AssetsFDSPropsTransformer({
 				});
 			}
 		},
-		searchAsYouType: true,
-		searchSuggestionsEnabled: true,
+		searchAsYouType: otherProps.searchAsYouType ?? true,
+		searchSuggestionsEnabled: otherProps.searchSuggestionsEnabled ?? true,
 		snapshotsEnabled: true,
 		views: transformViewsItemsProps({
 			fileMimeTypeCssClasses: additionalProps.fileMimeTypeCssClasses,

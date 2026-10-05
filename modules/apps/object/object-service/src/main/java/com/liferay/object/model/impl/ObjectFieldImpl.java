@@ -56,7 +56,23 @@ public class ObjectFieldImpl extends ObjectFieldBaseImpl {
 			};
 		}
 
+		if (compareBusinessType(ObjectFieldConstants.BUSINESS_TYPE_LOCATION)) {
+			return new String[] {
+				"address_" + getDBColumnName(), "latitude_" + getDBColumnName(),
+				"longitude_" + getDBColumnName()
+			};
+		}
+
 		return new String[] {getDBColumnName()};
+	}
+
+	@Override
+	public String getDefaultDBColumnName() {
+		if (compareBusinessType(ObjectFieldConstants.BUSINESS_TYPE_LOCATION)) {
+			return "address_" + getDBColumnName();
+		}
+
+		return getDBColumnName();
 	}
 
 	@Override
@@ -125,6 +141,17 @@ public class ObjectFieldImpl extends ObjectFieldBaseImpl {
 		}
 
 		return true;
+	}
+
+	@Override
+	public boolean hasMultipleDBColumns() {
+		if (compareBusinessType(ObjectFieldConstants.BUSINESS_TYPE_ASSIGNEE) ||
+			compareBusinessType(ObjectFieldConstants.BUSINESS_TYPE_LOCATION)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

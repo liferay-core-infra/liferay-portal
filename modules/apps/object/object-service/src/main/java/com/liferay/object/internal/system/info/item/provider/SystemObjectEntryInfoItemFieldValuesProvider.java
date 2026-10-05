@@ -5,8 +5,8 @@
 
 package com.liferay.object.internal.system.info.item.provider;
 
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
@@ -234,7 +234,7 @@ public class SystemObjectEntryInfoItemFieldValuesProvider
 				_objectActionLocalService, _objectDefinition,
 				_objectDefinitionLocalService, _objectEntryLocalService,
 				_objectEntryManagerRegistry, _objectEntryService,
-				_objectFieldInfoFieldConverter, _objectFieldLocalService,
+				_objectFieldInfoFieldConverter,
 				_objectFieldLocalService.getObjectFields(
 					_objectDefinition.getObjectDefinitionId()),
 				_objectRelationshipLocalService, _objectScopeProviderRegistry,

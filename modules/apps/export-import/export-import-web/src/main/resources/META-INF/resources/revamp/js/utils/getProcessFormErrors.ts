@@ -5,7 +5,10 @@
 
 import {FormikValues} from 'formik';
 
-export function getProcessFormErrors(values: FormikValues): {
+export function getProcessFormErrors(
+	values: FormikValues,
+	siteSelectionEnabled = false
+): {
 	[key: string]: string;
 } {
 	const errors: {[key: string]: string} = {};
@@ -14,10 +17,20 @@ export function getProcessFormErrors(values: FormikValues): {
 		errors.name = Liferay.Language.get('this-field-is-required');
 	}
 
-	if (!values.contentSelection) {
-		errors.contentSelection = Liferay.Language.get(
-			'please-select-at-least-one-entity-type-to-continue'
-		);
+	if (
+		!values.contentSelection &&
+		!values.siteExternalReferenceCodes?.length
+	) {
+		if (siteSelectionEnabled) {
+			errors.selection = Liferay.Language.get(
+				'please-select-at-least-one-entity-type-or-site-to-continue'
+			);
+		}
+		else {
+			errors.contentSelection = Liferay.Language.get(
+				'please-select-at-least-one-entity-type-to-continue'
+			);
+		}
 	}
 
 	return errors;

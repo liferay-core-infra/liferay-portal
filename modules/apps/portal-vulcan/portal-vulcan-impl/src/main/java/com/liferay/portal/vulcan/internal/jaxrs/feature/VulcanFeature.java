@@ -22,6 +22,7 @@ import com.liferay.portal.odata.sort.SortParserProvider;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineExportTaskResourceFactory;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResourceFactory;
 import com.liferay.portal.vulcan.extension.ExtensionProviderRegistry;
+import com.liferay.portal.vulcan.internal.configuration.admin.service.HeadlessAPICacheManagedServiceFactory;
 import com.liferay.portal.vulcan.internal.jaxrs.container.request.filter.CTContainerRequestFilter;
 import com.liferay.portal.vulcan.internal.jaxrs.container.request.filter.ContextContainerRequestFilter;
 import com.liferay.portal.vulcan.internal.jaxrs.container.request.filter.LogContainerRequestFilter;
@@ -85,6 +86,7 @@ import jakarta.ws.rs.core.FeatureContext;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -111,7 +113,6 @@ public class VulcanFeature implements Feature {
 	@Override
 	public boolean configure(FeatureContext featureContext) {
 		featureContext.register(BeanValidationInterceptor.class);
-		featureContext.register(CacheContainerResponseFilter.class);
 		featureContext.register(CTContainerRequestFilter.class);
 		featureContext.register(DateParamConverterProvider.class);
 		featureContext.register(DocumentFileExtensionExceptionMapper.class);
@@ -163,6 +164,9 @@ public class VulcanFeature implements Feature {
 			new AcceptLanguageContextProvider(_language, _portal));
 		featureContext.register(
 			new AggregationContextProvider(_language, _portal));
+		featureContext.register(
+			new CacheContainerResponseFilter(
+				(HeadlessAPICacheManagedServiceFactory)_managedServiceFactory));
 		featureContext.register(new CompanyContextProvider(_portal));
 		featureContext.register(
 			new ContextContainerRequestFilter(
@@ -241,6 +245,11 @@ public class VulcanFeature implements Feature {
 
 	@Reference
 	private Language _language;
+
+	@Reference(
+		target = "(component.name=com.liferay.portal.vulcan.internal.configuration.admin.service.HeadlessAPICacheManagedServiceFactory)"
+	)
+	private ManagedServiceFactory _managedServiceFactory;
 
 	@Reference
 	private PaginationProvider _paginationProvider;

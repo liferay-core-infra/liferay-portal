@@ -6,7 +6,6 @@
 package com.liferay.frontend.data.set.internal.serializer;
 
 import com.liferay.frontend.data.set.SystemFDSEntry;
-import com.liferay.frontend.data.set.action.FDSBulkActions;
 import com.liferay.frontend.data.set.action.FDSCreationMenu;
 import com.liferay.frontend.data.set.action.FDSItemsActions;
 import com.liferay.frontend.data.set.constants.FDSConstants;
@@ -19,7 +18,6 @@ import com.liferay.frontend.data.set.filter.FDSFilter;
 import com.liferay.frontend.data.set.filter.FDSFilterContextContributor;
 import com.liferay.frontend.data.set.filter.GroupedFDSFilters;
 import com.liferay.frontend.data.set.filter.SelectionFDSFilterItem;
-import com.liferay.frontend.data.set.internal.action.FDSBulkActionsRegistryImpl;
 import com.liferay.frontend.data.set.internal.filter.ClientExtensionFDSFilterContextContributor;
 import com.liferay.frontend.data.set.internal.filter.DateRangeFDSFilterContextContributor;
 import com.liferay.frontend.data.set.internal.filter.FDSFilterContextContributorRegistryImpl;
@@ -219,18 +217,6 @@ public class SystemFDSSerializerTest extends BaseFDSSerializerTestCase {
 
 		// Different bulk actions
 
-		ServiceTrackerMap
-			<String,
-			 ServiceTrackerCustomizerFactory.ServiceWrapper<FDSBulkActions>>
-				serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-					bundleContext, FDSBulkActions.class,
-					"frontend.data.set.name",
-					ServiceTrackerCustomizerFactory.
-						<FDSBulkActions>serviceWrapper(bundleContext));
-
-		systemFDSSerializer.fdsBulkActionsRegistry =
-			new FDSBulkActionsRegistryImpl(serviceTrackerMap);
-
 		List<FDSActionDropdownItem> fdsActionDropdownItems1 =
 			ListUtil.fromArray(
 				new FDSActionDropdownItem(
@@ -238,7 +224,7 @@ public class SystemFDSSerializerTest extends BaseFDSSerializerTestCase {
 					"headless"));
 
 		_registerServices(
-			_registerFDSBulkActions(fdsActionDropdownItems1, FDS_NAMES[0]),
+			registerFDSBulkActions(fdsActionDropdownItems1, FDS_NAMES[0]),
 			_registerSystemFDSEntry(FDS_NAMES[0]));
 
 		Assert.assertEquals(
@@ -253,7 +239,7 @@ public class SystemFDSSerializerTest extends BaseFDSSerializerTestCase {
 					"modal-permissions"));
 
 		_registerServices(
-			_registerFDSBulkActions(fdsActionDropdownItems2, FDS_NAMES[1]),
+			registerFDSBulkActions(fdsActionDropdownItems2, FDS_NAMES[1]),
 			_registerSystemFDSEntry(FDS_NAMES[0]));
 
 		Assert.assertEquals(
@@ -288,8 +274,8 @@ public class SystemFDSSerializerTest extends BaseFDSSerializerTestCase {
 				"headless"));
 
 		_registerServices(
-			_registerFDSBulkActions(fdsActionDropdownItems1, FDS_NAMES[0]),
-			_registerFDSBulkActions(fdsActionDropdownItems1, FDS_NAMES[1]),
+			registerFDSBulkActions(fdsActionDropdownItems1, FDS_NAMES[0]),
+			registerFDSBulkActions(fdsActionDropdownItems1, FDS_NAMES[1]),
 			_registerSystemFDSEntry(FDS_NAMES[0]),
 			_registerSystemFDSEntry(FDS_NAMES[1]));
 
@@ -300,8 +286,6 @@ public class SystemFDSSerializerTest extends BaseFDSSerializerTestCase {
 				FDS_NAMES[1], httpServletRequest));
 
 		_unregisterServices();
-
-		serviceTrackerMap.close();
 	}
 
 	@Test
@@ -1852,24 +1836,6 @@ public class SystemFDSSerializerTest extends BaseFDSSerializerTestCase {
 			}
 
 		};
-	}
-
-	private ServiceRegistration<FDSBulkActions> _registerFDSBulkActions(
-		List<FDSActionDropdownItem> fdsActionDropdownItems, String fdsName) {
-
-		return bundleContext.registerService(
-			FDSBulkActions.class,
-			new FDSBulkActions() {
-
-				@Override
-				public List<FDSActionDropdownItem> getFDSActionDropdownItems(
-					HttpServletRequest httpServletRequest) {
-
-					return fdsActionDropdownItems;
-				}
-
-			},
-			MapUtil.singletonDictionary("frontend.data.set.name", fdsName));
 	}
 
 	private ServiceRegistration<FDSCreationMenu> _registerFDSCreationMenu(

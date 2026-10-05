@@ -6,8 +6,8 @@
 package com.liferay.object.web.internal.info.item.provider;
 
 import com.liferay.asset.info.item.provider.AssetEntryInfoItemFieldSetProvider;
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.item.InfoItemFieldValues;
@@ -80,15 +80,6 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 			Collections.emptyList()
 		);
 
-		ObjectDefinition objectDefinition = Mockito.mock(
-			ObjectDefinition.class);
-
-		Mockito.when(
-			objectDefinition.isDefaultStorageType()
-		).thenReturn(
-			false
-		);
-
 		ObjectFieldLocalService objectFieldLocalService = Mockito.mock(
 			ObjectFieldLocalService.class);
 
@@ -117,7 +108,7 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 				Mockito.mock(FriendlyURLEntryLocalService.class),
 				infoItemFieldReaderFieldSetProvider,
 				Mockito.mock(ListTypeEntryLocalService.class),
-				Mockito.mock(ObjectActionLocalService.class), objectDefinition,
+				Mockito.mock(ObjectActionLocalService.class),
 				Mockito.mock(ObjectDefinitionLocalService.class),
 				Mockito.mock(ObjectFieldInfoFieldConverter.class),
 				Mockito.mock(ObjectEntryLocalService.class),
@@ -146,6 +137,21 @@ public class ObjectEntryInfoItemFieldValuesProviderTest {
 			serviceBuilderObjectEntry.getObjectEntryId()
 		).thenReturn(
 			RandomTestUtil.randomLong()
+		);
+
+		ObjectDefinition objectDefinition = Mockito.mock(
+			ObjectDefinition.class);
+
+		Mockito.when(
+			objectDefinition.isDefaultStorageType()
+		).thenReturn(
+			false
+		);
+
+		Mockito.when(
+			serviceBuilderObjectEntry.getObjectDefinition()
+		).thenReturn(
+			objectDefinition
 		);
 
 		ServiceContext serviceContext = Mockito.mock(ServiceContext.class);

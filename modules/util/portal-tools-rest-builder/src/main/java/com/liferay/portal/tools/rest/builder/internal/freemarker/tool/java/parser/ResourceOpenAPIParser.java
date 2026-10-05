@@ -88,6 +88,10 @@ public class ResourceOpenAPIParser {
 					_visitRequestBodyMediaTypes(
 						operation.getRequestBody(),
 						requestBodyMediaTypes -> {
+							if (operation.getOperationId() == null) {
+								operation.setCalculatedOperationId(true);
+							}
+
 							String operationId = _getOperationId(
 								configYAML, operation, path, returnType,
 								schemaName,
@@ -927,7 +931,9 @@ public class ResourceOpenAPIParser {
 		Schema schema = _getOperationSchema(operation, requestBodyMediaTypes);
 
 		if ((operationId != null) && operationId.endsWith("PermissionsPage") &&
-			operationId.startsWith("put") && (schema == null)) {
+			operationId.startsWith("put") && (schema == null) &&
+			(!operation.isCalculatedOperationId() ||
+			 ConfigUtil.isVersionCompatible(configYAML, 9))) {
 
 			javaMethodParameters.add(
 				new JavaMethodParameter(
@@ -1195,7 +1201,9 @@ public class ResourceOpenAPIParser {
 				String previousMethodNameSegment = operationIdSegments.get(
 					operationIdSegments.size() - 1);
 
-				if (pathName.endsWith("ExternalReferenceCode")) {
+				if (pathName.endsWith("ExternalReferenceCode") &&
+					ConfigUtil.isVersionCompatible(configYAML, 10)) {
+
 					if (!(Objects.equals(
 							previousMethodNameSegment, "AssetLibrary") ||
 						  Objects.equals(previousMethodNameSegment, "Site") ||

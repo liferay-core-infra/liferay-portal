@@ -26,8 +26,8 @@ public class RoleUtil {
 		}
 
 		return RoleLocalServiceUtil.addRole(
-			null, userId, null, 0, name, null, null, RoleConstants.TYPE_REGULAR,
-			null, null);
+			RoleConstants.toSystemRoleExternalReferenceCode(name), userId, null,
+			0, name, null, null, RoleConstants.TYPE_REGULAR, null, null);
 	}
 
 }

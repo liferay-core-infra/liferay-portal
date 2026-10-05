@@ -47,6 +47,7 @@ import com.liferay.layout.util.structure.RowStyledLayoutStructureItem;
 import com.liferay.object.constants.ObjectDefinitionSettingConstants;
 import com.liferay.object.constants.ObjectEntryFolderConstants;
 import com.liferay.object.constants.ObjectFolderConstants;
+import com.liferay.object.field.attachment.AttachmentManager;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectDefinitionSetting;
 import com.liferay.object.model.ObjectEntryFolder;
@@ -61,6 +62,8 @@ import com.liferay.object.service.ObjectDefinitionServiceUtil;
 import com.liferay.object.service.ObjectDefinitionSettingLocalServiceUtil;
 import com.liferay.object.service.ObjectFieldLocalServiceUtil;
 import com.liferay.object.service.ObjectLayoutLocalServiceUtil;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -77,6 +80,7 @@ import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolver;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolverRegistryUtil;
 import com.liferay.portal.kernel.portlet.constants.FriendlyURLResolverConstants;
@@ -93,6 +97,7 @@ import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ScopeUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -102,6 +107,8 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
+import com.liferay.site.cms.site.initializer.contributor.CMSObjectEntryFormContributor;
+import com.liferay.site.cms.site.initializer.contributor.CMSStructureObjectFolderContributor;
 import com.liferay.site.cms.site.initializer.internal.fragment.renderer.SpacesComponentSectionFragmentRenderer;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -113,6 +120,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Eudaldo Alonso
@@ -329,6 +339,8 @@ public class ActionUtil {
 					addedFragmentEntryLink);
 			}
 		}
+
+		_contribute(layout, objectDefinition, serviceContext);
 	}
 
 	public static void generateTranslateContentLayoutStructure(
@@ -567,6 +579,8 @@ public class ActionUtil {
 	}
 
 	public static List<DropdownItem> getAllSectionCreationMenuDropdownItems(
+		List<CMSStructureObjectFolderContributor>
+			cmsStructureObjectFolderContributors,
 		HttpServletRequest httpServletRequest) {
 
 		List<DropdownItem> dropdownItems = new ArrayList<>(
@@ -589,22 +603,24 @@ public class ActionUtil {
 					httpServletRequest,
 					ObjectEntryFolderConstants.EXTERNAL_REFERENCE_CODE_FILES)));
 
-		List<DropdownItem> contentsCustomDropdownItems =
-			getContentsCustomDropdownItems(
-				httpServletRequest,
-				ObjectEntryFolderConstants.EXTERNAL_REFERENCE_CODE_CONTENTS);
+		List<DropdownItem> customDropdownItems = getContentsCustomDropdownItems(
+			httpServletRequest,
+			ObjectEntryFolderConstants.EXTERNAL_REFERENCE_CODE_CONTENTS);
 
-		contentsCustomDropdownItems.addAll(
+		customDropdownItems.addAll(
 			getFilesCustomDropdownItems(
 				httpServletRequest,
 				ObjectEntryFolderConstants.EXTERNAL_REFERENCE_CODE_FILES));
+		customDropdownItems.addAll(
+			getStructureObjectFolderCustomDropdownItems(
+				cmsStructureObjectFolderContributors, httpServletRequest));
 
-		contentsCustomDropdownItems.sort(
+		customDropdownItems.sort(
 			Comparator.comparing(
 				dropdownItem -> (String)dropdownItem.get("label"),
 				String.CASE_INSENSITIVE_ORDER));
 
-		dropdownItems.addAll(contentsCustomDropdownItems);
+		dropdownItems.addAll(customDropdownItems);
 
 		return dropdownItems;
 	}
@@ -1141,6 +1157,50 @@ public class ActionUtil {
 		return getBaseSpaceURL(themeDisplay) + classPK;
 	}
 
+	public static List<DropdownItem>
+		getStructureObjectFolderCustomDropdownItems(
+			List<CMSStructureObjectFolderContributor>
+				cmsStructureObjectFolderContributors,
+			HttpServletRequest httpServletRequest) {
+
+		List<DropdownItem> dropdownItems = new ArrayList<>();
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		for (CMSStructureObjectFolderContributor
+				cmsStructureObjectFolderContributor :
+					cmsStructureObjectFolderContributors) {
+
+			String objectEntryFolderExternalReferenceCode =
+				cmsStructureObjectFolderContributor.
+					getObjectEntryFolderExternalReferenceCode();
+			String objectFolderExternalReferenceCode =
+				cmsStructureObjectFolderContributor.
+					getObjectFolderExternalReferenceCode();
+
+			if (Validator.isNull(objectEntryFolderExternalReferenceCode) ||
+				Validator.isNull(objectFolderExternalReferenceCode)) {
+
+				continue;
+			}
+
+			dropdownItems.addAll(
+				TransformUtil.transform(
+					ObjectDefinitionServiceUtil.getCMSObjectDefinitions(
+						themeDisplay.getCompanyId(),
+						new String[] {objectFolderExternalReferenceCode}),
+					objectDefinition -> getStructuredContentDropdownItem(
+						httpServletRequest,
+						cmsStructureObjectFolderContributor.
+							getCreationMenuIcon(),
+						null, objectDefinition,
+						objectEntryFolderExternalReferenceCode)));
+		}
+
+		return dropdownItems;
+	}
+
 	public static DropdownItem getStructuredContentDropdownItem(
 		HttpServletRequest httpServletRequest, String icon, String labelKey,
 		ObjectDefinition objectDefinition,
@@ -1261,17 +1321,48 @@ public class ActionUtil {
 		return StringPool.BLANK;
 	}
 
+	public static long getUploadMaximumFileSize(ThemeDisplay themeDisplay) {
+		long maximumFileSize = PropsValues.JSON_STRING_MAX_LENGTH / 4 * 3;
+
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionLocalServiceUtil.
+				fetchObjectDefinitionByExternalReferenceCode(
+					"L_CMS_BASIC_DOCUMENT", themeDisplay.getCompanyId());
+
+		if (objectDefinition == null) {
+			return maximumFileSize;
+		}
+
+		ObjectField objectField = ObjectFieldLocalServiceUtil.fetchObjectField(
+			objectDefinition.getObjectDefinitionId(), "file");
+
+		if (objectField == null) {
+			return maximumFileSize;
+		}
+
+		AttachmentManager attachmentManager = _attachmentManagerSnapshot.get();
+
+		return Math.min(
+			attachmentManager.getMaximumFileSize(
+				objectField.getObjectFieldId(), themeDisplay.isSignedIn()),
+			maximumFileSize);
+	}
+
 	public static DropdownItem getUploadMultipleFilesDropdownItem(
 		HttpServletRequest httpServletRequest,
 		String parentObjectEntryFolderExternalReferenceCode) {
 
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
 		return DropdownItemBuilder.putData(
 			"action", "uploadMultipleFiles"
 		).putData(
-			"baseAssetLibraryViewURL",
-			getBaseSpaceURL(
-				(ThemeDisplay)httpServletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY))
+			"baseAssetLibraryViewURL", getBaseSpaceURL(themeDisplay)
+		).putData(
+			"maxFileSize",
+			String.valueOf(getUploadMaximumFileSize(themeDisplay))
 		).putData(
 			"parentObjectEntryFolderExternalReferenceCode",
 			parentObjectEntryFolderExternalReferenceCode
@@ -1941,6 +2032,23 @@ public class ActionUtil {
 		return layoutPageTemplateEntry;
 	}
 
+	private static void _contribute(
+			Layout layout, ObjectDefinition objectDefinition,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		if (_cmsObjectEntryFormContributors == null) {
+			return;
+		}
+
+		for (CMSObjectEntryFormContributor cmsObjectEntryFormContributor :
+				_cmsObjectEntryFormContributors) {
+
+			cmsObjectEntryFormContributor.contribute(
+				layout, objectDefinition, serviceContext);
+		}
+	}
+
 	private static void _generateCompareContentLayoutStructure(
 			FormManager formManager,
 			FragmentEntryLinkListenerRegistry fragmentEntryLinkListenerRegistry,
@@ -2313,6 +2421,23 @@ public class ActionUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(ActionUtil.class);
 
+	private static final Snapshot<AttachmentManager>
+		_attachmentManagerSnapshot = new Snapshot<>(
+			ActionUtil.class, AttachmentManager.class);
+	private static final ServiceTrackerList<CMSObjectEntryFormContributor>
+		_cmsObjectEntryFormContributors;
 	private static final Object _compareContentLayoutLock = new Object();
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(ActionUtil.class);
+
+		if (bundle == null) {
+			_cmsObjectEntryFormContributors = null;
+		}
+		else {
+			_cmsObjectEntryFormContributors = ServiceTrackerListFactory.open(
+				bundle.getBundleContext(), CMSObjectEntryFormContributor.class);
+		}
+	}
 
 }

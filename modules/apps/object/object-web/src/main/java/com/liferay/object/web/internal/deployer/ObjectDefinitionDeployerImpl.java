@@ -14,13 +14,13 @@ import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.asset.util.AssetHelper;
+import com.liferay.document.library.helper.DLURLHelper;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileSizeException;
 import com.liferay.document.library.kernel.exception.InvalidFileException;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
-import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFactory;
 import com.liferay.friendly.url.info.item.provider.InfoItemFriendlyURLProvider;
 import com.liferay.friendly.url.info.item.updater.InfoItemFriendlyURLUpdater;
@@ -280,9 +280,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_assetCategoryLocalService, _assetTagLocalService,
 					_assetVocabularyLocalService, _groupLocalService,
 					_listTypeEntryLocalService, objectDefinition,
-					_objectEntryLocalService, _objectEntryManagerRegistry,
-					_objectFieldLocalService, _objectLayoutLocalService,
-					_objectScopeProviderRegistry),
+					_objectDefinitionLocalService, _objectEntryLocalService,
+					_objectEntryManagerRegistry, _objectFieldLocalService,
+					_objectLayoutLocalService, _objectScopeProviderRegistry),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"company.id", objectDefinition.getCompanyId()
 				).put(
@@ -363,7 +363,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_dlURLHelper, _friendlyURLEntryLocalService,
 					_infoItemFieldReaderFieldSetProvider,
 					_listTypeEntryLocalService, _objectActionLocalService,
-					objectDefinition, _objectDefinitionLocalService,
+					_objectDefinitionLocalService,
 					objectFieldInfoFieldConverter, _objectEntryLocalService,
 					_objectEntryManagerRegistry, _objectEntryService,
 					_objectFieldLocalService,

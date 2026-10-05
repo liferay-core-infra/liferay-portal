@@ -5,11 +5,24 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.service.PermissionService;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.persistence.GroupPersistence;
+import com.liferay.portal.kernel.service.persistence.LayoutPersistence;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.service.base.ResourcePermissionServiceBaseImpl;
 
 import java.util.Map;
@@ -168,7 +181,8 @@ public class ResourcePermissionServiceImpl
 			long roleId, String[] actionIds)
 		throws PortalException {
 
-		_permissionService.checkPermission(groupId, name, primKey);
+		_permissionService.checkPermission(
+			_getGroupId(groupId, name, primKey), name, primKey);
 
 		resourcePermissionLocalService.setResourcePermissions(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
@@ -204,12 +218,78 @@ public class ResourcePermissionServiceImpl
 			Map<Long, String[]> roleIdsToActionIds)
 		throws PortalException {
 
-		_permissionService.checkPermission(groupId, name, primKey);
+		_permissionService.checkPermission(
+			_getGroupId(groupId, name, primKey), name, primKey);
 
 		resourcePermissionLocalService.setResourcePermissions(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
 			roleIdsToActionIds);
 	}
+
+	private long _getGroupId(long groupId, String name, String primKey) {
+		ModelResourcePermission<?> modelResourcePermission =
+			ModelResourcePermissionRegistryUtil.getModelResourcePermission(
+				name);
+
+		if (modelResourcePermission != null) {
+			return groupId;
+		}
+
+		String plid = StringUtil.extractFirst(
+			primKey, PortletConstants.LAYOUT_SEPARATOR);
+
+		if (plid != null) {
+			Layout layout = _layoutPersistence.fetchByPrimaryKey(
+				GetterUtil.getLong(plid));
+
+			if (layout == null) {
+				return 0;
+			}
+
+			return layout.getGroupId();
+		}
+
+		long classPK = GetterUtil.getLong(primKey);
+
+		if (classPK <= 0) {
+			return 0;
+		}
+
+		String className = StringUtil.extractFirst(name, CharPool.DASH);
+
+		if (className == null) {
+			className = name;
+		}
+
+		PersistedModelLocalService persistedModelLocalService =
+			PersistedModelLocalServiceRegistryUtil.
+				getPersistedModelLocalService(className);
+
+		if (persistedModelLocalService != null) {
+			PersistedModel persistedModel =
+				persistedModelLocalService.fetchPersistedModel(classPK);
+
+			if (persistedModel instanceof GroupedModel) {
+				GroupedModel groupedModel = (GroupedModel)persistedModel;
+
+				return groupedModel.getGroupId();
+			}
+
+			return 0;
+		}
+
+		if (_groupPersistence.fetchByPrimaryKey(classPK) == null) {
+			return 0;
+		}
+
+		return classPK;
+	}
+
+	@BeanReference(type = GroupPersistence.class)
+	private GroupPersistence _groupPersistence;
+
+	@BeanReference(type = LayoutPersistence.class)
+	private LayoutPersistence _layoutPersistence;
 
 	@BeanReference(type = PermissionService.class)
 	private PermissionService _permissionService;

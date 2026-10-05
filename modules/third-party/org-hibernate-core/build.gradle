@@ -41,7 +41,5 @@ patch {
 	fileNames "org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java"
 	fileNames "org/hibernate/internal/SessionFactoryImpl.java"
 	fileNames "org/hibernate/metamodel/internal/AttributeFactory.java"
-	fileNames "org/hibernate/tuple/component/PojoComponentTuplizer.java"
-	fileNames "org/hibernate/tuple/entity/PojoEntityTuplizer.java"
 	originalLibModuleName = "hibernate-core"
 }

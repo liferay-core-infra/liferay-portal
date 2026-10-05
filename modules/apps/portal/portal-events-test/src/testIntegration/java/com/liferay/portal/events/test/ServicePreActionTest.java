@@ -9,10 +9,12 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.events.ServicePreAction;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.events.LifecycleEvent;
+import com.liferay.portal.kernel.exception.LayoutPermissionException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -21,6 +23,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
@@ -32,15 +35,18 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.PropsValuesTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.InstancePool;
 import com.liferay.portal.kernel.util.Portal;
@@ -48,6 +54,7 @@ import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.struts.AuthPublicPathRegistry;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -294,6 +301,78 @@ public class ServicePreActionTest {
 		Assert.assertEquals(firstLayout.getPlid(), contentPageLayout.getPlid());
 
 		Assert.assertEquals(layouts.toString(), count + 1, layouts.size());
+	}
+
+	@Test
+	@TestInfo("LPD-107079")
+	public void testInitThemeDisplayLayoutPermissionError() throws Exception {
+		String path = "/portal/" + RandomTestUtil.randomString();
+
+		_mockHttpServletRequest.setPathInfo(path);
+		_mockHttpServletRequest.setRequestURI(_portal.getPathMain() + path);
+
+		_getThemeDisplayPlid(false, false);
+
+		Assert.assertTrue(
+			SessionErrors.contains(
+				_mockHttpServletRequest,
+				LayoutPermissionException.class.getName()));
+
+		SessionErrors.clear(_mockHttpServletRequest);
+
+		AuthPublicPathRegistry.register(path);
+
+		try {
+			_getThemeDisplayPlid(false, false);
+
+			Assert.assertFalse(
+				SessionErrors.contains(
+					_mockHttpServletRequest,
+					LayoutPermissionException.class.getName()));
+		}
+		finally {
+			AuthPublicPathRegistry.unregister(path);
+		}
+	}
+
+	@Test
+	@TestInfo("LPD-107079")
+	public void testInitThemeDisplayMustBeAuthenticatedException()
+		throws Exception {
+
+		String path = "/portal/" + RandomTestUtil.randomString();
+
+		_mockHttpServletRequest.setPathInfo(path);
+		_mockHttpServletRequest.setRequestURI(_portal.getPathMain() + path);
+
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					_PID,
+					HashMapDictionaryBuilder.<String, Object>put(
+						"promptEnabled", true
+					).build())) {
+
+			try {
+				_getThemeDisplayPlid(false, false);
+
+				Assert.fail();
+			}
+			catch (ActionException actionException) {
+				Assert.assertSame(
+					PrincipalException.MustBeAuthenticated.class,
+					actionException.getCause(
+					).getClass());
+			}
+
+			AuthPublicPathRegistry.register(path);
+
+			try {
+				_getThemeDisplayPlid(false, false);
+			}
+			finally {
+				AuthPublicPathRegistry.unregister(path);
+			}
+		}
 	}
 
 	@Test
@@ -563,6 +642,9 @@ public class ServicePreActionTest {
 
 	private static final String _DO_AS_USER_ID =
 		"41b432f1b2872de6d1d7488d511e5da2b1";
+
+	private static final String _PID =
+		"com.liferay.login.web.internal.configuration.AuthLoginConfiguration";
 
 	private static Company _company;
 	private static SafeCloseable _safeCloseable;

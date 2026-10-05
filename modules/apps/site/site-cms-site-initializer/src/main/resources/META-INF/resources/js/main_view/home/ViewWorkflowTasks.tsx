@@ -24,6 +24,7 @@ import {
 	getWorkflowTasksAssignedToMyRoles,
 } from '../../common/services/WorkflowService';
 import {WorkflowTask} from '../../common/types/WorkflowTask';
+import {PAGINATION_BAR_LABELS} from '../../common/utils/constants';
 import {openCMSModal} from '../../common/utils/openCMSModal';
 import WorkflowTaskRenderer from '../props_transformer/cell_renderers/WorkflowTaskRenderer';
 
@@ -282,7 +283,7 @@ export default function ViewWorkflowTasks({
 
 	return (
 		<div className="container-fluid-max p-2 p-sm-3">
-			<div className="align-items-center d-flex justify-content-between mb-4">
+			<div className="align-items-center c-gapy-2 d-flex flex-wrap justify-content-between mb-4">
 				<span
 					aria-level={2}
 					className="font-weight-semi-bold mr-3 text-4"
@@ -291,21 +292,25 @@ export default function ViewWorkflowTasks({
 					{Liferay.Language.get('my-workflow-tasks')}
 				</span>
 
-				<div className="align-items-xl-center d-flex flex-column flex-xl-row">
+				<div className="align-items-center d-flex">
 					<ClayDropdown
 						className="filter-dropdown"
 						closeOnClick
 						hasLeftSymbols
 						trigger={
-							<ClayButton displayType="secondary" size="sm">
-								<span>
+							<ClayButton
+								className="align-items-center d-flex"
+								displayType="secondary"
+								size="sm"
+							>
+								<span className="text-left text-wrap">
 									{selectedItem.label}
-
-									<ClayIcon
-										className="ml-2"
-										symbol="caret-bottom"
-									/>
 								</span>
+
+								<ClayIcon
+									className="flex-shrink-0 ml-2"
+									symbol="caret-bottom"
+								/>
 							</ClayButton>
 						}
 					>
@@ -372,6 +377,7 @@ export default function ViewWorkflowTasks({
 							label: size,
 						}))}
 						ellipsisBuffer={3}
+						labels={PAGINATION_BAR_LABELS}
 						onActiveChange={handlePaginationPageChange}
 						onDeltaChange={handlePaginationDeltaChange}
 						totalItems={workflowTasks.totalCount}

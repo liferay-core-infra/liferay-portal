@@ -2231,9 +2231,6 @@ public interface PropsKeys {
 	public static final String RESOURCE_REPOSITORIES_ROOT =
 		"resource.repositories.root";
 
-	public static final String REST_PROXY_URL_PREFIXES_ALLOWED =
-		"rest.proxy.url.prefixes.allowed";
-
 	public static final String RETRY_ADVICE_MAX_RETRIES =
 		"retry.advice.max.retries";
 

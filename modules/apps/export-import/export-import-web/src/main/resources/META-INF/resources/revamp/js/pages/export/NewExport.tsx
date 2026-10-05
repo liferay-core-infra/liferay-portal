@@ -27,13 +27,15 @@ import {
 } from '../../utils/contentSelection';
 import {getProcessFormErrors} from '../../utils/getProcessFormErrors';
 import {toRequestPortletDataHandlers} from '../../utils/toRequestPortletDataHandlers';
+import SiteSelection from './components/SiteSelection';
 
 type ExportFormValues = {
-	contentSelection: ContentSelection | undefined;
+	contentSelection: ContentSelection | null | undefined;
 	dateFilter: DateFilterValues;
 	deletions: boolean;
 	name: string;
 	permissions: boolean;
+	siteExternalReferenceCodes: string[];
 };
 
 export function NewExport({
@@ -41,17 +43,21 @@ export function NewExport({
 	commentsAndRatingsEnabled = false,
 	exportPreview,
 	exportPreviewAPIURL,
+	exportPreviewSitesAPIURL,
 	exportProcessAPIURL,
 	lookAndFeelEnabled = false,
 	pageTreeModalConfiguration,
+	siteSelectionEnabled = false,
 }: {
 	backURL: string;
 	commentsAndRatingsEnabled?: boolean;
 	exportPreview?: Preview;
 	exportPreviewAPIURL: string;
+	exportPreviewSitesAPIURL?: string;
 	exportProcessAPIURL: string;
 	lookAndFeelEnabled?: boolean;
 	pageTreeModalConfiguration: PageTreeModalConfiguration;
+	siteSelectionEnabled?: boolean;
 }) {
 	const {appliedDateFilterRef, error, handleApplyFilter, loading, preview} =
 		usePreview(exportPreviewAPIURL, exportPreview);
@@ -69,6 +75,7 @@ export function NewExport({
 		deletions: false,
 		name: '',
 		permissions: false,
+		siteExternalReferenceCodes: [],
 	};
 
 	return (
@@ -87,6 +94,8 @@ export function NewExport({
 								previewPortletDataHandlerSections,
 								values.contentSelection
 							),
+						siteExternalReferenceCodes:
+							values.siteExternalReferenceCodes,
 					},
 					url: exportProcessAPIURL,
 				});
@@ -102,11 +111,17 @@ export function NewExport({
 
 				Liferay.Util.navigate(backURL);
 			}}
-			validate={getProcessFormErrors}
+			validate={(values) =>
+				getProcessFormErrors(values, siteSelectionEnabled)
+			}
 			validateOnMount
 		>
 			{(formik) => {
 				const contentSelection = formik.values.contentSelection;
+
+				const {selection: selectionError} = formik.errors as {
+					selection?: string;
+				};
 
 				return (
 					<Form noValidate>
@@ -159,10 +174,32 @@ export function NewExport({
 								previewPortletDataHandlerSections,
 								contentSelection
 							)}
+							sitesSelection={
+								siteSelectionEnabled &&
+								exportPreviewSitesAPIURL && (
+									<SiteSelection
+										exportPreviewSitesAPIURL={
+											exportPreviewSitesAPIURL
+										}
+									/>
+								)
+							}
 							subtitle={Liferay.Language.get(
 								'select-and-filter-the-data-you-want-to-include-in-your-export'
 							)}
 						/>
+
+						{(formik.touched.contentSelection ||
+							formik.touched.siteExternalReferenceCodes) &&
+							selectionError && (
+								<ClayAlert
+									className="mt-4"
+									displayType="danger"
+									title={Liferay.Language.get('error-colon')}
+								>
+									{selectionError}
+								</ClayAlert>
+							)}
 
 						<Footer
 							actionButton={

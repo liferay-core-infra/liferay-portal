@@ -8,6 +8,7 @@ package com.liferay.frontend.data.set.internal.serializer;
 import com.liferay.client.extension.type.FDSCellRendererCET;
 import com.liferay.client.extension.type.FDSFilterCET;
 import com.liferay.client.extension.type.manager.CETManager;
+import com.liferay.frontend.data.set.action.FDSBulkActions;
 import com.liferay.frontend.data.set.constants.FDSEntityFieldTypes;
 import com.liferay.frontend.data.set.internal.url.FDSAPIURLResolverRegistryImpl;
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
@@ -60,6 +61,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.ServiceRegistration;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -227,6 +230,35 @@ public class CustomFDSSerializerTest extends BaseFDSSerializerTestCase {
 			API_URL_PARAMETERS,
 			_customFDSSerializer.serializeAdditionalAPIURLParameters(
 				FDS_NAMES[0], httpServletRequest));
+	}
+
+	@Test
+	public void testSerializeBulkActions() throws Exception {
+		Mockito.when(
+			_customFDSSerializer.serializeBulkActions(
+				FDS_NAMES[0], httpServletRequest)
+		).thenCallRealMethod();
+
+		Assert.assertEquals(
+			Collections.emptyList(),
+			_customFDSSerializer.serializeBulkActions(
+				FDS_NAMES[0], httpServletRequest));
+
+		List<FDSActionDropdownItem> fdsActionDropdownItems = ListUtil.fromArray(
+			new FDSActionDropdownItem(
+				null, ICONS[0], IDS[0], LABELS[0],
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				RandomTestUtil.randomString()));
+
+		ServiceRegistration<FDSBulkActions> serviceRegistration =
+			registerFDSBulkActions(fdsActionDropdownItems, FDS_NAMES[0]);
+
+		Assert.assertEquals(
+			fdsActionDropdownItems,
+			_customFDSSerializer.serializeBulkActions(
+				FDS_NAMES[0], httpServletRequest));
+
+		serviceRegistration.unregister();
 	}
 
 	@Test

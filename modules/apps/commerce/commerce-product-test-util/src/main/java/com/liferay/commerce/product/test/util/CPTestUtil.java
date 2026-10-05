@@ -257,7 +257,8 @@ public class CPTestUtil {
 	public static CPDefinition addCPDefinitionFromCatalog(
 			long groupId, String productTypeName, Date displayDate,
 			Date expirationDate, boolean ignoreSKUCombinations,
-			boolean hasDefaultInstance, int status)
+			boolean hasDefaultInstance, int status,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		String defaultSku = null;
@@ -268,9 +269,7 @@ public class CPTestUtil {
 
 		return _addCPDefinitionWithSku(
 			groupId, productTypeName, displayDate, expirationDate,
-			ignoreSKUCombinations,
-			ServiceContextTestUtil.getServiceContext(groupId), defaultSku,
-			status);
+			ignoreSKUCombinations, serviceContext, defaultSku, status);
 	}
 
 	public static CPDefinitionOptionRel addCPDefinitionOptionRel(

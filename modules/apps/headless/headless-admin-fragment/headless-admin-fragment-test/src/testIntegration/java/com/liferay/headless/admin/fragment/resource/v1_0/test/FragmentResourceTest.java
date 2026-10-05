@@ -10,11 +10,19 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
+import com.liferay.asset.list.constants.AssetListEntryTypeConstants;
+import com.liferay.asset.list.model.AssetListEntry;
+import com.liferay.asset.list.service.AssetListEntryLocalService;
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
+import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.exportimport.test.util.LazyReferencingTestUtil;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.model.FragmentEntryVersion;
 import com.liferay.fragment.service.FragmentCollectionLocalService;
+import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.fragment.service.FragmentEntryLocalService;
 import com.liferay.headless.admin.fragment.client.constant.v1_0.FieldType;
 import com.liferay.headless.admin.fragment.client.dto.v1_0.ApprovedFragmentVersion;
@@ -37,9 +45,15 @@ import com.liferay.headless.admin.fragment.client.resource.v1_0.FragmentResource
 import com.liferay.headless.admin.fragment.client.serdes.v1_0.ConfigurationSerDes;
 import com.liferay.headless.batch.engine.client.http.HttpInvoker;
 import com.liferay.headless.batch.engine.client.resource.v1_0.ImportTaskResource;
+import com.liferay.info.collection.provider.InfoCollectionProvider;
+import com.liferay.info.collection.provider.RelatedInfoItemCollectionProvider;
+import com.liferay.info.collection.provider.SingleFormVariationInfoCollectionProvider;
+import com.liferay.info.item.InfoItemServiceRegistry;
 import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.test.util.ObjectDefinitionTestUtil;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.io.StreamUtil;
@@ -64,6 +78,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -80,6 +95,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.search.test.util.IdempotentRetryAssert;
 import com.liferay.portal.test.log.LogCapture;
@@ -90,6 +106,13 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.vulcan.util.TransformUtil;
+import com.liferay.site.navigation.menu.item.layout.constants.SiteNavigationMenuItemTypeConstants;
+import com.liferay.site.navigation.model.SiteNavigationMenu;
+import com.liferay.site.navigation.model.SiteNavigationMenuItem;
+import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService;
+import com.liferay.site.navigation.service.SiteNavigationMenuLocalService;
+import com.liferay.site.navigation.type.SiteNavigationMenuItemType;
+import com.liferay.site.navigation.type.util.SiteNavigationMenuItemTypeRegistryUtil;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -195,13 +218,14 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 
 	@Override
 	@Test
-	@TestInfo({"LPD-88395", "LPD-95281"})
+	@TestInfo({"LPD-88395", "LPD-95281", "LPD-107706"})
 	public void testDeleteSiteFragment() throws Exception {
 		super.testDeleteSiteFragment();
 
 		_testDeleteSiteFragment(false, true);
 		_testDeleteSiteFragment(true, false);
 		_testDeleteSiteFragment(true, true);
+		_testDeleteSiteFragmentInUseProblemException();
 		_testDeleteSiteFragmentNonexistent();
 		_testDeleteSiteFragmentWithFormFragment();
 		_testDeleteSiteFragmentWithoutPermissionsProblemException();
@@ -212,8 +236,9 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	@TestInfo(
 		{
 			"LPD-88395", "LPD-88489", "LPD-95281", "LPD-103947", "LPD-107082",
-			"LPD-107083", "LPD-107084", "LPD-107087", "LPD-107185",
-			"LPD-107186", "LPD-107187", "LPD-107188"
+			"LPD-107083", "LPD-107084", "LPD-107085", "LPD-107086",
+			"LPD-107087", "LPD-107088", "LPD-107185", "LPD-107186",
+			"LPD-107187", "LPD-107188", "LPD-107189"
 		}
 	)
 	public void testGetSiteFragment() throws Exception {
@@ -257,8 +282,9 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	@TestInfo(
 		{
 			"LPD-88395", "LPD-88489", "LPD-95281", "LPD-103947", "LPD-107082",
-			"LPD-107083", "LPD-107084", "LPD-107087", "LPD-107185",
-			"LPD-107186", "LPD-107187", "LPD-107188"
+			"LPD-107083", "LPD-107084", "LPD-107085", "LPD-107086",
+			"LPD-107087", "LPD-107088", "LPD-107185", "LPD-107186",
+			"LPD-107187", "LPD-107188", "LPD-107189", "LPD-107706"
 		}
 	)
 	public void testPostSiteFragment() throws Exception {
@@ -267,6 +293,9 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_testPostSiteFragmentApproved();
 		_testPostSiteFragmentApprovedAndDraft();
 		_testPostSiteFragmentApprovedConfiguration();
+		_testPostSiteFragmentApprovedConfigurationInvalidContextualMenuTypeNullProblemException();
+		_testPostSiteFragmentApprovedConfigurationInvalidProblemException();
+		_testPostSiteFragmentApprovedHTMLInvalidProblemException();
 		_testPostSiteFragmentBatch();
 		_testPostSiteFragmentDraft();
 		_testPostSiteFragmentDraftConfiguration();
@@ -281,6 +310,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_testPostSiteFragmentFragmentSetNonexistingProblemException();
 		_testPostSiteFragmentFragmentSetNullProblemException();
 		_testPostSiteFragmentMarketplace();
+		_testPostSiteFragmentNameInvalidProblemException();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCode();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeAndFileBase64();
 		_testPostSiteFragmentThumbnailURLReferenceExternalReferenceCodeEmptyAndFileBase64();
@@ -322,8 +352,9 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	@TestInfo(
 		{
 			"LPD-88395", "LPD-88489", "LPD-95281", "LPD-103947", "LPD-107082",
-			"LPD-107083", "LPD-107084", "LPD-107087", "LPD-107185",
-			"LPD-107186", "LPD-107187", "LPD-107188"
+			"LPD-107083", "LPD-107084", "LPD-107085", "LPD-107086",
+			"LPD-107087", "LPD-107088", "LPD-107185", "LPD-107186",
+			"LPD-107187", "LPD-107188", "LPD-107189", "LPD-107706"
 		}
 	)
 	public void testPutSiteFragment() throws Exception {
@@ -341,7 +372,10 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_testPutSiteFragmentUpdateApprovedAddDraftModifyApproved();
 		_testPutSiteFragmentUpdateApprovedAndDraftToDraftProblemException();
 		_testPutSiteFragmentUpdateApprovedAndDraftToEmptyProblemException();
+		_testPutSiteFragmentUpdateApprovedConfigurationInvalidContextualMenuTypeNullProblemException();
+		_testPutSiteFragmentUpdateApprovedConfigurationInvalidProblemException();
 		_testPutSiteFragmentUpdateApprovedConfigurationUnmodified();
+		_testPutSiteFragmentUpdateApprovedHTMLInvalidProblemException();
 		_testPutSiteFragmentUpdateApprovedModifyApproved();
 		_testPutSiteFragmentUpdateApprovedModifyApprovedAndDraft();
 		_testPutSiteFragmentUpdateApprovedToDraftProblemException();
@@ -354,6 +388,7 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_testPutSiteFragmentUpdateFragmentSetNonexisting();
 		_testPutSiteFragmentUpdateFragmentSetNonexistingProblemException();
 		_testPutSiteFragmentUpdateFragmentSetNull();
+		_testPutSiteFragmentUpdateNameInvalidProblemException();
 		_testPutSiteFragmentUpdateThumbnailURLReferenceExternalReferenceCode();
 		_testPutSiteFragmentUpdateThumbnailURLReferenceExternalReferenceCodeAndFileBase64();
 		_testPutSiteFragmentUpdateThumbnailURLReferenceFileBase64();
@@ -498,6 +533,20 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		try (OutputStream outputStream = httpExchange.getResponseBody()) {
 			outputStream.write(bytes);
 		}
+	}
+
+	private AssetListEntry _addAssetListEntry(Group group) throws Exception {
+		AssetListEntry assetListEntry =
+			_assetListEntryLocalService.addAssetListEntry(
+				null, TestPropsValues.getUserId(), group.getGroupId(),
+				RandomTestUtil.randomString(),
+				AssetListEntryTypeConstants.TYPE_MANUAL,
+				ServiceContextTestUtil.getServiceContext(group.getGroupId()));
+
+		assetListEntry.setAssetEntrySubtype(RandomTestUtil.randomString());
+		assetListEntry.setAssetEntryType(JournalArticle.class.getName());
+
+		return _assetListEntryLocalService.updateAssetListEntry(assetListEntry);
 	}
 
 	private FragmentCollection _addFragmentCollection() throws Exception {
@@ -837,6 +886,8 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	}
 
 	private Map<String, String> _getConfigurationValuesMap() throws Exception {
+		AssetListEntry testGroupAssetListEntry = _addAssetListEntry(testGroup);
+
 		AssetVocabulary assetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
 				TestPropsValues.getUserId(), testGroup.getGroupId(),
@@ -848,6 +899,64 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			TestPropsValues.getUserId(), testGroup.getGroupId(),
 			RandomTestUtil.randomString(), assetVocabulary.getVocabularyId(),
 			ServiceContextTestUtil.getServiceContext(testGroup.getGroupId()));
+
+		SiteNavigationMenu siteNavigationMenu =
+			_siteNavigationMenuLocalService.addSiteNavigationMenu(
+				null, TestPropsValues.getUserId(), testGroup.getGroupId(),
+				RandomTestUtil.randomString(),
+				ServiceContextTestUtil.getServiceContext(
+					testGroup.getGroupId()));
+
+		SiteNavigationMenuItem siteNavigationMenuItem =
+			_siteNavigationMenuItemLocalService.addSiteNavigationMenuItem(
+				null, TestPropsValues.getUserId(), testGroup.getGroupId(),
+				siteNavigationMenu.getSiteNavigationMenuId(), 0,
+				SiteNavigationMenuItemTypeConstants.NODE,
+				UnicodePropertiesBuilder.put(
+					"name", RandomTestUtil.randomString()
+				).buildString(),
+				ServiceContextTestUtil.getServiceContext(
+					testGroup.getGroupId()));
+
+		InfoCollectionProvider<?> infoCollectionProvider =
+			_infoItemServiceRegistry.getInfoItemService(
+				InfoCollectionProvider.class,
+				"com.liferay.asset.internal.info.collection.provider." +
+					"RecentContentInfoCollectionProvider");
+		RelatedInfoItemCollectionProvider<?, ?>
+			relatedInfoItemCollectionProvider =
+				_infoItemServiceRegistry.getInfoItemService(
+					RelatedInfoItemCollectionProvider.class,
+					"com.liferay.asset.internal.info.collection.provider." +
+						"RelatedAssetsRelatedInfoItemCollectionProvider");
+
+		_objectDefinition = ObjectDefinitionTestUtil.publishObjectDefinition();
+
+		SingleFormVariationInfoCollectionProvider<?>
+			singleFormVariationInfoCollectionProvider =
+				(SingleFormVariationInfoCollectionProvider<?>)
+					_infoItemServiceRegistry.getInfoItemService(
+						InfoCollectionProvider.class,
+						_objectDefinition.getClassName());
+
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm();
+
+		ddmForm.addDDMFormField(
+			DDMFormTestUtil.createTextDDMFormField(
+				"repeatableField", true, true, false));
+
+		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
+			testGroup.getGroupId(), JournalArticle.class.getName(), ddmForm);
+
+		AssetListEntry irrelevantGroupAssetListEntry = _addAssetListEntry(
+			irrelevantGroup);
+
+		SiteNavigationMenu irrelevantGroupSiteNavigationMenu =
+			_siteNavigationMenuLocalService.addSiteNavigationMenu(
+				null, TestPropsValues.getUserId(), irrelevantGroup.getGroupId(),
+				RandomTestUtil.randomString(),
+				ServiceContextTestUtil.getServiceContext(
+					irrelevantGroup.getGroupId()));
 
 		JournalArticle journalArticle = JournalTestUtil.addArticle(
 			testGroup.getGroupId(),
@@ -861,12 +970,100 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			StringPool.BLANK,
 			ServiceContextTestUtil.getServiceContext(testGroup.getGroupId()));
 
+		SiteNavigationMenuItemType siteNavigationMenuItemType =
+			SiteNavigationMenuItemTypeRegistryUtil.
+				getSiteNavigationMenuItemType(siteNavigationMenuItem);
+
 		return HashMapBuilder.put(
+			"ASSET_LIST_ENTRY_CLASS_NAME_ID",
+			String.valueOf(PortalUtil.getClassNameId(AssetListEntry.class))
+		).put(
+			"ASSET_LIST_ENTRY_ERC",
+			testGroupAssetListEntry.getExternalReferenceCode()
+		).put(
+			"ASSET_LIST_ENTRY_ID",
+			String.valueOf(testGroupAssetListEntry.getAssetListEntryId())
+		).put(
+			"ASSET_LIST_ENTRY_ITEM_SUBTYPE",
+			testGroupAssetListEntry.getAssetEntrySubtype()
+		).put(
+			"ASSET_LIST_ENTRY_ITEM_TYPE",
+			testGroupAssetListEntry.getAssetEntryType()
+		).put(
+			"ASSET_LIST_ENTRY_TITLE", testGroupAssetListEntry.getTitle()
+		).put(
 			"CATEGORY_ERC", assetCategory.getExternalReferenceCode()
 		).put(
 			"CATEGORY_ID", String.valueOf(assetCategory.getCategoryId())
 		).put(
 			"CATEGORY_NAME", assetCategory.getName()
+		).put(
+			"COLLECTION_PROVIDER_ITEM_TYPE",
+			infoCollectionProvider.getCollectionItemClassName()
+		).put(
+			"COLLECTION_PROVIDER_RELATED_ITEMS_ITEM_TYPE",
+			relatedInfoItemCollectionProvider.getCollectionItemClassName()
+		).put(
+			"COLLECTION_PROVIDER_RELATED_ITEMS_TITLE",
+			relatedInfoItemCollectionProvider.getLabel(LocaleUtil.getDefault())
+		).put(
+			"COLLECTION_PROVIDER_SINGLE_FORM_VARIATION_ITEM_SUBTYPE",
+			singleFormVariationInfoCollectionProvider.getFormVariationKey()
+		).put(
+			"COLLECTION_PROVIDER_SINGLE_FORM_VARIATION_ITEM_TYPE",
+			singleFormVariationInfoCollectionProvider.
+				getCollectionItemClassName()
+		).put(
+			"COLLECTION_PROVIDER_SINGLE_FORM_VARIATION_KEY",
+			singleFormVariationInfoCollectionProvider.getKey()
+		).put(
+			"COLLECTION_PROVIDER_SINGLE_FORM_VARIATION_TITLE",
+			singleFormVariationInfoCollectionProvider.getLabel(
+				LocaleUtil.getDefault())
+		).put(
+			"COLLECTION_PROVIDER_TITLE",
+			infoCollectionProvider.getLabel(LocaleUtil.getDefault())
+		).put(
+			"CONTEXTUAL_MENU_CHILDREN_TITLE",
+			_language.get(LocaleUtil.getMostRelevantLocale(), "children")
+		).put(
+			"CONTEXTUAL_MENU_PARENT_AND_ITS_SIBLINGS_TITLE",
+			_language.get(
+				LocaleUtil.getMostRelevantLocale(), "parent-and-its-siblings")
+		).put(
+			"CONTEXTUAL_MENU_SELF_AND_SIBLINGS_TITLE",
+			_language.get(
+				LocaleUtil.getMostRelevantLocale(), "self-and-siblings")
+		).put(
+			"DDM_STRUCTURE_KEY", ddmStructure.getStructureKey()
+		).put(
+			"IRRELEVANT_GROUP_ASSET_LIST_ENTRY_ERC",
+			irrelevantGroupAssetListEntry.getExternalReferenceCode()
+		).put(
+			"IRRELEVANT_GROUP_ASSET_LIST_ENTRY_ID",
+			String.valueOf(irrelevantGroupAssetListEntry.getAssetListEntryId())
+		).put(
+			"IRRELEVANT_GROUP_ASSET_LIST_ENTRY_ITEM_SUBTYPE",
+			irrelevantGroupAssetListEntry.getAssetEntrySubtype()
+		).put(
+			"IRRELEVANT_GROUP_ASSET_LIST_ENTRY_ITEM_TYPE",
+			irrelevantGroupAssetListEntry.getAssetEntryType()
+		).put(
+			"IRRELEVANT_GROUP_ASSET_LIST_ENTRY_TITLE",
+			irrelevantGroupAssetListEntry.getTitle()
+		).put(
+			"IRRELEVANT_GROUP_EXTERNAL_REFERENCE_CODE",
+			irrelevantGroup.getExternalReferenceCode()
+		).put(
+			"IRRELEVANT_GROUP_SITE_NAVIGATION_MENU_ERC",
+			irrelevantGroupSiteNavigationMenu.getExternalReferenceCode()
+		).put(
+			"IRRELEVANT_GROUP_SITE_NAVIGATION_MENU_ID",
+			String.valueOf(
+				irrelevantGroupSiteNavigationMenu.getSiteNavigationMenuId())
+		).put(
+			"IRRELEVANT_GROUP_SITE_NAVIGATION_MENU_NAME",
+			irrelevantGroupSiteNavigationMenu.getName()
 		).put(
 			"JOURNAL_ARTICLE_CLASS_NAME_ID",
 			String.valueOf(PortalUtil.getClassNameId(JournalArticle.class))
@@ -883,13 +1080,49 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		).put(
 			"LAYOUT_NAME", layout.getName(LocaleUtil.getMostRelevantLocale())
 		).put(
+			"LAYOUT_PLID", String.valueOf(layout.getPlid())
+		).put(
 			"LAYOUT_UUID", layout.getUuid()
 		).put(
 			"NONEXISTENT_CLASS_PK", String.valueOf(RandomTestUtil.randomLong())
 		).put(
+			"PAGES_HIERARCHY_TITLE",
+			() -> {
+				if (testGroup.isPrivateLayoutsEnabled()) {
+					return _language.get(
+						LocaleUtil.getMostRelevantLocale(),
+						"public-pages-hierarchy");
+				}
+
+				return _language.get(
+					LocaleUtil.getMostRelevantLocale(), "pages-hierarchy");
+			}
+		).put(
+			"PRIVATE_PAGES_HIERARCHY_TITLE",
+			_language.get(
+				LocaleUtil.getMostRelevantLocale(), "private-pages-hierarchy")
+		).put(
 			"SITE_EXTERNAL_REFERENCE_CODE", testGroup.getExternalReferenceCode()
 		).put(
 			"SITE_GROUP_ID", String.valueOf(testGroup.getGroupId())
+		).put(
+			"SITE_NAVIGATION_MENU_ERC",
+			siteNavigationMenu.getExternalReferenceCode()
+		).put(
+			"SITE_NAVIGATION_MENU_ID",
+			String.valueOf(siteNavigationMenu.getSiteNavigationMenuId())
+		).put(
+			"SITE_NAVIGATION_MENU_ITEM_ERC",
+			siteNavigationMenuItem.getExternalReferenceCode()
+		).put(
+			"SITE_NAVIGATION_MENU_ITEM_ID",
+			String.valueOf(siteNavigationMenuItem.getSiteNavigationMenuItemId())
+		).put(
+			"SITE_NAVIGATION_MENU_ITEM_TITLE",
+			siteNavigationMenuItemType.getTitle(
+				siteNavigationMenuItem, LocaleUtil.getMostRelevantLocale())
+		).put(
+			"SITE_NAVIGATION_MENU_NAME", siteNavigationMenu.getName()
 		).put(
 			"VOCABULARY_ERC", assetVocabulary.getExternalReferenceCode()
 		).put(
@@ -934,6 +1167,15 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		}
 
 		return null;
+	}
+
+	private String _getHTMLWithDuplicateEditableIds() {
+		String editableId = RandomTestUtil.randomString();
+
+		return StringBundler.concat(
+			"<lfr-editable id=\"", editableId,
+			"\" type=\"text\"></lfr-editable><lfr-editable id=\"", editableId,
+			"\" type=\"text\"></lfr-editable>");
 	}
 
 	private FragmentResource _getUserWithoutPermissionsFragmentResource()
@@ -1277,8 +1519,10 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	private String _readConfiguration(
 		String fileName, Map<String, String> valuesMap) {
 
-		return StringUtil.replace(
-			_readConfiguration(fileName), "${", "}", valuesMap);
+		String configuration = StringUtil.replace(
+			_readConfiguration(fileName), "\"#{", "}\"", valuesMap);
+
+		return StringUtil.replace(configuration, "${", "}", valuesMap);
 	}
 
 	private void _testBatchEngineDeleteImportTask() throws Exception {
@@ -1394,6 +1638,43 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			_fragmentEntryLocalService.getVersions(fragmentEntry);
 
 		Assert.assertTrue(fragmentEntryVersions.isEmpty());
+	}
+
+	private void _testDeleteSiteFragmentInUseProblemException()
+		throws Exception {
+
+		Fragment postFragment = _postSiteFragmentSetFragment(
+			_randomFragment(true, false));
+
+		FragmentEntry fragmentEntry =
+			_fragmentEntryLocalService.getFragmentEntryByExternalReferenceCode(
+				postFragment.getExternalReferenceCode(),
+				testGroup.getGroupId());
+
+		Layout layout = _layoutLocalService.addLayout(
+			null, TestPropsValues.getUserId(), testGroup.getGroupId(), false,
+			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID,
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			StringPool.BLANK, LayoutConstants.TYPE_CONTENT, false,
+			StringPool.BLANK,
+			ServiceContextTestUtil.getServiceContext(testGroup.getGroupId()));
+
+		_fragmentEntryLinkLocalService.addFragmentEntryLink(
+			null, TestPropsValues.getUserId(), testGroup.getGroupId(), null,
+			fragmentEntry.getExternalReferenceCode(), null, 0, layout.getPlid(),
+			fragmentEntry.getCss(), fragmentEntry.getHtml(),
+			fragmentEntry.getJs(), fragmentEntry.getConfiguration(),
+			StringPool.BLANK, StringPool.BLANK, 0, StringPool.BLANK,
+			fragmentEntry.getType(),
+			ServiceContextTestUtil.getServiceContext(testGroup.getGroupId()));
+
+		_assertProblemException(
+			"CONFLICT",
+			"the-fragment-cannot-be-deleted-because-it-is-required-by-one-or-" +
+				"more-pages-or-page-templates",
+			() -> fragmentResource.deleteSiteFragment(
+				testGroup.getExternalReferenceCode(),
+				postFragment.getExternalReferenceCode()));
 	}
 
 	private void _testDeleteSiteFragmentNonexistent() throws Exception {
@@ -1911,6 +2192,49 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 						"reference code category-scope-erc"),
 					StringBundler.concat(
 						"Optional reference generated for missing entity with ",
+						"class name ", AssetListEntry.class.getName(),
+						", external reference code collection-erc, and null ",
+						"scope with current scope ID ", testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", AssetListEntry.class.getName(),
+						", external reference code ",
+						"collection-erc-and-other-site-scope-erc, and scope ",
+						"external reference code ",
+						irrelevantGroup.getExternalReferenceCode()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", AssetListEntry.class.getName(),
+						", external reference code ",
+						"collection-erc-and-scope-erc, and scope external ",
+						"reference code collection-scope-erc"),
+					StringBundler.concat(
+						"Optional reference generated for missing ",
+						"InfoCollectionProvider with external reference code ",
+						"com.liferay.nonexistent.info.collection.provider.",
+						"NonexistentInfoCollectionProvider and company ID ",
+						testGroup.getCompanyId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name com.liferay.nonexistent.model.",
+						"NonexistentModel, external reference code ",
+						"collection-nonexistent-item-type-subtype-erc, and ",
+						"null scope with current scope ID ",
+						testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name com.liferay.dynamic.data.mapping.model.",
+						"DDMStructure, external reference code ",
+						"collection-nonexistent-subtype-erc, and null scope ",
+						"with current scope ID ", testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", AssetListEntry.class.getName(),
+						", external reference code collection-visible-erc, ",
+						"and null scope with current scope ID ",
+						testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
 						"class name ", JournalArticle.class.getName(),
 						", external reference code item-erc, and null scope ",
 						"with current scope ID ", testGroup.getGroupId()),
@@ -1919,6 +2243,25 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 						"class name ", JournalArticle.class.getName(),
 						", external reference code item-erc-and-scope-erc, ",
 						"and scope external reference code item-scope-erc"),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", SiteNavigationMenu.class.getName(),
+						", external reference code ",
+						"site-navigation-menu-nonexistent-erc, and null scope ",
+						"with current scope ID ", testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", SiteNavigationMenuItem.class.getName(),
+						", external reference code ",
+						"site-navigation-menu-nonexistent-parent-item-erc, ",
+						"and null scope with current scope ID ",
+						testGroup.getGroupId()),
+					StringBundler.concat(
+						"Optional reference generated for missing entity with ",
+						"class name ", Layout.class.getName(),
+						", external reference code ",
+						"layout-nonexistent-parent-page-erc, and null scope ",
+						"with current scope ID ", testGroup.getGroupId()),
 					StringBundler.concat(
 						"Optional reference generated for missing entity with ",
 						"class name ", Layout.class.getName(),
@@ -1943,6 +2286,59 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 				TransformUtil.transform(
 					logCapture.getLogEntries(), LogEntry::getMessage));
 		}
+	}
+
+	private void _testPostSiteFragmentApprovedConfigurationInvalidContextualMenuTypeNullProblemException()
+		throws Exception {
+
+		Fragment fragment = _randomFragment(true, false);
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				fragment, FragmentVersion.Status.APPROVED);
+
+		approvedFragmentVersion.setConfiguration(
+			ConfigurationSerDes.toDTO(
+				_readConfiguration(
+					"configuration_invalid_contextual_menu_type_null_dto." +
+						"json")));
+
+		_assertProblemException(
+			"a-contextual-menu-type-is-required",
+			() -> _postSiteFragment(fragment));
+	}
+
+	private void _testPostSiteFragmentApprovedConfigurationInvalidProblemException()
+		throws Exception {
+
+		Fragment fragment = _randomFragment(true, false);
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				fragment, FragmentVersion.Status.APPROVED);
+
+		approvedFragmentVersion.setConfiguration(
+			ConfigurationSerDes.toDTO(
+				_readConfiguration("configuration_invalid_dto.json")));
+
+		_assertProblemException(
+			"fragment-configuration-is-invalid",
+			() -> _postSiteFragment(fragment));
+	}
+
+	private void _testPostSiteFragmentApprovedHTMLInvalidProblemException()
+		throws Exception {
+
+		Fragment fragment = _randomFragment(true, false);
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				fragment, FragmentVersion.Status.APPROVED);
+
+		approvedFragmentVersion.setHtml(_getHTMLWithDuplicateEditableIds());
+
+		_assertProblemException(
+			"fragment-html-is-invalid", () -> _postSiteFragment(fragment));
 	}
 
 	private void _testPostSiteFragmentBatch() throws Exception {
@@ -2280,6 +2676,17 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			Assert.assertEquals(
 				fragmentVersion.getJs(), curFragmentEntry.getJs());
 		}
+	}
+
+	private void _testPostSiteFragmentNameInvalidProblemException()
+		throws Exception {
+
+		Fragment fragment = _randomFragment(true, false);
+
+		fragment.setName(RandomTestUtil.randomString() + StringPool.PERIOD);
+
+		_assertProblemException(
+			"fragment-name-is-invalid", () -> _postSiteFragment(fragment));
 	}
 
 	private void _testPostSiteFragmentSetFragmentApproved() throws Exception {
@@ -2962,6 +3369,54 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 			"at-least-one-fragment-entry-version-is-required");
 	}
 
+	private void _testPutSiteFragmentUpdateApprovedConfigurationInvalidContextualMenuTypeNullProblemException()
+		throws Exception {
+
+		Fragment postFragment = _postSiteFragmentSetFragment(
+			_randomFragment(true, false));
+
+		Fragment fragment = _randomFragment(
+			true, false, postFragment.getExternalReferenceCode(),
+			postFragment.getKey());
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				fragment, FragmentVersion.Status.APPROVED);
+
+		approvedFragmentVersion.setConfiguration(
+			ConfigurationSerDes.toDTO(
+				_readConfiguration(
+					"configuration_invalid_contextual_menu_type_null_dto." +
+						"json")));
+
+		_testPutSiteFragmentProblemException(
+			postFragment.getExternalReferenceCode(), fragment,
+			"a-contextual-menu-type-is-required");
+	}
+
+	private void _testPutSiteFragmentUpdateApprovedConfigurationInvalidProblemException()
+		throws Exception {
+
+		Fragment postFragment = _postSiteFragmentSetFragment(
+			_randomFragment(true, false));
+
+		Fragment fragment = _randomFragment(
+			true, false, postFragment.getExternalReferenceCode(),
+			postFragment.getKey());
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				fragment, FragmentVersion.Status.APPROVED);
+
+		approvedFragmentVersion.setConfiguration(
+			ConfigurationSerDes.toDTO(
+				_readConfiguration("configuration_invalid_dto.json")));
+
+		_testPutSiteFragmentProblemException(
+			postFragment.getExternalReferenceCode(), fragment,
+			"fragment-configuration-is-invalid");
+	}
+
 	private void _testPutSiteFragmentUpdateApprovedConfigurationUnmodified()
 		throws Exception {
 
@@ -2986,6 +3441,27 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		_assertEqualsJSON(
 			_readConfiguration("put_configuration.json", valuesMap),
 			fragmentEntry.getConfiguration());
+	}
+
+	private void _testPutSiteFragmentUpdateApprovedHTMLInvalidProblemException()
+		throws Exception {
+
+		Fragment postFragment = _postSiteFragmentSetFragment(
+			_randomFragment(true, false));
+
+		Fragment fragment = _randomFragment(
+			true, false, postFragment.getExternalReferenceCode(),
+			postFragment.getKey());
+
+		ApprovedFragmentVersion approvedFragmentVersion =
+			(ApprovedFragmentVersion)_getFragmentVersion(
+				fragment, FragmentVersion.Status.APPROVED);
+
+		approvedFragmentVersion.setHtml(_getHTMLWithDuplicateEditableIds());
+
+		_testPutSiteFragmentProblemException(
+			postFragment.getExternalReferenceCode(), fragment,
+			"fragment-html-is-invalid");
 	}
 
 	private void _testPutSiteFragmentUpdateApprovedModifyApproved()
@@ -3206,6 +3682,23 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 		Assert.assertEquals(
 			_fragmentCollection.getExternalReferenceCode(),
 			putFragment.getFragmentSetExternalReferenceCode());
+	}
+
+	private void _testPutSiteFragmentUpdateNameInvalidProblemException()
+		throws Exception {
+
+		Fragment postFragment = _postSiteFragmentSetFragment(
+			_randomFragment(true, false));
+
+		Fragment fragment = _randomFragment(
+			true, false, postFragment.getExternalReferenceCode(),
+			postFragment.getKey());
+
+		fragment.setName(RandomTestUtil.randomString() + StringPool.PERIOD);
+
+		_testPutSiteFragmentProblemException(
+			postFragment.getExternalReferenceCode(), fragment,
+			"fragment-name-is-invalid");
 	}
 
 	private void _testPutSiteFragmentUpdateThumbnailURLReferenceExternalReferenceCode()
@@ -3492,6 +3985,9 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Inject
+	private AssetListEntryLocalService _assetListEntryLocalService;
+
+	@Inject
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	private FragmentCollection _fragmentCollection;
@@ -3500,7 +3996,13 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	private FragmentCollectionLocalService _fragmentCollectionLocalService;
 
 	@Inject
+	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
+
+	@Inject
 	private FragmentEntryLocalService _fragmentEntryLocalService;
+
+	@Inject
+	private InfoItemServiceRegistry _infoItemServiceRegistry;
 
 	@Inject
 	private Language _language;
@@ -3508,8 +4010,18 @@ public class FragmentResourceTest extends BaseFragmentResourceTestCase {
 	@Inject
 	private LayoutLocalService _layoutLocalService;
 
+	@DeleteAfterTestRun
+	private ObjectDefinition _objectDefinition;
+
 	@Inject
 	private PortletFileRepository _portletFileRepository;
+
+	@Inject
+	private SiteNavigationMenuItemLocalService
+		_siteNavigationMenuItemLocalService;
+
+	@Inject
+	private SiteNavigationMenuLocalService _siteNavigationMenuLocalService;
 
 	@Inject
 	private UserLocalService _userLocalService;

@@ -2883,7 +2883,9 @@ test.describe('Create Object Fields', () => {
 			})
 		).toBeVisible({visible});
 		await expect(
-			objectFieldsPage.iframeLocator.getByText('Language')
+			objectFieldsPage.iframeLocator
+				.locator('label')
+				.filter({hasText: /^LanguageMandatory$/})
 		).toBeVisible({visible});
 		await expect(
 			objectFieldsPage.iframeLocator.getByRole('radio', {
@@ -3072,9 +3074,7 @@ test.describe('Create Object Fields', () => {
 					.getByLabel('Label')
 					.fill('Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -3142,9 +3142,7 @@ test.describe('Create Object Fields', () => {
 			await test.step('Verify that translated Label is updated', async () => {
 				await objectFieldsPage.openObjectField('Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -3190,9 +3188,7 @@ test.describe('Create Object Fields', () => {
 					.getByLabel('Label')
 					.fill('New Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -3232,9 +3228,7 @@ test.describe('Create Object Fields', () => {
 			await test.step('Verify that translated Label is updated', async () => {
 				await objectFieldsPage.openObjectField('New Updated Label');
 
-				await objectFieldsPage.iframeLocator
-					.getByTitle('en_US')
-					.click();
+				await objectFieldsPage.labelLocalizationButton.click();
 				await objectFieldsPage.iframeLocator
 					.getByRole('option', {name: 'pt_BR'})
 					.click();
@@ -4213,6 +4207,270 @@ test.describe('Manage object fields default value properties', () => {
 					objectFieldsPage.editFieldSaveButton
 				).toBeVisible();
 			});
+		}
+	);
+});
+
+test.describe('Manage object field descriptions', () => {
+	test(
+		'can add description through Model Builder',
+		{tag: '@LPD-103747'},
+		async ({
+			apiHelpers,
+			modelBuilderDiagramPage,
+			modelBuilderObjectDefinitionNodePage,
+			modelBuilderRightSidebarPage,
+			page,
+		}) => {
+			const objectFolder =
+				await apiHelpers.objectAdmin.postRandomObjectFolder();
+
+			apiHelpers.data.push({id: objectFolder.id, type: 'objectFolder'});
+
+			const objectFields = generateObjectFields({
+				objectFieldBusinessTypes: ['Text'],
+			});
+
+			const objectFieldLabel = objectFields[0].label!['en_US'];
+
+			const objectDefinition =
+				await apiHelpers.objectAdmin.postRandomObjectDefinition({
+					objectFields,
+					objectFolderExternalReferenceCode:
+						objectFolder.externalReferenceCode,
+					status: {code: 0},
+				});
+
+			apiHelpers.data.push({
+				id: objectDefinition.id,
+				type: 'objectDefinition',
+			});
+
+			const description = 'Length of the warranty in months.';
+
+			const objectDefinitionLabel = objectDefinition.label['en_US'];
+
+			await modelBuilderDiagramPage.goto({
+				objectFolderName: objectFolder.label['en_US'],
+			});
+
+			await modelBuilderDiagramPage.toggleSidebarsButton.click();
+
+			await modelBuilderDiagramPage.fitViewButton.click();
+
+			await modelBuilderObjectDefinitionNodePage.clickShowAllFieldsButton(
+				objectDefinitionLabel,
+				modelBuilderDiagramPage.objectDefinitionNodes
+			);
+
+			await modelBuilderDiagramPage.objectDefinitionNodes
+				.filter({hasText: objectDefinitionLabel})
+				.getByText(objectFieldLabel, {exact: true})
+				.click();
+
+			await modelBuilderRightSidebarPage.sidebarDescriptionInput.fill(
+				description
+			);
+
+			await modelBuilderRightSidebarPage.sidebarDescriptionInput.blur();
+
+			await expect(page.getByText('Changes Saved')).toBeVisible();
+
+			await expect(
+				modelBuilderRightSidebarPage.sidebarDescriptionInput
+			).toHaveValue(description);
+		}
+	);
+
+	test(
+		'can manage description through Objects Admin',
+		{tag: '@LPD-103747'},
+		async ({apiHelpers, objectFieldsPage}) => {
+			const objectFields = generateObjectFields({
+				objectFieldBusinessTypes: ['Text'],
+			});
+
+			const objectFieldLabel = objectFields[0].label!['en_US'];
+
+			const objectDefinition =
+				await apiHelpers.objectAdmin.postRandomObjectDefinition({
+					objectFields,
+					status: {code: 0},
+				});
+
+			apiHelpers.data.push({
+				id: objectDefinition.id,
+				type: 'objectDefinition',
+			});
+
+			const description = 'Length of the warranty in months.';
+			const updatedDescription = 'Length of the warranty in years.';
+
+			const saveAndReopen = async () => {
+				await objectFieldsPage.saveObjectField();
+
+				await objectFieldsPage.openObjectField(objectFieldLabel);
+			};
+
+			await objectFieldsPage.goto(objectDefinition.label['en_US']);
+
+			await objectFieldsPage.openObjectField(objectFieldLabel);
+
+			await objectFieldsPage.descriptionInput.fill(description);
+
+			await saveAndReopen();
+
+			await expect(objectFieldsPage.descriptionInput).toHaveValue(
+				description
+			);
+
+			await objectFieldsPage.descriptionInput.fill(updatedDescription);
+
+			await saveAndReopen();
+
+			await expect(objectFieldsPage.descriptionInput).toHaveValue(
+				updatedDescription
+			);
+
+			await objectFieldsPage.descriptionInput.clear();
+
+			await saveAndReopen();
+
+			await expect(objectFieldsPage.descriptionInput).toBeEmpty();
+		}
+	);
+
+	test(
+		'does not show the description for a framework metadata field',
+		{tag: '@LPD-103747'},
+		async ({
+			apiHelpers,
+			modelBuilderDiagramPage,
+			modelBuilderObjectDefinitionNodePage,
+			modelBuilderRightSidebarPage,
+			objectFieldsPage,
+		}) => {
+			const objectFields = generateObjectFields({
+				objectFieldBusinessTypes: ['Text'],
+			});
+
+			const objectFieldLabel = objectFields[0].label!['en_US'];
+
+			const objectDefinition =
+				await apiHelpers.objectAdmin.postRandomObjectDefinition({
+					objectFields,
+					status: {code: 0},
+				});
+
+			apiHelpers.data.push({
+				id: objectDefinition.id,
+				type: 'objectDefinition',
+			});
+
+			const objectDefinitionLabel = objectDefinition.label['en_US'];
+
+			await test.step('Objects Admin', async () => {
+				await objectFieldsPage.goto(objectDefinitionLabel);
+
+				await objectFieldsPage.openObjectField('Create Date');
+
+				await expect(objectFieldsPage.descriptionInput).toBeHidden();
+
+				await objectFieldsPage.closeObjectFieldSidePanel();
+
+				await objectFieldsPage.openObjectField(objectFieldLabel);
+
+				await expect(objectFieldsPage.descriptionInput).toBeVisible();
+			});
+
+			await test.step('Model Builder', async () => {
+				await modelBuilderDiagramPage.goto({
+					objectFolderName: 'Default',
+				});
+
+				await modelBuilderObjectDefinitionNodePage.clickShowAllFieldsButton(
+					objectDefinitionLabel,
+					modelBuilderDiagramPage.objectDefinitionNodes
+				);
+
+				await modelBuilderDiagramPage.objectDefinitionNodes
+					.filter({hasText: objectDefinitionLabel})
+					.getByText('Create Date', {exact: true})
+					.dispatchEvent('click');
+
+				await expect(
+					modelBuilderRightSidebarPage.sidebarDescriptionInput
+				).toBeHidden();
+
+				await modelBuilderDiagramPage.objectDefinitionNodes
+					.filter({hasText: objectDefinitionLabel})
+					.getByText(objectFieldLabel, {exact: true})
+					.dispatchEvent('click');
+
+				await expect(
+					modelBuilderRightSidebarPage.sidebarDescriptionInput
+				).toBeVisible();
+			});
+		}
+	);
+
+	test(
+		'shows the relationship description on the child foreign key field',
+		{tag: '@LPD-103748'},
+		async ({apiHelpers, objectFieldsPage}) => {
+			const objectDefinition1 =
+				await apiHelpers.objectAdmin.postRandomObjectDefinition({
+					status: {code: 0},
+				});
+
+			apiHelpers.data.push({
+				id: objectDefinition1.id,
+				type: 'objectDefinition',
+			});
+
+			const objectDefinition2 =
+				await apiHelpers.objectAdmin.postRandomObjectDefinition({
+					status: {code: 0},
+				});
+
+			apiHelpers.data.push({
+				id: objectDefinition2.id,
+				type: 'objectDefinition',
+			});
+
+			const description = 'Each claim has many service visits.';
+
+			const objectRelationshipLabel =
+				'objectRelationshipLabel' + getRandomInt();
+
+			const objectRelationshipAPIClient =
+				await apiHelpers.buildRestClient(ObjectRelationshipAPI);
+
+			const {body: objectRelationship} =
+				await objectRelationshipAPIClient.postObjectDefinitionByExternalReferenceCodeObjectRelationship(
+					objectDefinition1.externalReferenceCode,
+					{
+						description: {en_US: description},
+						label: {en_US: objectRelationshipLabel},
+						name: 'rel' + getRandomInt(),
+						objectDefinitionExternalReferenceCode2:
+							objectDefinition2.externalReferenceCode,
+						type: 'oneToMany',
+					}
+				);
+
+			apiHelpers.data.push({
+				id: objectRelationship.id,
+				type: 'objectRelationship',
+			});
+
+			await objectFieldsPage.goto(objectDefinition2.label['en_US']);
+
+			await objectFieldsPage.openObjectField(objectRelationshipLabel);
+
+			await expect(objectFieldsPage.descriptionInput).toHaveValue(
+				description
+			);
 		}
 	);
 });

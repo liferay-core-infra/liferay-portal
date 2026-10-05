@@ -82,6 +82,23 @@ public class PortalInstancesUserNotificationHandler
 		String status = jsonObject.getString("status");
 
 		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_ADD) ||
+			operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_COPY)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-x-is-ready-to-use",
+					jsonObject.getString("portalInstanceId"));
+			}
+
+			return serviceContext.translate(
+				jsonObject.getString("errorMessageKey"));
+		}
+
+		if (operationType.equals(
 				PortalInstancesNotificationConstants.OPERATION_TYPE_DELETE)) {
 
 			if (status.equals(
@@ -89,6 +106,37 @@ public class PortalInstancesUserNotificationHandler
 
 				return serviceContext.translate(
 					"the-instance-x-is-no-longer-available",
+					jsonObject.getString("portalInstanceId"));
+			}
+
+			return serviceContext.translate(
+				jsonObject.getString("errorMessageKey"));
+		}
+
+		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_EXPORT)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-was-exported-to-the-schema-x",
+					jsonObject.getString("schemaName"));
+			}
+
+			return serviceContext.translate(
+				jsonObject.getString("errorMessageKey"),
+				jsonObject.getString("schemaName"));
+		}
+
+		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_IMPORT)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-x-is-ready-to-use",
 					jsonObject.getString("portalInstanceId"));
 			}
 
@@ -109,6 +157,40 @@ public class PortalInstancesUserNotificationHandler
 		String status = jsonObject.getString("status");
 
 		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_ADD)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-x-was-created",
+					jsonObject.getString("portalInstanceId"));
+			}
+
+			return serviceContext.translate(
+				"the-instance-x-could-not-be-created",
+				jsonObject.getString("portalInstanceId"));
+		}
+
+		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_COPY)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-x-was-copied-to-y",
+					jsonObject.getString("sourcePortalInstanceId"),
+					jsonObject.getString("portalInstanceId"));
+			}
+
+			return serviceContext.translate(
+				"the-instance-x-could-not-be-copied-to-y",
+				jsonObject.getString("sourcePortalInstanceId"),
+				jsonObject.getString("portalInstanceId"));
+		}
+
+		if (operationType.equals(
 				PortalInstancesNotificationConstants.OPERATION_TYPE_DELETE)) {
 
 			if (status.equals(
@@ -122,6 +204,38 @@ public class PortalInstancesUserNotificationHandler
 			return serviceContext.translate(
 				"the-instance-x-could-not-be-deleted",
 				jsonObject.getString("portalInstanceId"));
+		}
+
+		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_EXPORT)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-x-was-exported",
+					jsonObject.getString("portalInstanceId"));
+			}
+
+			return serviceContext.translate(
+				"the-instance-x-could-not-be-exported",
+				jsonObject.getString("portalInstanceId"));
+		}
+
+		if (operationType.equals(
+				PortalInstancesNotificationConstants.OPERATION_TYPE_IMPORT)) {
+
+			if (status.equals(
+					PortalInstancesNotificationConstants.STATUS_SUCCESS)) {
+
+				return serviceContext.translate(
+					"the-instance-x-was-imported",
+					jsonObject.getString("portalInstanceId"));
+			}
+
+			return serviceContext.translate(
+				"the-instance-could-not-be-imported-from-the-schema-x",
+				jsonObject.getString("schemaName"));
 		}
 
 		throw new IllegalArgumentException(

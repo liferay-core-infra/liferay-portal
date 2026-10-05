@@ -1,6 +1,22 @@
 definition {
 
 	@summary = "Default summary"
+	macro _deleteMessage(messageId = null) {
+		Variables.assertDefined(parameterList = ${messageId});
+
+		var portalURL = JSONCompany.getPortalURL();
+		var userLoginInfo = JSONUtil2.formatJSONUser();
+
+		var curl = '''
+			${portalURL}/api/jsonws/mb.mbmessage/delete-message \
+				-u ${userLoginInfo} \
+				-d messageId=${messageId} \
+		''';
+
+		com.liferay.poshi.runner.util.JSONCurlUtil.post(${curl});
+	}
+
+	@summary = "Default summary"
 	macro addAttachmentToMessage(groupName = null, fileName = null, threadSubject = null, mimeType = null, categoryName = null) {
 		var messageId = JSONMBMessage.getMessageIdByName(
 			categoryName = ${categoryName},
@@ -207,6 +223,37 @@ definition {
 	}
 
 	@summary = "Default summary"
+	macro deleteAllThreads(groupName = null) {
+		Variables.assertDefined(parameterList = ${groupName});
+
+		var portalURL = JSONCompany.getPortalURL();
+		var groupId = JSONGroupSetter.setGroupId(groupName = ${groupName});
+		var userLoginInfo = JSONUtil2.formatJSONUser();
+
+		// Pass the status as ANY rather than APPROVED so a thread left
+		// pending by a workflow is removed too. See LPD-106704.
+
+		var curl = '''
+			${portalURL}/api/jsonws/mb.mbthread/get-threads \
+				-u ${userLoginInfo} \
+				-d groupId=${groupId} \
+				-d categoryId=0 \
+				-d "status=-1" \
+				-d "start=-1" \
+				-d "end=-1"
+		''';
+
+		var rootMessageIds = JSONCurlUtil.post(${curl}, "$..['rootMessageId']");
+
+		// Deleting the root message deletes its thread. There is no
+		// mb.mbthread/delete-thread action to call instead.
+
+		for (var rootMessageId : list ${rootMessageIds}) {
+			JSONMBMessage._deleteMessage(messageId = ${rootMessageId});
+		}
+	}
+
+	@summary = "Default summary"
 	macro deleteCategory(groupName = null, categoryName = null) {
 		Variables.assertDefined(parameterList = "${categoryName},${groupName}");
 
@@ -233,16 +280,8 @@ definition {
 			categoryName = ${categoryName},
 			groupName = ${groupName},
 			threadSubject = ${threadSubject});
-		var portalURL = JSONCompany.getPortalURL();
-		var userLoginInfo = JSONUtil2.formatJSONUser();
 
-		var curl = '''
-			${portalURL}/api/jsonws/mb.mbmessage/delete-message \
-				-u ${userLoginInfo} \
-				-d messageId=${messageId} \
-		''';
-
-		com.liferay.poshi.runner.util.JSONCurlUtil.post(${curl});
+		JSONMBMessage._deleteMessage(messageId = ${messageId});
 	}
 
 	@summary = "Default summary"

@@ -1,0 +1,785 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "grafana",
+					"uid": "-- Grafana --"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"links": [
+	],
+	"panels": [
+		{
+			"fieldConfig": {
+				"defaults": {
+				},
+				"overrides": [
+				]
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 1,
+			"options": {
+				"code": {
+					"language": "plaintext",
+					"showLineNumbers": false,
+					"showMiniMap": false
+				},
+				"content": "${HEADER_HTML}",
+				"mode": "html"
+			},
+			"pluginVersion": "12.4.2",
+			"title": "",
+			"transparent": true,
+			"type": "text"
+		},
+		{
+			"fieldConfig": {
+				"defaults": {
+				},
+				"overrides": [
+				]
+			},
+			"gridPos": {
+				"h": 23,
+				"w": 24,
+				"x": 0,
+				"y": 21
+			},
+			"id": 8,
+			"options": {
+				"code": {
+					"language": "plaintext",
+					"showLineNumbers": false,
+					"showMiniMap": false
+				},
+				"content": "${AZURE_BACKUP_HTML}",
+				"mode": "html"
+			},
+			"pluginVersion": "12.4.2",
+			"title": "",
+			"transparent": true,
+			"type": "text"
+		},
+		{
+			"datasource": {
+				"type": "grafana-azure-monitor-datasource",
+				"uid": "${DS_AZURE_MONITOR}"
+			},
+			"description": "Lists the backups triggered or completed within the time range, as chosen in Time Range Applies To. Azure Resource Graph only keeps the last 14 days of backup jobs, so older backups are not listed even if their recovery points have not expired.",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"align": "auto",
+						"cellOptions": {
+							"type": "auto"
+						},
+						"filterable": true,
+						"footer": {
+							"reducers": [
+							]
+						},
+						"inspect": false
+					},
+					"mappings": [
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "red",
+								"value": 0
+							},
+							{
+								"color": "green",
+								"value": 1
+							}
+						]
+					}
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": ".*"
+						},
+						"properties": [
+							{
+								"id": "links",
+								"value": [
+								]
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Recovery Point ID"
+						},
+						"properties": [
+							{
+								"id": "custom.inspect",
+								"value": true
+							},
+							{
+								"id": "custom.minWidth",
+								"value": 280
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Status"
+						},
+						"properties": [
+							{
+								"id": "mappings",
+								"value": [
+									{
+										"options": {
+											"FAILED": {
+												"index": 2,
+												"text": "🔴 FAILED"
+											},
+											"IN PROGRESS": {
+												"index": 1,
+												"text": "🟡 IN PROGRESS"
+											},
+											"SUCCEEDED": {
+												"index": 0,
+												"text": "🟢 SUCCEEDED"
+											}
+										},
+										"type": "value"
+									}
+								]
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Storage Account"
+						},
+						"properties": [
+							{
+								"id": "links",
+								"value": [
+									{
+										"targetBlank": true,
+										"title": "Open the storage account in the Azure Portal",
+										"url": "https://portal.azure.com/#resource/subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${AZURE_RESOURCE_GROUP}/providers/Microsoft.Storage/storageAccounts/${__value.raw}/overview"
+									}
+								]
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byType",
+							"options": "time"
+						},
+						"properties": [
+							{
+								"id": "custom.filterable"
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 16,
+				"w": 15,
+				"x": 0,
+				"y": 5
+			},
+			"id": 2,
+			"options": {
+				"cellHeight": "sm",
+				"showHeader": true,
+				"sortBy": [
+					{
+						"desc": true,
+						"displayName": "Backup Triggered"
+					}
+				]
+			},
+			"pluginVersion": "12.4.2",
+			"targets": [
+				{
+					"azureResourceGraph": {
+						"query": "recoveryservicesresources\n| where type == 'microsoft.dataprotection/backupvaults/backupjobs'\n| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n| where properties.operation == 'Backup'\n| extend endTime = todatetime(properties.endTime), status = tostring(properties.status), triggered = todatetime(properties.startTime)\n| extend finished = status != 'InProgress' and isnotnull(endTime)\n| extend completed = iff(finished, endTime, datetime(null))\n| where $__timeFilter(${timeField})\n| extend dataSourceName = tostring(properties.dataSourceName), recoveryPointId = tostring(properties.extendedInfo.targetRecoverPoint.recoveryPointID)\n| mv-expand resourceId = pack_array(tolower(tostring(properties.dataSourceId)), tostring(split(tolower(id), '/backupjobs/')[0])) to typeof(string)\n| join kind=leftouter (\n\tresources\n\t| where type in ('microsoft.dataprotection/backupvaults', 'microsoft.storage/storageaccounts')\n\t| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n\t| project dataPlane = tostring(tags['data-plane']), namespace = strcat('liferay-', tostring(tags['project-id']), '-', tostring(tags['environment-id'])), resourceId = tolower(id)\n) on resourceId\n| summarize dataPlane = max(dataPlane), namespace = max(namespace) by completed, dataSourceName, finished, id, recoveryPointId, status, triggered\n| where namespace == '$environment'\n| extend minutes = iff(finished, max_of(toint(round((completed - triggered) / 1m)), 1), int(null))\n| order by triggered desc\n| project ['Recovery Point ID'] = iff(status in ('Completed', 'CompletedWithWarnings'), recoveryPointId, ''), ['Data Plane'] = dataPlane, ['Storage Account'] = dataSourceName, ['Backup Triggered'] = triggered, ['Backup Completed'] = completed, Duration = case(not(finished), '', minutes >= 60, strcat(minutes / 60, 'h', iff(minutes % 60 < 10, '0', ''), minutes % 60, 'm'), strcat(minutes, 'm')), Status = case(status in ('Completed', 'CompletedWithWarnings'), 'SUCCEEDED', status == 'InProgress', 'IN PROGRESS', status == 'Failed', 'FAILED', toupper(status))",
+						"resultFormat": "table"
+					},
+					"datasource": {
+						"type": "grafana-azure-monitor-datasource",
+						"uid": "${DS_AZURE_MONITOR}"
+					},
+					"queryType": "Azure Resource Graph",
+					"refId": "A",
+					"subscriptions": [
+						"${AZURE_SUBSCRIPTION_ID}"
+					]
+				}
+			],
+			"title": "Backups",
+			"transformations": [
+				{
+					"id": "convertFieldType",
+					"options": {
+						"conversions": [
+							{
+								"destinationType": "time",
+								"targetField": "Backup Completed"
+							},
+							{
+								"destinationType": "time",
+								"targetField": "Backup Triggered"
+							}
+						],
+						"fields": {
+						}
+					}
+				}
+			],
+			"type": "table"
+		},
+		{
+			"datasource": {
+				"type": "grafana-azure-monitor-datasource",
+				"uid": "${DS_AZURE_MONITOR}"
+			},
+			"description": "Counts the backups that succeeded within the time range, as chosen in Time Range Applies To. Azure Resource Graph only keeps the last 14 days of backup jobs, so older backups are not counted.",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"index": 0,
+									"text": "N/A"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": 0
+							}
+						]
+					},
+					"unit": "none"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": ".*"
+						},
+						"properties": [
+							{
+								"id": "links",
+								"value": [
+								]
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 3,
+				"x": 15,
+				"y": 5
+			},
+			"id": 4,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "horizontal",
+				"percentChangeColorMode": "standard",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"textMode": "auto",
+				"wideLayout": true
+			},
+			"pluginVersion": "12.4.2",
+			"targets": [
+				{
+					"azureResourceGraph": {
+						"query": "recoveryservicesresources\n| where type == 'microsoft.dataprotection/backupvaults/backupjobs'\n| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n| where properties.operation == 'Backup'\n| extend endTime = todatetime(properties.endTime), status = tostring(properties.status), triggered = todatetime(properties.startTime)\n| extend finished = status != 'InProgress' and isnotnull(endTime)\n| extend completed = iff(finished, endTime, datetime(null))\n| where $__timeFilter(${timeField})\n| where status in ('Cancelled', 'Completed', 'CompletedWithWarnings', 'Failed')\n| mv-expand resourceId = pack_array(tolower(tostring(properties.dataSourceId)), tostring(split(tolower(id), '/backupjobs/')[0])) to typeof(string)\n| join kind=leftouter (\n\tresources\n\t| where type in ('microsoft.dataprotection/backupvaults', 'microsoft.storage/storageaccounts')\n\t| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n\t| project namespace = strcat('liferay-', tostring(tags['project-id']), '-', tostring(tags['environment-id'])), resourceId = tolower(id)\n) on resourceId\n| summarize namespace = max(namespace) by id, status\n| where namespace == '$environment'\n| where status in ('Completed', 'CompletedWithWarnings')\n| summarize ['Successful Runs'] = count()",
+						"resultFormat": "table"
+					},
+					"datasource": {
+						"type": "grafana-azure-monitor-datasource",
+						"uid": "${DS_AZURE_MONITOR}"
+					},
+					"queryType": "Azure Resource Graph",
+					"refId": "A",
+					"subscriptions": [
+						"${AZURE_SUBSCRIPTION_ID}"
+					]
+				}
+			],
+			"title": "Successful Runs",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "grafana-azure-monitor-datasource",
+				"uid": "${DS_AZURE_MONITOR}"
+			},
+			"description": "Counts the backups that failed or were cancelled within the time range, as chosen in Time Range Applies To. Azure Resource Graph only keeps the last 14 days of backup jobs, so older backups are not counted.",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"index": 0,
+									"text": "N/A"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": 0
+							}
+						]
+					},
+					"unit": "none"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": ".*"
+						},
+						"properties": [
+							{
+								"id": "links",
+								"value": [
+								]
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 3,
+				"x": 18,
+				"y": 5
+			},
+			"id": 5,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "horizontal",
+				"percentChangeColorMode": "standard",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"textMode": "auto",
+				"wideLayout": true
+			},
+			"pluginVersion": "12.4.2",
+			"targets": [
+				{
+					"azureResourceGraph": {
+						"query": "recoveryservicesresources\n| where type == 'microsoft.dataprotection/backupvaults/backupjobs'\n| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n| where properties.operation == 'Backup'\n| extend endTime = todatetime(properties.endTime), status = tostring(properties.status), triggered = todatetime(properties.startTime)\n| extend finished = status != 'InProgress' and isnotnull(endTime)\n| extend completed = iff(finished, endTime, datetime(null))\n| where $__timeFilter(${timeField})\n| where status in ('Cancelled', 'Completed', 'CompletedWithWarnings', 'Failed')\n| mv-expand resourceId = pack_array(tolower(tostring(properties.dataSourceId)), tostring(split(tolower(id), '/backupjobs/')[0])) to typeof(string)\n| join kind=leftouter (\n\tresources\n\t| where type in ('microsoft.dataprotection/backupvaults', 'microsoft.storage/storageaccounts')\n\t| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n\t| project namespace = strcat('liferay-', tostring(tags['project-id']), '-', tostring(tags['environment-id'])), resourceId = tolower(id)\n) on resourceId\n| summarize namespace = max(namespace) by id, status\n| where namespace == '$environment'\n| where status !in ('Completed', 'CompletedWithWarnings')\n| summarize ['Failed Runs'] = count()",
+						"resultFormat": "table"
+					},
+					"datasource": {
+						"type": "grafana-azure-monitor-datasource",
+						"uid": "${DS_AZURE_MONITOR}"
+					},
+					"queryType": "Azure Resource Graph",
+					"refId": "A",
+					"subscriptions": [
+						"${AZURE_SUBSCRIPTION_ID}"
+					]
+				}
+			],
+			"title": "Failed Runs",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "grafana-azure-monitor-datasource",
+				"uid": "${DS_AZURE_MONITOR}"
+			},
+			"description": "Counts the backups that finished within the time range, as chosen in Time Range Applies To. Azure Resource Graph only keeps the last 14 days of backup jobs, so older backups are not counted. Backups still in progress are not counted.",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"index": 0,
+									"text": "N/A"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": 0
+							}
+						]
+					},
+					"unit": "none"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": ".*"
+						},
+						"properties": [
+							{
+								"id": "links",
+								"value": [
+								]
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 3,
+				"x": 21,
+				"y": 5
+			},
+			"id": 6,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "horizontal",
+				"percentChangeColorMode": "standard",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"textMode": "auto",
+				"wideLayout": true
+			},
+			"pluginVersion": "12.4.2",
+			"targets": [
+				{
+					"azureResourceGraph": {
+						"query": "recoveryservicesresources\n| where type == 'microsoft.dataprotection/backupvaults/backupjobs'\n| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n| where properties.operation == 'Backup'\n| extend endTime = todatetime(properties.endTime), status = tostring(properties.status), triggered = todatetime(properties.startTime)\n| extend finished = status != 'InProgress' and isnotnull(endTime)\n| extend completed = iff(finished, endTime, datetime(null))\n| where $__timeFilter(${timeField})\n| where status in ('Cancelled', 'Completed', 'CompletedWithWarnings', 'Failed')\n| mv-expand resourceId = pack_array(tolower(tostring(properties.dataSourceId)), tostring(split(tolower(id), '/backupjobs/')[0])) to typeof(string)\n| join kind=leftouter (\n\tresources\n\t| where type in ('microsoft.dataprotection/backupvaults', 'microsoft.storage/storageaccounts')\n\t| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n\t| project namespace = strcat('liferay-', tostring(tags['project-id']), '-', tostring(tags['environment-id'])), resourceId = tolower(id)\n) on resourceId\n| summarize namespace = max(namespace) by id, status\n| where namespace == '$environment'\n| summarize ['Total Runs'] = count()",
+						"resultFormat": "table"
+					},
+					"datasource": {
+						"type": "grafana-azure-monitor-datasource",
+						"uid": "${DS_AZURE_MONITOR}"
+					},
+					"queryType": "Azure Resource Graph",
+					"refId": "A",
+					"subscriptions": [
+						"${AZURE_SUBSCRIPTION_ID}"
+					]
+				}
+			],
+			"title": "Total Runs",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "grafana-azure-monitor-datasource",
+				"uid": "${DS_AZURE_MONITOR}"
+			},
+			"description": "Shows the share of finished backups that failed or were cancelled within the time range, as chosen in Time Range Applies To. Azure Resource Graph only keeps the last 14 days of backup jobs, so older backups are not counted.",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"index": 0,
+									"text": "N/A"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": 0
+							},
+							{
+								"color": "orange",
+								"value": 1
+							},
+							{
+								"color": "red",
+								"value": 16
+							}
+						]
+					},
+					"unit": "percent"
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byRegexp",
+							"options": ".*"
+						},
+						"properties": [
+							{
+								"id": "links",
+								"value": [
+								]
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 10,
+				"w": 9,
+				"x": 15,
+				"y": 11
+			},
+			"id": 7,
+			"options": {
+				"minVizHeight": 75,
+				"minVizWidth": 75,
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true,
+				"sizing": "auto"
+			},
+			"pluginVersion": "12.4.2",
+			"targets": [
+				{
+					"azureResourceGraph": {
+						"query": "recoveryservicesresources\n| where type == 'microsoft.dataprotection/backupvaults/backupjobs'\n| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n| where properties.operation == 'Backup'\n| extend endTime = todatetime(properties.endTime), status = tostring(properties.status), triggered = todatetime(properties.startTime)\n| extend finished = status != 'InProgress' and isnotnull(endTime)\n| extend completed = iff(finished, endTime, datetime(null))\n| where $__timeFilter(${timeField})\n| where status in ('Cancelled', 'Completed', 'CompletedWithWarnings', 'Failed')\n| mv-expand resourceId = pack_array(tolower(tostring(properties.dataSourceId)), tostring(split(tolower(id), '/backupjobs/')[0])) to typeof(string)\n| join kind=leftouter (\n\tresources\n\t| where type in ('microsoft.dataprotection/backupvaults', 'microsoft.storage/storageaccounts')\n\t| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n\t| project namespace = strcat('liferay-', tostring(tags['project-id']), '-', tostring(tags['environment-id'])), resourceId = tolower(id)\n) on resourceId\n| summarize namespace = max(namespace) by id, status\n| where namespace == '$environment'\n| summarize failed = countif(status !in ('Completed', 'CompletedWithWarnings')), total = count()\n| project ['Backup Failure Rate'] = iff(total == 0, real(null), 100.0 * failed / total)",
+						"resultFormat": "table"
+					},
+					"datasource": {
+						"type": "grafana-azure-monitor-datasource",
+						"uid": "${DS_AZURE_MONITOR}"
+					},
+					"queryType": "Azure Resource Graph",
+					"refId": "A",
+					"subscriptions": [
+						"${AZURE_SUBSCRIPTION_ID}"
+					]
+				}
+			],
+			"title": "Backup Failure Rate",
+			"type": "gauge"
+		}
+	],
+	"preload": false,
+	"schemaVersion": 42,
+	"tags": [
+		"Backups",
+		"Liferay"
+	],
+	"templating": {
+		"list": [
+			{
+				"allowCustomValue": false,
+				"current": {
+					"text": "",
+					"value": ""
+				},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "${DS_PROMETHEUS}"
+				},
+				"definition": "label_values(kube_namespace_labels{label_liferay_com_observable=\"true\"},${NS_LABEL})",
+				"label": "Environment",
+				"name": "environment",
+				"options": [
+				],
+				"query": {
+					"qryType": 1,
+					"query": "label_values(kube_namespace_labels{label_liferay_com_observable=\"true\"},${NS_LABEL})",
+					"refId": "PrometheusVariableQueryEditor-VariableQuery"
+				},
+				"refresh": 1,
+				"regex": "/(?<value>.*-(?<text>.*))/",
+				"regexApplyTo": "value",
+				"sort": 1,
+				"type": "query"
+			},
+			{
+				"allowCustomValue": false,
+				"current": {
+					"text": "Start time",
+					"value": "triggered"
+				},
+				"description": "Whether the time range matches each backup by when it was triggered or by when it completed. A backup still in progress has not completed, so it only matches by when it was triggered.",
+				"label": "Time Range Applies To",
+				"name": "timeField",
+				"options": [
+					{
+						"selected": true,
+						"text": "Start time",
+						"value": "triggered"
+					},
+					{
+						"selected": false,
+						"text": "Completion time",
+						"value": "completed"
+					}
+				],
+				"query": "Start time : triggered,Completion time : completed",
+				"type": "custom"
+			},
+			{
+				"current": {
+					"text": "",
+					"value": ""
+				},
+				"datasource": {
+					"type": "grafana-azure-monitor-datasource",
+					"uid": "${DS_AZURE_MONITOR}"
+				},
+				"definition": "",
+				"hide": 2,
+				"name": "backupListEndTime",
+				"options": [
+				],
+				"query": {
+					"azureResourceGraph": {
+						"query": "resources\n| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n| take 1\n| extend cutoff = now() - 14d\n| project endTime = strcat(format_datetime(cutoff, 'yyyy-MM-dd'), 'T', format_datetime(cutoff, 'HH:mm:ss'))",
+						"resultFormat": "table"
+					},
+					"queryType": "Azure Resource Graph",
+					"refId": "A",
+					"subscriptions": [
+						"${AZURE_SUBSCRIPTION_ID}"
+					]
+				},
+				"refresh": 1,
+				"regex": "",
+				"sort": 0,
+				"type": "query"
+			},
+			{
+				"current": {
+					"text": "",
+					"value": ""
+				},
+				"datasource": {
+					"type": "grafana-azure-monitor-datasource",
+					"uid": "${DS_AZURE_MONITOR}"
+				},
+				"definition": "",
+				"hide": 2,
+				"name": "backupVault",
+				"options": [
+				],
+				"query": {
+					"azureResourceGraph": {
+						"query": "resources\n| where type == 'microsoft.dataprotection/backupvaults'\n| where resourceGroup =~ '${AZURE_RESOURCE_GROUP}'\n| where strcat('liferay-', tostring(tags['project-id']), '-', tostring(tags['environment-id'])) == '$environment'\n| project name",
+						"resultFormat": "table"
+					},
+					"queryType": "Azure Resource Graph",
+					"refId": "A",
+					"subscriptions": [
+						"${AZURE_SUBSCRIPTION_ID}"
+					]
+				},
+				"refresh": 1,
+				"regex": "",
+				"sort": 0,
+				"type": "query"
+			}
+		]
+	},
+	"time": {
+		"from": "now-14d",
+		"to": "now"
+	},
+	"timepicker": {
+	},
+	"timezone": "browser",
+	"title": "Backups",
+	"uid": "backups",
+	"version": 1,
+	"weekStart": ""
+}

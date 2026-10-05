@@ -461,7 +461,7 @@ public class TransactionalPortalCacheUtil {
 			else {
 				doCommit(
 					_invalidationSequence.invalidate(
-						_regionName, startSequence, super._removeAll,
+						_regionName, _sequence, super._removeAll,
 						super._uncommittedMap.keySet()));
 			}
 		}
@@ -493,6 +493,7 @@ public class TransactionalPortalCacheUtil {
 		}
 
 		private final String _regionName;
+		private final long _sequence = _invalidationSequence.getSequence();
 
 	}
 
@@ -699,19 +700,14 @@ public class TransactionalPortalCacheUtil {
 					shardedUncommittedBuffers.get(entry.getKey());
 
 				if (parentUncommittedBuffer == null) {
-					parentUncommittedBuffer =
-						shardedUncommittedBuffer._uncommittedBufferFunction.
-							apply(
-								entry.getKey(),
-								shardedUncommittedBuffer._portalCache);
-
 					shardedUncommittedBuffers.put(
-						entry.getKey(), parentUncommittedBuffer);
+						entry.getKey(), entry.getValue());
 				}
+				else {
+					UncommittedBuffer uncommittedBuffer2 = entry.getValue();
 
-				UncommittedBuffer uncommittedBuffer2 = entry.getValue();
-
-				uncommittedBuffer2.replay(parentUncommittedBuffer);
+					uncommittedBuffer2.replay(parentUncommittedBuffer);
+				}
 			}
 		}
 

@@ -96,11 +96,10 @@ public class LayoutSEOCanonicalURLProviderImpl
 			_language.getAvailableLocales(layout.getGroupId()));
 
 		LayoutSEOEntry layoutSEOEntry =
-			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId());
+			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(layout);
 
 		if ((layoutSEOEntry == null) ||
+			(layoutSEOEntry.getGroupId() != layout.getGroupId()) ||
 			!layoutSEOEntry.isCanonicalURLEnabled()) {
 
 			return alternateURLs;
@@ -232,11 +231,10 @@ public class LayoutSEOCanonicalURLProviderImpl
 
 	private String _getLayoutCanonicalURL(Locale locale, Layout layout) {
 		LayoutSEOEntry layoutSEOEntry =
-			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(
-				layout.getGroupId(), layout.isPrivateLayout(),
-				layout.getLayoutId());
+			_layoutSEOEntryLocalService.fetchLayoutSEOEntry(layout);
 
 		if ((layoutSEOEntry == null) ||
+			(layoutSEOEntry.getGroupId() != layout.getGroupId()) ||
 			!layoutSEOEntry.isCanonicalURLEnabled()) {
 
 			return StringPool.BLANK;

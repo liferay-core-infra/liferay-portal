@@ -8033,18 +8033,6 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="wildfly" app.server.version="30.0.0" database.type="mariadb" />
 	</target>
 
-	<target name="functional-upgrade-wildfly300-mariadb104">
-		<set-app-server-version-number app.server.type="wildfly" app.server.version="30.0.0" />
-
-		<run-functional-test app.server.type="wildfly" app.server.version="30.0.0" database.type="mariadb" database.version="10.4" />
-	</target>
-
-	<target name="functional-upgrade-wildfly300-mariadb106">
-		<set-app-server-version-number app.server.type="wildfly" app.server.version="30.0.0" />
-
-		<run-functional-test app.server.type="wildfly" app.server.version="30.0.0" database.type="mariadb" database.version="10.6" />
-	</target>
-
 	<target name="functional-weblogic151-mysql">
 		<set-app-server-version-number app.server.type="weblogic" app.server.version="15.1.1" />
 
@@ -9862,6 +9850,10 @@ ${output.content}</echo>
 		<run-playwright-js-test database.type="db2" />
 	</target>
 
+	<target name="playwright-js-upgrade-tomcat101-db2115">
+		<run-playwright-js-test database.type="db2" />
+	</target>
+
 	<target name="playwright-js-upgrade-tomcat101-mariadb106">
 		<run-playwright-js-test database.type="mariadb" />
 	</target>
@@ -10928,18 +10920,33 @@ junit.jvm.override.version=21</echo>
 			<test-action>
 				<local name="workspace.names" />
 
-				<propertycopy from="workspaces.names[workspaces-compile-jdk${batch.jdk.version}][${env.CI_TEST_SUITE}]" name="workspace.names" silent="true" />
-
 				<if>
-					<not>
-						<isset property="workspace.names" />
-					</not>
+					<isset property="modules.test.class.group" />
 					<then>
-						<propertycopy from="workspaces.names[workspaces-compile][${env.CI_TEST_SUITE}]" name="workspace.names" override="true" silent="true" />
+						<propertyregex
+							defaultValue="${modules.test.class.group}"
+							global="true"
+							input="${modules.test.class.group}"
+							override="true"
+							property="workspace.names"
+							regexp="\s+"
+							replace=","
+						/>
 					</then>
-				</if>
+					<else>
+						<beanshell>
+							<![CDATA[
+								import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-				<property name="workspace.names" value="${workspaces.names[workspaces-compile]}" />
+								Properties properties = new Properties();
+
+								properties.putAll(project.getProperties());
+
+								project.setProperty("workspace.names", JenkinsResultsParserUtil.getProperty(properties, "workspaces.names", false, new String[] {project.getProperty("test.batch.name"), project.getProperty("env.CI_TEST_SUITE")}));
+							]]>
+						</beanshell>
+					</else>
+				</if>
 
 				<for list="${workspace.names}" param="workspace.name">
 					<sequential>

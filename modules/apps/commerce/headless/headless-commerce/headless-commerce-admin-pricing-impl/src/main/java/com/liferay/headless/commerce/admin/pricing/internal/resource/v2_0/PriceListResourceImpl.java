@@ -8,18 +8,15 @@ package com.liferay.headless.commerce.admin.pricing.internal.resource.v2_0;
 import com.liferay.account.service.AccountEntryService;
 import com.liferay.account.service.AccountGroupService;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.commerce.currency.exception.NoSuchCurrencyException;
 import com.liferay.commerce.currency.model.CommerceCurrency;
+import com.liferay.commerce.currency.service.CommerceCurrencyService;
 import com.liferay.commerce.discount.service.CommerceDiscountService;
 import com.liferay.commerce.price.list.constants.CommercePriceListConstants;
 import com.liferay.commerce.price.list.exception.NoSuchPriceListException;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
 import com.liferay.commerce.price.list.model.CommercePriceList;
-import com.liferay.commerce.price.list.model.CommercePriceListAccountRel;
-import com.liferay.commerce.price.list.model.CommercePriceListChannelRel;
-import com.liferay.commerce.price.list.model.CommercePriceListCommerceAccountGroupRel;
-import com.liferay.commerce.price.list.model.CommercePriceListDiscountRel;
-import com.liferay.commerce.price.list.model.CommercePriceListOrderTypeRel;
 import com.liferay.commerce.price.list.service.CommercePriceEntryService;
 import com.liferay.commerce.price.list.service.CommercePriceListAccountRelService;
 import com.liferay.commerce.price.list.service.CommercePriceListChannelRelService;
@@ -28,15 +25,22 @@ import com.liferay.commerce.price.list.service.CommercePriceListDiscountRelServi
 import com.liferay.commerce.price.list.service.CommercePriceListOrderTypeRelService;
 import com.liferay.commerce.price.list.service.CommercePriceListService;
 import com.liferay.commerce.price.list.service.CommerceTierPriceEntryService;
+import com.liferay.commerce.pricing.constants.CommercePricingPortletKeys;
 import com.liferay.commerce.pricing.model.CommercePriceModifier;
 import com.liferay.commerce.pricing.service.CommercePriceModifierRelService;
 import com.liferay.commerce.pricing.service.CommercePriceModifierService;
 import com.liferay.commerce.pricing.service.CommercePricingClassService;
+import com.liferay.commerce.product.model.CPDefinition;
+import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceCatalog;
+import com.liferay.commerce.product.service.CPDefinitionService;
+import com.liferay.commerce.product.service.CPInstanceService;
 import com.liferay.commerce.product.service.CProductLocalService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
 import com.liferay.commerce.product.service.CommerceChannelService;
 import com.liferay.commerce.service.CommerceOrderTypeService;
+import com.liferay.exportimport.constants.ExportImportConstants;
+import com.liferay.exportimport.vulcan.batch.engine.ExportImportVulcanBatchEngineTaskItemDelegate;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceEntry;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceList;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceListAccount;
@@ -47,6 +51,8 @@ import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceListOrderType;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.PriceModifier;
 import com.liferay.headless.commerce.admin.pricing.dto.v2_0.TierPrice;
 import com.liferay.headless.commerce.admin.pricing.internal.odata.entity.v2_0.PriceListEntityModel;
+import com.liferay.headless.commerce.admin.pricing.internal.util.CatalogUtil;
+import com.liferay.headless.commerce.admin.pricing.internal.util.SkuUtil;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.PriceListAccountGroupUtil;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.PriceListAccountUtil;
 import com.liferay.headless.commerce.admin.pricing.internal.util.v2_0.PriceListChannelUtil;
@@ -59,6 +65,7 @@ import com.liferay.headless.commerce.core.helper.ServiceContextHelper;
 import com.liferay.headless.commerce.core.util.CommerceCurrencyUtil;
 import com.liferay.headless.commerce.core.util.DateConfig;
 import com.liferay.headless.commerce.core.util.ExpandoUtil;
+import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Field;
@@ -68,6 +75,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
@@ -81,6 +89,7 @@ import jakarta.ws.rs.core.MultivaluedMap;
 
 import java.math.BigDecimal;
 
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -92,9 +101,12 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v2_0/price-list.properties",
+	property = "export.import.vulcan.batch.engine.task.item.delegate=true",
 	scope = ServiceScope.PROTOTYPE, service = PriceListResource.class
 )
-public class PriceListResourceImpl extends BasePriceListResourceImpl {
+public class PriceListResourceImpl
+	extends BasePriceListResourceImpl
+	implements ExportImportVulcanBatchEngineTaskItemDelegate<PriceList> {
 
 	@Override
 	public void deletePriceList(Long id) throws Exception {
@@ -126,6 +138,55 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 		throws Exception {
 
 		return _entityModel;
+	}
+
+	@Override
+	public ExportImportDescriptor<CommercePriceList>
+		getExportImportDescriptor() {
+
+		return new ExportImportDescriptor<>() {
+
+			@Override
+			public String getKey() {
+				return PriceListResourceImpl.class.getName();
+			}
+
+			@Override
+			public String getLabelLanguageKey() {
+				return "price-lists";
+			}
+
+			@Override
+			public Class<CommercePriceList> getModelClass() {
+				return CommercePriceList.class;
+			}
+
+			@Override
+			public List<String> getNestedFields() {
+				return List.of(
+					"creator", "priceEntries.tierPrices",
+					"priceListAccountGroups", "priceListAccounts",
+					"priceListChannels", "priceListDiscounts",
+					"priceListOrderTypes",
+					"priceModifiers.priceModifierProducts");
+			}
+
+			@Override
+			public String getPortletId() {
+				return CommercePricingPortletKeys.COMMERCE_PRICE_LIST;
+			}
+
+			@Override
+			public Scope getScope() {
+				return Scope.COMPANY;
+			}
+
+			@Override
+			public String getSectionKey() {
+				return ExportImportConstants.SECTION_KEY_PRICING;
+			}
+
+		};
 	}
 
 	@Override
@@ -223,34 +284,32 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 			String externalReferenceCode, PriceList priceList)
 		throws Exception {
 
-		CommerceCatalog commerceCatalog =
-			_commerceCatalogService.fetchCommerceCatalogByExternalReferenceCode(
-				GetterUtil.getString(
-					priceList.getCatalogExternalReferenceCode()),
-				contextCompany.getCompanyId());
-
-		if (commerceCatalog == null) {
-			commerceCatalog = _commerceCatalogService.getCommerceCatalog(
-				priceList.getCatalogId());
-		}
-
-		CommerceCurrency commerceCurrency =
-			CommerceCurrencyUtil.getCommerceCurrency(
-				contextCompany.getCompanyId(), priceList.getCurrencyCode(),
-				priceList.getCurrencyExternalReferenceCode(),
-				GetterUtil.getLong(priceList.getCurrencyId()));
-
 		ServiceContext serviceContext =
 			_serviceContextHelper.getServiceContext();
+
+		CommerceCatalog commerceCatalog = CatalogUtil.getCommerceCatalog(
+			GetterUtil.getLong(priceList.getCatalogId()),
+			priceList.getCatalogCurrencyCode(),
+			priceList.getCatalogCurrencyExternalReferenceCode(),
+			priceList.getCatalogExternalReferenceCode(),
+			priceList.getCatalogName(), _commerceCatalogService,
+			_commerceCurrencyService, serviceContext);
+
+		CommerceCurrency commerceCurrency = _getCommerceCurrency(priceList);
 
 		DateConfig displayDateConfig = DateConfig.toDisplayDateConfig(
 			priceList.getDisplayDate(), serviceContext.getTimeZone());
 		DateConfig expirationDateConfig = DateConfig.toExpirationDateConfig(
 			priceList.getExpirationDate(), serviceContext.getTimeZone());
 
+		long catalogBaseCommercePriceListId =
+			_getCatalogBaseCommercePriceListId(
+				commerceCatalog, externalReferenceCode, priceList);
+
 		CommercePriceList commercePriceList =
 			_commercePriceListService.addOrUpdateCommercePriceList(
-				externalReferenceCode, commerceCatalog.getGroupId(), 0L,
+				externalReferenceCode, commerceCatalog.getGroupId(),
+				catalogBaseCommercePriceListId,
 				GetterUtil.get(priceList.getParentPriceListId(), 0L),
 				GetterUtil.get(priceList.getCatalogBasePriceList(), false),
 				commerceCurrency.getCode(), displayDateConfig.getDay(),
@@ -267,6 +326,13 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 					priceList.getTypeAsString(),
 					CommercePriceListConstants.TYPE_PRICE_LIST),
 				serviceContext);
+
+		if (catalogBaseCommercePriceListId > 0) {
+			commercePriceList =
+				_commercePriceListService.updateExternalReferenceCode(
+					commercePriceList, externalReferenceCode,
+					serviceContext.getCompanyId());
+		}
 
 		// Expando
 
@@ -318,6 +384,85 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 		).build();
 	}
 
+	private long _getCatalogBaseCommercePriceListId(
+			CommerceCatalog commerceCatalog, String externalReferenceCode,
+			PriceList priceList)
+		throws Exception {
+
+		if (!LazyReferencingThreadLocal.isEnabled() ||
+			!GetterUtil.get(priceList.getCatalogBasePriceList(), false)) {
+
+			return 0;
+		}
+
+		CommercePriceList commercePriceList =
+			_commercePriceListService.
+				fetchCommercePriceListByExternalReferenceCode(
+					externalReferenceCode, commerceCatalog.getCompanyId());
+
+		if (commercePriceList != null) {
+			return 0;
+		}
+
+		commercePriceList =
+			_commercePriceListService.fetchCatalogBaseCommercePriceListByType(
+				commerceCatalog.getGroupId(),
+				GetterUtil.get(
+					priceList.getTypeAsString(),
+					CommercePriceListConstants.TYPE_PRICE_LIST));
+
+		if (commercePriceList == null) {
+			return 0;
+		}
+
+		return commercePriceList.getCommercePriceListId();
+	}
+
+	private CommerceCurrency _getCommerceCurrency(PriceList priceList)
+		throws Exception {
+
+		String currencyExternalReferenceCode =
+			priceList.getCurrencyExternalReferenceCode();
+
+		CommerceCurrency commerceCurrency =
+			CommerceCurrencyUtil.fetchCommerceCurrency(
+				contextCompany.getCompanyId(), priceList.getCurrencyCode(),
+				currencyExternalReferenceCode,
+				GetterUtil.getLong(priceList.getCurrencyId()));
+
+		if (commerceCurrency != null) {
+			return commerceCurrency;
+		}
+
+		if (!LazyReferencingThreadLocal.isEnabled()) {
+			return CommerceCurrencyUtil.getCommerceCurrency(
+				contextCompany.getCompanyId(), priceList.getCurrencyCode(),
+				currencyExternalReferenceCode,
+				GetterUtil.getLong(priceList.getCurrencyId()));
+		}
+
+		if (Validator.isNull(currencyExternalReferenceCode)) {
+			throw new NoSuchCurrencyException(
+				"Unable to find currency with external reference code " +
+					currencyExternalReferenceCode);
+		}
+
+		return _commerceCurrencyService.getOrAddEmptyCommerceCurrency(
+			currencyExternalReferenceCode, priceList.getCurrencyCode());
+	}
+
+	private double _getPriceModifierPriority(
+		PriceList priceList, PriceModifier priceModifier) {
+
+		if (LazyReferencingThreadLocal.isEnabled() &&
+			(priceModifier.getPriority() != null)) {
+
+			return priceModifier.getPriority();
+		}
+
+		return GetterUtil.get(priceList.getPriority(), 0D);
+	}
+
 	private PriceList _toPriceList(CommercePriceList commercePriceList)
 		throws Exception {
 
@@ -350,17 +495,6 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 			for (PriceListAccountGroup priceListAccountGroup :
 					priceListAccountGroups) {
 
-				CommercePriceListCommerceAccountGroupRel
-					commercePriceListCommerceAccountGroupRel =
-						_commercePriceListCommerceAccountGroupRelService.
-							fetchCommercePriceListCommerceAccountGroupRel(
-								commercePriceList.getCommercePriceListId(),
-								priceListAccountGroup.getAccountGroupId());
-
-				if (commercePriceListCommerceAccountGroupRel != null) {
-					continue;
-				}
-
 				PriceListAccountGroupUtil.addCommercePriceListAccountGroupRel(
 					_accountGroupService,
 					_commercePriceListCommerceAccountGroupRelService,
@@ -375,16 +509,6 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 
 		if (priceListAccounts != null) {
 			for (PriceListAccount priceListAccount : priceListAccounts) {
-				CommercePriceListAccountRel commercePriceListAccountRel =
-					_commercePriceListAccountRelService.
-						fetchCommercePriceListAccountRel(
-							commercePriceList.getCommercePriceListId(),
-							priceListAccount.getAccountId());
-
-				if (commercePriceListAccountRel != null) {
-					continue;
-				}
-
 				PriceListAccountUtil.addCommercePriceListAccountRel(
 					_accountEntryService, _commercePriceListAccountRelService,
 					priceListAccount, commercePriceList, _serviceContextHelper);
@@ -397,16 +521,6 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 
 		if (priceListChannels != null) {
 			for (PriceListChannel priceListChannel : priceListChannels) {
-				CommercePriceListChannelRel commercePriceListChannelRel =
-					_commercePriceListChannelRelService.
-						fetchCommercePriceListChannelRel(
-							commercePriceList.getCommercePriceListId(),
-							priceListChannel.getPriceListId());
-
-				if (commercePriceListChannelRel != null) {
-					continue;
-				}
-
 				PriceListChannelUtil.addCommercePriceListChannelRel(
 					_commerceChannelService,
 					_commercePriceListChannelRelService, priceListChannel,
@@ -421,16 +535,6 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 
 		if (priceListDiscounts != null) {
 			for (PriceListDiscount priceListDiscount : priceListDiscounts) {
-				CommercePriceListDiscountRel commercePriceListDiscountRel =
-					_commercePriceListDiscountRelService.
-						fetchCommercePriceListDiscountRel(
-							commercePriceList.getCommercePriceListId(),
-							priceListDiscount.getDiscountId());
-
-				if (commercePriceListDiscountRel != null) {
-					continue;
-				}
-
 				PriceListDiscountUtil.addCommercePriceListDiscountRel(
 					_commerceDiscountService,
 					_commercePriceListDiscountRelService, priceListDiscount,
@@ -445,16 +549,6 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 
 		if (priceListOrderTypes != null) {
 			for (PriceListOrderType priceListOrderType : priceListOrderTypes) {
-				CommercePriceListOrderTypeRel commercePriceListOrderTypeRel =
-					_commercePriceListOrderTypeRelService.
-						fetchCommercePriceListOrderTypeRel(
-							commercePriceList.getCommercePriceListId(),
-							priceListOrderType.getOrderTypeId());
-
-				if (commercePriceListOrderTypeRel != null) {
-					continue;
-				}
-
 				PriceListOrderTypeUtil.addCommercePriceListOrderTypeRel(
 					_commerceOrderTypeService,
 					_commercePriceListOrderTypeRelService, priceListOrderType,
@@ -476,17 +570,24 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 						priceModifier.getExpirationDate(),
 						serviceContext.getTimeZone());
 
+				long priceModifierId = 0;
+
+				if (Validator.isNull(
+						priceModifier.getExternalReferenceCode())) {
+
+					priceModifierId = GetterUtil.getLong(priceModifier.getId());
+				}
+
 				CommercePriceModifier commercePriceModifier =
 					_commercePriceModifierService.
 						addOrUpdateCommercePriceModifier(
 							priceModifier.getExternalReferenceCode(),
-							GetterUtil.getLong(priceModifier.getId()),
-							commercePriceList.getGroupId(),
+							priceModifierId, commercePriceList.getGroupId(),
 							commercePriceList.getCommercePriceListId(),
 							priceModifier.getTitle(), priceModifier.getTarget(),
 							priceModifier.getModifierAmount(),
 							priceModifier.getModifierType(),
-							GetterUtil.get(priceList.getPriority(), 0D),
+							_getPriceModifierPriority(priceList, priceModifier),
 							GetterUtil.getBoolean(
 								priceModifier.getActive(), true),
 							displayDateConfig.getMonth(),
@@ -505,9 +606,12 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 
 				PriceModifierUtil.addOrUpdateCommercePriceModifierRels(
 					contextCompany.getGroupId(), _assetCategoryLocalService,
-					_commercePricingClassService, _cProductLocalService,
-					_commercePriceModifierRelService, priceModifier,
-					commercePriceModifier, _serviceContextHelper);
+					_assetCategoryService, _cProductLocalService,
+					_commerceCatalogService, _commerceCurrencyService,
+					_commercePriceModifierRelService,
+					_commercePricingClassService, _cpDefinitionService,
+					priceModifier, commercePriceModifier,
+					_serviceContextHelper);
 			}
 		}
 
@@ -524,13 +628,39 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 						priceEntry.getExpirationDate(),
 						serviceContext.getTimeZone());
 
+				long cProductId = 0;
+				String cpInstanceUuid = null;
+
+				CPInstance cpInstance = SkuUtil.fetchCPInstance(
+					_cpDefinitionService, _cpInstanceService,
+					commercePriceList.getGroupId(),
+					priceEntry.getProductExternalReferenceCode(), null,
+					priceEntry.getProductType(), serviceContext,
+					priceEntry.getSkuExternalReferenceCode(),
+					GetterUtil.getLong(priceEntry.getSkuId()));
+
+				if (cpInstance != null) {
+					CPDefinition cpDefinition = cpInstance.getCPDefinition();
+
+					cProductId = cpDefinition.getCProductId();
+
+					cpInstanceUuid = cpInstance.getCPInstanceUuid();
+				}
+
+				long priceEntryId = 0;
+
+				if (Validator.isNull(priceEntry.getExternalReferenceCode())) {
+					priceEntryId = GetterUtil.getLong(
+						priceEntry.getPriceEntryId());
+				}
+
 				CommercePriceEntry commercePriceEntry =
 					_commercePriceEntryService.addOrUpdateCommercePriceEntry(
-						priceEntry.getExternalReferenceCode(),
-						GetterUtil.getLong(priceEntry.getPriceEntryId()),
-						GetterUtil.getLong(priceEntry.getSkuId()), null,
+						priceEntry.getExternalReferenceCode(), priceEntryId,
+						cProductId, cpInstanceUuid,
 						commercePriceList.getCommercePriceListId(),
-						priceEntry.getDiscountDiscovery(),
+						GetterUtil.getBoolean(
+							priceEntry.getDiscountDiscovery(), true),
 						priceEntry.getDiscountLevel1(),
 						priceEntry.getDiscountLevel2(),
 						priceEntry.getDiscountLevel3(),
@@ -549,8 +679,8 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 						BigDecimal.valueOf(priceEntry.getPrice()),
 						GetterUtil.getBoolean(
 							priceEntry.getPriceOnApplication()),
-						priceEntry.getSkuExternalReferenceCode(), null,
-						serviceContext);
+						priceEntry.getSkuExternalReferenceCode(),
+						priceEntry.getUnitOfMeasureKey(), serviceContext);
 
 				TierPrice[] tierPrices = priceEntry.getTierPrices();
 
@@ -645,6 +775,9 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
+	private AssetCategoryService _assetCategoryService;
+
+	@Reference
 	private CProductLocalService _cProductLocalService;
 
 	@Reference
@@ -652,6 +785,9 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 
 	@Reference
 	private CommerceChannelService _commerceChannelService;
+
+	@Reference
+	private CommerceCurrencyService _commerceCurrencyService;
 
 	@Reference
 	private CommerceDiscountService _commerceDiscountService;
@@ -702,6 +838,12 @@ public class PriceListResourceImpl extends BasePriceListResourceImpl {
 
 	@Reference
 	private CommerceTierPriceEntryService _commerceTierPriceEntryService;
+
+	@Reference
+	private CPDefinitionService _cpDefinitionService;
+
+	@Reference
+	private CPInstanceService _cpInstanceService;
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;

@@ -4,11 +4,14 @@
  */
 
 import {expect, mergeTests} from '@playwright/test';
+import {createReadStream} from 'fs';
+import path from 'path';
 
 import {apiHelpersTest} from '../../../../fixtures/apiHelpersTest';
 import {commercePagesTest} from '../../../../fixtures/commercePagesTest';
 import {dataApiHelpersTest} from '../../../../fixtures/dataApiHelpersTest';
 import {displayPageTemplatesPagesTest} from '../../../../fixtures/displayPageTemplatesPagesTest';
+import {featureFlagsTest} from '../../../../fixtures/featureFlagsTest';
 import {loginTest} from '../../../../fixtures/loginTest';
 import {pageEditorPagesTest} from '../../../../fixtures/pageEditorPagesTest';
 import {usersAndOrganizationsPagesTest} from '../../../../fixtures/usersAndOrganizationsPagesTest';
@@ -18,8 +21,11 @@ import performLogin, {
 	performLogout,
 	performUserSwitch,
 } from '../../../../utils/performLogin';
+import getPageDefinition from '../../../layout-content-page-editor-web/main/utils/getPageDefinition';
+import getWidgetDefinition from '../../../layout-content-page-editor-web/main/utils/getWidgetDefinition';
 import {
 	classicCommerceSetUp,
+	configureBuyerUserForSite,
 	createAccountWithBuyerUser,
 	miniumSetUp,
 } from '../../utils/commerce';
@@ -29,6 +35,9 @@ export const test = mergeTests(
 	commercePagesTest,
 	dataApiHelpersTest,
 	displayPageTemplatesPagesTest,
+	featureFlagsTest({
+		'LPS-178052': {enabled: true},
+	}),
 	loginTest(),
 	pageEditorPagesTest,
 	usersAndOrganizationsPagesTest
@@ -36,7 +45,7 @@ export const test = mergeTests(
 
 test(
 	'COMMERCE-5864. Verify buyer can view the product card informations correctly',
-	{tag: ['@LPD-56323']},
+	{tag: ['@LPD-56323', '@LPD-96522']},
 	async ({
 		apiHelpers,
 		commerceAdminChannelDetailsPage,
@@ -53,6 +62,9 @@ test(
 		let product2;
 		let product3;
 		let product4;
+		let product5;
+		let product6;
+		let product7;
 		let site;
 
 		await test.step('Initialize Commerce Classic Site', async () => {
@@ -106,7 +118,70 @@ test(
 			product1 =
 				await apiHelpers.headlessCommerceAdminCatalog.postProduct({
 					catalogId: catalog.id,
-					name: {en_US: 'Product1'},
+					name: {en_US: 'Product1', es_ES: 'Producto1'},
+				});
+		});
+
+		await test.step('Create a product without images and two bundled products with a single SKU', async () => {
+			const getSku = (skuOptions = []) => {
+				return {
+					cost: 0,
+					price: 25,
+					published: true,
+					purchasable: true,
+					sku: getRandomString(),
+					skuOptions,
+				};
+			};
+
+			product5 =
+				await apiHelpers.headlessCommerceAdminCatalog.postProduct({
+					catalogId: catalog.id,
+					name: {en_US: 'Product5'},
+					skus: [getSku()],
+				});
+
+			const option =
+				await apiHelpers.headlessCommerceAdminCatalog.postOption();
+
+			const skuOptions = [{key: option.key, value: 'value'}];
+
+			const getProductOption = (priceType: string) => {
+				return {
+					fieldType: 'select',
+					key: option.key,
+					name: option.name,
+					optionId: option.id,
+					priceType,
+					priority: 1,
+					productOptionValues: [
+						{
+							deltaPrice: 10,
+							key: 'value',
+							name: {en_US: 'Value'},
+							priority: 1,
+							quantity: 1,
+							skuId: product5.skus[0].id,
+						},
+					],
+					skuContributor: true,
+				};
+			};
+
+			product6 =
+				await apiHelpers.headlessCommerceAdminCatalog.postProduct({
+					catalogId: catalog.id,
+					name: {en_US: 'Product6'},
+					productOptions: [getProductOption('dynamic')],
+					skus: [getSku(skuOptions)],
+				});
+
+			product7 =
+				await apiHelpers.headlessCommerceAdminCatalog.postProduct({
+					catalogId: catalog.id,
+					name: {en_US: 'Product7'},
+					productOptions: [getProductOption('static')],
+					skus: [getSku(skuOptions)],
 				});
 		});
 
@@ -336,6 +411,108 @@ test(
 					product4.name['en_US']
 				)
 			).not.toBeVisible();
+		});
+
+		await test.step('Products with multiple SKUs show the view all variants link in the product card', async () => {
+			await expect(
+				commerceThemeClassicCatalogPage.productCardViewAllVariantsButton(
+					product4.name['en_US']
+				)
+			).toBeVisible();
+		});
+
+		await test.step('Bundled products with a single SKU can be added to cart from the product card', async () => {
+			await page.goto(`/web/${site.name}`);
+
+			await expect(
+				commerceThemeClassicCatalogPage.productCardAddToCartButton(
+					product6.name['en_US']
+				)
+			).toBeEnabled();
+			await expect(
+				commerceThemeClassicCatalogPage.productCardViewAllVariantsButton(
+					product6.name['en_US']
+				)
+			).toHaveCount(0);
+
+			await expect(
+				commerceThemeClassicCatalogPage.productCardAddToCartButton(
+					product7.name['en_US']
+				)
+			).toBeEnabled();
+			await expect(
+				commerceThemeClassicCatalogPage.productCardViewAllVariantsButton(
+					product7.name['en_US']
+				)
+			).toHaveCount(0);
+		});
+
+		let defaultImageSrc;
+
+		await test.step('Product cards without an image share the catalog default image', async () => {
+			defaultImageSrc = await commerceThemeClassicCatalogPage
+				.productCardImage(product1.name['en_US'])
+				.getAttribute('src');
+
+			await expect(
+				commerceThemeClassicCatalogPage.productCardImage(
+					product5.name['en_US']
+				)
+			).toHaveAttribute('src', defaultImageSrc);
+		});
+
+		await test.step('Product card shows the custom image once one is uploaded', async () => {
+			await performLogout(page);
+			await performLoginViaApi({page, screenName: 'test'});
+
+			const document = await apiHelpers.headlessDelivery.postDocument(
+				site.id,
+				createReadStream(
+					path.join(__dirname, '/dependencies/liferay.png')
+				)
+			);
+
+			apiHelpers.data.push({id: document.id, type: 'document'});
+
+			await apiHelpers.headlessCommerceAdminCatalog.postImage(
+				product1.productId,
+				document.id,
+				document.title
+			);
+
+			await performLogout(page);
+			await performLoginViaApi({page, screenName: 'demo.unprivileged'});
+
+			await page.goto(`/web/${site.name}`);
+
+			await expect(
+				commerceThemeClassicCatalogPage.productCardImage(
+					product1.name['en_US']
+				)
+			).toHaveAttribute('src', new RegExp(document.fileName));
+			await expect(
+				commerceThemeClassicCatalogPage.productCardImage(
+					product1.name['en_US']
+				)
+			).not.toHaveAttribute('src', defaultImageSrc);
+		});
+
+		await test.step('Product card name follows the page language', async () => {
+			await page.goto(`/es/web/${site.name}`);
+
+			await expect(
+				commerceThemeClassicCatalogPage.productCard(
+					product1.name['es_ES']
+				)
+			).toBeVisible();
+
+			await page.goto(`/en/web/${site.name}`);
+
+			await expect(
+				commerceThemeClassicCatalogPage.productCard(
+					product1.name['en_US']
+				)
+			).toBeVisible();
 		});
 
 		await test.step('AllowBackOrder is disabled', async () => {
@@ -789,6 +966,270 @@ test(
 					productSku
 				)
 			).toHaveCount(0);
+		});
+	}
+);
+
+test(
+	'Add and remove products from the wish list via the product card',
+	{tag: ['@COMMERCE-5866', '@COMMERCE-5867', '@LPD-96522']},
+	async ({
+		apiHelpers,
+		commerceAdminChannelsPage,
+		commerceThemeClassicCatalogPage,
+		commerceWishListPage,
+		page,
+	}) => {
+		const product1Name = 'Wish List Product One ' + getRandomString();
+		const product2Name = 'Wish List Product Two ' + getRandomString();
+
+		let channel;
+		let layout;
+		let site;
+		let wishListLayout;
+
+		await test.step('Create a commerce site and build the storefront pages', async () => {
+			site = await apiHelpers.headlessAdminSite.postSite({
+				name: getRandomString(),
+			});
+
+			layout = await apiHelpers.headlessDelivery.createSitePage({
+				pageDefinition: getPageDefinition([
+					getWidgetDefinition({
+						id: getRandomString(),
+						widgetName:
+							'com_liferay_commerce_product_content_web_internal_portlet_CPPublisherPortlet',
+					}),
+				]),
+				siteId: site.id,
+				title: getRandomString(),
+			});
+
+			wishListLayout = await apiHelpers.headlessDelivery.createSitePage({
+				pageDefinition: getPageDefinition([
+					getWidgetDefinition({
+						id: getRandomString(),
+						widgetName:
+							'com_liferay_commerce_wish_list_web_internal_portlet_CommerceWishListContentPortlet',
+					}),
+				]),
+				siteId: site.id,
+				title: getRandomString(),
+			});
+		});
+
+		await test.step('Create a channel, catalog and products', async () => {
+			channel = await apiHelpers.headlessCommerceAdminChannel.postChannel(
+				{
+					siteGroupId: site.id,
+				}
+			);
+
+			const catalog =
+				await apiHelpers.headlessCommerceAdminCatalog.postCatalog();
+
+			await apiHelpers.headlessCommerceAdminCatalog.postProduct({
+				catalogId: catalog.id,
+				name: {en_US: product1Name},
+			});
+			await apiHelpers.headlessCommerceAdminCatalog.postProduct({
+				catalogId: catalog.id,
+				name: {en_US: product2Name},
+			});
+		});
+
+		await test.step('Set the channel site type to B2B', async () => {
+			await commerceAdminChannelsPage.changeCommerceChannelSiteType(
+				channel.name,
+				'B2B'
+			);
+		});
+
+		await test.step('Create a buyer for the account', async () => {
+			const account = await apiHelpers.headlessAdminUser.postAccount({
+				name: getRandomString(),
+				type: 'business',
+			});
+
+			await configureBuyerUserForSite(
+				account,
+				apiHelpers,
+				site,
+				'demo.unprivileged@liferay.com'
+			);
+		});
+
+		await test.step('As a buyer, add two products to the wish list from their cards', async () => {
+			await performLogout(page);
+			await performLoginViaApi({page, screenName: 'demo.unprivileged'});
+
+			await page.goto(`/web/${site.name}/${layout.friendlyUrlPath}`);
+
+			await commerceThemeClassicCatalogPage
+				.productCardAddToWishListButton(product1Name)
+				.click();
+			await commerceThemeClassicCatalogPage
+				.productCardAddToWishListButton(product2Name)
+				.click();
+		});
+
+		await test.step('Both products appear in the wish list', async () => {
+			await page.goto(
+				`/web/${site.name}/${wishListLayout.friendlyUrlPath}`
+			);
+
+			await expect(
+				commerceWishListPage.wishListItem(product1Name)
+			).toBeVisible();
+			await expect(
+				commerceWishListPage.wishListItem(product2Name)
+			).toBeVisible();
+		});
+
+		await test.step('Removing a product from the wish list drops only that product', async () => {
+			await commerceWishListPage
+				.wishListItemDeleteButton(product1Name)
+				.click();
+
+			await expect(
+				commerceWishListPage.wishListItem(product1Name)
+			).not.toBeVisible();
+			await expect(
+				commerceWishListPage.wishListItem(product2Name)
+			).toBeVisible();
+		});
+	}
+);
+
+test(
+	'View product availability on the product card',
+	{tag: ['@COMMERCE-5871', '@COMMERCE-5872', '@LPD-96522']},
+	async ({
+		apiHelpers,
+		commerceAdminChannelsPage,
+		commerceThemeClassicCatalogPage,
+		page,
+	}) => {
+		const availableProductName = 'Available Product ' + getRandomString();
+		const unavailableProductName =
+			'Unavailable Product ' + getRandomString();
+
+		let channel;
+		let layout;
+		let site;
+
+		await test.step('Create a commerce site and a catalog page', async () => {
+			site = await apiHelpers.headlessAdminSite.postSite({
+				name: getRandomString(),
+			});
+
+			layout = await apiHelpers.headlessDelivery.createSitePage({
+				pageDefinition: getPageDefinition([
+					getWidgetDefinition({
+						id: getRandomString(),
+						widgetName:
+							'com_liferay_commerce_product_content_web_internal_portlet_CPPublisherPortlet',
+					}),
+				]),
+				siteId: site.id,
+				title: getRandomString(),
+			});
+		});
+
+		await test.step('Create a channel, catalog and two products with availability display', async () => {
+			channel = await apiHelpers.headlessCommerceAdminChannel.postChannel(
+				{
+					siteGroupId: site.id,
+				}
+			);
+
+			const catalog =
+				await apiHelpers.headlessCommerceAdminCatalog.postCatalog();
+
+			const availableProduct =
+				await apiHelpers.headlessCommerceAdminCatalog.postProduct({
+					catalogId: catalog.id,
+					name: {en_US: availableProductName},
+				});
+			await apiHelpers.headlessCommerceAdminCatalog.patchProduct(
+				String(availableProduct.productId),
+				{
+					name: {en_US: availableProductName},
+					productConfiguration: {
+						displayAvailability: true,
+					},
+				}
+			);
+
+			const unavailableProduct =
+				await apiHelpers.headlessCommerceAdminCatalog.postProduct({
+					catalogId: catalog.id,
+					name: {en_US: unavailableProductName},
+				});
+			await apiHelpers.headlessCommerceAdminCatalog.patchProduct(
+				String(unavailableProduct.productId),
+				{
+					name: {en_US: unavailableProductName},
+					productConfiguration: {
+						allowBackOrder: false,
+						displayAvailability: true,
+					},
+				}
+			);
+
+			const warehouse =
+				await apiHelpers.headlessCommerceAdminInventoryApiHelper.postWarehouses(
+					{active: true, latitude: 40, longitude: -74}
+				);
+
+			await apiHelpers.headlessCommerceAdminInventoryApiHelper.postWarehousesChannels(
+				warehouse.id,
+				channel.id
+			);
+
+			await apiHelpers.headlessCommerceAdminInventoryApiHelper.postWarehousesWarehouseItems(
+				warehouse.id,
+				{quantity: 100, sku: availableProduct.skus[0].sku}
+			);
+		});
+
+		await test.step('Set the channel site type to B2B', async () => {
+			await commerceAdminChannelsPage.changeCommerceChannelSiteType(
+				channel.name,
+				'B2B'
+			);
+		});
+
+		await test.step('Create a buyer for the account', async () => {
+			const account = await apiHelpers.headlessAdminUser.postAccount({
+				name: getRandomString(),
+				type: 'business',
+			});
+
+			await configureBuyerUserForSite(
+				account,
+				apiHelpers,
+				site,
+				'demo.unprivileged@liferay.com'
+			);
+		});
+
+		await test.step('As a buyer, each product card shows its availability', async () => {
+			await performLogout(page);
+			await performLoginViaApi({page, screenName: 'demo.unprivileged'});
+
+			await page.goto(`/web/${site.name}/${layout.friendlyUrlPath}`);
+
+			await expect(
+				commerceThemeClassicCatalogPage.productCardAvailabilityLabel(
+					availableProductName
+				)
+			).toHaveText('Available');
+			await expect(
+				commerceThemeClassicCatalogPage.productCardAvailabilityLabel(
+					unavailableProductName
+				)
+			).toHaveText('Unavailable');
 		});
 	}
 );

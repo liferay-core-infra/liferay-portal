@@ -11,6 +11,7 @@ import com.liferay.fragment.listener.FragmentEntryLinkListener;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.DefaultFragmentEntryProcessorContext;
 import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
+import com.liferay.fragment.processor.util.FragmentEntryHtmlParserUtil;
 import com.liferay.fragment.util.configuration.FragmentConfigurationField;
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
@@ -47,7 +48,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -522,18 +522,6 @@ public class DropZoneFragmentEntryLinkListener
 		return null;
 	}
 
-	private Document _getDocument(String html) {
-		Document document = Jsoup.parseBodyFragment(html);
-
-		Document.OutputSettings outputSettings = new Document.OutputSettings();
-
-		outputSettings.prettyPrint(false);
-
-		document.outputSettings(outputSettings);
-
-		return document;
-	}
-
 	private Elements _getDropZoneElements(
 			FragmentEntryLink fragmentEntryLink,
 			HttpServletRequest httpServletRequest,
@@ -550,7 +538,7 @@ public class DropZoneFragmentEntryLinkListener
 
 		defaultFragmentEntryProcessorContext.setDisablePortletRender(true);
 
-		Document document = _getDocument(
+		Document document = FragmentEntryHtmlParserUtil.parseBodyFragment(
 			_fragmentEntryProcessorRegistry.processFragmentEntryLinkHTML(
 				fragmentEntryLink, defaultFragmentEntryProcessorContext));
 

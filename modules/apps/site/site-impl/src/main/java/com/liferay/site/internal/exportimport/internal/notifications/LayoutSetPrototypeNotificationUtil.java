@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.notifications.NotificationEvent;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -69,7 +70,15 @@ public class LayoutSetPrototypeNotificationUtil {
 	public static Long[] getLayoutSetGroupIds(
 		Map<String, Serializable> taskContextMap) {
 
-		return (Long[])taskContextMap.get(_LAYOUT_SET_GROUP_IDS);
+		Object[] layoutSetGroupIds = (Object[])taskContextMap.get(
+			_LAYOUT_SET_GROUP_IDS);
+
+		if (layoutSetGroupIds == null) {
+			return null;
+		}
+
+		return TransformUtil.transform(
+			layoutSetGroupIds, GetterUtil::getLong, Long.class);
 	}
 
 	public static long getLayoutSetPrototypeId(

@@ -436,7 +436,7 @@ definition {
 	}
 
 	@summary = "Default summary"
-	macro addWithMultipleCategories(allowMultipleCategories = null, webContentTitle = null, webContentContent = null, vocabularyName = null, categoryNameList = null) {
+	macro addWithMultipleCategories(webContentTitle = null, webContentContent = null, vocabularyName = null, categoryNameList = null) {
 		for (var key_panel : list "Basic Information,Default Template,Display Page Template,Featured Image ") {
 			if ((IsElementPresent(locator1 = "Panel#PANEL_EXPANDED")) && (IsVisible(locator1 = "Panel#PANEL_EXPANDED"))) {
 				AssertClick(
@@ -455,14 +455,7 @@ definition {
 			categoryNameList = ${categoryNameList},
 			vocabularyName = ${vocabularyName});
 
-		if (${allowMultipleCategories} == "false") {
-			WebContent.publishWithPermissions();
-
-			Alert.viewErrorMessage(errorMessage = "You cannot select more than one category for Vocabulary Name.");
-		}
-		else {
-			WebContent.publishWithPermissions();
-		}
+		WebContent.publishWithPermissions();
 	}
 
 	@summary = "Default summary"
@@ -1056,10 +1049,9 @@ definition {
 		WebContent.addCP(webContentTitle = ${webContentTitleEdit});
 
 		if (isSet(webContentContentEdit)) {
-			Type(
-				key_fieldLabel = "Content",
-				locator1 = "CKEditor#BODY_FIELD_CONTENTEDITABLE_WEB_CONTENT_ARTICLE",
-				value1 = ${webContentContentEdit});
+			CKEditor.addContentInWebContent(
+				content = ${webContentContentEdit},
+				fieldLabel = "Content");
 		}
 
 		if (isSet(webContentWebContent)) {

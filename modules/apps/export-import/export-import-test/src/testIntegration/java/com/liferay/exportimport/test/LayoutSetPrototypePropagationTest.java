@@ -41,6 +41,7 @@ import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.background.task.service.BackgroundTaskLocalService;
+import com.liferay.portal.background.task.service.persistence.BackgroundTaskPersistence;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.image.ImageToolUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
@@ -50,6 +51,8 @@ import com.liferay.portal.kernel.backgroundtask.BaseBackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.display.BackgroundTaskDisplay;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
+import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.exception.LayoutParentLayoutIdException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -484,6 +487,50 @@ public class LayoutSetPrototypePropagationTest
 		_testLayoutSetPrototypePropagationCheckNotification(
 			"successful", BackgroundTaskConstants.STATUS_SUCCESSFUL,
 			BackgroundTaskConstants.STATUS_SUCCESSFUL);
+	}
+
+	@Test
+	@TestInfo("LPD-107737")
+	public void testLayoutSetPrototypePropagationCheckNotificationWithBackgroundTaskReloadedFromDatabase()
+		throws Exception {
+
+		long userId = TestPropsValues.getUserId();
+
+		try (SafeCloseable safeCloseable = _registerServiceWithSafeCloseable(
+				BackgroundTaskExecutor.class,
+				HashMapDictionaryBuilder.<String, Object>put(
+					"background.task.executor.class.name",
+					BackgroundTaskExecutorNames.
+						LAYOUT_SET_PROTOTYPE_MERGE_BACKGROUND_TASK_EXECUTOR
+				).put(
+					"service.ranking", 1000
+				).build(),
+				new TestBackgroundTaskExecutor(Collections.emptyMap()) {
+
+					@Override
+					public BackgroundTaskResult execute(
+						BackgroundTask backgroundTask) {
+
+						Session session =
+							_backgroundTaskSessionFactory.getCurrentSession();
+
+						session.flush();
+
+						session.clear();
+
+						_backgroundTaskPersistence.clearCache();
+
+						return super.execute(backgroundTask);
+					}
+
+				})) {
+
+			long timestamp = System.currentTimeMillis();
+
+			_sites.mergeLayoutSetPrototypeLayouts(_layoutSetPrototype, userId);
+
+			_assertNotification("successful", timestamp, userId);
+		}
 	}
 
 	@Test
@@ -1856,6 +1903,14 @@ public class LayoutSetPrototypePropagationTest
 
 	@Inject
 	private BackgroundTaskLocalService _backgroundTaskLocalService;
+
+	@Inject
+	private BackgroundTaskPersistence _backgroundTaskPersistence;
+
+	@Inject(
+		filter = "origin.bundle.symbolic.name=com.liferay.portal.background.task.service"
+	)
+	private SessionFactory _backgroundTaskSessionFactory;
 
 	@DeleteAfterTestRun
 	private CTCollection _ctCollection;

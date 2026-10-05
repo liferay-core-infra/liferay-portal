@@ -43,6 +43,34 @@ tests:
             serviceAccount.name: operator-sa
     -   asserts:
             -   equal:
+                    path: rules[?(@.resources[0]=="configmaps")].verbs
+                    value:
+                        -   get
+                        -   list
+                        -   watch
+        documentSelector:
+            path: kind
+            value: ClusterRole
+        it: Grants only reading ConfigMaps cluster wide
+    -   asserts:
+            -   equal:
+                    path: rules[?(@.resources[0]=="clientextensions")].verbs
+                    value:
+                        -   get
+                        -   list
+                        -   watch
+            -   equal:
+                    path: rules[?(@.resources[0]=="clientextensions/status")].verbs
+                    value:
+                        -   get
+                        -   patch
+                        -   update
+        documentSelector:
+            path: kind
+            value: ClusterRole
+        it: Grants the verbs each ClientExtension subresource needs
+    -   asserts:
+            -   equal:
                     path: rules[?(@.resources[0]=="liferayenvironments")].verbs
                     value:
                         -   get
@@ -108,7 +136,7 @@ tests:
         it: Omits the service account annotations by default
     -   asserts:
             -   lengthEqual:
-                    count: 8
+                    count: 13
                     path: rules
             -   contains:
                     content:
@@ -149,6 +177,17 @@ tests:
             -   contains:
                     content:
                         apiGroups:
+                            -   apiextensions.k8s.io
+                        resources:
+                            -   customresourcedefinitions
+                        verbs:
+                            -   get
+                            -   list
+                            -   watch
+                    path: rules
+            -   contains:
+                    content:
+                        apiGroups:
                             -   apps
                         resources:
                             -   statefulsets
@@ -157,6 +196,30 @@ tests:
                             -   list
                             -   patch
                             -   update
+                            -   watch
+                    path: rules
+            -   contains:
+                    content:
+                        apiGroups:
+                            -   autoscaling
+                        resources:
+                            -   horizontalpodautoscalers
+                        verbs:
+                            -   get
+                            -   list
+                            -   patch
+                            -   watch
+                    path: rules
+            -   contains:
+                    content:
+                        apiGroups:
+                            -   keda.sh
+                        resources:
+                            -   scaledobjects
+                        verbs:
+                            -   get
+                            -   list
+                            -   patch
                             -   watch
                     path: rules
         documentSelector:

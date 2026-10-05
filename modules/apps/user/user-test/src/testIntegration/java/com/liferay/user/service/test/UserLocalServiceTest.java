@@ -466,6 +466,8 @@ public class UserLocalServiceTest {
 				() -> _userLocalService.authenticateByEmailAddress(
 					companyId, emailAddress, "password", null, null, null));
 
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
 			user = _userLocalService.fetchUser(user.getUserId());
 
 			Assert.assertEquals(
@@ -479,11 +481,43 @@ public class UserLocalServiceTest {
 						passwordPolicy.setMaxAge(0);
 					})) {
 
+			user.setPassword("password");
+			user.setPasswordEncrypted(false);
+
+			user = _userLocalService.updateUser(user);
+
+			long mvccVersion = user.getMvccVersion();
+
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
 			Assert.assertEquals(
 				Authenticator.SUCCESS,
 				_userLocalService.authenticateByEmailAddress(
 					user.getCompanyId(), user.getEmailAddress(), "password",
 					null, null, null));
+
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
+			user = _userLocalService.fetchUser(user.getUserId());
+
+			Assert.assertEquals(0, user.getFailedLoginAttempts());
+			Assert.assertEquals(mvccVersion + 1, user.getMvccVersion());
+			Assert.assertTrue(user.isPasswordEncrypted());
+
+			Assert.assertEquals(
+				Authenticator.SUCCESS,
+				_userLocalService.authenticateByEmailAddress(
+					user.getCompanyId(), user.getEmailAddress(), "password",
+					null, null, null));
+
+			EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
+			User curUser = _userLocalService.fetchUser(user.getUserId());
+
+			Assert.assertEquals(
+				user.getModifiedDate(), curUser.getModifiedDate());
+			Assert.assertEquals(
+				user.getMvccVersion(), curUser.getMvccVersion());
 		}
 	}
 
@@ -497,6 +531,37 @@ public class UserLocalServiceTest {
 			"PBKDF2WITHHMACSHA1/160/2600000", "PBKDF2WITHHMACSHA1/160/1300000");
 		_testAuthenticateByEmailAddressWithOutdatedPasswordsEncryptionAlgorithm(
 			"SHA-384", "PBKDF2WITHHMACSHA1/160/1300000");
+	}
+
+	@Test
+	public void testAuthenticateForDigest() throws Exception {
+		String method = RandomTestUtil.randomString();
+		String nonce = RandomTestUtil.randomString();
+		String password = RandomTestUtil.randomString();
+		String uriString = RandomTestUtil.randomString();
+
+		User user = UserTestUtil.addUser();
+
+		Assert.assertEquals(
+			user.getUserId(),
+			_authenticateForDigest(
+				DigesterUtil.MD5, method, nonce, password, uriString, user));
+
+		try (SafeCloseable safeCloseable =
+				PropsValuesTestUtil.swapWithSafeCloseable(
+					"FIPS_ENABLED", true)) {
+
+			Assert.assertEquals(
+				0,
+				_authenticateForDigest(
+					DigesterUtil.MD5, method, nonce, password, uriString,
+					user));
+			Assert.assertEquals(
+				user.getUserId(),
+				_authenticateForDigest(
+					DigesterUtil.SHA_256, method, nonce, password, uriString,
+					user));
+		}
 	}
 
 	@Test
@@ -1654,6 +1719,47 @@ public class UserLocalServiceTest {
 	}
 
 	@Test
+	public void testUpdateLastLoginKeepsUserGroupIds() throws Throwable {
+		User user = UserTestUtil.addUser();
+
+		user.setLoginDate(new Date());
+		user.setLastLoginDate(new Date());
+
+		EntityCacheUtil.removeResult(UserImpl.class, user.getUserId());
+
+		_updateLastLogin(user);
+
+		Assert.assertNull(
+			EntityCacheUtil.getResult(UserImpl.class, user.getUserId()));
+
+		user = _userLocalService.getUser(user.getUserId());
+
+		Assert.assertArrayEquals(new long[0], user.getUserGroupIds());
+
+		UserGroup userGroup = UserGroupTestUtil.addUserGroup();
+
+		_userGroupLocalService.addUserUserGroup(user.getUserId(), userGroup);
+
+		User reloadedUser = _userLocalService.getUser(user.getUserId());
+
+		Assert.assertArrayEquals(
+			new long[] {userGroup.getUserGroupId()},
+			reloadedUser.getUserGroupIds());
+
+		user.setLoginDate(new Date());
+
+		_updateLastLogin(user);
+
+		User cachedUser = (User)EntityCacheUtil.getResult(
+			UserImpl.class, user.getUserId());
+
+		Assert.assertEquals(user.getLoginDate(), cachedUser.getLoginDate());
+		Assert.assertArrayEquals(
+			new long[] {userGroup.getUserGroupId()},
+			cachedUser.getUserGroupIds());
+	}
+
+	@Test
 	public void testUpdatePassword() throws Exception {
 		User user = UserTestUtil.addUser();
 		String password = RandomTestUtil.randomString(
@@ -2097,6 +2203,27 @@ public class UserLocalServiceTest {
 		Assert.assertNotNull(user.getPasswordPolicy());
 	}
 
+	private long _authenticateForDigest(
+			String algorithm, String method, String nonce, String password,
+			String uriString, User user)
+		throws Exception {
+
+		user.setDigest(user.getDigest(password));
+
+		user = _userLocalService.updateUser(user);
+
+		String ha1 = DigesterUtil.digestHex(
+			algorithm, String.valueOf(user.getUserId()), Portal.PORTAL_REALM,
+			password);
+
+		String ha2 = DigesterUtil.digestHex(algorithm, method, uriString);
+
+		return _userLocalService.authenticateForDigest(
+			user.getCompanyId(), String.valueOf(user.getUserId()),
+			Portal.PORTAL_REALM, nonce, method, uriString,
+			DigesterUtil.digestHex(algorithm, ha1, nonce, ha2));
+	}
+
 	private String _getUpdatePasswordURL(String content) {
 		Matcher matcher = _updatePasswordURLPattern.matcher(content);
 
@@ -2337,25 +2464,10 @@ public class UserLocalServiceTest {
 	}
 
 	private void _testUpdateLastLogin(User user) throws Throwable {
-		AopInvocationHandler aopInvocationHandler =
-			ProxyUtil.fetchInvocationHandler(
-				_userLocalService, AopInvocationHandler.class);
-
-		ServiceWrapper<UserLocalService> serviceWrapper =
-			(ServiceWrapper<UserLocalService>)aopInvocationHandler.getTarget();
-
-		UserLocalServiceImpl userLocalServiceImpl =
-			(UserLocalServiceImpl)serviceWrapper.getWrappedService();
-
 		user.setLoginDate(new Date());
 		user.setLastLoginDate(new Date());
 
-		TransactionInvokerUtil.invoke(
-			TransactionConfig.Factory.create(
-				Propagation.SUPPORTS, new Class<?>[] {Exception.class}),
-			() -> ReflectionTestUtil.invoke(
-				userLocalServiceImpl, "_updateLastLogin",
-				new Class<?>[] {List.class}, Collections.singletonList(user)));
+		_updateLastLogin(user);
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
@@ -2476,6 +2588,25 @@ public class UserLocalServiceTest {
 			_passwordPolicyLocalService.updatePasswordPolicy(
 				updatedPasswordPolicy);
 		};
+	}
+
+	private void _updateLastLogin(User user) throws Throwable {
+		AopInvocationHandler aopInvocationHandler =
+			ProxyUtil.fetchInvocationHandler(
+				_userLocalService, AopInvocationHandler.class);
+
+		ServiceWrapper<UserLocalService> serviceWrapper =
+			(ServiceWrapper<UserLocalService>)aopInvocationHandler.getTarget();
+
+		UserLocalServiceImpl userLocalServiceImpl =
+			(UserLocalServiceImpl)serviceWrapper.getWrappedService();
+
+		TransactionInvokerUtil.invoke(
+			TransactionConfig.Factory.create(
+				Propagation.SUPPORTS, new Class<?>[] {Exception.class}),
+			() -> ReflectionTestUtil.invoke(
+				userLocalServiceImpl, "_updateLastLogin",
+				new Class<?>[] {List.class}, Collections.singletonList(user)));
 	}
 
 	private SafeCloseable _updateSecuritySendPasswordResetLinkWithSafeCloseable(

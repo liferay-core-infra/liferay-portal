@@ -30,6 +30,7 @@ export class ObjectFieldsPage {
 	readonly aggregationFunctionDropdown: Locator;
 	readonly agreggationRelationshipDropdown: Locator;
 	readonly deleteObjectFieldOption: Locator;
+	readonly descriptionInput: Locator;
 	readonly editFieldSaveButton: Locator;
 	readonly externalReferenceCodeField: Locator;
 	readonly fieldsTabItem: Locator;
@@ -39,6 +40,7 @@ export class ObjectFieldsPage {
 	readonly filterStartDate: Locator;
 	readonly filterTypeDropdown: Locator;
 	readonly filterValue: Locator;
+	readonly labelLocalizationButton: Locator;
 	readonly limitCharactersToggle: Locator;
 	readonly maximumFileSize: Locator;
 	readonly maximumNumberOfCharacters: Locator;
@@ -69,6 +71,10 @@ export class ObjectFieldsPage {
 		this.deleteObjectFieldOption = page.getByRole('menuitem', {
 			name: 'Delete',
 		});
+		this.descriptionInput = this.iframeLocator.getByRole('textbox', {
+			exact: true,
+			name: 'Description',
+		});
 		this.editFieldSaveButton = page
 			.frameLocator('iframe')
 			.getByRole('button', {name: 'Save'});
@@ -95,6 +101,13 @@ export class ObjectFieldsPage {
 			'Filter Type' + 'Mandatory'
 		);
 		this.filterValue = this.filterModal.getByLabel('Value' + 'Mandatory');
+		this.labelLocalizationButton = this.iframeLocator
+			.locator('.input-localized', {
+				has: page
+					.frameLocator('iframe')
+					.locator('#objectFieldLabelInput'),
+			})
+			.getByLabel('Open Localizations');
 		this.limitCharactersToggle = this.iframeLocator.getByRole('switch', {
 			name: 'Limit Characters',
 		});

@@ -7,16 +7,16 @@ package com.liferay.site.cms.site.initializer.internal.display.context;
 
 import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
+import com.liferay.object.exception.NoSuchObjectDefinitionException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.site.cms.site.initializer.contributor.CMSStructureObjectFolderContributor;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -102,12 +102,25 @@ public class StructureBuilderDisplayContextTest {
 			baseObjectDefinitionExternalReferenceCode
 		);
 
-		Mockito.when(
-			_objectDefinitionResource.getObjectDefinitionsPage(
-				Mockito.isNull(), Mockito.isNull(), Mockito.any(),
-				Mockito.isNull(), Mockito.isNull())
-		).thenReturn(
-			Page.of(Collections.emptyList())
+		Mockito.doThrow(
+			new NoSuchObjectDefinitionException()
+		).when(
+			_objectDefinitionResource
+		).getObjectDefinitionByExternalReferenceCode(
+			baseObjectDefinitionExternalReferenceCode
+		);
+
+		Assert.assertNull(
+			ReflectionTestUtil.invoke(
+				structureBuilderDisplayContext, "_getBaseObjectDefinition",
+				new Class<?>[0]));
+
+		Mockito.doThrow(
+			new PrincipalException()
+		).when(
+			_objectDefinitionResource
+		).getObjectDefinitionByExternalReferenceCode(
+			baseObjectDefinitionExternalReferenceCode
 		);
 
 		Assert.assertNull(
@@ -117,15 +130,12 @@ public class StructureBuilderDisplayContextTest {
 
 		ObjectDefinition objectDefinition = new ObjectDefinition();
 
-		objectDefinition.setExternalReferenceCode(
-			baseObjectDefinitionExternalReferenceCode);
-
-		Mockito.when(
-			_objectDefinitionResource.getObjectDefinitionsPage(
-				Mockito.isNull(), Mockito.isNull(), Mockito.any(),
-				Mockito.isNull(), Mockito.isNull())
-		).thenReturn(
-			Page.of(Collections.singletonList(objectDefinition))
+		Mockito.doReturn(
+			objectDefinition
+		).when(
+			_objectDefinitionResource
+		).getObjectDefinitionByExternalReferenceCode(
+			baseObjectDefinitionExternalReferenceCode
 		);
 
 		Assert.assertSame(

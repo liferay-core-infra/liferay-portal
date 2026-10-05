@@ -46,7 +46,8 @@ const SelectSiteNavigationMenuItem = ({itemSelectorSaveEvent, nodes}) => {
 
 		getOpener().Liferay.fire(itemSelectorSaveEvent, {
 			data: {
-				selectSiteNavigationMenuItemId: item.id,
+				selectSiteNavigationMenuItemExternalReferenceCode:
+					item.externalReferenceCode ?? item.id,
 				selectSiteNavigationMenuItemName: item.name,
 			},
 		});

@@ -57,6 +57,9 @@ describe('AssetConsumption', () => {
 		expect(await screen.findByText('Basic Content')).toBeInTheDocument();
 		expect(screen.getByText('Knowledge Base')).toBeInTheDocument();
 		expect(screen.getByText('211')).toBeInTheDocument();
+		expect(
+			screen.getByText('showing-x-to-x-of-x-entries')
+		).toBeInTheDocument();
 	});
 
 	it('renders the empty state when there are no items', async () => {
@@ -74,5 +77,9 @@ describe('AssetConsumption', () => {
 		renderComponent();
 
 		expect(await screen.findByText('no-assets-yet')).toBeInTheDocument();
+
+		expect(
+			document.querySelector('img[src*="_reduced_motion"]')
+		).not.toBeInTheDocument();
 	});
 });

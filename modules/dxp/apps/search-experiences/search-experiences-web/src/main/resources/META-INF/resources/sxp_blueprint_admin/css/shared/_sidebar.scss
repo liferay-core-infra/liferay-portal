@@ -34,7 +34,6 @@
 		}
 
 		button {
-			color: $secondary;
 			margin-left: 8px;
 		}
 
@@ -68,7 +67,6 @@
 .clause-contributors-sidebar,
 .info-sidebar,
 .preview-sidebar {
-	background-color: $white;
 	display: flex;
 	flex-direction: column;
 	height: calc(

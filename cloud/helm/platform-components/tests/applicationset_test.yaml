@@ -150,6 +150,14 @@ tests:
             observability:
                 enabled: true
     -   asserts:
+            -   contains:
+                    content:
+                        name: global.liferayServiceAccount.create
+                        value: "false"
+                    path: spec.template.spec.sources[0].helm.parameters
+                template: templates/applicationset-liferay.yaml
+        it: Leaves the Liferay service account to the infrastructure composition
+    -   asserts:
             -   hasDocuments:
                     count: 0
                 template: templates/application-infrastructure-provider.yaml
@@ -294,6 +302,22 @@ tests:
                     content:
                         group: apps
                         kind: StatefulSet
+                        managedFieldsManagers:
+                            -   liferay-dxp-operator
+                    path: spec.template.spec.ignoreDifferences
+                template: templates/applicationset-liferay.yaml
+            -   contains:
+                    content:
+                        group: autoscaling
+                        kind: HorizontalPodAutoscaler
+                        managedFieldsManagers:
+                            -   liferay-dxp-operator
+                    path: spec.template.spec.ignoreDifferences
+                template: templates/applicationset-liferay.yaml
+            -   contains:
+                    content:
+                        group: keda.sh
+                        kind: ScaledObject
                         managedFieldsManagers:
                             -   liferay-dxp-operator
                     path: spec.template.spec.ignoreDifferences

@@ -33,16 +33,16 @@ export function FormikFieldContentSelector({
 	previewPortletDataHandlerSections,
 	process = 'export',
 }: FormikFieldContentSelectorProps) {
-	const [field, meta, helpers] = useField<ContentSelection | undefined>(name);
+	const [field, meta, helpers] = useField<
+		ContentSelection | null | undefined
+	>(name);
 	const [{value: deletions}] = useField<boolean | undefined>('deletions');
 	const {setFieldTouched, setFieldValue} = useFormikContext();
 
 	const showDeletions = !!deletions;
 
 	const shouldSeed =
-		!!previewPortletDataHandlerSections.length &&
-		field.value === undefined &&
-		!meta.touched;
+		!!previewPortletDataHandlerSections.length && field.value === undefined;
 
 	const defaultContentSelection = shouldSeed
 		? getFullDataSelection(previewPortletDataHandlerSections, {
@@ -73,7 +73,7 @@ export function FormikFieldContentSelector({
 			lookAndFeelEnabled={lookAndFeelEnabled}
 			name={name}
 			onChange={(newValue) => {
-				helpers.setValue(newValue);
+				helpers.setValue(newValue ?? null);
 				setFieldTouched(name, true, false);
 			}}
 			pageTreeModalConfiguration={pageTreeModalConfiguration}

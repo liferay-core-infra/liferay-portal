@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -156,6 +157,13 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 	@Override
 	public ObjectEntry getRelatedObjectEntry(String objectFieldName) {
 		return _relatedObjectEntries.get(objectFieldName);
+	}
+
+	@Override
+	public ObjectDefinition getRelatedSystemObjectDefinition(
+		String objectFieldName) {
+
+		return _relatedSystemObjectDefinitions.get(objectFieldName);
 	}
 
 	@Override
@@ -298,7 +306,15 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 			}
 
 			try {
-				_values = ObjectEntryLocalServiceUtil.getValues(this);
+				_values = ObjectEntryLocalServiceUtil.getValues(
+					this, _dynamicObjectDefinitionTableValues,
+					dynamicObjectDefinitionTableValues -> {
+						_dynamicObjectDefinitionTableValues =
+							dynamicObjectDefinitionTableValues;
+
+						dynamicObjectDefinitionTableValuesUpdateEntityCacheBiConsumer.
+							accept(this, dynamicObjectDefinitionTableValues);
+					});
 			}
 			catch (Exception exception) {
 				_log.error(exception);
@@ -347,6 +363,15 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 	}
 
 	@Override
+	public void setRelatedSystemObjectDefinition(
+		String objectFieldName,
+		ObjectDefinition relatedSystemObjectDefinition) {
+
+		_relatedSystemObjectDefinitions.put(
+			objectFieldName, relatedSystemObjectDefinition);
+	}
+
+	@Override
 	public void setTransientValues(Map<String, Serializable> values) {
 		_transientValues = values;
 	}
@@ -354,15 +379,24 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 	@Override
 	public void setValues(Map<String, Serializable> values) {
 		_values = values;
+
+		_dynamicObjectDefinitionTableValues = null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectEntryImpl.class);
 
+	@CacheField(
+		methodName = "DynamicObjectDefinitionTableValues", permanent = true
+	)
+	private Map<String, Object> _dynamicObjectDefinitionTableValues;
+
 	private Map<String, Serializable> _indexedValues;
 	private ObjectDefinition _objectDefinition;
 	private final Map<String, ObjectEntry> _relatedObjectEntries =
 		new HashMap<>();
+	private final Map<String, ObjectDefinition>
+		_relatedSystemObjectDefinitions = new HashMap<>();
 	private Map<String, Serializable> _transientValues;
 	private Map<String, Serializable> _values;
 

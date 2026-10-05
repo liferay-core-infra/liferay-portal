@@ -9,6 +9,7 @@ import {Provider} from 'react-redux';
 const defaultProps = {
 	activePathname: '',
 	channelId: '123',
+	containerRef: React.createRef(),
 	groupId: '23'
 };
 
@@ -36,8 +37,8 @@ describe('Sidebar', () => {
 			</Provider>
 		);
 
-		expect(container.querySelector('.sidebar-root')).toHaveClass(
-			'collapsed'
+		expect(container.querySelector('.sidebar-root')).toHaveAttribute(
+			'inert'
 		);
 	});
 
@@ -55,9 +56,10 @@ describe('Sidebar', () => {
 			</Provider>
 		);
 
-		expect(
-			container.querySelector('.sidebar-item-root.active').firstChild
-		).toHaveAttribute('href', activePathName);
+		expect(container.querySelector('.nav-link.active')).toHaveAttribute(
+			'href',
+			activePathName
+		);
 	});
 
 	it('should render lifecycle and accounts items when LDP is enabled', () => {
@@ -123,7 +125,7 @@ describe('Sidebar', () => {
 		);
 
 		expect(
-			screen.getByRole('button', {name: 'Touchpoints'})
+			screen.getByRole('menuitem', {name: 'Touchpoints'})
 		).toHaveAttribute('aria-expanded', 'true');
 	});
 
@@ -140,7 +142,7 @@ describe('Sidebar', () => {
 		);
 
 		expect(
-			screen.getByRole('button', {name: 'Touchpoints'})
+			screen.getByRole('menuitem', {name: 'Touchpoints'})
 		).toHaveAttribute('aria-expanded', 'false');
 	});
 
@@ -158,7 +160,7 @@ describe('Sidebar', () => {
 			</Provider>
 		);
 
-		fireEvent.click(screen.getByRole('button', {name: 'Touchpoints'}));
+		fireEvent.click(screen.getByRole('menuitem', {name: 'Touchpoints'}));
 
 		expect(onSectionToggle).toHaveBeenCalledWith('touchpoints', true);
 	});

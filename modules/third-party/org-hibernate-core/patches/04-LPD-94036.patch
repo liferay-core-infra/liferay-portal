@@ -1,0 +1,160 @@
+diff --git a/org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java b/org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java
+index 30003ca..a128dfe 100644
+--- a/org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java
++++ b/org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java
+@@ -116,147 +116,12 @@ public class BytecodeProviderImpl implements BytecodeProvider {
+ 			final String[] getterNames,
+ 			final String[] setterNames,
+ 			final Class[] types) {
+-		final Class<?> fastClass;
+-		if ( !clazz.isInterface() && !Modifier.isAbstract( clazz.getModifiers() ) ) {
+-			// we only provide a fast class instantiator if the class can be instantiated
+-			final Constructor<?> constructor = findConstructor( clazz );
+-
+-			if ( constructor == null || Modifier.isPrivate( constructor.getModifiers() ) ) {
+-				// In the current implementation of the ReflectionOptimizer contract, we can't call private constructors
+-				// To support that, we have to inject a static factory method into the class during enhancement
+-				fastClass = null;
+-			}
+-			else {
+-				final String className = clazz.getName() + INSTANTIATOR_PROXY_NAMING_SUFFIX;
+-				fastClass = byteBuddyState.load( clazz, className, (byteBuddy, namingStrategy) -> byteBuddy
+-						.with( namingStrategy )
+-						.subclass( constants.TypeInstantiationOptimizer )
+-						.method( constants.newInstanceMethodName )
+-						.intercept( MethodCall.construct( constructor ) )
+-				);
+-			}
+-		}
+-		else {
+-			fastClass = null;
+-		}
+-
+-		final Method[] getters = new Method[getterNames.length];
+-		final Method[] setters = new Method[setterNames.length];
+-		try {
+-			findAccessors( clazz, getterNames, setterNames, types, getters, setters );
+-		}
+-		catch (InvalidPropertyAccessorException ex) {
+-			CORE_LOGGER.unableToGenerateReflectionOptimizer( clazz.getName(), ex.getMessage() );
+-			return null;
+-		}
+-
+-		final Class<?> bulkAccessor = byteBuddyState.load( clazz, byteBuddy -> byteBuddy
+-				.with( new NamingStrategy.SuffixingRandom(
+-						OPTIMIZER_PROXY_NAMING_SUFFIX,
+-						new NamingStrategy.Suffixing.BaseNameResolver.ForFixedValue( clazz.getName() )
+-				) )
+-				.subclass( constants.TypeObject )
+-				.implement( constants.INTERFACES_for_AccessOptimizer )
+-				.method( constants.getPropertyValuesMethodName )
+-				.intercept( new Implementation.Simple( new GetPropertyValues( clazz, getterNames, getters, constants ) ) )
+-				.method( constants.setPropertyValuesMethodName )
+-				.intercept( new Implementation.Simple( new SetPropertyValues( clazz, getterNames, setters, constants ) ) )
+-				.method( constants.getPropertyNamesMethodName )
+-				.intercept( new Implementation.Simple( new GetPropertyNames( getterNames, constants ) ) )
+-		);
+-
+-		try {
+-			return new ReflectionOptimizerImpl(
+-					fastClass != null ? (ReflectionOptimizer.InstantiationOptimizer) fastClass.newInstance() : null,
+-					(ReflectionOptimizer.AccessOptimizer) bulkAccessor.newInstance()
+-			);
+-		}
+-		catch (Exception exception) {
+-			throw new HibernateException( exception );
+-		}
++		return null;
+ 	}
+ 
+ 	@Override
+ 	public @Nullable ReflectionOptimizer getReflectionOptimizer(Class<?> clazz, Map<String, PropertyAccess> propertyAccessMap) {
+-		final Class<?> fastClass;
+-		if ( !clazz.isInterface() && !Modifier.isAbstract( clazz.getModifiers() ) ) {
+-			// we only provide a fast class instantiator if the class can be instantiated
+-			final Constructor<?> constructor = findConstructor( clazz );
+-
+-			if ( constructor == null || Modifier.isPrivate( constructor.getModifiers() ) ) {
+-				// In the current implementation of the ReflectionOptimizer contract, we can't call private constructors
+-				// To support that, we have to inject a static factory method into the class during enhancement
+-				fastClass = null;
+-			}
+-			else {
+-				final String className = clazz.getName() + INSTANTIATOR_PROXY_NAMING_SUFFIX;
+-				fastClass = byteBuddyState.load( clazz, className, (byteBuddy, namingStrategy) -> byteBuddy
+-						.with( namingStrategy )
+-						.subclass( constants.TypeInstantiationOptimizer )
+-						.method( constants.newInstanceMethodName )
+-						.intercept( MethodCall.construct( constructor ) )
+-				);
+-			}
+-		}
+-		else {
+-			fastClass = null;
+-		}
+-
+-		final Member[] getters = new Member[propertyAccessMap.size()];
+-		final Member[] setters = new Member[propertyAccessMap.size()];
+-		try {
+-			findAccessors( clazz, propertyAccessMap, getters, setters );
+-		}
+-		catch (InvalidPropertyAccessorException ex) {
+-			CORE_LOGGER.unableToGenerateReflectionOptimizer( clazz.getName(), ex.getMessage() );
+-			return null;
+-		}
+-
+-		final String[] propertyNames = propertyAccessMap.keySet().toArray( new String[0] );
+-		final Class<?> superClass = determineAccessOptimizerSuperClass( clazz, propertyNames, getters, setters );
+-
+-		final String className = clazz.getName() + "$" + OPTIMIZER_PROXY_NAMING_SUFFIX + NameEncodeHelper.encodeName( propertyNames, getters, setters );
+-		final Class<?> bulkAccessor;
+-		if ( className.getBytes( StandardCharsets.UTF_8 ).length >= 0x10000 ) {
+-			// The JVM has a 64K byte limit on class name length, so fallback to random name if encoding exceeds that
+-			bulkAccessor = byteBuddyState.load( clazz, byteBuddy -> byteBuddy
+-					.with( new NamingStrategy.SuffixingRandom(
+-							OPTIMIZER_PROXY_NAMING_SUFFIX,
+-							new NamingStrategy.Suffixing.BaseNameResolver.ForFixedValue( clazz.getName() )
+-					) )
+-					.subclass( superClass )
+-					.implement( constants.INTERFACES_for_AccessOptimizer )
+-					.method( constants.getPropertyValuesMethodName )
+-					.intercept( new Implementation.Simple( new GetPropertyValues( clazz, propertyNames, getters, constants ) ) )
+-					.method( constants.setPropertyValuesMethodName )
+-					.intercept( new Implementation.Simple( new SetPropertyValues( clazz, propertyNames, setters, constants ) ) )
+-					.method( constants.getPropertyNamesMethodName )
+-					.intercept( new Implementation.Simple( new GetPropertyNames( propertyNames, constants ) ) )
+-			);
+-		}
+-		else {
+-			bulkAccessor = byteBuddyState.load( clazz, className, (byteBuddy, namingStrategy) -> byteBuddy
+-					.with( namingStrategy )
+-					.subclass( superClass )
+-					.implement( constants.INTERFACES_for_AccessOptimizer )
+-					.method( constants.getPropertyValuesMethodName )
+-					.intercept( new Implementation.Simple( new GetPropertyValues( clazz, propertyNames, getters, constants ) ) )
+-					.method( constants.setPropertyValuesMethodName )
+-					.intercept( new Implementation.Simple( new SetPropertyValues( clazz, propertyNames, setters, constants ) ) )
+-					.method( constants.getPropertyNamesMethodName )
+-					.intercept( new Implementation.Simple( new GetPropertyNames( propertyNames, constants ) ) )
+-			);
+-		}
+-
+-		try {
+-			return new ReflectionOptimizerImpl(
+-					fastClass != null ? (ReflectionOptimizer.InstantiationOptimizer) fastClass.newInstance() : null,
+-					(ReflectionOptimizer.AccessOptimizer) bulkAccessor.newInstance()
+-			);
+-		}
+-		catch (Exception exception) {
+-			throw new HibernateException( exception );
+-		}
++		return null;
+ 	}
+ 
+ 	private Class<?> determineAccessOptimizerSuperClass(Class<?> clazz, String[] propertyNames, Member[] getters, Member[] setters) {
+@@ -569,3 +434,4 @@ public class BytecodeProviderImpl implements BytecodeProvider {
+ 	}
+ 
+ }
++/* @generated */
+\ No newline at end of file

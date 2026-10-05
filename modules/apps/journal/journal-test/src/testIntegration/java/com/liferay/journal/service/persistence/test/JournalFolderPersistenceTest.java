@@ -303,6 +303,14 @@ public class JournalFolderPersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_NotS() throws Exception {
+		_persistence.countByC_NotS(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+
+		_persistence.countByC_NotS(0L, 0);
+	}
+
+	@Test
 	public void testCountByG_P_N() throws Exception {
 		_persistence.countByG_P_N(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
@@ -771,4 +779,4 @@ public class JournalFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1767526025
+// LIFERAY-SERVICE-BUILDER-HASH:-907886987

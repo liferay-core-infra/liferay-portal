@@ -343,6 +343,23 @@ public class GroupPersistenceTest {
 	}
 
 	@Test
+	public void testCountByT_A() throws Exception {
+		_persistence.countByT_A(
+			RandomTestUtil.nextInt(), RandomTestUtil.randomBoolean());
+
+		_persistence.countByT_A(0, RandomTestUtil.randomBoolean());
+	}
+
+	@Test
+	public void testCountByGtG_C_P() throws Exception {
+		_persistence.countByGtG_C_P(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
+
+		_persistence.countByGtG_C_P(0L, 0L, 0L);
+	}
+
+	@Test
 	public void testCountByC_C_C() throws Exception {
 		_persistence.countByC_C_C(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
@@ -927,4 +944,4 @@ public class GroupPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-755357897
+// LIFERAY-SERVICE-BUILDER-HASH:1967735761

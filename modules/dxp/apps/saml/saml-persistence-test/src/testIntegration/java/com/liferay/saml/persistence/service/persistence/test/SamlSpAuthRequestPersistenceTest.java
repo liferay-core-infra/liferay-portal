@@ -511,4 +511,4 @@ public class SamlSpAuthRequestPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2124156135
+// LIFERAY-SERVICE-BUILDER-HASH:1180126189

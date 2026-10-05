@@ -215,6 +215,15 @@ public class RatingsEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_C_S() throws Exception {
+		_persistence.countByC_C_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDouble());
+
+		_persistence.countByC_C_S(0L, 0L, 0D);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		RatingsEntry newRatingsEntry = addRatingsEntry();
 
@@ -557,4 +566,4 @@ public class RatingsEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1091043658
+// LIFERAY-SERVICE-BUILDER-HASH:519080120

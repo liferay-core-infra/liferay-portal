@@ -291,6 +291,15 @@ public class KaleoTaskAssignmentInstancePersistenceTest {
 	}
 
 	@Test
+	public void testCountByKTITI_ACN() throws Exception {
+		_persistence.countByKTITI_ACN(RandomTestUtil.nextLong(), "");
+
+		_persistence.countByKTITI_ACN(0L, "null");
+
+		_persistence.countByKTITI_ACN(0L, (String)null);
+	}
+
+	@Test
 	public void testCountByACN_ACPK() throws Exception {
 		_persistence.countByACN_ACPK("", RandomTestUtil.nextLong());
 
@@ -655,4 +664,4 @@ public class KaleoTaskAssignmentInstancePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-595771904
+// LIFERAY-SERVICE-BUILDER-HASH:1240559809

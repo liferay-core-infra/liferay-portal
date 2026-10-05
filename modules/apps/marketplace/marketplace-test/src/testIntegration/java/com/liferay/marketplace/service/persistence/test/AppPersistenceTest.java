@@ -186,6 +186,13 @@ public class AppPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testCountByRemoteAppId() throws Exception {
 		_persistence.countByRemoteAppId(RandomTestUtil.nextLong());
 
@@ -527,4 +534,4 @@ public class AppPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-386908081
+// LIFERAY-SERVICE-BUILDER-HASH:1183965981

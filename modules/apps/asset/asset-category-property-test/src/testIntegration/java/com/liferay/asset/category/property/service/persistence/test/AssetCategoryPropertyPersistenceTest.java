@@ -230,6 +230,15 @@ public class AssetCategoryPropertyPersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_K() throws Exception {
+		_persistence.countByC_K(RandomTestUtil.nextLong(), "");
+
+		_persistence.countByC_K(0L, "null");
+
+		_persistence.countByC_K(0L, (String)null);
+	}
+
+	@Test
 	public void testCountByCA_K() throws Exception {
 		_persistence.countByCA_K(RandomTestUtil.nextLong(), "");
 
@@ -636,4 +645,4 @@ public class AssetCategoryPropertyPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1400930823
+// LIFERAY-SERVICE-BUILDER-HASH:-1165649240

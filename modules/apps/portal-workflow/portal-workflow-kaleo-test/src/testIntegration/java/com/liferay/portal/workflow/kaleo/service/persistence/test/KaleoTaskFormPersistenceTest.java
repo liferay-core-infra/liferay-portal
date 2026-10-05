@@ -245,6 +245,13 @@ public class KaleoTaskFormPersistenceTest {
 	}
 
 	@Test
+	public void testCountByKaleoNodeId() throws Exception {
+		_persistence.countByKaleoNodeId(RandomTestUtil.nextLong());
+
+		_persistence.countByKaleoNodeId(0L);
+	}
+
+	@Test
 	public void testCountByKaleoTaskId() throws Exception {
 		_persistence.countByKaleoTaskId(RandomTestUtil.nextLong());
 
@@ -630,4 +637,4 @@ public class KaleoTaskFormPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2100455725
+// LIFERAY-SERVICE-BUILDER-HASH:-936527258

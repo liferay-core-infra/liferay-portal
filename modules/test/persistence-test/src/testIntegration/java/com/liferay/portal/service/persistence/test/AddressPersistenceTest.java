@@ -279,6 +279,20 @@ public class AddressPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
+	public void testCountByUserId() throws Exception {
+		_persistence.countByUserId(RandomTestUtil.nextLong());
+
+		_persistence.countByUserId(0L);
+	}
+
+	@Test
 	public void testCountByCountryId() throws Exception {
 		_persistence.countByCountryId(RandomTestUtil.nextLong());
 
@@ -290,6 +304,14 @@ public class AddressPersistenceTest {
 		_persistence.countByRegionId(RandomTestUtil.nextLong());
 
 		_persistence.countByRegionId(0L);
+	}
+
+	@Test
+	public void testCountByC_C() throws Exception {
+		_persistence.countByC_C(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+
+		_persistence.countByC_C(0L, 0L);
 	}
 
 	@Test
@@ -724,4 +746,4 @@ public class AddressPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-413678213
+// LIFERAY-SERVICE-BUILDER-HASH:1144160643

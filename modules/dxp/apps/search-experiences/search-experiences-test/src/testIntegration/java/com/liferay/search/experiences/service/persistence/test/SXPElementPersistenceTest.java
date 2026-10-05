@@ -264,6 +264,23 @@ public class SXPElementPersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_T() throws Exception {
+		_persistence.countByC_T(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+
+		_persistence.countByC_T(0L, 0);
+	}
+
+	@Test
+	public void testCountByC_T_S() throws Exception {
+		_persistence.countByC_T_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByC_T_S(0L, 0, 0);
+	}
+
+	@Test
 	public void testCountByERC_C() throws Exception {
 		_persistence.countByERC_C("", RandomTestUtil.nextLong());
 
@@ -629,4 +646,4 @@ public class SXPElementPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:266729222
+// LIFERAY-SERVICE-BUILDER-HASH:501890832

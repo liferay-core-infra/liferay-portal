@@ -157,10 +157,26 @@ public class UserTrackerPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testCountByUserId() throws Exception {
 		_persistence.countByUserId(RandomTestUtil.nextLong());
 
 		_persistence.countByUserId(0L);
+	}
+
+	@Test
+	public void testCountBySessionId() throws Exception {
+		_persistence.countBySessionId("");
+
+		_persistence.countBySessionId("null");
+
+		_persistence.countBySessionId((String)null);
 	}
 
 	@Test
@@ -432,4 +448,4 @@ public class UserTrackerPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2095478829
+// LIFERAY-SERVICE-BUILDER-HASH:1056520777

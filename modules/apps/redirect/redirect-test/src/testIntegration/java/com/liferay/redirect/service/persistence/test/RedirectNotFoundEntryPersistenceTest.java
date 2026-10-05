@@ -566,4 +566,4 @@ public class RedirectNotFoundEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1909905366
+// LIFERAY-SERVICE-BUILDER-HASH:82621744

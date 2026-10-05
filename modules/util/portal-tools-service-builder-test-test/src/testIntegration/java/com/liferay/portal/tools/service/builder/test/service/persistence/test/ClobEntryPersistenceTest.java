@@ -353,4 +353,4 @@ public class ClobEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2062299382
+// LIFERAY-SERVICE-BUILDER-HASH:-1365524472

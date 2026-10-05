@@ -204,6 +204,20 @@ public class DDMContentPersistenceTest {
 	}
 
 	@Test
+	public void testCountByGroupId() throws Exception {
+		_persistence.countByGroupId(RandomTestUtil.nextLong());
+
+		_persistence.countByGroupId(0L);
+	}
+
+	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		DDMContent newDDMContent = addDDMContent();
 
@@ -540,4 +554,4 @@ public class DDMContentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1102011875
+// LIFERAY-SERVICE-BUILDER-HASH:-1332780663

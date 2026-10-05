@@ -199,6 +199,15 @@ public class PLOEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_L() throws Exception {
+		_persistence.countByC_L(RandomTestUtil.nextLong(), "");
+
+		_persistence.countByC_L(0L, "null");
+
+		_persistence.countByC_L(0L, (String)null);
+	}
+
+	@Test
 	public void testCountByC_K_L() throws Exception {
 		_persistence.countByC_K_L(RandomTestUtil.nextLong(), "", "");
 
@@ -562,4 +571,4 @@ public class PLOEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1656666920
+// LIFERAY-SERVICE-BUILDER-HASH:2075669993

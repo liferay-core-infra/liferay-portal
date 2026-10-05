@@ -549,4 +549,4 @@ public class LockPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:410881603
+// LIFERAY-SERVICE-BUILDER-HASH:1478467913

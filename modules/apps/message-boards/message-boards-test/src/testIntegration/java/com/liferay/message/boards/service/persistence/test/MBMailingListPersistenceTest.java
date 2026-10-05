@@ -281,6 +281,13 @@ public class MBMailingListPersistenceTest {
 	}
 
 	@Test
+	public void testCountByActive() throws Exception {
+		_persistence.countByActive(RandomTestUtil.randomBoolean());
+
+		_persistence.countByActive(RandomTestUtil.randomBoolean());
+	}
+
+	@Test
 	public void testCountByG_C() throws Exception {
 		_persistence.countByG_C(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
@@ -680,4 +687,4 @@ public class MBMailingListPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-401143575
+// LIFERAY-SERVICE-BUILDER-HASH:-1601923200

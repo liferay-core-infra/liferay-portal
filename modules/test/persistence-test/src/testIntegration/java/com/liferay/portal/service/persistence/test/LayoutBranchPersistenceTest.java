@@ -182,6 +182,14 @@ public class LayoutBranchPersistenceTest {
 	}
 
 	@Test
+	public void testCountByL_P() throws Exception {
+		_persistence.countByL_P(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+
+		_persistence.countByL_P(0L, 0L);
+	}
+
+	@Test
 	public void testCountByL_P_N() throws Exception {
 		_persistence.countByL_P_N(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
@@ -545,4 +553,4 @@ public class LayoutBranchPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1095065435
+// LIFERAY-SERVICE-BUILDER-HASH:-933999685

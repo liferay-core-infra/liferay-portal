@@ -210,6 +210,13 @@ public class LayoutLocalizationPersistenceTest {
 	}
 
 	@Test
+	public void testCountByPlid() throws Exception {
+		_persistence.countByPlid(RandomTestUtil.nextLong());
+
+		_persistence.countByPlid(0L);
+	}
+
+	@Test
 	public void testCountByL_P() throws Exception {
 		_persistence.countByL_P("", RandomTestUtil.nextLong());
 
@@ -611,4 +618,4 @@ public class LayoutLocalizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:432383476
+// LIFERAY-SERVICE-BUILDER-HASH:1490279569

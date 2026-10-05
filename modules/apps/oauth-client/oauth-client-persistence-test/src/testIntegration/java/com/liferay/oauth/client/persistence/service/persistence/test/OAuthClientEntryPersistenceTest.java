@@ -686,4 +686,4 @@ public class OAuthClientEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:89569616
+// LIFERAY-SERVICE-BUILDER-HASH:-1186200310

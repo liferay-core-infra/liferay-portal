@@ -623,4 +623,4 @@ public class EmailAddressPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1328660963
+// LIFERAY-SERVICE-BUILDER-HASH:193917929

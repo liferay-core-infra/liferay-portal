@@ -438,4 +438,4 @@ public class CTRemotePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:617776283
+// LIFERAY-SERVICE-BUILDER-HASH:-26576991

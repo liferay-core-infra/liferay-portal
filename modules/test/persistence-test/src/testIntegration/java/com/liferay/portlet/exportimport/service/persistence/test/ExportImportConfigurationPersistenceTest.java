@@ -581,4 +581,4 @@ public class ExportImportConfigurationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:484570563
+// LIFERAY-SERVICE-BUILDER-HASH:-1938102839

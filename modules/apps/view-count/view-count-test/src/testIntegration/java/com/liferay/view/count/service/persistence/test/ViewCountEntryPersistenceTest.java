@@ -314,13 +314,13 @@ public class ViewCountEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.companyId", newViewCountEntry.getCompanyId()));
+				"primaryKey.companyId", newViewCountEntry.getCompanyId()));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classNameId", newViewCountEntry.getClassNameId()));
+				"primaryKey.classNameId", newViewCountEntry.getClassNameId()));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classPK", newViewCountEntry.getClassPK()));
+				"primaryKey.classPK", newViewCountEntry.getClassPK()));
 
 		List<ViewCountEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -339,13 +339,13 @@ public class ViewCountEntryPersistenceTest {
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.companyId", RandomTestUtil.nextLong()));
+				"primaryKey.companyId", RandomTestUtil.nextLong()));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classNameId", RandomTestUtil.nextLong()));
+				"primaryKey.classNameId", RandomTestUtil.nextLong()));
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.eq(
-				"id.classPK", RandomTestUtil.nextLong()));
+				"primaryKey.classPK", RandomTestUtil.nextLong()));
 
 		List<ViewCountEntry> result = _persistence.findWithDynamicQuery(
 			dynamicQuery);
@@ -361,13 +361,13 @@ public class ViewCountEntryPersistenceTest {
 			ViewCountEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("id.companyId"));
+			ProjectionFactoryUtil.property("primaryKey.companyId"));
 
 		Object newCompanyId = newViewCountEntry.getCompanyId();
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"id.companyId", new Object[] {newCompanyId}));
+				"primaryKey.companyId", new Object[] {newCompanyId}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -384,11 +384,12 @@ public class ViewCountEntryPersistenceTest {
 			ViewCountEntry.class, _dynamicQueryClassLoader);
 
 		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.property("id.companyId"));
+			ProjectionFactoryUtil.property("primaryKey.companyId"));
 
 		dynamicQuery.add(
 			RestrictionsFactoryUtil.in(
-				"id.companyId", new Object[] {RandomTestUtil.nextLong()}));
+				"primaryKey.companyId",
+				new Object[] {RandomTestUtil.nextLong()}));
 
 		List<Object> result = _persistence.findWithDynamicQuery(dynamicQuery);
 
@@ -415,4 +416,4 @@ public class ViewCountEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-14567368
+// LIFERAY-SERVICE-BUILDER-HASH:484444330

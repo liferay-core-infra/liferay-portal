@@ -1,0 +1,21 @@
+diff --git a/org/hibernate/metamodel/internal/AttributeFactory.java b/org/hibernate/metamodel/internal/AttributeFactory.java
+index f382907..4aa3abe 100644
+--- a/org/hibernate/metamodel/internal/AttributeFactory.java
++++ b/org/hibernate/metamodel/internal/AttributeFactory.java
+@@ -561,6 +561,10 @@ public class AttributeFactory {
+ 	}
+ 
+ 	public static AttributeClassification determineSingularAssociationClassification(Member member) {
++		if (member == null) {
++			return AttributeClassification.MANY_TO_ONE;
++		}
++
+ 		if ( member instanceof Field field ) {
+ 			return field.getAnnotation( OneToOne.class ) != null
+ 					? AttributeClassification.ONE_TO_ONE
+@@ -786,3 +790,4 @@ public class AttributeFactory {
+ 				.getGetter();
+ 	}
+ }
++/* @generated */
+\ No newline at end of file

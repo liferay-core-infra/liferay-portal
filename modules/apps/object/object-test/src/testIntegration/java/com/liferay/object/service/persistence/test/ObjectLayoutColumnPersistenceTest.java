@@ -473,4 +473,4 @@ public class ObjectLayoutColumnPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1263574190
+// LIFERAY-SERVICE-BUILDER-HASH:-384456600

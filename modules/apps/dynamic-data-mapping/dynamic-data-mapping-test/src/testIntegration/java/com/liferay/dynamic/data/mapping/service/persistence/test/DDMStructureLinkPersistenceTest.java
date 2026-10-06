@@ -515,4 +515,4 @@ public class DDMStructureLinkPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:311259458
+// LIFERAY-SERVICE-BUILDER-HASH:1069361992

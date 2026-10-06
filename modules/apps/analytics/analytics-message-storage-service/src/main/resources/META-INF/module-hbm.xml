@@ -43,14 +43,13 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="createDate" type="timestamp" />
-		<one-to-one access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" cascade="merge,persist,save-update" class="com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel" constrained="false" name="bodyBlobModel" outer-join="false" />
+		<one-to-one access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" cascade="merge,persist" class="com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel" constrained="false" name="bodyBlobModel" outer-join="false" />
 	</class>
 	<class dynamic-update="true" lazy="true" name="com.liferay.analytics.message.storage.model.AnalyticsMessageBodyBlobModel" table="AnalyticsMessage">
 		<id column="analyticsMessageId" name="analyticsMessageId">
-			<generator class="foreign">
-				<param name="property">com.liferay.analytics.message.storage.model.impl.AnalyticsMessageImpl</param>
-			</generator>
+			<generator class="assigned" />
 		</id>
 		<property column="body" name="bodyBlob" type="blob" />
+		<sql-insert>UPDATE AnalyticsMessage SET body = ? WHERE analyticsMessageId = ?</sql-insert>
 	</class>
 </hibernate-mapping>

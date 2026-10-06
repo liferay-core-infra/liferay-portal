@@ -514,4 +514,4 @@ public class CTermEntryLocalizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:821465778
+// LIFERAY-SERVICE-BUILDER-HASH:-1120782280

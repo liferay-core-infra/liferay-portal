@@ -411,4 +411,4 @@ public class ImagePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2008455373
+// LIFERAY-SERVICE-BUILDER-HASH:-1333558727

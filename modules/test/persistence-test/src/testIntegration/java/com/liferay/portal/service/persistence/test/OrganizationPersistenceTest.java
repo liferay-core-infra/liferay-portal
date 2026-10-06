@@ -709,4 +709,4 @@ public class OrganizationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2130425210
+// LIFERAY-SERVICE-BUILDER-HASH:211297332

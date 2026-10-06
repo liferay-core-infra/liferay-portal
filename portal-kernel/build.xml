@@ -91,10 +91,6 @@
 				value="${release.info.date}"
 			/>
 			<replacefilter
-				token="@release.info.name@"
-				value="${release.info.name}"
-			/>
-			<replacefilter
 				token="@release.info.version@"
 				value="${release.info.version}"
 			/>
@@ -103,5 +99,29 @@
 				value="${release.info.version.display.name}"
 			/>
 		</replace>
+
+		<if>
+			<equals arg1="${build.profile}" arg2="cms-standalone" />
+			<then>
+				<replace
+					file="src/com/liferay/portal/kernel/util/ReleaseInfo.java"
+				>
+					<replacefilter
+						token="@release.info.name@"
+						value="Liferay Content Management System"
+					/>
+				</replace>
+			</then>
+			<else>
+				<replace
+					file="src/com/liferay/portal/kernel/util/ReleaseInfo.java"
+				>
+					<replacefilter
+						token="@release.info.name@"
+						value="${release.info.name}"
+					/>
+				</replace>
+			</else>
+		</if>
 	</target>
 </project>

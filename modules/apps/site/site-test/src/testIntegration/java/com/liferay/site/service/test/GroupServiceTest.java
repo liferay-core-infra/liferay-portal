@@ -8,6 +8,7 @@ package com.liferay.site.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.layout.test.util.LayoutTestUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.GroupFriendlyURLException;
@@ -53,6 +54,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -1145,6 +1147,27 @@ public class GroupServiceTest {
 		Assert.assertEquals(scopeGroup.getParentGroupId(), group.getGroupId());
 	}
 
+	@Test
+	public void testSearchCount() throws Exception {
+		String tempFileName = _file.createTempFileName();
+
+		try {
+			_groupService.searchCount(
+				TestPropsValues.getCompanyId(), RandomTestUtil.randomString(),
+				null,
+				new String[] {
+					StringBundler.concat(
+						RandomTestUtil.randomString(), ":", tempFileName,
+						":java.io.FileOutputStream")
+				});
+
+			Assert.assertFalse(_file.exists(tempFileName));
+		}
+		finally {
+			_file.delete(tempFileName);
+		}
+	}
+
 	@Test(expected = GroupParentException.MustNotHaveChildParent.class)
 	public void testSelectFirstChildGroupAsParentSite() throws Exception {
 		Group parentGroup = GroupTestUtil.addGroup();
@@ -1543,6 +1566,9 @@ public class GroupServiceTest {
 
 	@Inject
 	private CompanyLocalService _companyLocalService;
+
+	@Inject
+	private File _file;
 
 	@Inject
 	private FriendlyURLNormalizer _friendlyURLNormalizer;

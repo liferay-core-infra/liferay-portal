@@ -85,19 +85,10 @@ public class TemplateRestrictedVariablesTest {
 				bundleContext.ungetService(serviceReference);
 			}
 		}
-	}
 
-	@Test
-	public void testRestrictedSAXReaderUtil() throws Exception {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TemplateRestrictedVariablesTest.class);
-
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		Collection<ServiceReference<TemplateManager>> serviceReferences =
-			bundleContext.getServiceReferences(
-				TemplateManager.class,
-				"(language.type=" + TemplateConstants.LANG_TYPE_FTL + ")");
+		serviceReferences = bundleContext.getServiceReferences(
+			TemplateManager.class,
+			"(language.type=" + TemplateConstants.LANG_TYPE_FTL + ")");
 
 		Assert.assertFalse(serviceReferences.isEmpty());
 
@@ -108,9 +99,14 @@ public class TemplateRestrictedVariablesTest {
 				serviceReference);
 
 			try {
-				_testRestrictedSAXReaderUtil(
-					"ACCESSIBLE", false, templateManager);
-				_testRestrictedSAXReaderUtil("DENIED", true, templateManager);
+				_testGetRestrictedVariables(
+					"ACCESSIBLE", false, templateManager, "enumUtil");
+				_testGetRestrictedVariables(
+					"ACCESSIBLE", false, templateManager, "saxReaderUtil");
+				_testGetRestrictedVariables(
+					"DENIED", true, templateManager, "enumUtil");
+				_testGetRestrictedVariables(
+					"DENIED", true, templateManager, "saxReaderUtil");
 			}
 			finally {
 				bundleContext.ungetService(serviceReference);
@@ -118,15 +114,15 @@ public class TemplateRestrictedVariablesTest {
 		}
 	}
 
-	private void _testRestrictedSAXReaderUtil(
+	private void _testGetRestrictedVariables(
 			String expected, boolean restricted,
-			TemplateManager templateManager)
+			TemplateManager templateManager, String variableName)
 		throws Exception {
 
 		Template template = templateManager.getTemplate(
 			new StringTemplateResource(
 				RandomTestUtil.randomString(),
-				"<#if saxReaderUtil??>ACCESSIBLE<#else>DENIED</#if>"),
+				"<#if " + variableName + "??>ACCESSIBLE<#else>DENIED</#if>"),
 			restricted);
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();

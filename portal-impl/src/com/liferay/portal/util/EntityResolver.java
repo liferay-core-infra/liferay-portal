@@ -22,6 +22,14 @@ import org.xml.sax.InputSource;
  */
 public class EntityResolver implements org.xml.sax.EntityResolver {
 
+	public EntityResolver() {
+		this(false);
+	}
+
+	public EntityResolver(boolean secure) {
+		_secure = secure;
+	}
+
 	@Override
 	public InputSource resolveEntity(String publicId, String systemId) {
 		Class<?> clazz = getClass();
@@ -94,6 +102,10 @@ public class EntityResolver implements org.xml.sax.EntityResolver {
 					return inputSource;
 				}
 
+				throw new XNIException("Invalid system id " + systemId);
+			}
+
+			if (_secure) {
 				throw new XNIException("Invalid system id " + systemId);
 			}
 		}
@@ -649,5 +661,7 @@ public class EntityResolver implements org.xml.sax.EntityResolver {
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(EntityResolver.class);
+
+	private final boolean _secure;
 
 }

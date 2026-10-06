@@ -30,7 +30,7 @@ public class SAXReaderFactory {
 			saxReader = new SAXReader(xmlReader, validate);
 
 			saxReader.setDocumentFactory(documentFactory);
-			saxReader.setEntityResolver(new EntityResolver());
+			saxReader.setEntityResolver(new EntityResolver(secure));
 			saxReader.setFeature(_FEATURES_DYNAMIC, validate);
 			saxReader.setFeature(_FEATURES_VALIDATION, validate);
 			saxReader.setFeature(_FEATURES_VALIDATION_SCHEMA, validate);
@@ -53,7 +53,7 @@ public class SAXReaderFactory {
 			saxReader = new SAXReader(xmlReader, false);
 
 			saxReader.setDocumentFactory(documentFactory);
-			saxReader.setEntityResolver(new EntityResolver());
+			saxReader.setEntityResolver(new EntityResolver(secure));
 		}
 
 		return saxReader;

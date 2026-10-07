@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.util.LicenseUtil;
 
@@ -21,6 +22,7 @@ import java.nio.file.StandardCopyOption;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -84,12 +86,16 @@ public class CheckLicenseTest extends BaseLicenseTestCase {
 	public void testCheckLicenseWithFreeTierBinaryFile2026_Q1_0()
 		throws Exception {
 
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
+
 		_testCheckLicense("free_tier_binary_file_2026_Q1_0.li");
 	}
 
 	@Test
 	public void testCheckLicenseWithFreeTierBinaryFileAfter2026_Q1_0()
 		throws Exception {
+
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
 
 		_testCheckLicense("free_tier_binary_file_after_2026_Q1_0.li");
 	}

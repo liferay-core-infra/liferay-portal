@@ -11,8 +11,12 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,6 +24,8 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,6 +34,16 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class EnterpriseDatabaseTest extends BaseLicenseTestCase {
+
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			new AssumeTestRule("assume"), new LiferayIntegrationTestRule());
+
+	public static void assume() {
+		Assume.assumeTrue(isReleaseBundle() && !ReleaseInfo.isCMSStandalone());
+	}
 
 	@BeforeClass
 	public static void setUpClass() {

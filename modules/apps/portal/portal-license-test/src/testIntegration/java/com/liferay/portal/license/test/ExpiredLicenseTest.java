@@ -9,11 +9,13 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Time;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -56,6 +58,8 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 
 	@Test
 	public void testEnterpriseLicenseExpired() throws Exception {
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
+
 		assertLicensePropertiesNotExisted(getPortalProductId());
 
 		assertPortalLicenseNotRegistered();
@@ -75,6 +79,8 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 
 	@Test
 	public void testFreeAndEnterpriseExpired() throws Exception {
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
+
 		assertLicensePropertiesNotExisted(getPortalProductId());
 
 		assertPortalLicenseNotRegistered();
@@ -114,6 +120,8 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 
 	@Test
 	public void testFreeTierLicenseExpired() throws Exception {
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
+
 		assertLicensePropertiesNotExisted(getPortalProductId());
 
 		assertPortalLicenseNotRegistered();

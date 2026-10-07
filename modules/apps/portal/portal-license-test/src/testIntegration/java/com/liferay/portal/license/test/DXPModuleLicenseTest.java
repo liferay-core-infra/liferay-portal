@@ -9,6 +9,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Time;
 
 import java.io.File;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -62,11 +64,15 @@ public class DXPModuleLicenseTest extends BaseLicenseTestCase {
 
 	@Test
 	public void testLicenseFreeTier() throws Exception {
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
+
 		_testLicense(() -> deployFreeTierPortalLicense(Time.HOUR), false);
 	}
 
 	@Test
 	public void testLicenseFreeTierWithManualDeploy() throws Exception {
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
+
 		assertLicensePropertiesNotExisted(getPortalProductId());
 
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();

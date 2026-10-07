@@ -10,6 +10,7 @@ import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.AvailableLocaleException;
+import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.base.VirtualHostLocalServiceBaseImpl;
 
@@ -49,6 +51,26 @@ import java.util.TreeMap;
  */
 public class VirtualHostLocalServiceImpl
 	extends VirtualHostLocalServiceBaseImpl {
+
+	/**
+	 * Returns the company with the virtual host name.
+	 *
+	 * @param  virtualHostname the virtual host name
+	 * @return the company with the virtual host name, <code>null</code> if a
+	 *         company with the virtual host could not be found
+	 */
+	@Override
+	public Company fetchCompanyByVirtualHost(String virtualHostname) {
+		VirtualHost virtualHost = fetchVirtualHost(
+			StringUtil.toLowerCase(StringUtil.trim(virtualHostname)));
+
+		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
+			return null;
+		}
+
+		return _companyPersistence.fetchByPrimaryKey(
+			virtualHost.getCompanyId());
+	}
 
 	@Override
 	public VirtualHost fetchCompanyDefaultVirtualHost(long companyId) {
@@ -114,6 +136,26 @@ public class VirtualHostLocalServiceImpl
 		}
 
 		return virtualHost;
+	}
+
+	/**
+	 * Returns the company with the virtual host name.
+	 *
+	 * @param  virtualHostname the company's virtual host name
+	 * @return the company with the virtual host name
+	 */
+	@Override
+	public Company getCompanyByVirtualHost(String virtualHostname)
+		throws PortalException {
+
+		Company company = fetchCompanyByVirtualHost(virtualHostname);
+
+		if (company == null) {
+			throw new CompanyVirtualHostException(
+				"{virtualHostname=" + virtualHostname + "}");
+		}
+
+		return company;
 	}
 
 	@Override

@@ -774,25 +774,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		return companyPersistence.fetchByPrimaryKey(companyId);
 	}
 
-	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param  virtualHostname the virtual host name
-	 * @return the company with the virtual host name, <code>null</code> if a
-	 *         company with the virtual host could not be found
-	 */
-	@Override
-	public Company fetchCompanyByVirtualHost(String virtualHostname) {
-		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
-			StringUtil.toLowerCase(StringUtil.trim(virtualHostname)));
-
-		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
-			return null;
-		}
-
-		return companyPersistence.fetchByPrimaryKey(virtualHost.getCompanyId());
-	}
-
 	@Override
 	@Transactional(enabled = false)
 	public <E extends Exception> void forEachCompany(
@@ -950,26 +931,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	@Override
 	public Company getCompanyById(long companyId) throws PortalException {
 		return companyPersistence.findByPrimaryKey(companyId);
-	}
-
-	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param  virtualHostname the company's virtual host name
-	 * @return the company with the virtual host name
-	 */
-	@Override
-	public Company getCompanyByVirtualHost(String virtualHostname)
-		throws PortalException {
-
-		Company company = fetchCompanyByVirtualHost(virtualHostname);
-
-		if (company == null) {
-			throw new CompanyVirtualHostException(
-				"{virtualHostname=" + virtualHostname + "}");
-		}
-
-		return company;
 	}
 
 	/**

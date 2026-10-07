@@ -214,6 +214,21 @@ public class VirtualHostLocalServiceWrapper
 			dynamicQuery, projection);
 	}
 
+	/**
+	 * Returns the company with the virtual host name.
+	 *
+	 * @param virtualHostname the virtual host name
+	 * @return the company with the virtual host name, <code>null</code> if a
+	 company with the virtual host could not be found
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.Company fetchCompanyByVirtualHost(
+		String virtualHostname) {
+
+		return _virtualHostLocalService.fetchCompanyByVirtualHost(
+			virtualHostname);
+	}
+
 	@Override
 	public VirtualHost fetchCompanyDefaultVirtualHost(long companyId) {
 		return _virtualHostLocalService.fetchCompanyDefaultVirtualHost(
@@ -235,6 +250,21 @@ public class VirtualHostLocalServiceWrapper
 		getActionableDynamicQuery() {
 
 		return _virtualHostLocalService.getActionableDynamicQuery();
+	}
+
+	/**
+	 * Returns the company with the virtual host name.
+	 *
+	 * @param virtualHostname the company's virtual host name
+	 * @return the company with the virtual host name
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.Company getCompanyByVirtualHost(
+			String virtualHostname)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _virtualHostLocalService.getCompanyByVirtualHost(
+			virtualHostname);
 	}
 
 	@Override
@@ -396,4 +426,4 @@ public class VirtualHostLocalServiceWrapper
 	private VirtualHostLocalService _virtualHostLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1070851949
+// LIFERAY-SERVICE-BUILDER-HASH:-1076175808

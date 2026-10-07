@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.search.Indexable;
@@ -197,6 +198,16 @@ public interface VirtualHostLocalService
 	public long dynamicQueryCount(
 		DynamicQuery dynamicQuery, Projection projection);
 
+	/**
+	 * Returns the company with the virtual host name.
+	 *
+	 * @param virtualHostname the virtual host name
+	 * @return the company with the virtual host name, <code>null</code> if a
+	 company with the virtual host could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Company fetchCompanyByVirtualHost(String virtualHostname);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public VirtualHost fetchCompanyDefaultVirtualHost(long companyId);
 
@@ -208,6 +219,16 @@ public interface VirtualHostLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	/**
+	 * Returns the company with the virtual host name.
+	 *
+	 * @param virtualHostname the company's virtual host name
+	 * @return the company with the virtual host name
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Company getCompanyByVirtualHost(String virtualHostname)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
@@ -305,4 +326,4 @@ public interface VirtualHostLocalService
 		throws E;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-829312250
+// LIFERAY-SERVICE-BUILDER-HASH:-1724389297

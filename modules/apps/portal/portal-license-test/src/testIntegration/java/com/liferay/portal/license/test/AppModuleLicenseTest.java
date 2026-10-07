@@ -9,11 +9,14 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.test.log.LogEntry;
 
 import java.io.File;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -42,34 +45,72 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 	@Test
 	public void testAppLicenses() throws Exception {
 		for (App app : App.values()) {
-			try (SafeCloseable safeCloseable =
-					resetLicenseDataWithSafeCloseble()) {
+			if (ReleaseInfo.isCMSStandalone()) {
+				if (app == App.CMP) {
+					_testAppLicenseSupported(app);
+				}
+				else {
+					_testAppLicenseUnsupported(app);
+				}
+			}
+			else {
+				_testAppLicenseSupported(app);
+			}
+		}
+	}
 
-				assertLicensePropertiesNotExisted(getProductId(app));
+	private void _testAppLicenseSupported(App app) throws Exception {
+		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
+			assertLicensePropertiesNotExisted(getProductId(app));
 
+			Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
+			Assert.assertNull(LicenseManagerUtil.getAppExpirationDate(app));
+
+			long startTime = System.currentTimeMillis();
+
+			File binaryFile = deployAppLicense(app, startTime, Time.HOUR);
+
+			assertLicensePropertiesExisted(getProductId(app));
+
+			Assert.assertTrue(LicenseManagerUtil.isAppEnabled(app));
+			Assert.assertEquals(
+				getDateString(new Date(startTime + Time.HOUR)),
+				getDateString(LicenseManagerUtil.getAppExpirationDate(app)));
+
+			binaryFile.delete();
+
+			checkLicense(getProductId(app));
+
+			assertLicensePropertiesNotExisted(getProductId(app));
+
+			Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
+			Assert.assertNull(LicenseManagerUtil.getAppExpirationDate(app));
+		}
+	}
+
+	private void _testAppLicenseUnsupported(App app) throws Exception {
+		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
+			assertLicensePropertiesNotExisted(getProductId(app));
+
+			Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
+			Assert.assertNull(LicenseManagerUtil.getAppExpirationDate(app));
+
+			long startTime = System.currentTimeMillis();
+
+			try {
+				deployAppLicense(app, startTime, Time.HOUR);
+
+				Assert.fail();
+			}
+			catch (LogEntriesException logEntriesException) {
 				Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
-				Assert.assertNull(LicenseManagerUtil.getAppExpirationDate(app));
 
-				long startTime = System.currentTimeMillis();
+				List<LogEntry> logEntries = logEntriesException.getLogEntries();
 
-				File binaryFile = deployAppLicense(app, startTime, Time.HOUR);
+				LogEntry logEntry = logEntries.get(0);
 
-				assertLicensePropertiesExisted(getProductId(app));
-
-				Assert.assertTrue(LicenseManagerUtil.isAppEnabled(app));
 				Assert.assertEquals(
-					getDateString(new Date(startTime + Time.HOUR)),
-					getDateString(
-						LicenseManagerUtil.getAppExpirationDate(app)));
-
-				binaryFile.delete();
-
-				checkLicense(getProductId(app));
-
-				assertLicensePropertiesNotExisted(getProductId(app));
-
-				Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
-				Assert.assertNull(LicenseManagerUtil.getAppExpirationDate(app));
+					app + " license validation failed", logEntry.getMessage());
 			}
 		}
 	}

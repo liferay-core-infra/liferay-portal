@@ -16,6 +16,7 @@ import com.liferay.portal.test.log.LogEntry;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,7 +71,7 @@ public class BannedKeyLicenseTest extends BaseLicenseTestCase {
 		String[] bannedKeys = ArrayUtil.toStringArray(
 			(Set<String>)_bannedKeysField.get(getValidateClass()));
 
-		Assert.assertEquals(bannedKeys.toString(), 80, bannedKeys.length);
+		Assert.assertEquals(Arrays.toString(bannedKeys), 88, bannedKeys.length);
 
 		String bannedKey = bannedKeys[bannedKeys.length - 1];
 

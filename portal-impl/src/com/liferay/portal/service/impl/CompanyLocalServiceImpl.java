@@ -785,16 +785,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	 */
 	@Override
 	public Company fetchCompanyByVirtualHost(String virtualHostname) {
-		virtualHostname = StringUtil.toLowerCase(
-			StringUtil.trim(virtualHostname));
-
-		VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
-			virtualHostname);
-
-		if ((virtualHost == null) && virtualHostname.contains("xn--")) {
-			virtualHost = _virtualHostPersistence.fetchByHostname(
-				IDN.toUnicode(virtualHostname));
-		}
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			StringUtil.toLowerCase(StringUtil.trim(virtualHostname)));
 
 		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
 			return null;

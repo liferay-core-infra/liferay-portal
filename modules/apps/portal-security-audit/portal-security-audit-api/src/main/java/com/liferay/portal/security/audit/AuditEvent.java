@@ -56,6 +56,8 @@ public interface AuditEvent {
 
 	public String getUserUuid();
 
+	public boolean isPseudonymized();
+
 	public void setAccountEntryId(long accountEntryId);
 
 	public void setAdditionalInfo(String additionalInfo);

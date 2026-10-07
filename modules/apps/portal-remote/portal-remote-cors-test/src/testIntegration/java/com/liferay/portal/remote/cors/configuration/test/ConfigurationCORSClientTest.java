@@ -8,7 +8,7 @@ package com.liferay.portal.remote.cors.configuration.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.remote.cors.client.test.BaseCORSClientTestCase;
@@ -38,7 +38,7 @@ public class ConfigurationCORSClientTest extends BaseCORSClientTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		Company company = _companyLocalService.getCompanyByVirtualHost(
+		Company company = _virtualHostLocalService.getCompanyByVirtualHost(
 			"localhost");
 
 		_companyId = company.getCompanyId();
@@ -164,6 +164,6 @@ public class ConfigurationCORSClientTest extends BaseCORSClientTestCase {
 	private long _companyId;
 
 	@Inject
-	private CompanyLocalService _companyLocalService;
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

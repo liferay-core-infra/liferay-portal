@@ -1074,10 +1074,11 @@ public class CompanyLocalServiceTest {
 					company.getCompanyId())) {
 
 			Assert.assertEquals(
-				company, _companyLocalService.getCompanyByVirtualHost("::1"));
+				company,
+				_virtualHostLocalService.getCompanyByVirtualHost("::1"));
 			Assert.assertEquals(
 				company,
-				_companyLocalService.getCompanyByVirtualHost(
+				_virtualHostLocalService.getCompanyByVirtualHost(
 					"0:0:0:0:0:0:0:1"));
 		}
 		finally {

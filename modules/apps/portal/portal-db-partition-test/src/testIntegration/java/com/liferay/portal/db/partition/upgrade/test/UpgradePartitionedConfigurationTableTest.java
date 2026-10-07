@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
@@ -83,7 +84,7 @@ public class UpgradePartitionedConfigurationTableTest
 
 	@Test
 	public void testUpgradeProcess() throws Exception {
-		Company company = companyLocalService.fetchCompanyByVirtualHost(
+		Company company = VirtualHostLocalServiceUtil.fetchCompanyByVirtualHost(
 			TestPropsValues.COMPANY_WEB_ID);
 
 		DBPartitionUtil.forEachCompanyId(

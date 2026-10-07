@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.PrefsPropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -646,7 +647,7 @@ public class PortalInstanceResourceTest
 		finally {
 			for (PortalInstance portalInstance : portalInstances) {
 				Company company =
-					_companyLocalService.fetchCompanyByVirtualHost(
+					_virtualHostLocalService.fetchCompanyByVirtualHost(
 						portalInstance.getVirtualHost());
 
 				if (company != null) {
@@ -853,5 +854,8 @@ public class PortalInstanceResourceTest
 
 	@Inject
 	private UserLocalService _userLocalService;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

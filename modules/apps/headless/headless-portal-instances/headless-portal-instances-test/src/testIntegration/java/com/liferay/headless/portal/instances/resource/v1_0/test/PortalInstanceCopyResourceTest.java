@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -198,7 +199,7 @@ public class PortalInstanceCopyResourceTest
 	private void _deleteCompanyByVirtualHost(String virtualHost)
 		throws Exception {
 
-		Company company = _companyLocalService.fetchCompanyByVirtualHost(
+		Company company = _virtualHostLocalService.fetchCompanyByVirtualHost(
 			virtualHost);
 
 		if (company != null) {
@@ -485,5 +486,8 @@ public class PortalInstanceCopyResourceTest
 
 	@Inject
 	private static CompanyLocalService _companyLocalService;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

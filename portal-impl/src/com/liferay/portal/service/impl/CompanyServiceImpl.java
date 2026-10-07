@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -332,7 +333,7 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 	public Company getCompanyByVirtualHost(String virtualHost)
 		throws PortalException {
 
-		return companyLocalService.getCompanyByVirtualHost(virtualHost);
+		return _virtualHostLocalService.getCompanyByVirtualHost(virtualHost);
 	}
 
 	/**
@@ -647,5 +648,8 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 
 	@BeanReference(type = RoleLocalService.class)
 	private RoleLocalService _roleLocalService;
+
+	@BeanReference(type = VirtualHostLocalService.class)
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

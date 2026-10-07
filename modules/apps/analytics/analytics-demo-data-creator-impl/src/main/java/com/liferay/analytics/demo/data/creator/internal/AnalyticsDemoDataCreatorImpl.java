@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.role.RoleConstants;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -36,6 +35,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.TeamLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -143,7 +143,7 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 			ConfigurableUtil.createConfigurable(
 				AnalyticsDemoDataCreatorConfiguration.class, properties);
 
-		Company company = _companyLocalService.getCompanyByVirtualHost(
+		Company company = _virtualHostLocalService.getCompanyByVirtualHost(
 			_analyticsDemoDataCreatorConfiguration.virtualHostname());
 
 		_companyId = company.getCompanyId();
@@ -421,10 +421,6 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 	private volatile AnalyticsDemoDataCreatorConfiguration
 		_analyticsDemoDataCreatorConfiguration;
 	private long _companyId;
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
-
 	private long _defaultGroupId;
 
 	@Reference
@@ -461,5 +457,8 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 	private UserLocalService _userLocalService;
 
 	private final HashMap<String, User> _users = new HashMap<>();
+
+	@Reference
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

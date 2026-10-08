@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.exception.DuplicateUserGroupException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Organization;
@@ -27,8 +26,8 @@ import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.model.role.RoleConstants;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -36,6 +35,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.TeamLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -143,15 +143,20 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 			ConfigurableUtil.createConfigurable(
 				AnalyticsDemoDataCreatorConfiguration.class, properties);
 
-		Company company = _companyLocalService.getCompanyByVirtualHost(
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 			_analyticsDemoDataCreatorConfiguration.virtualHostname());
 
-		_companyId = company.getCompanyId();
+		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
+			throw new Exception(
+				"Unable to find a company virtual host with hostname " +
+					_analyticsDemoDataCreatorConfiguration.virtualHostname());
+		}
+
+		_companyId = virtualHost.getCompanyId();
 
 		_guestUserId = _userLocalService.getGuestUserId(_companyId);
 
-		Group group = _groupLocalService.getGroup(
-			company.getCompanyId(), "Guest");
+		Group group = _groupLocalService.getGroup(_companyId, "Guest");
 
 		_defaultGroupId = group.getGroupId();
 
@@ -421,10 +426,6 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 	private volatile AnalyticsDemoDataCreatorConfiguration
 		_analyticsDemoDataCreatorConfiguration;
 	private long _companyId;
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
-
 	private long _defaultGroupId;
 
 	@Reference
@@ -461,5 +462,8 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 	private UserLocalService _userLocalService;
 
 	private final HashMap<String, User> _users = new HashMap<>();
+
+	@Reference
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

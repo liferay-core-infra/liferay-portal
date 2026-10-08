@@ -21,9 +21,11 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -204,14 +206,14 @@ public class PortalInstanceCopyResourceTest
 		).build();
 	}
 
-	private void _deleteCompanyByVirtualHost(String virtualHost)
+	private void _deleteCompanyByVirtualHost(String virtualHostname)
 		throws Exception {
 
-		Company company = _companyLocalService.fetchCompanyByVirtualHost(
-			virtualHost);
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			virtualHostname);
 
-		if (company != null) {
-			_deleteCompany(company.getCompanyId());
+		if (virtualHost != null) {
+			_deleteCompany(virtualHost.getCompanyId());
 		}
 	}
 
@@ -517,5 +519,8 @@ public class PortalInstanceCopyResourceTest
 
 	@Inject
 	private static CompanyLocalService _companyLocalService;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

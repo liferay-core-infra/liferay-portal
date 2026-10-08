@@ -15,14 +15,15 @@ import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.instance.PortalInstancePool;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.module.util.BundleUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
@@ -34,6 +35,7 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
@@ -83,9 +85,6 @@ public class UpgradePartitionedConfigurationTableTest
 
 	@Test
 	public void testUpgradeProcess() throws Exception {
-		Company company = companyLocalService.fetchCompanyByVirtualHost(
-			TestPropsValues.COMPANY_WEB_ID);
-
 		DBPartitionUtil.forEachCompanyId(
 			companyId -> {
 				if (companyId != _companyId) {
@@ -98,6 +97,9 @@ public class UpgradePartitionedConfigurationTableTest
 				}
 			});
 
+		VirtualHost virtualHost = _virtualHostLocalService.getVirtualHost(
+			TestPropsValues.COMPANY_WEB_ID);
+
 		Map<Long, ConfigurationEntry> validConfigurationEntries =
 			HashMapBuilder.<Long, ConfigurationEntry>put(
 				_companyId,
@@ -109,20 +111,20 @@ public class UpgradePartitionedConfigurationTableTest
 					ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE,
 					RandomTestUtil.randomLong())
 			).put(
-				company.getCompanyId(),
+				virtualHost.getCompanyId(),
 				() -> {
 					Group group = GroupLocalServiceUtil.getGroup(
-						company.getCompanyId(), GroupConstants.GUEST);
+						virtualHost.getCompanyId(), GroupConstants.GUEST);
 
 					return new ConfigurationEntry(
 						ExtendedObjectClassDefinition.Scope.GROUP,
 						group.getGroupId());
 				}
 			).put(
-				company.getCompanyId(),
+				virtualHost.getCompanyId(),
 				new ConfigurationEntry(
 					ExtendedObjectClassDefinition.Scope.COMPANY,
-					company.getCompanyId())
+					virtualHost.getCompanyId())
 			).build();
 
 		long randomCompanyId = RandomTestUtil.randomLong();
@@ -290,6 +292,9 @@ public class UpgradePartitionedConfigurationTableTest
 
 	private static long _companyId;
 	private static DataSource _dataSource;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 	private class ConfigurationEntry {
 

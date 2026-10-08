@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.audit.AuditException;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.exception.CompanyVirtualHostException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -23,11 +24,13 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.EmailAddress;
 import com.liferay.portal.kernel.model.ListTypeConstants;
 import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -332,7 +335,22 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 	public Company getCompanyByVirtualHost(String virtualHost)
 		throws PortalException {
 
-		return companyLocalService.getCompanyByVirtualHost(virtualHost);
+		VirtualHost virtualHostModel =
+			_virtualHostLocalService.fetchVirtualHost(virtualHost);
+
+		if (virtualHostModel == null) {
+			throw new CompanyVirtualHostException(
+				"Unable to find a virtual host with host name " + virtualHost);
+		}
+
+		if (virtualHostModel.getLayoutSetId() != 0) {
+			throw new CompanyVirtualHostException(
+				"Virtual host is associated with layout set " +
+					virtualHostModel.getLayoutSetId());
+		}
+
+		return companyPersistence.findByPrimaryKey(
+			virtualHostModel.getCompanyId());
 	}
 
 	/**
@@ -647,5 +665,8 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 
 	@BeanReference(type = RoleLocalService.class)
 	private RoleLocalService _roleLocalService;
+
+	@BeanReference(type = VirtualHostLocalService.class)
+	private VirtualHostLocalService _virtualHostLocalService;
 
 }

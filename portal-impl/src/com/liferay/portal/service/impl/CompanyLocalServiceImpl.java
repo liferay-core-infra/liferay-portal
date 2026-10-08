@@ -962,33 +962,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	}
 
 	/**
-	 * Returns the company with the virtual host name.
-	 *
-	 * @param  virtualHostname the company's virtual host name
-	 * @return the company with the virtual host name
-	 */
-	@Override
-	public Company getCompanyByVirtualHost(String virtualHostname)
-		throws PortalException {
-
-		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
-			virtualHostname);
-
-		if (virtualHost == null) {
-			throw new CompanyVirtualHostException(
-				"No virtual host exists with host name " + virtualHostname);
-		}
-
-		if (virtualHost.getLayoutSetId() != 0) {
-			throw new CompanyVirtualHostException(
-				"Virtual host is associated with layout set " +
-					virtualHost.getLayoutSetId());
-		}
-
-		return companyPersistence.findByPrimaryKey(virtualHost.getCompanyId());
-	}
-
-	/**
 	 * Returns the company with the web domain.
 	 *
 	 * @param  webId the company's web domain

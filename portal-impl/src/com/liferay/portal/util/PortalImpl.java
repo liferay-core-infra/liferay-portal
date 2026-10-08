@@ -7358,8 +7358,6 @@ public class PortalImpl implements Portal {
 
 	protected boolean isValidVirtualHostname(String virtualHostname) {
 		try {
-			virtualHostname = StringUtil.toLowerCase(virtualHostname.trim());
-
 			VirtualHost virtualHost =
 				VirtualHostLocalServiceUtil.fetchVirtualHost(virtualHostname);
 

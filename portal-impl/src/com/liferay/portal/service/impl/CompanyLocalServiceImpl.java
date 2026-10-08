@@ -971,9 +971,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	public Company getCompanyByVirtualHost(String virtualHostname)
 		throws PortalException {
 
-		virtualHostname = StringUtil.toLowerCase(
-			StringUtil.trim(virtualHostname));
-
 		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 			virtualHostname);
 

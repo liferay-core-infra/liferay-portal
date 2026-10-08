@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.site.configuration.manager.LLMSConfigurationManager;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,9 +55,6 @@ public class LLMSStrutsAction implements StrutsAction {
 
 			String host = GetterUtil.getString(
 				_portal.getForwardedHost(httpServletRequest));
-
-			host = StringUtil.toLowerCase(host);
-			host = host.trim();
 
 			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
 				host);

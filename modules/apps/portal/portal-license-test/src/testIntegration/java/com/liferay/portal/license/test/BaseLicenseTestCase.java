@@ -264,7 +264,21 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 		return _buildBinaryFile(
 			getProductId(app), StringPool.BLANK, app.toString(),
-			_APP_LICENSE_TYPE);
+			_PRODUCTION_LICENSE_TYPE);
+	}
+
+	public File deployCMSPortalLicense(long validityPeriod) throws Exception {
+		return deployCMSPortalLicense(StringPool.BLANK, validityPeriod);
+	}
+
+	public File deployCMSPortalLicense(String key, long validityPeriod)
+		throws Exception {
+
+		_registerLicense(_buildCMSPortalLicenseXML(key, validityPeriod));
+
+		return _buildBinaryFile(
+			getPortalProductId(), _CMS_ACCOUNT_NAME, _CMS_PRODUCT_NAME,
+			_PRODUCTION_LICENSE_TYPE);
 	}
 
 	public File deployEnterprisePortalLicense(long validityPeriod)
@@ -551,7 +565,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		sb.append(app);
 		sb.append("</product-name><product-version>2026.Q1</product-version>");
 		sb.append("<license-type>");
-		sb.append(_APP_LICENSE_TYPE);
+		sb.append(_PRODUCTION_LICENSE_TYPE);
 		sb.append("</license-type><license-version>3</license-version>");
 		sb.append("<start-date>");
 		sb.append(_DATE_FORMAT.format(new Date(startTime)));
@@ -713,6 +727,54 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		);
 	}
 
+	private String _buildCMSPortalLicenseXML(String key, long validityPeriod) {
+		long currentTimeMillis = System.currentTimeMillis();
+
+		StringBundler sb = new StringBundler(30);
+
+		sb.append("<license><account-name>");
+		sb.append(_CMS_ACCOUNT_NAME);
+		sb.append("</account-name><product-id>");
+		sb.append(getPortalProductId());
+		sb.append("</product-id><product-name>");
+		sb.append(_CMS_PRODUCT_NAME);
+		sb.append("</product-name><product-version>2026.Q1</product-version>");
+		sb.append("<license-type>");
+		sb.append(_PRODUCTION_LICENSE_TYPE);
+		sb.append("</license-type><license-version>6</license-version>");
+		sb.append("<start-date>");
+		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
+		sb.append("</start-date><expiration-date>");
+		sb.append(
+			_DATE_FORMAT.format(new Date(currentTimeMillis + validityPeriod)));
+		sb.append("</expiration-date><host-names>");
+		sb.append("<host-name>localhost</host-name>");
+		sb.append("</host-names><ip-addresses>");
+
+		for (String localIpAddress : LicenseUtil.getIpAddresses()) {
+			sb.append("<ip-address>");
+			sb.append(localIpAddress);
+			sb.append("</ip-address>");
+		}
+
+		sb.append("</ip-addresses><mac-addresses>");
+
+		for (String localMacAddress : LicenseUtil.getMacAddresses()) {
+			sb.append("<mac-address>");
+			sb.append(localMacAddress);
+			sb.append("</mac-address>");
+		}
+
+		sb.append("</mac-addresses><domains><domain>");
+		sb.append(_CMS_DOMAIN);
+		sb.append("</domain><domain>localhost</domain></domains>");
+		sb.append("<key>");
+		sb.append(key);
+		sb.append("</key></license>");
+
+		return sb.toString();
+	}
+
 	private Set<String> _getBundleSymbolicNames() {
 		Set<String> bundleSymbolicNames = new HashSet<>();
 
@@ -725,10 +787,14 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		return bundleSymbolicNames;
 	}
 
-	private static final String _APP_LICENSE_TYPE = "production";
-
 	private static final String _BUNDLE_START_STOP_LOGGER =
 		"com.liferay.portal.bootstrap.log.BundleStartStopLogger";
+
+	private static final String _CMS_ACCOUNT_NAME = "CMS Account";
+
+	private static final String _CMS_DOMAIN = "cms.com";
+
+	private static final String _CMS_PRODUCT_NAME = "CMS Production";
 
 	private static final DateFormat _DATE_FORMAT = new SimpleDateFormat(
 		"EEEE, MMMM d, yyyy hh:mm:ss a z", LocaleUtil.US);
@@ -756,6 +822,8 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 	private static final String _NOT_REGISTERED_LICENSE_KEY =
 		"This instance is not registered.";
+
+	private static final String _PRODUCTION_LICENSE_TYPE = "production";
 
 	private static final String _PROPERTY_PREFIX = "license.test.";
 

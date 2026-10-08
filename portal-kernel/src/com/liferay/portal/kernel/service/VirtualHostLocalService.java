@@ -204,7 +204,7 @@ public interface VirtualHostLocalService
 	public VirtualHost fetchVirtualHost(long virtualHostId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public VirtualHost fetchVirtualHost(String hostname);
+	public VirtualHost fetchVirtualHost(String virtualHostname);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -239,7 +239,8 @@ public interface VirtualHostLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public VirtualHost getVirtualHost(String hostname) throws PortalException;
+	public VirtualHost getVirtualHost(String virtualHostname)
+		throws PortalException;
 
 	/**
 	 * Returns a range of all the virtual hosts.
@@ -287,7 +288,8 @@ public interface VirtualHostLocalService
 	public VirtualHost updateVirtualHost(VirtualHost virtualHost);
 
 	public List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId, TreeMap<String, String> hostnames);
+		long companyId, long layoutSetId,
+		TreeMap<String, String> virtualHostnames);
 
 	@Override
 	@Transactional(enabled = false)
@@ -305,4 +307,4 @@ public interface VirtualHostLocalService
 		throws E;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-829312250
+// LIFERAY-SERVICE-BUILDER-HASH:-1321434399

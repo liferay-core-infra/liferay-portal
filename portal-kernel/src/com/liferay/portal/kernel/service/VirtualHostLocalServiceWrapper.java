@@ -226,8 +226,8 @@ public class VirtualHostLocalServiceWrapper
 	}
 
 	@Override
-	public VirtualHost fetchVirtualHost(String hostname) {
-		return _virtualHostLocalService.fetchVirtualHost(hostname);
+	public VirtualHost fetchVirtualHost(String virtualHostname) {
+		return _virtualHostLocalService.fetchVirtualHost(virtualHostname);
 	}
 
 	@Override
@@ -280,10 +280,10 @@ public class VirtualHostLocalServiceWrapper
 	}
 
 	@Override
-	public VirtualHost getVirtualHost(String hostname)
+	public VirtualHost getVirtualHost(String virtualHostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _virtualHostLocalService.getVirtualHost(hostname);
+		return _virtualHostLocalService.getVirtualHost(virtualHostname);
 	}
 
 	/**
@@ -350,10 +350,10 @@ public class VirtualHostLocalServiceWrapper
 	@Override
 	public java.util.List<VirtualHost> updateVirtualHosts(
 		long companyId, long layoutSetId,
-		java.util.TreeMap<String, String> hostnames) {
+		java.util.TreeMap<String, String> virtualHostnames) {
 
 		return _virtualHostLocalService.updateVirtualHosts(
-			companyId, layoutSetId, hostnames);
+			companyId, layoutSetId, virtualHostnames);
 	}
 
 	@Override
@@ -396,4 +396,4 @@ public class VirtualHostLocalServiceWrapper
 	private VirtualHostLocalService _virtualHostLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1070851949
+// LIFERAY-SERVICE-BUILDER-HASH:-932651249

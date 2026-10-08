@@ -204,8 +204,8 @@ public class VirtualHostLocalServiceUtil {
 		return getService().fetchVirtualHost(virtualHostId);
 	}
 
-	public static VirtualHost fetchVirtualHost(String hostname) {
-		return getService().fetchVirtualHost(hostname);
+	public static VirtualHost fetchVirtualHost(String virtualHostname) {
+		return getService().fetchVirtualHost(virtualHostname);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -252,10 +252,10 @@ public class VirtualHostLocalServiceUtil {
 		return getService().getVirtualHost(virtualHostId);
 	}
 
-	public static VirtualHost getVirtualHost(String hostname)
+	public static VirtualHost getVirtualHost(String virtualHostname)
 		throws PortalException {
 
-		return getService().getVirtualHost(hostname);
+		return getService().getVirtualHost(virtualHostname);
 	}
 
 	/**
@@ -315,10 +315,10 @@ public class VirtualHostLocalServiceUtil {
 
 	public static List<VirtualHost> updateVirtualHosts(
 		long companyId, long layoutSetId,
-		java.util.TreeMap<String, String> hostnames) {
+		java.util.TreeMap<String, String> virtualHostnames) {
 
 		return getService().updateVirtualHosts(
-			companyId, layoutSetId, hostnames);
+			companyId, layoutSetId, virtualHostnames);
 	}
 
 	public static VirtualHostLocalService getService() {
@@ -332,4 +332,4 @@ public class VirtualHostLocalServiceUtil {
 	private static volatile VirtualHostLocalService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-219097511
+// LIFERAY-SERVICE-BUILDER-HASH:-1051235735

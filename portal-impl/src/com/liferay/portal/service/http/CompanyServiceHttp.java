@@ -438,7 +438,7 @@ public class CompanyServiceHttp {
 
 	public static com.liferay.portal.kernel.model.Company
 			getCompanyByVirtualHost(
-				HttpPrincipal httpPrincipal, String virtualHost)
+				HttpPrincipal httpPrincipal, String virtualHostname)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -447,7 +447,7 @@ public class CompanyServiceHttp {
 				_getCompanyByVirtualHostParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, virtualHost);
+				methodKey, virtualHostname);
 
 			Object returnObj = null;
 
@@ -962,4 +962,4 @@ public class CompanyServiceHttp {
 		};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1205983260
+// LIFERAY-SERVICE-BUILDER-HASH:-1288900740

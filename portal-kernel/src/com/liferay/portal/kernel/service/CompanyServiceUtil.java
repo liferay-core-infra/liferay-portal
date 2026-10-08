@@ -146,13 +146,13 @@ public class CompanyServiceUtil {
 	/**
 	 * Returns the company with the virtual host name.
 	 *
-	 * @param virtualHost the company's virtual host name
+	 * @param virtualHostname the company's virtual host name
 	 * @return Returns the company with the virtual host name
 	 */
-	public static Company getCompanyByVirtualHost(String virtualHost)
+	public static Company getCompanyByVirtualHost(String virtualHostname)
 		throws PortalException {
 
-		return getService().getCompanyByVirtualHost(virtualHost);
+		return getService().getCompanyByVirtualHost(virtualHostname);
 	}
 
 	/**
@@ -400,4 +400,4 @@ public class CompanyServiceUtil {
 	private static volatile CompanyService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1880922067
+// LIFERAY-SERVICE-BUILDER-HASH:248367970

@@ -138,11 +138,11 @@ public interface CompanyService extends BaseService {
 	/**
 	 * Returns the company with the virtual host name.
 	 *
-	 * @param virtualHost the company's virtual host name
+	 * @param virtualHostname the company's virtual host name
 	 * @return Returns the company with the virtual host name
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Company getCompanyByVirtualHost(String virtualHost)
+	public Company getCompanyByVirtualHost(String virtualHostname)
 		throws PortalException;
 
 	/**
@@ -337,4 +337,4 @@ public interface CompanyService extends BaseService {
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1902148685
+// LIFERAY-SERVICE-BUILDER-HASH:-242736753

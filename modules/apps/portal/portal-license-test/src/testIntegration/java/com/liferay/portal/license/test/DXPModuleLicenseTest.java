@@ -58,7 +58,16 @@ public class DXPModuleLicenseTest extends BaseLicenseTestCase {
 	}
 
 	@Test
+	public void testLicenseCMS() throws Exception {
+		Assume.assumeTrue(ReleaseInfo.isCMSStandalone());
+
+		_testLicense(() -> deployCMSPortalLicense(Time.HOUR), true);
+	}
+
+	@Test
 	public void testLicenseEnterprise() throws Exception {
+		Assume.assumeFalse(ReleaseInfo.isCMSStandalone());
+
 		_testLicense(() -> deployEnterprisePortalLicense(Time.HOUR), true);
 	}
 

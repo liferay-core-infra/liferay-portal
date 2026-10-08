@@ -52,8 +52,33 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 	@Test
 	public void testAppLicenseExpired() throws Exception {
 		for (App app : App.values()) {
+			if (ReleaseInfo.isCMSStandalone() && (app != App.CMP)) {
+				continue;
+			}
+
 			_testAppLicenseExpired(app);
 		}
+	}
+
+	@Test
+	public void testCMSPortalLicenseExpired() throws Exception {
+		Assume.assumeTrue(ReleaseInfo.isCMSStandalone());
+
+		assertLicensePropertiesNotExisted(getPortalProductId());
+
+		assertPortalLicenseNotRegistered();
+
+		deployCMSPortalLicense(_GRACE_PEIROD + _VALIDTY_PERIOD);
+
+		assertLicensePropertiesExisted(getPortalProductId());
+
+		assertPortalLicenseRegistered();
+
+		Thread.sleep(_VALIDTY_PERIOD);
+
+		assertLicensePropertiesExisted(getPortalProductId());
+
+		assertPortalLicenseExpired();
 	}
 
 	@Test

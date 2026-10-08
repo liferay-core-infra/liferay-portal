@@ -10,6 +10,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.log.LogEntry;
 
@@ -78,8 +79,13 @@ public class BannedKeyLicenseTest extends BaseLicenseTestCase {
 			SafeCloseable safeCloseable3 = setReturnValueWithSafeCloseable(
 				_encryptMethod, bannedKey)) {
 
-			deployFreeTierPortalLicense(
-				RandomTestUtil.randomString(), bannedKey, Time.HOUR);
+			if (ReleaseInfo.isCMSStandalone()) {
+				deployCMSPortalLicense(bannedKey, Time.HOUR);
+			}
+			else {
+				deployFreeTierPortalLicense(
+					RandomTestUtil.randomString(), bannedKey, Time.HOUR);
+			}
 
 			Assert.fail(
 				"Unable to see error message \'Corrupt license file. License " +
@@ -115,7 +121,12 @@ public class BannedKeyLicenseTest extends BaseLicenseTestCase {
 				"2026.Q1.0 LTS");
 			SafeCloseable safeCloseable2 = resetLicenseDataWithSafeCloseble()) {
 
-			deployFreeTierPortalLicense(domain, key, Time.HOUR);
+			if (ReleaseInfo.isCMSStandalone()) {
+				deployCMSPortalLicense(key, Time.HOUR);
+			}
+			else {
+				deployFreeTierPortalLicense(domain, key, Time.HOUR);
+			}
 
 			Assert.fail(
 				"Unable to see error message \'Corrupt license file. License " +
@@ -142,7 +153,12 @@ public class BannedKeyLicenseTest extends BaseLicenseTestCase {
 			SafeCloseable safeCloseable3 = setReturnValueWithSafeCloseable(
 				_encryptMethod, key)) {
 
-			deployFreeTierPortalLicense(domain, key, Time.HOUR);
+			if (ReleaseInfo.isCMSStandalone()) {
+				deployCMSPortalLicense(key, Time.HOUR);
+			}
+			else {
+				deployFreeTierPortalLicense(domain, key, Time.HOUR);
+			}
 
 			assertPortalLicenseRegistered();
 		}

@@ -57,6 +57,10 @@ public class CheckLicenseTest extends BaseLicenseTestCase {
 	@Test
 	public void testCheckLicenseForApp() throws Exception {
 		for (App app : App.values()) {
+			if (ReleaseInfo.isCMSStandalone() && (app != App.CMP)) {
+				continue;
+			}
+
 			_testCheckLicenseForApp(app);
 		}
 	}

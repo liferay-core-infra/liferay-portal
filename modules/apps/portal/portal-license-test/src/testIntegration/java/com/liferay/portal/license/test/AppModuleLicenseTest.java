@@ -7,6 +7,7 @@ package com.liferay.portal.license.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -47,19 +48,29 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 		for (App app : App.values()) {
 			if (ReleaseInfo.isCMSStandalone()) {
 				if (app == App.CMP) {
-					_testAppLicenseSupported(app);
+					_testAppLicenseSupported(app, StringPool.BLANK);
+					_testAppLicenseSupported(app, "cms");
+
+					_testAppLicenseUnsupported(app, "dxp");
 				}
 				else {
-					_testAppLicenseUnsupported(app);
+					_testAppLicenseUnsupported(app, StringPool.BLANK);
+					_testAppLicenseUnsupported(app, "cms");
+					_testAppLicenseUnsupported(app, "dxp");
 				}
 			}
 			else {
-				_testAppLicenseSupported(app);
+				_testAppLicenseSupported(app, StringPool.BLANK);
+				_testAppLicenseSupported(app, "dxp");
+
+				_testAppLicenseUnsupported(app, "cms");
 			}
 		}
 	}
 
-	private void _testAppLicenseSupported(App app) throws Exception {
+	private void _testAppLicenseSupported(App app, String compatibleProduct)
+		throws Exception {
+
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
 			assertLicensePropertiesNotExisted(getProductId(app));
 
@@ -68,7 +79,8 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 
 			long startTime = System.currentTimeMillis();
 
-			File binaryFile = deployAppLicense(app, startTime, Time.HOUR);
+			File binaryFile = deployAppLicense(
+				app, compatibleProduct, startTime, Time.HOUR);
 
 			assertLicensePropertiesExisted(getProductId(app));
 
@@ -88,7 +100,9 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 		}
 	}
 
-	private void _testAppLicenseUnsupported(App app) throws Exception {
+	private void _testAppLicenseUnsupported(App app, String compatibleProduct)
+		throws Exception {
+
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
 			assertLicensePropertiesNotExisted(getProductId(app));
 
@@ -98,7 +112,7 @@ public class AppModuleLicenseTest extends BaseLicenseTestCase {
 			long startTime = System.currentTimeMillis();
 
 			try {
-				deployAppLicense(app, startTime, Time.HOUR);
+				deployAppLicense(app, compatibleProduct, startTime, Time.HOUR);
 
 				Assert.fail();
 			}

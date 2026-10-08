@@ -133,7 +133,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 				sb.append(
 					_buildAppLicenseXML(
-						app, System.currentTimeMillis(),
+						app, StringPool.BLANK, System.currentTimeMillis(),
 						Long.valueOf(license[1])));
 			}
 		}
@@ -260,7 +260,18 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	public File deployAppLicense(App app, long startTime, long validityPeriod)
 		throws Exception {
 
-		_registerLicense(_buildAppLicenseXML(app, startTime, validityPeriod));
+		return deployAppLicense(
+			app, StringPool.BLANK, startTime, validityPeriod);
+	}
+
+	public File deployAppLicense(
+			App app, String compatibleProduct, long startTime,
+			long validityPeriod)
+		throws Exception {
+
+		_registerLicense(
+			_buildAppLicenseXML(
+				app, compatibleProduct, startTime, validityPeriod));
 
 		return _buildBinaryFile(
 			getProductId(app), StringPool.BLANK, app.toString(),
@@ -555,7 +566,8 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	protected static final String FREE_TIER_LICENSE_TYPE = "free";
 
 	private static String _buildAppLicenseXML(
-		App app, long startTime, long validityPeriod) {
+		App app, String compatibleProduct, long startTime,
+		long validityPeriod) {
 
 		StringBundler sb = new StringBundler(19);
 
@@ -573,7 +585,15 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		sb.append(_DATE_FORMAT.format(new Date(startTime + validityPeriod)));
 		sb.append("</expiration-date><host-names>");
 		sb.append("<host-name>localhost</host-name>");
-		sb.append("</host-names><ip-addresses>");
+		sb.append("</host-names>");
+
+		if (Validator.isNotNull(compatibleProduct)) {
+			sb.append("<compatible-product>");
+			sb.append(compatibleProduct);
+			sb.append("</compatible-product>");
+		}
+
+		sb.append("<ip-addresses>");
 
 		for (String localIpAddress : LicenseUtil.getIpAddresses()) {
 			sb.append("<ip-address>");

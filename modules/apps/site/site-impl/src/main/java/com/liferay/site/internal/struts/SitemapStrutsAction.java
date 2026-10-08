@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsValues;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.manager.SitemapManager;
@@ -69,13 +68,9 @@ public class SitemapStrutsAction implements StrutsAction {
 				layoutSet = _layoutSetLocalService.getLayoutSet(groupId, false);
 			}
 			else {
-				String host = _portal.getHost(httpServletRequest);
-
-				host = StringUtil.toLowerCase(host);
-				host = host.trim();
-
 				VirtualHost virtualHost =
-					_virtualHostLocalService.fetchVirtualHost(host);
+					_virtualHostLocalService.fetchVirtualHost(
+						_portal.getHost(httpServletRequest));
 
 				if ((virtualHost != null) &&
 					(virtualHost.getLayoutSetId() != 0)) {

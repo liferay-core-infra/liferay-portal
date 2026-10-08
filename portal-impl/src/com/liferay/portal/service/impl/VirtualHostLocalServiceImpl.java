@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.base.VirtualHostLocalServiceBaseImpl;
 
@@ -91,6 +92,8 @@ public class VirtualHostLocalServiceImpl
 
 	@Override
 	public VirtualHost fetchVirtualHost(String hostname) {
+		hostname = StringUtil.toLowerCase(StringUtil.trim(hostname));
+
 		if (Validator.isIPv6Address(hostname)) {
 			try {
 				Inet6Address inet6Address = (Inet6Address)InetAddress.getByName(

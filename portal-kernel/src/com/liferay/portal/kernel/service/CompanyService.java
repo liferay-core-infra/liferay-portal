@@ -337,4 +337,4 @@ public interface CompanyService extends BaseService {
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1902148685
+// LIFERAY-SERVICE-BUILDER-HASH:-1761501383

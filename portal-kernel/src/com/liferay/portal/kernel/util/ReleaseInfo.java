@@ -132,6 +132,10 @@ public class ReleaseInfo {
 		return _serverInfo;
 	}
 
+	public static boolean isCMSStandalone() {
+		return _NAME.equals("Liferay Content Management System");
+	}
+
 	public static boolean isDXP() {
 		return !_NAME.contains("Community");
 	}

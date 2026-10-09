@@ -81,8 +81,7 @@ public class BannedKeyLicenseTest extends BaseLicenseTestCase {
 			SafeCloseable safeCloseable3 = setReturnValueWithSafeCloseable(
 				_encryptMethod, bannedKey)) {
 
-			deployFreeTierPortalLicense(
-				RandomTestUtil.randomString(), bannedKey, Time.HOUR);
+			_deployPortalLicense(RandomTestUtil.randomString(), bannedKey);
 
 			Assert.fail(
 				"Unable to see error message \'Corrupt license file. License " +
@@ -109,16 +108,16 @@ public class BannedKeyLicenseTest extends BaseLicenseTestCase {
 		String domain = RandomTestUtil.randomString();
 		String key = RandomTestUtil.randomString(8);
 
-		Set<String> bnnedKeys = (Set<String>)_bannedKeysField.get(
+		Set<String> bannedKeys = (Set<String>)_bannedKeysField.get(
 			getValidateClass());
 
-		Assert.assertFalse(bnnedKeys.toString(), bnnedKeys.contains(key));
+		Assert.assertFalse(bannedKeys.toString(), bannedKeys.contains(key));
 
 		try (SafeCloseable safeCloseable1 = setVersionWithSafeCloseable(
 				"2026.Q1.0 LTS");
 			SafeCloseable safeCloseable2 = resetLicenseDataWithSafeCloseble()) {
 
-			deployFreeTierPortalLicense(domain, key, Time.HOUR);
+			_deployPortalLicense(domain, key);
 
 			Assert.fail(
 				"Unable to see error message \'Corrupt license file. License " +
@@ -145,9 +144,20 @@ public class BannedKeyLicenseTest extends BaseLicenseTestCase {
 			SafeCloseable safeCloseable3 = setReturnValueWithSafeCloseable(
 				_encryptMethod, key)) {
 
-			deployFreeTierPortalLicense(domain, key, Time.HOUR);
+			_deployPortalLicense(domain, key);
 
 			assertPortalLicenseRegistered();
+		}
+	}
+
+	private void _deployPortalLicense(String domain, String key)
+		throws Exception {
+
+		if (isCMSStandalone()) {
+			deployCMSPortalLicense(domain, key, Time.HOUR);
+		}
+		else {
+			deployFreeTierPortalLicense(domain, key, Time.HOUR);
 		}
 	}
 

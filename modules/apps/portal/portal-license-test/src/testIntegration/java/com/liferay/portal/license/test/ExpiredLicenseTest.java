@@ -6,6 +6,7 @@
 package com.liferay.portal.license.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
@@ -14,6 +15,7 @@ import com.liferay.portal.kernel.util.Time;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,36 +52,57 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 	@Test
 	public void testAppLicenseExpired() throws Exception {
 		for (App app : App.values()) {
-			_testAppLicenseExpired(app);
+			if (!isSupportedApp(app)) {
+				continue;
+			}
+
+			assertLicensePropertiesNotExisted(getProductId(app));
+
+			deployAppLicense(app, GRACE_PERIOD + _VALIDITY_PERIOD);
+
+			assertLicensePropertiesExisted(getProductId(app));
+
+			Assert.assertTrue(LicenseManagerUtil.isAppEnabled(app));
+
+			Thread.sleep(_VALIDITY_PERIOD);
+
+			assertLicensePropertiesExisted(getProductId(app));
+
+			Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
 		}
 	}
 
 	@Test
-	public void testEnterpriseLicenseExpired() throws Exception {
-		assertLicensePropertiesNotExisted(getPortalProductId());
+	public void testCMSPortalLicenseExpired() throws Exception {
+		Assume.assumeTrue(isCMSStandalone());
 
-		assertPortalLicenseNotRegistered();
-
-		deployEnterprisePortalLicense(GRACE_PERIOD + _VALIDITY_PERIOD);
-
-		assertLicensePropertiesExisted(getPortalProductId());
-
-		assertPortalLicenseRegistered();
-
-		Thread.sleep(_VALIDITY_PERIOD);
-
-		assertLicensePropertiesExisted(getPortalProductId());
-
-		assertPortalLicenseExpired();
+		_testPortalLicenseExpired(this::deployCMSPortalLicense);
 	}
 
 	@Test
-	public void testFreeTierLicenseExpired() throws Exception {
+	public void testEnterprisePortalLicenseExpired() throws Exception {
+		Assume.assumeFalse(isCMSStandalone());
+
+		_testPortalLicenseExpired(this::deployEnterprisePortalLicense);
+	}
+
+	@Test
+	public void testFreeTierPortalLicenseExpired() throws Exception {
+		Assume.assumeFalse(isCMSStandalone());
+
+		_testPortalLicenseExpired(
+			BaseLicenseTestCase::deployFreeTierPortalLicense);
+	}
+
+	private void _testPortalLicenseExpired(
+			UnsafeConsumer<Long, Exception> deployLicenseUnsafeConsumer)
+		throws Exception {
+
 		assertLicensePropertiesNotExisted(getPortalProductId());
 
 		assertPortalLicenseNotRegistered();
 
-		deployFreeTierPortalLicense(GRACE_PERIOD + _VALIDITY_PERIOD);
+		deployLicenseUnsafeConsumer.accept(GRACE_PERIOD + _VALIDITY_PERIOD);
 
 		assertLicensePropertiesExisted(getPortalProductId());
 
@@ -90,22 +113,6 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 		assertLicensePropertiesExisted(getPortalProductId());
 
 		assertPortalLicenseExpired();
-	}
-
-	private void _testAppLicenseExpired(App app) throws Exception {
-		assertLicensePropertiesNotExisted(getProductId(app));
-
-		deployAppLicense(app, GRACE_PERIOD + _VALIDITY_PERIOD);
-
-		assertLicensePropertiesExisted(getProductId(app));
-
-		Assert.assertTrue(LicenseManagerUtil.isAppEnabled(app));
-
-		Thread.sleep(_VALIDITY_PERIOD);
-
-		assertLicensePropertiesExisted(getProductId(app));
-
-		Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
 	}
 
 	private static final long _VALIDITY_PERIOD = 15 * Time.SECOND;

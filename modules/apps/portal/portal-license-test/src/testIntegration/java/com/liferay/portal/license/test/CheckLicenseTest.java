@@ -10,6 +10,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.util.LicenseUtil;
 
 import java.io.InputStream;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -109,14 +112,37 @@ public class CheckLicenseTest extends BaseLicenseTestCase {
 
 		assertLicensePropertiesNotExisted(getPortalProductId());
 
-		checkLicense(getPortalProductId());
+		if (isCMSStandalone()) {
+			try {
+				checkLicense(getPortalProductId());
 
-		assertLicensePropertiesExisted(getPortalProductId());
+				Assert.fail();
+			}
+			catch (LogEntriesException logEntriesException) {
+				List<LogEntry> logEntries = logEntriesException.getLogEntries();
 
-		assertPortalLicenseRegistered();
+				LogEntry logEntry = logEntries.get(0);
+
+				String message = logEntry.getMessage();
+
+				Assert.assertTrue(
+					message, message.contains(" license validation failed"));
+			}
+		}
+		else {
+			checkLicense(getPortalProductId());
+
+			assertLicensePropertiesExisted(getPortalProductId());
+
+			assertPortalLicenseRegistered();
+		}
 	}
 
 	private void _testCheckLicenseForApp(App app) throws Exception {
+		if (!isSupportedApp(app)) {
+			return;
+		}
+
 		try (SafeCloseable safeCloseable1 = disableValidateWithSafeCloseable();
 			SafeCloseable safeCloseable2 = resetLicenseDataWithSafeCloseble()) {
 

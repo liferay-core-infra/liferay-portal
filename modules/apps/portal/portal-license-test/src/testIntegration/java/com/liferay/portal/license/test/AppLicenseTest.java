@@ -44,16 +44,11 @@ public class AppLicenseTest extends BaseLicenseTestCase {
 	@Test
 	public void testAppLicenses() throws Exception {
 		for (App app : App.values()) {
-			if (isCMSStandalone()) {
-				if (app == App.CMP) {
-					_testAppLicenseSupported(app);
-				}
-				else {
-					_testAppLicenseUnsupported(app);
-				}
+			if (isSupportedApp(app)) {
+				_testAppLicenseSupported(app);
 			}
 			else {
-				_testAppLicenseSupported(app);
+				_testAppLicenseUnsupported(app);
 			}
 		}
 	}

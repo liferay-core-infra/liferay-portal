@@ -13,6 +13,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchGroupException;
@@ -46,11 +47,11 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.comparator.GroupIdComparator;
 import com.liferay.portal.security.membershippolicy.SiteMembershipPolicyUtil;
@@ -59,6 +60,8 @@ import com.liferay.portal.service.base.GroupServiceBaseImpl;
 import com.liferay.ratings.kernel.transformer.RatingsDataTransformerUtil;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Constructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -935,15 +938,9 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 			int start, int end)
 		throws PortalException {
 
-		if (params == null) {
-			params = new String[0];
-		}
-
-		LinkedHashMap<String, Object> paramsObj = MapUtil.toLinkedHashMap(
-			params);
-
 		List<Group> groups = groupLocalService.search(
-			companyId, name, description, paramsObj, true, start, end);
+			companyId, name, description, _toParamsMap(params), true, start,
+			end);
 
 		return filterGroups(groups);
 	}
@@ -978,15 +975,8 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 	public int searchCount(
 		long companyId, String name, String description, String[] params) {
 
-		if (params == null) {
-			params = new String[0];
-		}
-
-		LinkedHashMap<String, Object> paramsObj = MapUtil.toLinkedHashMap(
-			params);
-
 		return groupLocalService.searchCount(
-			companyId, name, description, paramsObj, true);
+			companyId, name, description, _toParamsMap(params), true);
 	}
 
 	/**
@@ -1186,6 +1176,69 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 		return HashMapBuilder.put(
 			LocaleUtil.getDefault(), value
 		).build();
+	}
+
+	private LinkedHashMap<String, Object> _toParamsMap(String[] params) {
+		LinkedHashMap<String, Object> paramsMap = new LinkedHashMap<>();
+
+		if (params == null) {
+			return paramsMap;
+		}
+
+		for (String param : params) {
+			String[] kvp = StringUtil.split(param, StringPool.COLON);
+
+			if (kvp.length == 2) {
+				paramsMap.put(kvp[0], kvp[1]);
+			}
+			else if (kvp.length == 3) {
+				String type = kvp[2];
+
+				if (StringUtil.equalsIgnoreCase(type, "boolean") ||
+					type.equals(Boolean.class.getName())) {
+
+					paramsMap.put(kvp[0], Boolean.valueOf(kvp[1]));
+				}
+				else if (StringUtil.equalsIgnoreCase(type, "double") ||
+						 type.equals(Double.class.getName())) {
+
+					paramsMap.put(kvp[0], Double.valueOf(kvp[1]));
+				}
+				else if (StringUtil.equalsIgnoreCase(type, "int") ||
+						 type.equals(Integer.class.getName())) {
+
+					paramsMap.put(kvp[0], Integer.valueOf(kvp[1]));
+				}
+				else if (StringUtil.equalsIgnoreCase(type, "long") ||
+						 type.equals(Long.class.getName())) {
+
+					paramsMap.put(kvp[0], Long.valueOf(kvp[1]));
+				}
+				else if (StringUtil.equalsIgnoreCase(type, "short") ||
+						 type.equals(Short.class.getName())) {
+
+					paramsMap.put(kvp[0], Short.valueOf(kvp[1]));
+				}
+				else if (type.equals(String.class.getName())) {
+					paramsMap.put(kvp[0], kvp[1]);
+				}
+				else {
+					try {
+						Class<?> clazz = Class.forName(type);
+
+						Constructor<?> constructor = clazz.getConstructor(
+							String.class);
+
+						paramsMap.put(kvp[0], constructor.newInstance(kvp[1]));
+					}
+					catch (Exception exception) {
+						_log.error(exception);
+					}
+				}
+			}
+		}
+
+		return paramsMap;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -719,7 +719,7 @@ definition {
 		// Get Company ID
 
 		var curl = '''
-			${specificURL}/api/jsonws/company/get-company-by-virtual-host/virtual-host/${portalInstanceName} \
+			${specificURL}/api/jsonws/company/get-company-by-virtual-host/virtual-hostname/${portalInstanceName} \
 				-u ${creatorEmailAddress}:${creatorPassword}
 		''';
 

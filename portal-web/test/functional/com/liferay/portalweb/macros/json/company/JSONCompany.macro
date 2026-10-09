@@ -105,7 +105,7 @@ definition {
 
 		if (${companyId} == "") {
 			var curl = '''
-				${portalURL}/api/jsonws/company/get-company-by-virtual-host/virtual-host/${portalInstanceName} \
+				${portalURL}/api/jsonws/company/get-company-by-virtual-host/virtual-hostname/${portalInstanceName} \
 					-u ${creatorEmailAddress}:${creatorPassword}
 			''';
 
@@ -141,7 +141,7 @@ definition {
 		}
 
 		var curl = '''
-			${portalURL}/api/jsonws/company/get-company-by-virtual-host/virtual-host/${portalInstanceName} \
+			${portalURL}/api/jsonws/company/get-company-by-virtual-host/virtual-hostname/${portalInstanceName} \
 				-u ${creatorEmailAddress}:${creatorPassword}
 		''';
 
@@ -251,7 +251,7 @@ definition {
 		}
 
 		var curl = '''
-			${portalURL}/api/jsonws/company/get-company-by-virtual-host/virtual-host/${portalInstanceName} \
+			${portalURL}/api/jsonws/company/get-company-by-virtual-host/virtual-hostname/${portalInstanceName} \
 				-u ${creatorEmailAddress}:${creatorPassword}
 		''';
 

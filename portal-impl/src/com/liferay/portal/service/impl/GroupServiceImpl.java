@@ -61,8 +61,6 @@ import com.liferay.ratings.kernel.transformer.RatingsDataTransformerUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Constructor;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1199,11 +1197,6 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 
 					paramsMap.put(kvp[0], Boolean.valueOf(kvp[1]));
 				}
-				else if (StringUtil.equalsIgnoreCase(type, "double") ||
-						 type.equals(Double.class.getName())) {
-
-					paramsMap.put(kvp[0], Double.valueOf(kvp[1]));
-				}
 				else if (StringUtil.equalsIgnoreCase(type, "int") ||
 						 type.equals(Integer.class.getName())) {
 
@@ -1214,26 +1207,8 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 
 					paramsMap.put(kvp[0], Long.valueOf(kvp[1]));
 				}
-				else if (StringUtil.equalsIgnoreCase(type, "short") ||
-						 type.equals(Short.class.getName())) {
-
-					paramsMap.put(kvp[0], Short.valueOf(kvp[1]));
-				}
 				else if (type.equals(String.class.getName())) {
 					paramsMap.put(kvp[0], kvp[1]);
-				}
-				else {
-					try {
-						Class<?> clazz = Class.forName(type);
-
-						Constructor<?> constructor = clazz.getConstructor(
-							String.class);
-
-						paramsMap.put(kvp[0], constructor.newInstance(kvp[1]));
-					}
-					catch (Exception exception) {
-						_log.error(exception);
-					}
 				}
 			}
 		}

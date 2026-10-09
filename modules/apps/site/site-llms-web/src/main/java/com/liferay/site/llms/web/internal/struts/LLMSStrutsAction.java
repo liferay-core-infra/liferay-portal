@@ -53,11 +53,9 @@ public class LLMSStrutsAction implements StrutsAction {
 			boolean enabled = false;
 			String content = null;
 
-			String host = GetterUtil.getString(
-				_portal.getForwardedHost(httpServletRequest));
-
 			VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
-				host);
+				GetterUtil.getString(
+					_portal.getForwardedHost(httpServletRequest)));
 
 			if ((virtualHost != null) && (virtualHost.getLayoutSetId() > 0)) {
 				LayoutSet layoutSet = _layoutSetLocalService.fetchLayoutSet(

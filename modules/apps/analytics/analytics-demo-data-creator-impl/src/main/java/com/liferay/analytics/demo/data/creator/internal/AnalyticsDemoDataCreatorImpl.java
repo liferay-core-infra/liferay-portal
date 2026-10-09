@@ -148,7 +148,7 @@ public class AnalyticsDemoDataCreatorImpl implements AnalyticsDemoDataCreator {
 
 		if ((virtualHost == null) || (virtualHost.getLayoutSetId() != 0)) {
 			throw new Exception(
-				"Unable to find a company virtual host with host name " +
+				"Unable to find a company virtual host with hostname " +
 					_analyticsDemoDataCreatorConfiguration.virtualHostname());
 		}
 

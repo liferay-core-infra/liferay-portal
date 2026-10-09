@@ -340,7 +340,7 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 
 		if (virtualHostModel == null) {
 			throw new CompanyVirtualHostException(
-				"Unable to find a virtual host with host name " + virtualHost);
+				"Unable to find a virtual host with hostname " + virtualHost);
 		}
 
 		if (virtualHostModel.getLayoutSetId() != 0) {

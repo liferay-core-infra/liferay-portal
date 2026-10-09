@@ -60,56 +60,17 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 
 		assertPortalLicenseNotRegistered();
 
-		deployEnterprisePortalLicense(_GRACE_PEIROD + _VALIDTY_PERIOD);
+		deployEnterprisePortalLicense(GRACE_PERIOD + _VALIDITY_PERIOD);
 
 		assertLicensePropertiesExisted(getPortalProductId());
 
 		assertPortalLicenseRegistered();
 
-		Thread.sleep(_VALIDTY_PERIOD);
+		Thread.sleep(_VALIDITY_PERIOD);
 
 		assertLicensePropertiesExisted(getPortalProductId());
 
 		assertPortalLicenseExpired();
-	}
-
-	@Test
-	public void testFreeAndEnterpriseExpired() throws Exception {
-		assertLicensePropertiesNotExisted(getPortalProductId());
-
-		assertPortalLicenseNotRegistered();
-
-		deployFreeTierPortalLicense(Time.HOUR);
-
-		assertLicensePropertiesExisted(getPortalProductId());
-
-		assertPortalLicenseRegistered();
-
-		Assert.assertTrue(LicenseManagerUtil.isFreeTier());
-
-		deployEnterprisePortalLicense(_GRACE_PEIROD + _VALIDTY_PERIOD);
-
-		assertLicensePropertiesExisted(getPortalProductId());
-
-		assertPortalLicenseRegistered();
-
-		Assert.assertFalse(LicenseManagerUtil.isFreeTier());
-
-		Thread.sleep(_VALIDTY_PERIOD);
-
-		assertLicensePropertiesExisted(getPortalProductId());
-
-		assertPortalLicenseExpired();
-
-		resetLifecycleAction();
-
-		checkLicense(getPortalProductId());
-
-		assertLicensePropertiesExisted(getPortalProductId());
-
-		assertPortalLicenseRegistered();
-
-		Assert.assertTrue(LicenseManagerUtil.isFreeTier());
 	}
 
 	@Test
@@ -118,13 +79,13 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 
 		assertPortalLicenseNotRegistered();
 
-		deployFreeTierPortalLicense(_GRACE_PEIROD + _VALIDTY_PERIOD);
+		deployFreeTierPortalLicense(GRACE_PERIOD + _VALIDITY_PERIOD);
 
 		assertLicensePropertiesExisted(getPortalProductId());
 
 		assertPortalLicenseRegistered();
 
-		Thread.sleep(_VALIDTY_PERIOD);
+		Thread.sleep(_VALIDITY_PERIOD);
 
 		assertLicensePropertiesExisted(getPortalProductId());
 
@@ -134,22 +95,20 @@ public class ExpiredLicenseTest extends BaseLicenseTestCase {
 	private void _testAppLicenseExpired(App app) throws Exception {
 		assertLicensePropertiesNotExisted(getProductId(app));
 
-		deployAppLicense(app, _GRACE_PEIROD + _VALIDTY_PERIOD);
+		deployAppLicense(app, GRACE_PERIOD + _VALIDITY_PERIOD);
 
 		assertLicensePropertiesExisted(getProductId(app));
 
 		Assert.assertTrue(LicenseManagerUtil.isAppEnabled(app));
 
-		Thread.sleep(_VALIDTY_PERIOD);
+		Thread.sleep(_VALIDITY_PERIOD);
 
 		assertLicensePropertiesExisted(getProductId(app));
 
 		Assert.assertFalse(LicenseManagerUtil.isAppEnabled(app));
 	}
 
-	private static final long _GRACE_PEIROD = -2 * Time.DAY;
-
-	private static final long _VALIDTY_PERIOD = 15 * Time.SECOND;
+	private static final long _VALIDITY_PERIOD = 15 * Time.SECOND;
 
 	private static SafeCloseable _disableKeyValidatorSafeCloseable;
 	private static SafeCloseable _setVersionSafeCloseable;

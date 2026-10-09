@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.module.framework.ModuleFrameworkUtil;
 import com.liferay.portal.test.log.LogCapture;
@@ -539,6 +540,8 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	protected static final String ENTERPRISE_LICENSE_TYPE = "enterprise";
 
 	protected static final String FREE_TIER_LICENSE_TYPE = "free";
+
+	protected static final long GRACE_PERIOD = -2 * Time.DAY;
 
 	private static String _buildAppLicenseXML(
 		App app, long startTime, long validityPeriod) {

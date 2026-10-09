@@ -80,12 +80,17 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 
 	@Test
 	public void testPortalLicensesEnterpriseAndFreeTier() throws Exception {
+		long validityPeriod = 30 * Time.SECOND;
+
 		try (SafeCloseable safeCloseable = resetLicenseDataWithSafeCloseble()) {
 			assertPortalLicenseNotRegistered();
 
 			deployLicenses(
 				new String[][] {
-					{ENTERPRISE_LICENSE_TYPE, String.valueOf(Time.HOUR)},
+					{
+						ENTERPRISE_LICENSE_TYPE,
+						String.valueOf(validityPeriod + GRACE_PERIOD)
+					},
 					{FREE_TIER_LICENSE_TYPE, String.valueOf(Time.HOUR)}
 				});
 
@@ -94,6 +99,22 @@ public class CombinedLicenseTest extends BaseLicenseTestCase {
 			assertPortalLicenseRegistered();
 
 			Assert.assertFalse(LicenseManagerUtil.isFreeTier());
+
+			Thread.sleep(validityPeriod);
+
+			assertLicensePropertiesExisted(getPortalProductId());
+
+			assertPortalLicenseExpired();
+
+			resetLifecycleAction();
+
+			checkLicense(getPortalProductId());
+
+			assertLicensePropertiesExisted(getPortalProductId());
+
+			assertPortalLicenseRegistered();
+
+			Assert.assertTrue(LicenseManagerUtil.isFreeTier());
 		}
 	}
 

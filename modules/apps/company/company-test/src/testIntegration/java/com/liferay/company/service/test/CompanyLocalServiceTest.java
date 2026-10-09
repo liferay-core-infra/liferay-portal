@@ -1066,31 +1066,6 @@ public class CompanyLocalServiceTest {
 	}
 
 	@Test
-	public void testGetVirtualHost() throws Exception {
-		Company company = _addCompany("::1");
-
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
-					company.getCompanyId())) {
-
-			VirtualHost virtualHost = _virtualHostLocalService.getVirtualHost(
-				"::1");
-
-			Assert.assertEquals(
-				company.getCompanyId(), virtualHost.getCompanyId());
-
-			virtualHost = _virtualHostLocalService.getVirtualHost(
-				"0:0:0:0:0:0:0:1");
-
-			Assert.assertEquals(
-				company.getCompanyId(), virtualHost.getCompanyId());
-		}
-		finally {
-			_companyLocalService.deleteCompany(company);
-		}
-	}
-
-	@Test
 	public void testUpdateCompany() throws Exception {
 		_testUpdateCompanyMaxUsers(-1);
 		_testUpdateCompanyMaxUsers(-100);

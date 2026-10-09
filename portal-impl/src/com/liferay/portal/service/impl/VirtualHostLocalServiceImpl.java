@@ -92,15 +92,16 @@ public class VirtualHostLocalServiceImpl
 	}
 
 	@Override
-	public VirtualHost fetchVirtualHost(String hostname) {
-		hostname = StringUtil.toLowerCase(StringUtil.trim(hostname));
+	public VirtualHost fetchVirtualHost(String virtualHostname) {
+		virtualHostname = StringUtil.toLowerCase(
+			StringUtil.trim(virtualHostname));
 
-		if (Validator.isIPv6Address(hostname)) {
+		if (Validator.isIPv6Address(virtualHostname)) {
 			try {
 				Inet6Address inet6Address = (Inet6Address)InetAddress.getByName(
-					hostname);
+					virtualHostname);
 
-				hostname = inet6Address.getHostAddress();
+				virtualHostname = inet6Address.getHostAddress();
 			}
 			catch (UnknownHostException unknownHostException) {
 				if (_log.isDebugEnabled()) {
@@ -110,22 +111,25 @@ public class VirtualHostLocalServiceImpl
 		}
 
 		VirtualHost virtualHost = virtualHostPersistence.fetchByHostname(
-			hostname);
+			virtualHostname);
 
-		if ((virtualHost == null) && hostname.contains("xn--")) {
+		if ((virtualHost == null) && virtualHostname.contains("xn--")) {
 			virtualHost = virtualHostPersistence.fetchByHostname(
-				IDN.toUnicode(hostname));
+				IDN.toUnicode(virtualHostname));
 		}
 
 		return virtualHost;
 	}
 
 	@Override
-	public VirtualHost getVirtualHost(String hostname) throws PortalException {
-		VirtualHost virtualHost = fetchVirtualHost(hostname);
+	public VirtualHost getVirtualHost(String virtualHostname)
+		throws PortalException {
+
+		VirtualHost virtualHost = fetchVirtualHost(virtualHostname);
 
 		if (virtualHost == null) {
-			throw new NoSuchVirtualHostException("{hostname=" + hostname + "}");
+			throw new NoSuchVirtualHostException(
+				"{hostname=" + virtualHostname + "}");
 		}
 
 		return virtualHost;
@@ -259,11 +263,11 @@ public class VirtualHostLocalServiceImpl
 
 		boolean first = true;
 
-		for (String curHostname : virtualHostnames.navigableKeySet()) {
+		for (String curVirtualHostname : virtualHostnames.navigableKeySet()) {
 			VirtualHost virtualHost = null;
 
 			for (VirtualHost curVirtualHost : virtualHosts) {
-				if (curHostname.equals(curVirtualHost.getHostname())) {
+				if (curVirtualHostname.equals(curVirtualHost.getHostname())) {
 					virtualHost = curVirtualHost;
 
 					break;
@@ -277,12 +281,12 @@ public class VirtualHostLocalServiceImpl
 
 				virtualHost.setCompanyId(layoutSet.getCompanyId());
 				virtualHost.setLayoutSetId(layoutSet.getLayoutSetId());
-				virtualHost.setHostname(curHostname);
+				virtualHost.setHostname(curVirtualHostname);
 
 				virtualHosts.add(virtualHost);
 			}
 
-			String languageId = virtualHostnames.get(curHostname);
+			String languageId = virtualHostnames.get(curVirtualHostname);
 
 			Locale locale = LocaleUtil.fromLanguageId(languageId, true, false);
 

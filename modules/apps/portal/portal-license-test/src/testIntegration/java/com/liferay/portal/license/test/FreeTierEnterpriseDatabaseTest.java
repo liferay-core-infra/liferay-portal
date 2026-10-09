@@ -27,7 +27,8 @@ import org.junit.runner.RunWith;
  * @author Kevin Lee
  */
 @RunWith(Arquillian.class)
-public class EnterpriseDatabaseTest extends BaseLicenseTestCase {
+public class FreeTierEnterpriseDatabaseTest
+	extends BaseFreeTierLicenseTestCase {
 
 	@BeforeClass
 	public static void setUpClass() {

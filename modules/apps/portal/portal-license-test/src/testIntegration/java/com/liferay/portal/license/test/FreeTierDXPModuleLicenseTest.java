@@ -31,7 +31,7 @@ import org.osgi.framework.BundleContext;
  * @author Tina Tian
  */
 @RunWith(Arquillian.class)
-public class DXPModuleLicenseTest extends BaseLicenseTestCase {
+public class FreeTierDXPModuleLicenseTest extends BaseFreeTierLicenseTestCase {
 
 	@BeforeClass
 	public static void setUpClass() {

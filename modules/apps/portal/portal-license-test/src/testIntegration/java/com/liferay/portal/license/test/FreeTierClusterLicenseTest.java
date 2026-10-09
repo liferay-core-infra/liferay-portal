@@ -53,7 +53,7 @@ import org.junit.runner.RunWith;
  */
 @Ignore
 @RunWith(Arquillian.class)
-public class ClusterLicenseTest extends BaseLicenseTestCase {
+public class FreeTierClusterLicenseTest extends BaseFreeTierLicenseTestCase {
 
 	@ClassRule
 	public static final TomcatClusterTestRule tomcatClusterTestRule =

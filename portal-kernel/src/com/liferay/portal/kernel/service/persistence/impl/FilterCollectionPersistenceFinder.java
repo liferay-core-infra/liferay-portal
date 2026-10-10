@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Shuyang Zhou
@@ -34,13 +35,15 @@ public class FilterCollectionPersistenceFinder
 		FinderPath countFinderPath, String sqlSelectWhere, String sqlCountWhere,
 		String defaultOrderByJpql, String orderByEntityAlias, String where,
 		String dbWhere, UniquePersistenceFinder<T, E> uniquePersistenceFinder,
-		FinderColumn<T>... finderColumns) {
+		Function<T, Long> filterPKFunction, FinderColumn<T>... finderColumns) {
 
 		super(
 			basePersistenceImpl, paginatedFindPath, unpaginatedFindPath,
 			countFinderPath, sqlSelectWhere, sqlCountWhere, defaultOrderByJpql,
 			orderByEntityAlias, where, dbWhere, uniquePersistenceFinder,
 			finderColumns);
+
+		_filterPKFunction = filterPKFunction;
 
 		String entityAlias = basePersistenceImpl.getEntityAlias();
 
@@ -214,7 +217,8 @@ public class FilterCollectionPersistenceFinder
 				finderCache, values, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
 				true);
 
-			list = InlineSQLHelperUtil.filter(list, groupIds);
+			list = InlineSQLHelperUtil.filter(
+				list, _filterPKFunction, groupIds);
 
 			return list.size();
 		}
@@ -262,7 +266,8 @@ public class FilterCollectionPersistenceFinder
 				finderCache, values, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				orderByComparator, true);
 
-			return InlineSQLHelperUtil.filter(list, groupIds);
+			return InlineSQLHelperUtil.filter(
+				list, _filterPKFunction, groupIds);
 		}
 
 		normalizeValues(values);
@@ -322,6 +327,7 @@ public class FilterCollectionPersistenceFinder
 	private static final long[] _EMPTY_GROUP_IDS = new long[0];
 
 	private final String _filterPKColumn;
+	private final Function<T, Long> _filterPKFunction;
 	private final String _filterSqlCountWhere;
 	private final String _filterSqlSelectNoInlineDistinctWhere1;
 	private final String _filterSqlSelectNoInlineDistinctWhere2;

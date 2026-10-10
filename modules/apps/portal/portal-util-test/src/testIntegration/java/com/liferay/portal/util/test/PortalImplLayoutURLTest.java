@@ -187,7 +187,7 @@ public class PortalImplLayoutURLTest extends BasePortalImplURLTestCase {
 		LayoutSet publicLayoutSet = publicLayout.getLayoutSet();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			company.getCompanyId(), publicLayoutSet.getLayoutSetId(),
+			publicLayoutSet,
 			TreeMapBuilder.put(
 				_PUBLIC_LAYOUT_SET_VIRTUAL_HOSTNAME, StringPool.BLANK
 			).build());
@@ -221,7 +221,7 @@ public class PortalImplLayoutURLTest extends BasePortalImplURLTestCase {
 		LayoutSet publicLayoutSet = publicLayout.getLayoutSet();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			company.getCompanyId(), publicLayoutSet.getLayoutSetId(),
+			publicLayoutSet,
 			TreeMapBuilder.put(
 				_PUBLIC_LAYOUT_SET_VIRTUAL_HOSTNAME, StringPool.BLANK
 			).build());

@@ -902,7 +902,7 @@ public class SitePageResourceTest extends BaseSitePageResourceTestCase {
 		LayoutSet layoutSet = layout.getLayoutSet();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			layout.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				"127.0.0.1", StringPool.BLANK
 			).build());
@@ -914,15 +914,14 @@ public class SitePageResourceTest extends BaseSitePageResourceTestCase {
 		_testGetSiteSitePageRenderedPagePortalURL(
 			friendlyURL, testCompany.getVirtualHostname());
 
-		_virtualHostLocalService.updateVirtualHosts(
-			layout.getCompanyId(), layoutSet.getLayoutSetId(), new TreeMap<>());
+		_virtualHostLocalService.updateVirtualHosts(layoutSet, new TreeMap<>());
 
 		Group group = GroupTestUtil.addGroup();
 
 		layoutSet = group.getPublicLayoutSet();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			group.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				"127.0.0.1", StringPool.BLANK
 			).build());

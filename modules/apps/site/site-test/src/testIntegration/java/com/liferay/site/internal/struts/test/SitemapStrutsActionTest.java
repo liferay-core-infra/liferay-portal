@@ -146,7 +146,7 @@ public class SitemapStrutsActionTest {
 		LayoutSet layoutSet = stagingGroup.getPublicLayoutSet();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			stagingGroup.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				"virtual", StringPool.BLANK
 			).build());

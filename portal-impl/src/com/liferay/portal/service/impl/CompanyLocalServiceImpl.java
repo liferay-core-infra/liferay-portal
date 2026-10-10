@@ -134,7 +134,6 @@ import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
-import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -1879,52 +1878,37 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			long companyId, String virtualHostname)
 		throws CompanyVirtualHostException {
 
-		if (Validator.isNotNull(virtualHostname)) {
-			try {
-				if (Validator.isIPv6Address(virtualHostname)) {
-					Inet6Address address = (Inet6Address)InetAddress.getByName(
-						virtualHostname);
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			virtualHostname);
 
-					virtualHostname = address.getHostAddress();
-				}
-			}
-			catch (UnknownHostException unknownHostException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(unknownHostException);
-				}
+		if (virtualHost != null) {
+			if ((virtualHost.getCompanyId() != companyId) ||
+				(virtualHost.getLayoutSetId() != 0)) {
 
-				throw new CompanyVirtualHostException(
-					"Virtual hostname is not a valid IPv6 address");
+				throw new CompanyVirtualHostException();
 			}
 
-			VirtualHost virtualHost = _virtualHostPersistence.fetchByHostname(
-				virtualHostname);
+			return companyPersistence.fetchByPrimaryKey(companyId);
+		}
 
-			if (virtualHost == null) {
-				_virtualHostLocalService.updateVirtualHosts(
-					companyId, 0,
-					TreeMapBuilder.put(
-						virtualHostname, StringPool.BLANK
-					).build());
-			}
-			else {
-				if ((virtualHost.getCompanyId() != companyId) ||
-					(virtualHost.getLayoutSetId() != 0)) {
+		try {
+			if (Validator.isIPv6Address(virtualHostname)) {
+				Inet6Address address = (Inet6Address)InetAddress.getByName(
+					virtualHostname);
 
-					throw new CompanyVirtualHostException();
-				}
+				virtualHostname = address.getHostAddress();
 			}
 		}
-		else {
-			List<VirtualHost> virtualHosts = _virtualHostPersistence.findByC_L(
-				companyId, 0);
-
-			if (!virtualHosts.isEmpty()) {
-				for (VirtualHost virtualHost : virtualHosts) {
-					_virtualHostPersistence.remove(virtualHost);
-				}
+		catch (UnknownHostException unknownHostException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(unknownHostException);
 			}
+
+			throw new CompanyVirtualHostException(
+				"Virtual hostname is not a valid IPv6 address");
 		}
+
+		_virtualHostLocalService.updateVirtualHost(companyId, virtualHostname);
 
 		return companyPersistence.fetchByPrimaryKey(companyId);
 	}

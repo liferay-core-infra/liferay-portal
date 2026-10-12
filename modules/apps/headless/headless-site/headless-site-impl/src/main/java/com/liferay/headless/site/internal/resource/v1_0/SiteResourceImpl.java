@@ -174,7 +174,8 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 				this::_toSite),
 			pagination,
 			_groupService.searchCount(
-				contextCompany.getCompanyId(), classNameIds, search, params));
+				contextCompany.getCompanyId(), classNameIds, search, null,
+				params, true));
 	}
 
 	@Override

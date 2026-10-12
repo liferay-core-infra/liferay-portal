@@ -25,6 +25,7 @@ import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -114,22 +115,24 @@ public class SimpleSiteItemSelectorViewDisplayContext
 		searchContainer.setOrderByComparator(
 			new GroupNameComparator(orderByAsc));
 		searchContainer.setOrderByType(getOrderByType());
+
+		long[] classNameIds = {
+			ClassNameLocalServiceUtil.getClassNameId(Group.class),
+			ClassNameLocalServiceUtil.getClassNameId(Organization.class)
+		};
+		LinkedHashMap<String, Object> params =
+			LinkedHashMapBuilder.<String, Object>put(
+				"active", true
+			).put(
+				"site", true
+			).build();
+
 		searchContainer.setResultsAndTotal(
 			() -> _groupService.search(
-				cpRequestHelper.getCompanyId(),
-				new long[] {
-					ClassNameLocalServiceUtil.getClassNameId(Group.class),
-					ClassNameLocalServiceUtil.getClassNameId(Organization.class)
-				},
-				null,
-				LinkedHashMapBuilder.<String, Object>put(
-					"active", true
-				).put(
-					"site", true
-				).build(),
+				cpRequestHelper.getCompanyId(), classNameIds, null, params,
 				searchContainer.getStart(), searchContainer.getEnd(), null),
 			_groupService.searchCount(
-				cpRequestHelper.getCompanyId(), null, null, new String[0]));
+				cpRequestHelper.getCompanyId(), classNameIds, null, params));
 		searchContainer.setSearch(_search);
 
 		return searchContainer;

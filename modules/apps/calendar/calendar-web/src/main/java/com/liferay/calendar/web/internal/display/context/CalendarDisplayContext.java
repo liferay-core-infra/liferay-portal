@@ -273,8 +273,8 @@ public class CalendarDisplayContext {
 				_groupSearchContainer.getEnd(),
 				_groupSearchContainer.getOrderByComparator()),
 			GroupServiceUtil.searchCount(
-				_themeDisplay.getCompanyId(), getKeywords(), getKeywords(),
-				new String[] {"site:true:boolean"}));
+				_themeDisplay.getCompanyId(), _getClassNameIds(), getKeywords(),
+				MapUtil.toLinkedHashMap(new String[] {"site:true:boolean"})));
 
 		return _groupSearchContainer;
 	}

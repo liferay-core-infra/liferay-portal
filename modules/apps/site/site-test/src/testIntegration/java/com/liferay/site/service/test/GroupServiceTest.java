@@ -72,6 +72,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -377,11 +378,14 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null,
+				TestPropsValues.getCompanyId(), null, null,
 				_group.getDescription(_getLocale()),
-				new String[] {
-					"manualMembership:true:boolean", "site:true:boolean"
-				}));
+				LinkedHashMapBuilder.<String, Object>put(
+					"manualMembership", true
+				).put(
+					"site", true
+				).build(),
+				true));
 	}
 
 	@Test
@@ -397,11 +401,14 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null,
+				TestPropsValues.getCompanyId(), null, null,
 				_group.getDescription(_getLocale()),
-				new String[] {
-					"manualMembership:true:boolean", "site:true:boolean"
-				}));
+				LinkedHashMapBuilder.<String, Object>put(
+					"manualMembership", true
+				).put(
+					"site", true
+				).build(),
+				true));
 	}
 
 	@Test
@@ -411,11 +418,14 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), _group.getName(_getLocale()),
-				null,
-				new String[] {
-					"manualMembership:true:boolean", "site:true:boolean"
-				}));
+				TestPropsValues.getCompanyId(), null,
+				_group.getName(_getLocale()), null,
+				LinkedHashMapBuilder.<String, Object>put(
+					"manualMembership", true
+				).put(
+					"site", true
+				).build(),
+				true));
 	}
 
 	@Test
@@ -431,11 +441,14 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), _group.getName(_getLocale()),
-				null,
-				new String[] {
-					"manualMembership:true:boolean", "site:true:boolean"
-				}));
+				TestPropsValues.getCompanyId(), null,
+				_group.getName(_getLocale()), null,
+				LinkedHashMapBuilder.<String, Object>put(
+					"manualMembership", true
+				).put(
+					"site", true
+				).build(),
+				true));
 	}
 
 	@Test
@@ -446,19 +459,22 @@ public class GroupServiceTest {
 
 		_role = _roleLocalService.fetchRole(roleId);
 
-		String[] groupParams = {
-			"groupsRoles:" + String.valueOf(roleId) + ":long",
-			"site:true:boolean"
-		};
+		LinkedHashMap<String, Object> groupParams =
+			LinkedHashMapBuilder.<String, Object>put(
+				"groupsRoles", roleId
+			).put(
+				"site", true
+			).build();
 
 		Assert.assertEquals(
 			1,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null, null, groupParams));
+				TestPropsValues.getCompanyId(), null, null, null, groupParams,
+				true));
 
 		List<Group> groups = _groupService.search(
-			TestPropsValues.getCompanyId(), null, null, groupParams,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			TestPropsValues.getCompanyId(), null, null, null, groupParams, true,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		Assert.assertEquals(groups.toString(), 1, groups.size());
 		Assert.assertEquals(_group, groups.get(0));
@@ -476,10 +492,13 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), "liferay%", null,
-				new String[] {
-					"manualMembership:true:boolean", "site:true:boolean"
-				}));
+				TestPropsValues.getCompanyId(), null, "liferay%", null,
+				LinkedHashMapBuilder.<String, Object>put(
+					"manualMembership", true
+				).put(
+					"site", true
+				).build(),
+				true));
 	}
 
 	@Test
@@ -487,10 +506,13 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			1,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), "Liferay%", null,
-				new String[] {
-					"manualMembership:true:boolean", "site:true:boolean"
-				}));
+				TestPropsValues.getCompanyId(), null, "Liferay%", null,
+				LinkedHashMapBuilder.<String, Object>put(
+					"manualMembership", true
+				).put(
+					"site", true
+				).build(),
+				true));
 	}
 
 	@Test
@@ -498,10 +520,13 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			0,
 			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), "cabina14", null,
-				new String[] {
-					"manualMembership:true:boolean", "site:true:boolean"
-				}));
+				TestPropsValues.getCompanyId(), null, "cabina14", null,
+				LinkedHashMapBuilder.<String, Object>put(
+					"manualMembership", true
+				).put(
+					"site", true
+				).build(),
+				true));
 	}
 
 	@Test

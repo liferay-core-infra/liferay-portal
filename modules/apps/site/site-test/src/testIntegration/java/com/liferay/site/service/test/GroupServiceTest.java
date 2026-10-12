@@ -376,16 +376,7 @@ public class GroupServiceTest {
 		_group = GroupTestUtil.addGroup(GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
 		Assert.assertEquals(
-			1,
-			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null, null,
-				_group.getDescription(_getLocale()),
-				LinkedHashMapBuilder.<String, Object>put(
-					"manualMembership", true
-				).put(
-					"site", true
-				).build(),
-				true));
+			1, _getSearchCount(_group.getDescription(_getLocale()), null));
 	}
 
 	@Test
@@ -399,16 +390,7 @@ public class GroupServiceTest {
 		_group = _groupLocalService.updateGroup(_group);
 
 		Assert.assertEquals(
-			1,
-			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null, null,
-				_group.getDescription(_getLocale()),
-				LinkedHashMapBuilder.<String, Object>put(
-					"manualMembership", true
-				).put(
-					"site", true
-				).build(),
-				true));
+			1, _getSearchCount(_group.getDescription(_getLocale()), null));
 	}
 
 	@Test
@@ -416,16 +398,7 @@ public class GroupServiceTest {
 		_group = GroupTestUtil.addGroup(GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
 		Assert.assertEquals(
-			1,
-			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null,
-				_group.getName(_getLocale()), null,
-				LinkedHashMapBuilder.<String, Object>put(
-					"manualMembership", true
-				).put(
-					"site", true
-				).build(),
-				true));
+			1, _getSearchCount(null, _group.getName(_getLocale())));
 	}
 
 	@Test
@@ -439,16 +412,7 @@ public class GroupServiceTest {
 		_group = _groupLocalService.updateGroup(_group);
 
 		Assert.assertEquals(
-			1,
-			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null,
-				_group.getName(_getLocale()), null,
-				LinkedHashMapBuilder.<String, Object>put(
-					"manualMembership", true
-				).put(
-					"site", true
-				).build(),
-				true));
+			1, _getSearchCount(null, _group.getName(_getLocale())));
 	}
 
 	@Test
@@ -489,44 +453,17 @@ public class GroupServiceTest {
 
 	@Test
 	public void testFindGuestGroupByCompanyName() throws Exception {
-		Assert.assertEquals(
-			1,
-			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null, "liferay%", null,
-				LinkedHashMapBuilder.<String, Object>put(
-					"manualMembership", true
-				).put(
-					"site", true
-				).build(),
-				true));
+		Assert.assertEquals(1, _getSearchCount(null, "liferay%"));
 	}
 
 	@Test
 	public void testFindGuestGroupByCompanyNameCapitalized() throws Exception {
-		Assert.assertEquals(
-			1,
-			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null, "Liferay%", null,
-				LinkedHashMapBuilder.<String, Object>put(
-					"manualMembership", true
-				).put(
-					"site", true
-				).build(),
-				true));
+		Assert.assertEquals(1, _getSearchCount(null, "Liferay%"));
 	}
 
 	@Test
 	public void testFindNonexistentGroup() throws Exception {
-		Assert.assertEquals(
-			0,
-			_groupService.searchCount(
-				TestPropsValues.getCompanyId(), null, "cabina14", null,
-				LinkedHashMapBuilder.<String, Object>put(
-					"manualMembership", true
-				).put(
-					"site", true
-				).build(),
-				true));
+		Assert.assertEquals(0, _getSearchCount(null, "cabina14"));
 	}
 
 	@Test
@@ -1457,6 +1394,19 @@ public class GroupServiceTest {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		return themeDisplay.getLocale();
+	}
+
+	private int _getSearchCount(String description, String name)
+		throws Exception {
+
+		return _groupService.searchCount(
+			TestPropsValues.getCompanyId(), null, name, description,
+			LinkedHashMapBuilder.<String, Object>put(
+				"manualMembership", true
+			).put(
+				"site", true
+			).build(),
+			true);
 	}
 
 	private void _testSelectableParentSites(boolean staging) throws Exception {

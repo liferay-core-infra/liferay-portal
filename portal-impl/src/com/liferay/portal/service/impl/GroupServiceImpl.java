@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -898,56 +897,6 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 		return filterGroups(groups);
 	}
 
-	/**
-	 * Returns an ordered range of all the site groups and organization groups
-	 * that match the name and description, optionally including the user's
-	 * inherited organization groups and user groups. System and staged groups
-	 * are not included.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end -
-	 * start</code> instances. <code>start</code> and <code>end</code> are not
-	 * primary keys, they are indexes in the result set. Thus, <code>0</code>
-	 * refers to the first result in the set. Setting both <code>start</code>
-	 * and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
-	 * result set.
-	 * </p>
-	 *
-	 * @param  companyId the primary key of the company
-	 * @param  name the group's name (optionally <code>null</code>)
-	 * @param  description the group's description (optionally
-	 *         <code>null</code>)
-	 * @param  params the finder params (optionally <code>null</code>). To
-	 *         include the user's inherited organizations and user groups in the
-	 *         search, add entries having &quot;usersGroups&quot; and
-	 *         &quot;inherit&quot; as keys mapped to the the user's ID. For more
-	 *         information see {@link
-	 *         com.liferay.portal.kernel.service.persistence.GroupFinder}.
-	 * @param  start the lower bound of the range of groups to return
-	 * @param  end the upper bound of the range of groups to return (not
-	 *         inclusive)
-	 * @return the matching groups ordered by name
-	 * @throws PortalException if a portal exception occurred
-	 */
-	@Override
-	public List<Group> search(
-			long companyId, String name, String description, String[] params,
-			int start, int end)
-		throws PortalException {
-
-		if (params == null) {
-			params = new String[0];
-		}
-
-		LinkedHashMap<String, Object> paramsObj = MapUtil.toLinkedHashMap(
-			params);
-
-		List<Group> groups = groupLocalService.search(
-			companyId, name, description, paramsObj, true, start, end);
-
-		return filterGroups(groups);
-	}
-
 	@Override
 	public int searchCount(
 		long companyId, long[] classNameIds, String keywords,
@@ -964,38 +913,6 @@ public class GroupServiceImpl extends GroupServiceBaseImpl {
 
 		return groupLocalService.searchCount(
 			companyId, classNameIds, name, description, params, andOperator);
-	}
-
-	/**
-	 * Returns the number of groups and organization groups that match the name
-	 * and description, optionally including the user's inherited organizations
-	 * and user groups. System and staged groups are not included.
-	 *
-	 * @param  companyId the primary key of the company
-	 * @param  name the group's name (optionally <code>null</code>)
-	 * @param  description the group's description (optionally
-	 *         <code>null</code>)
-	 * @param  params the finder params (optionally <code>null</code>). To
-	 *         include the user's inherited organizations and user groups in the
-	 *         search, add entries having &quot;usersGroups&quot; and
-	 *         &quot;inherit&quot; as keys mapped to the the user's ID. For more
-	 *         information see {@link
-	 *         com.liferay.portal.kernel.service.persistence.GroupFinder}.
-	 * @return the number of matching groups
-	 */
-	@Override
-	public int searchCount(
-		long companyId, String name, String description, String[] params) {
-
-		if (params == null) {
-			params = new String[0];
-		}
-
-		LinkedHashMap<String, Object> paramsObj = MapUtil.toLinkedHashMap(
-			params);
-
-		return groupLocalService.searchCount(
-			companyId, name, description, paramsObj, true);
 	}
 
 	/**

@@ -570,47 +570,6 @@ public class GroupServiceWrapper
 			start, end, orderByComparator);
 	}
 
-	/**
-	 * Returns an ordered range of all the site groups and organization groups
-	 * that match the name and description, optionally including the user's
-	 * inherited organization groups and user groups. System and staged groups
-	 * are not included.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end -
-	 * start</code> instances. <code>start</code> and <code>end</code> are not
-	 * primary keys, they are indexes in the result set. Thus, <code>0</code>
-	 * refers to the first result in the set. Setting both <code>start</code>
-	 * and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
-	 * result set.
-	 * </p>
-	 *
-	 * @param companyId the primary key of the company
-	 * @param name the group's name (optionally <code>null</code>)
-	 * @param description the group's description (optionally
-	 <code>null</code>)
-	 * @param params the finder params (optionally <code>null</code>). To
-	 include the user's inherited organizations and user groups in the
-	 search, add entries having &quot;usersGroups&quot; and
-	 &quot;inherit&quot; as keys mapped to the the user's ID. For more
-	 information see {@link
-	 com.liferay.portal.kernel.service.persistence.GroupFinder}.
-	 * @param start the lower bound of the range of groups to return
-	 * @param end the upper bound of the range of groups to return (not
-	 inclusive)
-	 * @return the matching groups ordered by name
-	 * @throws PortalException if a portal exception occurred
-	 */
-	@Override
-	public java.util.List<Group> search(
-			long companyId, String name, String description, String[] params,
-			int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _groupService.search(
-			companyId, name, description, params, start, end);
-	}
-
 	@Override
 	public int searchCount(
 		long companyId, long[] classNameIds, String keywords,
@@ -620,28 +579,13 @@ public class GroupServiceWrapper
 			companyId, classNameIds, keywords, params);
 	}
 
-	/**
-	 * Returns the number of groups and organization groups that match the name
-	 * and description, optionally including the user's inherited organizations
-	 * and user groups. System and staged groups are not included.
-	 *
-	 * @param companyId the primary key of the company
-	 * @param name the group's name (optionally <code>null</code>)
-	 * @param description the group's description (optionally
-	 <code>null</code>)
-	 * @param params the finder params (optionally <code>null</code>). To
-	 include the user's inherited organizations and user groups in the
-	 search, add entries having &quot;usersGroups&quot; and
-	 &quot;inherit&quot; as keys mapped to the the user's ID. For more
-	 information see {@link
-	 com.liferay.portal.kernel.service.persistence.GroupFinder}.
-	 * @return the number of matching groups
-	 */
 	@Override
 	public int searchCount(
-		long companyId, String name, String description, String[] params) {
+		long companyId, long[] classNameIds, String name, String description,
+		java.util.LinkedHashMap<String, Object> params, boolean andOperator) {
 
-		return _groupService.searchCount(companyId, name, description, params);
+		return _groupService.searchCount(
+			companyId, classNameIds, name, description, params, andOperator);
 	}
 
 	/**
@@ -743,4 +687,4 @@ public class GroupServiceWrapper
 	private GroupService _groupService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-370067583
+// LIFERAY-SERVICE-BUILDER-HASH:-1213276963

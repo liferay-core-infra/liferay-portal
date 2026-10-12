@@ -448,68 +448,15 @@ public interface GroupService extends BaseService {
 			OrderByComparator<Group> orderByComparator)
 		throws PortalException;
 
-	/**
-	 * Returns an ordered range of all the site groups and organization groups
-	 * that match the name and description, optionally including the user's
-	 * inherited organization groups and user groups. System and staged groups
-	 * are not included.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end -
-	 * start</code> instances. <code>start</code> and <code>end</code> are not
-	 * primary keys, they are indexes in the result set. Thus, <code>0</code>
-	 * refers to the first result in the set. Setting both <code>start</code>
-	 * and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full
-	 * result set.
-	 * </p>
-	 *
-	 * @param companyId the primary key of the company
-	 * @param name the group's name (optionally <code>null</code>)
-	 * @param description the group's description (optionally
-	 <code>null</code>)
-	 * @param params the finder params (optionally <code>null</code>). To
-	 include the user's inherited organizations and user groups in the
-	 search, add entries having &quot;usersGroups&quot; and
-	 &quot;inherit&quot; as keys mapped to the the user's ID. For more
-	 information see {@link
-	 com.liferay.portal.kernel.service.persistence.GroupFinder}.
-	 * @param start the lower bound of the range of groups to return
-	 * @param end the upper bound of the range of groups to return (not
-	 inclusive)
-	 * @return the matching groups ordered by name
-	 * @throws PortalException if a portal exception occurred
-	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Group> search(
-			long companyId, String name, String description, String[] params,
-			int start, int end)
-		throws PortalException;
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
 		long companyId, long[] classNameIds, String keywords,
 		LinkedHashMap<String, Object> params);
 
-	/**
-	 * Returns the number of groups and organization groups that match the name
-	 * and description, optionally including the user's inherited organizations
-	 * and user groups. System and staged groups are not included.
-	 *
-	 * @param companyId the primary key of the company
-	 * @param name the group's name (optionally <code>null</code>)
-	 * @param description the group's description (optionally
-	 <code>null</code>)
-	 * @param params the finder params (optionally <code>null</code>). To
-	 include the user's inherited organizations and user groups in the
-	 search, add entries having &quot;usersGroups&quot; and
-	 &quot;inherit&quot; as keys mapped to the the user's ID. For more
-	 information see {@link
-	 com.liferay.portal.kernel.service.persistence.GroupFinder}.
-	 * @return the number of matching groups
-	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
-		long companyId, String name, String description, String[] params);
+		long companyId, long[] classNameIds, String name, String description,
+		LinkedHashMap<String, Object> params, boolean andOperator);
 
 	/**
 	 * Sets the groups associated with the role, removing and adding
@@ -569,4 +516,4 @@ public interface GroupService extends BaseService {
 		throws PortalException;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-215775897
+// LIFERAY-SERVICE-BUILDER-HASH:-1444671938

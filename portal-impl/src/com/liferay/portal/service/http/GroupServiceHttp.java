@@ -1398,47 +1398,6 @@ public class GroupServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
-			HttpPrincipal httpPrincipal, long companyId, String name,
-			String description, String[] params, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		try {
-			MethodKey methodKey = new MethodKey(
-				GroupServiceUtil.class, "search", _searchParameterTypes33);
-
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId, name, description, params, start, end);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
-			}
-
-			return (java.util.List<com.liferay.portal.kernel.model.Group>)
-				returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
-
-			_log.error(systemException, systemException);
-
-			throw systemException;
-		}
-	}
-
 	public static int searchCount(
 		HttpPrincipal httpPrincipal, long companyId, long[] classNameIds,
 		String keywords, java.util.LinkedHashMap<String, Object> params) {
@@ -1446,7 +1405,7 @@ public class GroupServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "searchCount",
-				_searchCountParameterTypes34);
+				_searchCountParameterTypes33);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, classNameIds, keywords, params);
@@ -1473,16 +1432,18 @@ public class GroupServiceHttp {
 	}
 
 	public static int searchCount(
-		HttpPrincipal httpPrincipal, long companyId, String name,
-		String description, String[] params) {
+		HttpPrincipal httpPrincipal, long companyId, long[] classNameIds,
+		String name, String description,
+		java.util.LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "searchCount",
-				_searchCountParameterTypes35);
+				_searchCountParameterTypes34);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, companyId, name, description, params);
+				methodKey, companyId, classNameIds, name, description, params,
+				andOperator);
 
 			Object returnObj = null;
 
@@ -1512,7 +1473,7 @@ public class GroupServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "setRoleGroups",
-				_setRoleGroupsParameterTypes36);
+				_setRoleGroupsParameterTypes35);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, roleId, groupIds);
@@ -1548,7 +1509,7 @@ public class GroupServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "unsetRoleGroups",
-				_unsetRoleGroupsParameterTypes37);
+				_unsetRoleGroupsParameterTypes36);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, roleId, groupIds);
@@ -1584,7 +1545,7 @@ public class GroupServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "updateFriendlyURL",
-				_updateFriendlyURLParameterTypes38);
+				_updateFriendlyURLParameterTypes37);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, friendlyURL);
@@ -1630,7 +1591,7 @@ public class GroupServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "updateGroup",
-				_updateGroupParameterTypes39);
+				_updateGroupParameterTypes38);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, parentGroupId, nameMap, descriptionMap,
@@ -1672,7 +1633,7 @@ public class GroupServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "updateGroup",
-				_updateGroupParameterTypes40);
+				_updateGroupParameterTypes39);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, typeSettings);
@@ -1713,7 +1674,7 @@ public class GroupServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				GroupServiceUtil.class, "updateStagedPortlets",
-				_updateStagedPortletsParameterTypes41);
+				_updateStagedPortletsParameterTypes40);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, stagedPortletIds);
@@ -1839,33 +1800,30 @@ public class GroupServiceHttp {
 		java.util.LinkedHashMap.class, boolean.class, int.class, int.class,
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
-	private static final Class<?>[] _searchParameterTypes33 = new Class[] {
-		long.class, String.class, String.class, String[].class, int.class,
-		int.class
-	};
-	private static final Class<?>[] _searchCountParameterTypes34 = new Class[] {
+	private static final Class<?>[] _searchCountParameterTypes33 = new Class[] {
 		long.class, long[].class, String.class, java.util.LinkedHashMap.class
 	};
-	private static final Class<?>[] _searchCountParameterTypes35 = new Class[] {
-		long.class, String.class, String.class, String[].class
+	private static final Class<?>[] _searchCountParameterTypes34 = new Class[] {
+		long.class, long[].class, String.class, String.class,
+		java.util.LinkedHashMap.class, boolean.class
 	};
-	private static final Class<?>[] _setRoleGroupsParameterTypes36 =
+	private static final Class<?>[] _setRoleGroupsParameterTypes35 =
 		new Class[] {long.class, long[].class};
-	private static final Class<?>[] _unsetRoleGroupsParameterTypes37 =
+	private static final Class<?>[] _unsetRoleGroupsParameterTypes36 =
 		new Class[] {long.class, long[].class};
-	private static final Class<?>[] _updateFriendlyURLParameterTypes38 =
+	private static final Class<?>[] _updateFriendlyURLParameterTypes37 =
 		new Class[] {long.class, String.class};
-	private static final Class<?>[] _updateGroupParameterTypes39 = new Class[] {
+	private static final Class<?>[] _updateGroupParameterTypes38 = new Class[] {
 		long.class, long.class, java.util.Map.class, java.util.Map.class,
 		int.class, String.class, boolean.class, int.class, String.class,
 		boolean.class, boolean.class,
 		com.liferay.portal.kernel.service.ServiceContext.class
 	};
-	private static final Class<?>[] _updateGroupParameterTypes40 = new Class[] {
+	private static final Class<?>[] _updateGroupParameterTypes39 = new Class[] {
 		long.class, String.class
 	};
-	private static final Class<?>[] _updateStagedPortletsParameterTypes41 =
+	private static final Class<?>[] _updateStagedPortletsParameterTypes40 =
 		new Class[] {long.class, java.util.Map.class};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1684559598
+// LIFERAY-SERVICE-BUILDER-HASH:-334878767

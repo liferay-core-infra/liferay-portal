@@ -959,4 +959,4 @@ public class PortletItemModelImpl
 	private PortletItem _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1057157863
+// LIFERAY-SERVICE-BUILDER-HASH:-1612589441

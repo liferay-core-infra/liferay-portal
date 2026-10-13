@@ -791,4 +791,4 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	private Image _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1338524690
+// LIFERAY-SERVICE-BUILDER-HASH:349848664

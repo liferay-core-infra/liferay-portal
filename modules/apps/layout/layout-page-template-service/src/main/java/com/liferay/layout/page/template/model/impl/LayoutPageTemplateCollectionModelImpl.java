@@ -1346,4 +1346,4 @@ public class LayoutPageTemplateCollectionModelImpl
 	private LayoutPageTemplateCollection _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:844387370
+// LIFERAY-SERVICE-BUILDER-HASH:-2038654228

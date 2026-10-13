@@ -947,6 +947,8 @@ public abstract class ERCVersionedEntryLocalServiceBaseImpl
 		draftERCVersionedEntry.setCompanyId(
 			publishedERCVersionedEntry.getCompanyId());
 		draftERCVersionedEntry.setBlob(publishedERCVersionedEntry.getBlob());
+		draftERCVersionedEntry.setStatus(
+			publishedERCVersionedEntry.getStatus());
 
 		draftERCVersionedEntry.resetOriginalValues();
 
@@ -1028,4 +1030,4 @@ public abstract class ERCVersionedEntryLocalServiceBaseImpl
 		ERCVersionedEntryLocalServiceBaseImpl.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1537888376
+// LIFERAY-SERVICE-BUILDER-HASH:-147455669

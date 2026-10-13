@@ -1683,4 +1683,4 @@ public class CountryModelImpl
 	private Country _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:118041249
+// LIFERAY-SERVICE-BUILDER-HASH:1897211019

@@ -1041,4 +1041,4 @@ public class CommerceInventoryAuditModelImpl
 	private CommerceInventoryAudit _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:211209032
+// LIFERAY-SERVICE-BUILDER-HASH:1238762728

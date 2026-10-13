@@ -529,7 +529,7 @@ public class FragmentEntryModelImpl
 		fragmentEntryVersion.setType(getType());
 		fragmentEntryVersion.setTypeOptions(getTypeOptions());
 		fragmentEntryVersion.setLastPublishDate(getLastPublishDate());
-		fragmentEntryVersion.setStatus(getStatus());
+		fragmentEntryVersion.setStatus(_status);
 		fragmentEntryVersion.setStatusByUserId(getStatusByUserId());
 		fragmentEntryVersion.setStatusByUserName(getStatusByUserName());
 		fragmentEntryVersion.setStatusDate(getStatusDate());
@@ -1157,6 +1157,10 @@ public class FragmentEntryModelImpl
 	@JSON
 	@Override
 	public int getStatus() {
+		if (!isHead()) {
+			return WorkflowConstants.STATUS_DRAFT;
+		}
+
 		return _status;
 	}
 
@@ -1987,4 +1991,4 @@ public class FragmentEntryModelImpl
 	private FragmentEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1207162075
+// LIFERAY-SERVICE-BUILDER-HASH:458361219

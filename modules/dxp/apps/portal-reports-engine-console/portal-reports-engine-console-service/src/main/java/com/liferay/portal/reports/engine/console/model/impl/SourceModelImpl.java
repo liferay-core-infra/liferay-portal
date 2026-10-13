@@ -1229,4 +1229,4 @@ public class SourceModelImpl
 	private Source _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1199074704
+// LIFERAY-SERVICE-BUILDER-HASH:603797414

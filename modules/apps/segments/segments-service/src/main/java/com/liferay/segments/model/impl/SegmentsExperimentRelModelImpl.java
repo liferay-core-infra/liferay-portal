@@ -967,4 +967,4 @@ public class SegmentsExperimentRelModelImpl
 	private SegmentsExperimentRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:261411914
+// LIFERAY-SERVICE-BUILDER-HASH:791095564

@@ -1090,4 +1090,4 @@ public class CommercePriceListChannelRelModelImpl
 	private CommercePriceListChannelRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1799895451
+// LIFERAY-SERVICE-BUILDER-HASH:1872507003

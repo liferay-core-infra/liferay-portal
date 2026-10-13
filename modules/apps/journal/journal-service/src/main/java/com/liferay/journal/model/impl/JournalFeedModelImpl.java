@@ -1512,4 +1512,4 @@ public class JournalFeedModelImpl
 	private JournalFeed _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-565732881
+// LIFERAY-SERVICE-BUILDER-HASH:-1290953707

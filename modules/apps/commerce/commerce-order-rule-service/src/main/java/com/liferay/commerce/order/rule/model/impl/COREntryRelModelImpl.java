@@ -902,4 +902,4 @@ public class COREntryRelModelImpl
 	private COREntryRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:362778238
+// LIFERAY-SERVICE-BUILDER-HASH:-1656139004

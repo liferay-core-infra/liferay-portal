@@ -1284,4 +1284,4 @@ public class WorkflowDefinitionLinkModelImpl
 	private WorkflowDefinitionLink _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1183166849
+// LIFERAY-SERVICE-BUILDER-HASH:191254945

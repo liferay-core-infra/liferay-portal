@@ -1023,4 +1023,4 @@ public class KBTemplateModelImpl
 	private KBTemplate _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-857851218
+// LIFERAY-SERVICE-BUILDER-HASH:-2068238096

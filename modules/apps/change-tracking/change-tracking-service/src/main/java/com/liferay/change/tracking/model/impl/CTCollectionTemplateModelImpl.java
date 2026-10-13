@@ -829,4 +829,4 @@ public class CTCollectionTemplateModelImpl
 	private CTCollectionTemplate _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-988894098
+// LIFERAY-SERVICE-BUILDER-HASH:804785412

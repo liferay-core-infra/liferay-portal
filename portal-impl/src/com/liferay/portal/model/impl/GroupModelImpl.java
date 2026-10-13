@@ -2013,4 +2013,4 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private Group _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-349176140
+// LIFERAY-SERVICE-BUILDER-HASH:868845096

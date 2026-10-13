@@ -1445,4 +1445,4 @@ public class CommercePaymentMethodGroupRelModelImpl
 	private CommercePaymentMethodGroupRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2104184096
+// LIFERAY-SERVICE-BUILDER-HASH:1758901160

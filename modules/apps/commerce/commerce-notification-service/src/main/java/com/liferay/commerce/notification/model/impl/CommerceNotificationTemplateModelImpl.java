@@ -1832,4 +1832,4 @@ public class CommerceNotificationTemplateModelImpl
 	private CommerceNotificationTemplate _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:410935188
+// LIFERAY-SERVICE-BUILDER-HASH:127971786

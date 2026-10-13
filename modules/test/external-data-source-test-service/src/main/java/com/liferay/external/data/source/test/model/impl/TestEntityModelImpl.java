@@ -555,4 +555,4 @@ public class TestEntityModelImpl
 	private TestEntity _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1860368305
+// LIFERAY-SERVICE-BUILDER-HASH:963658265

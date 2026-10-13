@@ -1565,4 +1565,4 @@ public class AssetVocabularyModelImpl
 	private AssetVocabulary _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1598540392
+// LIFERAY-SERVICE-BUILDER-HASH:-673917772

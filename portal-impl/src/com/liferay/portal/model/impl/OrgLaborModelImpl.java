@@ -1074,4 +1074,4 @@ public class OrgLaborModelImpl
 	private OrgLabor _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1213253782
+// LIFERAY-SERVICE-BUILDER-HASH:-2019223792

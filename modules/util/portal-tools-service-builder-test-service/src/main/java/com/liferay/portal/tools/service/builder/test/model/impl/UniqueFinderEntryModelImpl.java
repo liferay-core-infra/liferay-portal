@@ -625,4 +625,4 @@ public class UniqueFinderEntryModelImpl
 	private UniqueFinderEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:53260511
+// LIFERAY-SERVICE-BUILDER-HASH:-316310643

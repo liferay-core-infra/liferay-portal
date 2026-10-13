@@ -1118,4 +1118,4 @@ public class RedirectEntryModelImpl
 	private RedirectEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:344050355
+// LIFERAY-SERVICE-BUILDER-HASH:1351096951

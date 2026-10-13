@@ -967,4 +967,4 @@ public class ChangesetEntryModelImpl
 	private ChangesetEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1517029452
+// LIFERAY-SERVICE-BUILDER-HASH:-506071480

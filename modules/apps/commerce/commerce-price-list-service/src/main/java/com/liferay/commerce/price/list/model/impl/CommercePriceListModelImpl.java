@@ -1765,4 +1765,4 @@ public class CommercePriceListModelImpl
 	private CommercePriceList _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:687482002
+// LIFERAY-SERVICE-BUILDER-HASH:463220402

@@ -1165,4 +1165,4 @@ public class DDMContentModelImpl
 	private DDMContent _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1143266172
+// LIFERAY-SERVICE-BUILDER-HASH:-1666565836

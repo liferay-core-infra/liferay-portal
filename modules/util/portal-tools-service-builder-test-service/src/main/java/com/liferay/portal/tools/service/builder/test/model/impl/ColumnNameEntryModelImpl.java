@@ -568,4 +568,4 @@ public class ColumnNameEntryModelImpl
 	private ColumnNameEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2011838503
+// LIFERAY-SERVICE-BUILDER-HASH:244350511

@@ -42,6 +42,7 @@ public class ERCVersionedEntryWrapper
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("blob", getBlob());
+		attributes.put("status", getStatus());
 
 		return attributes;
 	}
@@ -95,6 +96,12 @@ public class ERCVersionedEntryWrapper
 
 		if (blob != null) {
 			setBlob(blob);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
 		}
 	}
 
@@ -181,6 +188,16 @@ public class ERCVersionedEntryWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the status of this erc versioned entry.
+	 *
+	 * @return the status of this erc versioned entry
+	 */
+	@Override
+	public int getStatus() {
+		return model.getStatus();
 	}
 
 	/**
@@ -279,6 +296,16 @@ public class ERCVersionedEntryWrapper
 	}
 
 	/**
+	 * Sets the status of this erc versioned entry.
+	 *
+	 * @param status the status of this erc versioned entry
+	 */
+	@Override
+	public void setStatus(int status) {
+		model.setStatus(status);
+	}
+
+	/**
 	 * Sets the uuid of this erc versioned entry.
 	 *
 	 * @param uuid the uuid of this erc versioned entry
@@ -313,4 +340,4 @@ public class ERCVersionedEntryWrapper
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:352160151
+// LIFERAY-SERVICE-BUILDER-HASH:-1587836809

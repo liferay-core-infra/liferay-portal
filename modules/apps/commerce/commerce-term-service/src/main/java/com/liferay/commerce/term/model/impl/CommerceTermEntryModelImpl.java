@@ -1785,4 +1785,4 @@ public class CommerceTermEntryModelImpl
 	private CommerceTermEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1847043986
+// LIFERAY-SERVICE-BUILDER-HASH:-1332205116

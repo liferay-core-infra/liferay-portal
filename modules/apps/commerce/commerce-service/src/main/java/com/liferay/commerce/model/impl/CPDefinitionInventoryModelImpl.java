@@ -1392,4 +1392,4 @@ public class CPDefinitionInventoryModelImpl
 	private CPDefinitionInventory _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1368410872
+// LIFERAY-SERVICE-BUILDER-HASH:1262783596

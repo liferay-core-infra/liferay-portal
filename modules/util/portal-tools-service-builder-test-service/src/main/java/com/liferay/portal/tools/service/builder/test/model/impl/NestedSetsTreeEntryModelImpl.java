@@ -695,4 +695,4 @@ public class NestedSetsTreeEntryModelImpl
 	private NestedSetsTreeEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1006338296
+// LIFERAY-SERVICE-BUILDER-HASH:-78171696

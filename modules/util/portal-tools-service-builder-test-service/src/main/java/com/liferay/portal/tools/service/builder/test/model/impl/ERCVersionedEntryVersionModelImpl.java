@@ -62,7 +62,8 @@ public class ERCVersionedEntryVersionModelImpl
 		{"version", Types.INTEGER}, {"uuid_", Types.VARCHAR},
 		{"externalReferenceCode", Types.VARCHAR},
 		{"ercVersionedEntryId", Types.BIGINT}, {"groupId", Types.BIGINT},
-		{"companyId", Types.BIGINT}, {"blob_", Types.BLOB}
+		{"companyId", Types.BIGINT}, {"blob_", Types.BLOB},
+		{"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -77,10 +78,11 @@ public class ERCVersionedEntryVersionModelImpl
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("blob_", Types.BLOB);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ERCVersionedEntryVersion (ercVersionedEntryVersionId LONG not null primary key,version INTEGER,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,ercVersionedEntryId LONG,groupId LONG,companyId LONG,blob_ BLOB)";
+		"create table ERCVersionedEntryVersion (ercVersionedEntryVersionId LONG not null primary key,version INTEGER,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,ercVersionedEntryId LONG,groupId LONG,companyId LONG,blob_ BLOB,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table ERCVersionedEntryVersion";
@@ -233,6 +235,8 @@ public class ERCVersionedEntryVersionModelImpl
 				"companyId", ERCVersionedEntryVersion::getCompanyId);
 			attributeGetterFunctions.put(
 				"blob", ERCVersionedEntryVersion::getBlob);
+			attributeGetterFunctions.put(
+				"status", ERCVersionedEntryVersion::getStatus);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -284,6 +288,10 @@ public class ERCVersionedEntryVersionModelImpl
 				"blob",
 				(BiConsumer<ERCVersionedEntryVersion, Blob>)
 					ERCVersionedEntryVersion::setBlob);
+			attributeSetterBiConsumers.put(
+				"status",
+				(BiConsumer<ERCVersionedEntryVersion, Integer>)
+					ERCVersionedEntryVersion::setStatus);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -303,6 +311,7 @@ public class ERCVersionedEntryVersionModelImpl
 		ercVersionedEntry.setGroupId(getGroupId());
 		ercVersionedEntry.setCompanyId(getCompanyId());
 		ercVersionedEntry.setBlob(getBlob());
+		ercVersionedEntry.setStatus(getStatus());
 	}
 
 	@Override
@@ -493,6 +502,20 @@ public class ERCVersionedEntryVersionModelImpl
 	}
 
 	@Override
+	public int getStatus() {
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_status = status;
+	}
+
+	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
 			getCompanyId(), ERCVersionedEntryVersion.class.getName(),
@@ -536,6 +559,7 @@ public class ERCVersionedEntryVersionModelImpl
 			getErcVersionedEntryId());
 		ercVersionedEntryVersionImpl.setGroupId(getGroupId());
 		ercVersionedEntryVersionImpl.setCompanyId(getCompanyId());
+		ercVersionedEntryVersionImpl.setStatus(getStatus());
 
 		ercVersionedEntryVersionImpl.resetOriginalValues();
 
@@ -561,6 +585,8 @@ public class ERCVersionedEntryVersionModelImpl
 			this.<Long>getColumnOriginalValue("groupId"));
 		ercVersionedEntryVersionImpl.setCompanyId(
 			this.<Long>getColumnOriginalValue("companyId"));
+		ercVersionedEntryVersionImpl.setStatus(
+			this.<Integer>getColumnOriginalValue("status"));
 
 		return ercVersionedEntryVersionImpl;
 	}
@@ -676,6 +702,8 @@ public class ERCVersionedEntryVersionModelImpl
 
 		ercVersionedEntryVersionCacheModel.companyId = getCompanyId();
 
+		ercVersionedEntryVersionCacheModel.status = getStatus();
+
 		return ercVersionedEntryVersionCacheModel;
 	}
 
@@ -747,6 +775,7 @@ public class ERCVersionedEntryVersionModelImpl
 	private long _groupId;
 	private long _companyId;
 	private Blob _blob;
+	private int _status;
 
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
@@ -788,6 +817,7 @@ public class ERCVersionedEntryVersionModelImpl
 		_columnOriginalValues.put("groupId", _groupId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("blob_", _blob);
+		_columnOriginalValues.put("status", _status);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -805,4 +835,4 @@ public class ERCVersionedEntryVersionModelImpl
 	private ERCVersionedEntryVersion _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1264360358
+// LIFERAY-SERVICE-BUILDER-HASH:674360700

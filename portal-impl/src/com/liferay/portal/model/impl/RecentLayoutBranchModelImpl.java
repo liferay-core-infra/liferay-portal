@@ -836,4 +836,4 @@ public class RecentLayoutBranchModelImpl
 	private RecentLayoutBranch _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1237365969
+// LIFERAY-SERVICE-BUILDER-HASH:1529443849

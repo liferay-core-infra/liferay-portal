@@ -46,10 +46,12 @@ public class ERCVersionedEntryTable extends BaseTable<ERCVersionedEntryTable> {
 		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<ERCVersionedEntryTable, Blob> blob = createColumn(
 		"blob_", Blob.class, Types.BLOB, Column.FLAG_DEFAULT);
+	public final Column<ERCVersionedEntryTable, Integer> status = createColumn(
+		"status", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
 
 	private ERCVersionedEntryTable() {
 		super("ERCVersionedEntry", ERCVersionedEntryTable::new);
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1767433638
+// LIFERAY-SERVICE-BUILDER-HASH:1878227572

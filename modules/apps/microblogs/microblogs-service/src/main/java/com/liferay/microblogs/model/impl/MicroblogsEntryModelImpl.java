@@ -1060,4 +1060,4 @@ public class MicroblogsEntryModelImpl
 	private MicroblogsEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1219096589
+// LIFERAY-SERVICE-BUILDER-HASH:-854757269

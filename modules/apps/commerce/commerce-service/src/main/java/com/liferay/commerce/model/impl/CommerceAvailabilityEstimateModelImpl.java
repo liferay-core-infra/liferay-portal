@@ -1257,4 +1257,4 @@ public class CommerceAvailabilityEstimateModelImpl
 	private CommerceAvailabilityEstimate _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1528991426
+// LIFERAY-SERVICE-BUILDER-HASH:1479226882

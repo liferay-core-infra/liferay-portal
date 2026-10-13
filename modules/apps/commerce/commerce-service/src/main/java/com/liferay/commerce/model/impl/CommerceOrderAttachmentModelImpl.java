@@ -1232,4 +1232,4 @@ public class CommerceOrderAttachmentModelImpl
 	private CommerceOrderAttachment _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-673593320
+// LIFERAY-SERVICE-BUILDER-HASH:-130093196

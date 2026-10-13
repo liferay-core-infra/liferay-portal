@@ -1065,4 +1065,4 @@ public class SavedContentEntryModelImpl
 	private SavedContentEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1790590022
+// LIFERAY-SERVICE-BUILDER-HASH:-1144105622

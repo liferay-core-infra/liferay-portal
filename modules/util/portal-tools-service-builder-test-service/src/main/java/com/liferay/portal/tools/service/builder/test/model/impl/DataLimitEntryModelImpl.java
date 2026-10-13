@@ -719,4 +719,4 @@ public class DataLimitEntryModelImpl
 	private DataLimitEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1279138178
+// LIFERAY-SERVICE-BUILDER-HASH:-1188421568

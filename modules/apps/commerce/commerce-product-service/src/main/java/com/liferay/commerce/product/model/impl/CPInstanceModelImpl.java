@@ -2564,4 +2564,4 @@ public class CPInstanceModelImpl
 	private CPInstance _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:694605808
+// LIFERAY-SERVICE-BUILDER-HASH:512953370

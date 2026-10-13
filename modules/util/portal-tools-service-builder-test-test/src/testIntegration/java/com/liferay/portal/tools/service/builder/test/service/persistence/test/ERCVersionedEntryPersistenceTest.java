@@ -140,6 +140,8 @@ public class ERCVersionedEntryPersistenceTest {
 
 		newERCVersionedEntry.setBlob(newBlobBlob);
 
+		newERCVersionedEntry.setStatus(RandomTestUtil.nextInt());
+
 		newERCVersionedEntry = _persistence.update(newERCVersionedEntry);
 
 		_ercVersionedEntries.add(newERCVersionedEntry);
@@ -178,6 +180,9 @@ public class ERCVersionedEntryPersistenceTest {
 
 		Assert.assertArrayEquals(
 			newBlobBytes, existingBlob.getBytes(1, (int)existingBlob.length()));
+		Assert.assertEquals(
+			existingERCVersionedEntry.getStatus(),
+			newERCVersionedEntry.getStatus());
 	}
 
 	@Test
@@ -203,6 +208,7 @@ public class ERCVersionedEntryPersistenceTest {
 			new OutputBlob(
 				new ByteArrayInputStream(draftBlobBytes),
 				draftBlobBytes.length));
+		draftERCVersionedEntry.setStatus(ercVersionedEntry.getStatus());
 
 		_ercVersionedEntries.add(_persistence.update(draftERCVersionedEntry));
 
@@ -236,6 +242,7 @@ public class ERCVersionedEntryPersistenceTest {
 		Assert.assertArrayEquals(
 			draftBlobBytes,
 			persistedDraftBlob.getBytes(1, (int)persistedDraftBlob.length()));
+		Assert.assertEquals(2, draftERCVersionedEntry.getStatus());
 	}
 
 	@Test(
@@ -268,6 +275,8 @@ public class ERCVersionedEntryPersistenceTest {
 			new ByteArrayInputStream(blobBytes), blobBytes.length);
 
 		ercVersionedEntry2.setBlob(blobBlob);
+
+		ercVersionedEntry2.setStatus(RandomTestUtil.nextInt());
 
 		_ercVersionedEntries.add(_persistence.update(ercVersionedEntry2));
 	}
@@ -422,7 +431,8 @@ public class ERCVersionedEntryPersistenceTest {
 		return OrderByComparatorFactoryUtil.create(
 			"ERCVersionedEntry", "mvccVersion", true, "uuid", true,
 			"externalReferenceCode", true, "headId", true,
-			"ercVersionedEntryId", true, "groupId", true, "companyId", true);
+			"ercVersionedEntryId", true, "groupId", true, "companyId", true,
+			"status", true);
 	}
 
 	@Test
@@ -751,6 +761,8 @@ public class ERCVersionedEntryPersistenceTest {
 
 		ercVersionedEntry.setBlob(blobBlob);
 
+		ercVersionedEntry.setStatus(RandomTestUtil.nextInt());
+
 		_ercVersionedEntries.add(_persistence.update(ercVersionedEntry));
 
 		return ercVersionedEntry;
@@ -762,4 +774,4 @@ public class ERCVersionedEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2132282118
+// LIFERAY-SERVICE-BUILDER-HASH:2015884058

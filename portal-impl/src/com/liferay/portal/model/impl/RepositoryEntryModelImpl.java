@@ -1096,4 +1096,4 @@ public class RepositoryEntryModelImpl
 	private RepositoryEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1272378619
+// LIFERAY-SERVICE-BUILDER-HASH:-894308171

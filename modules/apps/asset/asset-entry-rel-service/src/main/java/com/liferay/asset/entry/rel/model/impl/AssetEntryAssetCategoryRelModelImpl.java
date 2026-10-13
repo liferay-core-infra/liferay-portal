@@ -751,4 +751,4 @@ public class AssetEntryAssetCategoryRelModelImpl
 	private AssetEntryAssetCategoryRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:128604549
+// LIFERAY-SERVICE-BUILDER-HASH:660330865

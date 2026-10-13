@@ -1841,4 +1841,4 @@ public class WikiPageModelImpl
 	private WikiPage _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1813625062
+// LIFERAY-SERVICE-BUILDER-HASH:-1826374096

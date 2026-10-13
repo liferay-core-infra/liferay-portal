@@ -1694,4 +1694,4 @@ public class CommerceAddressModelImpl
 	private CommerceAddress _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1544729626
+// LIFERAY-SERVICE-BUILDER-HASH:663898454

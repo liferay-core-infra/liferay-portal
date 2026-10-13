@@ -1181,4 +1181,4 @@ public class NotificationRecipientSettingModelImpl
 	private NotificationRecipientSetting _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-14066211
+// LIFERAY-SERVICE-BUILDER-HASH:1372445987

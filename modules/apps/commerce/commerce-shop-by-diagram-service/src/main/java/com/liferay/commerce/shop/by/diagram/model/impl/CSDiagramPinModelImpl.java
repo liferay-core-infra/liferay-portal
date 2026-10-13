@@ -921,4 +921,4 @@ public class CSDiagramPinModelImpl
 	private CSDiagramPin _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1393546317
+// LIFERAY-SERVICE-BUILDER-HASH:721821729

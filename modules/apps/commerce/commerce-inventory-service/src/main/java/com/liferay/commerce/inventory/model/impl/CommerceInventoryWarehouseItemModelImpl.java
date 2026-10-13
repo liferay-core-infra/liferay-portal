@@ -1191,4 +1191,4 @@ public class CommerceInventoryWarehouseItemModelImpl
 	private CommerceInventoryWarehouseItem _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1594365020
+// LIFERAY-SERVICE-BUILDER-HASH:-952427926

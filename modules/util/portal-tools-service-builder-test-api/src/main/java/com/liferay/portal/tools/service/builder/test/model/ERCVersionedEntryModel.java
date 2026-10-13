@@ -176,6 +176,20 @@ public interface ERCVersionedEntryModel
 	 */
 	public void setBlob(Blob blob);
 
+	/**
+	 * Returns the status of this erc versioned entry.
+	 *
+	 * @return the status of this erc versioned entry
+	 */
+	public int getStatus();
+
+	/**
+	 * Sets the status of this erc versioned entry.
+	 *
+	 * @param status the status of this erc versioned entry
+	 */
+	public void setStatus(int status);
+
 	@Override
 	public ERCVersionedEntry cloneWithOriginalValues();
 
@@ -184,4 +198,4 @@ public interface ERCVersionedEntryModel
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1688053007
+// LIFERAY-SERVICE-BUILDER-HASH:-846925746

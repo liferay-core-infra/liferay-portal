@@ -933,4 +933,4 @@ public class ReleaseModelImpl
 	private Release _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1575081231
+// LIFERAY-SERVICE-BUILDER-HASH:2018405349

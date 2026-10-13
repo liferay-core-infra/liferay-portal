@@ -1938,4 +1938,4 @@ public class KaleoDefinitionVersionModelImpl
 	private KaleoDefinitionVersion _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-114896182
+// LIFERAY-SERVICE-BUILDER-HASH:1651193946

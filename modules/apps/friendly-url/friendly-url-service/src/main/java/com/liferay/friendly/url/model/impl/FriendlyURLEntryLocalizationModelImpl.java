@@ -1031,4 +1031,4 @@ public class FriendlyURLEntryLocalizationModelImpl
 	private FriendlyURLEntryLocalization _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-125698535
+// LIFERAY-SERVICE-BUILDER-HASH:-997156361

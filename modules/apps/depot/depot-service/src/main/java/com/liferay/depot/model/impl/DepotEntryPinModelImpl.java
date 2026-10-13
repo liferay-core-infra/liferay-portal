@@ -841,4 +841,4 @@ public class DepotEntryPinModelImpl
 	private DepotEntryPin _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:15136176
+// LIFERAY-SERVICE-BUILDER-HASH:1731045778

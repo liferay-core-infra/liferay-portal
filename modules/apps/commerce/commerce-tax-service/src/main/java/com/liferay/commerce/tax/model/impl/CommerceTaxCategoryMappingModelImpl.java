@@ -1085,4 +1085,4 @@ public class CommerceTaxCategoryMappingModelImpl
 	private CommerceTaxCategoryMapping _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:162096751
+// LIFERAY-SERVICE-BUILDER-HASH:-990513667

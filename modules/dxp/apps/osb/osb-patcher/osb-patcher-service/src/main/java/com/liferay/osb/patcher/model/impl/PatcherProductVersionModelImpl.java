@@ -915,4 +915,4 @@ public class PatcherProductVersionModelImpl
 	private PatcherProductVersion _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:743014599
+// LIFERAY-SERVICE-BUILDER-HASH:-656543709

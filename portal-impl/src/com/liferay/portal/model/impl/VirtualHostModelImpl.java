@@ -801,4 +801,4 @@ public class VirtualHostModelImpl
 	private VirtualHost _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-604150546
+// LIFERAY-SERVICE-BUILDER-HASH:836588184

@@ -963,4 +963,4 @@ public class CommercePricingClassCPDefinitionRelModelImpl
 	private CommercePricingClassCPDefinitionRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1662853173
+// LIFERAY-SERVICE-BUILDER-HASH:1563420969

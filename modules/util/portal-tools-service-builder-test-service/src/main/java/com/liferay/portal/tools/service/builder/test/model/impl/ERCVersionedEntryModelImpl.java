@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.tools.service.builder.test.model.ERCVersionedEntry;
 import com.liferay.portal.tools.service.builder.test.model.ERCVersionedEntryModel;
 import com.liferay.portal.tools.service.builder.test.model.ERCVersionedEntryVersion;
@@ -61,7 +62,7 @@ public class ERCVersionedEntryModelImpl
 		{"externalReferenceCode", Types.VARCHAR}, {"headId", Types.BIGINT},
 		{"head", Types.BOOLEAN}, {"ercVersionedEntryId", Types.BIGINT},
 		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"blob_", Types.BLOB}
+		{"blob_", Types.BLOB}, {"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -77,10 +78,11 @@ public class ERCVersionedEntryModelImpl
 		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("blob_", Types.BLOB);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ERCVersionedEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,headId LONG,head BOOLEAN,ercVersionedEntryId LONG not null primary key,groupId LONG,companyId LONG,blob_ BLOB)";
+		"create table ERCVersionedEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,headId LONG,head BOOLEAN,ercVersionedEntryId LONG not null primary key,groupId LONG,companyId LONG,blob_ BLOB,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table ERCVersionedEntry";
 
@@ -227,6 +229,8 @@ public class ERCVersionedEntryModelImpl
 			attributeGetterFunctions.put(
 				"companyId", ERCVersionedEntry::getCompanyId);
 			attributeGetterFunctions.put("blob", ERCVersionedEntry::getBlob);
+			attributeGetterFunctions.put(
+				"status", ERCVersionedEntry::getStatus);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -277,6 +281,10 @@ public class ERCVersionedEntryModelImpl
 				"blob",
 				(BiConsumer<ERCVersionedEntry, Blob>)
 					ERCVersionedEntry::setBlob);
+			attributeSetterBiConsumers.put(
+				"status",
+				(BiConsumer<ERCVersionedEntry, Integer>)
+					ERCVersionedEntry::setStatus);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -294,6 +302,7 @@ public class ERCVersionedEntryModelImpl
 		ercVersionedEntryVersion.setGroupId(getGroupId());
 		ercVersionedEntryVersion.setCompanyId(getCompanyId());
 		ercVersionedEntryVersion.setBlob(getBlob());
+		ercVersionedEntryVersion.setStatus(_status);
 	}
 
 	@Override
@@ -499,6 +508,24 @@ public class ERCVersionedEntryModelImpl
 	}
 
 	@Override
+	public int getStatus() {
+		if (!isHead()) {
+			return WorkflowConstants.STATUS_DRAFT;
+		}
+
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_status = status;
+	}
+
+	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
 			getCompanyId(), ERCVersionedEntry.class.getName(), getPrimaryKey());
@@ -539,6 +566,7 @@ public class ERCVersionedEntryModelImpl
 		ercVersionedEntryImpl.setErcVersionedEntryId(getErcVersionedEntryId());
 		ercVersionedEntryImpl.setGroupId(getGroupId());
 		ercVersionedEntryImpl.setCompanyId(getCompanyId());
+		ercVersionedEntryImpl.setStatus(getStatus());
 
 		ercVersionedEntryImpl.resetOriginalValues();
 
@@ -564,6 +592,8 @@ public class ERCVersionedEntryModelImpl
 			this.<Long>getColumnOriginalValue("groupId"));
 		ercVersionedEntryImpl.setCompanyId(
 			this.<Long>getColumnOriginalValue("companyId"));
+		ercVersionedEntryImpl.setStatus(
+			this.<Integer>getColumnOriginalValue("status"));
 
 		return ercVersionedEntryImpl;
 	}
@@ -671,6 +701,8 @@ public class ERCVersionedEntryModelImpl
 
 		ercVersionedEntryCacheModel.companyId = getCompanyId();
 
+		ercVersionedEntryCacheModel.status = getStatus();
+
 		return ercVersionedEntryCacheModel;
 	}
 
@@ -742,6 +774,7 @@ public class ERCVersionedEntryModelImpl
 	private long _groupId;
 	private long _companyId;
 	private Blob _blob;
+	private int _status;
 
 	public <T> T getColumnValue(String columnName) {
 		if (columnName.equals("head")) {
@@ -787,6 +820,7 @@ public class ERCVersionedEntryModelImpl
 		_columnOriginalValues.put("groupId", _groupId);
 		_columnOriginalValues.put("companyId", _companyId);
 		_columnOriginalValues.put("blob_", _blob);
+		_columnOriginalValues.put("status", _status);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -804,4 +838,4 @@ public class ERCVersionedEntryModelImpl
 	private ERCVersionedEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:592943453
+// LIFERAY-SERVICE-BUILDER-HASH:1252506915

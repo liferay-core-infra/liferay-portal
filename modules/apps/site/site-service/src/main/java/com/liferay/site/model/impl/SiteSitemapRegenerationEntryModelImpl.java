@@ -715,4 +715,4 @@ public class SiteSitemapRegenerationEntryModelImpl
 	private SiteSitemapRegenerationEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1453635691
+// LIFERAY-SERVICE-BUILDER-HASH:1975267503

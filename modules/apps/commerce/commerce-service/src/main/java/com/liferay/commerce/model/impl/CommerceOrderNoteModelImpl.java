@@ -1108,4 +1108,4 @@ public class CommerceOrderNoteModelImpl
 	private CommerceOrderNote _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:798078211
+// LIFERAY-SERVICE-BUILDER-HASH:1571418711

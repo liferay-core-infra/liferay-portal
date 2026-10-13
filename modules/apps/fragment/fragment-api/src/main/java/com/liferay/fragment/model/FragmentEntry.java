@@ -66,8 +66,6 @@ public interface FragmentEntry extends FragmentEntryModel, PersistedModel {
 
 	public boolean isTypeSection();
 
-	public void populateVersionModel(FragmentEntryVersion fragmentEntryVersion);
-
 	public void populateZipWriter(
 			com.liferay.portal.kernel.zip.ZipWriter zipWriter, String path)
 		throws Exception;
@@ -75,4 +73,4 @@ public interface FragmentEntry extends FragmentEntryModel, PersistedModel {
 	public void setImagePreviewURL(String imagePreviewURL);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1320415919
+// LIFERAY-SERVICE-BUILDER-HASH:-2005891967

@@ -1187,4 +1187,4 @@ public class ObjectLayoutBoxModelImpl
 	private ObjectLayoutBox _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1554744464
+// LIFERAY-SERVICE-BUILDER-HASH:-1944407360

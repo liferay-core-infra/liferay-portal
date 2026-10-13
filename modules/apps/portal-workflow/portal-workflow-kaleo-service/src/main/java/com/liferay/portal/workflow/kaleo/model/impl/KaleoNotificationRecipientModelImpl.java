@@ -1344,4 +1344,4 @@ public class KaleoNotificationRecipientModelImpl
 	private KaleoNotificationRecipient _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:897693494
+// LIFERAY-SERVICE-BUILDER-HASH:-1212576094

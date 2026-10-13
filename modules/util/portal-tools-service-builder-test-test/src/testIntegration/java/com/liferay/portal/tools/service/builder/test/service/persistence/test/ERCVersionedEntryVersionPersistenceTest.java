@@ -143,6 +143,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 		newERCVersionedEntryVersion.setBlob(newBlobBlob);
 
+		newERCVersionedEntryVersion.setStatus(RandomTestUtil.nextInt());
+
 		newERCVersionedEntryVersion = _persistence.update(
 			newERCVersionedEntryVersion);
 
@@ -183,6 +185,9 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 		Assert.assertArrayEquals(
 			newBlobBytes, existingBlob.getBytes(1, (int)existingBlob.length()));
+		Assert.assertEquals(
+			existingERCVersionedEntryVersion.getStatus(),
+			newERCVersionedEntryVersion.getStatus());
 	}
 
 	@Test
@@ -288,7 +293,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 		return OrderByComparatorFactoryUtil.create(
 			"ERCVersionedEntryVersion", "ercVersionedEntryVersionId", true,
 			"version", true, "uuid", true, "externalReferenceCode", true,
-			"ercVersionedEntryId", true, "groupId", true, "companyId", true);
+			"ercVersionedEntryId", true, "groupId", true, "companyId", true,
+			"status", true);
 	}
 
 	@Test
@@ -616,6 +622,8 @@ public class ERCVersionedEntryVersionPersistenceTest {
 
 		ercVersionedEntryVersion.setBlob(blobBlob);
 
+		ercVersionedEntryVersion.setStatus(RandomTestUtil.nextInt());
+
 		_ercVersionedEntryVersions.add(
 			_persistence.update(ercVersionedEntryVersion));
 
@@ -628,4 +636,4 @@ public class ERCVersionedEntryVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1540875333
+// LIFERAY-SERVICE-BUILDER-HASH:-1269205184

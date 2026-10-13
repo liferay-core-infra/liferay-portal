@@ -614,4 +614,4 @@ public class DLStorageQuotaModelImpl
 	private DLStorageQuota _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1352026774
+// LIFERAY-SERVICE-BUILDER-HASH:931468876

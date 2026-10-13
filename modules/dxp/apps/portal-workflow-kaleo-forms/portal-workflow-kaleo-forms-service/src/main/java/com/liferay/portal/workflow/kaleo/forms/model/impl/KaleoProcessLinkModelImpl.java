@@ -674,4 +674,4 @@ public class KaleoProcessLinkModelImpl
 	private KaleoProcessLink _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:355515530
+// LIFERAY-SERVICE-BUILDER-HASH:-717391468

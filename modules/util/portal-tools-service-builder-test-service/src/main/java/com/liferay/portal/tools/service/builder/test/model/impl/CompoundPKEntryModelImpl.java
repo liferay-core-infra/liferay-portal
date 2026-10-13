@@ -629,4 +629,4 @@ public class CompoundPKEntryModelImpl
 	private CompoundPKEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1397546764
+// LIFERAY-SERVICE-BUILDER-HASH:1339259428

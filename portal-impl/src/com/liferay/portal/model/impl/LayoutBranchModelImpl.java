@@ -936,4 +936,4 @@ public class LayoutBranchModelImpl
 	private LayoutBranch _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1062031804
+// LIFERAY-SERVICE-BUILDER-HASH:-470828176

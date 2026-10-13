@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.style.book.model.StyleBookEntry;
 import com.liferay.style.book.model.StyleBookEntryModel;
 import com.liferay.style.book.model.StyleBookEntryVersion;
@@ -461,7 +462,7 @@ public class StyleBookEntryModelImpl
 		styleBookEntryVersion.setPreviewFileEntryId(getPreviewFileEntryId());
 		styleBookEntryVersion.setStyleBookEntryKey(getStyleBookEntryKey());
 		styleBookEntryVersion.setThemeId(getThemeId());
-		styleBookEntryVersion.setStatus(getStatus());
+		styleBookEntryVersion.setStatus(_status);
 	}
 
 	@JSON
@@ -938,6 +939,10 @@ public class StyleBookEntryModelImpl
 	@JSON
 	@Override
 	public int getStatus() {
+		if (!isHead()) {
+			return WorkflowConstants.STATUS_DRAFT;
+		}
+
 		return _status;
 	}
 
@@ -1493,4 +1498,4 @@ public class StyleBookEntryModelImpl
 	private StyleBookEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-8531987
+// LIFERAY-SERVICE-BUILDER-HASH:1070588048

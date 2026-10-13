@@ -1578,4 +1578,4 @@ public class BatchEngineImportTaskModelImpl
 	private BatchEngineImportTask _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1596919131
+// LIFERAY-SERVICE-BUILDER-HASH:-1444820329

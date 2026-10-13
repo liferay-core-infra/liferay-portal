@@ -1043,4 +1043,4 @@ public class RatingsEntryModelImpl
 	private RatingsEntry _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-969061475
+// LIFERAY-SERVICE-BUILDER-HASH:1900310907

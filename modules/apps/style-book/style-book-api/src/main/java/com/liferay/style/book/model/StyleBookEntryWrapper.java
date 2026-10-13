@@ -435,13 +435,6 @@ public class StyleBookEntryWrapper
 	}
 
 	@Override
-	public void populateVersionModel(
-		StyleBookEntryVersion styleBookEntryVersion) {
-
-		model.populateVersionModel(styleBookEntryVersion);
-	}
-
-	@Override
 	public void populateZipWriter(
 			com.liferay.portal.kernel.zip.ZipWriter zipWriter, String path)
 		throws Exception {
@@ -699,9 +692,16 @@ public class StyleBookEntryWrapper
 	}
 
 	@Override
+	public void populateVersionModel(
+		StyleBookEntryVersion styleBookEntryVersion) {
+
+		model.populateVersionModel(styleBookEntryVersion);
+	}
+
+	@Override
 	protected StyleBookEntryWrapper wrap(StyleBookEntry styleBookEntry) {
 		return new StyleBookEntryWrapper(styleBookEntry);
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1125371228
+// LIFERAY-SERVICE-BUILDER-HASH:1981253851

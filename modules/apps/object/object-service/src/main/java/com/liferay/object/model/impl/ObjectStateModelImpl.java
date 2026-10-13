@@ -912,4 +912,4 @@ public class ObjectStateModelImpl
 	private ObjectState _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1599580816
+// LIFERAY-SERVICE-BUILDER-HASH:-1478549198

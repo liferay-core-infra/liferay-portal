@@ -129,7 +129,8 @@ create table ERCVersionedEntry (
 	ercVersionedEntryId LONG not null primary key,
 	groupId LONG,
 	companyId LONG,
-	blob_ BLOB
+	blob_ BLOB,
+	status INTEGER
 );
 
 create table ERCVersionedEntryVersion (
@@ -140,7 +141,8 @@ create table ERCVersionedEntryVersion (
 	ercVersionedEntryId LONG,
 	groupId LONG,
 	companyId LONG,
-	blob_ BLOB
+	blob_ BLOB,
+	status INTEGER
 );
 
 create table EagerBlobEntry (

@@ -67,7 +67,7 @@ public class ERCVersionedEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(17);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -83,6 +83,9 @@ public class ERCVersionedEntryCacheModel
 		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
+		sb.append(", status=");
+		sb.append(status);
+		sb.append("}");
 
 		return sb.toString();
 	}
@@ -114,6 +117,7 @@ public class ERCVersionedEntryCacheModel
 		ercVersionedEntryImpl.setErcVersionedEntryId(ercVersionedEntryId);
 		ercVersionedEntryImpl.setGroupId(groupId);
 		ercVersionedEntryImpl.setCompanyId(companyId);
+		ercVersionedEntryImpl.setStatus(status);
 
 		ercVersionedEntryImpl.resetOriginalValues();
 
@@ -135,6 +139,8 @@ public class ERCVersionedEntryCacheModel
 		groupId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
+
+		status = objectInput.readInt();
 	}
 
 	@Override
@@ -164,6 +170,8 @@ public class ERCVersionedEntryCacheModel
 		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
+
+		objectOutput.writeInt(status);
 	}
 
 	public long mvccVersion;
@@ -174,6 +182,7 @@ public class ERCVersionedEntryCacheModel
 	public long ercVersionedEntryId;
 	public long groupId;
 	public long companyId;
+	public int status;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1407182578
+// LIFERAY-SERVICE-BUILDER-HASH:-1588412573

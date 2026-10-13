@@ -1066,4 +1066,4 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelModelImpl
 	private CommerceNotificationTemplateCommerceAccountGroupRel _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1103980139
+// LIFERAY-SERVICE-BUILDER-HASH:1922377657

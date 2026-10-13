@@ -820,4 +820,4 @@ public class TrashVersionModelImpl
 	private TrashVersion _escapedModel;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1583361132
+// LIFERAY-SERVICE-BUILDER-HASH:-154021392

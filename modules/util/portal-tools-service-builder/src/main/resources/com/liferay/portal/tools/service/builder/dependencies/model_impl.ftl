@@ -791,7 +791,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		public void populateVersionModel(${versionEntity.name} ${versionEntity.variableName}) {
 			<#list entity.entityColumns as entityColumn>
 				<#if !entityColumn.isPrimary() && !stringUtil.equals(entityColumn.methodName, "HeadId") && !stringUtil.equals(entityColumn.methodName, "MvccVersion") && !entityColumn.isMappingManyToMany()>
-					${versionEntity.variableName}.set${entityColumn.methodName}(get${entityColumn.methodName}());
+					<#if stringUtil.equals(entityColumn.name, "status")>
+						${versionEntity.variableName}.set${entityColumn.methodName}(_${entityColumn.name});
+					<#else>
+						${versionEntity.variableName}.set${entityColumn.methodName}(get${entityColumn.methodName}());
+					</#if>
 				</#if>
 			</#list>
 		}
@@ -866,6 +870,13 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			@Override
 		</#if>
 		public ${entityColumn.genericizedType} get${entityColumn.methodName}() {
+			<#if entity.versionEntity?? && stringUtil.equals(entityColumn.name, "status")>
+				if (!isHead()) {
+					return WorkflowConstants.STATUS_DRAFT;
+				}
+
+			</#if>
+
 			<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
 				if (_${entityColumn.name} == null) {
 					return "";

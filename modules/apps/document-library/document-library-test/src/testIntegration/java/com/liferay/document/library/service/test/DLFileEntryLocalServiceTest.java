@@ -40,6 +40,7 @@ import com.liferay.document.library.kernel.service.DLTrashLocalServiceUtil;
 import com.liferay.document.library.kernel.store.DLStoreRequest;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLAppHelperThreadLocal;
+import com.liferay.document.library.test.util.DLAppTestUtil;
 import com.liferay.document.library.test.util.DLTestUtil;
 import com.liferay.document.library.util.DLFileEntryTypeUtil;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
@@ -66,6 +67,7 @@ import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.interval.IntervalActionProcessor;
 import com.liferay.portal.kernel.lock.Lock;
@@ -86,7 +88,11 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -1064,6 +1070,30 @@ public class DLFileEntryLocalServiceTest {
 			20,
 			DLFileEntryLocalServiceUtil.getFileEntriesCount(
 				_group.getGroupId(), folder.getFolderId()));
+	}
+
+	@Test
+	public void testDeleteFileEntryWithRollback() throws Exception {
+		FileEntry fileEntry = DLAppTestUtil.addFileEntry(_group.getGroupId());
+
+		byte[] bytes = FileUtil.getBytes(fileEntry.getContentStream());
+
+		Assert.assertThrows(
+			PortalException.class,
+			() -> TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					DLFileEntryLocalServiceUtil.deleteFileEntry(
+						fileEntry.getFileEntryId());
+
+					throw new PortalException();
+				}));
+
+		FileEntry rolledBackFileEntry = DLAppLocalServiceUtil.getFileEntry(
+			fileEntry.getFileEntryId());
+
+		Assert.assertArrayEquals(
+			bytes, FileUtil.getBytes(rolledBackFileEntry.getContentStream()));
 	}
 
 	@Test
@@ -2229,6 +2259,36 @@ public class DLFileEntryLocalServiceTest {
 		}
 	}
 
+	@Test
+	public void testUpdateFileEntryWithRollback() throws Exception {
+		FileEntry fileEntry = DLAppTestUtil.addFileEntry(_group.getGroupId());
+
+		byte[] bytes = FileUtil.getBytes(fileEntry.getContentStream());
+
+		Assert.assertThrows(
+			PortalException.class,
+			() -> TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					DLAppLocalServiceUtil.updateFileEntry(
+						TestPropsValues.getUserId(), fileEntry.getFileEntryId(),
+						fileEntry.getFileName(), ContentTypes.TEXT_PLAIN,
+						fileEntry.getTitle(), null, StringPool.BLANK,
+						StringPool.BLANK, DLVersionNumberIncrease.NONE,
+						RandomTestUtil.randomBytes(), null, null, null,
+						ServiceContextTestUtil.getServiceContext(
+							_group.getGroupId()));
+
+					throw new PortalException();
+				}));
+
+		FileEntry rolledBackFileEntry = DLAppLocalServiceUtil.getFileEntry(
+			fileEntry.getFileEntryId());
+
+		Assert.assertArrayEquals(
+			bytes, FileUtil.getBytes(rolledBackFileEntry.getContentStream()));
+	}
+
 	@Test(expected = DuplicateFolderNameException.class)
 	public void testValidateFileFailsWithAnExistingFolder() throws Exception {
 		Folder folder = DLAppServiceUtil.addFolder(
@@ -2500,6 +2560,10 @@ public class DLFileEntryLocalServiceTest {
 
 		return dlFileEntry;
 	}
+
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
 	@Inject
 	private DDMStorageEngineManager _ddmStorageEngineManager;

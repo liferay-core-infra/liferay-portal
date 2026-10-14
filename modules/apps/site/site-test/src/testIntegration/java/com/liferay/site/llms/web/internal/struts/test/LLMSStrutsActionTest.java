@@ -63,7 +63,7 @@ public class LLMSStrutsActionTest {
 			RandomTestUtil.randomString());
 
 		_virtualHostLocalService.updateVirtualHosts(
-			_group.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				_virtualHostname, StringPool.BLANK
 			).build());

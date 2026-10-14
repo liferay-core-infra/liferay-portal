@@ -159,7 +159,7 @@ public class I18nFilterTest {
 				RandomTestUtil.randomString(3);
 
 		_virtualHostLocalService.updateVirtualHosts(
-			_group.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				StringUtil.toLowerCase(layoutHostname),
 				LocaleUtil.toLanguageId(LocaleUtil.SPAIN)
@@ -327,7 +327,7 @@ public class I18nFilterTest {
 			LayoutSet layoutSet = _group.getPublicLayoutSet();
 
 			_virtualHostLocalService.updateVirtualHosts(
-				_group.getCompanyId(), layoutSet.getLayoutSetId(),
+				layoutSet,
 				TreeMapBuilder.put(
 					StringUtil.toLowerCase(layoutHostname),
 					LocaleUtil.toLanguageId(virtualHostLocale)

@@ -98,7 +98,7 @@ public class PortalInstancesTest {
 	}
 
 	@Test
-	public void testGetCompanyId() {
+	public void testGetCompanyId() throws Exception {
 		_updateLayoutSetVirtualHostname(
 			_defaultGroupPublicLayout, StringPool.BLANK);
 
@@ -265,7 +265,8 @@ public class PortalInstancesTest {
 	}
 
 	private void _updateLayoutSetVirtualHostname(
-		Layout layout, String layoutHostname) {
+			Layout layout, String layoutHostname)
+		throws Exception {
 
 		_updateLayoutSetVirtualHostname(
 			StringPool.BLANK, layout.getLayoutSet(), layoutHostname);
@@ -274,10 +275,11 @@ public class PortalInstancesTest {
 	}
 
 	private void _updateLayoutSetVirtualHostname(
-		String languageId, LayoutSet layoutSet, String layoutHostname) {
+			String languageId, LayoutSet layoutSet, String layoutHostname)
+		throws Exception {
 
 		_virtualHostLocalService.updateVirtualHosts(
-			_company.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				StringUtil.toLowerCase(layoutHostname), languageId
 			).build());

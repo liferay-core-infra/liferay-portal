@@ -8,12 +8,14 @@ package com.liferay.portal.kernel.service;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.search.Indexable;
@@ -272,7 +274,26 @@ public interface VirtualHostLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getVirtualHostsCount(
-		long excludedLayoutSetId, String[] virtualHostNames);
+		long excludedLayoutSetId, String[] virtualHostnames);
+
+	@Clusterable
+	@Transactional(enabled = false)
+	public void registerVirtualHost(long companyId, String hostname);
+
+	@Clusterable
+	@Transactional(enabled = false)
+	public void reloadVirtualHosts();
+
+	@Clusterable
+	@Transactional(enabled = false)
+	public void unregisterVirtualHost(String hostname);
+
+	@Clusterable
+	@Transactional(enabled = false)
+	public void unregisterVirtualHosts(long companyId);
+
+	public VirtualHost updateVirtualHost(
+		long companyId, String virtualHostname);
 
 	/**
 	 * Updates the virtual host in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -288,8 +309,8 @@ public interface VirtualHostLocalService
 	public VirtualHost updateVirtualHost(VirtualHost virtualHost);
 
 	public List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId,
-		TreeMap<String, String> virtualHostnames);
+			LayoutSet layoutSet, TreeMap<String, String> virtualHostnames)
+		throws PortalException;
 
 	@Override
 	@Transactional(enabled = false)
@@ -307,4 +328,4 @@ public interface VirtualHostLocalService
 		throws E;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1321434399
+// LIFERAY-SERVICE-BUILDER-HASH:-638151375

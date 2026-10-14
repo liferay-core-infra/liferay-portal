@@ -326,10 +326,38 @@ public class VirtualHostLocalServiceWrapper
 
 	@Override
 	public long getVirtualHostsCount(
-		long excludedLayoutSetId, String[] virtualHostNames) {
+		long excludedLayoutSetId, String[] virtualHostnames) {
 
 		return _virtualHostLocalService.getVirtualHostsCount(
-			excludedLayoutSetId, virtualHostNames);
+			excludedLayoutSetId, virtualHostnames);
+	}
+
+	@Override
+	public void registerVirtualHost(long companyId, String hostname) {
+		_virtualHostLocalService.registerVirtualHost(companyId, hostname);
+	}
+
+	@Override
+	public void reloadVirtualHosts() {
+		_virtualHostLocalService.reloadVirtualHosts();
+	}
+
+	@Override
+	public void unregisterVirtualHost(String hostname) {
+		_virtualHostLocalService.unregisterVirtualHost(hostname);
+	}
+
+	@Override
+	public void unregisterVirtualHosts(long companyId) {
+		_virtualHostLocalService.unregisterVirtualHosts(companyId);
+	}
+
+	@Override
+	public VirtualHost updateVirtualHost(
+		long companyId, String virtualHostname) {
+
+		return _virtualHostLocalService.updateVirtualHost(
+			companyId, virtualHostname);
 	}
 
 	/**
@@ -349,11 +377,12 @@ public class VirtualHostLocalServiceWrapper
 
 	@Override
 	public java.util.List<VirtualHost> updateVirtualHosts(
-		long companyId, long layoutSetId,
-		java.util.TreeMap<String, String> virtualHostnames) {
+			com.liferay.portal.kernel.model.LayoutSet layoutSet,
+			java.util.TreeMap<String, String> virtualHostnames)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _virtualHostLocalService.updateVirtualHosts(
-			companyId, layoutSetId, virtualHostnames);
+			layoutSet, virtualHostnames);
 	}
 
 	@Override
@@ -396,4 +425,4 @@ public class VirtualHostLocalServiceWrapper
 	private VirtualHostLocalService _virtualHostLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-932651249
+// LIFERAY-SERVICE-BUILDER-HASH:-1599935381

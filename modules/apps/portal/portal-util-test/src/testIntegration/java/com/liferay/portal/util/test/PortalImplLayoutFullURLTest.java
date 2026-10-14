@@ -37,7 +37,7 @@ public class PortalImplLayoutFullURLTest extends BasePortalImplURLTestCase {
 		LayoutSet publicLayoutSet = publicLayout.getLayoutSet();
 
 		_virtualHostLocalService.updateVirtualHosts(
-			company.getCompanyId(), publicLayoutSet.getLayoutSetId(),
+			publicLayoutSet,
 			TreeMapBuilder.put(
 				VIRTUAL_HOSTNAME, StringPool.BLANK
 			).build());

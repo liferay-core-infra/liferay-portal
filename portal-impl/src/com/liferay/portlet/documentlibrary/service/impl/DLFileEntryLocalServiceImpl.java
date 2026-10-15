@@ -356,6 +356,10 @@ public class DLFileEntryLocalServiceImpl
 			dlFileVersion.getStoreFileName()
 		).build();
 
+		_deleteFileOnRollback(
+			user.getCompanyId(), dlFileEntry.getDataRepositoryId(), name,
+			dlFileVersion.getStoreFileName());
+
 		if (file != null) {
 			DLStoreUtil.addFile(dlStoreRequest, file);
 		}
@@ -515,6 +519,10 @@ public class DLFileEntryLocalServiceImpl
 		).versionLabel(
 			oldStoreFileName
 		).build();
+
+		_deleteFileOnRollback(
+			dlFileEntry.getCompanyId(), dlFileEntry.getDataRepositoryId(),
+			dlFileEntry.getName(), latestDLFileVersion.getStoreFileName());
 
 		try {
 			DLStoreUtil.copyFileVersion(
@@ -2817,6 +2825,15 @@ public class DLFileEntryLocalServiceImpl
 			DLFileVersion toDLFileVersion)
 		throws PortalException {
 
+		if (!Objects.equals(
+				fromDLFileVersion.getStoreFileName(),
+				toDLFileVersion.getStoreFileName())) {
+
+			_deleteFileOnRollback(
+				dlFileEntry.getCompanyId(), dlFileEntry.getDataRepositoryId(),
+				dlFileEntry.getName(), toDLFileVersion.getStoreFileName());
+		}
+
 		try {
 			DLStoreUtil.copyFileVersion(
 				dlFileEntry.getCompanyId(), dlFileEntry.getDataRepositoryId(),
@@ -2855,6 +2872,26 @@ public class DLFileEntryLocalServiceImpl
 					DLStoreUtil.deleteFile(
 						companyId, repositoryId, name,
 						storeFileName + ".index");
+				}
+
+				return null;
+			});
+	}
+
+	private void _deleteFileOnRollback(
+		long companyId, long repositoryId, String name, String storeFileName) {
+
+		long ctCollectionId = CTCollectionThreadLocal.getCTCollectionId();
+
+		TransactionCallbackUtil.registerRollbackCallback(
+			() -> {
+				try (SafeCloseable safeCloseable =
+						CTCollectionThreadLocal.
+							setCTCollectionIdWithSafeCloseable(
+								ctCollectionId)) {
+
+					DLStoreUtil.deleteFile(
+						companyId, repositoryId, name, storeFileName);
 				}
 
 				return null;
@@ -3951,6 +3988,11 @@ public class DLFileEntryLocalServiceImpl
 				).versionLabel(
 					updatedFileVersion.getStoreFileName()
 				).build();
+
+				_deleteFileOnRollback(
+					user.getCompanyId(), dlFileEntry.getDataRepositoryId(),
+					dlFileEntry.getName(),
+					updatedFileVersion.getStoreFileName());
 
 				if (file != null) {
 					DLStoreUtil.updateFile(dlStoreRequest, file);

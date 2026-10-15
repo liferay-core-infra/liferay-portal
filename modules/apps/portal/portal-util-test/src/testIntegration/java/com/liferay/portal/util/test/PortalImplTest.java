@@ -131,7 +131,7 @@ public class PortalImplTest {
 				Layout layout = _layoutLocalService.fetchDefaultLayout(
 					group.getGroupId(), false);
 
-				String hostname = _setLayoutSetVirtualHost(company, group);
+				String hostname = _setLayoutSetVirtualHost(group);
 
 				_assertLayoutFriendlyURL(
 					company, group, layout, hostname, layout.getFriendlyURL());
@@ -285,7 +285,7 @@ public class PortalImplTest {
 		};
 	}
 
-	private String _setLayoutSetVirtualHost(Company company, Group group) {
+	private String _setLayoutSetVirtualHost(Group group) throws Exception {
 		LayoutSet layoutSet = group.getPublicLayoutSet();
 
 		String hostname =
@@ -293,7 +293,7 @@ public class PortalImplTest {
 				RandomTestUtil.randomString(3);
 
 		_virtualHostLocalService.updateVirtualHosts(
-			company.getCompanyId(), layoutSet.getLayoutSetId(),
+			layoutSet,
 			TreeMapBuilder.put(
 				hostname, StringPool.BLANK
 			).build());

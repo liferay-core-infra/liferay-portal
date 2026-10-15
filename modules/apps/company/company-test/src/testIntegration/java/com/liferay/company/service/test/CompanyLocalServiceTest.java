@@ -1715,19 +1715,27 @@ public class CompanyLocalServiceTest {
 		finally {
 			String originalVirtualHostname = originalVirtualHost.getHostname();
 
-			VirtualHost virtualHost =
-				_virtualHostLocalService.fetchCompanyDefaultVirtualHost(
-					_company.getCompanyId());
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						_company.getCompanyId())) {
 
-			if (!originalVirtualHostname.equals(virtualHost.getHostname())) {
-				_virtualHostLocalService.deleteVirtualHost(virtualHost);
+				VirtualHost virtualHost =
+					_virtualHostLocalService.fetchCompanyDefaultVirtualHost(
+						_company.getCompanyId());
+
+				if (!originalVirtualHostname.equals(
+						virtualHost.getHostname())) {
+
+					_virtualHostLocalService.deleteVirtualHost(virtualHost);
+				}
+
+				_virtualHostLocalService.updateVirtualHost(originalVirtualHost);
+
+				_company = _companyLocalService.updateCompany(
+					_company.getCompanyId(), originalVirtualHostname,
+					_company.getMx(), _company.getMaxUsers(),
+					_company.isActive());
 			}
-
-			_virtualHostLocalService.updateVirtualHost(originalVirtualHost);
-
-			_company = _companyLocalService.updateCompany(
-				_company.getCompanyId(), originalVirtualHostname,
-				_company.getMx(), _company.getMaxUsers(), _company.isActive());
 		}
 	}
 

@@ -857,6 +857,9 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeVersionTreeMap.put(
 			new Version(39, 2, 0), new AssetTagGroupRelUpgradeProcess());
+
+		upgradeVersionTreeMap.put(
+			new Version(40, 0, 0), new UpgradeVirtualHostDBPartition());
 	}
 
 }

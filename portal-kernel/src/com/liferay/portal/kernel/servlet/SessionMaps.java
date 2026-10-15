@@ -39,6 +39,10 @@ public class SessionMaps {
 	public static boolean contains(
 		HttpSession httpSession, String mapKey, String key) {
 
+		if (key == null) {
+			return false;
+		}
+
 		Map<String, Object> map = _getMap(httpSession, mapKey);
 
 		if (map == null) {
@@ -50,6 +54,10 @@ public class SessionMaps {
 
 	public static Object get(
 		HttpSession httpSession, String mapKey, String key) {
+
+		if (key == null) {
+			return null;
+		}
 
 		Map<String, Object> map = _getMap(httpSession, mapKey);
 

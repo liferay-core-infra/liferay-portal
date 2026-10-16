@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.cookies.constants.CookiesConstants;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.events.LifecycleEvent;
+import com.liferay.portal.kernel.exception.LayoutPermissionException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -34,6 +35,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -452,6 +454,67 @@ public class ServicePreActionTest {
 		Assert.assertNull(
 			mockHttpServletResponse.getCookie(
 				CookiesConstants.NAME_COOKIE_SUPPORT));
+	}
+
+	@Test
+	@TestInfo("LPD-107079")
+	public void testInitThemeDisplayWhenAuthPublicPath() throws Exception {
+		Role role = _roleLocalService.getRole(
+			_company.getCompanyId(), RoleConstants.GUEST);
+
+		for (Layout layout :
+				_layoutLocalService.getLayouts(_group.getGroupId(), false)) {
+
+			_resourcePermissionLocalService.setResourcePermissions(
+				layout.getCompanyId(), Layout.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(layout.getPlid()), role.getRoleId(),
+				new String[0]);
+		}
+
+		_mockHttpServletRequest.setPathInfo("/portal/captcha/get_image");
+		_mockHttpServletRequest.setRequestURI(
+			_portal.getPathMain() + "/portal/captcha/get_image");
+
+		_user = _portal.initUser(_mockHttpServletRequest);
+
+		_mockHttpServletRequest.setAttribute(WebKeys.USER, _user);
+
+		_servicePreAction.run(
+			_mockHttpServletRequest, _mockHttpServletResponse);
+
+		Assert.assertFalse(
+			SessionErrors.contains(
+				_mockHttpServletRequest,
+				LayoutPermissionException.class.getName()));
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)_mockHttpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		Layout layout = _getLayout(
+			ReflectionTestUtil.invoke(
+				_servicePreAction, "_getGuestSiteLayoutComposite",
+				new Class<?>[] {User.class}, _user));
+
+		Assert.assertEquals(layout.getPlid(), themeDisplay.getPlid());
+	}
+
+	@Test
+	@TestInfo("LPD-107079")
+	public void testInitThemeDisplayWhenAuthPublicPathAndNoLayoutIsViewable()
+		throws Exception {
+
+		_mockHttpServletRequest.setPathInfo("/portal/captcha/get_image");
+		_mockHttpServletRequest.setRequestURI(
+			_portal.getPathMain() + "/portal/captcha/get_image");
+
+		_getThemeDisplayPlid(false, false);
+
+		Assert.assertTrue(
+			SessionErrors.contains(
+				_mockHttpServletRequest,
+				LayoutPermissionException.class.getName()));
 	}
 
 	private void _addResources(Layout layout) throws Exception {

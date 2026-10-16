@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.struts.LastPath;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -74,6 +75,9 @@ import java.util.Set;
  * @author Neil Griffin
  */
 public class PortalRequestProcessor {
+
+	public static final String AUTH_PUBLIC_PATH =
+		PortalRequestProcessor.class.getName() + "#AUTH_PUBLIC_PATH";
 
 	public static final String INCLUDE_PATH_INFO =
 		"jakarta.servlet.include.path_info";
@@ -374,10 +378,13 @@ public class PortalRequestProcessor {
 		return false;
 	}
 
-	private boolean _isPublicPath(String path) {
+	private boolean _isPublicPath(
+		HttpServletRequest httpServletRequest, String path) {
+
 		if ((path != null) &&
 			(_publicPaths.contains(path) || path.startsWith(_PATH_COMMON) ||
-			 AuthPublicPathRegistry.contains(path))) {
+			 GetterUtil.getBoolean(
+				 httpServletRequest.getAttribute(AUTH_PUBLIC_PATH)))) {
 
 			return true;
 		}
@@ -682,7 +689,7 @@ public class PortalRequestProcessor {
 				}
 			}
 		}
-		else if (!_isPublicPath(path)) {
+		else if (!_isPublicPath(httpServletRequest, path)) {
 
 			// Users must sign in
 
@@ -710,7 +717,7 @@ public class PortalRequestProcessor {
 
 		String path = actionMapping.getPath();
 
-		if (_isPublicPath(path)) {
+		if (_isPublicPath(httpServletRequest, path)) {
 			return true;
 		}
 

@@ -96,6 +96,8 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
+import com.liferay.portal.struts.AuthPublicPathRegistry;
+import com.liferay.portal.struts.PortalRequestProcessor;
 import com.liferay.portal.theme.ThemeDisplayFactory;
 import com.liferay.portal.util.LayoutClone;
 import com.liferay.portal.util.LayoutCloneFactory;
@@ -549,13 +551,18 @@ public class ServicePreAction extends Action {
 			boolean ignoreHiddenLayouts)
 		throws Exception {
 
+		boolean authPublicPath = GetterUtil.getBoolean(
+			httpServletRequest.getAttribute(
+				PortalRequestProcessor.AUTH_PUBLIC_PATH));
+
 		LayoutComposite defaultLayoutComposite =
 			_getDefaultVirtualHostLayoutComposite(httpServletRequest);
 
 		defaultLayoutComposite = _getViewableLayoutComposite(
 			httpServletRequest, ignoreHiddenLayouts,
 			defaultLayoutComposite.getLayout(),
-			defaultLayoutComposite.getLayouts(), permissionChecker, true, user);
+			defaultLayoutComposite.getLayouts(), permissionChecker,
+			!authPublicPath, true, user);
 
 		if (ListUtil.isNotEmpty(defaultLayoutComposite.getLayouts())) {
 			return defaultLayoutComposite;
@@ -573,8 +580,8 @@ public class ServicePreAction extends Action {
 			defaultLayoutComposite = _getViewableLayoutComposite(
 				httpServletRequest, ignoreHiddenLayouts,
 				defaultLayoutComposite.getLayout(),
-				defaultLayoutComposite.getLayouts(), permissionChecker, true,
-				user);
+				defaultLayoutComposite.getLayouts(), permissionChecker,
+				!authPublicPath, true, user);
 
 			if (ListUtil.isNotEmpty(defaultLayoutComposite.getLayouts())) {
 				return defaultLayoutComposite;
@@ -685,8 +692,8 @@ public class ServicePreAction extends Action {
 	private LayoutComposite _getViewableLayoutComposite(
 			HttpServletRequest httpServletRequest, boolean ignoreHiddenLayouts,
 			Layout layout, List<Layout> layouts,
-			PermissionChecker permissionChecker, boolean requirePublishedLayout,
-			User user)
+			PermissionChecker permissionChecker, boolean addPermissionError,
+			boolean requirePublishedLayout, User user)
 		throws Exception {
 
 		if (ListUtil.isEmpty(layouts)) {
@@ -721,7 +728,7 @@ public class ServicePreAction extends Action {
 		if (accessibleLayouts.isEmpty()) {
 			layouts = null;
 
-			if (!_isLoginRequest(httpServletRequest) &&
+			if (addPermissionError && !_isLoginRequest(httpServletRequest) &&
 				!hasViewLayoutPermission) {
 
 				if (user.isGuestUser() &&
@@ -742,6 +749,18 @@ public class ServicePreAction extends Action {
 		}
 
 		return new LayoutComposite(layout, layouts);
+	}
+
+	private LayoutComposite _getViewableLayoutComposite(
+			HttpServletRequest httpServletRequest, boolean ignoreHiddenLayouts,
+			Layout layout, List<Layout> layouts,
+			PermissionChecker permissionChecker, boolean requirePublishedLayout,
+			User user)
+		throws Exception {
+
+		return _getViewableLayoutComposite(
+			httpServletRequest, ignoreHiddenLayouts, layout, layouts,
+			permissionChecker, true, requirePublishedLayout, user);
 	}
 
 	private boolean _hasAccessPermission(
@@ -811,6 +830,19 @@ public class ServicePreAction extends Action {
 			HttpServletResponse httpServletResponse,
 			boolean initPermissionChecker)
 		throws Exception {
+
+		// Auth public path
+
+		String path = (String)httpServletRequest.getAttribute(
+			PortalRequestProcessor.INCLUDE_PATH_INFO);
+
+		if (path == null) {
+			path = httpServletRequest.getPathInfo();
+		}
+
+		httpServletRequest.setAttribute(
+			PortalRequestProcessor.AUTH_PUBLIC_PATH,
+			(path != null) && AuthPublicPathRegistry.contains(path));
 
 		// Company
 

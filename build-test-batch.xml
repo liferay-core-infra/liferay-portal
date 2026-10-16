@@ -5560,6 +5560,10 @@ information. Make sure to commit in all build-lib-versions results.
 		<run-bundle-blacklist-restart-test database.type="mysql" database.version="8.4" />
 	</target>
 
+	<target name="bundle-blacklist-restart-mysql84-jdk25_zulu">
+		<run-bundle-blacklist-restart-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="bundle-blacklist-restart-postgresql163">
 		<run-bundle-blacklist-restart-test database.type="postgresql" database.version="16.3" />
 	</target>
@@ -9117,6 +9121,10 @@ information. Make sure to commit in all format-javadoc results.
 		<run-lpkg-container-test database.type="mysql" database.version="8.4" />
 	</target>
 
+	<target name="lpkg-container-mysql84-jdk25_zulu">
+		<run-lpkg-container-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="lpkg-container-postgresql163">
 		<run-lpkg-container-test database.type="postgresql" database.version="16.3" />
 	</target>
@@ -9126,6 +9134,10 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="lpkg-controller-mysql84">
+		<run-lpkg-controller-test database.type="mysql" database.version="8.4" />
+	</target>
+
+	<target name="lpkg-controller-mysql84-jdk25_zulu">
 		<run-lpkg-controller-test database.type="mysql" database.version="8.4" />
 	</target>
 
@@ -9141,6 +9153,10 @@ information. Make sure to commit in all format-javadoc results.
 		<run-lpkg-override-test database.type="mysql" database.version="8.4" />
 	</target>
 
+	<target name="lpkg-override-mysql84-jdk25_zulu">
+		<run-lpkg-override-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="lpkg-override-postgresql163">
 		<run-lpkg-override-test database.type="postgresql" database.version="16.3" />
 	</target>
@@ -9153,6 +9169,10 @@ information. Make sure to commit in all format-javadoc results.
 		<run-lpkg-persistence-test database.type="mysql" database.version="8.4" />
 	</target>
 
+	<target name="lpkg-persistence-mysql84-jdk25_zulu">
+		<run-lpkg-persistence-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="lpkg-persistence-postgresql163">
 		<run-lpkg-persistence-test database.type="postgresql" database.version="16.3" />
 	</target>
@@ -9162,6 +9182,10 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="lpkg-startup-mysql84">
+		<run-lpkg-startup-test database.type="mysql" database.version="8.4" />
+	</target>
+
+	<target name="lpkg-startup-mysql84-jdk25_zulu">
 		<run-lpkg-startup-test database.type="mysql" database.version="8.4" />
 	</target>
 
@@ -9599,6 +9623,10 @@ information. Make sure to commit in all format-javadoc results.
 		<run-modules-integration-test database.type="mysql" database.version="8.4" />
 	</target>
 
+	<target name="modules-integration-mysql84-jdk25_zulu">
+		<run-modules-integration-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="modules-integration-mysql84_stable">
 		<run-modules-integration-test database.type="mysql" database.version="8.4" />
 	</target>
@@ -9656,6 +9684,10 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="modules-integration-postgresql163">
+		<run-modules-integration-test database.type="postgresql" database.version="16.3" />
+	</target>
+
+	<target name="modules-integration-postgresql163-jdk25_zulu">
 		<run-modules-integration-test database.type="postgresql" database.version="16.3" />
 	</target>
 
@@ -9786,6 +9818,19 @@ junit.jvm.override.version=21</echo>
 		<antcall target="modules-unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="21" />
+		</antcall>
+	</target>
+
+	<target name="modules-unit-jdk25_zulu">
+		<get-java-jdk-home type="zulu" version="25" />
+
+		<echo append="true" file="build.${user.name}.properties">
+junit.jvm.override=${java.jdk.home}/bin/java
+junit.jvm.override.version=25</echo>
+
+		<antcall target="modules-unit">
+			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
+			<param name="junit.jvm.override.version" value="25" />
 		</antcall>
 	</target>
 
@@ -10464,6 +10509,10 @@ ${output.content}</echo>
 		<run-release-osgi-state-exploded-test database.type="mysql" database.version="8.4" />
 	</target>
 
+	<target name="release-osgi-state-exploded-test-mysql84-jdk25_zulu">
+		<run-release-osgi-state-exploded-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="release-osgi-state-exploded-test-postgresql163">
 		<run-release-osgi-state-exploded-test database.type="postgresql" database.version="16.3" />
 	</target>
@@ -10476,6 +10525,10 @@ ${output.content}</echo>
 		<run-release-osgi-state-lpkg-change-directory-test database.type="mysql" database.version="8.4" />
 	</target>
 
+	<target name="release-osgi-state-lpkg-change-directory-test-mysql84-jdk25_zulu">
+		<run-release-osgi-state-lpkg-change-directory-test database.type="mysql" database.version="8.4" />
+	</target>
+
 	<target name="release-osgi-state-lpkg-change-directory-test-postgresql163">
 		<run-release-osgi-state-lpkg-change-directory-test database.type="postgresql" database.version="16.3" />
 	</target>
@@ -10485,6 +10538,10 @@ ${output.content}</echo>
 	</target>
 
 	<target name="release-osgi-state-lpkg-test-mysql84">
+		<run-release-osgi-state-lpkg-test database.type="mysql" database.version="8.4" />
+	</target>
+
+	<target name="release-osgi-state-lpkg-test-mysql84-jdk25_zulu">
 		<run-release-osgi-state-lpkg-test database.type="mysql" database.version="8.4" />
 	</target>
 
@@ -11076,6 +11133,19 @@ junit.jvm.override.version=21</echo>
 		<antcall target="unit">
 			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
 			<param name="junit.jvm.override.version" value="21" />
+		</antcall>
+	</target>
+
+	<target name="unit-jdk25_zulu">
+		<get-java-jdk-home type="zulu" version="25" />
+
+		<echo append="true" file="build.${user.name}.properties">
+junit.jvm.override=${java.jdk.home}/bin/java
+junit.jvm.override.version=25</echo>
+
+		<antcall target="unit">
+			<param name="junit.jvm.override" value="${java.jdk.home}/bin/java" />
+			<param name="junit.jvm.override.version" value="25" />
 		</antcall>
 	</target>
 

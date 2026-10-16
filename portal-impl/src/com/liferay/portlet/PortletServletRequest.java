@@ -5,14 +5,11 @@
 
 package com.liferay.portlet;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.ServletInputStreamAdapter;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.internal.PortletRequestDispatcherImpl;
 
@@ -34,7 +31,6 @@ import java.io.UnsupportedEncodingException;
 
 import java.security.Principal;
 
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
@@ -176,50 +172,6 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 	}
 
 	@Override
-	public long getDateHeader(String name) {
-		String header = getHeader(name);
-
-		if (header == null) {
-			return -1;
-		}
-
-		long result = GetterUtil.getLong(header, -1);
-
-		if (result > 0) {
-			return result;
-		}
-
-		Date date = GetterUtil.getDate(
-			header,
-			DateFormatFactoryUtil.getSimpleDateFormat(Time.RFC822_FORMAT),
-			null);
-
-		if (date == null) {
-			throw new IllegalArgumentException(
-				StringBundler.concat(
-					"Unable to convert \"", name, "\" header value \"", header,
-					"\" to a date"));
-		}
-
-		return date.getTime();
-	}
-
-	@Override
-	public String getHeader(String name) {
-		return _httpServletRequest.getHeader(name);
-	}
-
-	@Override
-	public Enumeration<String> getHeaderNames() {
-		return _httpServletRequest.getHeaderNames();
-	}
-
-	@Override
-	public Enumeration<String> getHeaders(String name) {
-		return _httpServletRequest.getHeaders(name);
-	}
-
-	@Override
 	public ServletInputStream getInputStream() throws IOException {
 		if (_lifecycle.equals(PortletRequest.ACTION_PHASE) ||
 			_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
@@ -231,17 +183,6 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 		}
 
 		return null;
-	}
-
-	@Override
-	public int getIntHeader(String name) {
-		String header = getHeader(name);
-
-		if (header == null) {
-			return -1;
-		}
-
-		return GetterUtil.getIntegerStrict(header);
 	}
 
 	@Override

@@ -15,6 +15,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.security.Key;
 
+import java.util.Arrays;
+
 import javax.crypto.spec.SecretKeySpec;
 
 import org.junit.Assert;
@@ -47,6 +49,27 @@ public class EncryptorImplTest {
 			Assert.assertEquals(
 				_PLAINTEXT, encryptor.decrypt(key, encryptedString));
 		}
+	}
+
+	@Test
+	public void testDecryptAfterFailedDecrypt() throws Exception {
+		Encryptor encryptor = new EncryptorImpl();
+
+		Key key = encryptor.generateKey();
+
+		String encryptedString = encryptor.encrypt(key, _PLAINTEXT);
+
+		byte[] encryptedBytes = Base64.decode(encryptedString);
+
+		Assert.assertThrows(
+			EncryptorException.class,
+			() -> encryptor.decrypt(
+				key,
+				Base64.encode(
+					Arrays.copyOf(encryptedBytes, encryptedBytes.length - 1))));
+
+		Assert.assertEquals(
+			_PLAINTEXT, encryptor.decrypt(key, encryptedString));
 	}
 
 	@Test
@@ -106,6 +129,30 @@ public class EncryptorImplTest {
 			EncryptorException.class,
 			() -> encryptor.decryptAuthenticated(
 				key, Base64.encode(encryptedBytes)));
+	}
+
+	@Test
+	public void testEncryptWithKeysOfTheSameHashCode() throws Exception {
+		Encryptor encryptor = new EncryptorImpl();
+
+		Key key1 = encryptor.generateKey();
+
+		byte[] bytes = key1.getEncoded();
+
+		bytes[0] ^= 0x01;
+
+		Key key2 = new SecretKeySpec(bytes, key1.getAlgorithm());
+
+		Assert.assertEquals(key1.hashCode(), key2.hashCode());
+
+		String encryptedString1 = encryptor.encrypt(key1, _PLAINTEXT);
+		String encryptedString2 = encryptor.encrypt(key2, _PLAINTEXT);
+
+		Assert.assertEquals(
+			_PLAINTEXT, encryptor.decrypt(key1, encryptedString1));
+		Assert.assertEquals(
+			_PLAINTEXT, encryptor.decrypt(key2, encryptedString2));
+		Assert.assertNotEquals(encryptedString1, encryptedString2);
 	}
 
 	@Test

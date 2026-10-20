@@ -11,6 +11,7 @@ import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReference
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
@@ -18,13 +19,17 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
+import java.util.Collection;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.wiring.BundleWiring;
 
 /**
  * @author Drew Brokke
@@ -114,12 +119,32 @@ public class ConfigurationVisibilityUtil {
 	}
 
 	private static Class<?> _getClass(Bundle bundle, String pid) {
+		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+
+		if (bundleWiring == null) {
+			return null;
+		}
+
+		String path = StringUtil.replace(pid, CharPool.PERIOD, CharPool.SLASH);
+
+		int index = path.lastIndexOf(CharPool.SLASH);
+
+		String dirName = path.substring(0, index + 1);
+		String className = path.substring(index + 1);
+
+		Collection<String> resources = bundleWiring.listResources(
+			dirName, className + ".class", BundleWiring.LISTRESOURCES_LOCAL);
+
+		if ((resources == null) || resources.isEmpty()) {
+			return null;
+		}
+
 		try {
 			return bundle.loadClass(pid);
 		}
-		catch (ClassNotFoundException classNotFoundException) {
+		catch (ClassNotFoundException | IllegalStateException exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(classNotFoundException);
+				_log.debug(exception);
 			}
 		}
 

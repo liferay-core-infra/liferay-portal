@@ -201,8 +201,9 @@ public class LiferaySecureUberspector extends SecureUberspector {
 			TemplateRestrictedUtil.getRestrictedMethodNames(
 				clazz, _restrictedMethodNames.get(className));
 
-		if ((methodNames != null) &&
-			methodNames.contains(StringUtil.toLowerCase(methodName))) {
+		if ((methodNames != null) && !methodNames.isEmpty() &&
+			(methodName.equals("toString") ||
+			 methodNames.contains(StringUtil.toLowerCase(methodName)))) {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(

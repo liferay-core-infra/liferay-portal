@@ -72,11 +72,9 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 		}
 
 		if (restrictedMethodNames == null) {
-			_deniedAccessToStringClasses = Collections.emptySet();
 			_restrictedMethodNames = Collections.emptyMap();
 		}
 		else {
-			_deniedAccessToStringClasses = new HashSet<>();
 			_restrictedMethodNames = new HashMap<>();
 
 			for (String restrictedMethodName : restrictedMethodNames) {
@@ -96,10 +94,6 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 					restrictedMethodName.substring(0, index));
 				String methodName = StringUtil.trim(
 					restrictedMethodName.substring(index + 1));
-
-				if (methodName.equals("toString")) {
-					_deniedAccessToStringClasses.add(className);
-				}
 
 				Set<String> methodNames =
 					_restrictedMethodNames.computeIfAbsent(
@@ -219,8 +213,6 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 				(LiferayFreeMarkerStringModel)
 					_RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
 
-			liferayFreeMarkerStringModel.setDeniedAccessToString(
-				_deniedAccessToStringClasses.contains(className));
 			liferayFreeMarkerStringModel.setRestrictedMethodNames(methodNames);
 
 			return liferayFreeMarkerStringModel;
@@ -352,7 +344,6 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 	private final boolean _allowAllClasses;
 	private final List<String> _allowedClassNames;
-	private final Set<String> _deniedAccessToStringClasses;
 	private final Map<String, Boolean> _restrictedClassMap =
 		new ConcurrentHashMap<>();
 	private final List<Class<?>> _restrictedClasses;

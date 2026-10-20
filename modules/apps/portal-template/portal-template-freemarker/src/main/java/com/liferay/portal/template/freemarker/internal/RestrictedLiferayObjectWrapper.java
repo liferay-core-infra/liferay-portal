@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.aop.AopInvocationHandler;
+import com.liferay.portal.template.engine.TemplateRestrictedUtil;
 import com.liferay.portal.util.PortalImpl;
 
 import freemarker.ext.beans.BeansWrapper;
@@ -174,8 +175,6 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 			return (TemplateModel)object;
 		}
 
-		Class<?> clazz = object.getClass();
-
 		if (PropsValues.TEMPLATE_ENGINE_FREEMARKER_COMPANY_RESTRICT &&
 			(object instanceof BaseModel) &&
 			!CompanyThreadLocal.isInitializingPortalInstance()) {
@@ -203,21 +202,26 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 			}
 		}
 
+		Class<?> clazz = object.getClass();
+
 		if (!_allowAllClasses && _isRestricted(clazz)) {
 			return _RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
 		}
 
 		String className = clazz.getName();
 
-		if (_restrictedMethodNames.containsKey(className)) {
+		Set<String> methodNames =
+			TemplateRestrictedUtil.getRestrictedMethodNames(
+				clazz, _restrictedMethodNames.get(className));
+
+		if ((methodNames != null) && !methodNames.isEmpty()) {
 			LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
 				(LiferayFreeMarkerStringModel)
 					_RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
 
 			liferayFreeMarkerStringModel.setDeniedAccessToString(
 				_deniedAccessToStringClasses.contains(className));
-			liferayFreeMarkerStringModel.setRestrictedMethodNames(
-				_restrictedMethodNames.get(className));
+			liferayFreeMarkerStringModel.setRestrictedMethodNames(methodNames);
 
 			return liferayFreeMarkerStringModel;
 		}
@@ -252,16 +256,20 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 			return restricted;
 		}
 
-		restricted = _isRestricted(clazz, className);
+		restricted = _isRestricted(className, clazz);
 
 		_restrictedClassMap.putIfAbsent(className, restricted);
 
 		return restricted;
 	}
 
-	private boolean _isRestricted(Class<?> clazz, String className) {
+	private boolean _isRestricted(String className, Class<?> clazz) {
 		if (_allowedClassNames.contains(className)) {
 			return false;
+		}
+
+		if (TemplateRestrictedUtil.isRestricted(clazz)) {
+			return true;
 		}
 
 		for (Class<?> restrictedClass : _restrictedClasses) {

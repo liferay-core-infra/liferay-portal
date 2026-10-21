@@ -192,6 +192,7 @@ public class CompanyImpl extends CompanyBaseImpl {
 	}
 
 	@Override
+	@TemplateRestricted
 	public Key getKeyObj() {
 		if (_keyObj == null) {
 			String key = getKey();

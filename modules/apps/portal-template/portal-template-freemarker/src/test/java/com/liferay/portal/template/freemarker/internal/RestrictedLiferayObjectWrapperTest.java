@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvoker;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -37,6 +38,7 @@ import freemarker.template.ObjectWrapper;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import freemarker.template.TemplateNumberModel;
 
 import java.io.Serializable;
 
@@ -115,6 +117,41 @@ public class RestrictedLiferayObjectWrapperTest
 
 			Assert.assertEquals(logEntries.toString(), 0, logEntries.size());
 		}
+	}
+
+	@Test
+	public void testGetWithBaseModel() throws Exception {
+		RestrictedLiferayObjectWrapper restrictedLiferayObjectWrapper =
+			new RestrictedLiferayObjectWrapper(null, null, null);
+
+		long companyId = RandomTestUtil.randomLong();
+
+		TemplateModel templateModel = restrictedLiferayObjectWrapper.wrap(
+			new TestBaseModel(companyId));
+
+		Assert.assertThat(
+			templateModel,
+			CoreMatchers.instanceOf(LiferayFreeMarkerStringModel.class));
+
+		LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
+			(LiferayFreeMarkerStringModel)templateModel;
+
+		_testGet("attributeGetterFunctions", liferayFreeMarkerStringModel);
+		_testGet("getAttributeGetterFunctions", liferayFreeMarkerStringModel);
+		_testGet("getModelAttributes", liferayFreeMarkerStringModel);
+		_testGet("modelAttributes", liferayFreeMarkerStringModel);
+		_testGet("toCacheModel", liferayFreeMarkerStringModel);
+		_testGet("toString", liferayFreeMarkerStringModel);
+
+		Assert.assertEquals(
+			"Denied access to the toString method in class " +
+				TestBaseModel.class,
+			liferayFreeMarkerStringModel.getAsString());
+
+		TemplateNumberModel templateNumberModel =
+			(TemplateNumberModel)liferayFreeMarkerStringModel.get("companyId");
+
+		Assert.assertEquals(companyId, templateNumberModel.getAsNumber());
 	}
 
 	@Test
@@ -468,7 +505,7 @@ public class RestrictedLiferayObjectWrapperTest
 		// System company ID
 
 		assertTemplateModel(
-			"123", stringModel -> stringModel.getAsString(),
+			"123", stringModel -> stringModel.get("companyId"),
 			StringModel.class.cast(
 				objectWrapper.wrap(new TestBaseModel(123L))));
 
@@ -481,7 +518,7 @@ public class RestrictedLiferayObjectWrapperTest
 			// Base model without company ID
 
 			assertTemplateModel(
-				"123", stringModel -> stringModel.getAsString(),
+				"123", stringModel -> stringModel.get("companyId"),
 				StringModel.class.cast(
 					objectWrapper.wrap(
 						new TestBaseModel(123L) {
@@ -497,7 +534,7 @@ public class RestrictedLiferayObjectWrapperTest
 			// Base model with company ID
 
 			assertTemplateModel(
-				"1", stringModel -> stringModel.getAsString(),
+				"1", stringModel -> stringModel.get("companyId"),
 				StringModel.class.cast(
 					objectWrapper.wrap(new TestBaseModel(1L))));
 
@@ -522,7 +559,7 @@ public class RestrictedLiferayObjectWrapperTest
 			}
 			else {
 				assertTemplateModel(
-					"123", stringModel -> stringModel.getAsString(),
+					"123", stringModel -> stringModel.get("companyId"),
 					StringModel.class.cast(
 						objectWrapper.wrap(new TestBaseModel(123L))));
 			}
@@ -534,7 +571,7 @@ public class RestrictedLiferayObjectWrapperTest
 						setInitializingPortalInstanceWithSafeCloseable(true)) {
 
 				assertTemplateModel(
-					"123", stringModel -> stringModel.getAsString(),
+					"123", stringModel -> stringModel.get("companyId"),
 					StringModel.class.cast(
 						objectWrapper.wrap(new TestBaseModel(123L))));
 			}

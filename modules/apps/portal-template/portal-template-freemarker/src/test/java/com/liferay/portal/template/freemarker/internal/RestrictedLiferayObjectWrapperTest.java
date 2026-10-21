@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.template.TemplateRestricted;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -118,23 +119,35 @@ public class RestrictedLiferayObjectWrapperTest
 
 	@Test
 	public void testGetWithRestrictedClass() throws Exception {
-		_testGetWithRestrictedClass(
-			new TestLiferayMethodObject("test"),
+		RestrictedLiferayObjectWrapper restrictedLiferayObjectWrapper =
 			new RestrictedLiferayObjectWrapper(
 				null, new String[] {TestLiferayMethodObject.class.getName()},
-				null));
+				null);
+
+		_testGetWithRestrictedClass(
+			new TestLiferayMethodObject("test"),
+			restrictedLiferayObjectWrapper);
+		_testGetWithRestrictedClass(
+			new TestTemplateRestrictedObject("test"),
+			restrictedLiferayObjectWrapper);
 	}
 
 	@Test
 	public void testGetWithRestrictedMethodNames() throws Exception {
-		_testGetWithRestrictedMethodNames(
-			new TestLiferayMethodObject("test"),
+		RestrictedLiferayObjectWrapper restrictedLiferayObjectWrapper =
 			new RestrictedLiferayObjectWrapper(
 				null, null,
 				new String[] {
 					TestLiferayMethodObject.class.getName() + "#getName",
 					TestLiferayMethodObject.class.getName() + "#toString"
-				}));
+				});
+
+		_testGetWithRestrictedMethodNames(
+			new TestLiferayMethodObject("test"),
+			restrictedLiferayObjectWrapper);
+		_testGetWithRestrictedMethodNames(
+			new TestTemplateRestrictedMethodObject("test"),
+			restrictedLiferayObjectWrapper);
 	}
 
 	@Test
@@ -199,6 +212,11 @@ public class RestrictedLiferayObjectWrapperTest
 					new String[] {"com.liferay.portal.template.freemarker"},
 					null),
 				byte.class));
+
+		Assert.assertTrue(
+			_isRestricted(
+				new RestrictedLiferayObjectWrapper(null, null, null),
+				TestTemplateRestrictedObject.class));
 	}
 
 	@Test
@@ -709,6 +727,30 @@ public class RestrictedLiferayObjectWrapperTest
 			}
 
 			return null;
+		}
+
+	}
+
+	private class TestTemplateRestrictedMethodObject
+		extends TestLiferayMethodObject {
+
+		@Override
+		@TemplateRestricted
+		public String getName() {
+			return super.getName();
+		}
+
+		private TestTemplateRestrictedMethodObject(String name) {
+			super(name);
+		}
+
+	}
+
+	@TemplateRestricted
+	private class TestTemplateRestrictedObject extends TestLiferayMethodObject {
+
+		private TestTemplateRestrictedObject(String name) {
+			super(name);
 		}
 
 	}

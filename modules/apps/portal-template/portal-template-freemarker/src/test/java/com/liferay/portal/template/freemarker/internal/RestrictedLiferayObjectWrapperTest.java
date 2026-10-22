@@ -118,50 +118,6 @@ public class RestrictedLiferayObjectWrapperTest
 	}
 
 	@Test
-	public void testIsMatch() {
-		Assert.assertFalse(
-			_isMatch(
-				Collections.emptyList(), new HashMap<>(),
-				TestLiferayObject.class, Collections.emptyList()));
-
-		Assert.assertFalse(
-			_isMatch(
-				Collections.singletonList(String.class), new HashMap<>(),
-				TestLiferayObject.class, Collections.emptyList()));
-
-		Assert.assertFalse(
-			_isMatch(
-				Collections.emptyList(), new HashMap<>(),
-				TestLiferayObject.class,
-				Collections.singletonList("com.liferay.portal.cache")));
-
-		Assert.assertTrue(
-			_isMatch(
-				Collections.singletonList(TestLiferayObject.class),
-				new HashMap<>(), TestLiferayObject.class,
-				Collections.emptyList()));
-
-		Assert.assertTrue(
-			_isMatch(
-				Collections.emptyList(), new HashMap<>(),
-				TestLiferayObject.class,
-				Collections.singletonList(
-					"com.liferay.portal.template.freemarker")));
-
-		Assert.assertTrue(
-			_isMatch(
-				Collections.emptyList(), new HashMap<>(),
-				TestLiferayObject.class,
-				Collections.singletonList("com.liferay.portal.")));
-
-		Assert.assertFalse(
-			_isMatch(
-				Collections.emptyList(), new HashMap<>(), byte.class,
-				Collections.singletonList(
-					"com.liferay.portal.template.freemarker")));
-	}
-
-	@Test
 	public void testConstructorWithNoContextClassloader() {
 		try (SafeCloseable safeCloseable = ThreadContextClassLoaderUtil.swap(
 				null)) {
@@ -238,6 +194,50 @@ public class RestrictedLiferayObjectWrapperTest
 				Collections.singletonList(new SimpleScalar("generate")));
 
 		Assert.assertEquals("test-generate", resultTemplateModel.toString());
+	}
+
+	@Test
+	public void testIsMatch() {
+		Assert.assertFalse(
+			_isMatch(
+				Collections.emptyList(), new HashMap<>(),
+				TestLiferayObject.class, Collections.emptyList()));
+
+		Assert.assertFalse(
+			_isMatch(
+				Collections.singletonList(String.class), new HashMap<>(),
+				TestLiferayObject.class, Collections.emptyList()));
+
+		Assert.assertFalse(
+			_isMatch(
+				Collections.emptyList(), new HashMap<>(),
+				TestLiferayObject.class,
+				Collections.singletonList("com.liferay.portal.cache")));
+
+		Assert.assertTrue(
+			_isMatch(
+				Collections.singletonList(TestLiferayObject.class),
+				new HashMap<>(), TestLiferayObject.class,
+				Collections.emptyList()));
+
+		Assert.assertTrue(
+			_isMatch(
+				Collections.emptyList(), new HashMap<>(),
+				TestLiferayObject.class,
+				Collections.singletonList(
+					"com.liferay.portal.template.freemarker")));
+
+		Assert.assertTrue(
+			_isMatch(
+				Collections.emptyList(), new HashMap<>(),
+				TestLiferayObject.class,
+				Collections.singletonList("com.liferay.portal.")));
+
+		Assert.assertFalse(
+			_isMatch(
+				Collections.emptyList(), new HashMap<>(), byte.class,
+				Collections.singletonList(
+					"com.liferay.portal.template.freemarker")));
 	}
 
 	@Test

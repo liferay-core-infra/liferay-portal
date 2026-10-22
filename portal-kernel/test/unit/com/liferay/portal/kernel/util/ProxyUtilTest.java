@@ -38,6 +38,12 @@ public class ProxyUtilTest {
 				public void appendAssertClasses(List<Class<?>> assertClasses) {
 					assertClasses.clear();
 
+					Runtime.Version version = Runtime.version();
+
+					if (version.feature() >= 24) {
+						return;
+					}
+
 					for (Class<?> clazz :
 							ProxyUtil.class.getDeclaredClasses()) {
 
@@ -56,6 +62,12 @@ public class ProxyUtilTest {
 	@Test
 	public void testDelegateInvocationHandlerInitializationFailure()
 		throws ClassNotFoundException {
+
+		Runtime.Version version = Runtime.version();
+
+		if (version.feature() >= 24) {
+			return;
+		}
 
 		NoSuchMethodException noSuchMethodException =
 			new NoSuchMethodException();

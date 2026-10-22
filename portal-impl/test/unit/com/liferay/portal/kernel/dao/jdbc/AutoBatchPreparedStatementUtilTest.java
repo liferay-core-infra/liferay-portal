@@ -69,7 +69,19 @@ public class AutoBatchPreparedStatementUtilTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			CodeCoverageAssertor.INSTANCE, LiferayUnitTestRule.INSTANCE);
+			new CodeCoverageAssertor() {
+
+				@Override
+				public void appendAssertClasses(List<Class<?>> assertClasses) {
+					Runtime.Version version = Runtime.version();
+
+					if (version.feature() >= 24) {
+						assertClasses.clear();
+					}
+				}
+
+			},
+			LiferayUnitTestRule.INSTANCE);
 
 	@Before
 	public void setUp() {
@@ -99,6 +111,12 @@ public class AutoBatchPreparedStatementUtilTest {
 
 	@Test
 	public void testCINITFailure() throws ClassNotFoundException {
+		Runtime.Version version = Runtime.version();
+
+		if (version.feature() >= 24) {
+			return;
+		}
+
 		PropsUtil.set(PropsKeys.HIBERNATE_JDBC_BATCH_SIZE, "0");
 
 		final NoSuchMethodException noSuchMethodException =

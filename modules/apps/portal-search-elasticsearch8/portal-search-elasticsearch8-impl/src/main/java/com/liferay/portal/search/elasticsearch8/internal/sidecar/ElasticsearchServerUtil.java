@@ -102,7 +102,9 @@ public class ElasticsearchServerUtil {
 
 			_mainMethod.invoke(null, (Object)null);
 
-			System.setSecurityManager(null);
+			if (System.getSecurityManager() != null) {
+				System.setSecurityManager(null);
+			}
 
 			_addShutdownHook();
 		}

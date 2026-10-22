@@ -7,6 +7,7 @@ package com.liferay.portal.template.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -29,6 +30,10 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Debora Buriti
@@ -69,6 +74,36 @@ public class TemplateRestrictedClassesTest {
 		_testGetRestrictedClasses(fileSystem, "${object.provider()}");
 		_testGetRestrictedClasses(
 			fileSystem.provider(), "${object.getScheme()}");
+
+		Bundle bundle = FrameworkUtil.getBundle(
+			TemplateRestrictedClassesTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		String templateContent = "${object.getBundles()?size}";
+
+		Template template = TemplateManagerUtil.getTemplate(
+			TemplateConstants.LANG_TYPE_FTL,
+			new StringTemplateResource(
+				RandomTestUtil.randomString(), templateContent),
+			false);
+
+		template.put("object", bundleContext);
+
+		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+		template.processTemplate(unsyncStringWriter);
+
+		Assert.assertEquals(
+			String.valueOf(bundleContext.getBundles().length),
+			unsyncStringWriter.toString());
+
+		_testGetRestrictedClasses(bundle, "${object.getBundleContext()}");
+		_testGetRestrictedClasses(
+			bundleContext,
+			"${object.getServiceReference(\"" +
+				UserLocalService.class.getName() + "\")}");
+		_testGetRestrictedClasses(bundleContext, templateContent);
 	}
 
 	private void _testGetRestrictedClasses(

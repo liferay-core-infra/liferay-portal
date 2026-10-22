@@ -2354,6 +2354,9 @@ public class PropsValues {
 	public static final String TUNNELING_SERVLET_ENCRYPTION_ALGORITHM =
 		PropsUtil.get(PropsKeys.TUNNELING_SERVLET_ENCRYPTION_ALGORITHM);
 
+	public static final String[] TUNNELING_SERVLET_OUTBOUND_HOSTS_ALLOWED =
+		PropsUtil.getArray(PropsKeys.TUNNELING_SERVLET_OUTBOUND_HOSTS_ALLOWED);
+
 	public static final String TUNNELING_SERVLET_SHARED_SECRET = PropsUtil.get(
 		PropsKeys.TUNNELING_SERVLET_SHARED_SECRET);
 

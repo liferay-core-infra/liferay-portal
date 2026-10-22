@@ -6,6 +6,9 @@
 package com.liferay.portal.kernel.service.http;
 
 import com.liferay.petra.io.ProtectedClassLoaderObjectInputStream;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.internal.security.access.control.AllowedIPAddressesValidator;
+import com.liferay.portal.kernel.internal.security.access.control.AllowedIPAddressesValidatorFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
@@ -13,6 +16,7 @@ import com.liferay.portal.kernel.security.auth.tunnel.TunnelAuthenticationManage
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
@@ -20,6 +24,8 @@ import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.EOFException;
 import java.io.ObjectInputStream;
@@ -96,6 +102,41 @@ public class TunnelUtil {
 		return returnObject;
 	}
 
+	public static boolean isHostAllowed(String host) {
+		if (ArrayUtil.isEmpty(
+				PropsValues.TUNNELING_SERVLET_OUTBOUND_HOSTS_ALLOWED)) {
+
+			return true;
+		}
+
+		if (Validator.isNull(host)) {
+			return false;
+		}
+
+		boolean ipAddress = Validator.isIPAddress(host);
+
+		for (String hostAllowed :
+				PropsValues.TUNNELING_SERVLET_OUTBOUND_HOSTS_ALLOWED) {
+
+			if (StringUtil.equalsIgnoreCase(host, hostAllowed)) {
+				return true;
+			}
+
+			if (!ipAddress) {
+				continue;
+			}
+
+			AllowedIPAddressesValidator allowedIPAddressesValidator =
+				AllowedIPAddressesValidatorFactory.create(hostAllowed);
+
+			if (allowedIPAddressesValidator.isAllowedIPAddress(host)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private static HttpURLConnection _getConnection(HttpPrincipal httpPrincipal)
 		throws Exception {
 
@@ -104,6 +145,14 @@ public class TunnelUtil {
 		}
 
 		URL url = new URL(httpPrincipal.getUrl() + "/api/liferay/do");
+
+		if (!isHostAllowed(url.getHost())) {
+			throw new SecurityException(
+				StringBundler.concat(
+					"Tunnel connections to host ", url.getHost(),
+					" are not allowed by the portal property \"",
+					PropsKeys.TUNNELING_SERVLET_OUTBOUND_HOSTS_ALLOWED, "\""));
+		}
 
 		HttpURLConnection httpURLConnection =
 			(HttpURLConnection)url.openConnection();

@@ -2702,6 +2702,9 @@ public interface PropsKeys {
 	public static final String TUNNELING_SERVLET_ENCRYPTION_ALGORITHM =
 		"tunneling.servlet.encryption.algorithm";
 
+	public static final String TUNNELING_SERVLET_OUTBOUND_HOSTS_ALLOWED =
+		"tunneling.servlet.outbound.hosts.allowed";
+
 	public static final String TUNNELING_SERVLET_SHARED_SECRET =
 		"tunneling.servlet.shared.secret";
 

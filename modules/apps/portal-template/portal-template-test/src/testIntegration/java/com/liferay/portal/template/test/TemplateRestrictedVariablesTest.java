@@ -88,7 +88,7 @@ public class TemplateRestrictedVariablesTest {
 	}
 
 	@Test
-	public void testRestrictedSAXReaderUtil() throws Exception {
+	public void testGetTemplate() throws Exception {
 		Bundle bundle = FrameworkUtil.getBundle(
 			TemplateRestrictedVariablesTest.class);
 
@@ -108,9 +108,13 @@ public class TemplateRestrictedVariablesTest {
 				serviceReference);
 
 			try {
-				_testRestrictedSAXReaderUtil(
-					"ACCESSIBLE", false, templateManager);
-				_testRestrictedSAXReaderUtil("DENIED", true, templateManager);
+				_testGetTemplate(
+					"ACCESSIBLE", false, templateManager, "enumUtil");
+				_testGetTemplate(
+					"ACCESSIBLE", false, templateManager, "saxReaderUtil");
+				_testGetTemplate("DENIED", true, templateManager, "enumUtil");
+				_testGetTemplate(
+					"DENIED", true, templateManager, "saxReaderUtil");
 			}
 			finally {
 				bundleContext.ungetService(serviceReference);
@@ -118,15 +122,15 @@ public class TemplateRestrictedVariablesTest {
 		}
 	}
 
-	private void _testRestrictedSAXReaderUtil(
+	private void _testGetTemplate(
 			String expected, boolean restricted,
-			TemplateManager templateManager)
+			TemplateManager templateManager, String variableName)
 		throws Exception {
 
 		Template template = templateManager.getTemplate(
 			new StringTemplateResource(
 				RandomTestUtil.randomString(),
-				"<#if saxReaderUtil??>ACCESSIBLE<#else>DENIED</#if>"),
+				"<#if " + variableName + "??>ACCESSIBLE<#else>DENIED</#if>"),
 			restricted);
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();

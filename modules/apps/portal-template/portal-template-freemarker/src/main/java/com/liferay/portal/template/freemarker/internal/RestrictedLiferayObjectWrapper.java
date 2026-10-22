@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -54,20 +55,15 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 		String[] restrictedMethodNames) {
 
 		if (allowedClassNames == null) {
-			_allowedClassNames = Collections.emptyList();
+			_allowedClasses = Collections.emptyList();
+			_allowedPackageNames = Collections.emptyList();
 		}
 		else {
-			_allowedClassNames = new ArrayList<>(allowedClassNames.length);
+			_allowedClasses = new ArrayList<>(allowedClassNames.length);
+			_allowedPackageNames = new ArrayList<>();
 
-			for (String allowedClassName : allowedClassNames) {
-				allowedClassName = StringUtil.trim(allowedClassName);
-
-				if (Validator.isBlank(allowedClassName)) {
-					continue;
-				}
-
-				_allowedClassNames.add(allowedClassName);
-			}
+			_populateClassesAndPackageNames(
+				_allowedClasses, allowedClassNames, _allowedPackageNames);
 		}
 
 		if (restrictedMethodNames == null) {
@@ -108,7 +104,8 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 			}
 		}
 
-		_allowAllClasses = _allowedClassNames.contains(StringPool.STAR);
+		_allowAllClasses = ArrayUtil.contains(
+			allowedClassNames, StringPool.STAR);
 
 		if (restrictedClassNames == null) {
 			_restrictedClasses = Collections.emptyList();
@@ -165,7 +162,11 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 		String className = clazz.getName();
 
-		if (!_allowAllClasses && !_allowedClassNames.contains(className)) {
+		if (!_allowAllClasses &&
+			!_isMatch(
+				_allowedClasses, _allowedClassMap, clazz,
+				_allowedPackageNames)) {
+
 			if (_isMatch(
 					_restrictedClasses, _restrictedClassMap, clazz,
 					_restrictedPackageNames)) {
@@ -350,7 +351,10 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 	}
 
 	private final boolean _allowAllClasses;
-	private final List<String> _allowedClassNames;
+	private final Map<String, Boolean> _allowedClassMap =
+		new ConcurrentHashMap<>();
+	private final List<Class<?>> _allowedClasses;
+	private final List<String> _allowedPackageNames;
 	private final Set<String> _deniedAccessToStringClasses;
 	private final Map<String, Boolean> _restrictedClassMap =
 		new ConcurrentHashMap<>();

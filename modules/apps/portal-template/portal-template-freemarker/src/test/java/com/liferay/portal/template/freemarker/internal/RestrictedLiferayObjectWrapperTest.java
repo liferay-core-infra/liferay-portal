@@ -177,7 +177,7 @@ public class RestrictedLiferayObjectWrapperTest
 	}
 
 	@Test
-	public void testRestrictedClass() throws Exception {
+	public void testGetWithRestrictedClass() throws Exception {
 		RestrictedLiferayObjectWrapper restrictedLiferayObjectWrapper =
 			new RestrictedLiferayObjectWrapper(
 				null, new String[] {TestLiferayMethodObject.class.getName()},
@@ -193,16 +193,15 @@ public class RestrictedLiferayObjectWrapperTest
 		LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
 			(LiferayFreeMarkerStringModel)templateModel;
 
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "name");
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "Name");
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "getName");
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "getname");
-		_testRestrictedMethodNames(
-			liferayFreeMarkerStringModel, "generateName");
+		_testGetWithRestricted("name", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("Name", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("getName", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("getname", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("generateName", liferayFreeMarkerStringModel);
 	}
 
 	@Test
-	public void testRestrictedMethodNames() throws Exception {
+	public void testGetWithRestrictedMethodNames() throws Exception {
 		RestrictedLiferayObjectWrapper restrictedLiferayObjectWrapper =
 			new RestrictedLiferayObjectWrapper(
 				null, null,
@@ -221,10 +220,10 @@ public class RestrictedLiferayObjectWrapperTest
 		LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
 			(LiferayFreeMarkerStringModel)templateModel;
 
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "name");
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "Name");
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "getName");
-		_testRestrictedMethodNames(liferayFreeMarkerStringModel, "getname");
+		_testGetWithRestricted("name", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("Name", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("getName", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("getname", liferayFreeMarkerStringModel);
 
 		Assert.assertEquals(
 			"Denied access to the toString method in class " +
@@ -492,8 +491,8 @@ public class RestrictedLiferayObjectWrapperTest
 			classes, classMap, clazz, packageNames);
 	}
 
-	private void _testRestrictedMethodNames(
-		LiferayFreeMarkerStringModel liferayFreeMarkerStringModel, String key) {
+	private void _testGetWithRestricted(
+		String key, LiferayFreeMarkerStringModel liferayFreeMarkerStringModel) {
 
 		try {
 			liferayFreeMarkerStringModel.get(key);

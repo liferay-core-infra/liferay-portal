@@ -6,40 +6,30 @@
 package com.liferay.portal.kernel.test.util;
 
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.kernel.test.SwappableSecurityManager;
 
-import java.security.Permission;
-
-import java.util.Objects;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 /**
  * @author Janis Zhang
  */
 public class ReflectionUtilTestUtil {
 
-	public static SwappableSecurityManager throwForSuppressAccessChecks(
-			SecurityException securityException)
-		throws ClassNotFoundException {
+	public static MockedStatic<ReflectionUtil> throwForDefineClass(
+		Exception exception) {
 
-		Class.forName(ReflectionUtil.class.getName());
+		MockedStatic<ReflectionUtil> mockedStatic = Mockito.mockStatic(
+			ReflectionUtil.class);
 
-		SwappableSecurityManager swappableSecurityManager =
-			new SwappableSecurityManager() {
+		mockedStatic.when(
+			() -> ReflectionUtil.getDeclaredMethod(
+				ClassLoader.class, "defineClass", String.class, byte[].class,
+				int.class, int.class)
+		).thenThrow(
+			exception
+		);
 
-				@Override
-				public void checkPermission(Permission permission) {
-					if (Objects.equals(
-							permission.getName(), "suppressAccessChecks")) {
-
-						throw securityException;
-					}
-				}
-
-			};
-
-		swappableSecurityManager.install();
-
-		return swappableSecurityManager;
+		return mockedStatic;
 	}
 
 }

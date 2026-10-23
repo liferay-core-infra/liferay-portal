@@ -5,6 +5,7 @@
 
 package com.liferay.portal.proxy.internal;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.SwappableSecurityManager;
@@ -16,7 +17,6 @@ import com.liferay.portal.kernel.test.util.ReflectionUtilTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DelegateProxyFactory;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.lang.reflect.Method;
@@ -29,6 +29,8 @@ import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.MockedStatic;
 
 /**
  * @author Shuyang Zhou
@@ -69,15 +71,10 @@ public class ASMDelegateProxyFactoryTest {
 	@NewEnv(type = NewEnv.Type.CLASSLOADER)
 	@Test
 	public void testClassInitializationFailure() throws Exception {
-		Class.forName(
-			SystemProperties.class.getName(), true,
-			SystemProperties.class.getClassLoader());
+		Exception exception = new Exception();
 
-		SecurityException securityException = new SecurityException();
-
-		try (SwappableSecurityManager swappableSecurityManager =
-				ReflectionUtilTestUtil.throwForSuppressAccessChecks(
-					securityException)) {
+		try (MockedStatic<ReflectionUtil> mockedStatic =
+				ReflectionUtilTestUtil.throwForDefineClass(exception)) {
 
 			DelegateProxyFactory delegateProxyFactory =
 				new ASMDelegateProxyFactory();
@@ -89,7 +86,7 @@ public class ASMDelegateProxyFactoryTest {
 			Assert.fail();
 		}
 		catch (ExceptionInInitializerError eiie) {
-			Assert.assertSame(securityException, eiie.getCause());
+			Assert.assertSame(exception, eiie.getCause());
 		}
 	}
 

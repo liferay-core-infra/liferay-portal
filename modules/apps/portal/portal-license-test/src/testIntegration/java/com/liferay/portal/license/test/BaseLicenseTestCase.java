@@ -61,7 +61,9 @@ import net.bytebuddy.agent.builder.ResettableClassFileTransformer;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.matcher.ElementMatchers;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 
@@ -204,6 +206,139 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		return false;
 	}
 
+	public static SafeCloseable resetLicenseDataWithSafeCloseble()
+		throws Exception {
+
+		File dir = new File(LicenseUtil.LICENSE_REPOSITORY_DIR);
+
+		File tmpDir = FileUtil.createTempFolder();
+
+		if (dir.exists()) {
+			FileUtil.copyDirectory(dir, tmpDir);
+
+			FileUtil.deltree(dir);
+		}
+
+		checkLicense(getPortalProductId());
+
+		for (App app : App.values()) {
+			checkLicense(getProductId(app));
+		}
+
+		resetLifecycleAction();
+
+		return () -> {
+			if (dir.exists()) {
+				FileUtil.deltree(dir);
+			}
+
+			if (tmpDir.exists()) {
+				try {
+					FileUtil.copyDirectory(tmpDir, dir);
+				}
+				catch (Exception exception) {
+					throw new IllegalStateException(exception);
+				}
+
+				FileUtil.deltree(tmpDir);
+			}
+
+			try {
+				checkLicense(getPortalProductId());
+
+				for (App app : App.values()) {
+					checkLicense(getProductId(app));
+				}
+
+				resetLifecycleAction();
+			}
+			catch (Exception exception) {
+				throw new IllegalStateException(exception);
+			}
+		};
+	}
+
+	public static void resetLifecycleAction() throws Exception {
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				_BUNDLE_START_STOP_LOGGER, LoggerTestUtil.ALL)) {
+
+			for (Method method : _lifecycleActionClass.getDeclaredMethods()) {
+				if (Arrays.equals(
+						method.getParameterTypes(),
+						new Class<?>[] {
+							BundleContext.class, Map.class, Framework.class
+						})) {
+
+					method.setAccessible(true);
+
+					for (Field field :
+							_lifecycleActionClass.getDeclaredFields()) {
+
+						if (!Map.class.isAssignableFrom(field.getType())) {
+							continue;
+						}
+
+						field.setAccessible(true);
+
+						if (!Modifier.isFinal(field.getModifiers())) {
+							Object bundleData = field.get(_lifecycleAction);
+
+							if (bundleData != null) {
+								method.invoke(
+									_lifecycleAction,
+									SystemBundleUtil.getBundleContext(),
+									bundleData,
+									ModuleFrameworkUtil.getFramework());
+							}
+						}
+						else {
+							Map<?, ?> map = (Map<?, ?>)field.get(
+								_lifecycleAction);
+
+							for (Object object : map.values()) {
+								if (!Map.class.isAssignableFrom(
+										object.getClass())) {
+
+									continue;
+								}
+
+								method.invoke(
+									_lifecycleAction,
+									SystemBundleUtil.getBundleContext(), object,
+									ModuleFrameworkUtil.getFramework());
+							}
+						}
+					}
+
+					break;
+				}
+			}
+
+			for (Field field : _lifecycleActionClass.getDeclaredFields()) {
+				field.setAccessible(true);
+
+				if (!Modifier.isFinal(field.getModifiers())) {
+					if (Objects.equals(field.getType(), long.class)) {
+						field.set(_lifecycleAction, 0L);
+					}
+					else if (Objects.equals(field.getType(), boolean.class)) {
+						field.set(_lifecycleAction, false);
+					}
+					else {
+						field.set(_lifecycleAction, null);
+					}
+				}
+				else if (Objects.equals(field.getType(), Map.class)) {
+					Map<?, ?> map = (Map<?, ?>)field.get(_lifecycleAction);
+
+					map.clear();
+				}
+			}
+
+			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
+		}
+	}
+
 	public static SafeCloseable setReturnValueWithSafeCloseable(
 		Method method, Object result) {
 
@@ -215,9 +350,19 @@ public abstract class BaseLicenseTestCase implements Serializable {
 			AgentBuilder.RedefinitionStrategy.RETRANSFORMATION);
 	}
 
+	@BeforeClass
+	public static void setUpTestCaseClass() throws Exception {
+		_safeCloseable = resetLicenseDataWithSafeCloseble();
+	}
+
 	public static SafeCloseable setVersionWithSafeCloseable(String version) {
 		return setReturnValueWithSafeCloseable(
 			ReflectionsHolder._versionMethod, version);
+	}
+
+	@AfterClass
+	public static void tearDownTestCaseClass() throws Exception {
+		_safeCloseable.close();
 	}
 
 	public void assertBundlesExisted(String... bundleNames) {
@@ -322,132 +467,11 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		}
 	}
 
-	public SafeCloseable resetLicenseDataWithSafeCloseble() throws Exception {
-		File dir = new File(LicenseUtil.LICENSE_REPOSITORY_DIR);
-
-		File tmpDir = FileUtil.createTempFolder();
-
-		if (dir.exists()) {
-			FileUtil.copyDirectory(dir, tmpDir);
-
-			FileUtil.deltree(dir);
-		}
-
-		checkLicense(getPortalProductId());
-
-		for (App app : App.values()) {
-			checkLicense(getProductId(app));
-		}
-
-		resetLifecycleAction();
-
-		return () -> {
-			if (dir.exists()) {
-				FileUtil.deltree(dir);
-			}
-
-			if (tmpDir.exists()) {
-				try {
-					FileUtil.copyDirectory(tmpDir, dir);
-				}
-				catch (Exception exception) {
-					throw new IllegalStateException(exception);
-				}
-
-				FileUtil.deltree(tmpDir);
-			}
-
-			try {
-				checkLicense(getPortalProductId());
-
-				for (App app : App.values()) {
-					checkLicense(getProductId(app));
-				}
-
-				resetLifecycleAction();
-			}
-			catch (Exception exception) {
-				throw new IllegalStateException(exception);
-			}
-		};
-	}
-
-	public void resetLifecycleAction() throws Exception {
+	protected static void checkLicense(String productId) throws Exception {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				_BUNDLE_START_STOP_LOGGER, LoggerTestUtil.ALL)) {
+				_licensePackageName, LoggerTestUtil.ALL)) {
 
-			for (Method method : _lifecycleActionClass.getDeclaredMethods()) {
-				if (Arrays.equals(
-						method.getParameterTypes(),
-						new Class<?>[] {
-							BundleContext.class, Map.class, Framework.class
-						})) {
-
-					method.setAccessible(true);
-
-					for (Field field :
-							_lifecycleActionClass.getDeclaredFields()) {
-
-						if (!Map.class.isAssignableFrom(field.getType())) {
-							continue;
-						}
-
-						field.setAccessible(true);
-
-						if (!Modifier.isFinal(field.getModifiers())) {
-							Object bundleData = field.get(_lifecycleAction);
-
-							if (bundleData != null) {
-								method.invoke(
-									_lifecycleAction,
-									SystemBundleUtil.getBundleContext(),
-									bundleData,
-									ModuleFrameworkUtil.getFramework());
-							}
-						}
-						else {
-							Map<?, ?> map = (Map<?, ?>)field.get(
-								_lifecycleAction);
-
-							for (Object object : map.values()) {
-								if (!Map.class.isAssignableFrom(
-										object.getClass())) {
-
-									continue;
-								}
-
-								method.invoke(
-									_lifecycleAction,
-									SystemBundleUtil.getBundleContext(), object,
-									ModuleFrameworkUtil.getFramework());
-							}
-						}
-					}
-
-					break;
-				}
-			}
-
-			for (Field field : _lifecycleActionClass.getDeclaredFields()) {
-				field.setAccessible(true);
-
-				if (!Modifier.isFinal(field.getModifiers())) {
-					if (Objects.equals(field.getType(), long.class)) {
-						field.set(_lifecycleAction, 0L);
-					}
-					else if (Objects.equals(field.getType(), boolean.class)) {
-						field.set(_lifecycleAction, false);
-					}
-					else {
-						field.set(_lifecycleAction, null);
-					}
-				}
-				else if (Objects.equals(field.getType(), Map.class)) {
-					Map<?, ?> map = (Map<?, ?>)field.get(_lifecycleAction);
-
-					map.clear();
-				}
-			}
+			LicenseManagerUtil.checkLicense(productId);
 
 			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
 		}
@@ -525,16 +549,6 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 	protected static Class<?> getValidateClass() {
 		return ReflectionsHolder._validateClass;
-	}
-
-	protected void checkLicense(String productId) throws Exception {
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				_licensePackageName, LoggerTestUtil.ALL)) {
-
-			LicenseManagerUtil.checkLicense(productId);
-
-			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
-		}
 	}
 
 	protected String getCurrentVersion() throws Exception {
@@ -824,6 +838,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	private static Properties _licenseTestProperties;
 	private static Object _lifecycleAction;
 	private static Class<?> _lifecycleActionClass;
+	private static SafeCloseable _safeCloseable;
 
 	private static class ReflectionsHolder {
 

@@ -67,15 +67,12 @@ public interface FreeMarkerEngineConfiguration {
 	public String[] macroLibrary();
 
 	@Meta.AD(
-		deflt = "com.ibm.*|com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist|com.liferay.portal.kernel.service.persistence.BasePersistence|com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence|com.liferay.portal.spring.context.*|io.undertow.*|java.io.*|java.lang.Class|java.lang.ClassLoader|java.lang.Package|java.lang.Process|java.lang.Runtime|java.lang.RuntimePermission|java.lang.SecurityManager|java.lang.System|java.lang.Thread|java.lang.ThreadGroup|java.lang.ThreadLocal|java.nio.*|java.nio.file.FileSystem|java.nio.file.Path|java.nio.file.spi.FileSystemProvider|org.apache.*|org.glassfish.*|org.jboss.*|org.springframework.*|org.wildfly.*|weblogic.*",
+		deflt = "com.ibm.*|com.liferay.portal.spring.context.*|io.undertow.*|java.io.*|java.lang.Class|java.lang.ClassLoader|java.lang.Package|java.lang.Process|java.lang.Runtime|java.lang.RuntimePermission|java.lang.SecurityManager|java.lang.System|java.lang.Thread|java.lang.ThreadGroup|java.lang.ThreadLocal|java.nio.*|java.nio.file.FileSystem|java.nio.file.Path|java.nio.file.spi.FileSystemProvider|org.apache.*|org.glassfish.*|org.jboss.*|org.springframework.*|org.wildfly.*|weblogic.*",
 		name = "restricted-classes", required = false
 	)
 	public String[] restrictedClasses();
 
-	@Meta.AD(
-		deflt = "com.liferay.portal.model.impl.CompanyImpl#getKey|com.liferay.portal.model.impl.UserImpl#getAttributeGetterFunctions|com.liferay.portal.model.impl.UserImpl#getDigest|com.liferay.portal.model.impl.UserImpl#getLastFailedLoginDate|com.liferay.portal.model.impl.UserImpl#getLastLoginDate|com.liferay.portal.model.impl.UserImpl#getLastLoginIP|com.liferay.portal.model.impl.UserImpl#getLoginDate|com.liferay.portal.model.impl.UserImpl#getLoginIP|com.liferay.portal.model.impl.UserImpl#getModelAttributes|com.liferay.portal.model.impl.UserImpl#getPassword|com.liferay.portal.model.impl.UserImpl#getPasswordEncrypted|com.liferay.portal.model.impl.UserImpl#getPasswordReset|com.liferay.portal.model.impl.UserImpl#getReminderQueryAnswer|com.liferay.portal.model.impl.UserImpl#getReminderQueryQuestion|com.liferay.portal.model.impl.UserImpl#toCacheModel|com.liferay.portal.model.impl.UserImpl#toString",
-		name = "restricted-methods", required = false
-	)
+	@Meta.AD(deflt = "", name = "restricted-methods", required = false)
 	public String[] restrictedMethods();
 
 	@Meta.AD(

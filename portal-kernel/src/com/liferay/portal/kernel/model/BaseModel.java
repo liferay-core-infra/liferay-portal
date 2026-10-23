@@ -7,6 +7,7 @@ package com.liferay.portal.kernel.model;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.template.TemplateRestricted;
 
 import java.io.Serializable;
 
@@ -37,6 +38,7 @@ public interface BaseModel<T>
 	public default void copyCacheFields(T source) {
 	}
 
+	@TemplateRestricted
 	public default Map<String, Function<T, Object>>
 		getAttributeGetterFunctions() {
 
@@ -57,6 +59,7 @@ public interface BaseModel<T>
 	@Override
 	public ExpandoBridge getExpandoBridge();
 
+	@TemplateRestricted
 	public Map<String, Object> getModelAttributes();
 
 	/**
@@ -117,6 +120,7 @@ public interface BaseModel<T>
 	/**
 	 * Reset all original fields to current values.
 	 */
+	@TemplateRestricted
 	public void resetOriginalValues();
 
 	/**
@@ -126,10 +130,13 @@ public interface BaseModel<T>
 	 *        entity cache
 	 * @see   com.liferay.portal.kernel.dao.orm.EntityCache
 	 */
+	@TemplateRestricted
 	public void setCachedModel(boolean cachedModel);
 
+	@TemplateRestricted
 	public void setExpandoBridgeAttributes(BaseModel<?> baseModel);
 
+	@TemplateRestricted
 	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge);
 
 	/**
@@ -139,8 +146,10 @@ public interface BaseModel<T>
 	 * @param serviceContext the service context to be applied
 	 * @see   ServiceContext#getExpandoBridgeAttributes()
 	 */
+	@TemplateRestricted
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
+	@TemplateRestricted
 	public void setModelAttributes(Map<String, Object> attributes);
 
 	/**
@@ -148,6 +157,7 @@ public interface BaseModel<T>
 	 *
 	 * @param n whether this model instance does not yet exist in the database
 	 */
+	@TemplateRestricted
 	public void setNew(boolean n);
 
 	/**
@@ -156,6 +166,7 @@ public interface BaseModel<T>
 	 * @param primaryKeyObj the primary key of this model instance
 	 */
 	@Override
+	@TemplateRestricted
 	public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
 	/**
@@ -163,6 +174,7 @@ public interface BaseModel<T>
 	 *
 	 * @return the cache model object
 	 */
+	@TemplateRestricted
 	public CacheModel<T> toCacheModel();
 
 	/**

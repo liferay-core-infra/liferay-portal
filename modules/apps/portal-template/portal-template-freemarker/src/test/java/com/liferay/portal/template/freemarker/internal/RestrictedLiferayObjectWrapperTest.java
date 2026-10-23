@@ -178,10 +178,10 @@ public class RestrictedLiferayObjectWrapperTest
 		LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
 			(LiferayFreeMarkerStringModel)templateModel;
 
-		_testGetWithRestricted("name", liferayFreeMarkerStringModel);
-		_testGetWithRestricted("Name", liferayFreeMarkerStringModel);
 		_testGetWithRestricted("getName", liferayFreeMarkerStringModel);
 		_testGetWithRestricted("getname", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("Name", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("name", liferayFreeMarkerStringModel);
 
 		Assert.assertEquals(
 			"Denied access to the toString method in class " +
@@ -202,44 +202,38 @@ public class RestrictedLiferayObjectWrapperTest
 	public void testIsMatch() {
 		Assert.assertFalse(
 			_isMatch(
-				Collections.emptyList(), new HashMap<>(),
-				TestLiferayObject.class, Collections.emptyList()));
-
+				Collections.emptyList(), new HashMap<>(), byte.class,
+				Collections.singletonList(
+					"com.liferay.portal.template.freemarker")));
 		Assert.assertFalse(
 			_isMatch(
-				Collections.singletonList(String.class), new HashMap<>(),
+				Collections.emptyList(), new HashMap<>(),
 				TestLiferayObject.class, Collections.emptyList()));
-
 		Assert.assertFalse(
 			_isMatch(
 				Collections.emptyList(), new HashMap<>(),
 				TestLiferayObject.class,
 				Collections.singletonList("com.liferay.portal.cache")));
-
-		Assert.assertTrue(
+		Assert.assertFalse(
 			_isMatch(
-				Collections.singletonList(TestLiferayObject.class),
-				new HashMap<>(), TestLiferayObject.class,
-				Collections.emptyList()));
-
-		Assert.assertTrue(
-			_isMatch(
-				Collections.emptyList(), new HashMap<>(),
-				TestLiferayObject.class,
-				Collections.singletonList(
-					"com.liferay.portal.template.freemarker")));
-
+				Collections.singletonList(String.class), new HashMap<>(),
+				TestLiferayObject.class, Collections.emptyList()));
 		Assert.assertTrue(
 			_isMatch(
 				Collections.emptyList(), new HashMap<>(),
 				TestLiferayObject.class,
 				Collections.singletonList("com.liferay.portal.")));
-
-		Assert.assertFalse(
+		Assert.assertTrue(
 			_isMatch(
-				Collections.emptyList(), new HashMap<>(), byte.class,
+				Collections.emptyList(), new HashMap<>(),
+				TestLiferayObject.class,
 				Collections.singletonList(
 					"com.liferay.portal.template.freemarker")));
+		Assert.assertTrue(
+			_isMatch(
+				Collections.singletonList(TestLiferayObject.class),
+				new HashMap<>(), TestLiferayObject.class,
+				Collections.emptyList()));
 	}
 
 	@Test
@@ -566,11 +560,11 @@ public class RestrictedLiferayObjectWrapperTest
 		LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =
 			(LiferayFreeMarkerStringModel)templateModel;
 
-		_testGetWithRestricted("name", liferayFreeMarkerStringModel);
-		_testGetWithRestricted("Name", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("generateName", liferayFreeMarkerStringModel);
 		_testGetWithRestricted("getName", liferayFreeMarkerStringModel);
 		_testGetWithRestricted("getname", liferayFreeMarkerStringModel);
-		_testGetWithRestricted("generateName", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("Name", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("name", liferayFreeMarkerStringModel);
 	}
 
 	private void _testWrap() throws Exception {

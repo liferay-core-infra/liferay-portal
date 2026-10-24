@@ -291,8 +291,18 @@ fi
 			<arg value="${app.server.weblogic.dir}/remove-domain.sh" />
 		</exec>
 
+		<property name="weblogic.domain.java.jdk.home" value="" />
+
+		<condition else="" property="weblogic.domain.java.jdk.home.option" value="setOption('JavaHome', '${weblogic.domain.java.jdk.home}')">
+			<not>
+				<equals arg1="${weblogic.domain.java.jdk.home}" arg2="" />
+			</not>
+		</condition>
+
 		<echo file="${app.server.weblogic.dir}/create-weblogic-domain.py"><![CDATA[
 readTemplate('${app.server.weblogic.template.dir}/wls.jar')
+
+${weblogic.domain.java.jdk.home.option}
 
 set('Name', '${app.server.weblogic.instance.name}')
 

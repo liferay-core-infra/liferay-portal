@@ -111,8 +111,8 @@ public class AutoBatchPreparedStatementUtilTest {
 
 			Assert.fail();
 		}
-		catch (ExceptionInInitializerError eiie) {
-			Throwable throwable = eiie.getCause();
+		catch (ExceptionInInitializerError exceptionInInitializerError) {
+			Throwable throwable = exceptionInInitializerError.getCause();
 
 			Assert.assertEquals(message, throwable.getMessage());
 		}

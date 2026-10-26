@@ -86,8 +86,9 @@ public class ASMDelegateProxyFactoryTest {
 
 			Assert.fail();
 		}
-		catch (ExceptionInInitializerError eiie) {
-			Assert.assertSame(exception, eiie.getCause());
+		catch (ExceptionInInitializerError exceptionInInitializerError) {
+			Assert.assertSame(
+				exception, exceptionInInitializerError.getCause());
 		}
 	}
 

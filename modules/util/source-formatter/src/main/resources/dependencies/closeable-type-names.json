@@ -100,9 +100,6 @@
 			"name": "com.liferay.portal.kernel.test.CaptureHandler"
 		},
 		{
-			"name": "com.liferay.portal.kernel.test.SwappableSecurityManager"
-		},
-		{
 			"name": "com.liferay.portal.kernel.test.context.ContextUserReplace"
 		},
 		{

@@ -108,6 +108,8 @@ public class AutoBatchPreparedStatementUtilTest {
 					"getMethod", String.class, Class[].class))) {
 
 			Class.forName(AutoBatchPreparedStatementUtil.class.getName());
+
+			Assert.fail();
 		}
 		catch (ExceptionInInitializerError eiie) {
 			Throwable throwable = eiie.getCause();

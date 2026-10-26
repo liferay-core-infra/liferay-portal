@@ -214,6 +214,8 @@ public class ASMDelegateProxyFactoryTest {
 			delegateProxyFactory.newDelegateProxyInstance(
 				TestInterface.class.getClassLoader(), TestInterface.class,
 				new TestDelegate(), new TestDefault());
+
+			Assert.fail();
 		}
 		catch (RuntimeException runtimeException) {
 			Throwable throwable = runtimeException.getCause();

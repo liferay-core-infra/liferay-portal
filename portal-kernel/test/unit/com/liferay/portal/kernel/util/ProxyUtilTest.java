@@ -67,6 +67,8 @@ public class ProxyUtilTest {
 			String name = ProxyUtil.class.getName();
 
 			Class.forName(name.concat("$DelegateInvocationHandler"));
+
+			Assert.fail();
 		}
 		catch (ExceptionInInitializerError exceptionInInitializerError) {
 			Throwable throwable = exceptionInInitializerError.getCause();

@@ -99,8 +99,8 @@ public class RestrictedLiferayObjectWrapperTest
 			LogEntry logEntry = logEntries.get(0);
 
 			Assert.assertEquals(
-				"Registering com.liferay.package.name as a package " +
-					"because the class cannot be found",
+				"Registering com.liferay.package.name as a package because " +
+					"the class cannot be found",
 				logEntry.getMessage());
 		}
 

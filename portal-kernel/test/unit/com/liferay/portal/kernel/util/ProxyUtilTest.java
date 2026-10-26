@@ -5,12 +5,12 @@
 
 package com.liferay.portal.kernel.util;
 
-import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.kernel.test.SwappableSecurityManager;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
+import com.liferay.portal.kernel.test.util.MethodTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.lang.reflect.InvocationHandler;
 
@@ -55,37 +55,23 @@ public class ProxyUtilTest {
 	@NewEnv(type = NewEnv.Type.CLASSLOADER)
 	@Test
 	public void testDelegateInvocationHandlerInitializationFailure()
-		throws ClassNotFoundException {
+		throws Exception {
 
-		NoSuchMethodException noSuchMethodException =
-			new NoSuchMethodException();
+		String message = RandomTestUtil.randomString();
 
-		AtomicInteger counter = new AtomicInteger();
-
-		try (SwappableSecurityManager swappableSecurityManager =
-				new SwappableSecurityManager() {
-
-					@Override
-					public void checkPackageAccess(String pkg) {
-						if (pkg.equals("java.lang") &&
-							(counter.getAndIncrement() == 18)) {
-
-							ReflectionUtil.throwException(
-								noSuchMethodException);
-						}
-					}
-
-				}) {
-
-			swappableSecurityManager.install();
+		try (AutoCloseable autoCloseable = MethodTestUtil.throwException(
+				message,
+				Class.class.getMethod(
+					"getMethod", String.class, Class[].class))) {
 
 			String name = ProxyUtil.class.getName();
 
 			Class.forName(name.concat("$DelegateInvocationHandler"));
 		}
 		catch (ExceptionInInitializerError exceptionInInitializerError) {
-			Assert.assertSame(
-				noSuchMethodException, exceptionInInitializerError.getCause());
+			Throwable throwable = exceptionInInitializerError.getCause();
+
+			Assert.assertEquals(message, throwable.getMessage());
 		}
 	}
 

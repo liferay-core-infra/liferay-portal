@@ -8,10 +8,10 @@ package com.liferay.portal.proxy.internal;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.test.SwappableSecurityManager;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.test.util.MethodTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ReflectionUtilTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.DelegateProxyFactory;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -204,18 +205,20 @@ public class ASMDelegateProxyFactoryTest {
 				illegalArgumentException.getMessage());
 		}
 
-		SecurityException securityException = new SecurityException();
+		String message = RandomTestUtil.randomString();
 
-		try (SwappableSecurityManager swappableSecurityManager =
-				ReflectionUtilTestUtil.throwForSuppressAccessChecks(
-					securityException)) {
+		try (AutoCloseable autoCloseable = MethodTestUtil.throwException(
+				message,
+				Constructor.class.getMethod("setAccessible", boolean.class))) {
 
 			delegateProxyFactory.newDelegateProxyInstance(
 				TestInterface.class.getClassLoader(), TestInterface.class,
 				new TestDelegate(), new TestDefault());
 		}
 		catch (RuntimeException runtimeException) {
-			Assert.assertSame(securityException, runtimeException.getCause());
+			Throwable throwable = runtimeException.getCause();
+
+			Assert.assertEquals(message, throwable.getMessage());
 		}
 	}
 

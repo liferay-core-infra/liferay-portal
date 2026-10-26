@@ -7,10 +7,10 @@ package com.liferay.petra.string;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.ReloadURLClassLoader;
-import com.liferay.portal.kernel.test.SwappableSecurityManager;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
-import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.test.util.MethodTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.ByteArrayInputStream;
@@ -19,11 +19,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringWriter;
-
-import java.security.Permission;
-
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -744,34 +739,14 @@ public class StringBundlerTest {
 		Assert.assertEquals("test2", sb.stringAt(0));
 	}
 
-	@NewEnv(type = NewEnv.Type.JVM)
-	@NewEnv.JVMArgsLine("-Djava.security.manager=allow")
 	@Test
 	public void testStringBuilderFallbackOnUnsupportedJDK() throws Exception {
 		ReloadURLClassLoader reloadURLClassLoader = new ReloadURLClassLoader(
 			StringBundler.class);
 
-		AtomicInteger counter = new AtomicInteger();
-
-		try (SwappableSecurityManager swappableSecurityManager =
-				new SwappableSecurityManager() {
-
-					@Override
-					public void checkPermission(Permission permission) {
-						if (Objects.equals(
-								permission.getName(),
-								"accessDeclaredMembers") &&
-							(counter.incrementAndGet() == 1)) {
-
-							StringBundlerTest.this.
-								<RuntimeException>_throwException(
-									new NoSuchFieldException());
-						}
-					}
-
-				}) {
-
-			swappableSecurityManager.install();
+		try (AutoCloseable autoCloseable = MethodTestUtil.throwException(
+				RandomTestUtil.randomString(),
+				Class.class.getMethod("getDeclaredField", String.class))) {
 
 			Class<?> clazz = reloadURLClassLoader.loadClass(
 				StringBundler.class.getName());
@@ -855,13 +830,6 @@ public class StringBundlerTest {
 		for (int i = prefix.length; i < strings.length; i++) {
 			Assert.assertNull(strings[i]);
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private <E extends Throwable> void _throwException(Throwable throwable)
-		throws E {
-
-		throw (E)throwable;
 	}
 
 }

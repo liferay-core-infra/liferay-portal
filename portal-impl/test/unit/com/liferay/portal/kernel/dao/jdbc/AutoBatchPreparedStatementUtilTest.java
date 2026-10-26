@@ -9,14 +9,14 @@ import com.liferay.petra.concurrent.DefaultNoticeableFuture;
 import com.liferay.petra.concurrent.NoticeableThreadPoolExecutor;
 import com.liferay.petra.concurrent.ThreadPoolHandlerAdapter;
 import com.liferay.petra.executor.PortalExecutorManager;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.test.SwappableSecurityManager;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.test.util.MethodTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PrimitiveIntList;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -46,7 +46,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -98,34 +97,22 @@ public class AutoBatchPreparedStatementUtilTest {
 	}
 
 	@Test
-	public void testCINITFailure() throws ClassNotFoundException {
+	public void testCINITFailure() throws Exception {
 		PropsUtil.set(PropsKeys.HIBERNATE_JDBC_BATCH_SIZE, "0");
 
-		final NoSuchMethodException noSuchMethodException =
-			new NoSuchMethodException();
-		final AtomicInteger counter = new AtomicInteger();
+		String message = RandomTestUtil.randomString();
 
-		try (SwappableSecurityManager swappableSecurityManager =
-				new SwappableSecurityManager() {
-
-					@Override
-					public void checkPackageAccess(String pkg) {
-						if (pkg.equals("java.sql") &&
-							(counter.getAndIncrement() == 1)) {
-
-							ReflectionUtil.throwException(
-								noSuchMethodException);
-						}
-					}
-
-				}) {
-
-			swappableSecurityManager.install();
+		try (AutoCloseable autoCloseable = MethodTestUtil.throwException(
+				message,
+				Class.class.getMethod(
+					"getMethod", String.class, Class[].class))) {
 
 			Class.forName(AutoBatchPreparedStatementUtil.class.getName());
 		}
 		catch (ExceptionInInitializerError eiie) {
-			Assert.assertSame(noSuchMethodException, eiie.getCause());
+			Throwable throwable = eiie.getCause();
+
+			Assert.assertEquals(message, throwable.getMessage());
 		}
 	}
 

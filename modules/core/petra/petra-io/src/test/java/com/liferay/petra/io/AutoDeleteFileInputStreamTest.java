@@ -6,10 +6,8 @@
 package com.liferay.petra.io;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.test.SwappableSecurityManager;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
-import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.File;
@@ -23,6 +21,9 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 /**
  * @author Shuyang Zhou
@@ -83,23 +84,18 @@ public class AutoDeleteFileInputStreamTest {
 		Assert.assertFalse(_tempFile.exists());
 	}
 
-	@NewEnv(type = NewEnv.Type.JVM)
-	@NewEnv.JVMArgsLine("-Djava.security.manager=allow")
 	@Test
 	public void testUnableToDeleteOnClose() throws IOException {
-		try (SwappableSecurityManager autoCloseSwappableSecurityManager =
-				new SwappableSecurityManager() {
+		Exception exception = new IOException();
 
-					@Override
-					public void checkDelete(String file) {
-						if (file.equals(_tempFile.getPath())) {
-							throw new SecurityException("Unable to delete");
-						}
-					}
+		try (MockedStatic<Files> mockedStatic = Mockito.mockStatic(
+				Files.class)) {
 
-				}) {
-
-			autoCloseSwappableSecurityManager.install();
+			mockedStatic.when(
+				() -> Files.deleteIfExists(_tempFile.toPath())
+			).thenThrow(
+				exception
+			);
 
 			try (AutoDeleteFileInputStream autoDeleteFileInputStream =
 					new AutoDeleteFileInputStream(_tempFile)) {
@@ -109,9 +105,8 @@ public class AutoDeleteFileInputStreamTest {
 
 			Assert.fail();
 		}
-		catch (SecurityException securityException) {
-			Assert.assertEquals(
-				"Unable to delete", securityException.getMessage());
+		catch (IOException ioException) {
+			Assert.assertSame(exception, ioException);
 		}
 
 		Assert.assertTrue(_tempFile.exists());

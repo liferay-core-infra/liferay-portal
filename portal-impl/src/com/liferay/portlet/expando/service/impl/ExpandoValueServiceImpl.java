@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.service.permission.CommonPermissionUtil;
 import com.liferay.portlet.expando.service.base.ExpandoValueServiceBaseImpl;
 
 import java.io.Serializable;
@@ -38,6 +39,9 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 			String columnName, long classPK, Object data)
 		throws PortalException {
 
+		CommonPermissionUtil.check(
+			getPermissionChecker(), className, classPK, ActionKeys.UPDATE);
+
 		ExpandoColumnPermissionUtil.check(
 			getPermissionChecker(),
 			_expandoColumnLocalService.getColumn(
@@ -55,6 +59,9 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 			long companyId, String className, String tableName,
 			String columnName, long classPK, String data)
 		throws PortalException {
+
+		CommonPermissionUtil.check(
+			getPermissionChecker(), className, classPK, ActionKeys.UPDATE);
 
 		ExpandoColumn expandoColumn = _expandoColumnLocalService.getColumn(
 			companyId, _classNameLocalService.getClassNameId(className),

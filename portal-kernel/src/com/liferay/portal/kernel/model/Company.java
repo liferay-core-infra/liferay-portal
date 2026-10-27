@@ -85,6 +85,7 @@ public interface Company extends CompanyModel, PersistedModel {
 	@com.liferay.portal.kernel.bean.AutoEscape
 	public String getIndustry();
 
+	@com.liferay.portal.kernel.template.TemplateRestricted
 	public String getKey();
 
 	public java.security.Key getKeyObj();
@@ -183,4 +184,4 @@ public interface Company extends CompanyModel, PersistedModel {
 	public void setVirtualHostname(String virtualHostname);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1636826691
+// LIFERAY-SERVICE-BUILDER-HASH:2106997622

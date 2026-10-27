@@ -95,6 +95,9 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 			Collection<String> columnNames, long classPK)
 		throws PortalException {
 
+		CommonPermissionUtil.check(
+			getPermissionChecker(), className, classPK, ActionKeys.VIEW);
+
 		Map<String, Serializable> attributeValues =
 			expandoValueLocalService.getData(
 				companyId, className, tableName, columnNames, classPK);
@@ -122,6 +125,9 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 			String columnName, long classPK)
 		throws PortalException {
 
+		CommonPermissionUtil.check(
+			getPermissionChecker(), className, classPK, ActionKeys.VIEW);
+
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			companyId, className, tableName, columnName);
 
@@ -141,6 +147,9 @@ public class ExpandoValueServiceImpl extends ExpandoValueServiceBaseImpl {
 			long companyId, String className, String tableName,
 			String columnName, long classPK)
 		throws PortalException {
+
+		CommonPermissionUtil.check(
+			getPermissionChecker(), className, classPK, ActionKeys.VIEW);
 
 		ExpandoColumn column = _expandoColumnLocalService.getColumn(
 			companyId, className, tableName, columnName);

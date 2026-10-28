@@ -59,14 +59,14 @@ public class TunnelUtilTest {
 
 	@Test
 	public void testGetConnectionWithHostNotAllowed() throws Exception {
-		HttpPrincipal httpPrincipal = new HttpPrincipal(
-			"http://127.0.0.1:18778");
-
 		try (AutoCloseable autoCloseable =
 				ReflectionTestUtil.setFieldValueWithAutoCloseable(
 					PropsValues.class,
 					"TUNNELING_SERVLET_OUTBOUND_HOSTS_ALLOWED",
-					new String[] {"live.example.com"})) {
+					new String[] {RandomTestUtil.randomString()})) {
+
+			HttpPrincipal httpPrincipal = new HttpPrincipal(
+				"http://127.0.0.1:18778");
 
 			SecurityException securityException = Assert.assertThrows(
 				SecurityException.class,
@@ -110,7 +110,6 @@ public class TunnelUtilTest {
 			Assert.assertTrue(TunnelUtil.isHostAllowed("[fd00::1]"));
 			Assert.assertTrue(TunnelUtil.isHostAllowed("live.example.com"));
 
-			Assert.assertFalse(TunnelUtil.isHostAllowed(null));
 			Assert.assertFalse(TunnelUtil.isHostAllowed(""));
 			Assert.assertFalse(TunnelUtil.isHostAllowed("127.0.0.1"));
 			Assert.assertFalse(TunnelUtil.isHostAllowed("192.168.1.6"));
@@ -118,6 +117,7 @@ public class TunnelUtilTest {
 			Assert.assertFalse(TunnelUtil.isHostAllowed("evil.example.com"));
 			Assert.assertFalse(
 				TunnelUtil.isHostAllowed("live.example.com.evil.com"));
+			Assert.assertFalse(TunnelUtil.isHostAllowed(null));
 		}
 	}
 

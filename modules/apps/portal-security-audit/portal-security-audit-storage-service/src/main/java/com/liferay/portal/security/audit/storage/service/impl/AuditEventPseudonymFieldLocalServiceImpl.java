@@ -5,8 +5,13 @@
 
 package com.liferay.portal.security.audit.storage.service.impl;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.audit.AuditMessage;
+import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -26,6 +31,7 @@ import org.osgi.service.component.annotations.Component;
 	property = "model.class.name=com.liferay.portal.security.audit.storage.model.AuditEventPseudonymField",
 	service = AopService.class
 )
+@CTAware
 public class AuditEventPseudonymFieldLocalServiceImpl
 	extends AuditEventPseudonymFieldLocalServiceBaseImpl {
 
@@ -75,5 +81,107 @@ public class AuditEventPseudonymFieldLocalServiceImpl
 		return auditEventPseudonymFieldPersistence.update(
 			auditEventPseudonymField);
 	}
+
+	@Override
+	public AuditMessage pseudonymizeAuditMessage(AuditMessage auditMessage)
+		throws PortalException {
+
+		AuditMessage pseudonymizedAuditMessage = new AuditMessage(
+			String.valueOf(auditMessage.toJSONObject()));
+
+		try {
+			String clientIP = auditMessage.getClientIP();
+
+			String clientIPPseudonym = _pseudonymize(
+				auditMessage, "clientIP", clientIP);
+
+			String clientHost = auditMessage.getClientHost();
+
+			if (!Validator.isBlank(clientHost)) {
+				if (clientHost.equals(clientIP)) {
+					pseudonymizedAuditMessage.setClientHost(clientIPPseudonym);
+				}
+				else {
+					pseudonymizedAuditMessage.setClientHost(StringPool.BLANK);
+				}
+			}
+
+			pseudonymizedAuditMessage.setClientIP(clientIPPseudonym);
+			pseudonymizedAuditMessage.setImpersonatedUserEmailAddress(
+				_pseudonymize(
+					auditMessage, "userEmailAddress",
+					auditMessage.getImpersonatedUserEmailAddress()));
+			pseudonymizedAuditMessage.setImpersonatedUserName(
+				_pseudonymize(
+					auditMessage, "userName",
+					auditMessage.getImpersonatedUserName()));
+			pseudonymizedAuditMessage.setObjectName(
+				_pseudonymize(
+					auditMessage, "objectName", auditMessage.getObjectName()));
+
+			String userEmailAddress = auditMessage.getUserEmailAddress();
+
+			String userEmailAddressPseudonym = _pseudonymize(
+				auditMessage, "userEmailAddress", userEmailAddress);
+
+			pseudonymizedAuditMessage.setUserEmailAddress(
+				userEmailAddressPseudonym);
+
+			String userLogin = auditMessage.getUserLogin();
+
+			if (!Validator.isBlank(userLogin)) {
+				if (userLogin.equals(userEmailAddress)) {
+					pseudonymizedAuditMessage.setUserLogin(
+						userEmailAddressPseudonym);
+				}
+				else if (!userLogin.equals(
+							String.valueOf(auditMessage.getUserId()))) {
+
+					pseudonymizedAuditMessage.setUserLogin(StringPool.BLANK);
+				}
+			}
+
+			pseudonymizedAuditMessage.setUserName(
+				_pseudonymize(
+					auditMessage, "userName", auditMessage.getUserName()));
+		}
+		catch (Exception exception) {
+			_log.error("Unable to pseudonymize the audit message", exception);
+
+			pseudonymizedAuditMessage.setClientHost(StringPool.BLANK);
+			pseudonymizedAuditMessage.setClientIP(StringPool.BLANK);
+			pseudonymizedAuditMessage.setImpersonatedUserEmailAddress(
+				StringPool.BLANK);
+			pseudonymizedAuditMessage.setImpersonatedUserName(StringPool.BLANK);
+			pseudonymizedAuditMessage.setObjectName(StringPool.BLANK);
+			pseudonymizedAuditMessage.setUserEmailAddress(StringPool.BLANK);
+			pseudonymizedAuditMessage.setUserLogin(StringPool.BLANK);
+			pseudonymizedAuditMessage.setUserName(StringPool.BLANK);
+		}
+
+		pseudonymizedAuditMessage.setPseudonymized(true);
+
+		return pseudonymizedAuditMessage;
+	}
+
+	private String _pseudonymize(
+			AuditMessage auditMessage, String name, String value)
+		throws PortalException {
+
+		if (Validator.isBlank(value)) {
+			return value;
+		}
+
+		AuditEventPseudonymField auditEventPseudonymField =
+			addAuditEventPseudonymField(
+				auditMessage.getCompanyId(), auditMessage.getContextName(),
+				name, value);
+
+		return String.valueOf(
+			auditEventPseudonymField.getAuditEventPseudonymFieldId());
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AuditEventPseudonymFieldLocalServiceImpl.class);
 
 }

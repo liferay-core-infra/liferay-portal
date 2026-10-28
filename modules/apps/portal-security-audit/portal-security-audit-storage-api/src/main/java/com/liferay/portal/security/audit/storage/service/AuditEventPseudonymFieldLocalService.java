@@ -6,6 +6,7 @@
 package com.liferay.portal.security.audit.storage.service;
 
 import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -256,6 +257,9 @@ public interface AuditEventPseudonymFieldLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	public AuditMessage pseudonymizeAuditMessage(AuditMessage auditMessage)
+		throws PortalException;
+
 	/**
 	 * Updates the audit event pseudonym field in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -271,4 +275,4 @@ public interface AuditEventPseudonymFieldLocalService
 		AuditEventPseudonymField auditEventPseudonymField);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:502965395
+// LIFERAY-SERVICE-BUILDER-HASH:-2009657772

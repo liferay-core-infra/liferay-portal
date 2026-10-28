@@ -345,6 +345,16 @@ public class AuditEventPseudonymFieldLocalServiceWrapper
 			primaryKeyObj);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.audit.AuditMessage
+			pseudonymizeAuditMessage(
+				com.liferay.portal.kernel.audit.AuditMessage auditMessage)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _auditEventPseudonymFieldLocalService.pseudonymizeAuditMessage(
+			auditMessage);
+	}
+
 	/**
 	 * Updates the audit event pseudonym field in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -389,4 +399,4 @@ public class AuditEventPseudonymFieldLocalServiceWrapper
 		_auditEventPseudonymFieldLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1826015033
+// LIFERAY-SERVICE-BUILDER-HASH:558990816

@@ -295,6 +295,14 @@ public class AuditEventPseudonymFieldLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static com.liferay.portal.kernel.audit.AuditMessage
+			pseudonymizeAuditMessage(
+				com.liferay.portal.kernel.audit.AuditMessage auditMessage)
+		throws PortalException {
+
+		return getService().pseudonymizeAuditMessage(auditMessage);
+	}
+
 	/**
 	 * Updates the audit event pseudonym field in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -322,4 +330,4 @@ public class AuditEventPseudonymFieldLocalServiceUtil {
 			AuditEventPseudonymFieldLocalService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1586865321
+// LIFERAY-SERVICE-BUILDER-HASH:190290025

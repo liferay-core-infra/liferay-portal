@@ -16,19 +16,24 @@ import com.liferay.portal.kernel.dao.orm.Junction;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.audit.configuration.AuditConfigurationProvider;
 import com.liferay.portal.security.audit.constants.AuditEventConstants;
 import com.liferay.portal.security.audit.storage.comparator.AuditEventCreateDateComparator;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
+import com.liferay.portal.security.audit.storage.service.AuditEventPseudonymFieldLocalService;
 import com.liferay.portal.security.audit.storage.service.base.AuditEventLocalServiceBaseImpl;
 
 import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -284,6 +289,19 @@ public class AuditEventLocalServiceImpl extends AuditEventLocalServiceBaseImpl {
 	private AuditEvent _toAuditEvent(
 		AuditMessage auditMessage, long auditEventId) {
 
+		if (_auditConfigurationProvider.isPseudonymizationEnabled(
+				auditMessage.getCompanyId())) {
+
+			try {
+				auditMessage =
+					_auditEventPseudonymFieldLocalService.
+						pseudonymizeAuditMessage(auditMessage);
+			}
+			catch (PortalException portalException) {
+				throw new SystemException(portalException);
+			}
+		}
+
 		AuditEvent auditEvent = auditEventPersistence.create(auditEventId);
 
 		auditEvent.setGroupId(auditMessage.getGroupId());
@@ -324,5 +342,12 @@ public class AuditEventLocalServiceImpl extends AuditEventLocalServiceBaseImpl {
 
 		return auditEvent;
 	}
+
+	@Reference
+	private AuditConfigurationProvider _auditConfigurationProvider;
+
+	@Reference
+	private AuditEventPseudonymFieldLocalService
+		_auditEventPseudonymFieldLocalService;
 
 }

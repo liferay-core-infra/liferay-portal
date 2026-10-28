@@ -14,7 +14,6 @@ import com.liferay.account.service.AccountEntryUserRelLocalService;
 import com.liferay.account.service.AccountRoleLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -217,23 +216,26 @@ public class AuditEventResourceTest extends BaseAuditEventResourceTestCase {
 	protected AuditEvent testGetAuditEventsPage_addAuditEvent(
 		AuditEvent auditEvent) {
 
-		AuditMessage auditMessage = new AuditMessage(
-			0, testCompany.getCompanyId(), 0, null, null,
-			auditEvent.getAccountId(), null, auditEvent.getEntityType(),
-			String.valueOf(auditEvent.getEntityId()),
-			auditEvent.getContextName(), auditEvent.getEventType(), null);
+		com.liferay.portal.security.audit.storage.model.AuditEvent
+			serviceBuilderAuditEvent = _auditEventLocalService.createAuditEvent(
+				RandomTestUtil.nextLong());
 
-		auditMessage.setImpersonated(auditEvent.getImpersonated());
+		serviceBuilderAuditEvent.setCompanyId(testCompany.getCompanyId());
+		serviceBuilderAuditEvent.setAccountEntryId(auditEvent.getAccountId());
+		serviceBuilderAuditEvent.setClassName(auditEvent.getEntityType());
+		serviceBuilderAuditEvent.setClassPK(
+			String.valueOf(auditEvent.getEntityId()));
+		serviceBuilderAuditEvent.setContextName(auditEvent.getContextName());
+		serviceBuilderAuditEvent.setEventType(auditEvent.getEventType());
+		serviceBuilderAuditEvent.setImpersonated(auditEvent.getImpersonated());
 
 		Creator impersonatedCreator = auditEvent.getImpersonatedCreator();
 
-		auditMessage.setImpersonatedUserId(impersonatedCreator.getId());
+		serviceBuilderAuditEvent.setImpersonatedUserId(
+			impersonatedCreator.getId());
 
-		com.liferay.portal.security.audit.storage.model.AuditEvent
-			serviceBuilderAuditEvent = _auditEventLocalService.addAuditEvent(
-				auditMessage);
-
-		_serviceBuilderAuditEvents.add(serviceBuilderAuditEvent);
+		_serviceBuilderAuditEvents.add(
+			_auditEventLocalService.addAuditEvent(serviceBuilderAuditEvent));
 
 		return new AuditEvent() {
 			{
@@ -249,17 +251,20 @@ public class AuditEventResourceTest extends BaseAuditEventResourceTestCase {
 		String impersonatedUserName, boolean pseudonymized, long userId,
 		String userName) {
 
-		AuditMessage auditMessage = new AuditMessage(
-			testCompany.getCompanyId(), userId, userName,
-			RandomTestUtil.randomString());
+		com.liferay.portal.security.audit.storage.model.AuditEvent
+			serviceBuilderAuditEvent = _auditEventLocalService.createAuditEvent(
+				RandomTestUtil.nextLong());
 
-		auditMessage.setContextName(contextName);
-		auditMessage.setImpersonatedUserId(impersonatedUserId);
-		auditMessage.setImpersonatedUserName(impersonatedUserName);
-		auditMessage.setPseudonymized(pseudonymized);
+		serviceBuilderAuditEvent.setCompanyId(testCompany.getCompanyId());
+		serviceBuilderAuditEvent.setUserId(userId);
+		serviceBuilderAuditEvent.setUserName(userName);
+		serviceBuilderAuditEvent.setContextName(contextName);
+		serviceBuilderAuditEvent.setImpersonatedUserId(impersonatedUserId);
+		serviceBuilderAuditEvent.setImpersonatedUserName(impersonatedUserName);
+		serviceBuilderAuditEvent.setPseudonymized(pseudonymized);
 
 		_serviceBuilderAuditEvents.add(
-			_auditEventLocalService.addAuditEvent(auditMessage));
+			_auditEventLocalService.addAuditEvent(serviceBuilderAuditEvent));
 	}
 
 	private void _addUserToAccount(
@@ -278,12 +283,14 @@ public class AuditEventResourceTest extends BaseAuditEventResourceTestCase {
 	}
 
 	private AuditEvent _getAuditEvent(String contextName) throws Exception {
-		Page<AuditEvent> page = auditEventResource.getAuditEventsPage(
-			null, contextName, null, null, null, Pagination.of(1, 10), null);
+		Page<AuditEvent> auditEventsPage =
+			auditEventResource.getAuditEventsPage(
+				null, contextName, null, null, null, Pagination.of(1, 10),
+				null);
 
-		Assert.assertEquals(1, page.getTotalCount());
+		Assert.assertEquals(1, auditEventsPage.getTotalCount());
 
-		return page.fetchFirstItem();
+		return auditEventsPage.fetchFirstItem();
 	}
 
 	private AuditEvent _randomAuditEvent(

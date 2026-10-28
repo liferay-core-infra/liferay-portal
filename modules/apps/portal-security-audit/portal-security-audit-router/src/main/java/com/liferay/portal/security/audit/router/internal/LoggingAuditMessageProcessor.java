@@ -13,8 +13,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.audit.AuditMessageProcessor;
+import com.liferay.portal.security.audit.configuration.AuditConfigurationProvider;
 import com.liferay.portal.security.audit.formatter.LogMessageFormatter;
 import com.liferay.portal.security.audit.router.configuration.LoggingAuditMessageProcessorConfiguration;
+import com.liferay.portal.security.audit.storage.service.AuditEventPseudonymFieldLocalService;
 
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Mika Koivisto
@@ -98,6 +101,14 @@ public class LoggingAuditMessageProcessor implements AuditMessageProcessor {
 				return;
 			}
 
+			if (_auditConfigurationProvider.isPseudonymizationEnabled(
+					auditMessage.getCompanyId())) {
+
+				auditMessage =
+					_auditEventPseudonymFieldLocalService.
+						pseudonymizeAuditMessage(auditMessage);
+			}
+
 			String logMessage = logMessageFormatter.format(auditMessage);
 
 			if (_log.isInfoEnabled()) {
@@ -113,6 +124,13 @@ public class LoggingAuditMessageProcessor implements AuditMessageProcessor {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LoggingAuditMessageProcessor.class);
+
+	@Reference
+	private AuditConfigurationProvider _auditConfigurationProvider;
+
+	@Reference
+	private AuditEventPseudonymFieldLocalService
+		_auditEventPseudonymFieldLocalService;
 
 	private volatile LoggingAuditMessageProcessorConfiguration
 		_loggingAuditMessageProcessorConfiguration;

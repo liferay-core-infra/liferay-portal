@@ -1,0 +1,124 @@
+diff --git a/org/hibernate/persister/entity/AbstractEntityPersister.java b/org/hibernate/persister/entity/AbstractEntityPersister.java
+index 480edb8..df0166d 100644
+--- a/org/hibernate/persister/entity/AbstractEntityPersister.java
++++ b/org/hibernate/persister/entity/AbstractEntityPersister.java
+@@ -382,10 +382,10 @@ public abstract class AbstractEntityPersister
+ 	private String sqlVersionSelectString;
+ 
+ 	private EntityTableMapping[] tableMappings;
+-	private InsertCoordinator insertCoordinator;
+-	private UpdateCoordinator updateCoordinator;
+-	private DeleteCoordinator deleteCoordinator;
+-	private UpdateCoordinator mergeCoordinator;
++	private volatile InsertCoordinator _insertCoordinator;
++	private volatile UpdateCoordinator _updateCoordinator;
++	private volatile DeleteCoordinator _deleteCoordinator;
++	private volatile UpdateCoordinator _mergeCoordinator;
+ 
+ 	private SqmMultiTableMutationStrategy sqmMultiTableMutationStrategy;
+ 	private SqmMultiTableInsertStrategy sqmMultiTableInsertStrategy;
+@@ -1092,21 +1092,41 @@ public abstract class AbstractEntityPersister
+ 
+ 	@Override
+ 	public InsertCoordinator getInsertCoordinator() {
++		InsertCoordinator insertCoordinator = _insertCoordinator;
++		if ( insertCoordinator == null ) {
++			insertCoordinator = stateManagement.createInsertCoordinator( this );
++			_insertCoordinator = insertCoordinator;
++		}
+ 		return insertCoordinator;
+ 	}
+ 
+ 	@Override
+ 	public UpdateCoordinator getUpdateCoordinator() {
++		UpdateCoordinator updateCoordinator = _updateCoordinator;
++		if ( updateCoordinator == null ) {
++			updateCoordinator = stateManagement.createUpdateCoordinator( this );
++			_updateCoordinator = updateCoordinator;
++		}
+ 		return updateCoordinator;
+ 	}
+ 
+ 	@Override
+ 	public DeleteCoordinator getDeleteCoordinator() {
++		DeleteCoordinator deleteCoordinator = _deleteCoordinator;
++		if ( deleteCoordinator == null ) {
++			deleteCoordinator = stateManagement.createDeleteCoordinator( this );
++			_deleteCoordinator = deleteCoordinator;
++		}
+ 		return deleteCoordinator;
+ 	}
+ 
+ 	@Override
+ 	public UpdateCoordinator getMergeCoordinator() {
++		UpdateCoordinator mergeCoordinator = _mergeCoordinator;
++		if ( mergeCoordinator == null ) {
++			mergeCoordinator = stateManagement.createMergeCoordinator( this );
++			_mergeCoordinator = mergeCoordinator;
++		}
+ 		return mergeCoordinator;
+ 	}
+ 
+@@ -2222,7 +2242,7 @@ public abstract class AbstractEntityPersister
+ 	public Object forceVersionIncrement(Object id, Object currentVersion, SharedSessionContractImplementor session) {
+ 		assert getMappedTableDetails().getTableName().equals( getVersionedTableName() );
+ 		final Object nextVersion = calculateNextVersion( id, currentVersion, session );
+-		updateCoordinator.forceVersionIncrement( id, currentVersion, nextVersion, session );
++		getUpdateCoordinator().forceVersionIncrement( id, currentVersion, nextVersion, session );
+ 		return nextVersion;
+ 	}
+ 
+@@ -2235,7 +2255,7 @@ public abstract class AbstractEntityPersister
+ 					throws HibernateException {
+ 		assert getMappedTableDetails().getTableName().equals( getVersionedTableName() );
+ 		final Object nextVersion = calculateNextVersion( id, currentVersion, session );
+-		updateCoordinator.forceVersionIncrement( id, currentVersion, nextVersion, batching, session );
++		getUpdateCoordinator().forceVersionIncrement( id, currentVersion, nextVersion, batching, session );
+ 		return nextVersion;
+ 	}
+ 
+@@ -2895,7 +2915,7 @@ public abstract class AbstractEntityPersister
+ 			}
+ 
+ 			{
+-				final var staticInsertGroup = insertCoordinator.getStaticMutationOperationGroup();
++				final var staticInsertGroup = getInsertCoordinator().getStaticMutationOperationGroup();
+ 				if ( staticInsertGroup != null ) {
+ 					for ( int i = 0; i < staticInsertGroup.getNumberOfOperations(); i++ ) {
+ 						if ( staticInsertGroup.getOperation( i ) instanceof JdbcOperation jdbcOperation ) {
+@@ -2906,7 +2926,7 @@ public abstract class AbstractEntityPersister
+ 			}
+ 
+ 			{
+-				final var staticUpdateGroup = updateCoordinator.getStaticMutationOperationGroup();
++				final var staticUpdateGroup = getUpdateCoordinator().getStaticMutationOperationGroup();
+ 				if ( staticUpdateGroup != null ) {
+ 					for ( int i = 0; i < staticUpdateGroup.getNumberOfOperations(); i++ ) {
+ 						if ( staticUpdateGroup.getOperation( i ) instanceof JdbcOperation jdbcOperation ) {
+@@ -2917,7 +2937,7 @@ public abstract class AbstractEntityPersister
+ 			}
+ 
+ 			{
+-				final var staticDeleteGroup = deleteCoordinator.getStaticMutationOperationGroup();
++				final var staticDeleteGroup = getDeleteCoordinator().getStaticMutationOperationGroup();
+ 				if ( staticDeleteGroup != null ) {
+ 					for ( int i = 0; i < staticDeleteGroup.getNumberOfOperations(); i++ ) {
+ 						if ( staticDeleteGroup.getOperation( i ) instanceof JdbcOperation jdbcOperation ) {
+@@ -3405,11 +3425,6 @@ public abstract class AbstractEntityPersister
+ 					createGeneratedValuesProcessor( UPDATE, updateGeneratedAttributes );
+ 		}
+ 
+-		insertCoordinator = stateManagement.createInsertCoordinator( this );
+-		updateCoordinator = stateManagement.createUpdateCoordinator( this );
+-		deleteCoordinator = stateManagement.createDeleteCoordinator( this );
+-		mergeCoordinator = stateManagement.createMergeCoordinator( this );
+-
+ 		//select SQL
+ 		sqlVersionSelectString = generateSelectVersionString();
+ 	}
+@@ -6389,3 +6404,4 @@ public abstract class AbstractEntityPersister
+ 		return false;
+ 	}
+ }
++/* @generated */
+\ No newline at end of file

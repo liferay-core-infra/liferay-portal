@@ -39,6 +39,7 @@ patch {
 	}
 
 	fileNames "org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java"
+	fileNames "org/hibernate/loader/ast/internal/SingleIdEntityLoaderStandardImpl.java"
 	fileNames "org/hibernate/metamodel/internal/AttributeFactory.java"
 	originalLibModuleName = "hibernate-core"
 }

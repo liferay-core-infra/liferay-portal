@@ -205,6 +205,14 @@ public class AssetVocabularyGroupRelPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_V() throws Exception {
+		_persistence.countByG_V(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+
+		_persistence.countByG_V(0L, 0L);
+	}
+
+	@Test
 	public void testCountByG_D() throws Exception {
 		_persistence.countByG_D(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
@@ -579,6 +587,17 @@ public class AssetVocabularyGroupRelPersistenceTest {
 			ReflectionTestUtil.<Long>invoke(
 				assetVocabularyGroupRel, "getColumnOriginalValue",
 				new Class<?>[] {String.class}, "vocabularyId"));
+
+		Assert.assertEquals(
+			Long.valueOf(assetVocabularyGroupRel.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				assetVocabularyGroupRel, "getColumnOriginalValue",
+				new Class<?>[] {String.class}, "groupId"));
+		Assert.assertEquals(
+			Long.valueOf(assetVocabularyGroupRel.getVocabularyId()),
+			ReflectionTestUtil.<Long>invoke(
+				assetVocabularyGroupRel, "getColumnOriginalValue",
+				new Class<?>[] {String.class}, "vocabularyId"));
 		Assert.assertEquals(
 			Integer.valueOf(assetVocabularyGroupRel.getDepotEntryType()),
 			ReflectionTestUtil.<Integer>invoke(
@@ -618,4 +637,4 @@ public class AssetVocabularyGroupRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:817436269
+// LIFERAY-SERVICE-BUILDER-HASH:-1440120626

@@ -218,6 +218,28 @@ public class WebsitePersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
+	public void testCountByUserId() throws Exception {
+		_persistence.countByUserId(RandomTestUtil.nextLong());
+
+		_persistence.countByUserId(0L);
+	}
+
+	@Test
+	public void testCountByC_C() throws Exception {
+		_persistence.countByC_C(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+
+		_persistence.countByC_C(0L, 0L);
+	}
+
+	@Test
 	public void testCountByC_C_C() throws Exception {
 		_persistence.countByC_C_C(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
@@ -581,4 +603,4 @@ public class WebsitePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1368392731
+// LIFERAY-SERVICE-BUILDER-HASH:-1169339417

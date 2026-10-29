@@ -282,11 +282,27 @@ public class MBThreadPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_NotC() throws Exception {
+		_persistence.countByG_NotC(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+
+		_persistence.countByG_NotC(0L, 0L);
+	}
+
+	@Test
 	public void testCountByG_S() throws Exception {
 		_persistence.countByG_S(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_S(0L, 0);
+	}
+
+	@Test
+	public void testCountByC_P() throws Exception {
+		_persistence.countByC_P(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextDouble());
+
+		_persistence.countByC_P(0L, 0D);
 	}
 
 	@Test
@@ -338,6 +354,24 @@ public class MBThreadPersistenceTest {
 			RandomTestUtil.nextLong(),
 			new long[] {RandomTestUtil.nextLong(), 0L},
 			RandomTestUtil.nextInt());
+	}
+
+	@Test
+	public void testCountByG_NotC_S() throws Exception {
+		_persistence.countByG_NotC_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_NotC_S(0L, 0L, 0);
+	}
+
+	@Test
+	public void testCountByG_NotC_NotS() throws Exception {
+		_persistence.countByG_NotC_NotS(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_NotC_NotS(0L, 0L, 0);
 	}
 
 	@Test
@@ -725,4 +759,4 @@ public class MBThreadPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1610351370
+// LIFERAY-SERVICE-BUILDER-HASH:-2093334132

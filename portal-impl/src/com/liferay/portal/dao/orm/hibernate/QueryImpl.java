@@ -23,8 +23,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-import org.hibernate.LockOptions;
+import org.hibernate.query.ParameterMetadata;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,14 +33,19 @@ import org.hibernate.LockOptions;
  */
 public class QueryImpl implements Query {
 
-	public QueryImpl(org.hibernate.Query query, boolean strictName) {
+	public QueryImpl(org.hibernate.query.Query query, boolean strictName) {
 		_query = query;
 		_strictName = strictName;
 
 		String[] names = null;
 
 		if (!_strictName) {
-			names = query.getNamedParameters();
+			ParameterMetadata parameterMetadata = query.getParameterMetadata();
+
+			Set<String> namedParameterNames =
+				parameterMetadata.getNamedParameterNames();
+
+			names = namedParameterNames.toArray(new String[0]);
 
 			Arrays.sort(names);
 		}
@@ -128,7 +134,7 @@ public class QueryImpl implements Query {
 
 	@Override
 	public Query setBigDecimal(int pos, BigDecimal value) {
-		_query.setBigDecimal(pos, value);
+		_query.setParameter(pos, value, BigDecimal.class);
 
 		return this;
 	}
@@ -139,14 +145,14 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setBigDecimal(name, value);
+		_query.setParameter(name, value, BigDecimal.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setBoolean(int pos, boolean value) {
-		_query.setBoolean(pos, value);
+		_query.setParameter(pos, value, Boolean.class);
 
 		return this;
 	}
@@ -157,7 +163,7 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setBoolean(name, value);
+		_query.setParameter(name, value, Boolean.class);
 
 		return this;
 	}
@@ -185,7 +191,7 @@ public class QueryImpl implements Query {
 
 	@Override
 	public Query setDouble(int pos, double value) {
-		_query.setDouble(pos, value);
+		_query.setParameter(pos, value, Double.class);
 
 		return this;
 	}
@@ -196,7 +202,7 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setDouble(name, value);
+		_query.setParameter(name, value, Double.class);
 
 		return this;
 	}
@@ -210,7 +216,7 @@ public class QueryImpl implements Query {
 
 	@Override
 	public Query setFloat(int pos, float value) {
-		_query.setFloat(pos, value);
+		_query.setParameter(pos, value, Float.class);
 
 		return this;
 	}
@@ -221,14 +227,14 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setFloat(name, value);
+		_query.setParameter(name, value, Float.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setInteger(int pos, int value) {
-		_query.setInteger(pos, value);
+		_query.setParameter(pos, value, Integer.class);
 
 		return this;
 	}
@@ -239,7 +245,7 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setInteger(name, value);
+		_query.setParameter(name, value, Integer.class);
 
 		return this;
 	}
@@ -249,18 +255,14 @@ public class QueryImpl implements Query {
 		org.hibernate.LockMode hibernateLockMode = LockModeTranslator.translate(
 			lockMode);
 
-		LockOptions lockOptions = new LockOptions(hibernateLockMode);
-
-		lockOptions.setAliasSpecificLockMode(alias, hibernateLockMode);
-
-		_query.setLockOptions(lockOptions);
+		_query.setLockMode(hibernateLockMode.toJpaLockMode());
 
 		return this;
 	}
 
 	@Override
 	public Query setLong(int pos, long value) {
-		_query.setLong(pos, value);
+		_query.setParameter(pos, value, Long.class);
 
 		return this;
 	}
@@ -271,7 +273,7 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setLong(name, value);
+		_query.setParameter(name, value, Long.class);
 
 		return this;
 	}
@@ -285,7 +287,7 @@ public class QueryImpl implements Query {
 
 	@Override
 	public Query setSerializable(int pos, Serializable value) {
-		_query.setSerializable(pos, value);
+		_query.setParameter(pos, value, Serializable.class);
 
 		return this;
 	}
@@ -296,14 +298,14 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setSerializable(name, value);
+		_query.setParameter(name, value, Serializable.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setShort(int pos, short value) {
-		_query.setShort(pos, value);
+		_query.setParameter(pos, value, Short.class);
 
 		return this;
 	}
@@ -314,14 +316,14 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setShort(name, value);
+		_query.setParameter(name, value, Short.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setString(int pos, String value) {
-		_query.setString(pos, value);
+		_query.setParameter(pos, value, String.class);
 
 		return this;
 	}
@@ -332,14 +334,14 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setString(name, value);
+		_query.setParameter(name, value, String.class);
 
 		return this;
 	}
 
 	@Override
 	public Query setTimestamp(int pos, Timestamp value) {
-		_query.setTimestamp(pos, value);
+		_query.setParameter(pos, value, Timestamp.class);
 
 		return this;
 	}
@@ -350,7 +352,7 @@ public class QueryImpl implements Query {
 			return this;
 		}
 
-		_query.setTimestamp(name, value);
+		_query.setParameter(name, value, Timestamp.class);
 
 		return this;
 	}
@@ -373,7 +375,7 @@ public class QueryImpl implements Query {
 	}
 
 	private final String[] _names;
-	private final org.hibernate.Query _query;
+	private final org.hibernate.query.Query _query;
 	private final boolean _strictName;
 
 }

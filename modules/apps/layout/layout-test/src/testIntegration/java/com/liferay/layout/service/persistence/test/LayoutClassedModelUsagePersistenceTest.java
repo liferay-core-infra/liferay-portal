@@ -264,6 +264,16 @@ public class LayoutClassedModelUsagePersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_CERC_CN() throws Exception {
+		_persistence.countByC_CERC_CN(
+			RandomTestUtil.nextLong(), "", RandomTestUtil.nextLong());
+
+		_persistence.countByC_CERC_CN(0L, "null", 0L);
+
+		_persistence.countByC_CERC_CN(0L, (String)null, 0L);
+	}
+
+	@Test
 	public void testCountByC_CN_CT() throws Exception {
 		_persistence.countByC_CN_CT(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
@@ -289,6 +299,17 @@ public class LayoutClassedModelUsagePersistenceTest {
 		_persistence.countByCK_CT_P("null", 0L, 0L);
 
 		_persistence.countByCK_CT_P((String)null, 0L, 0L);
+	}
+
+	@Test
+	public void testCountByC_CERC_CN_T() throws Exception {
+		_persistence.countByC_CERC_CN_T(
+			RandomTestUtil.nextLong(), "", RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByC_CERC_CN_T(0L, "null", 0L, 0);
+
+		_persistence.countByC_CERC_CN_T(0L, (String)null, 0L, 0);
 	}
 
 	@Test
@@ -733,4 +754,4 @@ public class LayoutClassedModelUsagePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:642635194
+// LIFERAY-SERVICE-BUILDER-HASH:-1350119604

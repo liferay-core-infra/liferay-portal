@@ -172,6 +172,15 @@ public class ModulePersistenceTest {
 	}
 
 	@Test
+	public void testCountByBundleSymbolicName() throws Exception {
+		_persistence.countByBundleSymbolicName("");
+
+		_persistence.countByBundleSymbolicName("null");
+
+		_persistence.countByBundleSymbolicName((String)null);
+	}
+
+	@Test
 	public void testCountByContextName() throws Exception {
 		_persistence.countByContextName("");
 
@@ -521,4 +530,4 @@ public class ModulePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2113219236
+// LIFERAY-SERVICE-BUILDER-HASH:-629479006

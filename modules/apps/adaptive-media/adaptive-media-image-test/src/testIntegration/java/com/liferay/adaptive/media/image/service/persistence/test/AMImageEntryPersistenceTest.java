@@ -206,6 +206,29 @@ public class AMImageEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByGroupId() throws Exception {
+		_persistence.countByGroupId(RandomTestUtil.nextLong());
+
+		_persistence.countByGroupId(0L);
+	}
+
+	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
+	public void testCountByConfigurationUuid() throws Exception {
+		_persistence.countByConfigurationUuid("");
+
+		_persistence.countByConfigurationUuid("null");
+
+		_persistence.countByConfigurationUuid((String)null);
+	}
+
+	@Test
 	public void testCountByFileVersionId() throws Exception {
 		_persistence.countByFileVersionId(RandomTestUtil.nextLong());
 
@@ -586,4 +609,4 @@ public class AMImageEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-379078423
+// LIFERAY-SERVICE-BUILDER-HASH:-1070254757

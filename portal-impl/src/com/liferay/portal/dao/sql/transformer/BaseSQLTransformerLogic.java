@@ -5,6 +5,7 @@
 
 package com.liferay.portal.dao.sql.transformer;
 
+import com.liferay.petra.concurrent.DCLSingleton;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -15,9 +16,11 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.boot.model.FunctionContributor;
+import org.hibernate.query.sqm.function.SqmFunctionRegistry;
+import org.hibernate.type.BasicTypeRegistry;
 import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.spi.TypeConfiguration;
 
 /**
  * @author Manuel de la Peña
@@ -26,20 +29,14 @@ import org.hibernate.type.StandardBasicTypes;
 public abstract class BaseSQLTransformerLogic implements SQLTransformerLogic {
 
 	@Override
-	public Function<String, String>[] getFunctions() {
-		return _functions;
+	public FunctionContributor getFunctionContributor() {
+		return _functionContributorDCLSingleton.getSingleton(
+			this::_createFunctionContributor);
 	}
 
 	@Override
-	public void populateSQLFunctions(Configuration configuration) {
-		Function<String, String> castClobTextFunction =
-			getCastClobTextFunction();
-
-		configuration.addSqlFunction(
-			"CAST_CLOB_TEXT",
-			new SQLFunctionTemplate(
-				StandardBasicTypes.STRING,
-				castClobTextFunction.apply("CAST_CLOB_TEXT(?1)")));
+	public Function<String, String>[] getFunctions() {
+		return _functions;
 	}
 
 	protected Function<String, String> getAggregationFunction() {
@@ -306,6 +303,27 @@ public abstract class BaseSQLTransformerLogic implements SQLTransformerLogic {
 		_functions = functions;
 	}
 
+	private FunctionContributor _createFunctionContributor() {
+		Function<String, String> castClobTextFunction =
+			getCastClobTextFunction();
+
+		return functionContributions -> {
+			TypeConfiguration typeConfiguration =
+				functionContributions.getTypeConfiguration();
+
+			BasicTypeRegistry basicTypeRegistry =
+				typeConfiguration.getBasicTypeRegistry();
+
+			SqmFunctionRegistry sqmFunctionRegistry =
+				functionContributions.getFunctionRegistry();
+
+			sqmFunctionRegistry.registerPattern(
+				"CAST_CLOB_TEXT",
+				castClobTextFunction.apply("CAST_CLOB_TEXT(?1)"),
+				basicTypeRegistry.resolve(StandardBasicTypes.STRING));
+		};
+	}
+
 	private Function<String, String> _getCastFunction(
 		Function<Matcher, String> castFunction, String castName,
 		Pattern castPattern) {
@@ -360,6 +378,8 @@ public abstract class BaseSQLTransformerLogic implements SQLTransformerLogic {
 
 	private static final String _LOWER_OPEN = "lower(";
 
+	private final DCLSingleton<FunctionContributor>
+		_functionContributorDCLSingleton = new DCLSingleton<>();
 	private Function[] _functions;
 
 }

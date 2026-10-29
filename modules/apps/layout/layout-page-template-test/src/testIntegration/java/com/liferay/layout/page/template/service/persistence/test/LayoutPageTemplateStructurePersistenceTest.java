@@ -217,6 +217,13 @@ public class LayoutPageTemplateStructurePersistenceTest {
 	}
 
 	@Test
+	public void testCountByGroupId() throws Exception {
+		_persistence.countByGroupId(RandomTestUtil.nextLong());
+
+		_persistence.countByGroupId(0L);
+	}
+
+	@Test
 	public void testCountByG_P() throws Exception {
 		_persistence.countByG_P(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
@@ -629,4 +636,4 @@ public class LayoutPageTemplateStructurePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-457443937
+// LIFERAY-SERVICE-BUILDER-HASH:35537551

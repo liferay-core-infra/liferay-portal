@@ -319,10 +319,26 @@ public class CommercePriceModifierPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testCountByCommercePriceListId() throws Exception {
 		_persistence.countByCommercePriceListId(RandomTestUtil.nextLong());
 
 		_persistence.countByCommercePriceListId(0L);
+	}
+
+	@Test
+	public void testCountByC_T() throws Exception {
+		_persistence.countByC_T(RandomTestUtil.nextLong(), "");
+
+		_persistence.countByC_T(0L, "null");
+
+		_persistence.countByC_T(0L, (String)null);
 	}
 
 	@Test
@@ -339,6 +355,38 @@ public class CommercePriceModifierPersistenceTest {
 			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 
 		_persistence.countByLtE_S(RandomTestUtil.nextDate(), 0);
+	}
+
+	@Test
+	public void testCountByG_C_S() throws Exception {
+		_persistence.countByG_C_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_C_S(0L, 0L, 0);
+	}
+
+	@Test
+	public void testCountByG_C_SArrayable() throws Exception {
+		_persistence.countByG_C_S(
+			new long[] {RandomTestUtil.nextLong(), 0L},
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+	}
+
+	@Test
+	public void testCountByG_C_NotS() throws Exception {
+		_persistence.countByG_C_NotS(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_C_NotS(0L, 0L, 0);
+	}
+
+	@Test
+	public void testCountByG_C_NotSArrayable() throws Exception {
+		_persistence.countByG_C_NotS(
+			new long[] {RandomTestUtil.nextLong(), 0L},
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 	}
 
 	@Test
@@ -773,4 +821,4 @@ public class CommercePriceModifierPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1792599663
+// LIFERAY-SERVICE-BUILDER-HASH:987621671

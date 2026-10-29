@@ -231,6 +231,14 @@ public class DDLRecordSetVersionPersistenceTest {
 	}
 
 	@Test
+	public void testCountByRS_S() throws Exception {
+		_persistence.countByRS_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+
+		_persistence.countByRS_S(0L, 0);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		DDLRecordSetVersion newDDLRecordSetVersion = addDDLRecordSetVersion();
 
@@ -603,4 +611,4 @@ public class DDLRecordSetVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1469046943
+// LIFERAY-SERVICE-BUILDER-HASH:739746568

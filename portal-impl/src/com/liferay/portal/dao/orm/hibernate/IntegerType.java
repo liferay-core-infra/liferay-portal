@@ -13,36 +13,36 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.UserType;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Bruno Farache
  */
-public class IntegerType implements Serializable, UserType {
+public class IntegerType implements Serializable, UserType<Integer> {
 
 	public static final Integer DEFAULT_VALUE = Integer.valueOf(0);
 
 	@Override
-	public Object assemble(Serializable cached, Object owner) {
-		return cached;
+	public Integer assemble(Serializable cached, Object owner) {
+		return (Integer)cached;
 	}
 
 	@Override
-	public Object deepCopy(Object object) {
+	public Integer deepCopy(Integer object) {
 		return object;
 	}
 
 	@Override
-	public Serializable disassemble(Object value) {
-		return (Serializable)value;
+	public Serializable disassemble(Integer value) {
+		return value;
 	}
 
 	@Override
-	public boolean equals(Object x, Object y) {
+	public boolean equals(Integer x, Integer y) {
 		if (x == y) {
 			return true;
 		}
@@ -54,7 +54,12 @@ public class IntegerType implements Serializable, UserType {
 	}
 
 	@Override
-	public int hashCode(Object x) {
+	public int getSqlType() {
+		return Types.INTEGER;
+	}
+
+	@Override
+	public int hashCode(Integer x) {
 		return x.hashCode();
 	}
 
@@ -64,16 +69,12 @@ public class IntegerType implements Serializable, UserType {
 	}
 
 	@Override
-	public Object nullSafeGet(
-		ResultSet resultSet, String[] names,
-		SharedSessionContractImplementor sharedSessionContractImplementor,
-		Object owner) {
-
-		Integer value = null;
+	public Integer nullSafeGet(
+			ResultSet resultSet, int index, WrapperOptions wrapperOptions)
+		throws SQLException {
 
 		try {
-			value = StandardBasicTypes.INTEGER.nullSafeGet(
-				resultSet, names[0], sharedSessionContractImplementor);
+			return resultSet.getInt(index);
 		}
 		catch (SQLException sqlException) {
 			if (_log.isDebugEnabled()) {
@@ -81,39 +82,30 @@ public class IntegerType implements Serializable, UserType {
 			}
 		}
 
-		if (value == null) {
-			return DEFAULT_VALUE;
-		}
-
-		return value;
+		return DEFAULT_VALUE;
 	}
 
 	@Override
 	public void nullSafeSet(
-			PreparedStatement preparedStatement, Object target, int index,
-			SharedSessionContractImplementor sharedSessionContractImplementor)
+			PreparedStatement preparedStatement, Integer target, int index,
+			WrapperOptions wrapperOptions)
 		throws SQLException {
 
 		if (target == null) {
 			target = DEFAULT_VALUE;
 		}
 
-		preparedStatement.setInt(index, (Integer)target);
+		preparedStatement.setInt(index, target);
 	}
 
 	@Override
-	public Object replace(Object original, Object target, Object owner) {
+	public Integer replace(Integer original, Integer target, Object owner) {
 		return original;
 	}
 
 	@Override
 	public Class<Integer> returnedClass() {
 		return Integer.class;
-	}
-
-	@Override
-	public int[] sqlTypes() {
-		return new int[] {StandardBasicTypes.INTEGER.sqlType()};
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(IntegerType.class);

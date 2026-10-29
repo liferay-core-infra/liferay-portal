@@ -344,6 +344,13 @@ public class CommerceTierPriceEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_LteM() throws Exception {
+		_persistence.countByC_LteM(RandomTestUtil.nextLong(), (BigDecimal)null);
+
+		_persistence.countByC_LteM(0L, (BigDecimal)null);
+	}
+
+	@Test
 	public void testCountByC_S() throws Exception {
 		_persistence.countByC_S(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
@@ -819,4 +826,4 @@ public class CommerceTierPriceEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2107237382
+// LIFERAY-SERVICE-BUILDER-HASH:-1818060906

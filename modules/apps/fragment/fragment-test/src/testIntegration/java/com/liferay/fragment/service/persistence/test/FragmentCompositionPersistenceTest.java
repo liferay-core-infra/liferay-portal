@@ -294,6 +294,13 @@ public class FragmentCompositionPersistenceTest {
 	}
 
 	@Test
+	public void testCountByGroupId() throws Exception {
+		_persistence.countByGroupId(RandomTestUtil.nextLong());
+
+		_persistence.countByGroupId(0L);
+	}
+
+	@Test
 	public void testCountByFragmentCollectionId() throws Exception {
 		_persistence.countByFragmentCollectionId(RandomTestUtil.nextLong());
 
@@ -768,4 +775,4 @@ public class FragmentCompositionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1168087997
+// LIFERAY-SERVICE-BUILDER-HASH:-1325004703

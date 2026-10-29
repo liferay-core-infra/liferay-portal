@@ -475,4 +475,4 @@ public class UniqueFinderEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1353080357
+// LIFERAY-SERVICE-BUILDER-HASH:503328547

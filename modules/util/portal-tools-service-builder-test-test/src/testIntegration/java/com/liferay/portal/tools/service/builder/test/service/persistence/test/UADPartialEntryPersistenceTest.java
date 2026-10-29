@@ -404,4 +404,4 @@ public class UADPartialEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:453743134
+// LIFERAY-SERVICE-BUILDER-HASH:-797998376

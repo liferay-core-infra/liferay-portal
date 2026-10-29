@@ -516,4 +516,4 @@ public class UserIdMapperPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1555469532
+// LIFERAY-SERVICE-BUILDER-HASH:-1563500450

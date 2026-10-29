@@ -852,4 +852,4 @@ public class ObjectRelationshipPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-585141576
+// LIFERAY-SERVICE-BUILDER-HASH:1465234238

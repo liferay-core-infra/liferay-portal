@@ -179,6 +179,14 @@ public class AssetLinkPersistenceTest {
 	}
 
 	@Test
+	public void testCountByE_E() throws Exception {
+		_persistence.countByE_E(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+
+		_persistence.countByE_E(0L, 0L);
+	}
+
+	@Test
 	public void testCountByE1_T() throws Exception {
 		_persistence.countByE1_T(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
@@ -538,4 +546,4 @@ public class AssetLinkPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-332573669
+// LIFERAY-SERVICE-BUILDER-HASH:857982205

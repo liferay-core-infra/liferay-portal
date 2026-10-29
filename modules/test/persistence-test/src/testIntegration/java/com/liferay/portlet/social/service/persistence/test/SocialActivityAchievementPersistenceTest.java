@@ -171,6 +171,13 @@ public class SocialActivityAchievementPersistenceTest {
 	}
 
 	@Test
+	public void testCountByGroupId() throws Exception {
+		_persistence.countByGroupId(RandomTestUtil.nextLong());
+
+		_persistence.countByGroupId(0L);
+	}
+
+	@Test
 	public void testCountByG_U() throws Exception {
 		_persistence.countByG_U(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
@@ -188,6 +195,14 @@ public class SocialActivityAchievementPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_F() throws Exception {
+		_persistence.countByG_F(
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
+
+		_persistence.countByG_F(0L, RandomTestUtil.randomBoolean());
+	}
+
+	@Test
 	public void testCountByG_U_N() throws Exception {
 		_persistence.countByG_U_N(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(), "");
@@ -195,6 +210,15 @@ public class SocialActivityAchievementPersistenceTest {
 		_persistence.countByG_U_N(0L, 0L, "null");
 
 		_persistence.countByG_U_N(0L, 0L, (String)null);
+	}
+
+	@Test
+	public void testCountByG_U_F() throws Exception {
+		_persistence.countByG_U_F(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.randomBoolean());
+
+		_persistence.countByG_U_F(0L, 0L, RandomTestUtil.randomBoolean());
 	}
 
 	@Test
@@ -585,4 +609,4 @@ public class SocialActivityAchievementPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1750254087
+// LIFERAY-SERVICE-BUILDER-HASH:262120412

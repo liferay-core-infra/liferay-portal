@@ -497,4 +497,4 @@ public class ServiceComponentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1392823828
+// LIFERAY-SERVICE-BUILDER-HASH:96546842

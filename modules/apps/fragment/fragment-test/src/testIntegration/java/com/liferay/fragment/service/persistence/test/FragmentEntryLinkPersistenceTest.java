@@ -331,6 +331,15 @@ public class FragmentEntryLinkPersistenceTest {
 	}
 
 	@Test
+	public void testCountByRendererKey() throws Exception {
+		_persistence.countByRendererKey("");
+
+		_persistence.countByRendererKey("null");
+
+		_persistence.countByRendererKey((String)null);
+	}
+
+	@Test
 	public void testCountByType() throws Exception {
 		_persistence.countByType(RandomTestUtil.nextInt());
 
@@ -937,4 +946,4 @@ public class FragmentEntryLinkPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1230242078
+// LIFERAY-SERVICE-BUILDER-HASH:718080854

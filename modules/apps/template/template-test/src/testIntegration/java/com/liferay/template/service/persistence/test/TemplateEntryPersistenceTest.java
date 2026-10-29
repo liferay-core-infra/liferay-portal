@@ -260,6 +260,15 @@ public class TemplateEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_IICN() throws Exception {
+		_persistence.countByG_IICN(RandomTestUtil.nextLong(), "");
+
+		_persistence.countByG_IICN(0L, "null");
+
+		_persistence.countByG_IICN(0L, (String)null);
+	}
+
+	@Test
 	public void testCountByG_IICN_IIFVK() throws Exception {
 		_persistence.countByG_IICN_IIFVK(RandomTestUtil.nextLong(), "", "");
 
@@ -653,4 +662,4 @@ public class TemplateEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1857676873
+// LIFERAY-SERVICE-BUILDER-HASH:-1185712530

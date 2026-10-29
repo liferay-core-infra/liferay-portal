@@ -511,4 +511,4 @@ public class RenameFinderColumnEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:87284225
+// LIFERAY-SERVICE-BUILDER-HASH:-383293893

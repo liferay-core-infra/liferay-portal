@@ -246,6 +246,15 @@ public class ObjectValidationRulePersistenceTest {
 	}
 
 	@Test
+	public void testCountByODI_E() throws Exception {
+		_persistence.countByODI_E(RandomTestUtil.nextLong(), "");
+
+		_persistence.countByODI_E(0L, "null");
+
+		_persistence.countByODI_E(0L, (String)null);
+	}
+
+	@Test
 	public void testCountByODI_O() throws Exception {
 		_persistence.countByODI_O(RandomTestUtil.nextLong(), "");
 
@@ -664,4 +673,4 @@ public class ObjectValidationRulePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:445335309
+// LIFERAY-SERVICE-BUILDER-HASH:-1104822926

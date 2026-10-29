@@ -254,6 +254,13 @@ public class KBFolderPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testCountByG_P() throws Exception {
 		_persistence.countByG_P(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
@@ -696,4 +703,4 @@ public class KBFolderPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:552338168
+// LIFERAY-SERVICE-BUILDER-HASH:526319762

@@ -227,6 +227,13 @@ public class CPConfigurationEntrySettingPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testCountByC_T() throws Exception {
 		_persistence.countByC_T(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
@@ -645,4 +652,4 @@ public class CPConfigurationEntrySettingPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-90722181
+// LIFERAY-SERVICE-BUILDER-HASH:189510349

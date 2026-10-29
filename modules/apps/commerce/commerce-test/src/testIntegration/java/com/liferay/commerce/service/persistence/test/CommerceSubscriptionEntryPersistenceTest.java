@@ -348,6 +348,13 @@ public class CommerceSubscriptionEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testCountByCommerceOrderItemId() throws Exception {
 		_persistence.countByCommerceOrderItemId(RandomTestUtil.nextLong());
 
@@ -863,4 +870,4 @@ public class CommerceSubscriptionEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1222307697
+// LIFERAY-SERVICE-BUILDER-HASH:909066177

@@ -36,7 +36,7 @@ public class ExceptionTranslator {
 		if (exception instanceof StaleObjectStateException) {
 			BaseModel<?> baseModel = (BaseModel<?>)object;
 
-			Object currentObject = session.get(
+			Object currentObject = session.find(
 				object.getClass(), baseModel.getPrimaryKeyObj());
 
 			BaseModel<?> currentObjectBaseModel = (BaseModel<?>)currentObject;

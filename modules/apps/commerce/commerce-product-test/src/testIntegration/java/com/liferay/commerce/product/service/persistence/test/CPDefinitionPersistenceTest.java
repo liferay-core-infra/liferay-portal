@@ -420,6 +420,14 @@ public class CPDefinitionPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_SE() throws Exception {
+		_persistence.countByG_SE(
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
+
+		_persistence.countByG_SE(0L, RandomTestUtil.randomBoolean());
+	}
+
+	@Test
 	public void testCountByG_S() throws Exception {
 		_persistence.countByG_S(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
@@ -924,4 +932,4 @@ public class CPDefinitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:540241002
+// LIFERAY-SERVICE-BUILDER-HASH:1263632136

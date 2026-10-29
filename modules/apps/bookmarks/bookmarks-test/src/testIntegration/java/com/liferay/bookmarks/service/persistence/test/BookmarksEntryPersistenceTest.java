@@ -268,6 +268,14 @@ public class BookmarksEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_S() throws Exception {
+		_persistence.countByG_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+
+		_persistence.countByG_S(0L, 0);
+	}
+
+	@Test
 	public void testCountByG_NotS() throws Exception {
 		_persistence.countByG_NotS(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
@@ -281,6 +289,15 @@ public class BookmarksEntryPersistenceTest {
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
 		_persistence.countByC_NotS(0L, 0);
+	}
+
+	@Test
+	public void testCountByG_U_S() throws Exception {
+		_persistence.countByG_U_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_U_S(0L, 0L, 0);
 	}
 
 	@Test
@@ -704,4 +721,4 @@ public class BookmarksEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-948596357
+// LIFERAY-SERVICE-BUILDER-HASH:-357411484

@@ -163,6 +163,13 @@ public class CTCommentPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCtEntryId() throws Exception {
+		_persistence.countByCtEntryId(RandomTestUtil.nextLong());
+
+		_persistence.countByCtEntryId(0L);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		CTComment newCTComment = addCTComment();
 
@@ -430,4 +437,4 @@ public class CTCommentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1468200970
+// LIFERAY-SERVICE-BUILDER-HASH:359626824

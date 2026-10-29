@@ -477,4 +477,4 @@ public class SiteSitemapRegenerationEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1907743928
+// LIFERAY-SERVICE-BUILDER-HASH:-655130230

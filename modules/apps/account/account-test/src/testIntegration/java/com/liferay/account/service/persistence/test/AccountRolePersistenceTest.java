@@ -167,6 +167,13 @@ public class AccountRolePersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testCountByAccountEntryId() throws Exception {
 		_persistence.countByAccountEntryId(RandomTestUtil.nextLong());
 
@@ -541,4 +548,4 @@ public class AccountRolePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-959278036
+// LIFERAY-SERVICE-BUILDER-HASH:648710418

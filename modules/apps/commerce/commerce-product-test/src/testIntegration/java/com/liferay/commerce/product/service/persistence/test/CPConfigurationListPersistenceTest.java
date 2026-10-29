@@ -291,6 +291,21 @@ public class CPConfigurationListPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
+	public void testCountByParentCPConfigurationListId() throws Exception {
+		_persistence.countByParentCPConfigurationListId(
+			RandomTestUtil.nextLong());
+
+		_persistence.countByParentCPConfigurationListId(0L);
+	}
+
+	@Test
 	public void testCountByG_C() throws Exception {
 		_persistence.countByG_C(
 			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
@@ -311,6 +326,46 @@ public class CPConfigurationListPersistenceTest {
 			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
 
 		_persistence.countByG_M(0L, RandomTestUtil.randomBoolean());
+	}
+
+	@Test
+	public void testCountByLtD_S() throws Exception {
+		_persistence.countByLtD_S(
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
+
+		_persistence.countByLtD_S(RandomTestUtil.nextDate(), 0);
+	}
+
+	@Test
+	public void testCountByG_C_S() throws Exception {
+		_persistence.countByG_C_S(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_C_S(0L, 0L, 0);
+	}
+
+	@Test
+	public void testCountByG_C_SArrayable() throws Exception {
+		_persistence.countByG_C_S(
+			new long[] {RandomTestUtil.nextLong(), 0L},
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
+	}
+
+	@Test
+	public void testCountByG_C_NotS() throws Exception {
+		_persistence.countByG_C_NotS(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_C_NotS(0L, 0L, 0);
+	}
+
+	@Test
+	public void testCountByG_C_NotSArrayable() throws Exception {
+		_persistence.countByG_C_NotS(
+			new long[] {RandomTestUtil.nextLong(), 0L},
+			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 	}
 
 	@Test
@@ -721,4 +776,4 @@ public class CPConfigurationListPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:793835053
+// LIFERAY-SERVICE-BUILDER-HASH:-1608287165

@@ -222,6 +222,13 @@ public class DefinitionPersistenceTest {
 	}
 
 	@Test
+	public void testCountByCompanyId() throws Exception {
+		_persistence.countByCompanyId(RandomTestUtil.nextLong());
+
+		_persistence.countByCompanyId(0L);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		Definition newDefinition = addDefinition();
 
@@ -590,4 +597,4 @@ public class DefinitionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-992505069
+// LIFERAY-SERVICE-BUILDER-HASH:-107232415

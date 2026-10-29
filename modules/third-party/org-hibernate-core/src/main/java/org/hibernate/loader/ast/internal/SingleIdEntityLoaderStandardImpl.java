@@ -51,11 +51,6 @@ public class SingleIdEntityLoaderStandardImpl<T> extends SingleIdEntityLoaderSup
 		// todo (6.0) : consider creating a base AST and "cloning" it
 		super( entityDescriptor, influencers.getSessionFactory() );
 		this.loadPlanCreator = loadPlanCreator;
-		// Preload some load plans (for now only do it for LockMode.NONE)
-		final var singleIdLoadPlan = loadPlanCreator.apply( LockOptions.NONE, influencers );
-//		if ( isLoadPlanReusable( LockOptions.NONE, influencers ) ) {
-		selectByLockMode.put( LockMode.NONE, singleIdLoadPlan );
-//		}
 	}
 
 	@Override
@@ -195,3 +190,4 @@ public class SingleIdEntityLoaderStandardImpl<T> extends SingleIdEntityLoaderSup
 		);
 	}
 }
+/* @generated */

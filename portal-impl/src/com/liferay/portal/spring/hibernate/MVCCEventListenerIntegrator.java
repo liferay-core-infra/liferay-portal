@@ -8,6 +8,7 @@ package com.liferay.portal.spring.hibernate;
 import com.liferay.portal.dao.orm.hibernate.event.MVCCSynchronizerPostUpdateEventListener;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;
@@ -30,12 +31,11 @@ public class MVCCEventListenerIntegrator implements Integrator {
 
 	@Override
 	public void integrate(
-		Metadata metadata, SessionFactoryImplementor sessionFactoryImplementor,
-		SessionFactoryServiceRegistry sessionFactoryServiceRegistry) {
+		Metadata metadata, BootstrapContext bootstrapContext,
+		SessionFactoryImplementor sessionFactoryImplementor) {
 
 		EventListenerRegistry eventListenerRegistry =
-			sessionFactoryServiceRegistry.getService(
-				EventListenerRegistry.class);
+			sessionFactoryImplementor.getEventListenerRegistry();
 
 		eventListenerRegistry.setListeners(
 			EventType.POST_UPDATE,

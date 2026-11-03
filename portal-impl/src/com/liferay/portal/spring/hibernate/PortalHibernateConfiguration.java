@@ -99,6 +99,8 @@ public class PortalHibernateConfiguration
 		properties.setProperty(
 			"hibernate.jpa.static_metamodel.population", "disabled");
 		properties.setProperty("hibernate.jpa_callbacks.enabled", "false");
+		properties.setProperty(
+			"hibernate.query.native.prefer_jdbc_datetime_types", "true");
 
 		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
 			properties.put("hibernate.dialect", dialect);

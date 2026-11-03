@@ -34,9 +34,12 @@ import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
@@ -48,9 +51,13 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.hibernate.boot.jaxb.internal.InputStreamXmlSource;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.resource.beans.internal.ManagedBeanRegistryImpl;
+import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
 
 import org.osgi.framework.Bundle;
@@ -73,8 +80,19 @@ public class PortalHibernateConfiguration
 		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
 			new BootstrapServiceRegistryBuilder();
 
-		bootstrapServiceRegistryBuilder.applyClassLoader(
-			getConfigurationClassLoader());
+		bootstrapServiceRegistryBuilder.applyClassLoaderService(
+			new ClassLoaderServiceImpl(getConfigurationClassLoader()) {
+
+				@Override
+				public <S> Collection<S> loadJavaServices(
+					Class<S> serviceContract) {
+
+					return (Collection<S>)_javaServices.computeIfAbsent(
+						serviceContract,
+						key -> super.loadJavaServices(serviceContract));
+				}
+
+			});
 
 		bootstrapServiceRegistryBuilder.applyIntegrator(
 			GlobalEventListenerIntegrator.INSTANCE);
@@ -208,6 +226,12 @@ public class PortalHibernateConfiguration
 		catch (Exception exception) {
 			_log.error(exception);
 		}
+
+		StandardServiceRegistryBuilder standardServiceRegistryBuilder =
+			configuration.getStandardServiceRegistryBuilder();
+
+		standardServiceRegistryBuilder.addService(
+			ManagedBeanRegistry.class, new ManagedBeanRegistryImpl(null));
 
 		return configuration.buildSessionFactory();
 	}
@@ -347,6 +371,9 @@ public class PortalHibernateConfiguration
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalHibernateConfiguration.class);
 
+	private static final Map<Class<?>, Collection<?>> _javaServices =
+		new ConcurrentHashMap<>();
+
 	static {
 		PropsUtil.set("hibernate.allow_update_outside_transaction", "true");
 		PropsUtil.set("hibernate.auto_quote_keyword", "false");
@@ -358,6 +385,8 @@ public class PortalHibernateConfiguration
 		PropsUtil.set("hibernate.globally_quoted_identifiers", "false");
 		PropsUtil.set(
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
+		PropsUtil.set("hibernate.jpa.static_metamodel.population", "disabled");
+		PropsUtil.set("hibernate.jpa_callbacks.enabled", "false");
 		PropsUtil.set("jakarta.persistence.validation.mode", "none");
 	}
 

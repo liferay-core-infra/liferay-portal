@@ -36,6 +36,44 @@ import java.util.Date;
  */
 public class AuditMessage implements Serializable {
 
+	public AuditMessage(AuditMessage auditMessage) {
+		_accountEntryId = auditMessage._accountEntryId;
+		_action = auditMessage._action;
+		_additionalInfoJSONObject = auditMessage._additionalInfoJSONObject;
+		_className = auditMessage._className;
+		_classPK = auditMessage._classPK;
+		_clientHost = auditMessage._clientHost;
+		_clientIP = auditMessage._clientIP;
+		_companyId = auditMessage._companyId;
+		_contextName = auditMessage._contextName;
+		_correlationId = auditMessage._correlationId;
+		_eventType = auditMessage._eventType;
+		_groupId = auditMessage._groupId;
+		_httpMethod = auditMessage._httpMethod;
+		_impersonated = auditMessage._impersonated;
+		_impersonatedUserEmailAddress =
+			auditMessage._impersonatedUserEmailAddress;
+		_impersonatedUserId = auditMessage._impersonatedUserId;
+		_impersonatedUserName = auditMessage._impersonatedUserName;
+		_message = auditMessage._message;
+		_objectName = auditMessage._objectName;
+		_pseudonymized = auditMessage._pseudonymized;
+		_requestId = auditMessage._requestId;
+		_requestIdGenerated = auditMessage._requestIdGenerated;
+		_resourceAction = auditMessage._resourceAction;
+		_resourceType = auditMessage._resourceType;
+		_roles = auditMessage._roles;
+		_serverName = auditMessage._serverName;
+		_serverPort = auditMessage._serverPort;
+		_sessionID = auditMessage._sessionID;
+		_timestampDate = auditMessage._timestampDate;
+		_userAgent = auditMessage._userAgent;
+		_userEmailAddress = auditMessage._userEmailAddress;
+		_userId = auditMessage._userId;
+		_userLogin = auditMessage._userLogin;
+		_userName = auditMessage._userName;
+	}
+
 	public AuditMessage(
 		long groupId, long companyId, long userId, String userName,
 		Date timestampDate, JSONObject additionalInfoJSONObject,

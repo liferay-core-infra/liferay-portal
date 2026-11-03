@@ -257,8 +257,7 @@ public interface AuditEventPseudonymFieldLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public AuditMessage pseudonymizeAuditMessage(AuditMessage auditMessage)
-		throws PortalException;
+	public AuditMessage pseudonymizeAuditMessage(AuditMessage auditMessage);
 
 	/**
 	 * Updates the audit event pseudonym field in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -275,4 +274,4 @@ public interface AuditEventPseudonymFieldLocalService
 		AuditEventPseudonymField auditEventPseudonymField);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2009657772
+// LIFERAY-SERVICE-BUILDER-HASH:870231180

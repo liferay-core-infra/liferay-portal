@@ -296,9 +296,8 @@ public class AuditEventPseudonymFieldLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.audit.AuditMessage
-			pseudonymizeAuditMessage(
-				com.liferay.portal.kernel.audit.AuditMessage auditMessage)
-		throws PortalException {
+		pseudonymizeAuditMessage(
+			com.liferay.portal.kernel.audit.AuditMessage auditMessage) {
 
 		return getService().pseudonymizeAuditMessage(auditMessage);
 	}
@@ -330,4 +329,4 @@ public class AuditEventPseudonymFieldLocalServiceUtil {
 			AuditEventPseudonymFieldLocalService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:190290025
+// LIFERAY-SERVICE-BUILDER-HASH:1099494359

@@ -347,9 +347,8 @@ public class AuditEventPseudonymFieldLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.audit.AuditMessage
-			pseudonymizeAuditMessage(
-				com.liferay.portal.kernel.audit.AuditMessage auditMessage)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		pseudonymizeAuditMessage(
+			com.liferay.portal.kernel.audit.AuditMessage auditMessage) {
 
 		return _auditEventPseudonymFieldLocalService.pseudonymizeAuditMessage(
 			auditMessage);
@@ -399,4 +398,4 @@ public class AuditEventPseudonymFieldLocalServiceWrapper
 		_auditEventPseudonymFieldLocalService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:558990816
+// LIFERAY-SERVICE-BUILDER-HASH:755859726

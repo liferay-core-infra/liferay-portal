@@ -7,7 +7,7 @@ package com.liferay.launch.web.internal.portlet.action;
 
 import com.liferay.launch.set.publisher.LaunchSetPublisher;
 import com.liferay.launch.web.internal.constants.LaunchPortletKeys;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseTransactionalMVCActionCommand;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 
@@ -19,6 +19,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Tardín
+ * @author Jose Luis Navarro
  */
 @Component(
 	property = {
@@ -27,11 +28,10 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCActionCommand.class
 )
-public class PublishLaunchMVCActionCommand
-	extends BaseTransactionalMVCActionCommand {
+public class PublishLaunchMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
-	protected void doTransactionalCommand(
+	protected void doProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 

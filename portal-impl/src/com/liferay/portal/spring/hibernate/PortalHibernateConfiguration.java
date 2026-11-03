@@ -100,7 +100,7 @@ public class PortalHibernateConfiguration
 			new MetadataSources(bootstrapServiceRegistryBuilder.build()));
 
 		if (_mvccEnabled) {
-			configuration.setInterceptor(new CTSQLInterceptor());
+			configuration.setStatementInspector(new CTSQLInterceptor());
 		}
 
 		configuration.addProperties(PropsUtil.getProperties());
@@ -323,10 +323,10 @@ public class PortalHibernateConfiguration
 		XmlMappingBinderAccess xmlMappingBinderAccess =
 			configuration.getXmlMappingBinderAccess();
 
-		Binding<?> binding = InputStreamXmlSource.doBind(
-			xmlMappingBinderAccess.getMappingBinder(),
+		Binding<?> binding = InputStreamXmlSource.fromStream(
 			urlConnection.getInputStream(),
-			new Origin(SourceType.URL, url.toExternalForm()), true);
+			new Origin(SourceType.URL, url.toExternalForm()), true,
+			xmlMappingBinderAccess.getMappingBinder());
 
 		if (PropsValues.HIBERNATE_HBM_JAXB_CACHE) {
 			Serializer serializer = new Serializer();

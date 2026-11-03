@@ -7,11 +7,7 @@ import ClayLabel from '@clayui/label';
 import React from 'react';
 
 import confirmAndUnscheduleLaunchAction from '../actions/confirmAndUnscheduleLaunchAction';
-import {Launch, isPublished} from '../api/launches';
-import {
-	WORKFLOW_STATUS_DRAFT,
-	WORKFLOW_STATUS_SCHEDULED,
-} from '../components/WorkflowStatusLabel';
+import {Launch, getLaunchStatus} from '../api/launches';
 import openNewLaunchModal from '../modals/openNewLaunchModal';
 import fillViewLaunchURL from '../util/fillViewLaunchURL';
 
@@ -54,7 +50,9 @@ export default function LaunchesFDSPropsTransformer({
 			tableCell: [
 				{
 					component: ({itemData}: {itemData: Launch}) => {
-						if (isPublished(itemData)) {
+						const launchStatus = getLaunchStatus(itemData);
+
+						if (launchStatus === 'published') {
 							return (
 								<ClayLabel displayType="success">
 									{Liferay.Language.get('published')}
@@ -62,10 +60,7 @@ export default function LaunchesFDSPropsTransformer({
 							);
 						}
 
-						if (
-							itemData.scheduledDate &&
-							itemData.status?.code === WORKFLOW_STATUS_DRAFT
-						) {
+						if (launchStatus === 'failed') {
 							return (
 								<ClayLabel displayType="danger">
 									{Liferay.Language.get('failed')}
@@ -73,9 +68,7 @@ export default function LaunchesFDSPropsTransformer({
 							);
 						}
 
-						if (
-							itemData.status?.code === WORKFLOW_STATUS_SCHEDULED
-						) {
+						if (launchStatus === 'scheduled') {
 							return (
 								<ClayLabel displayType="info">
 									{Liferay.Language.get('scheduled')}
@@ -99,7 +92,7 @@ export default function LaunchesFDSPropsTransformer({
 				return {
 					...action,
 					isVisible: (launch: Launch) =>
-						launch.status?.code === WORKFLOW_STATUS_SCHEDULED,
+						getLaunchStatus(launch) === 'scheduled',
 				};
 			}
 

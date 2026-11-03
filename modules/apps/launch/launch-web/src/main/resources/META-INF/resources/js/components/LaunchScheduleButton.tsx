@@ -11,19 +11,20 @@ import ClayModal, {useModal} from '@clayui/modal';
 import {navigate} from 'frontend-js-web';
 import React, {useState} from 'react';
 
+import {LaunchStatus} from '../api/launches';
 import LaunchService from '../services/LaunchService';
 import {openErrorToast} from '../util/toasts';
 
 interface Props {
+	launchStatus: LaunchStatus;
 	portletNamespace: string;
-	published: boolean;
 	scheduleLaunchURL: string;
 	scheduledDate: string | null;
 }
 
 export default function LaunchScheduleButton({
+	launchStatus,
 	portletNamespace,
-	published,
 	scheduleLaunchURL,
 	scheduledDate,
 }: Props) {
@@ -75,7 +76,7 @@ export default function LaunchScheduleButton({
 		);
 	}
 
-	if (published) {
+	if (launchStatus !== 'open') {
 		return null;
 	}
 

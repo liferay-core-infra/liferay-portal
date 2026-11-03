@@ -8,16 +8,16 @@ import ClayIcon from '@clayui/icon';
 import {openConfirmModal} from 'frontend-js-components-web';
 import React, {useRef} from 'react';
 
+import {LaunchStatus} from '../api/launches';
+
 interface Props {
+	launchStatus: LaunchStatus;
 	publishLaunchURL: string;
-	published: boolean;
-	scheduled: boolean;
 }
 
 export default function LaunchPublishButton({
+	launchStatus,
 	publishLaunchURL,
-	published,
-	scheduled,
 }: Props) {
 	const formRef = useRef<HTMLFormElement>(null);
 
@@ -37,7 +37,7 @@ export default function LaunchPublishButton({
 	return (
 		<form action={publishLaunchURL} method="post" ref={formRef}>
 			<ClayButton
-				disabled={published || scheduled}
+				disabled={launchStatus !== 'open'}
 				displayType="primary"
 				onClick={handleClick}
 				small
@@ -48,9 +48,11 @@ export default function LaunchPublishButton({
 					symbol="rocket"
 				/>
 
-				{published
-					? Liferay.Language.get('published')
-					: Liferay.Language.get('publish')}
+				{launchStatus === 'failed'
+					? Liferay.Language.get('failed')
+					: launchStatus === 'published'
+						? Liferay.Language.get('published')
+						: Liferay.Language.get('publish')}
 			</ClayButton>
 		</form>
 	);

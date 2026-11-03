@@ -24,10 +24,11 @@ import java.lang.reflect.Method;
 
 import java.sql.Connection;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.metamodel.spi.MappingMetamodelImplementor;
 
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -103,10 +104,15 @@ public class VerifySessionFactoryWrapper implements SessionFactory {
 		SessionFactoryImplementor currentSessionFactoryImplementor,
 		SessionFactoryImplementor targetSessionFactoryImplementor) {
 
-		MetamodelImplementor currentSessionMetamodelImplementor =
-			currentSessionFactoryImplementor.getMetamodel();
-		MetamodelImplementor targetSessionMetamodelImplementor =
-			targetSessionFactoryImplementor.getMetamodel();
+		MappingMetamodelImplementor currentSessionMappingMetamodelImplementor =
+			currentSessionFactoryImplementor.getMappingMetamodel();
+		MappingMetamodelImplementor targetSessionMappingMetamodelImplementor =
+			targetSessionFactoryImplementor.getMappingMetamodel();
+
+		String[] currentSessionEntityNames =
+			currentSessionMappingMetamodelImplementor.getAllEntityNames();
+		String[] targetSessionEntityNames =
+			targetSessionMappingMetamodelImplementor.getAllEntityNames();
 
 		_log.error(
 			"Failed session factory verification",
@@ -114,9 +120,9 @@ public class VerifySessionFactoryWrapper implements SessionFactory {
 				StringBundler.concat(
 					"Wrong current transaction manager, current session ",
 					"factory classes metadata: ",
-					currentSessionMetamodelImplementor.entityPersisters(),
+					Arrays.toString(currentSessionEntityNames),
 					", target session factory classes metadata: ",
-					targetSessionMetamodelImplementor.entityPersisters())));
+					Arrays.toString(targetSessionEntityNames))));
 	}
 
 	private boolean _verify() {

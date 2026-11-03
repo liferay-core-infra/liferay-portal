@@ -12,11 +12,14 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.Group;
@@ -148,11 +151,12 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 		_receiveWithError(RandomTestUtil.randomLong());
 
 		_assertBackgroundTasks(2, BackgroundTaskConstants.STATUS_FAILED);
+		_assertLaunchSetError(0);
 		_assertStatus(WorkflowConstants.STATUS_DRAFT);
 
 		// Scheduled launch set with a publish error
 
-		_addLaunchEntryObjectEntry(
+		ObjectEntry launchEntryObjectEntry = _addLaunchEntryObjectEntry(
 			RandomTestUtil.randomString(), RandomTestUtil.randomInt(),
 			RandomTestUtil.randomString());
 
@@ -161,6 +165,7 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 		_receiveWithError(TestPropsValues.getUserId());
 
 		_assertBackgroundTasks(3, BackgroundTaskConstants.STATUS_FAILED);
+		_assertLaunchSetError(launchEntryObjectEntry.getObjectEntryId());
 		_assertStatus(WorkflowConstants.STATUS_DRAFT);
 	}
 
@@ -215,6 +220,45 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 			backgroundTasks.size() - 1);
 
 		Assert.assertEquals(expectedStatus, backgroundTask.getStatus());
+	}
+
+	private void _assertLaunchSetError(long expectedLaunchEntryId)
+		throws Exception {
+
+		ObjectEntry launchSetObjectEntry =
+			_objectEntryLocalService.getObjectEntry(
+				_launchSetObjectEntry.getObjectEntryId());
+
+		Assert.assertEquals(
+			1,
+			MapUtil.getLong(
+				launchSetObjectEntry.getValues(), "publishErrorsCount"));
+
+		ObjectRelationship objectRelationship =
+			_objectRelationshipLocalService.getObjectRelationship(
+				_launchSetObjectEntry.getObjectDefinitionId(),
+				"launchSetToLaunchSetErrors");
+
+		List<ObjectEntry> launchSetErrorObjectEntries =
+			_objectEntryLocalService.getOneToManyObjectEntries(
+				_launchSetObjectEntry.getGroupId(),
+				objectRelationship.getObjectRelationshipId(), null, false,
+				_launchSetObjectEntry.getObjectEntryId(), true, null,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		Assert.assertEquals(
+			launchSetErrorObjectEntries.toString(), 1,
+			launchSetErrorObjectEntries.size());
+
+		ObjectEntry launchSetErrorObjectEntry = launchSetErrorObjectEntries.get(
+			0);
+
+		Map<String, Serializable> values =
+			launchSetErrorObjectEntry.getValues();
+
+		Assert.assertEquals(
+			expectedLaunchEntryId, MapUtil.getLong(values, "launchEntryId"));
+		Assert.assertEquals("error", MapUtil.getString(values, "severity"));
 	}
 
 	private void _assertStatus(int expectedStatus) throws Exception {
@@ -365,5 +409,8 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 
 	@Inject
 	private ObjectEntryLocalService _objectEntryLocalService;
+
+	@Inject
+	private ObjectRelationshipLocalService _objectRelationshipLocalService;
 
 }

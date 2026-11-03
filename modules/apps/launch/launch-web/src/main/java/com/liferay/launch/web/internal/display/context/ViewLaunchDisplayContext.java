@@ -6,6 +6,9 @@
 package com.liferay.launch.web.internal.display.context;
 
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
+import com.liferay.frontend.data.set.model.FDSSortItemBuilder;
+import com.liferay.frontend.data.set.model.FDSSortItemList;
+import com.liferay.frontend.data.set.model.FDSSortItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
@@ -146,6 +149,18 @@ public class ViewLaunchDisplayContext {
 
 	public String getLaunchSetErrorsFDSName() {
 		return LaunchFDSNames.LAUNCH_SET_ERRORS;
+	}
+
+	public FDSSortItemList getLaunchSetErrorsFDSSortItemList() {
+		return FDSSortItemListBuilder.add(
+			FDSSortItemBuilder.setDirection(
+				"desc"
+			).setKey(
+				"dateCreated"
+			).setLabel(
+				LanguageUtil.get(_httpServletRequest, "date")
+			).build()
+		).build();
 	}
 
 	public long getLaunchSetId() {

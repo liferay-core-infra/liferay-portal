@@ -13,6 +13,7 @@ ViewLaunchDisplayContext viewLaunchDisplayContext = (ViewLaunchDisplayContext)re
 
 <frontend-data-set:headless-display
 	apiURL="<%= viewLaunchDisplayContext.getLaunchSetErrorsAPIURL() %>"
+	fdsSortItemList="<%= viewLaunchDisplayContext.getLaunchSetErrorsFDSSortItemList() %>"
 	id="<%= viewLaunchDisplayContext.getLaunchSetErrorsFDSName() %>"
 	style="fluid"
 />

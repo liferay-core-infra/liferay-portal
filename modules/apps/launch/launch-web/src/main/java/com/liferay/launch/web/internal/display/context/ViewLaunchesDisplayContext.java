@@ -12,6 +12,7 @@ import com.liferay.frontend.data.set.model.FDSSortItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.launch.web.internal.constants.LaunchFDSNames;
+import com.liferay.launch.web.internal.constants.LaunchScreenNavigationConstants;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -57,7 +58,12 @@ public class ViewLaunchesDisplayContext {
 			new FDSActionDropdownItem(
 				_getViewLaunchURL(), "view", "view",
 				LanguageUtil.get(_httpServletRequest, "view"), "get", null,
-				null));
+				null),
+			new FDSActionDropdownItem(
+				_getViewLaunchErrorDetailsURL(), "warning",
+				"view-error-details",
+				LanguageUtil.get(_httpServletRequest, "view-error-details"),
+				"get", null, null));
 	}
 
 	public String getFDSName() {
@@ -82,6 +88,21 @@ public class ViewLaunchesDisplayContext {
 				LanguageUtil.get(_httpServletRequest, "last-modified")
 			).build()
 		).build();
+	}
+
+	private String _getViewLaunchErrorDetailsURL() {
+		return PortletURLBuilder.createRenderURL(
+			_liferayPortletResponse
+		).setMVCRenderCommandName(
+			"/launch/view_launch"
+		).setParameter(
+			"launchSetId", "{id}"
+		).setParameter(
+			"launchSetName", "{name}"
+		).setParameter(
+			"screenNavigationCategoryKey",
+			LaunchScreenNavigationConstants.CATEGORY_KEY_ERROR_DETAILS
+		).buildString();
 	}
 
 	private String _getViewLaunchURL() {

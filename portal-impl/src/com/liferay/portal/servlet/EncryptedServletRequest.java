@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.encryptor.EncryptorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,13 +37,25 @@ public class EncryptedServletRequest extends HttpServletRequestWrapper {
 
 		Map<String, String[]> parameters = httpServletRequest.getParameterMap();
 
+		Map<String, String[]> originalQueryParameterMap =
+			HttpComponentsUtil.getParameterMap(
+				HttpComponentsUtil.getQueryString(httpServletRequest));
+		Map<String, String[]> queryParameterMap =
+			HttpComponentsUtil.getParameterMap(
+				httpServletRequest.getQueryString());
+
 		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
 			String name = entry.getKey();
 
 			String[] values = entry.getValue();
 
 			for (int i = 0; i < values.length; i++) {
-				if (Validator.isNull(values[i])) {
+				if (Validator.isNull(values[i]) ||
+					(ArrayUtil.contains(
+						queryParameterMap.get(name), values[i]) &&
+					 !ArrayUtil.contains(
+						 originalQueryParameterMap.get(name), values[i]))) {
+
 					continue;
 				}
 

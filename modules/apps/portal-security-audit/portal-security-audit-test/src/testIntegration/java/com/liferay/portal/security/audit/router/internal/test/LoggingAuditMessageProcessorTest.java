@@ -192,6 +192,9 @@ public class LoggingAuditMessageProcessorTest {
 
 			_auditEventPseudonymFields.add(clientIPAuditEventPseudonymField);
 
+			Assert.assertEquals(
+				clientIP, clientIPAuditEventPseudonymField.getValue());
+
 			AuditEventPseudonymField userNameAuditEventPseudonymField =
 				_auditEventPseudonymFieldLocalService.
 					fetchAuditEventPseudonymField(
@@ -199,8 +202,6 @@ public class LoggingAuditMessageProcessorTest {
 
 			_auditEventPseudonymFields.add(userNameAuditEventPseudonymField);
 
-			Assert.assertEquals(
-				clientIP, clientIPAuditEventPseudonymField.getValue());
 			Assert.assertTrue(jsonObject.getBoolean("pseudonymized"));
 			Assert.assertEquals(
 				auditMessage.getUserName(),

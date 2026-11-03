@@ -4,7 +4,10 @@
  */
 
 import ClayEmptyState from '@clayui/empty-state';
+import ClayIcon from '@clayui/icon';
+import ClayLink from '@clayui/link';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {sub} from 'frontend-js-web';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 
 import {fetchResults, ignoreRule, unignoreRule} from './api';
@@ -159,17 +162,18 @@ export function ProductionReadinessDashboard(
 		return <ClayLoadingIndicator />;
 	}
 
+	let content;
+
 	if (error) {
-		return (
+		content = (
 			<ClayEmptyState
 				description={error}
 				title={Liferay.Language.get('an-unexpected-error-occurred')}
 			/>
 		);
 	}
-
-	if (!payload || !payload.results.length) {
-		return (
+	else if (!payload || !payload.results.length) {
+		content = (
 			<ClayEmptyState
 				description={Liferay.Language.get(
 					'no-production-readiness-rules-are-deployed'
@@ -178,33 +182,63 @@ export function ProductionReadinessDashboard(
 			/>
 		);
 	}
+	else {
+		const {failed, ignored, passed} = payload.summary;
 
-	const {failed, ignored, passed} = payload.summary;
+		content = (
+			<>
+				<div className="align-items-start d-flex justify-content-between mb-4">
+					<SummaryHeader
+						failed={failed}
+						ignored={ignored}
+						passed={passed}
+						total={failed + ignored + passed}
+					/>
+
+					<FilterPills
+						onChange={setFilterValue}
+						value={filterValue}
+					/>
+				</div>
+
+				<div className="production-readiness-sections">
+					{grouped.map(({category, categoryLabel, results}) => (
+						<CategorySection
+							categoryLabel={categoryLabel}
+							key={category}
+							onToggleIgnore={onToggleIgnore}
+							results={results}
+							togglingRuleKeys={togglingRuleKeys}
+						/>
+					))}
+				</div>
+			</>
+		);
+	}
 
 	return (
 		<div className="production-readiness-dashboard">
-			<div className="align-items-start d-flex justify-content-between mb-4">
-				<SummaryHeader
-					failed={failed}
-					ignored={ignored}
-					passed={passed}
-					total={failed + ignored + passed}
-				/>
+			<div className="mb-3">
+				<ClayLink
+					aria-label={sub(
+						Liferay.Language.get('x-opens-new-window'),
+						Liferay.Language.get(
+							'click-here-to-learn-more-about-what-settings-liferay-recommends-checking-before-a-dxp-deployment'
+						)
+					)}
+					href="https://www.liferay.com/resources/product-info/Liferay+DXP+Go+Live+Checklist"
+					rel="noopener noreferrer"
+					target="_blank"
+				>
+					{Liferay.Language.get(
+						'click-here-to-learn-more-about-what-settings-liferay-recommends-checking-before-a-dxp-deployment'
+					)}
 
-				<FilterPills onChange={setFilterValue} value={filterValue} />
+					<ClayIcon className="ml-1" symbol="shortcut" />
+				</ClayLink>
 			</div>
 
-			<div className="production-readiness-sections">
-				{grouped.map(({category, categoryLabel, results}) => (
-					<CategorySection
-						categoryLabel={categoryLabel}
-						key={category}
-						onToggleIgnore={onToggleIgnore}
-						results={results}
-						togglingRuleKeys={togglingRuleKeys}
-					/>
-				))}
-			</div>
+			{content}
 		</div>
 	);
 }

@@ -49,7 +49,7 @@ String scheduledDate = viewLaunchDisplayContext.getScheduledDate();
 				module="{LaunchScheduleButton} from launch-web"
 				props='<%=
 					HashMapBuilder.<String, Object>put(
-						"published", viewLaunchDisplayContext.isPublished()
+						"launchStatus", viewLaunchDisplayContext.getLaunchStatus()
 					).put(
 						"scheduledDate", scheduledDate
 					).put(
@@ -64,11 +64,9 @@ String scheduledDate = viewLaunchDisplayContext.getScheduledDate();
 				module="{LaunchPublishButton} from launch-web"
 				props='<%=
 					HashMapBuilder.<String, Object>put(
-						"published", viewLaunchDisplayContext.isPublished()
+						"launchStatus", viewLaunchDisplayContext.getLaunchStatus()
 					).put(
 						"publishLaunchURL", viewLaunchDisplayContext.getPublishLaunchURL()
-					).put(
-						"scheduled", scheduledDate != null
 					).build()
 				%>'
 			/>

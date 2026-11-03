@@ -12,16 +12,18 @@ import {openToast} from 'frontend-js-components-web';
 import {escapeHTML, fetch} from 'frontend-js-web';
 import React, {useState} from 'react';
 
+import {LaunchStatus} from '../api/launches';
+
 interface Props {
+	launchStatus: LaunchStatus;
 	portletNamespace: string;
-	published: boolean;
 	scheduleLaunchURL: string;
 	scheduledDate: string | null;
 }
 
 export default function LaunchScheduleButton({
+	launchStatus,
 	portletNamespace,
-	published,
 	scheduleLaunchURL,
 	scheduledDate,
 }: Props) {
@@ -77,7 +79,7 @@ export default function LaunchScheduleButton({
 		);
 	}
 
-	if (published) {
+	if (launchStatus !== 'open') {
 		return null;
 	}
 

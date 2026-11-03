@@ -15,6 +15,7 @@ import com.liferay.portal.internal.change.tracking.hibernate.CTSQLInterceptor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.util.ConcurrentHashMapBuilder;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -36,9 +37,13 @@ import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
@@ -50,9 +55,19 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.hibernate.boot.jaxb.internal.InputStreamXmlSource;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.models.internal.BasicModelsContextImpl;
+import org.hibernate.models.spi.ModelsConfiguration;
+import org.hibernate.models.spi.ModelsContextProvider;
+import org.hibernate.resource.beans.internal.ManagedBeanRegistryImpl;
+import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
 
 import org.osgi.framework.Bundle;
@@ -86,6 +101,9 @@ public class PortalHibernateConfiguration
 			PortalCurrentSessionContext.class.getName());
 		properties.setProperty(
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
+		properties.setProperty(
+			"hibernate.jpa.static_metamodel.population", "disabled");
+		properties.setProperty("hibernate.jpa_callbacks.enabled", "false");
 
 		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
 			properties.put("hibernate.dialect", dialect);
@@ -96,8 +114,19 @@ public class PortalHibernateConfiguration
 		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
 			new BootstrapServiceRegistryBuilder();
 
-		bootstrapServiceRegistryBuilder.applyClassLoader(
-			getConfigurationClassLoader());
+		bootstrapServiceRegistryBuilder.applyClassLoaderService(
+			new ClassLoaderServiceImpl(getConfigurationClassLoader()) {
+
+				@Override
+				public <S> Collection<S> loadJavaServices(
+					Class<S> serviceContract) {
+
+					return (Collection<S>)_javaServices.computeIfAbsent(
+						serviceContract,
+						key -> super.loadJavaServices(serviceContract));
+				}
+
+			});
 
 		bootstrapServiceRegistryBuilder.applyIntegrator(
 			GlobalEventListenerIntegrator.INSTANCE);
@@ -229,7 +258,34 @@ public class PortalHibernateConfiguration
 			_log.error(exception);
 		}
 
-		return configuration.buildSessionFactory();
+		StandardServiceRegistryBuilder standardServiceRegistryBuilder =
+			configuration.getStandardServiceRegistryBuilder();
+
+		standardServiceRegistryBuilder.addService(
+			ManagedBeanRegistry.class, new ManagedBeanRegistryImpl(null));
+
+		if (_dataSource == null) {
+			return configuration.buildSessionFactory();
+		}
+
+		JdbcEnvironment jdbcEnvironment = _jdbcEnvironments.get(_dataSource);
+
+		if (jdbcEnvironment != null) {
+			standardServiceRegistryBuilder.addService(
+				JdbcEnvironment.class, jdbcEnvironment);
+
+			return configuration.buildSessionFactory();
+		}
+
+		SessionFactoryImplementor sessionFactoryImplementor =
+			(SessionFactoryImplementor)configuration.buildSessionFactory();
+
+		JdbcServices jdbcServices = sessionFactoryImplementor.getJdbcServices();
+
+		_jdbcEnvironments.putIfAbsent(
+			_dataSource, jdbcServices.getJdbcEnvironment());
+
+		return sessionFactoryImplementor;
 	}
 
 	private File _getCacheFile(URL url) {
@@ -361,6 +417,20 @@ public class PortalHibernateConfiguration
 
 	private static final BundleContext _bundleContext =
 		SystemBundleUtil.getBundleContext();
+	private static final Map<Class<?>, Collection<?>> _javaServices =
+		ConcurrentHashMapBuilder.<Class<?>, Collection<?>>put(
+			ModelsContextProvider.class,
+			Collections.singletonList(
+				(ModelsContextProvider)
+					(classLoading, registryPrimer, configProperties) ->
+						new BasicModelsContextImpl(
+							classLoading,
+							ModelsConfiguration.shouldTrackImplementors(
+								configProperties),
+							null))
+		).build();
+	private static final Map<DataSource, JdbcEnvironment> _jdbcEnvironments =
+		new ConcurrentHashMap<>();
 
 	private String[] _configurationResources;
 	private DataSource _dataSource;

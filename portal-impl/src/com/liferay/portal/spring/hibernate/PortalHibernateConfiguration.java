@@ -387,6 +387,8 @@ public class PortalHibernateConfiguration
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
 		PropsUtil.set("hibernate.jpa.static_metamodel.population", "disabled");
 		PropsUtil.set("hibernate.jpa_callbacks.enabled", "false");
+		PropsUtil.set(
+			"hibernate.query.native.prefer_jdbc_datetime_types", "true");
 		PropsUtil.set("jakarta.persistence.validation.mode", "none");
 	}
 

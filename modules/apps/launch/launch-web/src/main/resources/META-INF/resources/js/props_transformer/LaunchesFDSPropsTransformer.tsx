@@ -96,6 +96,14 @@ export default function LaunchesFDSPropsTransformer({
 				};
 			}
 
+			if (action.data?.id === 'view-error-details') {
+				return {
+					...action,
+					isVisible: (launch: Launch) =>
+						getLaunchStatus(launch) === 'failed',
+				};
+			}
+
 			return action;
 		}),
 		onActionDropdownItemClick({

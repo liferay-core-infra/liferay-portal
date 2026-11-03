@@ -13,6 +13,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.audit.constants.AuditEventConstants;
@@ -21,6 +24,7 @@ import com.liferay.portal.security.audit.storage.model.AuditEventPseudonymField;
 import com.liferay.portal.security.audit.storage.service.base.AuditEventPseudonymFieldLocalServiceBaseImpl;
 
 import java.util.Date;
+import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -83,11 +87,8 @@ public class AuditEventPseudonymFieldLocalServiceImpl
 	}
 
 	@Override
-	public AuditMessage pseudonymizeAuditMessage(AuditMessage auditMessage)
-		throws PortalException {
-
-		AuditMessage pseudonymizedAuditMessage = new AuditMessage(
-			String.valueOf(auditMessage.toJSONObject()));
+	public AuditMessage pseudonymizeAuditMessage(AuditMessage auditMessage) {
+		AuditMessage pseudonymizedAuditMessage = new AuditMessage(auditMessage);
 
 		try {
 			String clientIP = auditMessage.getClientIP();
@@ -145,8 +146,8 @@ public class AuditEventPseudonymFieldLocalServiceImpl
 				_pseudonymize(
 					auditMessage, "userName", auditMessage.getUserName()));
 		}
-		catch (Exception exception) {
-			_log.error("Unable to pseudonymize the audit message", exception);
+		catch (Throwable throwable) {
+			_log.error("Unable to pseudonymize the audit message", throwable);
 
 			pseudonymizedAuditMessage.setClientHost(StringPool.BLANK);
 			pseudonymizedAuditMessage.setClientIP(StringPool.BLANK);
@@ -166,16 +167,34 @@ public class AuditEventPseudonymFieldLocalServiceImpl
 
 	private String _pseudonymize(
 			AuditMessage auditMessage, String name, String value)
-		throws PortalException {
+		throws Throwable {
 
 		if (Validator.isBlank(value)) {
 			return value;
 		}
 
-		AuditEventPseudonymField auditEventPseudonymField =
-			addAuditEventPseudonymField(
+		AuditEventPseudonymField auditEventPseudonymField = null;
+
+		Callable<AuditEventPseudonymField> callable =
+			() -> addAuditEventPseudonymField(
 				auditMessage.getCompanyId(), auditMessage.getContextName(),
 				name, value);
+
+		try {
+			auditEventPseudonymField = TransactionInvokerUtil.invoke(
+				_transactionConfig, callable);
+		}
+		catch (Throwable throwable) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Retrying the pseudonym allocation after a concurrent " +
+						"insert",
+					throwable);
+			}
+
+			auditEventPseudonymField = TransactionInvokerUtil.invoke(
+				_transactionConfig, callable);
+		}
 
 		return String.valueOf(
 			auditEventPseudonymField.getAuditEventPseudonymFieldId());
@@ -183,5 +202,9 @@ public class AuditEventPseudonymFieldLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AuditEventPseudonymFieldLocalServiceImpl.class);
+
+	private final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
 }

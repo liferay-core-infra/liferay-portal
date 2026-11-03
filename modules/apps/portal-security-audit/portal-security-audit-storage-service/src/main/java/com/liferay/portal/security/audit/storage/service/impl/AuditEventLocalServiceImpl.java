@@ -16,8 +16,6 @@ import com.liferay.portal.kernel.dao.orm.Junction;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -292,14 +290,9 @@ public class AuditEventLocalServiceImpl extends AuditEventLocalServiceBaseImpl {
 		if (_auditConfigurationProvider.isPseudonymizationEnabled(
 				auditMessage.getCompanyId())) {
 
-			try {
-				auditMessage =
-					_auditEventPseudonymFieldLocalService.
-						pseudonymizeAuditMessage(auditMessage);
-			}
-			catch (PortalException portalException) {
-				throw new SystemException(portalException);
-			}
+			auditMessage =
+				_auditEventPseudonymFieldLocalService.pseudonymizeAuditMessage(
+					auditMessage);
 		}
 
 		AuditEvent auditEvent = auditEventPersistence.create(auditEventId);

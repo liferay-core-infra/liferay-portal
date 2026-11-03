@@ -5,6 +5,7 @@
 
 package com.liferay.launch.internal.background.task;
 
+import com.liferay.launch.internal.helper.LaunchSetErrorHelper;
 import com.liferay.launch.set.publisher.LaunchSetPublisher;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectEntryLocalService;
@@ -14,6 +15,7 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
 import com.liferay.portal.kernel.backgroundtask.BaseBackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.display.BackgroundTaskDisplay;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -25,11 +27,10 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.transaction.Propagation;
-import com.liferay.portal.kernel.transaction.TransactionConfig;
-import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -79,50 +80,11 @@ public class LaunchSetScheduledPublishBackgroundTaskExecutor
 		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 
 		try {
-			Group group = _groupLocalService.getGroup(
-				launchSetObjectEntry.getCompanyId(), GroupConstants.GUEST);
-
-			serviceContext.setScopeGroupId(group.getGroupId());
-
-			PermissionThreadLocal.setPermissionChecker(
-				_permissionCheckerFactory.create(
-					_userLocalService.getUser(userId)));
-			PrincipalThreadLocal.setName(userId);
-
-			TransactionInvokerUtil.invoke(
-				_transactionConfig,
-				() -> {
-					_launchSetPublisher.publish(
-						launchSetObjectEntry.getObjectEntryId());
-
-					return null;
-				});
-		}
-		catch (Throwable throwable) {
-			_log.error(
-				"Unable to publish launch set " +
-					launchSetObjectEntry.getObjectEntryId(),
-				throwable);
-
-			long statusByUserId = userId;
-
-			if (_userLocalService.fetchUser(userId) == null) {
-				statusByUserId = _userLocalService.getGuestUserId(
-					launchSetObjectEntry.getCompanyId());
-			}
-
-			_objectEntryLocalService.updateStatus(
-				statusByUserId, launchSetObjectEntry.getObjectEntryId(),
-				WorkflowConstants.STATUS_DRAFT, serviceContext);
-
-			return new BackgroundTaskResult(
-				BackgroundTaskConstants.STATUS_FAILED, throwable.getMessage());
+			return _publish(launchSetObjectEntry, serviceContext, userId);
 		}
 		finally {
 			ServiceContextThreadLocal.popServiceContext();
 		}
-
-		return BackgroundTaskResult.SUCCESS;
 	}
 
 	@Override
@@ -132,22 +94,65 @@ public class LaunchSetScheduledPublishBackgroundTaskExecutor
 		return null;
 	}
 
+	private BackgroundTaskResult _publish(
+			ObjectEntry launchSetObjectEntry, ServiceContext serviceContext,
+			long userId)
+		throws PortalException {
+
+		try {
+			Group group = _groupLocalService.getGroup(
+				launchSetObjectEntry.getCompanyId(), GroupConstants.GUEST);
+
+			serviceContext.setScopeGroupId(group.getGroupId());
+
+			PermissionThreadLocal.setPermissionChecker(
+				_permissionCheckerFactory.create(
+					_userLocalService.getUser(userId)));
+			PrincipalThreadLocal.setName(userId);
+		}
+		catch (PortalException portalException) {
+			_log.error(
+				"Unable to publish launch set " +
+					launchSetObjectEntry.getObjectEntryId(),
+				portalException);
+
+			_launchSetErrorHelper.markPublishFailed(
+				List.of(
+					_launchSetErrorHelper.getLaunchSetErrorValues(
+						null, portalException.getMessage())),
+				launchSetObjectEntry, userId);
+
+			return new BackgroundTaskResult(
+				BackgroundTaskConstants.STATUS_FAILED,
+				portalException.getMessage());
+		}
+
+		try {
+			_launchSetPublisher.publish(
+				launchSetObjectEntry.getObjectEntryId());
+		}
+		catch (PortalException portalException) {
+			_log.error(
+				"Unable to publish launch set " +
+					launchSetObjectEntry.getObjectEntryId(),
+				portalException);
+
+			return new BackgroundTaskResult(
+				BackgroundTaskConstants.STATUS_FAILED,
+				portalException.getMessage());
+		}
+
+		return BackgroundTaskResult.SUCCESS;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LaunchSetScheduledPublishBackgroundTaskExecutor.class);
 
-	private static final TransactionConfig _transactionConfig;
-
-	static {
-		TransactionConfig.Builder builder = new TransactionConfig.Builder();
-
-		builder.setPropagation(Propagation.REQUIRED);
-		builder.setRollbackForClasses(Exception.class);
-
-		_transactionConfig = builder.build();
-	}
-
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private LaunchSetErrorHelper _launchSetErrorHelper;
 
 	@Reference
 	private LaunchSetPublisher _launchSetPublisher;

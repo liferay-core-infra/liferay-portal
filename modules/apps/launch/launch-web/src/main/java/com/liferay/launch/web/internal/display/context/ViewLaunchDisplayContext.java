@@ -135,6 +135,19 @@ public class ViewLaunchDisplayContext {
 		return LaunchFDSNames.LAUNCH_ENTRIES;
 	}
 
+	public String getLaunchSetErrorsAPIURL() {
+		String filterString = URLCodec.encodeURL(
+			StringBundler.concat(
+				"r_launchSetToLaunchSetErrors_c_launchSetId eq '",
+				getLaunchSetId(), "'"));
+
+		return "/o/launch-set-errors?filter=" + filterString;
+	}
+
+	public String getLaunchSetErrorsFDSName() {
+		return LaunchFDSNames.LAUNCH_SET_ERRORS;
+	}
+
 	public long getLaunchSetId() {
 		if (_launchSetId == null) {
 			_launchSetId = ParamUtil.getLong(

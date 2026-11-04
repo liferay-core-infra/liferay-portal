@@ -1,0 +1,45 @@
+diff --git a/org/hibernate/boot/internal/BootstrapContextImpl.java b/org/hibernate/boot/internal/BootstrapContextImpl.java
+index 7f098c8..20772ab 100644
+--- a/org/hibernate/boot/internal/BootstrapContextImpl.java
++++ b/org/hibernate/boot/internal/BootstrapContextImpl.java
+@@ -117,7 +117,7 @@ public class BootstrapContextImpl implements BootstrapContext {
+ 		managedBeanRegistry = serviceRegistry.requireService( ManagedBeanRegistry.class );
+ 		configurationService = serviceRegistry.requireService( ConfigurationService.class );
+ 
+-		modelsContext = createModelBuildingContext( classLoaderService, configService );
++		modelsContext = null;
+ 	}
+ 
+ 	@Override
+@@ -388,3 +388,4 @@ public class BootstrapContextImpl implements BootstrapContext {
+ 		return modelsConfiguration.bootstrap();
+ 	}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hibernate/boot/model/process/spi/MetadataBuildingProcess.java b/org/hibernate/boot/model/process/spi/MetadataBuildingProcess.java
+index c4508b0..73d6311 100644
+--- a/org/hibernate/boot/model/process/spi/MetadataBuildingProcess.java
++++ b/org/hibernate/boot/model/process/spi/MetadataBuildingProcess.java
+@@ -391,6 +391,15 @@ public class MetadataBuildingProcess {
+ 
+ 		final var aggregatedPersistenceUnitMetadata = metadataCollector.getPersistenceUnitMetadata();
+ 		final var modelsContext = bootstrapContext.getModelsContext();
++		if ( modelsContext == null ) {
++			return new DomainModelSource(
++					null,
++					new ArrayList<>(),
++					metadataCollector.getGlobalRegistrations(),
++					new RootMappingDefaults( optionDefaults, aggregatedPersistenceUnitMetadata ),
++					aggregatedPersistenceUnitMetadata
++			);
++		}
+ 		final var xmlPreProcessingResult =
+ 				XmlPreProcessor.preProcessXmlResources( managedResources,
+ 						aggregatedPersistenceUnitMetadata );
+@@ -972,3 +981,4 @@ public class MetadataBuildingProcess {
+ 		}
+ 	}
+ }
++/* @generated */
+\ No newline at end of file

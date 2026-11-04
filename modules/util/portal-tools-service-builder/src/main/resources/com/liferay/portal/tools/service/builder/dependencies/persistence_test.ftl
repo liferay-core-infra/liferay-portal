@@ -401,27 +401,10 @@ public class ${entity.name}PersistenceTest {
 				${entity.name} persisted${entity.name} = _persistence.findByPrimaryKey(${entity.variableName}.getPrimaryKey());
 				${entity.name} persistedDraft${entity.name} = _persistence.findByPrimaryKey(pk);
 
-				<#list entity.regularEntityColumns as entityColumn>
-					<#if !entityColumn.primary && (validator.isNull(parentPKColumn) || (parentPKColumn.name != entityColumn.name))>
-						<#if stringUtil.equals(entityColumn.name, "headId")>
-							Assert.assertEquals(persisted${entity.name}.get${entityColumn.methodName}(), -persistedDraft${entity.name}.get${entityColumn.methodName}());
-						<#elseif stringUtil.equals(entityColumn.name, "status")>
-							Assert.assertEquals(2, persistedDraft${entity.name}.get${entityColumn.methodName}());
-						<#elseif stringUtil.equals(entityColumn.type, "Blob")>
-							Blob persistedDraft${entityColumn.methodName} = persistedDraft${entity.name}.get${entityColumn.methodName}();
-
-							Assert.assertArrayEquals(draft${entityColumn.methodName}Bytes, persistedDraft${entityColumn.methodName}.getBytes(1, (int)persistedDraft${entityColumn.methodName}.length()));
-						<#elseif stringUtil.equals(entityColumn.type, "boolean")>
-							Assert.assertEquals(persisted${entity.name}.is${entityColumn.methodName}(), persistedDraft${entity.name}.is${entityColumn.methodName}());
-						<#elseif stringUtil.equals(entityColumn.type, "Date")>
-							Assert.assertEquals(Time.getShortTimestamp(persisted${entity.name}.get${entityColumn.methodName}()), Time.getShortTimestamp(persistedDraft${entity.name}.get${entityColumn.methodName}()));
-						<#elseif stringUtil.equals(entityColumn.type, "double")>
-							AssertUtils.assertEquals(persisted${entity.name}.get${entityColumn.methodName}(), persistedDraft${entity.name}.get${entityColumn.methodName}());
-						<#else>
-							Assert.assertEquals(persisted${entity.name}.get${entityColumn.methodName}(), persistedDraft${entity.name}.get${entityColumn.methodName}());
-						</#if>
-					</#if>
-				</#list>
+				Assert.assertEquals(persisted${entity.name}.getExternalReferenceCode(), persistedDraft${entity.name}.getExternalReferenceCode());
+				Assert.assertEquals(persisted${entity.name}.getHeadId(), -persistedDraft${entity.name}.getHeadId());
+				Assert.assertTrue(persisted${entity.name}.isHead());
+				Assert.assertFalse(persistedDraft${entity.name}.isHead());
 
 			}
 

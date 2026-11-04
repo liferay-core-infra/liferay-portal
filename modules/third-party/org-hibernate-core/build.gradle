@@ -39,6 +39,8 @@ patch {
 		autoClean = false
 	}
 
+	fileNames "org/hibernate/boot/internal/BootstrapContextImpl.java"
+	fileNames "org/hibernate/boot/model/process/spi/MetadataBuildingProcess.java"
 	fileNames "org/hibernate/bytecode/internal/bytebuddy/ByteBuddyState.java"
 	fileNames "org/hibernate/bytecode/internal/bytebuddy/BytecodeProviderImpl.java"
 	fileNames "org/hibernate/loader/ast/internal/SingleIdEntityLoaderStandardImpl.java"

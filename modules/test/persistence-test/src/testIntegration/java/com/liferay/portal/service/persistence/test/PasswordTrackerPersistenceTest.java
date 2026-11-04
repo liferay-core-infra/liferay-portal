@@ -421,4 +421,4 @@ public class PasswordTrackerPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1144933730
+// LIFERAY-SERVICE-BUILDER-HASH:-303126696

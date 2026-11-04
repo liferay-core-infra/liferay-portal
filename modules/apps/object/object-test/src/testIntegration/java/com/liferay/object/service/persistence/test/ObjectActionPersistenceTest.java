@@ -707,4 +707,4 @@ public class ObjectActionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-513795542
+// LIFERAY-SERVICE-BUILDER-HASH:1771365552

@@ -1123,4 +1123,4 @@ public class LayoutPageTemplateEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2037673519
+// LIFERAY-SERVICE-BUILDER-HASH:1980857705

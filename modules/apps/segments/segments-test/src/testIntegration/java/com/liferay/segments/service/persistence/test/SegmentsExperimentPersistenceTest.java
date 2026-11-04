@@ -665,4 +665,4 @@ public class SegmentsExperimentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-221619992
+// LIFERAY-SERVICE-BUILDER-HASH:-1962373470

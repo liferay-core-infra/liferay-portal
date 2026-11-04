@@ -679,4 +679,4 @@ public class DDLRecordSetPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-829314943
+// LIFERAY-SERVICE-BUILDER-HASH:528532359

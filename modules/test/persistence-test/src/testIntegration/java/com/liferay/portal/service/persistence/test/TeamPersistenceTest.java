@@ -582,4 +582,4 @@ public class TeamPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2007068493
+// LIFERAY-SERVICE-BUILDER-HASH:1390255239

@@ -574,4 +574,4 @@ public class SourcePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-863389364
+// LIFERAY-SERVICE-BUILDER-HASH:168331986

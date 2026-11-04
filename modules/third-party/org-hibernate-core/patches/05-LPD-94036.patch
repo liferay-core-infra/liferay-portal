@@ -1,0 +1,88 @@
+diff --git a/org/hibernate/bytecode/internal/bytebuddy/ByteBuddyState.java b/org/hibernate/bytecode/internal/bytebuddy/ByteBuddyState.java
+index 4101c6e..e0694af 100644
+--- a/org/hibernate/bytecode/internal/bytebuddy/ByteBuddyState.java
++++ b/org/hibernate/bytecode/internal/bytebuddy/ByteBuddyState.java
+@@ -57,9 +57,9 @@ public final class ByteBuddyState {
+ 
+ 	private final ByteBuddy byteBuddy;
+ 
+-	private final ProxyDefinitionHelpers proxyDefinitionHelpers = new ProxyDefinitionHelpers();
++	private volatile ProxyDefinitionHelpers proxyDefinitionHelpers;
+ 
+-	private final EnhancerImplConstants enhancerConstants = new EnhancerImplConstants();
++	private volatile EnhancerImplConstants enhancerConstants;
+ 
+ 	/**
+ 	 * It will be easier to maintain the cache and its state when it will no longer be static
+@@ -182,7 +182,12 @@ public final class ByteBuddyState {
+ 	 * @return The proxy definition helpers.
+ 	 */
+ 	public ProxyDefinitionHelpers getProxyDefinitionHelpers() {
+-		return proxyDefinitionHelpers;
++		var helpers = proxyDefinitionHelpers;
++		if ( helpers == null ) {
++			helpers = new ProxyDefinitionHelpers();
++			proxyDefinitionHelpers = helpers;
++		}
++		return helpers;
+ 	}
+ 
+ 	/**
+@@ -262,7 +267,12 @@ public final class ByteBuddyState {
+ 	}
+ 
+ 	public EnhancerImplConstants getEnhancerConstants() {
+-		return this.enhancerConstants;
++		var constants = enhancerConstants;
++		if ( constants == null ) {
++			constants = new EnhancerImplConstants();
++			enhancerConstants = constants;
++		}
++		return constants;
+ 	}
+ 
+ 	/**
+@@ -364,3 +374,4 @@ public final class ByteBuddyState {
+ 		}
+ 	}
+ }
++/* @generated */
+\ No newline at end of file
+diff --git a/org/hibernate/proxy/pojo/bytebuddy/ByteBuddyProxyHelper.java b/org/hibernate/proxy/pojo/bytebuddy/ByteBuddyProxyHelper.java
+index 6f3dae1..39f60db 100644
+--- a/org/hibernate/proxy/pojo/bytebuddy/ByteBuddyProxyHelper.java
++++ b/org/hibernate/proxy/pojo/bytebuddy/ByteBuddyProxyHelper.java
+@@ -12,7 +12,6 @@ import java.util.function.BiFunction;
+ import java.util.function.Function;
+ 
+ import org.hibernate.HibernateException;
+-import org.hibernate.bytecode.enhance.internal.bytebuddy.EnhancerImplConstants;
+ import org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState;
+ import org.hibernate.engine.spi.PrimeAmongSecondarySupertypes;
+ import org.hibernate.proxy.HibernateProxy;
+@@ -36,11 +35,9 @@ public class ByteBuddyProxyHelper implements Serializable {
+ 	private static final TypeDescription OBJECT = TypeDescription.ForLoadedType.of(Object.class);
+ 
+ 	private final ByteBuddyState byteBuddyState;
+-	private final EnhancerImplConstants constants;
+ 
+ 	public ByteBuddyProxyHelper(ByteBuddyState byteBuddyState) {
+ 		this.byteBuddyState = byteBuddyState;
+-		this.constants = byteBuddyState.getEnhancerConstants();
+ 	}
+ 
+ 	public Class<?> buildProxy(
+@@ -82,6 +79,7 @@ public class ByteBuddyProxyHelper implements Serializable {
+ 	private BiFunction<ByteBuddy, NamingStrategy, DynamicType.Builder<?>> proxyBuilder(TypeDefinition persistentClass,
+ 			Collection<? extends TypeDefinition> interfaces) {
+ 		var helpers = byteBuddyState.getProxyDefinitionHelpers();
++		var constants = byteBuddyState.getEnhancerConstants();
+ 		return (byteBuddy, namingStrategy) -> helpers.appendIgnoreAlsoAtEnd( byteBuddy
+ 				.ignore( helpers.getGroovyGetMetaClassFilter() )
+ 				.with( namingStrategy )
+@@ -178,3 +176,4 @@ public class ByteBuddyProxyHelper implements Serializable {
+ 		}
+ 	}
+ }
++/* @generated */
+\ No newline at end of file

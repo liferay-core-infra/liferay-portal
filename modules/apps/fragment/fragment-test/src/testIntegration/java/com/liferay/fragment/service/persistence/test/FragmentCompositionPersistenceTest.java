@@ -757,4 +757,4 @@ public class FragmentCompositionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:922241603
+// LIFERAY-SERVICE-BUILDER-HASH:-1224360631

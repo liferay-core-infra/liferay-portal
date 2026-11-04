@@ -621,4 +621,4 @@ public class SXPBlueprintPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1829012244
+// LIFERAY-SERVICE-BUILDER-HASH:247590810

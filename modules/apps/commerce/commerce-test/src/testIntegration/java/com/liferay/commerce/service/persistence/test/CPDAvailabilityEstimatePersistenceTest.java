@@ -596,4 +596,4 @@ public class CPDAvailabilityEstimatePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-544457614
+// LIFERAY-SERVICE-BUILDER-HASH:-517684180

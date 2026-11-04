@@ -590,4 +590,4 @@ public class PortalPreferenceValuePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1175596090
+// LIFERAY-SERVICE-BUILDER-HASH:1077086592

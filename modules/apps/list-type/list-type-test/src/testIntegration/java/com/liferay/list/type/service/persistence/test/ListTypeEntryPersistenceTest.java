@@ -611,4 +611,4 @@ public class ListTypeEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1407382026
+// LIFERAY-SERVICE-BUILDER-HASH:-1170487044

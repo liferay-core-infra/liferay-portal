@@ -430,4 +430,4 @@ public class CTCommentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1468200970
+// LIFERAY-SERVICE-BUILDER-HASH:-1600775376

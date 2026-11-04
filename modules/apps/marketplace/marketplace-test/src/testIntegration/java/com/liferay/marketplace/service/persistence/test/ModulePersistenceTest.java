@@ -521,4 +521,4 @@ public class ModulePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2113219236
+// LIFERAY-SERVICE-BUILDER-HASH:1552548702

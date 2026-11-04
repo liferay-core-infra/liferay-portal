@@ -117,7 +117,7 @@ public class BootstrapContextImpl implements BootstrapContext {
 		managedBeanRegistry = serviceRegistry.requireService( ManagedBeanRegistry.class );
 		configurationService = serviceRegistry.requireService( ConfigurationService.class );
 
-		modelsContext = createModelBuildingContext( classLoaderService, configService );
+		modelsContext = null;
 	}
 
 	@Override
@@ -388,3 +388,4 @@ public class BootstrapContextImpl implements BootstrapContext {
 		return modelsConfiguration.bootstrap();
 	}
 }
+/* @generated */

@@ -391,6 +391,15 @@ public class MetadataBuildingProcess {
 
 		final var aggregatedPersistenceUnitMetadata = metadataCollector.getPersistenceUnitMetadata();
 		final var modelsContext = bootstrapContext.getModelsContext();
+		if ( modelsContext == null ) {
+			return new DomainModelSource(
+					null,
+					new ArrayList<>(),
+					metadataCollector.getGlobalRegistrations(),
+					new RootMappingDefaults( optionDefaults, aggregatedPersistenceUnitMetadata ),
+					aggregatedPersistenceUnitMetadata
+			);
+		}
 		final var xmlPreProcessingResult =
 				XmlPreProcessor.preProcessXmlResources( managedResources,
 						aggregatedPersistenceUnitMetadata );
@@ -972,3 +981,4 @@ public class MetadataBuildingProcess {
 		}
 	}
 }
+/* @generated */

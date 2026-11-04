@@ -12,7 +12,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.hibernate.HibernateException;
-import org.hibernate.bytecode.enhance.internal.bytebuddy.EnhancerImplConstants;
 import org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState;
 import org.hibernate.engine.spi.PrimeAmongSecondarySupertypes;
 import org.hibernate.proxy.HibernateProxy;
@@ -36,11 +35,9 @@ public class ByteBuddyProxyHelper implements Serializable {
 	private static final TypeDescription OBJECT = TypeDescription.ForLoadedType.of(Object.class);
 
 	private final ByteBuddyState byteBuddyState;
-	private final EnhancerImplConstants constants;
 
 	public ByteBuddyProxyHelper(ByteBuddyState byteBuddyState) {
 		this.byteBuddyState = byteBuddyState;
-		this.constants = byteBuddyState.getEnhancerConstants();
 	}
 
 	public Class<?> buildProxy(
@@ -82,6 +79,7 @@ public class ByteBuddyProxyHelper implements Serializable {
 	private BiFunction<ByteBuddy, NamingStrategy, DynamicType.Builder<?>> proxyBuilder(TypeDefinition persistentClass,
 			Collection<? extends TypeDefinition> interfaces) {
 		var helpers = byteBuddyState.getProxyDefinitionHelpers();
+		var constants = byteBuddyState.getEnhancerConstants();
 		return (byteBuddy, namingStrategy) -> helpers.appendIgnoreAlsoAtEnd( byteBuddy
 				.ignore( helpers.getGroovyGetMetaClassFilter() )
 				.with( namingStrategy )

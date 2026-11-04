@@ -57,9 +57,9 @@ public final class ByteBuddyState {
 
 	private final ByteBuddy byteBuddy;
 
-	private final ProxyDefinitionHelpers proxyDefinitionHelpers = new ProxyDefinitionHelpers();
+	private volatile ProxyDefinitionHelpers proxyDefinitionHelpers;
 
-	private final EnhancerImplConstants enhancerConstants = new EnhancerImplConstants();
+	private volatile EnhancerImplConstants enhancerConstants;
 
 	/**
 	 * It will be easier to maintain the cache and its state when it will no longer be static
@@ -182,7 +182,12 @@ public final class ByteBuddyState {
 	 * @return The proxy definition helpers.
 	 */
 	public ProxyDefinitionHelpers getProxyDefinitionHelpers() {
-		return proxyDefinitionHelpers;
+		var helpers = proxyDefinitionHelpers;
+		if ( helpers == null ) {
+			helpers = new ProxyDefinitionHelpers();
+			proxyDefinitionHelpers = helpers;
+		}
+		return helpers;
 	}
 
 	/**
@@ -262,7 +267,12 @@ public final class ByteBuddyState {
 	}
 
 	public EnhancerImplConstants getEnhancerConstants() {
-		return this.enhancerConstants;
+		var constants = enhancerConstants;
+		if ( constants == null ) {
+			constants = new EnhancerImplConstants();
+			enhancerConstants = constants;
+		}
+		return constants;
 	}
 
 	/**

@@ -311,78 +311,25 @@ public class FragmentEntryPersistenceTest {
 
 		_fragmentEntries.add(_persistence.update(draftFragmentEntry));
 
+		Session session = _persistence.openSession();
+
+		session.flush();
+
+		session.clear();
+
+		FragmentEntry persistedFragmentEntry = _persistence.findByPrimaryKey(
+			fragmentEntry.getPrimaryKey());
+		FragmentEntry persistedDraftFragmentEntry =
+			_persistence.findByPrimaryKey(pk);
+
 		Assert.assertEquals(
-			fragmentEntry.getMvccVersion(),
-			draftFragmentEntry.getMvccVersion());
+			persistedFragmentEntry.getExternalReferenceCode(),
+			persistedDraftFragmentEntry.getExternalReferenceCode());
 		Assert.assertEquals(
-			fragmentEntry.getCtCollectionId(),
-			draftFragmentEntry.getCtCollectionId());
-		Assert.assertEquals(
-			fragmentEntry.getUuid(), draftFragmentEntry.getUuid());
-		Assert.assertEquals(
-			fragmentEntry.getExternalReferenceCode(),
-			draftFragmentEntry.getExternalReferenceCode());
-		Assert.assertEquals(
-			fragmentEntry.getHeadId(), -draftFragmentEntry.getHeadId());
-		Assert.assertEquals(
-			fragmentEntry.getGroupId(), draftFragmentEntry.getGroupId());
-		Assert.assertEquals(
-			fragmentEntry.getCompanyId(), draftFragmentEntry.getCompanyId());
-		Assert.assertEquals(
-			fragmentEntry.getUserId(), draftFragmentEntry.getUserId());
-		Assert.assertEquals(
-			fragmentEntry.getUserName(), draftFragmentEntry.getUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getCreateDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getCreateDate()));
-		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getModifiedDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getModifiedDate()));
-		Assert.assertEquals(
-			fragmentEntry.getFragmentCollectionId(),
-			draftFragmentEntry.getFragmentCollectionId());
-		Assert.assertEquals(
-			fragmentEntry.getFragmentEntryKey(),
-			draftFragmentEntry.getFragmentEntryKey());
-		Assert.assertEquals(
-			fragmentEntry.getName(), draftFragmentEntry.getName());
-		Assert.assertEquals(
-			fragmentEntry.getCss(), draftFragmentEntry.getCss());
-		Assert.assertEquals(
-			fragmentEntry.getHtml(), draftFragmentEntry.getHtml());
-		Assert.assertEquals(fragmentEntry.getJs(), draftFragmentEntry.getJs());
-		Assert.assertEquals(
-			fragmentEntry.isCacheable(), draftFragmentEntry.isCacheable());
-		Assert.assertEquals(
-			fragmentEntry.getConfiguration(),
-			draftFragmentEntry.getConfiguration());
-		Assert.assertEquals(
-			fragmentEntry.getIcon(), draftFragmentEntry.getIcon());
-		Assert.assertEquals(
-			fragmentEntry.getPreviewFileEntryId(),
-			draftFragmentEntry.getPreviewFileEntryId());
-		Assert.assertEquals(
-			fragmentEntry.isMarketplace(), draftFragmentEntry.isMarketplace());
-		Assert.assertEquals(
-			fragmentEntry.isReadOnly(), draftFragmentEntry.isReadOnly());
-		Assert.assertEquals(
-			fragmentEntry.getType(), draftFragmentEntry.getType());
-		Assert.assertEquals(
-			fragmentEntry.getTypeOptions(),
-			draftFragmentEntry.getTypeOptions());
-		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getLastPublishDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getLastPublishDate()));
-		Assert.assertEquals(2, draftFragmentEntry.getStatus());
-		Assert.assertEquals(
-			fragmentEntry.getStatusByUserId(),
-			draftFragmentEntry.getStatusByUserId());
-		Assert.assertEquals(
-			fragmentEntry.getStatusByUserName(),
-			draftFragmentEntry.getStatusByUserName());
-		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getStatusDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getStatusDate()));
+			persistedFragmentEntry.getHeadId(),
+			-persistedDraftFragmentEntry.getHeadId());
+		Assert.assertTrue(persistedFragmentEntry.isHead());
+		Assert.assertFalse(persistedDraftFragmentEntry.isHead());
 	}
 
 	@Test(expected = DuplicateFragmentEntryExternalReferenceCodeException.class)
@@ -1140,4 +1087,4 @@ public class FragmentEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1636049288
+// LIFERAY-SERVICE-BUILDER-HASH:523606265

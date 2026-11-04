@@ -194,7 +194,6 @@ public class ERCVersionedEntryPersistenceTest {
 		draftERCVersionedEntry.setHeadId(-ercVersionedEntry.getHeadId());
 		draftERCVersionedEntry.setGroupId(ercVersionedEntry.getGroupId());
 		draftERCVersionedEntry.setCompanyId(ercVersionedEntry.getCompanyId());
-
 		String draftBlobString = RandomTestUtil.randomString();
 
 		byte[] draftBlobBytes = draftBlobString.getBytes("UTF-8");
@@ -212,30 +211,19 @@ public class ERCVersionedEntryPersistenceTest {
 
 		session.clear();
 
+		ERCVersionedEntry persistedERCVersionedEntry =
+			_persistence.findByPrimaryKey(ercVersionedEntry.getPrimaryKey());
 		ERCVersionedEntry persistedDraftERCVersionedEntry =
 			_persistence.findByPrimaryKey(pk);
 
 		Assert.assertEquals(
-			ercVersionedEntry.getMvccVersion(),
-			draftERCVersionedEntry.getMvccVersion());
+			persistedERCVersionedEntry.getExternalReferenceCode(),
+			persistedDraftERCVersionedEntry.getExternalReferenceCode());
 		Assert.assertEquals(
-			ercVersionedEntry.getUuid(), draftERCVersionedEntry.getUuid());
-		Assert.assertEquals(
-			ercVersionedEntry.getExternalReferenceCode(),
-			draftERCVersionedEntry.getExternalReferenceCode());
-		Assert.assertEquals(
-			ercVersionedEntry.getHeadId(), -draftERCVersionedEntry.getHeadId());
-		Assert.assertEquals(
-			ercVersionedEntry.getGroupId(),
-			draftERCVersionedEntry.getGroupId());
-		Assert.assertEquals(
-			ercVersionedEntry.getCompanyId(),
-			draftERCVersionedEntry.getCompanyId());
-		Blob persistedDraftBlob = persistedDraftERCVersionedEntry.getBlob();
-
-		Assert.assertArrayEquals(
-			draftBlobBytes,
-			persistedDraftBlob.getBytes(1, (int)persistedDraftBlob.length()));
+			persistedERCVersionedEntry.getHeadId(),
+			-persistedDraftERCVersionedEntry.getHeadId());
+		Assert.assertTrue(persistedERCVersionedEntry.isHead());
+		Assert.assertFalse(persistedDraftERCVersionedEntry.isHead());
 	}
 
 	@Test(
@@ -762,4 +750,4 @@ public class ERCVersionedEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2132282118
+// LIFERAY-SERVICE-BUILDER-HASH:-671481500

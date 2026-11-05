@@ -887,4 +887,4 @@ public class BlogsEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2087994996
+// LIFERAY-SERVICE-BUILDER-HASH:-975132910

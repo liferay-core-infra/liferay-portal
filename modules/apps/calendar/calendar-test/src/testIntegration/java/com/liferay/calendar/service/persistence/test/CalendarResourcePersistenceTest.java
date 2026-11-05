@@ -672,4 +672,4 @@ public class CalendarResourcePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-907173692
+// LIFERAY-SERVICE-BUILDER-HASH:194569034

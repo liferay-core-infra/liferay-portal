@@ -803,4 +803,4 @@ public class CPDefinitionOptionValueRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2009741924
+// LIFERAY-SERVICE-BUILDER-HASH:-1736157334

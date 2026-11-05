@@ -667,4 +667,4 @@ public class SavedContentEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:441422435
+// LIFERAY-SERVICE-BUILDER-HASH:-1077751417

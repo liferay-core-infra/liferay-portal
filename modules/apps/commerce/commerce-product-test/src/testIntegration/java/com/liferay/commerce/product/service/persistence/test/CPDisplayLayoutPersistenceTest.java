@@ -618,4 +618,4 @@ public class CPDisplayLayoutPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:79643218
+// LIFERAY-SERVICE-BUILDER-HASH:-1386841844

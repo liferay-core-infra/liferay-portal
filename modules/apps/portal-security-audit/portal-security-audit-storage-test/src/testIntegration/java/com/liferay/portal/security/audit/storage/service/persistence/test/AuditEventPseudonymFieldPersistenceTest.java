@@ -560,4 +560,4 @@ public class AuditEventPseudonymFieldPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:815846391
+// LIFERAY-SERVICE-BUILDER-HASH:-146445707

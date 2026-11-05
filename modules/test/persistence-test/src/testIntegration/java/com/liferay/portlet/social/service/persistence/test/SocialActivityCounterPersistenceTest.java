@@ -668,4 +668,4 @@ public class SocialActivityCounterPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-840366426
+// LIFERAY-SERVICE-BUILDER-HASH:142812384

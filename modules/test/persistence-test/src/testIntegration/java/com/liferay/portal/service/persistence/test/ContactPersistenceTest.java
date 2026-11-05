@@ -570,4 +570,4 @@ public class ContactPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2122158679
+// LIFERAY-SERVICE-BUILDER-HASH:-1653902703

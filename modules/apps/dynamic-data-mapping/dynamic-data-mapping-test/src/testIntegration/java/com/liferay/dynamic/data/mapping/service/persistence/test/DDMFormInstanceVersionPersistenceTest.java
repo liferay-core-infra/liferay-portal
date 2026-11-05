@@ -636,4 +636,4 @@ public class DDMFormInstanceVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1447464685
+// LIFERAY-SERVICE-BUILDER-HASH:-1551685005

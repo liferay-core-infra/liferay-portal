@@ -549,4 +549,4 @@ public class PushNotificationsDevicePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-789450475
+// LIFERAY-SERVICE-BUILDER-HASH:1315266075

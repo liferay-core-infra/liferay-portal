@@ -629,4 +629,4 @@ public class SXPElementPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:266729222
+// LIFERAY-SERVICE-BUILDER-HASH:56241804

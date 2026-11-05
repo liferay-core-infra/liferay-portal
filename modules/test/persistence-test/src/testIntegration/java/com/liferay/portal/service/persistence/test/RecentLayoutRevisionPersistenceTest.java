@@ -556,4 +556,4 @@ public class RecentLayoutRevisionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1697610979
+// LIFERAY-SERVICE-BUILDER-HASH:1584702115

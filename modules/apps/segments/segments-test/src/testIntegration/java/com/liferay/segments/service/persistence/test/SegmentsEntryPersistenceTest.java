@@ -803,4 +803,4 @@ public class SegmentsEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1805518344
+// LIFERAY-SERVICE-BUILDER-HASH:561189426

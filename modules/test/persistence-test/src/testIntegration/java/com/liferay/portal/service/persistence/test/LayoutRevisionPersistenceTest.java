@@ -680,4 +680,4 @@ public class LayoutRevisionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1024471097
+// LIFERAY-SERVICE-BUILDER-HASH:71024371

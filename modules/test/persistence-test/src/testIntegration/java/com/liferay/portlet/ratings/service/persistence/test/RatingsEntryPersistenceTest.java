@@ -557,4 +557,4 @@ public class RatingsEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1091043658
+// LIFERAY-SERVICE-BUILDER-HASH:1631573712

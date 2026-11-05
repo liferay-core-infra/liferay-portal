@@ -18,7 +18,7 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="modifiedDate" type="timestamp" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="callbackURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="className" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<one-to-one access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" cascade="merge,persist,save-update" class="com.liferay.batch.engine.model.BatchEngineExportTaskContentBlobModel" constrained="false" name="contentBlobModel" outer-join="false" />
+		<one-to-one access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" cascade="merge,persist" class="com.liferay.batch.engine.model.BatchEngineExportTaskContentBlobModel" constrained="false" name="contentBlobModel" outer-join="false" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="contentType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="endTime" type="timestamp" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="errorMessage" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
@@ -32,11 +32,10 @@
 	</class>
 	<class dynamic-update="true" lazy="true" name="com.liferay.batch.engine.model.BatchEngineExportTaskContentBlobModel" table="BatchEngineExportTask">
 		<id column="batchEngineExportTaskId" name="batchEngineExportTaskId">
-			<generator class="foreign">
-				<param name="property">com.liferay.batch.engine.model.impl.BatchEngineExportTaskImpl</param>
-			</generator>
+			<generator class="assigned" />
 		</id>
 		<property column="content" name="contentBlob" type="blob" />
+		<sql-insert>UPDATE BatchEngineExportTask SET content = ? WHERE batchEngineExportTaskId = ?</sql-insert>
 	</class>
 	<class dynamic-update="true" name="com.liferay.batch.engine.model.impl.BatchEngineImportTaskImpl" table="BatchEngineImportTask">
 		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="batchEngineImportTaskId" type="long">
@@ -52,7 +51,7 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="batchSize" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="callbackURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="className" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<one-to-one access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" cascade="merge,persist,save-update" class="com.liferay.batch.engine.model.BatchEngineImportTaskContentBlobModel" constrained="false" name="contentBlobModel" outer-join="false" />
+		<one-to-one access="com.liferay.portal.dao.orm.hibernate.PrivateFieldPropertyAccessor" cascade="merge,persist" class="com.liferay.batch.engine.model.BatchEngineImportTaskContentBlobModel" constrained="false" name="contentBlobModel" outer-join="false" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="contentType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="endTime" type="timestamp" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="errorMessage" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
@@ -68,11 +67,10 @@
 	</class>
 	<class dynamic-update="true" lazy="true" name="com.liferay.batch.engine.model.BatchEngineImportTaskContentBlobModel" table="BatchEngineImportTask">
 		<id column="batchEngineImportTaskId" name="batchEngineImportTaskId">
-			<generator class="foreign">
-				<param name="property">com.liferay.batch.engine.model.impl.BatchEngineImportTaskImpl</param>
-			</generator>
+			<generator class="assigned" />
 		</id>
 		<property column="content" name="contentBlob" type="blob" />
+		<sql-insert>UPDATE BatchEngineImportTask SET content = ? WHERE batchEngineImportTaskId = ?</sql-insert>
 	</class>
 	<class dynamic-update="true" name="com.liferay.batch.engine.model.impl.BatchEngineImportTaskErrorImpl" table="BatchEngineImportTaskError">
 		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="batchEngineImportTaskErrorId" type="long">

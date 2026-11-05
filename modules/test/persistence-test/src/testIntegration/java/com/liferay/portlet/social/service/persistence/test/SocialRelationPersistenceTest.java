@@ -574,4 +574,4 @@ public class SocialRelationPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1026975491
+// LIFERAY-SERVICE-BUILDER-HASH:2017604361

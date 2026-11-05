@@ -522,4 +522,4 @@ public class ObjectStateFlowPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:223183293
+// LIFERAY-SERVICE-BUILDER-HASH:524979703

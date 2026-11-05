@@ -194,7 +194,6 @@ public class ERCVersionedEntryPersistenceTest {
 		draftERCVersionedEntry.setHeadId(-ercVersionedEntry.getHeadId());
 		draftERCVersionedEntry.setGroupId(ercVersionedEntry.getGroupId());
 		draftERCVersionedEntry.setCompanyId(ercVersionedEntry.getCompanyId());
-
 		String draftBlobString = RandomTestUtil.randomString();
 
 		byte[] draftBlobBytes = draftBlobString.getBytes("UTF-8");
@@ -212,25 +211,31 @@ public class ERCVersionedEntryPersistenceTest {
 
 		session.clear();
 
+		_persistence.clearCache();
+
+		ERCVersionedEntry persistedERCVersionedEntry =
+			_persistence.findByPrimaryKey(ercVersionedEntry.getPrimaryKey());
 		ERCVersionedEntry persistedDraftERCVersionedEntry =
 			_persistence.findByPrimaryKey(pk);
 
 		Assert.assertEquals(
-			ercVersionedEntry.getMvccVersion(),
-			draftERCVersionedEntry.getMvccVersion());
+			persistedERCVersionedEntry.getMvccVersion(),
+			persistedDraftERCVersionedEntry.getMvccVersion());
 		Assert.assertEquals(
-			ercVersionedEntry.getUuid(), draftERCVersionedEntry.getUuid());
+			persistedERCVersionedEntry.getUuid(),
+			persistedDraftERCVersionedEntry.getUuid());
 		Assert.assertEquals(
-			ercVersionedEntry.getExternalReferenceCode(),
-			draftERCVersionedEntry.getExternalReferenceCode());
+			persistedERCVersionedEntry.getExternalReferenceCode(),
+			persistedDraftERCVersionedEntry.getExternalReferenceCode());
 		Assert.assertEquals(
-			ercVersionedEntry.getHeadId(), -draftERCVersionedEntry.getHeadId());
+			persistedERCVersionedEntry.getHeadId(),
+			-persistedDraftERCVersionedEntry.getHeadId());
 		Assert.assertEquals(
-			ercVersionedEntry.getGroupId(),
-			draftERCVersionedEntry.getGroupId());
+			persistedERCVersionedEntry.getGroupId(),
+			persistedDraftERCVersionedEntry.getGroupId());
 		Assert.assertEquals(
-			ercVersionedEntry.getCompanyId(),
-			draftERCVersionedEntry.getCompanyId());
+			persistedERCVersionedEntry.getCompanyId(),
+			persistedDraftERCVersionedEntry.getCompanyId());
 		Blob persistedDraftBlob = persistedDraftERCVersionedEntry.getBlob();
 
 		Assert.assertArrayEquals(
@@ -762,4 +767,4 @@ public class ERCVersionedEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2132282118
+// LIFERAY-SERVICE-BUILDER-HASH:-1738059819

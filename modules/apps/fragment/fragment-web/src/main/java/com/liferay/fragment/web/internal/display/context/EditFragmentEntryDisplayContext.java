@@ -655,7 +655,7 @@ public class EditFragmentEntryDisplayContext {
 
 		FragmentEntry fragmentEntry = getFragmentEntry();
 
-		if (WorkflowConstants.STATUS_DRAFT != fragmentEntry.getStatus()) {
+		if (fragmentEntry.isHead()) {
 			_renderResponse.setTitle(getFragmentEntryTitle());
 
 			return;

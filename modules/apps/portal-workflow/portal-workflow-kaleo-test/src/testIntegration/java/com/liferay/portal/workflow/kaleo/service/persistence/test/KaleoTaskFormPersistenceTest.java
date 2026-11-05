@@ -630,4 +630,4 @@ public class KaleoTaskFormPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2100455725
+// LIFERAY-SERVICE-BUILDER-HASH:-557492083

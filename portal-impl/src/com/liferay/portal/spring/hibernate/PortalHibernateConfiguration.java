@@ -9,12 +9,9 @@ import com.liferay.petra.io.Deserializer;
 import com.liferay.petra.io.Serializer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.internal.change.tracking.hibernate.CTSQLInterceptor;
-import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
@@ -23,7 +20,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -35,19 +31,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import java.lang.reflect.Field;
-
 import java.net.URL;
 import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
@@ -59,14 +53,17 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.hibernate.boot.jaxb.internal.InputStreamXmlSource;
 import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.resource.beans.internal.ManagedBeanRegistryImpl;
+import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
-import org.hibernate.type.spi.TypeConfiguration;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -74,7 +71,6 @@ import org.osgi.framework.BundleContext;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
-import org.springframework.util.ClassUtils;
 
 /**
  * @author Brian Wing Shun Chan
@@ -88,19 +84,7 @@ public class PortalHibernateConfiguration
 	public void afterPropertiesSet() throws IOException {
 		Dialect dialect = DialectDetector.getDialect(_dataSource);
 
-		if (DBManagerUtil.getDBType(dialect) == DBType.ORACLE) {
-
-			// This must be done before the instantiating Configuration to
-			// ensure that org.hibernate.cfg.Environment's static init block can
-			// see it
-
-			System.setProperty(
-				PropsKeys.HIBERNATE_JDBC_USE_STREAMS_FOR_BINARY, "true");
-		}
-
 		Properties properties = PropsUtil.getProperties();
-
-		properties.remove("hibernate.cache.region.factory_class");
 
 		properties.setProperty(
 			"hibernate.allow_update_outside_transaction", "true");
@@ -112,11 +96,14 @@ public class PortalHibernateConfiguration
 			PortalCurrentSessionContext.class.getName());
 		properties.setProperty(
 			"hibernate.id.sequence.increment_size_mismatch_strategy", "FIX");
+		properties.setProperty(
+			"hibernate.jpa.static_metamodel.population", "disabled");
+		properties.setProperty("hibernate.jpa_callbacks.enabled", "false");
+		properties.setProperty(
+			"hibernate.query.native.prefer_jdbc_datetime_types", "true");
 
 		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
-			Class<?> clazz = dialect.getClass();
-
-			properties.setProperty("hibernate.dialect", clazz.getName());
+			properties.put("hibernate.dialect", dialect);
 		}
 
 		properties.setProperty("jakarta.persistence.validation.mode", "none");
@@ -124,8 +111,19 @@ public class PortalHibernateConfiguration
 		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
 			new BootstrapServiceRegistryBuilder();
 
-		bootstrapServiceRegistryBuilder.applyClassLoader(
-			getConfigurationClassLoader());
+		bootstrapServiceRegistryBuilder.applyClassLoaderService(
+			new ClassLoaderServiceImpl(getConfigurationClassLoader()) {
+
+				@Override
+				public <S> Collection<S> loadJavaServices(
+					Class<S> serviceContract) {
+
+					return (Collection<S>)_javaServices.computeIfAbsent(
+						serviceContract,
+						key -> super.loadJavaServices(serviceContract));
+				}
+
+			});
 
 		bootstrapServiceRegistryBuilder.applyIntegrator(
 			GlobalEventListenerIntegrator.INSTANCE);
@@ -140,19 +138,16 @@ public class PortalHibernateConfiguration
 		Configuration configuration = new Configuration(
 			new MetadataSources(bootstrapServiceRegistryBuilder.build()));
 
-		SQLTransformer.populateSQLFunctions(configuration);
+		configuration.registerFunctionContributor(
+			SQLTransformer.getFunctionContributor());
 
 		if (_mvccEnabled) {
-			configuration.setInterceptor(new CTSQLInterceptor());
+			configuration.setStatementInspector(new CTSQLInterceptor());
 		}
 
 		configuration.addProperties(properties);
 
 		properties = configuration.getProperties();
-
-		properties.put(
-			"hibernate.classLoaders",
-			Collections.singleton(ClassUtils.getDefaultClassLoader()));
 
 		if (_dataSource != null) {
 			properties.put("hibernate.connection.datasource", _dataSource);
@@ -260,35 +255,34 @@ public class PortalHibernateConfiguration
 			_log.error(exception);
 		}
 
-		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		StandardServiceRegistryBuilder standardServiceRegistryBuilder =
+			configuration.getStandardServiceRegistryBuilder();
+
+		standardServiceRegistryBuilder.addService(
+			ManagedBeanRegistry.class, new ManagedBeanRegistryImpl(null));
+
+		if (_dataSource == null) {
+			return configuration.buildSessionFactory();
+		}
+
+		JdbcEnvironment jdbcEnvironment = _jdbcEnvironments.get(_dataSource);
+
+		if (jdbcEnvironment != null) {
+			standardServiceRegistryBuilder.addService(
+				JdbcEnvironment.class, jdbcEnvironment);
+
+			return configuration.buildSessionFactory();
+		}
 
 		SessionFactoryImplementor sessionFactoryImplementor =
-			(SessionFactoryImplementor)sessionFactory;
+			(SessionFactoryImplementor)configuration.buildSessionFactory();
 
-		MetamodelImplementor metamodelImplementor =
-			sessionFactoryImplementor.getMetamodel();
+		JdbcServices jdbcServices = sessionFactoryImplementor.getJdbcServices();
 
-		TypeConfiguration typeConfiguration =
-			metamodelImplementor.getTypeConfiguration();
+		_jdbcEnvironments.putIfAbsent(
+			_dataSource, jdbcServices.getJdbcEnvironment());
 
-		try {
-			_META_MODEL_FIELD.set(
-				sessionFactory,
-				ProxyUtil.newDelegateProxyInstance(
-					MetamodelImplementor.class.getClassLoader(),
-					MetamodelImplementor.class,
-					new SessionFactoryDelegate(
-						typeConfiguration.getImportMap()),
-					metamodelImplementor));
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to inject optimized query plan cache", exception);
-			}
-		}
-
-		return sessionFactory;
+		return sessionFactoryImplementor;
 	}
 
 	private File _getCacheFile(URL url) {
@@ -356,10 +350,10 @@ public class PortalHibernateConfiguration
 		XmlMappingBinderAccess xmlMappingBinderAccess =
 			configuration.getXmlMappingBinderAccess();
 
-		Binding<?> binding = InputStreamXmlSource.doBind(
-			xmlMappingBinderAccess.getMappingBinder(),
+		Binding<?> binding = InputStreamXmlSource.fromStream(
 			urlConnection.getInputStream(),
-			new Origin(SourceType.URL, url.toExternalForm()), true);
+			new Origin(SourceType.URL, url.toExternalForm()), true,
+			xmlMappingBinderAccess.getMappingBinder());
 
 		if (PropsValues.HIBERNATE_HBM_JAXB_CACHE) {
 			Serializer serializer = new Serializer();
@@ -415,42 +409,19 @@ public class PortalHibernateConfiguration
 		}
 	}
 
-	private static final Field _META_MODEL_FIELD;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalHibernateConfiguration.class);
 
-	private static final BundleContext _bundleContext;
-
-	static {
-		_bundleContext = SystemBundleUtil.getBundleContext();
-
-		try {
-			_META_MODEL_FIELD = ReflectionUtil.getDeclaredField(
-				SessionFactoryImpl.class, "metamodel");
-		}
-		catch (Exception exception) {
-			throw new ExceptionInInitializerError(exception);
-		}
-	}
+	private static final BundleContext _bundleContext =
+		SystemBundleUtil.getBundleContext();
+	private static final Map<Class<?>, Collection<?>> _javaServices =
+		new ConcurrentHashMap<>();
+	private static final Map<DataSource, JdbcEnvironment> _jdbcEnvironments =
+		new ConcurrentHashMap<>();
 
 	private String[] _configurationResources;
 	private DataSource _dataSource;
 	private boolean _mvccEnabled = true;
 	private SessionFactory _sessionFactory;
-
-	private static class SessionFactoryDelegate {
-
-		public String getImportedClassName(String className) {
-			return _imports.get(className);
-		}
-
-		private SessionFactoryDelegate(Map<String, String> imports) {
-			_imports = new HashMap<>(imports);
-		}
-
-		private final Map<String, String> _imports;
-
-	}
 
 }

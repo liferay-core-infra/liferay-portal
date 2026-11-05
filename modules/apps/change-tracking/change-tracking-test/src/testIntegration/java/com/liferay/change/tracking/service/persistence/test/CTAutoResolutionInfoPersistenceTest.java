@@ -463,4 +463,4 @@ public class CTAutoResolutionInfoPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1118706015
+// LIFERAY-SERVICE-BUILDER-HASH:-1115156327

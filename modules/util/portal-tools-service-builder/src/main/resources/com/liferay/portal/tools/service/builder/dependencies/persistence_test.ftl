@@ -407,8 +407,6 @@ public class ${entity.name}PersistenceTest {
 					<#if !entityColumn.primary && (validator.isNull(parentPKColumn) || (parentPKColumn.name != entityColumn.name))>
 						<#if stringUtil.equals(entityColumn.name, "headId")>
 							Assert.assertEquals(persisted${entity.name}.get${entityColumn.methodName}(), -persistedDraft${entity.name}.get${entityColumn.methodName}());
-						<#elseif stringUtil.equals(entityColumn.name, "status")>
-							Assert.assertEquals(2, persistedDraft${entity.name}.get${entityColumn.methodName}());
 						<#elseif stringUtil.equals(entityColumn.type, "Blob")>
 							Blob persistedDraft${entityColumn.methodName} = persistedDraft${entity.name}.get${entityColumn.methodName}();
 

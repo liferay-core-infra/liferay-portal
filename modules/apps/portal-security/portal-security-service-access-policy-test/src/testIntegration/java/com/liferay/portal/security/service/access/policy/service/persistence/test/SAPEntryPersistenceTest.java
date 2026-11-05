@@ -550,4 +550,4 @@ public class SAPEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-16390770
+// LIFERAY-SERVICE-BUILDER-HASH:1559605396

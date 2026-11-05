@@ -465,4 +465,4 @@ public class FilterPrimaryEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1935280507
+// LIFERAY-SERVICE-BUILDER-HASH:-1554812985

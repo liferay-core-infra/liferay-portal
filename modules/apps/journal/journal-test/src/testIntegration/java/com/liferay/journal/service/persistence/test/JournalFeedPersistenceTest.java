@@ -646,4 +646,4 @@ public class JournalFeedPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:904150981
+// LIFERAY-SERVICE-BUILDER-HASH:-306073141

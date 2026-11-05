@@ -653,4 +653,4 @@ public class TemplateEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1857676873
+// LIFERAY-SERVICE-BUILDER-HASH:782449469

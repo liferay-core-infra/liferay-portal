@@ -594,4 +594,4 @@ public class AuditEventPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1262735458
+// LIFERAY-SERVICE-BUILDER-HASH:1947853672

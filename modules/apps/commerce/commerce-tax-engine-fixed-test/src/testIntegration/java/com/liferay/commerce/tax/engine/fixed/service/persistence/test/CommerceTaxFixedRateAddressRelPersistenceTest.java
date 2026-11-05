@@ -600,4 +600,4 @@ public class CommerceTaxFixedRateAddressRelPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2029129457
+// LIFERAY-SERVICE-BUILDER-HASH:2116685461

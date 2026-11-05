@@ -418,4 +418,4 @@ public class DataLimitEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1079177210
+// LIFERAY-SERVICE-BUILDER-HASH:-1395011444

@@ -644,4 +644,4 @@ public class CPDefinitionGroupedEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-490600772
+// LIFERAY-SERVICE-BUILDER-HASH:1527143158

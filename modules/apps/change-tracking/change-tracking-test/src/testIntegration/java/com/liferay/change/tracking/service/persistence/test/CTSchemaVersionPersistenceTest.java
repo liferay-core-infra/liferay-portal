@@ -407,4 +407,4 @@ public class CTSchemaVersionPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2139588968
+// LIFERAY-SERVICE-BUILDER-HASH:427244450

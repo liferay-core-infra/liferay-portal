@@ -9,12 +9,10 @@ import com.liferay.document.library.util.DLURLHelperUtil;
 import com.liferay.fragment.constants.FragmentConstants;
 import com.liferay.fragment.constants.FragmentExportImportConstants;
 import com.liferay.fragment.model.FragmentEntry;
-import com.liferay.fragment.model.FragmentEntryVersion;
 import com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil;
 import com.liferay.fragment.service.FragmentEntryLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -24,7 +22,6 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.zip.ZipWriter;
 
 /**
@@ -87,16 +84,6 @@ public class FragmentEntryImpl extends FragmentEntryBaseImpl {
 		return StringPool.BLANK;
 	}
 
-	@JSON
-	@Override
-	public int getStatus() {
-		if (isHead()) {
-			return WorkflowConstants.STATUS_APPROVED;
-		}
-
-		return WorkflowConstants.STATUS_DRAFT;
-	}
-
 	@Override
 	public String getTypeLabel() {
 		return FragmentConstants.getTypeLabel(getType());
@@ -115,16 +102,6 @@ public class FragmentEntryImpl extends FragmentEntryBaseImpl {
 		}
 
 		return 0;
-	}
-
-	@Override
-	public boolean isApproved() {
-		return isHead();
-	}
-
-	@Override
-	public boolean isDraft() {
-		return !isHead();
 	}
 
 	@Override
@@ -161,15 +138,6 @@ public class FragmentEntryImpl extends FragmentEntryBaseImpl {
 		}
 
 		return false;
-	}
-
-	@Override
-	public void populateVersionModel(
-		FragmentEntryVersion fragmentEntryVersion) {
-
-		super.populateVersionModel(fragmentEntryVersion);
-
-		fragmentEntryVersion.setStatus(super.getStatus());
 	}
 
 	@Override

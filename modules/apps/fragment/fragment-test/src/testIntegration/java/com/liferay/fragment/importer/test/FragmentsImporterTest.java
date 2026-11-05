@@ -422,7 +422,7 @@ public class FragmentsImporterTest {
 
 		FragmentEntry fragmentEntry = filteredFragmentEntries.get(0);
 
-		Assert.assertTrue(fragmentEntry.isDraft());
+		Assert.assertFalse(fragmentEntry.isHead());
 	}
 
 	@Test
@@ -449,7 +449,7 @@ public class FragmentsImporterTest {
 
 		FragmentEntry fragmentEntry = filteredFragmentEntries.get(0);
 
-		Assert.assertTrue(fragmentEntry.isDraft());
+		Assert.assertFalse(fragmentEntry.isHead());
 	}
 
 	@Test

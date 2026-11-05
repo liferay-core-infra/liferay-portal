@@ -61,7 +61,7 @@ public class EditFragmentEntryMVCActionCommand
 
 		FragmentEntry draftFragmentEntry = null;
 
-		if (fragmentEntry.isDraft()) {
+		if (!fragmentEntry.isHead()) {
 			draftFragmentEntry = fragmentEntry;
 		}
 		else {

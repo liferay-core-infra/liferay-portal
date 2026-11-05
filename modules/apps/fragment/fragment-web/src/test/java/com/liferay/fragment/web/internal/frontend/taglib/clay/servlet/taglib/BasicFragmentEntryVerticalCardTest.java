@@ -71,7 +71,7 @@ public class BasicFragmentEntryVerticalCardTest {
 		_testGetLabels("cached", "draft");
 
 		Mockito.when(
-			_fragmentEntry.isApproved()
+			_fragmentEntry.isHead()
 		).thenReturn(
 			true
 		);

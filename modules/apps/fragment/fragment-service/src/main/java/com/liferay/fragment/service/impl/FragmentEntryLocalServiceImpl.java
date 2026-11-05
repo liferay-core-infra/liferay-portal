@@ -205,7 +205,7 @@ public class FragmentEntryLocalServiceImpl
 		FragmentEntry draftFragmentEntry = null;
 		FragmentEntry publishedFragmentEntry = null;
 
-		if (sourceFragmentEntry.isDraft()) {
+		if (!sourceFragmentEntry.isHead()) {
 			draftFragmentEntry = sourceFragmentEntry;
 
 			if (draftFragmentEntry.getFragmentEntryId() !=
@@ -349,7 +349,7 @@ public class FragmentEntryLocalServiceImpl
 		if (fragmentEntry.getPreviewFileEntryId() > 0) {
 			boolean deletePreviewFileEntry = true;
 
-			if (fragmentEntry.isDraft() &&
+			if (!fragmentEntry.isHead() &&
 				(fragmentEntry.getHeadId() !=
 					fragmentEntry.getFragmentEntryId())) {
 
@@ -370,7 +370,7 @@ public class FragmentEntryLocalServiceImpl
 			}
 		}
 
-		if (fragmentEntry.isDraft()) {
+		if (!fragmentEntry.isHead()) {
 			return deleteDraft(fragmentEntry);
 		}
 
@@ -425,7 +425,7 @@ public class FragmentEntryLocalServiceImpl
 			return null;
 		}
 
-		if (!fragmentEntry.isDraft()) {
+		if (fragmentEntry.isHead()) {
 			return fragmentEntry;
 		}
 
@@ -775,7 +775,7 @@ public class FragmentEntryLocalServiceImpl
 
 		FragmentEntry draftFragmentEntry = null;
 
-		if (fragmentEntry.isDraft()) {
+		if (!fragmentEntry.isHead()) {
 			draftFragmentEntry = fragmentEntry;
 		}
 		else {
@@ -790,7 +790,7 @@ public class FragmentEntryLocalServiceImpl
 		FragmentEntry updatedDraftFragmentEntry =
 			fragmentEntryPersistence.update(draftFragmentEntry);
 
-		if (fragmentEntry.isDraft()) {
+		if (!fragmentEntry.isHead()) {
 			return updatedDraftFragmentEntry;
 		}
 

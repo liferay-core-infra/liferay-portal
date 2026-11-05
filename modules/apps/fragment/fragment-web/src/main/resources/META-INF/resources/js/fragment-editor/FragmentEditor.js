@@ -36,6 +36,7 @@ const FragmentEditor = ({
 		fragmentCollectionId,
 		fragmentConfigurationURL,
 		fragmentEntryId,
+		head,
 		htmlEditorCustomEntities,
 		initialCSS,
 		initialConfiguration,
@@ -47,7 +48,6 @@ const FragmentEditor = ({
 		propagationEnabled,
 		readOnly,
 		showFieldTypes,
-		status,
 		urls,
 	},
 }) => {
@@ -355,9 +355,7 @@ const FragmentEditor = ({
 										}
 										onChangeFieldTypes={setFieldTypes}
 										readOnly={readOnly}
-										showFragmentConfigurationLink={
-											status !== allowedStatus.draft
-										}
+										showFragmentConfigurationLink={head}
 										title={Liferay.Language.get(
 											'field-types'
 										)}

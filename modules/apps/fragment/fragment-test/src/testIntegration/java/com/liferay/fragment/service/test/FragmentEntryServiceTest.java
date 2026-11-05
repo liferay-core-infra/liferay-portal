@@ -262,8 +262,7 @@ public class FragmentEntryServiceTest {
 
 		Assert.assertEquals(
 			"fragmententrykey", fragmentEntry.getFragmentEntryKey());
-		Assert.assertEquals(
-			WorkflowConstants.STATUS_APPROVED, fragmentEntry.getStatus());
+		Assert.assertTrue(fragmentEntry.isHead());
 	}
 
 	@Test
@@ -2006,8 +2005,7 @@ public class FragmentEntryServiceTest {
 		Assert.assertEquals("<div>Updated</div>", fragmentEntry.getHtml());
 		Assert.assertEquals("alert(\"test\");", fragmentEntry.getJs());
 		Assert.assertEquals(1, fragmentEntry.getPreviewFileEntryId());
-		Assert.assertEquals(
-			WorkflowConstants.STATUS_APPROVED, fragmentEntry.getStatus());
+		Assert.assertTrue(fragmentEntry.isHead());
 	}
 
 	@Test
@@ -2048,8 +2046,7 @@ public class FragmentEntryServiceTest {
 		Assert.assertEquals("div {\ncolor: red;\n}", fragmentEntry.getCss());
 		Assert.assertEquals("<div>Updated</div>", fragmentEntry.getHtml());
 		Assert.assertEquals("alert(\"test\");", fragmentEntry.getJs());
-		Assert.assertEquals(
-			WorkflowConstants.STATUS_APPROVED, fragmentEntry.getStatus());
+		Assert.assertTrue(fragmentEntry.isHead());
 	}
 
 	@Test
@@ -2082,8 +2079,7 @@ public class FragmentEntryServiceTest {
 		Assert.assertEquals("<div>Updated</div>", fragmentEntry.getHtml());
 		Assert.assertEquals("alert(\"test\");", fragmentEntry.getJs());
 		Assert.assertEquals(1, fragmentEntry.getPreviewFileEntryId());
-		Assert.assertEquals(
-			WorkflowConstants.STATUS_APPROVED, fragmentEntry.getStatus());
+		Assert.assertTrue(fragmentEntry.isHead());
 	}
 
 	@Test
@@ -2116,8 +2112,7 @@ public class FragmentEntryServiceTest {
 
 		Assert.assertEquals(fragmentEntry.getJs(), copyFragmentEntry.getJs());
 
-		Assert.assertEquals(
-			fragmentEntry.getStatus(), copyFragmentEntry.getStatus());
+		Assert.assertEquals(fragmentEntry.isHead(), copyFragmentEntry.isHead());
 
 		Assert.assertEquals(
 			fragmentEntry.getType(), copyFragmentEntry.getType());

@@ -301,8 +301,7 @@ public class FragmentEntryLocalServiceTest {
 		Assert.assertEquals(
 			fragmentEntry.getHtml(), copyFragmentEntry.getHtml());
 		Assert.assertEquals(fragmentEntry.getJs(), copyFragmentEntry.getJs());
-		Assert.assertEquals(
-			fragmentEntry.getStatus(), copyFragmentEntry.getStatus());
+		Assert.assertEquals(fragmentEntry.isHead(), copyFragmentEntry.isHead());
 		Assert.assertEquals(
 			fragmentEntry.getType(), copyFragmentEntry.getType());
 	}

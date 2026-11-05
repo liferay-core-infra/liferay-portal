@@ -447,7 +447,7 @@ public class FragmentsImporterImpl implements FragmentsImporter {
 				fragmentsImporterResultEntryStatus =
 					FragmentsImporterResultEntry.Status.IMPORTED;
 
-			if (fragmentEntry.getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			if (!fragmentEntry.isHead()) {
 				fragmentsImporterResultEntryStatus =
 					FragmentsImporterResultEntry.Status.IMPORTED_DRAFT;
 			}

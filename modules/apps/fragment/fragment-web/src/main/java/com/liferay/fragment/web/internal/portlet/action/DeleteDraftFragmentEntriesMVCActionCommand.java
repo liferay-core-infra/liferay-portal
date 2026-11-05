@@ -47,7 +47,7 @@ public class DeleteDraftFragmentEntriesMVCActionCommand
 			return;
 		}
 
-		if (fragmentEntry.isDraft()) {
+		if (!fragmentEntry.isHead()) {
 			_fragmentEntryService.deleteFragmentEntry(
 				fragmentEntry.getFragmentEntryId());
 		}

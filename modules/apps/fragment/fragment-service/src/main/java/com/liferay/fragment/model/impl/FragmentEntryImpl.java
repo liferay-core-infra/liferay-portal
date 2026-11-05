@@ -34,7 +34,7 @@ public class FragmentEntryImpl extends FragmentEntryBaseImpl {
 
 	@Override
 	public FragmentEntry fetchDraftFragmentEntry() {
-		if (isDraft()) {
+		if (!isHead()) {
 			return null;
 		}
 

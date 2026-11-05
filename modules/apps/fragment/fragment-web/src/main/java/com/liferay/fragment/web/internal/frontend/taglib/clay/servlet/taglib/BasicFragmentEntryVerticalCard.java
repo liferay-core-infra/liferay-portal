@@ -102,7 +102,7 @@ public class BasicFragmentEntryVerticalCard
 
 	@Override
 	public List<LabelItem> getLabels() {
-		if (fragmentEntry.isApproved() &&
+		if (fragmentEntry.isHead() &&
 			(fragmentEntry.fetchDraftFragmentEntry() != null)) {
 
 			return LabelItemListBuilder.add(

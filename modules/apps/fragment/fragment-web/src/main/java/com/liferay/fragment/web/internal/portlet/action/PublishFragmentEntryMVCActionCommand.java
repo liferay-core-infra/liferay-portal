@@ -53,7 +53,7 @@ public class PublishFragmentEntryMVCActionCommand
 			FragmentEntry fragmentEntry =
 				_fragmentEntryService.fetchFragmentEntry(fragmentEntryId);
 
-			if (fragmentEntry.isDraft()) {
+			if (!fragmentEntry.isHead()) {
 				draftFragmentEntry = fragmentEntry;
 			}
 			else {

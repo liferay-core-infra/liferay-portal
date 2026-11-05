@@ -101,7 +101,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 						() ->
 							hasManageFragmentEntriesPermission &&
 							!_fragmentEntry.isReadOnly() &&
-							(_fragmentEntry.isDraft() ||
+							(!_fragmentEntry.isHead() ||
 							 (_fragmentEntry.fetchDraftFragmentEntry() !=
 								 null)) &&
 							!_fragmentEntry.isTypeReact() &&
@@ -278,7 +278,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 
 		FragmentEntry fragmentEntry = null;
 
-		if (_fragmentEntry.isDraft()) {
+		if (!_fragmentEntry.isHead()) {
 			fragmentEntry = _fragmentEntry;
 		}
 		else {
@@ -317,7 +317,7 @@ public class BasicFragmentEntryActionDropdownItemsProvider {
 			"/fragment/export_fragment_compositions_and_fragment_entries");
 
 		return dropdownItem -> {
-			dropdownItem.setDisabled(_fragmentEntry.isDraft());
+			dropdownItem.setDisabled(!_fragmentEntry.isHead());
 			dropdownItem.setHref(exportFragmentEntryURL);
 			dropdownItem.setIcon("export");
 			dropdownItem.setLabel(

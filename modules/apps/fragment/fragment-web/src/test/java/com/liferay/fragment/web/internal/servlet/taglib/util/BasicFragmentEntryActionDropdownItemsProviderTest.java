@@ -277,9 +277,9 @@ public class BasicFragmentEntryActionDropdownItemsProviderTest
 		boolean draft, boolean readOnly, boolean typeReact) {
 
 		Mockito.when(
-			_fragmentEntry.isDraft()
+			_fragmentEntry.isHead()
 		).thenReturn(
-			draft
+			!draft
 		);
 
 		Mockito.when(

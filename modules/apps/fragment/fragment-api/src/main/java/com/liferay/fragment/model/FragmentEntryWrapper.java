@@ -770,13 +770,6 @@ public class FragmentEntryWrapper
 	}
 
 	@Override
-	public void populateVersionModel(
-		FragmentEntryVersion fragmentEntryVersion) {
-
-		model.populateVersionModel(fragmentEntryVersion);
-	}
-
-	@Override
 	public void populateZipWriter(
 			com.liferay.portal.kernel.zip.ZipWriter zipWriter, String path)
 		throws Exception {
@@ -1159,9 +1152,16 @@ public class FragmentEntryWrapper
 	}
 
 	@Override
+	public void populateVersionModel(
+		FragmentEntryVersion fragmentEntryVersion) {
+
+		model.populateVersionModel(fragmentEntryVersion);
+	}
+
+	@Override
 	protected FragmentEntryWrapper wrap(FragmentEntry fragmentEntry) {
 		return new FragmentEntryWrapper(fragmentEntry);
 	}
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:138963817
+// LIFERAY-SERVICE-BUILDER-HASH:-586595934

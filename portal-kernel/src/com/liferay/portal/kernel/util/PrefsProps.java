@@ -5,6 +5,8 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.template.TemplateRestricted;
+
 import jakarta.portlet.PortletPreferences;
 
 import java.util.Properties;
@@ -17,6 +19,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface PrefsProps {
 
+	@TemplateRestricted
 	public boolean getBoolean(long companyId, String name);
 
 	public boolean getBoolean(
@@ -33,6 +36,7 @@ public interface PrefsProps {
 
 	public boolean getBoolean(String name, boolean defaultValue);
 
+	@TemplateRestricted
 	public String getContent(long companyId, String name);
 
 	public String getContent(
@@ -40,6 +44,7 @@ public interface PrefsProps {
 
 	public String getContent(String name);
 
+	@TemplateRestricted
 	public double getDouble(long companyId, String name);
 
 	public double getDouble(long companyId, String name, double defaultValue);
@@ -54,6 +59,7 @@ public interface PrefsProps {
 
 	public double getDouble(String name, double defaultValue);
 
+	@TemplateRestricted
 	public int getInteger(long companyId, String name);
 
 	public int getInteger(long companyId, String name, int defaultValue);
@@ -67,6 +73,7 @@ public interface PrefsProps {
 
 	public int getInteger(String name, int defaultValue);
 
+	@TemplateRestricted
 	public long getLong(long companyId, String name);
 
 	public long getLong(long companyId, String name, long defaultValue);
@@ -90,6 +97,7 @@ public interface PrefsProps {
 
 	public Properties getProperties(String prefix, boolean removePrefix);
 
+	@TemplateRestricted
 	public short getShort(long companyId, String name);
 
 	public short getShort(long companyId, String name, short defaultValue);
@@ -103,6 +111,7 @@ public interface PrefsProps {
 
 	public short getShort(String name, short defaultValue);
 
+	@TemplateRestricted
 	public String getString(long companyId, String name);
 
 	public String getString(long companyId, String name, String defaultValue);
@@ -134,6 +143,7 @@ public interface PrefsProps {
 
 	public String getString(String name, String defaultValue);
 
+	@TemplateRestricted
 	public String[] getStringArray(
 		long companyId, String name, String delimiter);
 
@@ -152,6 +162,7 @@ public interface PrefsProps {
 	public String[] getStringArray(
 		String name, String delimiter, String[] defaultValue);
 
+	@TemplateRestricted
 	public String getStringFromNames(long companyId, String... names);
 
 }

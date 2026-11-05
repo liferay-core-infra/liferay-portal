@@ -121,7 +121,9 @@ public class BasicFragmentEntryVerticalCard
 		}
 
 		return LabelItemListBuilder.add(
-			labelItem -> labelItem.setStatus(fragmentEntry.getStatus())
+			labelItem -> labelItem.setStatus(
+				fragmentEntry.isHead() ? WorkflowConstants.STATUS_APPROVED :
+					WorkflowConstants.STATUS_DRAFT)
 		).add(
 			fragmentEntry::isCacheable,
 			labelItem -> {

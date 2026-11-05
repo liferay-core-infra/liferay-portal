@@ -468,6 +468,13 @@ public class EditFragmentEntryDisplayContext {
 		).put(
 			"freeMarkerVariables", freeMarkerVariables
 		).put(
+			"head",
+			() -> {
+				FragmentEntry fragmentEntry = getFragmentEntry();
+
+				return fragmentEntry.isHead();
+			}
+		).put(
 			"htmlEditorCustomEntities",
 			ListUtil.fromArray(
 				HashMapBuilder.<String, Object>put(
@@ -532,13 +539,6 @@ public class EditFragmentEntryDisplayContext {
 			"showFieldTypes", _isShowFieldTypes()
 		).put(
 			"spritemap", _themeDisplay.getPathThemeSpritemap()
-		).put(
-			"status",
-			() -> {
-				FragmentEntry fragmentEntry = getFragmentEntry();
-
-				return String.valueOf(fragmentEntry.getStatus());
-			}
 		).put(
 			"urls",
 			HashMapBuilder.<String, Object>put(
@@ -664,11 +664,7 @@ public class EditFragmentEntryDisplayContext {
 		_renderResponse.setTitle(
 			StringBundler.concat(
 				getFragmentEntryTitle(), " (",
-				LanguageUtil.get(
-					_httpServletRequest,
-					WorkflowConstants.getStatusLabel(
-						fragmentEntry.getStatus())),
-				")"));
+				LanguageUtil.get(_httpServletRequest, "draft"), ")"));
 	}
 
 	private static final InfoFieldType[] _INFO_FIELD_TYPES = {

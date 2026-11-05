@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import jakarta.portlet.RenderRequest;
@@ -55,9 +54,9 @@ public class BasicFragmentEntryVerticalCardTest {
 	@TestInfo("LPD-48427")
 	public void testGetLabels() {
 		Mockito.when(
-			_fragmentEntry.getStatus()
+			_fragmentEntry.isHead()
 		).thenReturn(
-			WorkflowConstants.STATUS_DRAFT
+			false
 		);
 
 		_testGetLabels("draft");

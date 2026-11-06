@@ -84,6 +84,7 @@ import java.security.Key;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -100,6 +101,44 @@ import java.util.function.BiConsumer;
  */
 public class PortletURLImpl
 	implements LiferayPortletURL, PortletURL, ResourceURL, Serializable {
+
+	public static Map<String, String[]> decryptParameterMap(
+		HttpServletRequest httpServletRequest, Key key) {
+
+		Map<String, String[]> parameterMap = new HashMap<>();
+
+		Map<String, String[]> httpServletRequestParameterMap =
+			httpServletRequest.getParameterMap();
+
+		for (Map.Entry<String, String[]> entry :
+				httpServletRequestParameterMap.entrySet()) {
+
+			String name = entry.getKey();
+
+			String[] values = entry.getValue();
+
+			for (int i = 0; i < values.length; i++) {
+				if (Validator.isNull(values[i])) {
+					continue;
+				}
+
+				try {
+					values[i] = EncryptorUtil.decrypt(key, values[i]);
+				}
+				catch (EncryptorException encryptorException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(encryptorException);
+					}
+
+					values[i] = StringPool.BLANK;
+				}
+			}
+
+			parameterMap.put(name, values);
+		}
+
+		return parameterMap;
+	}
 
 	public PortletURLImpl(
 		HttpServletRequest httpServletRequest, Portlet portlet, Layout layout,

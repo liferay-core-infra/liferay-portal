@@ -5,13 +5,8 @@
 
 package com.liferay.portal.servlet;
 
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.encryptor.EncryptorException;
-import com.liferay.portal.kernel.encryptor.EncryptorUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portlet.internal.PortletURLImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
@@ -19,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 import java.security.Key;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,34 +26,7 @@ public class EncryptedServletRequest extends HttpServletRequestWrapper {
 
 		super(httpServletRequest);
 
-		_key = key;
-
-		Map<String, String[]> parameters = httpServletRequest.getParameterMap();
-
-		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
-			String name = entry.getKey();
-
-			String[] values = entry.getValue();
-
-			for (int i = 0; i < values.length; i++) {
-				if (Validator.isNull(values[i])) {
-					continue;
-				}
-
-				try {
-					values[i] = EncryptorUtil.decrypt(_key, values[i]);
-				}
-				catch (EncryptorException encryptorException) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(encryptorException);
-					}
-
-					values[i] = StringPool.BLANK;
-				}
-			}
-
-			_params.put(name, values);
-		}
+		_params = PortletURLImpl.decryptParameterMap(httpServletRequest, key);
 	}
 
 	@Override
@@ -83,10 +50,6 @@ public class EncryptedServletRequest extends HttpServletRequestWrapper {
 		return _params.get(name);
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		EncryptedServletRequest.class);
-
-	private final Key _key;
-	private final Map<String, String[]> _params = new HashMap<>();
+	private final Map<String, String[]> _params;
 
 }

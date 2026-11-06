@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 
@@ -74,7 +75,9 @@ public class FragmentEntryStagedModelRepository
 			fragmentEntry.getConfiguration(), fragmentEntry.getIcon(),
 			fragmentEntry.getPreviewFileEntryId(), false,
 			fragmentEntry.isReadOnly(), fragmentEntry.getType(),
-			fragmentEntry.getTypeOptions(), fragmentEntry.getStatus(),
+			fragmentEntry.getTypeOptions(),
+			fragmentEntry.isHead() ? WorkflowConstants.STATUS_APPROVED :
+				WorkflowConstants.STATUS_DRAFT,
 			serviceContext);
 	}
 
@@ -162,7 +165,9 @@ public class FragmentEntryStagedModelRepository
 			fragmentEntry.getJs(), fragmentEntry.isCacheable(),
 			fragmentEntry.getConfiguration(), fragmentEntry.getIcon(),
 			fragmentEntry.getPreviewFileEntryId(), fragmentEntry.isReadOnly(),
-			fragmentEntry.getTypeOptions(), fragmentEntry.getStatus());
+			fragmentEntry.getTypeOptions(),
+			fragmentEntry.isHead() ? WorkflowConstants.STATUS_APPROVED :
+				WorkflowConstants.STATUS_DRAFT);
 	}
 
 	private void _deleteFragmentEntryLinks(

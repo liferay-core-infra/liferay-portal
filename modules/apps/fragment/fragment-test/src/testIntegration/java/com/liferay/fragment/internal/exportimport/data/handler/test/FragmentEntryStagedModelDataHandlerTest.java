@@ -221,6 +221,17 @@ public class FragmentEntryStagedModelDataHandlerTest
 		Assert.assertNotEquals(
 			fragmentEntryLink.getJs(), importedFragmentEntry.getJs());
 		validateImportedStagedModel(stagedModel, importedStagedModel);
+
+		FragmentEntry draftFragmentEntry = _fragmentEntryLocalService.getDraft(
+			(FragmentEntry)stagedModel);
+
+		draftFragmentEntry.setHtml(RandomTestUtil.randomString());
+
+		_exportImportStagedModel(
+			_fragmentEntryLocalService.updateDraft(draftFragmentEntry));
+
+		validateImportedStagedModel(
+			stagedModel, getStagedModel(stagedModel.getUuid(), liveGroup));
 	}
 
 	@Test

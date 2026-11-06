@@ -1692,11 +1692,11 @@ public class FragmentEntryServiceTest {
 				_fragmentCollection.getFragmentCollectionId(),
 				"Fragment Entry");
 
-		FragmentEntryTestUtil.addFragmentEntryByType(
+		FragmentEntryTestUtil.addFragmentEntryByStatus(
 			_fragmentCollection.getFragmentCollectionId(), "Fragment Entry One",
 			WorkflowConstants.STATUS_APPROVED);
 
-		FragmentEntryTestUtil.addFragmentEntryByType(
+		FragmentEntryTestUtil.addFragmentEntryByStatus(
 			_fragmentCollection.getFragmentCollectionId(), "Fragment Entry Two",
 			WorkflowConstants.STATUS_DENIED);
 

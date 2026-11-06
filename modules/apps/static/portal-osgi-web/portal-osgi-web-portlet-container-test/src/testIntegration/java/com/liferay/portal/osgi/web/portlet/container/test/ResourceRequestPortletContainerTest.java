@@ -7,12 +7,15 @@ package com.liferay.portal.osgi.web.portlet.container.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.osgi.web.portlet.container.test.util.PortletContainerTestUtil;
 import com.liferay.portal.test.log.LogCapture;
@@ -235,6 +238,50 @@ public class ResourceRequestPortletContainerTest
 		Assert.assertEquals(200, response.getCode());
 
 		Assert.assertTrue(testRuntimePortlet.isCalledRender());
+	}
+
+	@Test
+	public void testServeResourceWithEncryptedPortletURL() throws Exception {
+		String name = RandomTestUtil.randomString();
+
+		testPortlet = new TestPortlet() {
+
+			@Override
+			public void serveResource(
+					ResourceRequest resourceRequest,
+					ResourceResponse resourceResponse)
+				throws IOException {
+
+				PrintWriter printWriter = resourceResponse.getWriter();
+
+				printWriter.write(ParamUtil.getString(resourceRequest, name));
+			}
+
+		};
+
+		setUpPortlet(
+			testPortlet, new HashMapDictionary<String, Object>(),
+			TEST_PORTLET_ID);
+
+		LiferayPortletURL liferayPortletURL = PortletURLFactoryUtil.create(
+			PortletContainerTestUtil.getHttpServletRequest(group, layout),
+			TEST_PORTLET_ID, layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+
+		liferayPortletURL.setEncrypt(true);
+
+		String value = RandomTestUtil.randomString();
+
+		liferayPortletURL.setParameter(name, value);
+
+		String url = liferayPortletURL.toString();
+
+		Assert.assertFalse(url.contains(value));
+
+		PortletContainerTestUtil.Response response =
+			PortletContainerTestUtil.request(url);
+
+		Assert.assertEquals(value, response.getBody());
+		Assert.assertEquals(200, response.getCode());
 	}
 
 }

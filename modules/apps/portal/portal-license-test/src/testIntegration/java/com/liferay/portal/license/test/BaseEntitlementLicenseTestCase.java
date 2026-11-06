@@ -8,10 +8,15 @@ package com.liferay.portal.license.test;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.test.log.LogEntry;
+
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -63,6 +68,21 @@ public abstract class BaseEntitlementLicenseTestCase
 	}
 
 	@Test
+	public void testAppLicensesForDifferentInstallation() throws Exception {
+		for (App app : getApps()) {
+			try {
+				deployAppLicense(
+					app, "7", RandomTestUtil.randomString(), Time.HOUR);
+
+				Assert.fail();
+			}
+			catch (LogEntriesException logEntriesException) {
+				_assertDifferentInstallation(logEntriesException);
+			}
+		}
+	}
+
+	@Test
 	public void testPortalLicense() throws Exception {
 		String installationId = RandomTestUtil.randomString();
 
@@ -78,7 +98,42 @@ public abstract class BaseEntitlementLicenseTestCase
 		}
 	}
 
+	@Test
+	public void testPortalLicenseForDifferentInstallation() throws Exception {
+		try {
+			deployEnterprisePortalLicense(
+				RandomTestUtil.randomString(), "7",
+				RandomTestUtil.randomString(), Time.HOUR);
+
+			Assert.fail();
+		}
+		catch (LogEntriesException logEntriesException) {
+			_assertDifferentInstallation(logEntriesException);
+		}
+	}
+
 	protected abstract App[] getApps();
+
+	private void _assertDifferentInstallation(
+		LogEntriesException logEntriesException) {
+
+		List<LogEntry> logEntries = logEntriesException.getLogEntries();
+
+		Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+		LogEntry logEntry = logEntries.get(0);
+
+		String message = logEntry.getMessage();
+
+		Assert.assertTrue(
+			message, message.endsWith(" license validation failed"));
+
+		Throwable throwable = logEntry.getThrowable();
+
+		Assert.assertTrue(
+			StringUtil.endsWith(
+				throwable.getMessage(), "belongs to a different installation"));
+	}
 
 	private static SafeCloseable _disableValidateSafeCloseable;
 	private static SafeCloseable _entitlementReleaseSafeCloseable;

@@ -121,6 +121,12 @@ public class PortletURLImpl
 
 			String[] values = entry.getValue();
 
+			if (name.equals("p_auth")) {
+				parameterMap.put(name, values);
+
+				continue;
+			}
+
 			for (int i = 0; i < values.length; i++) {
 				if (Validator.isNull(values[i]) ||
 					!ArrayUtil.contains(
@@ -1239,6 +1245,9 @@ public class PortletURLImpl
 						processValue(
 							key,
 							LiferayMutablePortletParameters.NULL_PARAM_VALUE));
+				}
+				else if (name.equals("p_auth")) {
+					sb.append(URLCodec.encodeURL(value));
 				}
 				else {
 					sb.append(processValue(key, value));

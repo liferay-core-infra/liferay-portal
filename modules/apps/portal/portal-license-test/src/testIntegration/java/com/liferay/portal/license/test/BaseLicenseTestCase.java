@@ -124,6 +124,21 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		return deployEnterprisePortalLicense(key, 0, validityPeriod);
 	}
 
+	public static File deployEnterprisePortalLicense(
+			String key, String licenseVersion, String installationId,
+			long validityPeriod)
+		throws Exception {
+
+		_registerLicense(
+			_buildEnterprisePortalLicenseXML(
+				key, ENTERPRISE_LICENSE_TYPE, 0, _getEnterpriseProductName(),
+				validityPeriod, licenseVersion, installationId));
+
+		return _buildBinaryFile(
+			_ENTERPRISE_ACCOUNT_NAME, ENTERPRISE_LICENSE_TYPE,
+			getPortalProductId(), _getEnterpriseProductName());
+	}
+
 	public static File deployFreeTierPortalLicense(long validityPeriod)
 		throws Exception {
 
@@ -337,6 +352,13 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 			_throwLogEntriesException(logCapture, null, LoggerTestUtil.ERROR);
 		}
+	}
+
+	public static SafeCloseable setInstallationIdWithSafeCloseable(
+		String installationId) {
+
+		return setReturnValueWithSafeCloseable(
+			ReflectionsHolder._installationIdMethod, installationId);
 	}
 
 	public static SafeCloseable setReturnValueWithSafeCloseable(
@@ -659,9 +681,18 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		String key, String licenseType, int maxClusterNodes, String productName,
 		long validityPeriod) {
 
+		return _buildEnterprisePortalLicenseXML(
+			key, licenseType, maxClusterNodes, productName, validityPeriod, "6",
+			null);
+	}
+
+	private static String _buildEnterprisePortalLicenseXML(
+		String key, String licenseType, int maxClusterNodes, String productName,
+		long validityPeriod, String licenseVersion, String installationId) {
+
 		long currentTimeMillis = System.currentTimeMillis();
 
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(28);
 
 		sb.append("<license><account-name>");
 		sb.append(_ENTERPRISE_ACCOUNT_NAME);
@@ -672,7 +703,9 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		sb.append("</product-name><product-version>2026.Q1</product-version>");
 		sb.append("<license-type>");
 		sb.append(licenseType);
-		sb.append("</license-type><license-version>6</license-version>");
+		sb.append("</license-type><license-version>");
+		sb.append(licenseVersion);
+		sb.append("</license-version>");
 		sb.append("<start-date>");
 		sb.append(_DATE_FORMAT.format(new Date(currentTimeMillis)));
 		sb.append("</start-date><expiration-date>");
@@ -684,6 +717,12 @@ public abstract class BaseLicenseTestCase implements Serializable {
 			sb.append("<max-cluster-nodes>");
 			sb.append(maxClusterNodes);
 			sb.append("</max-cluster-nodes>");
+		}
+
+		if (installationId != null) {
+			sb.append("<installation-id>");
+			sb.append(installationId);
+			sb.append("</installation-id>");
 		}
 
 		sb.append("<domains><domain>");
@@ -842,6 +881,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 
 	private static class ReflectionsHolder {
 
+		private static Method _installationIdMethod;
 		private static Instrumentation _instrumentation;
 		private static Class<?> _licenseManagerHelperClass;
 		private static Method _nameMethod;
@@ -883,6 +923,8 @@ public abstract class BaseLicenseTestCase implements Serializable {
 						}
 					}
 
+					_installationIdMethod = findMethod(
+						"installation.id.method");
 					_nameMethod = findMethod("name.method");
 					_versionMethod = findMethod("version.method");
 

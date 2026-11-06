@@ -311,78 +311,113 @@ public class FragmentEntryPersistenceTest {
 
 		_fragmentEntries.add(_persistence.update(draftFragmentEntry));
 
+		Session session = _persistence.openSession();
+
+		session.flush();
+
+		session.clear();
+
+		_persistence.clearCache();
+
+		FragmentEntry persistedFragmentEntry = _persistence.findByPrimaryKey(
+			fragmentEntry.getPrimaryKey());
+		FragmentEntry persistedDraftFragmentEntry =
+			_persistence.findByPrimaryKey(pk);
+
 		Assert.assertEquals(
-			fragmentEntry.getMvccVersion(),
-			draftFragmentEntry.getMvccVersion());
+			persistedFragmentEntry.getMvccVersion(),
+			persistedDraftFragmentEntry.getMvccVersion());
 		Assert.assertEquals(
-			fragmentEntry.getCtCollectionId(),
-			draftFragmentEntry.getCtCollectionId());
+			persistedFragmentEntry.getCtCollectionId(),
+			persistedDraftFragmentEntry.getCtCollectionId());
 		Assert.assertEquals(
-			fragmentEntry.getUuid(), draftFragmentEntry.getUuid());
+			persistedFragmentEntry.getUuid(),
+			persistedDraftFragmentEntry.getUuid());
 		Assert.assertEquals(
-			fragmentEntry.getExternalReferenceCode(),
-			draftFragmentEntry.getExternalReferenceCode());
+			persistedFragmentEntry.getExternalReferenceCode(),
+			persistedDraftFragmentEntry.getExternalReferenceCode());
 		Assert.assertEquals(
-			fragmentEntry.getHeadId(), -draftFragmentEntry.getHeadId());
+			persistedFragmentEntry.getHeadId(),
+			-persistedDraftFragmentEntry.getHeadId());
 		Assert.assertEquals(
-			fragmentEntry.getGroupId(), draftFragmentEntry.getGroupId());
+			persistedFragmentEntry.getGroupId(),
+			persistedDraftFragmentEntry.getGroupId());
 		Assert.assertEquals(
-			fragmentEntry.getCompanyId(), draftFragmentEntry.getCompanyId());
+			persistedFragmentEntry.getCompanyId(),
+			persistedDraftFragmentEntry.getCompanyId());
 		Assert.assertEquals(
-			fragmentEntry.getUserId(), draftFragmentEntry.getUserId());
+			persistedFragmentEntry.getUserId(),
+			persistedDraftFragmentEntry.getUserId());
 		Assert.assertEquals(
-			fragmentEntry.getUserName(), draftFragmentEntry.getUserName());
+			persistedFragmentEntry.getUserName(),
+			persistedDraftFragmentEntry.getUserName());
 		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getCreateDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getCreateDate()));
+			Time.getShortTimestamp(persistedFragmentEntry.getCreateDate()),
+			Time.getShortTimestamp(
+				persistedDraftFragmentEntry.getCreateDate()));
 		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getModifiedDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getModifiedDate()));
+			Time.getShortTimestamp(persistedFragmentEntry.getModifiedDate()),
+			Time.getShortTimestamp(
+				persistedDraftFragmentEntry.getModifiedDate()));
 		Assert.assertEquals(
-			fragmentEntry.getFragmentCollectionId(),
-			draftFragmentEntry.getFragmentCollectionId());
+			persistedFragmentEntry.getFragmentCollectionId(),
+			persistedDraftFragmentEntry.getFragmentCollectionId());
 		Assert.assertEquals(
-			fragmentEntry.getFragmentEntryKey(),
-			draftFragmentEntry.getFragmentEntryKey());
+			persistedFragmentEntry.getFragmentEntryKey(),
+			persistedDraftFragmentEntry.getFragmentEntryKey());
 		Assert.assertEquals(
-			fragmentEntry.getName(), draftFragmentEntry.getName());
+			persistedFragmentEntry.getName(),
+			persistedDraftFragmentEntry.getName());
 		Assert.assertEquals(
-			fragmentEntry.getCss(), draftFragmentEntry.getCss());
+			persistedFragmentEntry.getCss(),
+			persistedDraftFragmentEntry.getCss());
 		Assert.assertEquals(
-			fragmentEntry.getHtml(), draftFragmentEntry.getHtml());
-		Assert.assertEquals(fragmentEntry.getJs(), draftFragmentEntry.getJs());
+			persistedFragmentEntry.getHtml(),
+			persistedDraftFragmentEntry.getHtml());
 		Assert.assertEquals(
-			fragmentEntry.isCacheable(), draftFragmentEntry.isCacheable());
+			persistedFragmentEntry.getJs(),
+			persistedDraftFragmentEntry.getJs());
 		Assert.assertEquals(
-			fragmentEntry.getConfiguration(),
-			draftFragmentEntry.getConfiguration());
+			persistedFragmentEntry.isCacheable(),
+			persistedDraftFragmentEntry.isCacheable());
 		Assert.assertEquals(
-			fragmentEntry.getIcon(), draftFragmentEntry.getIcon());
+			persistedFragmentEntry.getConfiguration(),
+			persistedDraftFragmentEntry.getConfiguration());
 		Assert.assertEquals(
-			fragmentEntry.getPreviewFileEntryId(),
-			draftFragmentEntry.getPreviewFileEntryId());
+			persistedFragmentEntry.getIcon(),
+			persistedDraftFragmentEntry.getIcon());
 		Assert.assertEquals(
-			fragmentEntry.isMarketplace(), draftFragmentEntry.isMarketplace());
+			persistedFragmentEntry.getPreviewFileEntryId(),
+			persistedDraftFragmentEntry.getPreviewFileEntryId());
 		Assert.assertEquals(
-			fragmentEntry.isReadOnly(), draftFragmentEntry.isReadOnly());
+			persistedFragmentEntry.isMarketplace(),
+			persistedDraftFragmentEntry.isMarketplace());
 		Assert.assertEquals(
-			fragmentEntry.getType(), draftFragmentEntry.getType());
+			persistedFragmentEntry.isReadOnly(),
+			persistedDraftFragmentEntry.isReadOnly());
 		Assert.assertEquals(
-			fragmentEntry.getTypeOptions(),
-			draftFragmentEntry.getTypeOptions());
+			persistedFragmentEntry.getType(),
+			persistedDraftFragmentEntry.getType());
 		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getLastPublishDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getLastPublishDate()));
-		Assert.assertEquals(2, draftFragmentEntry.getStatus());
+			persistedFragmentEntry.getTypeOptions(),
+			persistedDraftFragmentEntry.getTypeOptions());
 		Assert.assertEquals(
-			fragmentEntry.getStatusByUserId(),
-			draftFragmentEntry.getStatusByUserId());
+			Time.getShortTimestamp(persistedFragmentEntry.getLastPublishDate()),
+			Time.getShortTimestamp(
+				persistedDraftFragmentEntry.getLastPublishDate()));
 		Assert.assertEquals(
-			fragmentEntry.getStatusByUserName(),
-			draftFragmentEntry.getStatusByUserName());
+			persistedFragmentEntry.getStatus(),
+			persistedDraftFragmentEntry.getStatus());
 		Assert.assertEquals(
-			Time.getShortTimestamp(fragmentEntry.getStatusDate()),
-			Time.getShortTimestamp(draftFragmentEntry.getStatusDate()));
+			persistedFragmentEntry.getStatusByUserId(),
+			persistedDraftFragmentEntry.getStatusByUserId());
+		Assert.assertEquals(
+			persistedFragmentEntry.getStatusByUserName(),
+			persistedDraftFragmentEntry.getStatusByUserName());
+		Assert.assertEquals(
+			Time.getShortTimestamp(persistedFragmentEntry.getStatusDate()),
+			Time.getShortTimestamp(
+				persistedDraftFragmentEntry.getStatusDate()));
 	}
 
 	@Test(expected = DuplicateFragmentEntryExternalReferenceCodeException.class)
@@ -1140,4 +1175,4 @@ public class FragmentEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1636049288
+// LIFERAY-SERVICE-BUILDER-HASH:373946440

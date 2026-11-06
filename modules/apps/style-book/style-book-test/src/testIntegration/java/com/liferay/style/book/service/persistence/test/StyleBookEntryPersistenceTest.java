@@ -251,52 +251,75 @@ public class StyleBookEntryPersistenceTest {
 
 		_styleBookEntries.add(_persistence.update(draftStyleBookEntry));
 
+		Session session = _persistence.openSession();
+
+		session.flush();
+
+		session.clear();
+
+		_persistence.clearCache();
+
+		StyleBookEntry persistedStyleBookEntry = _persistence.findByPrimaryKey(
+			styleBookEntry.getPrimaryKey());
+		StyleBookEntry persistedDraftStyleBookEntry =
+			_persistence.findByPrimaryKey(pk);
+
 		Assert.assertEquals(
-			styleBookEntry.getMvccVersion(),
-			draftStyleBookEntry.getMvccVersion());
+			persistedStyleBookEntry.getMvccVersion(),
+			persistedDraftStyleBookEntry.getMvccVersion());
 		Assert.assertEquals(
-			styleBookEntry.getCtCollectionId(),
-			draftStyleBookEntry.getCtCollectionId());
+			persistedStyleBookEntry.getCtCollectionId(),
+			persistedDraftStyleBookEntry.getCtCollectionId());
 		Assert.assertEquals(
-			styleBookEntry.getUuid(), draftStyleBookEntry.getUuid());
+			persistedStyleBookEntry.getUuid(),
+			persistedDraftStyleBookEntry.getUuid());
 		Assert.assertEquals(
-			styleBookEntry.getExternalReferenceCode(),
-			draftStyleBookEntry.getExternalReferenceCode());
+			persistedStyleBookEntry.getExternalReferenceCode(),
+			persistedDraftStyleBookEntry.getExternalReferenceCode());
 		Assert.assertEquals(
-			styleBookEntry.getHeadId(), -draftStyleBookEntry.getHeadId());
+			persistedStyleBookEntry.getHeadId(),
+			-persistedDraftStyleBookEntry.getHeadId());
 		Assert.assertEquals(
-			styleBookEntry.getGroupId(), draftStyleBookEntry.getGroupId());
+			persistedStyleBookEntry.getGroupId(),
+			persistedDraftStyleBookEntry.getGroupId());
 		Assert.assertEquals(
-			styleBookEntry.getCompanyId(), draftStyleBookEntry.getCompanyId());
+			persistedStyleBookEntry.getCompanyId(),
+			persistedDraftStyleBookEntry.getCompanyId());
 		Assert.assertEquals(
-			styleBookEntry.getUserId(), draftStyleBookEntry.getUserId());
+			persistedStyleBookEntry.getUserId(),
+			persistedDraftStyleBookEntry.getUserId());
 		Assert.assertEquals(
-			styleBookEntry.getUserName(), draftStyleBookEntry.getUserName());
+			persistedStyleBookEntry.getUserName(),
+			persistedDraftStyleBookEntry.getUserName());
 		Assert.assertEquals(
-			Time.getShortTimestamp(styleBookEntry.getCreateDate()),
-			Time.getShortTimestamp(draftStyleBookEntry.getCreateDate()));
+			Time.getShortTimestamp(persistedStyleBookEntry.getCreateDate()),
+			Time.getShortTimestamp(
+				persistedDraftStyleBookEntry.getCreateDate()));
 		Assert.assertEquals(
-			Time.getShortTimestamp(styleBookEntry.getModifiedDate()),
-			Time.getShortTimestamp(draftStyleBookEntry.getModifiedDate()));
+			Time.getShortTimestamp(persistedStyleBookEntry.getModifiedDate()),
+			Time.getShortTimestamp(
+				persistedDraftStyleBookEntry.getModifiedDate()));
 		Assert.assertEquals(
-			styleBookEntry.isDefaultStyleBookEntry(),
-			draftStyleBookEntry.isDefaultStyleBookEntry());
+			persistedStyleBookEntry.isDefaultStyleBookEntry(),
+			persistedDraftStyleBookEntry.isDefaultStyleBookEntry());
 		Assert.assertEquals(
-			styleBookEntry.getFrontendTokenDefinition(),
-			draftStyleBookEntry.getFrontendTokenDefinition());
+			persistedStyleBookEntry.getFrontendTokenDefinition(),
+			persistedDraftStyleBookEntry.getFrontendTokenDefinition());
 		Assert.assertEquals(
-			styleBookEntry.getFrontendTokensValues(),
-			draftStyleBookEntry.getFrontendTokensValues());
+			persistedStyleBookEntry.getFrontendTokensValues(),
+			persistedDraftStyleBookEntry.getFrontendTokensValues());
 		Assert.assertEquals(
-			styleBookEntry.getName(), draftStyleBookEntry.getName());
+			persistedStyleBookEntry.getName(),
+			persistedDraftStyleBookEntry.getName());
 		Assert.assertEquals(
-			styleBookEntry.getPreviewFileEntryId(),
-			draftStyleBookEntry.getPreviewFileEntryId());
+			persistedStyleBookEntry.getPreviewFileEntryId(),
+			persistedDraftStyleBookEntry.getPreviewFileEntryId());
 		Assert.assertEquals(
-			styleBookEntry.getStyleBookEntryKey(),
-			draftStyleBookEntry.getStyleBookEntryKey());
+			persistedStyleBookEntry.getStyleBookEntryKey(),
+			persistedDraftStyleBookEntry.getStyleBookEntryKey());
 		Assert.assertEquals(
-			styleBookEntry.getThemeId(), draftStyleBookEntry.getThemeId());
+			persistedStyleBookEntry.getThemeId(),
+			persistedDraftStyleBookEntry.getThemeId());
 	}
 
 	@Test(
@@ -1039,4 +1062,4 @@ public class StyleBookEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-425048980
+// LIFERAY-SERVICE-BUILDER-HASH:-2013312769

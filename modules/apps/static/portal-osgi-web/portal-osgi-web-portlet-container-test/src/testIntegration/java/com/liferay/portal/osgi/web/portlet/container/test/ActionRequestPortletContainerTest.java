@@ -217,6 +217,62 @@ public class ActionRequestPortletContainerTest
 	}
 
 	@Test
+	public void testPortalAuthenticationTokenInRequestBodyWithEncryptedPortletURL()
+		throws Exception {
+
+		testPortlet = new TestPortlet() {
+
+			@Override
+			public void serveResource(
+					ResourceRequest resourceRequest,
+					ResourceResponse resourceResponse)
+				throws IOException {
+
+				LiferayPortletURL liferayPortletURL =
+					(LiferayPortletURL)resourceResponse.createActionURL();
+
+				liferayPortletURL.setEncrypt(true);
+
+				PrintWriter printWriter = resourceResponse.getWriter();
+
+				printWriter.write(liferayPortletURL.toString());
+			}
+
+		};
+
+		setUpPortlet(
+			testPortlet, new HashMapDictionary<String, Object>(),
+			TEST_PORTLET_ID);
+
+		PortletContainerTestUtil.Response response =
+			PortletContainerTestUtil.getPortalAuthentication(
+				PortletContainerTestUtil.getHttpServletRequest(group, layout),
+				layout, TEST_PORTLET_ID);
+
+		testPortlet.reset();
+
+		// Make an action request using the portal authentication token
+
+		String url = response.getBody();
+
+		response = PortletContainerTestUtil.request(
+			HttpComponentsUtil.removeParameter(url, "p_auth"),
+			Collections.singletonMap("Cookie", response.getCookies()),
+			Collections.singletonMap(
+				"p_auth",
+				new String[] {
+					MapUtil.getString(
+						HttpComponentsUtil.getParameterMap(
+							HttpComponentsUtil.getQueryString(url)),
+						"p_auth")
+				}));
+
+		Assert.assertEquals(200, response.getCode());
+
+		Assert.assertTrue(testPortlet.isCalledAction());
+	}
+
+	@Test
 	public void testPortalAuthenticationTokenSecret() throws Exception {
 		registerService(
 			AuthTokenWhitelist.class, new TestSharedSecretTokenWhitelist(),

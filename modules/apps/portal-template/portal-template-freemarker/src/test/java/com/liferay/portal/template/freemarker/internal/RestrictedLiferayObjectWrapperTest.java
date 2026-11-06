@@ -270,6 +270,9 @@ public class RestrictedLiferayObjectWrapperTest
 			"getModelAttributes", liferayFreeMarkerStringModel);
 		_testGetWithRestricted("modelAttributes", liferayFreeMarkerStringModel);
 		_testGetWithRestricted("toCacheModel", liferayFreeMarkerStringModel);
+		_testGetWithRestricted("toEscapedModel", liferayFreeMarkerStringModel);
+		_testGetWithRestricted(
+			"toUnescapedModel", liferayFreeMarkerStringModel);
 
 		templateNumberModel =
 			(TemplateNumberModel)liferayFreeMarkerStringModel.get("companyId");

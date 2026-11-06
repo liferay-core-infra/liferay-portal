@@ -184,8 +184,10 @@ public interface BaseModel<T>
 	 * @return the escaped model instance
 	 * @see    com.liferay.portal.kernel.bean.AutoEscapeBeanHandler
 	 */
+	@TemplateRestricted
 	public T toEscapedModel();
 
+	@TemplateRestricted
 	public T toUnescapedModel();
 
 }

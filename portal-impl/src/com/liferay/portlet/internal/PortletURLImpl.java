@@ -110,6 +110,10 @@ public class PortletURLImpl
 		Map<String, String[]> httpServletRequestParameterMap =
 			httpServletRequest.getParameterMap();
 
+		Map<String, String[]> queryParameterMap =
+			HttpComponentsUtil.getParameterMap(
+				HttpComponentsUtil.getQueryString(httpServletRequest));
+
 		for (Map.Entry<String, String[]> entry :
 				httpServletRequestParameterMap.entrySet()) {
 
@@ -118,7 +122,10 @@ public class PortletURLImpl
 			String[] values = entry.getValue();
 
 			for (int i = 0; i < values.length; i++) {
-				if (Validator.isNull(values[i])) {
+				if (Validator.isNull(values[i]) ||
+					!ArrayUtil.contains(
+						queryParameterMap.get(name), values[i])) {
+
 					continue;
 				}
 

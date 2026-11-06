@@ -6,6 +6,7 @@
 package com.liferay.portal.license.test;
 
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.license.util.App;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -83,6 +84,22 @@ public abstract class BaseEntitlementLicenseTestCase
 	}
 
 	@Test
+	public void testAppLicensesWithUnsupportedLicenseVersion()
+		throws Exception {
+
+		for (App app : getApps()) {
+			try {
+				deployAppLicense(app, "6", null, Time.HOUR);
+
+				Assert.fail();
+			}
+			catch (LogEntriesException logEntriesException) {
+				_assertUnsupportedLicenseVersion(logEntriesException, "6");
+			}
+		}
+	}
+
+	@Test
 	public void testPortalLicense() throws Exception {
 		String installationId = RandomTestUtil.randomString();
 
@@ -112,9 +129,42 @@ public abstract class BaseEntitlementLicenseTestCase
 		}
 	}
 
+	@Test
+	public void testPortalLicenseWithUnsupportedLicenseVersion()
+		throws Exception {
+
+		try {
+			deployEnterprisePortalLicense(
+				RandomTestUtil.randomString(), "6", null, Time.HOUR);
+
+			Assert.fail();
+		}
+		catch (LogEntriesException logEntriesException) {
+			_assertUnsupportedLicenseVersion(logEntriesException, "6");
+		}
+	}
+
 	protected abstract App[] getApps();
 
 	private void _assertDifferentInstallation(
+		LogEntriesException logEntriesException) {
+
+		Assert.assertTrue(
+			StringUtil.endsWith(
+				_getThrowableMessage(logEntriesException),
+				"belongs to a different installation"));
+	}
+
+	private void _assertUnsupportedLicenseVersion(
+		LogEntriesException logEntriesException, String licenseVersion) {
+
+		Assert.assertEquals(
+			StringBundler.concat(
+				"License version ", licenseVersion, " is not supported"),
+			_getThrowableMessage(logEntriesException));
+	}
+
+	private String _getThrowableMessage(
 		LogEntriesException logEntriesException) {
 
 		List<LogEntry> logEntries = logEntriesException.getLogEntries();
@@ -130,9 +180,7 @@ public abstract class BaseEntitlementLicenseTestCase
 
 		Throwable throwable = logEntry.getThrowable();
 
-		Assert.assertTrue(
-			StringUtil.endsWith(
-				throwable.getMessage(), "belongs to a different installation"));
+		return throwable.getMessage();
 	}
 
 	private static SafeCloseable _disableValidateSafeCloseable;

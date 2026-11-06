@@ -8,6 +8,7 @@ package com.liferay.fragment.internal.exportimport.data.handler.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
+import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.test.util.lar.BaseStagedModelDataHandlerTestCase;
 import com.liferay.fragment.configuration.FragmentServiceConfiguration;
 import com.liferay.fragment.constants.FragmentConstants;
@@ -221,6 +222,26 @@ public class FragmentEntryStagedModelDataHandlerTest
 		Assert.assertNotEquals(
 			fragmentEntryLink.getJs(), importedFragmentEntry.getJs());
 		validateImportedStagedModel(stagedModel, importedStagedModel);
+
+		FragmentEntry draftFragmentEntry = _fragmentEntryLocalService.getDraft(
+			(FragmentEntry)stagedModel);
+
+		draftFragmentEntry.setHtml(RandomTestUtil.randomString());
+
+		try {
+			_exportImportStagedModel(
+				_fragmentEntryLocalService.updateDraft(draftFragmentEntry));
+
+			Assert.fail();
+		}
+		catch (PortletDataException portletDataException) {
+			Assert.assertEquals(
+				PortletDataException.STATUS_UNAVAILABLE,
+				portletDataException.getType());
+		}
+
+		validateImportedStagedModel(
+			stagedModel, getStagedModel(stagedModel.getUuid(), liveGroup));
 	}
 
 	@Test

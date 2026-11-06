@@ -7,11 +7,14 @@ package com.liferay.portal.license.test;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.license.util.App;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.Time;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * @author Kevin Lee
@@ -40,6 +43,39 @@ public abstract class BaseEntitlementLicenseTestCase
 	@After
 	public void tearDown() {
 		_resetLicenseDataSafeCloseable.close();
+	}
+
+	@Test
+	public void testAppLicenses() throws Exception {
+		String installationId = RandomTestUtil.randomString();
+
+		try (SafeCloseable safeCloseable = setInstallationIdWithSafeCloseable(
+				installationId)) {
+
+			for (App app : getApps()) {
+				deployAppLicense(app, "7", installationId, Time.HOUR);
+
+				assertLicensePropertiesExisted(getProductId(app));
+
+				checkLicense(getProductId(app));
+			}
+		}
+	}
+
+	@Test
+	public void testPortalLicense() throws Exception {
+		String installationId = RandomTestUtil.randomString();
+
+		try (SafeCloseable safeCloseable = setInstallationIdWithSafeCloseable(
+				installationId)) {
+
+			deployEnterprisePortalLicense(
+				RandomTestUtil.randomString(), "7", installationId, Time.HOUR);
+
+			assertLicensePropertiesExisted(getPortalProductId());
+
+			checkLicense(getPortalProductId());
+		}
 	}
 
 	protected abstract App[] getApps();

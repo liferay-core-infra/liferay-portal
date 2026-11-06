@@ -119,7 +119,7 @@ public class PortletURLImpl
 
 			String name = entry.getKey();
 
-			String[] values = entry.getValue();
+			String[] values = ArrayUtil.clone(entry.getValue());
 
 			if (name.equals("p_auth") || name.equals(WebKeys.ENCRYPT)) {
 				parameterMap.put(name, values);

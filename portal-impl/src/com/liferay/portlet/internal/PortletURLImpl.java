@@ -84,6 +84,7 @@ import java.security.Key;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -100,6 +101,57 @@ import java.util.function.BiConsumer;
  */
 public class PortletURLImpl
 	implements LiferayPortletURL, PortletURL, ResourceURL, Serializable {
+
+	public static Map<String, String[]> decryptParameterMap(
+		HttpServletRequest httpServletRequest, Key key) {
+
+		Map<String, String[]> parameterMap = new HashMap<>();
+
+		Map<String, String[]> httpServletRequestParameterMap =
+			httpServletRequest.getParameterMap();
+
+		Map<String, String[]> queryParameterMap =
+			HttpComponentsUtil.getParameterMap(
+				HttpComponentsUtil.getQueryString(httpServletRequest));
+
+		for (Map.Entry<String, String[]> entry :
+				httpServletRequestParameterMap.entrySet()) {
+
+			String name = entry.getKey();
+
+			String[] values = ArrayUtil.clone(entry.getValue());
+
+			if (name.equals("p_auth") || name.equals(WebKeys.ENCRYPT)) {
+				parameterMap.put(name, values);
+
+				continue;
+			}
+
+			for (int i = 0; i < values.length; i++) {
+				if (Validator.isNull(values[i]) ||
+					!ArrayUtil.contains(
+						queryParameterMap.get(name), values[i])) {
+
+					continue;
+				}
+
+				try {
+					values[i] = EncryptorUtil.decrypt(key, values[i]);
+				}
+				catch (EncryptorException encryptorException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(encryptorException);
+					}
+
+					values[i] = StringPool.BLANK;
+				}
+			}
+
+			parameterMap.put(name, values);
+		}
+
+		return parameterMap;
+	}
 
 	public PortletURLImpl(
 		HttpServletRequest httpServletRequest, Portlet portlet, Layout layout,
@@ -1193,6 +1245,9 @@ public class PortletURLImpl
 						processValue(
 							key,
 							LiferayMutablePortletParameters.NULL_PARAM_VALUE));
+				}
+				else if (name.equals("p_auth")) {
+					sb.append(URLCodec.encodeURL(value));
 				}
 				else {
 					sb.append(processValue(key, value));

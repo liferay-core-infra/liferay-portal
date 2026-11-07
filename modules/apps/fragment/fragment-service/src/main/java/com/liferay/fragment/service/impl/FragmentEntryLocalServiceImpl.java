@@ -889,6 +889,8 @@ public class FragmentEntryLocalServiceImpl
 
 		User user = _userLocalService.getUser(userId);
 
+		fragmentEntry = getDraft(fragmentEntry);
+
 		fragmentEntry.setModifiedDate(new Date());
 		fragmentEntry.setFragmentCollectionId(fragmentCollectionId);
 		fragmentEntry.setName(name);
@@ -906,14 +908,8 @@ public class FragmentEntryLocalServiceImpl
 		fragmentEntry.setStatusByUserName(user.getFullName());
 		fragmentEntry.setStatusDate(new Date());
 
-		fragmentEntry = getDraft(fragmentEntry);
-
-		if (!Objects.equals(name, fragmentEntry.getName())) {
-			fragmentEntry.setName(name);
-		}
-
 		if (status != WorkflowConstants.STATUS_APPROVED) {
-			return fragmentEntry;
+			return updateDraft(fragmentEntry);
 		}
 
 		return _publishDraft(fragmentEntry);

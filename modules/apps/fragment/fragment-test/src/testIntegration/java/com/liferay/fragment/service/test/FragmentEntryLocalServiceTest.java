@@ -35,6 +35,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -250,6 +251,7 @@ public class FragmentEntryLocalServiceTest {
 		_testUpdateFragmentEntryWithHtmlWithAmpersand();
 		_testUpdateFragmentEntryWithPreviewFileEntryId();
 		_testUpdateFragmentEntryWithPropagateChanges();
+		_testUpdateFragmentEntryWithStatusDraft();
 	}
 
 	private DepotEntry _addDesignLibraryDepotEntry() throws Exception {
@@ -1510,6 +1512,35 @@ public class FragmentEntryLocalServiceTest {
 		_assertFragmentEntryLinksHTML(
 			originalHTML,
 			disconnectedDepotFragmentEntryLink.getFragmentEntryLinkId());
+	}
+
+	private void _testUpdateFragmentEntryWithStatusDraft() throws Exception {
+		FragmentEntry fragmentEntry =
+			FragmentEntryTestUtil.addFragmentEntryByStatus(
+				_fragmentCollection.getFragmentCollectionId(),
+				WorkflowConstants.STATUS_APPROVED);
+
+		EntityCacheUtil.clearCache();
+
+		_fragmentEntryLocalService.updateFragmentEntry(
+			TestPropsValues.getUserId(), fragmentEntry.getFragmentEntryId(),
+			fragmentEntry.getFragmentCollectionId(), fragmentEntry.getName(),
+			fragmentEntry.getCss(), RandomTestUtil.randomString(),
+			fragmentEntry.getJs(), fragmentEntry.isCacheable(),
+			fragmentEntry.getConfiguration(), fragmentEntry.getIcon(),
+			fragmentEntry.getPreviewFileEntryId(), fragmentEntry.isReadOnly(),
+			fragmentEntry.getTypeOptions(), WorkflowConstants.STATUS_DRAFT);
+
+		EntityCacheUtil.clearCache();
+
+		FragmentEntry headFragmentEntry =
+			_fragmentEntryLocalService.getFragmentEntry(
+				fragmentEntry.getFragmentEntryId());
+
+		Assert.assertEquals(
+			fragmentEntry.getHtml(), headFragmentEntry.getHtml());
+		Assert.assertEquals(
+			WorkflowConstants.STATUS_APPROVED, headFragmentEntry.getStatus());
 	}
 
 	private void _updateFragmentEntriesWithPropagateChanges(

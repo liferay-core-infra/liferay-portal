@@ -256,30 +256,38 @@ public class PortalHibernateConfiguration
 	}
 
 	private File _getCacheFile(URL url) {
-		long bundleId = 0;
+		String fileName = StringUtil.replace(
+			StringUtil.replace(
+				url.getPath(), PropsValues.LIFERAY_HOME, "_liferay_home_"),
+			new char[] {CharPool.COLON, CharPool.EXCLAMATION, CharPool.SLASH},
+			new char[] {
+				CharPool.UNDERLINE, CharPool.UNDERLINE, CharPool.UNDERLINE
+			});
 
-		if (Objects.equals(url.getProtocol(), "bundleresource")) {
-			String host = url.getHost();
+		if (!Objects.equals(url.getProtocol(), "bundleresource")) {
+			File cacheDir = new File(
+				PropsValues.LIFERAY_HOME, "data/hibernate");
 
-			int index = host.indexOf(CharPool.PERIOD);
+			cacheDir.mkdirs();
 
-			if (index != -1) {
-				bundleId = GetterUtil.getLong(host.substring(0, index));
-			}
+			return new File(cacheDir, fileName);
 		}
 
-		Bundle bundle = _bundleContext.getBundle(bundleId);
+		long bundleId = 0;
 
-		return bundle.getDataFile(
-			StringUtil.replace(
-				StringUtil.replace(
-					url.getPath(), PropsValues.LIFERAY_HOME, "_liferay_home_"),
-				new char[] {
-					CharPool.COLON, CharPool.EXCLAMATION, CharPool.SLASH
-				},
-				new char[] {
-					CharPool.UNDERLINE, CharPool.UNDERLINE, CharPool.UNDERLINE
-				}));
+		String host = url.getHost();
+
+		int index = host.indexOf(CharPool.PERIOD);
+
+		if (index != -1) {
+			bundleId = GetterUtil.getLong(host.substring(0, index));
+		}
+
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		Bundle bundle = bundleContext.getBundle(bundleId);
+
+		return bundle.getDataFile(fileName);
 	}
 
 	private Binding<?> _loadBinding(Configuration configuration, URL url)
@@ -384,11 +392,7 @@ public class PortalHibernateConfiguration
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalHibernateConfiguration.class);
 
-	private static final BundleContext _bundleContext;
-
 	static {
-		_bundleContext = SystemBundleUtil.getBundleContext();
-
 		PropsUtil.set("hibernate.allow_update_outside_transaction", "true");
 		PropsUtil.set("hibernate.cache.use_query_cache", "false");
 		PropsUtil.set("hibernate.cache.use_second_level_cache", "false");

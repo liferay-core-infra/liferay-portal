@@ -370,13 +370,9 @@ public class ${entity.name}PersistenceTest {
 
 				${entity.name} draft${entity.name} = _persistence.create(pk);
 
-				<#assign hasBlobEntityColumn = false />
-
 				<#list entity.regularEntityColumns as entityColumn>
 					<#if !entityColumn.primary && (validator.isNull(parentPKColumn) || (parentPKColumn.name != entityColumn.name)) && !(serviceBuilder.isVersionGTE_7_4_0() && stringUtil.equals(entityColumn.name, "mvccVersion"))>
 						<#if stringUtil.equals(entityColumn.type, "Blob")>
-							<#assign hasBlobEntityColumn = true />
-
 							String draft${entityColumn.methodName}String = RandomTestUtil.randomString();
 
 							byte[] draft${entityColumn.methodName}Bytes = draft${entityColumn.methodName}String.getBytes("UTF-8");
@@ -396,34 +392,33 @@ public class ${entity.name}PersistenceTest {
 
 				_${entity.pluralVariableName}.add(_persistence.update(draft${entity.name}));
 
-				<#if hasBlobEntityColumn>
-					Session session = _persistence.openSession();
+				Session session = _persistence.openSession();
 
-					session.flush();
+				session.flush();
 
-					session.clear();
+				session.clear();
 
-					${entity.name} persistedDraft${entity.name} = _persistence.findByPrimaryKey(pk);
-				</#if>
+				_persistence.clearCache();
+
+				${entity.name} persisted${entity.name} = _persistence.findByPrimaryKey(${entity.variableName}.getPrimaryKey());
+				${entity.name} persistedDraft${entity.name} = _persistence.findByPrimaryKey(pk);
 
 				<#list entity.regularEntityColumns as entityColumn>
 					<#if !entityColumn.primary && (validator.isNull(parentPKColumn) || (parentPKColumn.name != entityColumn.name))>
 						<#if stringUtil.equals(entityColumn.name, "headId")>
-							Assert.assertEquals(${entity.variableName}.get${entityColumn.methodName}(), -draft${entity.name}.get${entityColumn.methodName}());
-						<#elseif stringUtil.equals(entityColumn.name, "status")>
-							Assert.assertEquals(2, draft${entity.name}.get${entityColumn.methodName}());
+							Assert.assertEquals(persisted${entity.name}.get${entityColumn.methodName}(), -persistedDraft${entity.name}.get${entityColumn.methodName}());
 						<#elseif stringUtil.equals(entityColumn.type, "Blob")>
 							Blob persistedDraft${entityColumn.methodName} = persistedDraft${entity.name}.get${entityColumn.methodName}();
 
 							Assert.assertArrayEquals(draft${entityColumn.methodName}Bytes, persistedDraft${entityColumn.methodName}.getBytes(1, (int)persistedDraft${entityColumn.methodName}.length()));
 						<#elseif stringUtil.equals(entityColumn.type, "boolean")>
-							Assert.assertEquals(${entity.variableName}.is${entityColumn.methodName}(), draft${entity.name}.is${entityColumn.methodName}());
+							Assert.assertEquals(persisted${entity.name}.is${entityColumn.methodName}(), persistedDraft${entity.name}.is${entityColumn.methodName}());
 						<#elseif stringUtil.equals(entityColumn.type, "Date")>
-							Assert.assertEquals(Time.getShortTimestamp(${entity.variableName}.get${entityColumn.methodName}()), Time.getShortTimestamp(draft${entity.name}.get${entityColumn.methodName}()));
+							Assert.assertEquals(Time.getShortTimestamp(persisted${entity.name}.get${entityColumn.methodName}()), Time.getShortTimestamp(persistedDraft${entity.name}.get${entityColumn.methodName}()));
 						<#elseif stringUtil.equals(entityColumn.type, "double")>
-							AssertUtils.assertEquals(${entity.variableName}.get${entityColumn.methodName}(), draft${entity.name}.get${entityColumn.methodName}());
+							AssertUtils.assertEquals(persisted${entity.name}.get${entityColumn.methodName}(), persistedDraft${entity.name}.get${entityColumn.methodName}());
 						<#else>
-							Assert.assertEquals(${entity.variableName}.get${entityColumn.methodName}(), draft${entity.name}.get${entityColumn.methodName}());
+							Assert.assertEquals(persisted${entity.name}.get${entityColumn.methodName}(), persistedDraft${entity.name}.get${entityColumn.methodName}());
 						</#if>
 					</#if>
 				</#list>

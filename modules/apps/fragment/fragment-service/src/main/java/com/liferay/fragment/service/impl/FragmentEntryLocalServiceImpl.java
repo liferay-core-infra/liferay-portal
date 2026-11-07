@@ -194,6 +194,20 @@ public class FragmentEntryLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
+	public FragmentEntry checkout(
+			FragmentEntry publishedFragmentEntry, int version)
+		throws PortalException {
+
+		FragmentEntry draftFragmentEntry = super.checkout(
+			publishedFragmentEntry, version);
+
+		draftFragmentEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
+
+		return fragmentEntryPersistence.update(draftFragmentEntry);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
 	public FragmentEntry copyFragmentEntry(
 			long userId, long groupId, long sourceFragmentEntryId,
 			long fragmentCollectionId, ServiceContext serviceContext)
@@ -770,6 +784,16 @@ public class FragmentEntryLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
+	public FragmentEntry updateDraft(FragmentEntry draftFragmentEntry)
+		throws PortalException {
+
+		draftFragmentEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
+
+		return super.updateDraft(draftFragmentEntry);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
 	public FragmentEntry updateFragmentEntry(FragmentEntry fragmentEntry)
 		throws PortalException {
 
@@ -786,6 +810,8 @@ public class FragmentEntryLocalServiceImpl
 				draftFragmentEntry = getDraft(fragmentEntry);
 			}
 		}
+
+		draftFragmentEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 
 		FragmentEntry updatedDraftFragmentEntry =
 			fragmentEntryPersistence.update(draftFragmentEntry);
@@ -863,6 +889,8 @@ public class FragmentEntryLocalServiceImpl
 
 		User user = _userLocalService.getUser(userId);
 
+		fragmentEntry = getDraft(fragmentEntry);
+
 		fragmentEntry.setModifiedDate(new Date());
 		fragmentEntry.setFragmentCollectionId(fragmentCollectionId);
 		fragmentEntry.setName(name);
@@ -880,14 +908,8 @@ public class FragmentEntryLocalServiceImpl
 		fragmentEntry.setStatusByUserName(user.getFullName());
 		fragmentEntry.setStatusDate(new Date());
 
-		fragmentEntry = getDraft(fragmentEntry);
-
-		if (!Objects.equals(name, fragmentEntry.getName())) {
-			fragmentEntry.setName(name);
-		}
-
 		if (status != WorkflowConstants.STATUS_APPROVED) {
-			return fragmentEntry;
+			return updateDraft(fragmentEntry);
 		}
 
 		return _publishDraft(fragmentEntry);

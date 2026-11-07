@@ -367,29 +367,33 @@ public class AuditEventPseudonymFieldLocalServiceTest {
 
 						try {
 							auditEventPseudonymFieldReference.set(
-								TransactionInvokerUtil.invoke(
-									_transactionConfig,
-									() ->
-										_auditEventPseudonymFieldLocalService.
-											addAuditEventPseudonymField(
-												auditMessage.getCompanyId(),
-												auditMessage.getContextName(),
-												"clientIP", clientIP)));
+								_auditEventPseudonymFieldLocalService.
+									addAuditEventPseudonymField(
+										auditMessage.getCompanyId(),
+										auditMessage.getContextName(),
+										"clientIP", clientIP));
 						}
-						catch (Throwable throwable) {
-							throw new ModelListenerException(throwable);
+						catch (PortalException portalException) {
+							throw new ModelListenerException(portalException);
 						}
 					}
 
 				},
 				null);
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
 				"org.hibernate.engine.jdbc.spi.SqlExceptionHelper",
-				LoggerTestUtil.OFF)) {
+				LoggerTestUtil.OFF);
+			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.spring.aop.RetryAdvice",
+				LoggerTestUtil.WARN)) {
 
 			AuditMessage pseudonymizedAuditMessage = _pseudonymizeAuditMessage(
 				auditMessage);
+
+			List<LogEntry> logEntries = logCapture2.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
 
 			AuditEventPseudonymField auditEventPseudonymField =
 				auditEventPseudonymFieldReference.get();

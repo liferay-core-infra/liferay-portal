@@ -47,6 +47,9 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+
 /**
  * @author Christian Moura
  */
@@ -146,14 +149,9 @@ public class LoggingAuditMessageProcessorTest {
 
 			LogEntry logEntry = logEntries.get(0);
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				logEntry.getMessage());
-
-			Assert.assertEquals(
-				auditMessage.getClientIP(), jsonObject.getString("clientIP"));
-			Assert.assertFalse(jsonObject.getBoolean("pseudonymized"));
-			Assert.assertEquals(
-				auditMessage.getUserName(), jsonObject.getString("userName"));
+			JSONAssert.assertEquals(
+				String.valueOf(auditMessage.toJSONObject()),
+				logEntry.getMessage(), JSONCompareMode.STRICT);
 		}
 	}
 
@@ -171,6 +169,8 @@ public class LoggingAuditMessageProcessorTest {
 			String clientIP = RandomTestUtil.randomString();
 
 			auditMessage.setClientIP(clientIP);
+
+			auditMessage.setObjectName(RandomTestUtil.randomString());
 
 			auditMessageProcessor.process(auditMessage);
 
@@ -202,10 +202,28 @@ public class LoggingAuditMessageProcessorTest {
 
 			_auditEventPseudonymFields.add(userNameAuditEventPseudonymField);
 
-			Assert.assertTrue(jsonObject.getBoolean("pseudonymized"));
 			Assert.assertEquals(
 				auditMessage.getUserName(),
 				userNameAuditEventPseudonymField.getValue());
+
+			AuditEventPseudonymField objectNameAuditEventPseudonymField =
+				_auditEventPseudonymFieldLocalService.
+					fetchAuditEventPseudonymField(
+						GetterUtil.getLong(jsonObject.getString("objectName")));
+
+			_auditEventPseudonymFields.add(objectNameAuditEventPseudonymField);
+
+			Assert.assertEquals(
+				auditMessage.getObjectName(),
+				objectNameAuditEventPseudonymField.getValue());
+
+			AuditMessage pseudonymizedAuditMessage =
+				_auditEventPseudonymFieldLocalService.pseudonymizeAuditMessage(
+					auditMessage);
+
+			JSONAssert.assertEquals(
+				String.valueOf(pseudonymizedAuditMessage.toJSONObject()),
+				logEntry.getMessage(), JSONCompareMode.STRICT);
 		}
 	}
 

@@ -145,10 +145,10 @@ public class AuditEventPseudonymFieldLocalServiceTest {
 			pseudonymizedAuditMessage.getImpersonatedUserId());
 		Assert.assertTrue(pseudonymizedAuditMessage.isPseudonymized());
 		Assert.assertEquals(
-			auditMessage.getUserId(), pseudonymizedAuditMessage.getUserId());
-		Assert.assertEquals(
 			pseudonymizedAuditMessage.getUserEmailAddress(),
 			pseudonymizedAuditMessage.getUserLogin());
+		Assert.assertEquals(
+			auditMessage.getUserId(), pseudonymizedAuditMessage.getUserId());
 
 		_assertAuditEventPseudonymField(
 			"clientIP", pseudonymizedAuditMessage.getClientIP(),
@@ -507,7 +507,8 @@ public class AuditEventPseudonymFieldLocalServiceTest {
 
 		try {
 			TransactionInvokerUtil.invoke(
-				_transactionConfig,
+				TransactionConfig.Factory.create(
+					Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class}),
 				() -> {
 					pseudonymizedAuditMessageReference.set(
 						_pseudonymizeAuditMessage(auditMessage));
@@ -593,10 +594,6 @@ public class AuditEventPseudonymFieldLocalServiceTest {
 	}
 
 	private static final String _NAME = RandomTestUtil.randomString();
-
-	private static final TransactionConfig _transactionConfig =
-		TransactionConfig.Factory.create(
-			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
 	@Inject
 	private AuditEventPseudonymFieldLocalService

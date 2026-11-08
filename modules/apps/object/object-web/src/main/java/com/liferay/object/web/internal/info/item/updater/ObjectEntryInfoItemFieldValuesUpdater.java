@@ -41,12 +41,16 @@ import com.liferay.object.web.internal.info.item.handler.ObjectEntryInfoItemExce
 import com.liferay.object.web.internal.util.ObjectEntryCMSInfoItemFieldValuesUtil;
 import com.liferay.object.web.internal.util.ObjectEntryUtil;
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.InfoFormException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -98,173 +102,24 @@ public class ObjectEntryInfoItemFieldValuesUpdater
 			int statusInt)
 		throws InfoFormException {
 
-		ObjectDefinition objectDefinition = objectEntry.getObjectDefinition();
-
-		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerRegistry.getObjectEntryManager(
-				objectDefinition.getCompanyId(),
-				objectDefinition.getStorageType());
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
-
 		try {
-			infoItemFieldValues =
-				ObjectEntryCMSInfoItemFieldValuesUtil.
-					normalizeInfoItemFieldValues(
-						infoItemFieldValues, objectEntry,
-						_objectEntryManagerRegistry,
-						_objectScopeProviderRegistry, serviceContext);
-
-			Map<String, Object> curProperties = _getProperties(
-				infoItemFieldValues, objectDefinition, objectEntry);
-
-			String scopeKey = ObjectEntryInfoItemUtil.getScopeKey(
-				objectEntry.getGroupId(), objectDefinition,
-				_objectScopeProviderRegistry);
-
-			DTOConverterContext dtoConverterContext =
-				new DefaultDTOConverterContext(
-					false, null, null, null, null, themeDisplay.getLocale(),
-					null, themeDisplay.getUser());
-
-			dtoConverterContext.setAttribute("addActions", Boolean.FALSE);
-
-			_deleteRelatedObjectEntries(
-				themeDisplay.getCompanyId(), dtoConverterContext,
-				infoItemFieldValues, objectEntry, scopeKey);
-
-			com.liferay.object.rest.dto.v1_0.ObjectEntry dtoObjectEntry = null;
-
-			if (objectEntryManager instanceof
-					DefaultObjectEntryManager defaultObjectEntryManager) {
-
-				dtoObjectEntry = defaultObjectEntryManager.getObjectEntry(
-					dtoConverterContext, objectDefinition, objectEntry);
-			}
-			else {
-				dtoObjectEntry = objectEntryManager.getObjectEntry(
-					objectEntry.getCompanyId(), dtoConverterContext,
-					objectEntry.getExternalReferenceCode(), objectDefinition,
-					scopeKey);
-			}
-
-			dtoObjectEntry = ObjectEntryManagerUtil.partialUpdateObjectEntry(
-				dtoObjectEntry, objectDefinition.getObjectDefinitionId(),
-				new com.liferay.object.rest.dto.v1_0.ObjectEntry() {
-					{
-						setFriendlyUrlPath(
-							() -> GetterUtil.getString(
-								curProperties.get("objectEntryFriendlyURL"),
-								null));
-						setFriendlyUrlPath_i18n(
-							() -> (Map<String, String>)curProperties.get(
-								"objectEntryFriendlyURL_i18n"));
-						setKeywords(() -> _getKeywords(serviceContext));
-						setProperties(() -> curProperties);
-						setStatus(
-							() -> new Status() {
-								{
-									setCode(() -> statusInt);
-								}
-							});
-						setTaxonomyCategoryBriefs(
-							() -> _getTaxonomyCategoryBriefs(
-								themeDisplay.getLocale(), serviceContext));
-					}
-				});
-
-			if (curProperties.containsKey("displayDate") ||
-				curProperties.containsKey("expirationDate") ||
-				curProperties.containsKey("reviewDate")) {
-
-				dtoObjectEntry.setDisplayDate(
-					() -> {
-						Map.Entry<String, Object> displayDateEntry =
-							MapUtil.getEntry(curProperties, "displayDate");
-
-						if (displayDateEntry != null) {
-							return GetterUtil.getDate(
-								displayDateEntry.getValue(), _dateTimeFormatter,
-								null);
-						}
-
-						return objectEntry.getDisplayDate();
-					});
-				dtoObjectEntry.setExpirationDate(
-					() -> {
-						Map.Entry<String, Object> expirationDateEntry =
-							MapUtil.getEntry(curProperties, "expirationDate");
-
-						if (expirationDateEntry != null) {
-							return GetterUtil.getDate(
-								expirationDateEntry.getValue(),
-								_dateTimeFormatter, null);
-						}
-
-						return objectEntry.getExpirationDate();
-					});
-				dtoObjectEntry.setReviewDate(
-					() -> {
-						Map.Entry<String, Object> reviewDateEntry =
-							MapUtil.getEntry(curProperties, "reviewDate");
-
-						if (reviewDateEntry != null) {
-							return GetterUtil.getDate(
-								reviewDateEntry.getValue(), _dateTimeFormatter,
-								null);
-						}
-
-						return objectEntry.getReviewDate();
-					});
-			}
-
-			DTOConverterContext updateDTOConverterContext =
-				new DefaultDTOConverterContext(
-					false, null, null, null, null, themeDisplay.getLocale(),
-					null, themeDisplay.getUser());
-
-			updateDTOConverterContext.setAttribute("addActions", Boolean.FALSE);
-
-			if (objectEntryManager instanceof
-					DefaultObjectEntryManager defaultObjectEntryManager) {
-
-				dtoObjectEntry = defaultObjectEntryManager.updateObjectEntry(
-					updateDTOConverterContext, objectDefinition, dtoObjectEntry,
-					scopeKey, objectEntry);
-			}
-			else {
-				dtoObjectEntry = objectEntryManager.updateObjectEntry(
-					objectEntry.getCompanyId(), updateDTOConverterContext,
-					dtoObjectEntry.getExternalReferenceCode(), objectDefinition,
-					dtoObjectEntry, scopeKey);
-			}
-
-			ObjectEntry updatedObjectEntry = ObjectEntryUtil.toObjectEntry(
-				objectDefinition, dtoObjectEntry);
-
-			if (objectDefinition.isDefaultStorageType()) {
-				_relateMainObjectEntry(
-					infoItemFieldValues, objectDefinition, updatedObjectEntry,
-					serviceContext, themeDisplay.getUserId());
-
-				_relateNestedObjectEntries(
-					themeDisplay.getCompanyId(),
-					updatedObjectEntry.getGroupId(), infoItemFieldValues,
-					serviceContext, themeDisplay.getUserId());
-			}
-
-			return updatedObjectEntry;
+			return TransactionInvokerUtil.invoke(
+				TransactionConfig.Factory.create(
+					Propagation.REQUIRED, new Class<?>[] {Exception.class}),
+				() -> _updateObjectEntry(
+					infoItemFieldValues, objectEntry, statusInt));
 		}
-		catch (Exception exception) {
-			ObjectEntryInfoItemExceptionRequestHandler.handleInfoFormException(
-				exception, objectEntry.getGroupId(), _infoItemFormProvider,
-				objectDefinition.getObjectDefinitionId());
-		}
+		catch (Throwable throwable) {
+			if (throwable instanceof Exception exception) {
+				ObjectEntryInfoItemExceptionRequestHandler.
+					handleInfoFormException(
+						exception, objectEntry.getGroupId(),
+						_infoItemFormProvider,
+						objectEntry.getObjectDefinitionId());
+			}
 
-		return null;
+			return ReflectionUtil.throwException(throwable);
+		}
 	}
 
 	private void _deleteRelatedObjectEntries(
@@ -622,6 +477,167 @@ public class ObjectEntryInfoItemFieldValuesUpdater
 				};
 			},
 			TaxonomyCategoryBrief.class);
+	}
+
+	private ObjectEntry _updateObjectEntry(
+			InfoItemFieldValues infoItemFieldValues, ObjectEntry objectEntry,
+			int statusInt)
+		throws Exception {
+
+		ObjectDefinition objectDefinition = objectEntry.getObjectDefinition();
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		infoItemFieldValues =
+			ObjectEntryCMSInfoItemFieldValuesUtil.normalizeInfoItemFieldValues(
+				infoItemFieldValues, objectEntry, _objectEntryManagerRegistry,
+				_objectScopeProviderRegistry, serviceContext);
+
+		Map<String, Object> curProperties = _getProperties(
+			infoItemFieldValues, objectDefinition, objectEntry);
+
+		String scopeKey = ObjectEntryInfoItemUtil.getScopeKey(
+			objectEntry.getGroupId(), objectDefinition,
+			_objectScopeProviderRegistry);
+
+		ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
+
+		DTOConverterContext dtoConverterContext =
+			new DefaultDTOConverterContext(
+				false, null, null, null, null, themeDisplay.getLocale(), null,
+				themeDisplay.getUser());
+
+		dtoConverterContext.setAttribute("addActions", Boolean.FALSE);
+
+		_deleteRelatedObjectEntries(
+			themeDisplay.getCompanyId(), dtoConverterContext,
+			infoItemFieldValues, objectEntry, scopeKey);
+
+		ObjectEntryManager objectEntryManager =
+			_objectEntryManagerRegistry.getObjectEntryManager(
+				objectDefinition.getCompanyId(),
+				objectDefinition.getStorageType());
+
+		com.liferay.object.rest.dto.v1_0.ObjectEntry dtoObjectEntry = null;
+
+		if (objectEntryManager instanceof
+				DefaultObjectEntryManager defaultObjectEntryManager) {
+
+			dtoObjectEntry = defaultObjectEntryManager.getObjectEntry(
+				dtoConverterContext, objectDefinition, objectEntry);
+		}
+		else {
+			dtoObjectEntry = objectEntryManager.getObjectEntry(
+				objectEntry.getCompanyId(), dtoConverterContext,
+				objectEntry.getExternalReferenceCode(), objectDefinition,
+				scopeKey);
+		}
+
+		dtoObjectEntry = ObjectEntryManagerUtil.partialUpdateObjectEntry(
+			dtoObjectEntry, objectDefinition.getObjectDefinitionId(),
+			new com.liferay.object.rest.dto.v1_0.ObjectEntry() {
+				{
+					setFriendlyUrlPath(
+						() -> GetterUtil.getString(
+							curProperties.get("objectEntryFriendlyURL"), null));
+					setFriendlyUrlPath_i18n(
+						() -> (Map<String, String>)curProperties.get(
+							"objectEntryFriendlyURL_i18n"));
+					setKeywords(() -> _getKeywords(serviceContext));
+					setProperties(() -> curProperties);
+					setStatus(
+						() -> new Status() {
+							{
+								setCode(() -> statusInt);
+							}
+						});
+					setTaxonomyCategoryBriefs(
+						() -> _getTaxonomyCategoryBriefs(
+							themeDisplay.getLocale(), serviceContext));
+				}
+			});
+
+		if (curProperties.containsKey("displayDate") ||
+			curProperties.containsKey("expirationDate") ||
+			curProperties.containsKey("reviewDate")) {
+
+			dtoObjectEntry.setDisplayDate(
+				() -> {
+					Map.Entry<String, Object> displayDateEntry =
+						MapUtil.getEntry(curProperties, "displayDate");
+
+					if (displayDateEntry != null) {
+						return GetterUtil.getDate(
+							displayDateEntry.getValue(), _dateTimeFormatter,
+							null);
+					}
+
+					return objectEntry.getDisplayDate();
+				});
+			dtoObjectEntry.setExpirationDate(
+				() -> {
+					Map.Entry<String, Object> expirationDateEntry =
+						MapUtil.getEntry(curProperties, "expirationDate");
+
+					if (expirationDateEntry != null) {
+						return GetterUtil.getDate(
+							expirationDateEntry.getValue(), _dateTimeFormatter,
+							null);
+					}
+
+					return objectEntry.getExpirationDate();
+				});
+			dtoObjectEntry.setReviewDate(
+				() -> {
+					Map.Entry<String, Object> reviewDateEntry =
+						MapUtil.getEntry(curProperties, "reviewDate");
+
+					if (reviewDateEntry != null) {
+						return GetterUtil.getDate(
+							reviewDateEntry.getValue(), _dateTimeFormatter,
+							null);
+					}
+
+					return objectEntry.getReviewDate();
+				});
+		}
+
+		DTOConverterContext updateDTOConverterContext =
+			new DefaultDTOConverterContext(
+				false, null, null, null, null, themeDisplay.getLocale(), null,
+				themeDisplay.getUser());
+
+		updateDTOConverterContext.setAttribute("addActions", Boolean.FALSE);
+
+		if (objectEntryManager instanceof
+				DefaultObjectEntryManager defaultObjectEntryManager) {
+
+			dtoObjectEntry = defaultObjectEntryManager.updateObjectEntry(
+				updateDTOConverterContext, objectDefinition, dtoObjectEntry,
+				scopeKey, objectEntry);
+		}
+		else {
+			dtoObjectEntry = objectEntryManager.updateObjectEntry(
+				objectEntry.getCompanyId(), updateDTOConverterContext,
+				dtoObjectEntry.getExternalReferenceCode(), objectDefinition,
+				dtoObjectEntry, scopeKey);
+		}
+
+		ObjectEntry updatedObjectEntry = ObjectEntryUtil.toObjectEntry(
+			objectDefinition, dtoObjectEntry);
+
+		if (objectDefinition.isDefaultStorageType()) {
+			_relateMainObjectEntry(
+				infoItemFieldValues, objectDefinition, updatedObjectEntry,
+				serviceContext, themeDisplay.getUserId());
+
+			_relateNestedObjectEntries(
+				themeDisplay.getCompanyId(), updatedObjectEntry.getGroupId(),
+				infoItemFieldValues, serviceContext, themeDisplay.getUserId());
+		}
+
+		return updatedObjectEntry;
 	}
 
 	private static final DateFormat _dateTimeFormatter =

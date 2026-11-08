@@ -461,6 +461,83 @@ public class ObjectEntryInfoItemFieldValuesUpdaterTest
 	}
 
 	@Test
+	public void testUpdateFromInfoItemFieldValuesWithDeletedItemIdentifiersWhenUpdateFails()
+		throws Exception {
+
+		Tree objectDefinitionTree = TreeTestUtil.createObjectDefinitionTree(
+			_objectDefinitionLocalService, _objectRelationshipLocalService,
+			true,
+			LinkedHashMapBuilder.put(
+				"A", new String[] {"AA", "AB"}
+			).put(
+				"AA", new String[0]
+			).put(
+				"AB", new String[0]
+			).build());
+
+		Node objectDefinitionRootNode = objectDefinitionTree.getRootNode();
+
+		TreeTestUtil.createObjectEntryTree(
+			"1", _objectDefinitionLocalService, objectEntryLocalService,
+			_objectFieldLocalService, _objectRelationshipLocalService,
+			objectDefinitionRootNode.getPrimaryKey());
+
+		ObjectEntry rootObjectEntry = _getObjectEntry("A1", "C_A");
+
+		ObjectField objectField = ObjectFieldUtil.addCustomObjectField(
+			new TextObjectFieldBuilder(
+			).labelMap(
+				RandomTestUtil.randomLocaleStringMap()
+			).name(
+				"a" + RandomTestUtil.randomString()
+			).objectDefinitionId(
+				rootObjectEntry.getObjectDefinitionId()
+			).userId(
+				TestPropsValues.getUserId()
+			).build());
+
+		AssertUtils.assertFailure(
+			InfoFormException.class, null,
+			() -> _updateFromInfoItemFieldValues(
+				InfoItemFieldValues.builder(
+				).infoFieldValue(
+					_getDeletedItemIdentifiersInfoFieldValue(
+						_getObjectEntry("AA1", "C_AA"))
+				).infoFieldValue(
+					new InfoFieldValue<>(
+						InfoField.builder(
+						).infoFieldType(
+							TextInfoFieldType.INSTANCE
+						).namespace(
+							ObjectField.class.getSimpleName()
+						).name(
+							objectField.getName()
+						).build(),
+						RandomTestUtil.randomString(281))
+				).build(),
+				rootObjectEntry.getObjectDefinition(), rootObjectEntry));
+
+		ObjectEntryTreeFactory objectEntryTreeFactory =
+			new ObjectEntryTreeFactory(
+				objectEntryLocalService, _objectRelationshipLocalService);
+
+		TreeTestUtil.assertObjectEntryTree(
+			LinkedHashMapBuilder.put(
+				"A1", new String[] {"AA1", "AB1"}
+			).put(
+				"AA1", new String[0]
+			).put(
+				"AB1", new String[0]
+			).build(),
+			objectEntryTreeFactory.create(rootObjectEntry.getObjectEntryId()),
+			objectEntryLocalService);
+
+		TreeTestUtil.deleteObjectDefinitionHierarchy(
+			_objectDefinitionLocalService, new String[] {"C_A", "C_AA", "C_AB"},
+			objectEntryLocalService, _objectRelationshipLocalService);
+	}
+
+	@Test
 	public void testUpdateFromInfoItemFieldValuesWithLocalizedObjectField()
 		throws Exception {
 

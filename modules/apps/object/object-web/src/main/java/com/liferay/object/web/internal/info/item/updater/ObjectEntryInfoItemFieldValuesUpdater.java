@@ -562,6 +562,9 @@ public class ObjectEntryInfoItemFieldValuesUpdater
 			curProperties.containsKey("expirationDate") ||
 			curProperties.containsKey("reviewDate")) {
 
+			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+				"yyyy-MM-dd HH:mm");
+
 			dtoObjectEntry.setDisplayDate(
 				() -> {
 					Map.Entry<String, Object> displayDateEntry =
@@ -569,8 +572,7 @@ public class ObjectEntryInfoItemFieldValuesUpdater
 
 					if (displayDateEntry != null) {
 						return GetterUtil.getDate(
-							displayDateEntry.getValue(), _dateTimeFormatter,
-							null);
+							displayDateEntry.getValue(), dateFormat, null);
 					}
 
 					return objectEntry.getDisplayDate();
@@ -582,8 +584,7 @@ public class ObjectEntryInfoItemFieldValuesUpdater
 
 					if (expirationDateEntry != null) {
 						return GetterUtil.getDate(
-							expirationDateEntry.getValue(), _dateTimeFormatter,
-							null);
+							expirationDateEntry.getValue(), dateFormat, null);
 					}
 
 					return objectEntry.getExpirationDate();
@@ -595,8 +596,7 @@ public class ObjectEntryInfoItemFieldValuesUpdater
 
 					if (reviewDateEntry != null) {
 						return GetterUtil.getDate(
-							reviewDateEntry.getValue(), _dateTimeFormatter,
-							null);
+							reviewDateEntry.getValue(), dateFormat, null);
 					}
 
 					return objectEntry.getReviewDate();
@@ -639,9 +639,6 @@ public class ObjectEntryInfoItemFieldValuesUpdater
 
 		return updatedObjectEntry;
 	}
-
-	private static final DateFormat _dateTimeFormatter =
-		DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	private final InfoItemFormProvider<ObjectEntry> _infoItemFormProvider;
 	private final ObjectEntryManagerRegistry _objectEntryManagerRegistry;

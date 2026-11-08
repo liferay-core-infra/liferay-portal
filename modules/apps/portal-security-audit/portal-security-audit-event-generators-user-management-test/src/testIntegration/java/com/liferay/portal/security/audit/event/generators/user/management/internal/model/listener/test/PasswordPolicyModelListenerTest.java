@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.security.audit.configuration.AuditConfiguration;
 import com.liferay.portal.security.audit.event.generators.constants.EventTypes;
 import com.liferay.portal.security.audit.router.configuration.LoggingAuditMessageProcessorConfiguration;
 import com.liferay.portal.security.audit.test.util.AuditMessageTestUtil;
@@ -44,7 +45,13 @@ public class PasswordPolicyModelListenerTest extends BaseModelListenerTestCase {
 	@FeatureFlag("LPD-6417")
 	@Test
 	public void testOnBeforeCreate() throws Exception {
-		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper1 =
+				new ConfigurationTemporarySwapper(
+					AuditConfiguration.class.getName(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"pseudonymizationEnabled", false
+					).build());
+			ConfigurationTemporarySwapper configurationTemporarySwapper2 =
 				new ConfigurationTemporarySwapper(
 					LoggingAuditMessageProcessorConfiguration.class.getName(),
 					HashMapDictionaryBuilder.<String, Object>put(

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.security.audit.AuditMessageProcessor;
+import com.liferay.portal.security.audit.configuration.AuditConfiguration;
 import com.liferay.portal.security.audit.event.generators.constants.EventTypes;
 import com.liferay.portal.security.audit.router.configuration.LoggingAuditMessageProcessorConfiguration;
 import com.liferay.portal.test.rule.FeatureFlag;
@@ -95,7 +96,13 @@ public class ClientExtensionEntryModelListenerTest {
 	public void testOnBeforeCreate() throws Exception {
 		PrintStream printStream = System.out;
 
-		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper1 =
+				new ConfigurationTemporarySwapper(
+					AuditConfiguration.class.getName(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"pseudonymizationEnabled", false
+					).build());
+			ConfigurationTemporarySwapper configurationTemporarySwapper2 =
 				new ConfigurationTemporarySwapper(
 					LoggingAuditMessageProcessorConfiguration.class.getName(),
 					HashMapDictionaryBuilder.<String, Object>put(

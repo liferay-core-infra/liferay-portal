@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.security.audit.configuration.AuditConfiguration;
 import com.liferay.portal.security.audit.router.configuration.PersistentAuditMessageProcessorConfiguration;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
 import com.liferay.portal.security.audit.storage.service.AuditEventLocalService;
@@ -151,7 +152,13 @@ public class PersistentAuditMessageProcessorTest {
 	}
 
 	private void _testProcessHttpRequestContext() throws Exception {
-		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper1 =
+				new ConfigurationTemporarySwapper(
+					AuditConfiguration.class.getName(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"pseudonymizationEnabled", false
+					).build());
+			ConfigurationTemporarySwapper configurationTemporarySwapper2 =
 				new ConfigurationTemporarySwapper(
 					PersistentAuditMessageProcessorConfiguration.class.
 						getName(),

@@ -41,38 +41,6 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 public class BackgroundTaskServiceHttp {
 
-	public static String getBackgroundTaskStatusJSON(
-		HttpPrincipal httpPrincipal, long backgroundTaskId) {
-
-		try {
-			MethodKey methodKey = new MethodKey(
-				BackgroundTaskServiceUtil.class, "getBackgroundTaskStatusJSON",
-				_getBackgroundTaskStatusJSONParameterTypes0);
-
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, backgroundTaskId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
-			}
-
-			return (String)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
-
-			_log.error(systemException, systemException);
-
-			throw systemException;
-		}
-	}
-
 	public static int getBackgroundTasksCount(
 		HttpPrincipal httpPrincipal, long groupId, String taskExecutorClassName,
 		boolean completed) {
@@ -80,7 +48,7 @@ public class BackgroundTaskServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				BackgroundTaskServiceUtil.class, "getBackgroundTasksCount",
-				_getBackgroundTasksCountParameterTypes1);
+				_getBackgroundTasksCountParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, groupId, taskExecutorClassName, completed);
@@ -106,48 +74,11 @@ public class BackgroundTaskServiceHttp {
 		}
 	}
 
-	public static int getBackgroundTasksCount(
-		HttpPrincipal httpPrincipal, long groupId, String name,
-		String taskExecutorClassName) {
-
-		try {
-			MethodKey methodKey = new MethodKey(
-				BackgroundTaskServiceUtil.class, "getBackgroundTasksCount",
-				_getBackgroundTasksCountParameterTypes2);
-
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, groupId, name, taskExecutorClassName);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception exception) {
-				throw new com.liferay.portal.kernel.exception.SystemException(
-					exception);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException
-					systemException) {
-
-			_log.error(systemException, systemException);
-
-			throw systemException;
-		}
-	}
-
 	private static Log _log = LogFactoryUtil.getLog(
 		BackgroundTaskServiceHttp.class);
 
-	private static final Class<?>[]
-		_getBackgroundTaskStatusJSONParameterTypes0 = new Class[] {long.class};
-	private static final Class<?>[] _getBackgroundTasksCountParameterTypes1 =
+	private static final Class<?>[] _getBackgroundTasksCountParameterTypes0 =
 		new Class[] {long.class, String.class, boolean.class};
-	private static final Class<?>[] _getBackgroundTasksCountParameterTypes2 =
-		new Class[] {long.class, String.class, String.class};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-427986571
+// LIFERAY-SERVICE-BUILDER-HASH:1089783348

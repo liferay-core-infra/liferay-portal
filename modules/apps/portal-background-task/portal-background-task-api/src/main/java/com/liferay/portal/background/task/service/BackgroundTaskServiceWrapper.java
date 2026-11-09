@@ -35,20 +35,6 @@ public class BackgroundTaskServiceWrapper
 			groupId, taskExecutorClassName, completed);
 	}
 
-	@Override
-	public int getBackgroundTasksCount(
-		long groupId, String name, String taskExecutorClassName) {
-
-		return _backgroundTaskService.getBackgroundTasksCount(
-			groupId, name, taskExecutorClassName);
-	}
-
-	@Override
-	public String getBackgroundTaskStatusJSON(long backgroundTaskId) {
-		return _backgroundTaskService.getBackgroundTaskStatusJSON(
-			backgroundTaskId);
-	}
-
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -72,4 +58,4 @@ public class BackgroundTaskServiceWrapper
 	private BackgroundTaskService _backgroundTaskService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1713220582
+// LIFERAY-SERVICE-BUILDER-HASH:2069423468

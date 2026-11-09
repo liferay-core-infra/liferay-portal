@@ -33,17 +33,6 @@ public class BackgroundTaskServiceUtil {
 			groupId, taskExecutorClassName, completed);
 	}
 
-	public static int getBackgroundTasksCount(
-		long groupId, String name, String taskExecutorClassName) {
-
-		return getService().getBackgroundTasksCount(
-			groupId, name, taskExecutorClassName);
-	}
-
-	public static String getBackgroundTaskStatusJSON(long backgroundTaskId) {
-		return getService().getBackgroundTaskStatusJSON(backgroundTaskId);
-	}
-
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -62,4 +51,4 @@ public class BackgroundTaskServiceUtil {
 			BackgroundTaskServiceUtil.class, BackgroundTaskService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1958418030
+// LIFERAY-SERVICE-BUILDER-HASH:-2106909522

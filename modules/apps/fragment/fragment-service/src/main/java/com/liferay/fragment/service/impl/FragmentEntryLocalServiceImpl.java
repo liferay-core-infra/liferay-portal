@@ -908,10 +908,6 @@ public class FragmentEntryLocalServiceImpl
 		fragmentEntry.setStatusByUserName(user.getFullName());
 		fragmentEntry.setStatusDate(new Date());
 
-		if (!Objects.equals(name, fragmentEntry.getName())) {
-			fragmentEntry.setName(name);
-		}
-
 		if (status != WorkflowConstants.STATUS_APPROVED) {
 			return updateDraft(fragmentEntry);
 		}

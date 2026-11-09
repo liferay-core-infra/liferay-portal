@@ -12,6 +12,9 @@ public class StagingProcessesWebKeys {
 
 	public static final String BRANCHING_ENABLED = "BRANCHING_ENABLED";
 
+	public static final String INCOMPLETE_BACKGROUND_TASKS_COUNT =
+		"INCOMPLETE_BACKGROUND_TASKS_COUNT";
+
 	public static final String LAYOUT_BRANCH = "LAYOUT_BRANCH";
 
 	public static final String LAYOUT_SET_BRANCH = "LAYOUT_SET_BRANCH";

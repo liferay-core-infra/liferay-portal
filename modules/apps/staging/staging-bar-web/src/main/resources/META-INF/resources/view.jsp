@@ -8,6 +8,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
+int incompleteBackgroundTasksCount = GetterUtil.getInteger(renderRequest.getAttribute(StagingProcessesWebKeys.INCOMPLETE_BACKGROUND_TASKS_COUNT));
 LayoutRevision layoutRevision = (LayoutRevision)renderRequest.getAttribute(WebKeys.LAYOUT_REVISION);
 List<LayoutSetBranch> layoutSetBranches = (List<LayoutSetBranch>)renderRequest.getAttribute(StagingProcessesWebKeys.LAYOUT_SET_BRANCHES);
 liveGroup = (Group)renderRequest.getAttribute(StagingProcessesWebKeys.LIVE_GROUP);
@@ -206,7 +207,7 @@ if (liveLayout != null) {
 								<clay:col
 									cssClass="staging-alert-container"
 								>
-									<div class="alert alert-warning hide warning-content" id="<portlet:namespace />warningMessage">
+									<div class="alert alert-warning <%= (incompleteBackgroundTasksCount > 0) ? StringPool.BLANK : "hide" %> warning-content" id="<portlet:namespace />warningMessage">
 										<liferay-ui:message key="an-initial-staging-publish-process-is-in-progress" />
 									</div>
 
@@ -267,47 +268,29 @@ if (liveLayout != null) {
 			}
 		}
 
-		var stagingLink = document.getElementById('<portlet:namespace />stagingLink');
-		var warningMessage = document.getElementById(
-			'<portlet:namespace />warningMessage'
-		);
-
-		var checkBackgroundTasks = function () {
-			Liferay.Service(
-				'/backgroundtask.backgroundtask/get-background-tasks-count',
-				{
-					completed: false,
-					groupId: '<%= liveGroup.getGroupId() %>',
-					taskExecutorClassName:
-						'<%= BackgroundTaskExecutorNames.LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR %>',
-				},
-				(obj) => {
-					var incomplete = obj > 0;
-
-					if (incomplete) {
-						if (stagingLink) {
-							stagingLink.classList.add('hide');
+		<c:if test="<%= incompleteBackgroundTasksCount > 0 %>">
+			var checkBackgroundTasks = function () {
+				Liferay.Util.fetch(
+					'<portlet:resourceURL id="/staging_bar/get_incomplete_background_tasks_count" />'
+				)
+					.then((response) => response.json())
+					.then((incompleteBackgroundTasksCount) => {
+						if (incompleteBackgroundTasksCount > 0) {
+							setTimeout(checkBackgroundTasks, 5000);
 						}
+						else {
+							var warningMessage = document.getElementById(
+								'<portlet:namespace />warningMessage'
+							);
 
-						if (warningMessage) {
-							warningMessage.classList.remove('hide');
+							if (warningMessage) {
+								warningMessage.classList.add('hide');
+							}
 						}
+					});
+			};
 
-						setTimeout(checkBackgroundTasks, 5000);
-					}
-					else {
-						if (stagingLink) {
-							stagingLink.classList.remove('hide');
-						}
-
-						if (warningMessage) {
-							warningMessage.classList.add('hide');
-						}
-					}
-				}
-			);
-		};
-
-		checkBackgroundTasks();
+			setTimeout(checkBackgroundTasks, 5000);
+		</c:if>
 	</aui:script>
 </c:if>

@@ -29,7 +29,8 @@ public class BackgroundTaskServiceWrapper
 
 	@Override
 	public int getBackgroundTasksCount(
-		long groupId, String taskExecutorClassName, boolean completed) {
+			long groupId, String taskExecutorClassName, boolean completed)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _backgroundTaskService.getBackgroundTasksCount(
 			groupId, taskExecutorClassName, completed);
@@ -58,4 +59,4 @@ public class BackgroundTaskServiceWrapper
 	private BackgroundTaskService _backgroundTaskService;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:2069423468
+// LIFERAY-SERVICE-BUILDER-HASH:-1594228006

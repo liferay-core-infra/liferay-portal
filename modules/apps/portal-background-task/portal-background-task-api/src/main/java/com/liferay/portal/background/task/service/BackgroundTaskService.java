@@ -41,7 +41,8 @@ public interface BackgroundTaskService extends BaseService {
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getBackgroundTasksCount(
-		long groupId, String taskExecutorClassName, boolean completed);
+			long groupId, String taskExecutorClassName, boolean completed)
+		throws PortalException;
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -51,4 +52,4 @@ public interface BackgroundTaskService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:50060030
+// LIFERAY-SERVICE-BUILDER-HASH:-1029921750

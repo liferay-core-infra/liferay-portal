@@ -5,6 +5,7 @@
 
 package com.liferay.portal.background.task.service;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.service.Snapshot;
 
 /**
@@ -27,7 +28,8 @@ public class BackgroundTaskServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portal.background.task.service.impl.BackgroundTaskServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static int getBackgroundTasksCount(
-		long groupId, String taskExecutorClassName, boolean completed) {
+			long groupId, String taskExecutorClassName, boolean completed)
+		throws PortalException {
 
 		return getService().getBackgroundTasksCount(
 			groupId, taskExecutorClassName, completed);
@@ -51,4 +53,4 @@ public class BackgroundTaskServiceUtil {
 			BackgroundTaskServiceUtil.class, BackgroundTaskService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2106909522
+// LIFERAY-SERVICE-BUILDER-HASH:304331164

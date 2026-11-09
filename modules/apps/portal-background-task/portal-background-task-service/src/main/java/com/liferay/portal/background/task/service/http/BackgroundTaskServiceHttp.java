@@ -42,8 +42,9 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class BackgroundTaskServiceHttp {
 
 	public static int getBackgroundTasksCount(
-		HttpPrincipal httpPrincipal, long groupId, String taskExecutorClassName,
-		boolean completed) {
+			HttpPrincipal httpPrincipal, long groupId,
+			String taskExecutorClassName, boolean completed)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -59,6 +60,13 @@ public class BackgroundTaskServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
 				throw new com.liferay.portal.kernel.exception.SystemException(
 					exception);
 			}
@@ -81,4 +89,4 @@ public class BackgroundTaskServiceHttp {
 		new Class[] {long.class, String.class, boolean.class};
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1089783348
+// LIFERAY-SERVICE-BUILDER-HASH:1410352366

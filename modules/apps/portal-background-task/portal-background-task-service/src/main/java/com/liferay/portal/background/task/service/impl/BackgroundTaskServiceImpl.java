@@ -7,6 +7,9 @@ package com.liferay.portal.background.task.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.background.task.service.base.BackgroundTaskServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -24,7 +27,11 @@ public class BackgroundTaskServiceImpl extends BackgroundTaskServiceBaseImpl {
 
 	@Override
 	public int getBackgroundTasksCount(
-		long groupId, String taskExecutorClassName, boolean completed) {
+			long groupId, String taskExecutorClassName, boolean completed)
+		throws PortalException {
+
+		GroupPermissionUtil.check(
+			getPermissionChecker(), groupId, ActionKeys.VIEW_STAGING);
 
 		return backgroundTaskLocalService.getBackgroundTasksCount(
 			groupId, taskExecutorClassName, completed);

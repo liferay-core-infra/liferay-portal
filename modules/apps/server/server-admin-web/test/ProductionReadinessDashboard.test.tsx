@@ -63,6 +63,7 @@ jest.mock('frontend-js-web', () => ({
 		})
 	),
 	fetch: jest.fn(),
+	sub: (key: string, ...values: string[]) => [key, ...values].join(' '),
 }));
 
 const {fetch: mockFetch} = jest.requireMock('frontend-js-web') as {
@@ -204,6 +205,54 @@ describe('ProductionReadinessDashboard', () => {
 			expect(
 				screen.getByText('no-production-readiness-rules-are-deployed')
 			).toBeInTheDocument()
+		);
+
+		expect(
+			screen.getByRole('link', {
+				name: 'x-opens-new-window click-here-to-learn-more-about-what-settings-liferay-recommends-checking-before-a-dxp-deployment',
+			})
+		).toBeInTheDocument();
+	});
+
+	it('renders an error state when the request fails', async () => {
+		mockFetch.mockRejectedValueOnce(new Error('Request failed'));
+
+		render(<ProductionReadinessDashboard baseResourceURL={BASE_URL} />);
+
+		await waitFor(() =>
+			expect(
+				screen.getByText('an-unexpected-error-occurred')
+			).toBeInTheDocument()
+		);
+
+		expect(
+			screen.getByRole('link', {
+				name: 'x-opens-new-window click-here-to-learn-more-about-what-settings-liferay-recommends-checking-before-a-dxp-deployment',
+			})
+		).toBeInTheDocument();
+	});
+
+	it('renders the go live checklist link', async () => {
+		mockFetchOnce(SAMPLE_PAYLOAD);
+
+		render(<ProductionReadinessDashboard baseResourceURL={BASE_URL} />);
+
+		await waitFor(() =>
+			expect(screen.getByText('Security Enabled')).toBeInTheDocument()
+		);
+
+		const link = screen.getByRole('link', {
+			name: 'x-opens-new-window click-here-to-learn-more-about-what-settings-liferay-recommends-checking-before-a-dxp-deployment',
+		});
+
+		expect(link).toHaveAttribute(
+			'href',
+			'https://www.liferay.com/resources/product-info/Liferay+DXP+Go+Live+Checklist'
+		);
+		expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+		expect(link).toHaveAttribute('target', '_blank');
+		expect(link).toHaveTextContent(
+			'click-here-to-learn-more-about-what-settings-liferay-recommends-checking-before-a-dxp-deployment'
 		);
 	});
 

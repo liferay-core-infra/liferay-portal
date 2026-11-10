@@ -165,6 +165,14 @@ public class LaunchSetErrorHelper {
 			ObjectEntry launchSetObjectEntry, long userId)
 		throws PortalException {
 
+		ObjectEntry currentLaunchSetObjectEntry =
+			_objectEntryLocalService.getObjectEntry(
+				launchSetObjectEntry.getObjectEntryId());
+
+		if (currentLaunchSetObjectEntry.isApproved()) {
+			return;
+		}
+
 		deleteLaunchSetErrors(launchSetObjectEntry);
 
 		long statusByUserId = _getStatusByUserId(launchSetObjectEntry, userId);
@@ -173,10 +181,6 @@ public class LaunchSetErrorHelper {
 
 		serviceContext.setCompanyId(launchSetObjectEntry.getCompanyId());
 		serviceContext.setUserId(statusByUserId);
-
-		ObjectEntry currentLaunchSetObjectEntry =
-			_objectEntryLocalService.getObjectEntry(
-				launchSetObjectEntry.getObjectEntryId());
 
 		if (!currentLaunchSetObjectEntry.isDraft()) {
 			serviceContext.setWorkflowAction(

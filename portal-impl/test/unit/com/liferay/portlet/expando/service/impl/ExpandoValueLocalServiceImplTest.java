@@ -13,9 +13,12 @@ import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
 import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
 import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.LocalizationImpl;
 import com.liferay.portlet.expando.model.impl.ExpandoColumnImpl;
 import com.liferay.portlet.expando.model.impl.ExpandoTableImpl;
 import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
@@ -24,6 +27,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +53,9 @@ public class ExpandoValueLocalServiceImplTest {
 
 	@Before
 	public void setUp() {
+		ReflectionTestUtil.setFieldValue(
+			LocalizationUtil.class, "_localization", new LocalizationImpl());
+
 		ClassNameLocalService classNameLocalService = Mockito.mock(
 			ClassNameLocalService.class);
 
@@ -83,6 +90,14 @@ public class ExpandoValueLocalServiceImplTest {
 			5, "unsetLongArrayColumn", ExpandoColumnConstants.LONG_ARRAY, "");
 		_addColumn(
 			6, "unsetBooleanColumn", ExpandoColumnConstants.BOOLEAN, "true");
+		_addColumn(
+			7, "geolocationColumn", ExpandoColumnConstants.GEOLOCATION, "");
+		_addColumn(
+			8, "unsetSelectionColumn", ExpandoColumnConstants.STRING_ARRAY,
+			"a,b,c");
+		_addColumn(
+			9, "unsetLocalizedColumn", ExpandoColumnConstants.STRING_LOCALIZED,
+			"");
 
 		ExpandoColumnPersistence expandoColumnPersistence = Mockito.mock(
 			ExpandoColumnPersistence.class);
@@ -105,6 +120,8 @@ public class ExpandoValueLocalServiceImplTest {
 		_expandoValuePersistence = Mockito.mock(ExpandoValuePersistence.class);
 
 		List<ExpandoValue> values = Arrays.asList(
+			_addValue(
+				"geolocationColumn", "{\"latitude\":1.5,\"longitude\":2.5}"),
 			_addValue("integerColumn", "42"),
 			_addValue("longArrayColumn", "1,2,3"),
 			_addValue("stringColumn", "value"));
@@ -137,6 +154,12 @@ public class ExpandoValueLocalServiceImplTest {
 		Map<String, Serializable> data = _getData();
 
 		Assert.assertEquals(data.toString(), _columns.size(), data.size());
+
+		JSONObject jsonObject = (JSONObject)data.get("geolocationColumn");
+
+		Assert.assertEquals(1.5, jsonObject.getDouble("latitude"), 0);
+		Assert.assertEquals(2.5, jsonObject.getDouble("longitude"), 0);
+
 		Assert.assertEquals(42, data.get("integerColumn"));
 		Assert.assertArrayEquals(
 			new long[] {1, 2, 3}, (long[])data.get("longArrayColumn"));
@@ -144,6 +167,10 @@ public class ExpandoValueLocalServiceImplTest {
 		Assert.assertTrue((Boolean)data.get("unsetBooleanColumn"));
 		Assert.assertArrayEquals(
 			new long[0], (long[])data.get("unsetLongArrayColumn"));
+		Assert.assertEquals(
+			Collections.emptyMap(), data.get("unsetLocalizedColumn"));
+		Assert.assertArrayEquals(
+			new String[0], (String[])data.get("unsetSelectionColumn"));
 		Assert.assertEquals("unsetDefault", data.get("unsetStringColumn"));
 
 		// All values of the row are read with one query instead of one
@@ -174,9 +201,15 @@ public class ExpandoValueLocalServiceImplTest {
 				ExpandoTableConstants.DEFAULT_TABLE_NAME, columnName,
 				_CLASS_PK);
 
+			Serializable actualData = data.get(columnName);
+
+			if (expectedData instanceof JSONObject) {
+				expectedData = expectedData.toString();
+				actualData = actualData.toString();
+			}
+
 			Assert.assertTrue(
-				columnName,
-				Objects.deepEquals(expectedData, data.get(columnName)));
+				columnName, Objects.deepEquals(expectedData, actualData));
 		}
 	}
 

@@ -1209,19 +1209,23 @@ public class ExpandoValueLocalServiceImpl
 			if (value == null) {
 				value = new ExpandoValueImpl();
 
-				value.setColumn(column);
-				value.setData(column.getDefaultData());
+				// Array and localized columns default to an empty value, not
+				// to the column's default data (the options of a selection
+				// list)
 
-				attributeValues.put(
-					column.getName(), _getDefaultData(column.getType(), value));
+				int type = column.getType();
 
-				continue;
+				if (!isTypeArray(type) &&
+					(type != ExpandoColumnConstants.STRING_ARRAY_LOCALIZED) &&
+					(type != ExpandoColumnConstants.STRING_LOCALIZED)) {
+
+					value.setData(column.getDefaultData());
+				}
 			}
 
 			value.setColumn(column);
 
-			attributeValues.put(
-				column.getName(), _getData(column.getType(), value));
+			attributeValues.put(column.getName(), value.getSerializable());
 		}
 
 		return attributeValues;
@@ -1998,137 +2002,6 @@ public class ExpandoValueLocalServiceImpl
 		}
 
 		return false;
-	}
-
-	private Serializable _getData(int type, ExpandoValue value)
-		throws PortalException {
-
-		if (type == ExpandoColumnConstants.BOOLEAN) {
-			return value.getBoolean();
-		}
-		else if (type == ExpandoColumnConstants.BOOLEAN_ARRAY) {
-			return value.getBooleanArray();
-		}
-		else if (type == ExpandoColumnConstants.DATE) {
-			return value.getDate();
-		}
-		else if (type == ExpandoColumnConstants.DATE_ARRAY) {
-			return value.getDateArray();
-		}
-		else if (type == ExpandoColumnConstants.DOUBLE) {
-			return value.getDouble();
-		}
-		else if (type == ExpandoColumnConstants.DOUBLE_ARRAY) {
-			return value.getDoubleArray();
-		}
-		else if (type == ExpandoColumnConstants.FLOAT) {
-			return value.getFloat();
-		}
-		else if (type == ExpandoColumnConstants.FLOAT_ARRAY) {
-			return value.getFloatArray();
-		}
-		else if (type == ExpandoColumnConstants.GEOLOCATION) {
-			return value.getGeolocationJSONObject();
-		}
-		else if (type == ExpandoColumnConstants.INTEGER) {
-			return value.getInteger();
-		}
-		else if (type == ExpandoColumnConstants.INTEGER_ARRAY) {
-			return value.getIntegerArray();
-		}
-		else if (type == ExpandoColumnConstants.LONG) {
-			return value.getLong();
-		}
-		else if (type == ExpandoColumnConstants.LONG_ARRAY) {
-			return value.getLongArray();
-		}
-		else if (type == ExpandoColumnConstants.NUMBER) {
-			return value.getNumber();
-		}
-		else if (type == ExpandoColumnConstants.NUMBER_ARRAY) {
-			return value.getNumberArray();
-		}
-		else if (type == ExpandoColumnConstants.SHORT) {
-			return value.getShort();
-		}
-		else if (type == ExpandoColumnConstants.SHORT_ARRAY) {
-			return value.getShortArray();
-		}
-		else if (type == ExpandoColumnConstants.STRING_ARRAY) {
-			return value.getStringArray();
-		}
-		else if (type == ExpandoColumnConstants.STRING) {
-			return value.getString();
-		}
-		else if (type == ExpandoColumnConstants.STRING_ARRAY_LOCALIZED) {
-			return (Serializable)value.getStringArrayMap();
-		}
-
-		return (Serializable)value.getStringMap();
-	}
-
-	private Serializable _getDefaultData(int type, ExpandoValue defaultValue)
-		throws PortalException {
-
-		if (type == ExpandoColumnConstants.BOOLEAN) {
-			return defaultValue.getBoolean();
-		}
-		else if (type == ExpandoColumnConstants.BOOLEAN_ARRAY) {
-			return new boolean[0];
-		}
-		else if (type == ExpandoColumnConstants.DATE) {
-			return defaultValue.getDate();
-		}
-		else if (type == ExpandoColumnConstants.DATE_ARRAY) {
-			return new Date[0];
-		}
-		else if (type == ExpandoColumnConstants.DOUBLE) {
-			return defaultValue.getDouble();
-		}
-		else if (type == ExpandoColumnConstants.DOUBLE_ARRAY) {
-			return new double[0];
-		}
-		else if (type == ExpandoColumnConstants.FLOAT) {
-			return defaultValue.getFloat();
-		}
-		else if (type == ExpandoColumnConstants.FLOAT_ARRAY) {
-			return new float[0];
-		}
-		else if (type == ExpandoColumnConstants.GEOLOCATION) {
-			return defaultValue.getGeolocationJSONObject();
-		}
-		else if (type == ExpandoColumnConstants.INTEGER) {
-			return defaultValue.getInteger();
-		}
-		else if (type == ExpandoColumnConstants.INTEGER_ARRAY) {
-			return new int[0];
-		}
-		else if (type == ExpandoColumnConstants.LONG) {
-			return defaultValue.getLong();
-		}
-		else if (type == ExpandoColumnConstants.LONG_ARRAY) {
-			return new long[0];
-		}
-		else if (type == ExpandoColumnConstants.NUMBER) {
-			return defaultValue.getNumber();
-		}
-		else if (type == ExpandoColumnConstants.NUMBER_ARRAY) {
-			return new Number[0];
-		}
-		else if (type == ExpandoColumnConstants.SHORT) {
-			return defaultValue.getShort();
-		}
-		else if (type == ExpandoColumnConstants.SHORT_ARRAY) {
-			return new short[0];
-		}
-		else if (type == ExpandoColumnConstants.STRING_ARRAY) {
-			return new String[0];
-		}
-		else if (type == ExpandoColumnConstants.STRING) {
-			return defaultValue.getString();
-		}
-
-		return new HashMap<>();
 	}
 
 	@BeanReference(type = ClassNameLocalService.class)

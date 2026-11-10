@@ -146,11 +146,28 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	}
 
 	public static File deployFreeTierPortalLicense(
+			String installationId, int licenseVersion, long validityPeriod)
+		throws Exception {
+
+		return deployFreeTierPortalLicense(
+			_FREE_TIER_DOMAIN, installationId, licenseVersion, validityPeriod);
+	}
+
+	public static File deployFreeTierPortalLicense(
 			String domain, long validityPeriod)
 		throws Exception {
 
+		return deployFreeTierPortalLicense(domain, null, 6, validityPeriod);
+	}
+
+	public static File deployFreeTierPortalLicense(
+			String domain, String installationId, int licenseVersion,
+			long validityPeriod)
+		throws Exception {
+
 		_registerLicense(
-			_buildFreeTierPortalLicenseXML(domain, validityPeriod));
+			_buildFreeTierPortalLicenseXML(
+				domain, installationId, licenseVersion, validityPeriod));
 
 		return _buildBinaryFile(
 			_FREE_TIER_ACCOUNT_NAME, FREE_TIER_LICENSE_TYPE,
@@ -172,7 +189,7 @@ public abstract class BaseLicenseTestCase implements Serializable {
 			else if (Objects.equals(license[0], FREE_TIER_LICENSE_TYPE)) {
 				sb.append(
 					_buildFreeTierPortalLicenseXML(
-						_FREE_TIER_DOMAIN, Long.valueOf(license[1])));
+						_FREE_TIER_DOMAIN, null, 6, Long.valueOf(license[1])));
 			}
 			else {
 				App app = App.valueOf(license[0]);
@@ -735,9 +752,10 @@ public abstract class BaseLicenseTestCase implements Serializable {
 	}
 
 	private static String _buildFreeTierPortalLicenseXML(
-		String domain, long validityPeriod) {
+		String domain, String installationId, int licenseVersion,
+		long validityPeriod) {
 
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(24);
 
 		sb.append("<license><account-name>");
 		sb.append(_FREE_TIER_ACCOUNT_NAME);
@@ -748,8 +766,16 @@ public abstract class BaseLicenseTestCase implements Serializable {
 		sb.append("</product-name><product-version>2026.Q1</product-version>");
 		sb.append("<license-type>");
 		sb.append(FREE_TIER_LICENSE_TYPE);
-		sb.append("</license-type><license-version>6</license-version>");
+		sb.append("</license-type><license-version>");
+		sb.append(licenseVersion);
+		sb.append("</license-version>");
 		sb.append("<start-date>");
+
+		if (installationId != null) {
+			sb.append("<installation-id>");
+			sb.append(installationId);
+			sb.append("</installation-id>");
+		}
 
 		long startTime = System.currentTimeMillis();
 

@@ -119,7 +119,7 @@ public class LaunchSetScheduledPublishBackgroundTaskExecutor
 			_launchSetErrorHelper.markPublishFailed(
 				List.of(
 					_launchSetErrorHelper.getLaunchSetErrorValues(
-						null, portalException.getMessage())),
+						null, portalException)),
 				launchSetObjectEntry, userId);
 
 			return new BackgroundTaskResult(

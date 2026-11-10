@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -64,7 +65,7 @@ public class LaunchSetErrorHelper {
 	}
 
 	public Map<String, Serializable> getLaunchSetErrorValues(
-		ObjectEntry launchEntryObjectEntry, String message) {
+		ObjectEntry launchEntryObjectEntry, Throwable throwable) {
 
 		long launchEntryId = 0;
 		String launchEntryTitle = StringPool.BLANK;
@@ -79,7 +80,9 @@ public class LaunchSetErrorHelper {
 		).put(
 			"launchEntryTitle", launchEntryTitle
 		).put(
-			"message", message
+			"message",
+			GetterUtil.getString(
+				throwable.getMessage(), String.valueOf(throwable))
 		).put(
 			"severity", "error"
 		).build();

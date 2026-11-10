@@ -10,6 +10,8 @@ import com.liferay.portal.kernel.encryptor.EncryptorException;
 import com.liferay.portal.kernel.encryptor.EncryptorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +34,10 @@ public class PortletURLEncryptionUtil {
 		Map<String, String[]> httpServletRequestParameterMap =
 			httpServletRequest.getParameterMap();
 
+		Map<String, String[]> queryParameterMap =
+			HttpComponentsUtil.getParameterMap(
+				HttpComponentsUtil.getQueryString(httpServletRequest));
+
 		for (Map.Entry<String, String[]> entry :
 				httpServletRequestParameterMap.entrySet()) {
 
@@ -40,7 +46,10 @@ public class PortletURLEncryptionUtil {
 			String[] values = entry.getValue();
 
 			for (int i = 0; i < values.length; i++) {
-				if (Validator.isNull(values[i])) {
+				if (Validator.isNull(values[i]) ||
+					!ArrayUtil.contains(
+						queryParameterMap.get(name), values[i])) {
+
 					continue;
 				}
 

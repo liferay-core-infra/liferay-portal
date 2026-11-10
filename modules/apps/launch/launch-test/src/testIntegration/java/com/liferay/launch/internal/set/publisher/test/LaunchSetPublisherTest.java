@@ -327,10 +327,18 @@ public class LaunchSetPublisherTest {
 			MapUtil.getLong(
 				_getValues(longTitleLaunchEntryObjectEntry), "draftId"));
 
-		Assert.assertThrows(
-			PortalException.class,
-			() -> _launchSetPublisher.publish(
-				longTitleLaunchSetObjectEntry.getObjectEntryId()));
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.launch.internal.set.publisher." +
+					"LaunchSetPublisherImpl",
+				LoggerTestUtil.WARN)) {
+
+			Assert.assertThrows(
+				PortalException.class,
+				() -> _launchSetPublisher.publish(
+					longTitleLaunchSetObjectEntry.getObjectEntryId()));
+
+			_assertLogEntry(longTitleLaunchEntryObjectEntry, logCapture);
+		}
 
 		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries(
 			longTitleLaunchSetObjectEntry);

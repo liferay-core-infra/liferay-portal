@@ -15,12 +15,15 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ProgressTracker;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -37,12 +40,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -271,6 +276,14 @@ public class PortletContainerTestUtil {
 			String url, Map<String, List<String>> headers)
 		throws IOException {
 
+		return request(url, headers, Collections.<String, String[]>emptyMap());
+	}
+
+	public static Response request(
+			String url, Map<String, List<String>> headers,
+			Map<String, String[]> parameterMap)
+		throws IOException {
+
 		URL urlObject = new URL(url);
 
 		HttpURLConnection httpURLConnection =
@@ -291,6 +304,24 @@ public class PortletContainerTestUtil {
 				else {
 					httpURLConnection.setRequestProperty(key, value);
 				}
+			}
+		}
+
+		if (!parameterMap.isEmpty()) {
+			httpURLConnection.setDoOutput(true);
+			httpURLConnection.setRequestMethod(HttpMethods.POST);
+			httpURLConnection.setRequestProperty(
+				"Content-Type", ContentTypes.APPLICATION_X_WWW_FORM_URLENCODED);
+
+			try (OutputStream outputStream =
+					httpURLConnection.getOutputStream()) {
+
+				String parameterString =
+					HttpComponentsUtil.parameterMapToString(
+						parameterMap, false);
+
+				outputStream.write(
+					parameterString.getBytes(StandardCharsets.UTF_8));
 			}
 		}
 

@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -84,7 +83,7 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 			if (launchSetErrorValuesList.isEmpty()) {
 				launchSetErrorValuesList.add(
 					_launchSetErrorHelper.getLaunchSetErrorValues(
-						null, _getMessage(throwable)));
+						null, throwable));
 			}
 
 			try {
@@ -205,11 +204,6 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 			launchSetObjectEntry.getCompanyId());
 	}
 
-	private String _getMessage(Throwable throwable) {
-		return GetterUtil.getString(
-			throwable.getMessage(), String.valueOf(throwable));
-	}
-
 	private List<ObjectEntry> _getOneToManyObjectEntries(
 			ObjectEntry launchSetObjectEntry, String objectRelationshipName)
 		throws PortalException {
@@ -266,7 +260,7 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 
 				launchSetErrorValuesList.add(
 					_launchSetErrorHelper.getLaunchSetErrorValues(
-						launchEntryObjectEntry, _getMessage(throwable)));
+						launchEntryObjectEntry, throwable));
 			}
 		}
 

@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -94,7 +95,9 @@ public class PortletURLEncryptionUtil {
 		return ArrayUtil.contains(_EXCLUDED_PARAMETER_NAMES, name);
 	}
 
-	private static final String[] _EXCLUDED_PARAMETER_NAMES = {"p_auth"};
+	private static final String[] _EXCLUDED_PARAMETER_NAMES = {
+		"p_auth", WebKeys.ENCRYPT
+	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletURLEncryptionUtil.class);

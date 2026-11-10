@@ -241,11 +241,38 @@ public class ExpandoBridgeImpl implements ExpandoBridge {
 
 	@Override
 	public Map<String, Serializable> getAttributes(boolean secure) {
-		Map<String, Serializable> attributes = new HashMap<>();
+		List<ExpandoColumn> columns = getAttributeColumns();
 
-		for (ExpandoColumn column : getAttributeColumns()) {
-			attributes.put(
-				column.getName(), getAttribute(column.getName(), secure));
+		if (columns.isEmpty()) {
+			return new HashMap<>();
+		}
+
+		Map<String, Serializable> attributes = null;
+
+		try {
+			attributes = ExpandoValueLocalServiceUtil.getData(
+				_companyId, _className,
+				ExpandoTableConstants.DEFAULT_TABLE_NAME,
+				TransformUtil.transform(columns, ExpandoColumn::getName),
+				_classPK);
+
+			if (secure) {
+				PermissionChecker permissionChecker =
+					GuestOrUserUtil.getPermissionChecker();
+
+				for (ExpandoColumn column : columns) {
+					if (ExpandoColumnPermissionUtil.contains(
+							permissionChecker, column, ActionKeys.VIEW)) {
+
+						continue;
+					}
+
+					attributes.put(column.getName(), null);
+				}
+			}
+		}
+		catch (Exception exception) {
+			ReflectionUtil.throwException(exception);
 		}
 
 		return attributes;

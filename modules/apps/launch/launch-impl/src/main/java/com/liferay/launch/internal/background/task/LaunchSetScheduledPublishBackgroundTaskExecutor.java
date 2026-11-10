@@ -5,10 +5,13 @@
 
 package com.liferay.launch.internal.background.task;
 
+import com.liferay.launch.entry.manager.LaunchEntryManagerRegistry;
 import com.liferay.launch.internal.helper.LaunchSetErrorHelper;
 import com.liferay.launch.set.publisher.LaunchSetPublisher;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
@@ -32,6 +35,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -92,6 +96,14 @@ public class LaunchSetScheduledPublishBackgroundTaskExecutor
 		BackgroundTask backgroundTask) {
 
 		return null;
+	}
+
+	@Activate
+	protected void activate() {
+		_launchSetErrorHelper = new LaunchSetErrorHelper(
+			_launchEntryManagerRegistry, _objectDefinitionLocalService,
+			_objectEntryLocalService, _objectRelationshipLocalService,
+			_userLocalService);
 	}
 
 	private BackgroundTaskResult _publish(
@@ -157,13 +169,21 @@ public class LaunchSetScheduledPublishBackgroundTaskExecutor
 	private GroupLocalService _groupLocalService;
 
 	@Reference
+	private LaunchEntryManagerRegistry _launchEntryManagerRegistry;
+
 	private LaunchSetErrorHelper _launchSetErrorHelper;
 
 	@Reference
 	private LaunchSetPublisher _launchSetPublisher;
 
 	@Reference
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
+
+	@Reference
 	private ObjectEntryLocalService _objectEntryLocalService;
+
+	@Reference
+	private ObjectRelationshipLocalService _objectRelationshipLocalService;
 
 	@Reference
 	private PermissionCheckerFactory _permissionCheckerFactory;

@@ -150,7 +150,7 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 
 		_updateStatus(WorkflowConstants.STATUS_SCHEDULED);
 
-		_receiveWithError(RandomTestUtil.randomLong());
+		_receiveWithError(0, RandomTestUtil.randomLong());
 
 		_assertBackgroundTasks(2, BackgroundTaskConstants.STATUS_FAILED);
 		_assertLaunchSetError(0);
@@ -164,7 +164,9 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 
 		_updateStatus(WorkflowConstants.STATUS_SCHEDULED);
 
-		_receiveWithError(TestPropsValues.getUserId());
+		_receiveWithError(
+			launchEntryObjectEntry.getObjectEntryId(),
+			TestPropsValues.getUserId());
 
 		_assertBackgroundTasks(3, BackgroundTaskConstants.STATUS_FAILED);
 		_assertLaunchSetError(launchEntryObjectEntry.getObjectEntryId());
@@ -330,15 +332,21 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 		}
 	}
 
-	private void _receiveWithError(long userId) throws Exception {
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+	private void _receiveWithError(long launchEntryId, long userId)
+		throws Exception {
+
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
 				"com.liferay.launch.internal.background.task." +
 					"LaunchSetScheduledPublishBackgroundTaskExecutor",
-				LoggerTestUtil.ERROR)) {
+				LoggerTestUtil.ERROR);
+			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.launch.internal.set.publisher." +
+					"LaunchSetPublisherImpl",
+				LoggerTestUtil.WARN)) {
 
 			_receive(_launchSetObjectEntry.getObjectEntryId(), userId);
 
-			List<LogEntry> logEntries = logCapture.getLogEntries();
+			List<LogEntry> logEntries = logCapture1.getLogEntries();
 
 			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
 
@@ -347,6 +355,23 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 			Assert.assertEquals(
 				"Unable to publish launch set " +
 					_launchSetObjectEntry.getObjectEntryId(),
+				logEntry.getMessage());
+
+			logEntries = logCapture2.getLogEntries();
+
+			if (launchEntryId == 0) {
+				Assert.assertEquals(
+					logEntries.toString(), 0, logEntries.size());
+
+				return;
+			}
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			logEntry = logEntries.get(0);
+
+			Assert.assertEquals(
+				"Unable to publish launch entry " + launchEntryId,
 				logEntry.getMessage());
 		}
 	}

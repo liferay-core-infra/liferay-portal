@@ -111,16 +111,21 @@ public class LaunchSetScheduledPublishBackgroundTaskExecutor
 			PrincipalThreadLocal.setName(userId);
 		}
 		catch (PortalException portalException) {
+			try {
+				_launchSetErrorHelper.markPublishFailed(
+					List.of(
+						_launchSetErrorHelper.getLaunchSetErrorValues(
+							null, portalException)),
+					launchSetObjectEntry, userId);
+			}
+			catch (Throwable throwable) {
+				portalException.addSuppressed(throwable);
+			}
+
 			_log.error(
 				"Unable to publish launch set " +
 					launchSetObjectEntry.getObjectEntryId(),
 				portalException);
-
-			_launchSetErrorHelper.markPublishFailed(
-				List.of(
-					_launchSetErrorHelper.getLaunchSetErrorValues(
-						null, portalException)),
-				launchSetObjectEntry, userId);
 
 			return new BackgroundTaskResult(
 				BackgroundTaskConstants.STATUS_FAILED,

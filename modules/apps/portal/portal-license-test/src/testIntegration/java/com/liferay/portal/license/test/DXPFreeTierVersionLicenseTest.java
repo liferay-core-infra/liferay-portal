@@ -49,17 +49,14 @@ public class DXPFreeTierVersionLicenseTest extends BaseLicenseTestCase {
 	}
 
 	@Test
-	public void testIgnoredPatchedVersion() throws Exception {
-		_testVersion(true, true, true);
-		_testVersion(true, false, true);
-	}
-
-	@Test
 	public void testIgnoredVersion() throws Exception {
 		String ignoredVersion = _getIgnoredVersion();
 
 		if (Validator.isNotNull(ignoredVersion)) {
 			Assert.assertEquals(ignoredVersion, getCurrentVersion());
+
+			_testVersion(true, true, true);
+			_testVersion(true, false, true);
 		}
 	}
 

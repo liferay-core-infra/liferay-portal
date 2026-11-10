@@ -1551,20 +1551,8 @@ public class PortletURLImpl
 			return URLCodec.encodeURL(value);
 		}
 
-		return URLCodec.encodeURL(_encryptParameterValue(key, value));
-	}
-
-	private static String _encryptParameterValue(Key key, String value) {
-		try {
-			return EncryptorUtil.encrypt(key, value);
-		}
-		catch (EncryptorException encryptorException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(encryptorException);
-			}
-
-			return value;
-		}
+		return URLCodec.encodeURL(
+			PortletURLEncryptionUtil.encryptParameterValue(key, value));
 	}
 
 	private Key _getKey() {

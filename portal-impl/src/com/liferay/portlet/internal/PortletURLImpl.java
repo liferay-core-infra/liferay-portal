@@ -984,7 +984,7 @@ public class PortletURLImpl
 			sb.append(PortalUtil.getPortalURL(_httpServletRequest, _secure));
 			sb.append(themeDisplay.getPathMain());
 			sb.append("/portal/layout?p_l_id=");
-			sb.append(processValue(key, _plid));
+			sb.append(_encodeValue(key, _plid));
 			sb.append(StringPool.AMPERSAND);
 		}
 		else {
@@ -1020,7 +1020,7 @@ public class PortletURLImpl
 				if (!isParameterIncludedInPath(name)) {
 					sb.append(name);
 					sb.append(StringPool.EQUAL);
-					sb.append(processValue(key, value));
+					sb.append(_encodeValue(key, value));
 					sb.append(StringPool.AMPERSAND);
 				}
 			});
@@ -1039,7 +1039,7 @@ public class PortletURLImpl
 							company.getKeyObj(), doAsUserIdBytes)));
 
 				sb.append("doAsUserId=");
-				sb.append(processValue(key, doAsUserIdString));
+				sb.append(_encodeValue(key, doAsUserIdString));
 				sb.append(StringPool.AMPERSAND);
 			}
 			catch (EncryptorException | PortalException exception) {
@@ -1053,7 +1053,7 @@ public class PortletURLImpl
 
 			if (Validator.isNotNull(doAsUserId)) {
 				sb.append("doAsUserId=");
-				sb.append(processValue(key, doAsUserId));
+				sb.append(_encodeValue(key, doAsUserId));
 				sb.append(StringPool.AMPERSAND);
 			}
 		}
@@ -1066,7 +1066,7 @@ public class PortletURLImpl
 
 		if (Validator.isNotNull(doAsUserLanguageId)) {
 			sb.append("doAsUserLanguageId=");
-			sb.append(processValue(key, doAsUserLanguageId));
+			sb.append(_encodeValue(key, doAsUserLanguageId));
 			sb.append(StringPool.AMPERSAND);
 		}
 
@@ -1078,7 +1078,7 @@ public class PortletURLImpl
 
 		if (doAsGroupId > 0) {
 			sb.append("doAsGroupId=");
-			sb.append(processValue(key, doAsGroupId));
+			sb.append(_encodeValue(key, doAsGroupId));
 			sb.append(StringPool.AMPERSAND);
 		}
 
@@ -1090,7 +1090,7 @@ public class PortletURLImpl
 
 		if (refererGroupId > 0) {
 			sb.append("refererGroupId=");
-			sb.append(processValue(key, refererGroupId));
+			sb.append(_encodeValue(key, refererGroupId));
 			sb.append(StringPool.AMPERSAND);
 		}
 
@@ -1102,7 +1102,7 @@ public class PortletURLImpl
 
 		if (refererPlid > 0) {
 			sb.append("refererPlid=");
-			sb.append(processValue(key, refererPlid));
+			sb.append(_encodeValue(key, refererPlid));
 			sb.append(StringPool.AMPERSAND);
 		}
 
@@ -1190,12 +1190,12 @@ public class PortletURLImpl
 
 				if (value == null) {
 					sb.append(
-						processValue(
+						_encodeValue(
 							key,
 							LiferayMutablePortletParameters.NULL_PARAM_VALUE));
 				}
 				else {
-					sb.append(processValue(key, value));
+					sb.append(_encodeValue(key, value));
 				}
 
 				sb.append(StringPool.AMPERSAND);
@@ -1263,27 +1263,6 @@ public class PortletURLImpl
 		}
 
 		return publicRenderParameterName;
-	}
-
-	protected String processValue(Key key, long value) {
-		return processValue(key, String.valueOf(value));
-	}
-
-	protected String processValue(Key key, String value) {
-		if (key == null) {
-			return URLCodec.encodeURL(value);
-		}
-
-		try {
-			return URLCodec.encodeURL(EncryptorUtil.encrypt(key, value));
-		}
-		catch (EncryptorException encryptorException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(encryptorException);
-			}
-
-			return value;
-		}
 	}
 
 	private PortletURLImpl(
@@ -1561,6 +1540,27 @@ public class PortletURLImpl
 		}
 
 		return portletURLParams;
+	}
+
+	private String _encodeValue(Key key, long value) {
+		return _encodeValue(key, String.valueOf(value));
+	}
+
+	private String _encodeValue(Key key, String value) {
+		if (key == null) {
+			return URLCodec.encodeURL(value);
+		}
+
+		try {
+			return URLCodec.encodeURL(EncryptorUtil.encrypt(key, value));
+		}
+		catch (EncryptorException encryptorException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(encryptorException);
+			}
+
+			return value;
+		}
 	}
 
 	private Key _getKey() {

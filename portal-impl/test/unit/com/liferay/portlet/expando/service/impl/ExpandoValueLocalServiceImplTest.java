@@ -84,7 +84,9 @@ public class ExpandoValueLocalServiceImplTest {
 		_addColumn("geolocationColumn", ExpandoColumnConstants.GEOLOCATION, "");
 		_addColumn("integerColumn", ExpandoColumnConstants.INTEGER, "0");
 		_addColumn("longArrayColumn", ExpandoColumnConstants.LONG_ARRAY, "");
-		_addColumn("stringColumn", ExpandoColumnConstants.STRING, "default");
+		_addColumn(
+			"stringColumn", ExpandoColumnConstants.STRING,
+			RandomTestUtil.randomString());
 		_addColumn(
 			"unsetBooleanColumn", ExpandoColumnConstants.BOOLEAN, "true");
 		_addColumn(
@@ -192,11 +194,11 @@ public class ExpandoValueLocalServiceImplTest {
 		Assert.assertEquals("unsetDefault", data.get("unsetStringColumn"));
 
 		for (String columnName : _columns.keySet()) {
+			Serializable actualData = data.get(columnName);
 			Serializable expectedData = _expandoValueLocalServiceImpl.getData(
 				_COMPANY_ID, _CLASS_NAME,
 				ExpandoTableConstants.DEFAULT_TABLE_NAME, columnName,
 				_CLASS_PK);
-			Serializable actualData = data.get(columnName);
 
 			if (expectedData instanceof JSONObject) {
 				expectedData = expectedData.toString();

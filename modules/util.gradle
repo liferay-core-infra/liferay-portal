@@ -340,6 +340,10 @@ private void _createSetUpLibTasks(Map<File, Properties> libDependenciesMap) {
 
 		Configuration libConfiguration = configurations.create("lib" + libSuffix)
 
+		libConfiguration.attributes {
+			attribute TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment, TargetJvmEnvironment.STANDARD_JVM)
+		}
+
 		libConfiguration.transitive = false
 
 		Task libTask = tasks.create(name: "setUpLib" + libSuffix, type: Copy) {

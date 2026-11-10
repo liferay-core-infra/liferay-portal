@@ -55,21 +55,20 @@ public class DXPFreeTierVersionLicenseTest extends BaseLicenseTestCase {
 		if (Validator.isNotNull(ignoredVersion)) {
 			Assert.assertEquals(ignoredVersion, getCurrentVersion());
 
-			_testVersion(true, true, true);
-			_testVersion(true, false, true);
+			_testVersion(true, true, ignoredVersion);
 		}
 	}
 
 	@Test
 	public void testNonignoredNonpatchedVersions() throws Exception {
-		_testVersion(false, true, false);
-		_testVersion(false, false, false);
+		_testNonignoredVersion(true, false);
+		_testNonignoredVersion(false, false);
 	}
 
 	@Test
 	public void testNonignoredPatchedVersions() throws Exception {
-		_testVersion(false, true, true);
-		_testVersion(false, false, true);
+		_testNonignoredVersion(true, true);
+		_testNonignoredVersion(false, true);
 	}
 
 	private String _generateRandomVersion(boolean ltsVersion, boolean patch) {
@@ -95,26 +94,26 @@ public class DXPFreeTierVersionLicenseTest extends BaseLicenseTestCase {
 		return properties.getProperty("license.free.tier.ignored.version");
 	}
 
-	private void _testVersion(
-			boolean ignored, boolean ltsVersion, boolean patch)
+	private void _testNonignoredVersion(boolean ltsVersion, boolean patch)
 		throws Exception {
 
 		String ignoredVersion = _getIgnoredVersion();
 
 		String version = null;
 
-		if (ignored) {
-			version = ignoredVersion;
-		}
-		else {
-			while (true) {
-				version = _generateRandomVersion(ltsVersion, patch);
+		while (true) {
+			version = _generateRandomVersion(ltsVersion, patch);
 
-				if (!Objects.equals(ignoredVersion, version)) {
-					break;
-				}
+			if (!Objects.equals(ignoredVersion, version)) {
+				break;
 			}
 		}
+
+		_testVersion(false, patch, version);
+	}
+
+	private void _testVersion(boolean ignored, boolean patch, String version)
+		throws Exception {
 
 		assertLicensePropertiesNotExisted(getPortalProductId());
 

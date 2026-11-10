@@ -65,12 +65,12 @@ public class ExpandoValueLocalServiceImplTest {
 			_CLASS_NAME_ID
 		);
 
+		ExpandoTablePersistence expandoTablePersistence = Mockito.mock(
+			ExpandoTablePersistence.class);
+
 		ExpandoTable table = new ExpandoTableImpl();
 
 		table.setTableId(_TABLE_ID);
-
-		ExpandoTablePersistence expandoTablePersistence = Mockito.mock(
-			ExpandoTablePersistence.class);
 
 		Mockito.when(
 			expandoTablePersistence.fetchByC_C_N(
@@ -124,7 +124,7 @@ public class ExpandoValueLocalServiceImplTest {
 
 		List<ExpandoValue> values = Arrays.asList(
 			_addValue(
-				"geolocationColumn", "{\"latitude\":1.5,\"longitude\":2.5}"),
+				"geolocationColumn", "{\"latitude\": 1.5, \"longitude\": 2.5}"),
 			_addValue("integerColumn", "42"),
 			_addValue("longArrayColumn", "1,2,3"),
 			_addValue("stringColumn", "value"));
@@ -205,8 +205,7 @@ public class ExpandoValueLocalServiceImplTest {
 				actualData = actualData.toString();
 			}
 
-			Assert.assertTrue(
-				columnName, Objects.deepEquals(expectedData, actualData));
+			Assert.assertTrue(Objects.deepEquals(expectedData, actualData));
 		}
 	}
 

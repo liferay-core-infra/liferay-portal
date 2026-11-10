@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -181,6 +183,14 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 			_getJobName(launchSetObjectEntry),
 			LaunchDestinationNames.LAUNCH_SET_SCHEDULED_PUBLISH,
 			StorageType.PERSISTED);
+	}
+
+	@Activate
+	protected void activate() {
+		_launchSetErrorHelper = new LaunchSetErrorHelper(
+			_launchEntryManagerRegistry, _objectDefinitionLocalService,
+			_objectEntryLocalService, _objectRelationshipLocalService,
+			_userLocalService);
 	}
 
 	private ServiceContext _createServiceContext(
@@ -352,7 +362,6 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 	@Reference
 	private LaunchEntryManagerRegistry _launchEntryManagerRegistry;
 
-	@Reference
 	private LaunchSetErrorHelper _launchSetErrorHelper;
 
 	@Reference
@@ -369,5 +378,8 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 
 	@Reference
 	private TriggerFactory _triggerFactory;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

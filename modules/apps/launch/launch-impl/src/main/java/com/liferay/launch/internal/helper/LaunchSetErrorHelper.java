@@ -35,14 +35,24 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Jose Luis Navarro
  */
-@Component(service = LaunchSetErrorHelper.class)
 public class LaunchSetErrorHelper {
+
+	public LaunchSetErrorHelper(
+		LaunchEntryManagerRegistry launchEntryManagerRegistry,
+		ObjectDefinitionLocalService objectDefinitionLocalService,
+		ObjectEntryLocalService objectEntryLocalService,
+		ObjectRelationshipLocalService objectRelationshipLocalService,
+		UserLocalService userLocalService) {
+
+		_launchEntryManagerRegistry = launchEntryManagerRegistry;
+		_objectDefinitionLocalService = objectDefinitionLocalService;
+		_objectEntryLocalService = objectEntryLocalService;
+		_objectRelationshipLocalService = objectRelationshipLocalService;
+		_userLocalService = userLocalService;
+	}
 
 	public void deleteLaunchSetErrors(ObjectEntry launchSetObjectEntry)
 		throws PortalException {
@@ -206,19 +216,11 @@ public class LaunchSetErrorHelper {
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
-	@Reference
-	private LaunchEntryManagerRegistry _launchEntryManagerRegistry;
-
-	@Reference
-	private ObjectDefinitionLocalService _objectDefinitionLocalService;
-
-	@Reference
-	private ObjectEntryLocalService _objectEntryLocalService;
-
-	@Reference
-	private ObjectRelationshipLocalService _objectRelationshipLocalService;
-
-	@Reference
-	private UserLocalService _userLocalService;
+	private final LaunchEntryManagerRegistry _launchEntryManagerRegistry;
+	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
+	private final ObjectEntryLocalService _objectEntryLocalService;
+	private final ObjectRelationshipLocalService
+		_objectRelationshipLocalService;
+	private final UserLocalService _userLocalService;
 
 }

@@ -24,10 +24,10 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
@@ -85,14 +85,20 @@ public class LaunchSetErrorHelper {
 			launchEntryTitle = _getLaunchEntryTitle(launchEntryObjectEntry);
 		}
 
+		String message = throwable.getMessage();
+
+		if (Validator.isNull(message)) {
+			Class<?> clazz = throwable.getClass();
+
+			message = clazz.getName();
+		}
+
 		return HashMapBuilder.<String, Serializable>put(
 			"launchEntryId", launchEntryId
 		).put(
 			"launchEntryTitle", launchEntryTitle
 		).put(
-			"message",
-			GetterUtil.getString(
-				throwable.getMessage(), String.valueOf(throwable))
+			"message", message
 		).put(
 			"severity", "error"
 		).build();

@@ -75,7 +75,7 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 
 		try {
 			TransactionInvokerUtil.invoke(
-				_requiresNewTransactionConfig,
+				_transactionConfig,
 				() -> {
 					_publish(
 						launchSetErrorValuesList, launchSetObjectEntry,
@@ -355,9 +355,9 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 	private static final TransactionConfig _nestedTransactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.NESTED, new Class<?>[] {Exception.class});
-	private static final TransactionConfig _requiresNewTransactionConfig =
+	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
-			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	@Reference
 	private LaunchEntryManagerRegistry _launchEntryManagerRegistry;

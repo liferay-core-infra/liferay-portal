@@ -1559,7 +1559,7 @@ public class PortletURLImpl
 				_log.debug(encryptorException);
 			}
 
-			return value;
+			return URLCodec.encodeURL(value);
 		}
 	}
 

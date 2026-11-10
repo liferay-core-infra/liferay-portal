@@ -214,7 +214,7 @@ public class LaunchSetErrorHelper {
 
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
-			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	private final LaunchEntryManagerRegistry _launchEntryManagerRegistry;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;

@@ -268,8 +268,8 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 					});
 			}
 			catch (Throwable throwable) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
+				if (_log.isWarnEnabled()) {
+					_log.warn(
 						"Unable to publish launch entry " +
 							launchEntryObjectEntry.getObjectEntryId(),
 						throwable);

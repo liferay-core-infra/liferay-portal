@@ -188,8 +188,8 @@
 					"unique": false
 				},
 				{
-					"DBType": "String",
-					"businessType": "Text",
+					"DBType": "Clob",
+					"businessType": "LongText",
 					"externalReferenceCode": "LAUNCH_ENTRY_TITLE",
 					"indexed": true,
 					"indexedAsKeyword": false,

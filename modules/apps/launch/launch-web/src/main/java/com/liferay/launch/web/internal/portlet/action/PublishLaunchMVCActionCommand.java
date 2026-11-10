@@ -7,6 +7,7 @@ package com.liferay.launch.web.internal.portlet.action;
 
 import com.liferay.launch.set.publisher.LaunchSetPublisher;
 import com.liferay.launch.web.internal.constants.LaunchPortletKeys;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -35,8 +36,15 @@ public class PublishLaunchMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		_launchSetPublisher.publish(
-			ParamUtil.getLong(actionRequest, "launchSetId"));
+		try {
+			_launchSetPublisher.publish(
+				ParamUtil.getLong(actionRequest, "launchSetId"));
+		}
+		catch (PortalException portalException) {
+			hideDefaultErrorMessage(actionRequest);
+
+			throw portalException;
+		}
 
 		sendRedirect(actionRequest, actionResponse);
 	}

@@ -98,6 +98,9 @@ public class ExpandoValueLocalServiceImplTest {
 		_addColumn(
 			9, "unsetLocalizedColumn", ExpandoColumnConstants.STRING_LOCALIZED,
 			"");
+		_addColumn(
+			10, "unsetLocalizedArrayColumn",
+			ExpandoColumnConstants.STRING_ARRAY_LOCALIZED, "a,b,c");
 
 		ExpandoColumnPersistence expandoColumnPersistence = Mockito.mock(
 			ExpandoColumnPersistence.class);
@@ -151,7 +154,21 @@ public class ExpandoValueLocalServiceImplTest {
 
 	@Test
 	public void testGetDataWithColumnNames() throws Exception {
-		Map<String, Serializable> data = _getData();
+		Map<String, Serializable> data = _expandoValueLocalServiceImpl.getData(
+			_COMPANY_ID, _CLASS_NAME, ExpandoTableConstants.DEFAULT_TABLE_NAME,
+			_columns.keySet(), _CLASS_PK);
+
+		Mockito.verify(
+			_expandoValuePersistence, Mockito.times(1)
+		).findByT_CPK(
+			_TABLE_ID, _CLASS_PK
+		);
+
+		Mockito.verify(
+			_expandoValuePersistence, Mockito.never()
+		).fetchByT_C_C(
+			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyLong()
+		);
 
 		Assert.assertEquals(data.toString(), _columns.size(), data.size());
 
@@ -165,35 +182,15 @@ public class ExpandoValueLocalServiceImplTest {
 			new long[] {1, 2, 3}, (long[])data.get("longArrayColumn"));
 		Assert.assertEquals("value", data.get("stringColumn"));
 		Assert.assertTrue((Boolean)data.get("unsetBooleanColumn"));
-		Assert.assertArrayEquals(
-			new long[0], (long[])data.get("unsetLongArrayColumn"));
+		Assert.assertEquals(
+			Collections.emptyMap(), data.get("unsetLocalizedArrayColumn"));
 		Assert.assertEquals(
 			Collections.emptyMap(), data.get("unsetLocalizedColumn"));
 		Assert.assertArrayEquals(
+			new long[0], (long[])data.get("unsetLongArrayColumn"));
+		Assert.assertArrayEquals(
 			new String[0], (String[])data.get("unsetSelectionColumn"));
 		Assert.assertEquals("unsetDefault", data.get("unsetStringColumn"));
-
-		// All values of the row are read with one query instead of one
-		// query per column
-
-		Mockito.verify(
-			_expandoValuePersistence, Mockito.times(1)
-		).findByT_CPK(
-			_TABLE_ID, _CLASS_PK
-		);
-
-		Mockito.verify(
-			_expandoValuePersistence, Mockito.never()
-		).fetchByT_C_C(
-			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyLong()
-		);
-	}
-
-	@Test
-	public void testGetDataWithColumnNamesMatchesGetDataWithColumnName()
-		throws Exception {
-
-		Map<String, Serializable> data = _getData();
 
 		for (String columnName : _columns.keySet()) {
 			Serializable expectedData = _expandoValueLocalServiceImpl.getData(
@@ -250,12 +247,6 @@ public class ExpandoValueLocalServiceImplTest {
 		);
 
 		return value;
-	}
-
-	private Map<String, Serializable> _getData() throws Exception {
-		return _expandoValueLocalServiceImpl.getData(
-			_COMPANY_ID, _CLASS_NAME, ExpandoTableConstants.DEFAULT_TABLE_NAME,
-			_columns.keySet(), _CLASS_PK);
 	}
 
 	private static final String _CLASS_NAME = "com.liferay.Test";

@@ -1194,24 +1194,20 @@ public class ExpandoValueLocalServiceImpl
 			return attributeValues;
 		}
 
-		Map<Long, ExpandoValue> values = new HashMap<>();
+		Map<Long, ExpandoValue> valuesMap = new HashMap<>();
 
 		for (ExpandoValue value :
 				expandoValuePersistence.findByT_CPK(
 					table.getTableId(), classPK)) {
 
-			values.put(value.getColumnId(), value);
+			valuesMap.put(value.getColumnId(), value);
 		}
 
 		for (ExpandoColumn column : columns) {
-			ExpandoValue value = values.get(column.getColumnId());
+			ExpandoValue value = valuesMap.get(column.getColumnId());
 
 			if (value == null) {
 				value = new ExpandoValueImpl();
-
-				// Array and localized columns default to an empty value, not
-				// to the column's default data (the options of a selection
-				// list)
 
 				int type = column.getType();
 

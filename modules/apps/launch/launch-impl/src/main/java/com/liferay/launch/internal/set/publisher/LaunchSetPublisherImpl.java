@@ -95,8 +95,13 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 					launchSetErrorValuesList, launchSetObjectEntry,
 					serviceContext.getUserId());
 			}
-			catch (PortalException portalException) {
-				throwable.addSuppressed(portalException);
+			catch (Throwable throwable2) {
+				_log.error(
+					"Unable to store the publish errors of launch set " +
+						launchSetId,
+					throwable2);
+
+				throwable.addSuppressed(throwable2);
 			}
 
 			if (throwable instanceof PortalException) {

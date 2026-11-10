@@ -241,9 +241,9 @@ public class ExpandoBridgeImpl implements ExpandoBridge {
 
 	@Override
 	public Map<String, Serializable> getAttributes(boolean secure) {
-		List<ExpandoColumn> columns = getAttributeColumns();
+		List<ExpandoColumn> attributeColumns = getAttributeColumns();
 
-		if (columns.isEmpty()) {
+		if (attributeColumns.isEmpty()) {
 			return new HashMap<>();
 		}
 
@@ -253,14 +253,15 @@ public class ExpandoBridgeImpl implements ExpandoBridge {
 			attributes = ExpandoValueLocalServiceUtil.getData(
 				_companyId, _className,
 				ExpandoTableConstants.DEFAULT_TABLE_NAME,
-				TransformUtil.transform(columns, ExpandoColumn::getName),
+				TransformUtil.transform(
+					attributeColumns, ExpandoColumn::getName),
 				_classPK);
 
 			if (secure) {
 				PermissionChecker permissionChecker =
 					GuestOrUserUtil.getPermissionChecker();
 
-				for (ExpandoColumn column : columns) {
+				for (ExpandoColumn column : attributeColumns) {
 					if (ExpandoColumnPermissionUtil.contains(
 							permissionChecker, column, ActionKeys.VIEW)) {
 

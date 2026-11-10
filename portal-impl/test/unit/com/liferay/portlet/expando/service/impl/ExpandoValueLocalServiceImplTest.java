@@ -16,6 +16,7 @@ import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.LocalizationImpl;
@@ -80,27 +81,25 @@ public class ExpandoValueLocalServiceImplTest {
 			table
 		);
 
-		_addColumn(1, "integerColumn", ExpandoColumnConstants.INTEGER, "0");
-		_addColumn(2, "stringColumn", ExpandoColumnConstants.STRING, "default");
+		_addColumn("geolocationColumn", ExpandoColumnConstants.GEOLOCATION, "");
+		_addColumn("integerColumn", ExpandoColumnConstants.INTEGER, "0");
+		_addColumn("longArrayColumn", ExpandoColumnConstants.LONG_ARRAY, "");
+		_addColumn("stringColumn", ExpandoColumnConstants.STRING, "default");
 		_addColumn(
-			3, "unsetStringColumn", ExpandoColumnConstants.STRING,
-			"unsetDefault");
-		_addColumn(4, "longArrayColumn", ExpandoColumnConstants.LONG_ARRAY, "");
+			"unsetBooleanColumn", ExpandoColumnConstants.BOOLEAN, "true");
 		_addColumn(
-			5, "unsetLongArrayColumn", ExpandoColumnConstants.LONG_ARRAY, "");
+			"unsetLocalizedArrayColumn",
+			ExpandoColumnConstants.STRING_ARRAY_LOCALIZED, "a,b,c");
 		_addColumn(
-			6, "unsetBooleanColumn", ExpandoColumnConstants.BOOLEAN, "true");
-		_addColumn(
-			7, "geolocationColumn", ExpandoColumnConstants.GEOLOCATION, "");
-		_addColumn(
-			8, "unsetSelectionColumn", ExpandoColumnConstants.STRING_ARRAY,
-			"a,b,c");
-		_addColumn(
-			9, "unsetLocalizedColumn", ExpandoColumnConstants.STRING_LOCALIZED,
+			"unsetLocalizedColumn", ExpandoColumnConstants.STRING_LOCALIZED,
 			"");
 		_addColumn(
-			10, "unsetLocalizedArrayColumn",
-			ExpandoColumnConstants.STRING_ARRAY_LOCALIZED, "a,b,c");
+			"unsetLongArrayColumn", ExpandoColumnConstants.LONG_ARRAY, "");
+		_addColumn(
+			"unsetSelectionColumn", ExpandoColumnConstants.STRING_ARRAY,
+			"a,b,c");
+		_addColumn(
+			"unsetStringColumn", ExpandoColumnConstants.STRING, "unsetDefault");
 
 		ExpandoColumnPersistence expandoColumnPersistence = Mockito.mock(
 			ExpandoColumnPersistence.class);
@@ -197,7 +196,6 @@ public class ExpandoValueLocalServiceImplTest {
 				_COMPANY_ID, _CLASS_NAME,
 				ExpandoTableConstants.DEFAULT_TABLE_NAME, columnName,
 				_CLASS_PK);
-
 			Serializable actualData = data.get(columnName);
 
 			if (expectedData instanceof JSONObject) {
@@ -209,12 +207,10 @@ public class ExpandoValueLocalServiceImplTest {
 		}
 	}
 
-	private ExpandoColumn _addColumn(
-		long columnId, String name, int type, String defaultData) {
-
+	private void _addColumn(String name, int type, String defaultData) {
 		ExpandoColumn column = new ExpandoColumnImpl();
 
-		column.setColumnId(columnId);
+		column.setColumnId(_columns.size() + 1);
 		column.setCompanyId(_COMPANY_ID);
 		column.setTableId(_TABLE_ID);
 		column.setName(name);
@@ -222,8 +218,6 @@ public class ExpandoValueLocalServiceImplTest {
 		column.setDefaultData(defaultData);
 
 		_columns.put(name, column);
-
-		return column;
 	}
 
 	private ExpandoValue _addValue(String columnName, String data) {
@@ -248,15 +242,15 @@ public class ExpandoValueLocalServiceImplTest {
 		return value;
 	}
 
-	private static final String _CLASS_NAME = "com.liferay.Test";
+	private static final String _CLASS_NAME = RandomTestUtil.randomString();
 
-	private static final long _CLASS_NAME_ID = 100;
+	private static final long _CLASS_NAME_ID = RandomTestUtil.randomLong();
 
-	private static final long _CLASS_PK = 300;
+	private static final long _CLASS_PK = RandomTestUtil.randomLong();
 
-	private static final long _COMPANY_ID = 10;
+	private static final long _COMPANY_ID = RandomTestUtil.randomLong();
 
-	private static final long _TABLE_ID = 200;
+	private static final long _TABLE_ID = RandomTestUtil.randomLong();
 
 	private final Map<String, ExpandoColumn> _columns = new LinkedHashMap<>();
 	private final ExpandoValueLocalServiceImpl _expandoValueLocalServiceImpl =

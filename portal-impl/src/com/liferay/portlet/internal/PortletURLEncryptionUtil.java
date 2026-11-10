@@ -44,7 +44,7 @@ public class PortletURLEncryptionUtil {
 
 			String name = entry.getKey();
 
-			String[] values = entry.getValue();
+			String[] values = ArrayUtil.clone(entry.getValue());
 
 			if (isExcludedParameter(name)) {
 				parameterMap.put(name, values);

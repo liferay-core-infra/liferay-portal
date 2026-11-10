@@ -45,6 +45,12 @@ public class PortletURLEncryptionUtil {
 
 			String[] values = entry.getValue();
 
+			if (isExcludedParameter(name)) {
+				parameterMap.put(name, values);
+
+				continue;
+			}
+
 			for (int i = 0; i < values.length; i++) {
 				if (Validator.isNull(values[i]) ||
 					!ArrayUtil.contains(
@@ -83,6 +89,12 @@ public class PortletURLEncryptionUtil {
 			return value;
 		}
 	}
+
+	public static boolean isExcludedParameter(String name) {
+		return ArrayUtil.contains(_EXCLUDED_PARAMETER_NAMES, name);
+	}
+
+	private static final String[] _EXCLUDED_PARAMETER_NAMES = {"p_auth"};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletURLEncryptionUtil.class);

@@ -1194,6 +1194,9 @@ public class PortletURLImpl
 							key,
 							LiferayMutablePortletParameters.NULL_PARAM_VALUE));
 				}
+				else if (PortletURLEncryptionUtil.isExcludedParameter(name)) {
+					sb.append(URLCodec.encodeURL(value));
+				}
 				else {
 					sb.append(_encodeValue(key, value));
 				}

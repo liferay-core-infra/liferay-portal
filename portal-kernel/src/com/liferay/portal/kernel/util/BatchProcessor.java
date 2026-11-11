@@ -5,10 +5,14 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -39,7 +43,12 @@ public class BatchProcessor<T> {
 		int size = _queueSize.incrementAndGet();
 
 		if (size >= _batchSize) {
-			_flush();
+			try {
+				_scheduledExecutorService.execute(this::_flush);
+			}
+			catch (RejectedExecutionException rejectedExecutionException) {
+				_flush();
+			}
 		}
 	}
 
@@ -87,9 +96,16 @@ public class BatchProcessor<T> {
 				size = _queueSize.get();
 			}
 
-			_consumer.accept(items);
+			try {
+				_consumer.accept(items);
+			}
+			catch (Throwable throwable) {
+				_log.error(throwable);
+			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(BatchProcessor.class);
 
 	private volatile int _batchSize;
 	private final Consumer<List<T>> _consumer;

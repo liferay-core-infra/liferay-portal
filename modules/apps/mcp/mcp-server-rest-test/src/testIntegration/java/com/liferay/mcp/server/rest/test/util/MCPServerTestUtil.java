@@ -303,24 +303,30 @@ public class MCPServerTestUtil {
 	public static String getAuditedDeleteReason(ObjectEntry objectEntry)
 		throws Exception {
 
-		List<AuditEvent> auditEvents =
-			AuditEventLocalServiceUtil.getAuditEvents(
-				0, 0, 0, null, null, null, null, null,
-				String.valueOf(objectEntry.getObjectEntryId()), null, null,
-				null, EventTypes.DELETE, null, 0, null, true, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS);
+		long timeout = System.currentTimeMillis() + _TIMEOUT;
 
-		if (auditEvents.isEmpty()) {
-			return null;
+		while (System.currentTimeMillis() < timeout) {
+			List<AuditEvent> auditEvents =
+				AuditEventLocalServiceUtil.getAuditEvents(
+					0, 0, 0, null, null, null, null, null,
+					String.valueOf(objectEntry.getObjectEntryId()), null, null,
+					null, EventTypes.DELETE, null, 0, null, true,
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			if (!auditEvents.isEmpty()) {
+				AuditEvent auditEvent = auditEvents.get(0);
+
+				return JSONFactoryUtil.createJSONObject(
+					auditEvent.getAdditionalInfo()
+				).getString(
+					"deleteReason"
+				);
+			}
+
+			Thread.sleep(100);
 		}
 
-		AuditEvent auditEvent = auditEvents.get(0);
-
-		return JSONFactoryUtil.createJSONObject(
-			auditEvent.getAdditionalInfo()
-		).getString(
-			"deleteReason"
-		);
+		return null;
 	}
 
 	public static int getMCPServerProfileDataMaskExecutionOrder(
@@ -523,5 +529,7 @@ public class MCPServerTestUtil {
 
 	private static final String _DATA_MASK_BATCH_FILE_NAME =
 		"com.liferay.headless.data.mask.impl_test";
+
+	private static final long _TIMEOUT = 10000;
 
 }

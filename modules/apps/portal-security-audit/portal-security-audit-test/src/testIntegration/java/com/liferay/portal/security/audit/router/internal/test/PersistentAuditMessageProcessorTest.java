@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.audit.AuditRequestContextThreadLocal;
 import com.liferay.portal.kernel.audit.AuditRouter;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -25,6 +26,7 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.filters.invoker.InvokerFilterChain;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -67,6 +69,7 @@ public class PersistentAuditMessageProcessorTest {
 	@Test
 	public void testProcess() throws Exception {
 		_testProcessHttpRequestContext();
+		_testProcessLockedCompanyThread();
 		_testProcessRequestContextPersistsAfterClear();
 		_testProcessRolesPersistAfterRoleChanges();
 	}
@@ -110,17 +113,31 @@ public class PersistentAuditMessageProcessorTest {
 		return StringUtil.toUpperCase(RandomTestUtil.randomString());
 	}
 
-	private AuditEvent _getAuditEvent(long companyId, String eventType) {
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setCompanyIdWithSafeCloseable(companyId)) {
+	private AuditEvent _getAuditEvent(long companyId, String eventType)
+		throws Exception {
 
-			List<AuditEvent> auditEvents =
-				_auditEventLocalService.getAuditEvents(
-					companyId, 0, 0, null, null, null, null, null, null, null,
-					null, null, eventType, null, 0, null, false, 0, 1);
+		long timeout = System.currentTimeMillis() + _TIMEOUT;
 
-			return auditEvents.get(0);
+		while (System.currentTimeMillis() < timeout) {
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+						companyId)) {
+
+				List<AuditEvent> auditEvents =
+					_auditEventLocalService.getAuditEvents(
+						companyId, 0, 0, null, null, null, null, null, null,
+						null, null, null, eventType, null, 0, null, false, 0,
+						1);
+
+				if (!auditEvents.isEmpty()) {
+					return auditEvents.get(0);
+				}
+			}
+
+			Thread.sleep(100);
 		}
+
+		throw new AssertionError("No audit event with event type " + eventType);
 	}
 
 	private int _getAuditEventsCount(long companyId, String eventType) {
@@ -178,6 +195,36 @@ public class PersistentAuditMessageProcessorTest {
 			Assert.assertEquals(remoteHost, auditEvent.getClientHost());
 			Assert.assertEquals(httpMethod, auditEvent.getHttpMethod());
 			Assert.assertEquals(userAgent, auditEvent.getUserAgent());
+		}
+	}
+
+	private void _testProcessLockedCompanyThread() throws Exception {
+		_company = CompanyTestUtil.addCompany();
+
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					PersistentAuditMessageProcessorConfiguration.class.
+						getName(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"bufferSize", 1
+					).build())) {
+
+			String eventType = _createEventType();
+
+			try (SafeCloseable safeCloseable = CompanyThreadLocal.lock(
+					_company.getCompanyId())) {
+
+				_auditRouter.route(
+					new AuditMessage(
+						TestPropsValues.getCompanyId(),
+						RandomTestUtil.randomLong(),
+						RandomTestUtil.randomString(), eventType));
+			}
+
+			AuditEvent auditEvent = _getAuditEvent(
+				TestPropsValues.getCompanyId(), eventType);
+
+			Assert.assertEquals(eventType, auditEvent.getEventType());
 		}
 	}
 
@@ -325,6 +372,8 @@ public class PersistentAuditMessageProcessorTest {
 
 	private static final long _FLUSH_INTERVAL = 86400000;
 
+	private static final long _TIMEOUT = 10000;
+
 	@Inject
 	private AuditEventLocalService _auditEventLocalService;
 
@@ -333,6 +382,9 @@ public class PersistentAuditMessageProcessorTest {
 
 	@Inject
 	private AuditRouter _auditRouter;
+
+	@DeleteAfterTestRun
+	private Company _company;
 
 	@Inject
 	private RoleLocalService _roleLocalService;

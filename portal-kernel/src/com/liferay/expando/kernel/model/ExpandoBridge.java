@@ -82,6 +82,10 @@ public interface ExpandoBridge {
 
 	public long getCompanyId();
 
+	public default Map<String, Serializable> getRowAttributes() {
+		return getAttributes();
+	}
+
 	public boolean hasAttribute(String name);
 
 	public void setAttribute(String name, Serializable value);

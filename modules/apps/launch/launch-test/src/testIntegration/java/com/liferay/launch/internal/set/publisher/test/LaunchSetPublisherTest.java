@@ -40,6 +40,9 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -47,6 +50,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.io.Serializable;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -124,17 +128,43 @@ public class LaunchSetPublisherTest {
 			_launchSetObjectEntry.getObjectEntryId(), unknownClassName2,
 			RandomTestUtil.randomInt(), RandomTestUtil.randomString());
 
-		try {
-			_launchSetPublisher.publish(
-				_launchSetObjectEntry.getObjectEntryId());
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.launch.internal.set.publisher." +
+					"LaunchSetPublisherImpl",
+				LoggerTestUtil.WARN)) {
 
-			Assert.fail();
-		}
-		catch (PortalException portalException) {
+			try {
+				_launchSetPublisher.publish(
+					_launchSetObjectEntry.getObjectEntryId());
+
+				Assert.fail();
+			}
+			catch (PortalException portalException) {
+				Assert.assertEquals(
+					"Unable to publish 2 launch entries of launch set " +
+						_launchSetObjectEntry.getObjectEntryId(),
+					portalException.getMessage());
+			}
+
+			Map<String, String> messages = new HashMap<>();
+
+			for (LogEntry logEntry : logCapture.getLogEntries()) {
+				Throwable throwable = logEntry.getThrowable();
+
+				messages.put(logEntry.getMessage(), throwable.getMessage());
+			}
+
+			Assert.assertEquals(messages.toString(), 2, messages.size());
 			Assert.assertEquals(
-				"Unable to publish 2 launch entries of launch set " +
-					_launchSetObjectEntry.getObjectEntryId(),
-				portalException.getMessage());
+				"No launch entry manager exists for " + unknownClassName1,
+				messages.get(
+					"Unable to publish launch entry " +
+						unknownLaunchEntryObjectEntry1.getObjectEntryId()));
+			Assert.assertEquals(
+				"No launch entry manager exists for " + unknownClassName2,
+				messages.get(
+					"Unable to publish launch entry " +
+						unknownLaunchEntryObjectEntry2.getObjectEntryId()));
 		}
 
 		LaunchEntryManager launchEntryManager =

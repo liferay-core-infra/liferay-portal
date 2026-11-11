@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -63,6 +64,7 @@ import org.junit.runner.RunWith;
  * @author Jose Luis Navarro
  */
 @RunWith(Arquillian.class)
+@Sync(cleanTransaction = true)
 public class LaunchSetScheduledPublishMessageListenerTest {
 
 	@ClassRule

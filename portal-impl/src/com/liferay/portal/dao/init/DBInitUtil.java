@@ -24,9 +24,12 @@ import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
+import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.hibernate.DialectDetector;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
 
@@ -81,6 +84,25 @@ public class DBInitUtil {
 		DBManager dbManager = new DBManagerImpl();
 
 		Dialect dialect = DialectDetector.getDialect(dataSource);
+
+		if (Validator.isNotNull(PropsValues.HIBERNATE_DIALECT)) {
+			Dialect configuredDialect = (Dialect)InstanceFactory.newInstance(
+				PropsValues.HIBERNATE_DIALECT);
+
+			DBType configuredDBType = dbManager.getDBType(configuredDialect);
+
+			DBType dbType = dbManager.getDBType(dialect);
+
+			if ((configuredDBType != dbType) && _log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"The configured dialect ",
+						PropsValues.HIBERNATE_DIALECT, " is for ",
+						configuredDBType, ", but the database is ", dbType));
+			}
+
+			dialect = configuredDialect;
+		}
 
 		dbManager.setDB(
 			dbManager.getDB(dbManager.getDBType(dialect), dataSource));

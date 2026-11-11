@@ -18,12 +18,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.persistence.PersistenceException;
 
@@ -57,7 +57,6 @@ import org.hibernate.boot.jaxb.spi.Binding;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.metamodel.spi.MetamodelImplementor;
@@ -110,13 +109,15 @@ public class PortalHibernateConfiguration
 
 		Properties properties = configuration.getProperties();
 
-		if (Validator.isNull(PropsValues.HIBERNATE_DIALECT)) {
-			Dialect dialect = DialectDetector.getDialect(_dataSource);
+		Object dialect = InfrastructureUtil.getDialect();
 
-			Class<?> clazz = dialect.getClass();
-
-			properties.setProperty("hibernate.dialect", clazz.getName());
+		if (_dataSource != InfrastructureUtil.getDataSource()) {
+			dialect = DialectDetector.getDialect(_dataSource);
 		}
+
+		Class<?> clazz = dialect.getClass();
+
+		properties.setProperty("hibernate.dialect", clazz.getName());
 
 		if (_dataSource != null) {
 			properties.put("hibernate.connection.datasource", _dataSource);

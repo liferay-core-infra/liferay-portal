@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.Group;
@@ -150,7 +152,11 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 
 		_updateStatus(WorkflowConstants.STATUS_SCHEDULED);
 
-		_receiveWithError(0, RandomTestUtil.randomLong());
+		long userId = RandomTestUtil.randomLong();
+
+		_receiveWithError(
+			NoSuchUserException.class,
+			"No User exists with the primary key " + userId, null, userId);
 
 		_assertBackgroundTasks(2, BackgroundTaskConstants.STATUS_FAILED);
 		_assertLaunchSetError(0);
@@ -165,8 +171,10 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 		_updateStatus(WorkflowConstants.STATUS_SCHEDULED);
 
 		_receiveWithError(
-			launchEntryObjectEntry.getObjectEntryId(),
-			TestPropsValues.getUserId());
+			PortalException.class,
+			"Unable to publish 1 launch entries of launch set " +
+				_launchSetObjectEntry.getObjectEntryId(),
+			launchEntryObjectEntry, TestPropsValues.getUserId());
 
 		_assertBackgroundTasks(3, BackgroundTaskConstants.STATUS_FAILED);
 		_assertLaunchSetError(launchEntryObjectEntry.getObjectEntryId());
@@ -332,7 +340,9 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 		}
 	}
 
-	private void _receiveWithError(long launchEntryId, long userId)
+	private void _receiveWithError(
+			Class<?> exceptionClass, String exceptionMessage,
+			ObjectEntry launchEntryObjectEntry, long userId)
 		throws Exception {
 
 		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
@@ -356,10 +366,16 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 				"Unable to publish launch set " +
 					_launchSetObjectEntry.getObjectEntryId(),
 				logEntry.getMessage());
+			Assert.assertEquals("ERROR", logEntry.getPriority());
+
+			Throwable throwable = logEntry.getThrowable();
+
+			Assert.assertSame(exceptionClass, throwable.getClass());
+			Assert.assertEquals(exceptionMessage, throwable.getMessage());
 
 			logEntries = logCapture2.getLogEntries();
 
-			if (launchEntryId == 0) {
+			if (launchEntryObjectEntry == null) {
 				Assert.assertEquals(
 					logEntries.toString(), 0, logEntries.size());
 
@@ -371,8 +387,21 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 			logEntry = logEntries.get(0);
 
 			Assert.assertEquals(
-				"Unable to publish launch entry " + launchEntryId,
+				"Unable to publish launch entry " +
+					launchEntryObjectEntry.getObjectEntryId(),
 				logEntry.getMessage());
+			Assert.assertEquals("WARN", logEntry.getPriority());
+
+			throwable = logEntry.getThrowable();
+
+			Assert.assertSame(PortalException.class, throwable.getClass());
+
+			String className = MapUtil.getString(
+				launchEntryObjectEntry.getValues(), "className");
+
+			Assert.assertEquals(
+				"No launch entry manager exists for " + className,
+				throwable.getMessage());
 		}
 	}
 

@@ -7,6 +7,7 @@ package com.liferay.launch.internal.set.publisher.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.journal.constants.JournalFolderConstants;
+import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.test.util.JournalTestUtil;
@@ -335,7 +336,9 @@ public class LaunchSetPublisherTest {
 				PortalException.class,
 				() -> _launchSetPublisher.publish(blankMessageLaunchSetId));
 
-			_assertLogEntry(blankMessageLaunchEntryObjectEntry, logCapture);
+			_assertLogEntry(
+				PortalException.class, StringPool.SPACE,
+				blankMessageLaunchEntryObjectEntry, logCapture);
 		}
 		finally {
 			serviceRegistration.unregister();
@@ -400,7 +403,9 @@ public class LaunchSetPublisherTest {
 				PortalException.class,
 				() -> _launchSetPublisher.publish(longMessageLaunchSetId));
 
-			_assertLogEntry(longMessageLaunchEntryObjectEntry, logCapture);
+			_assertLogEntry(
+				PortalException.class, longMessage,
+				longMessageLaunchEntryObjectEntry, logCapture);
 		}
 		finally {
 			serviceRegistration.unregister();
@@ -440,10 +445,11 @@ public class LaunchSetPublisherTest {
 				longTitleJournalArticle.getResourcePrimKey(),
 				String.valueOf(longTitleJournalArticle.getVersion()));
 
+		long longTitleDraftId = MapUtil.getLong(
+			_getValues(longTitleLaunchEntryObjectEntry), "draftId");
+
 		launchEntryManager.deleteDraft(
-			longTitleJournalArticle.getResourcePrimKey(),
-			MapUtil.getLong(
-				_getValues(longTitleLaunchEntryObjectEntry), "draftId"));
+			longTitleJournalArticle.getResourcePrimKey(), longTitleDraftId);
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				"com.liferay.launch.internal.set.publisher." +
@@ -455,7 +461,11 @@ public class LaunchSetPublisherTest {
 				() -> _launchSetPublisher.publish(
 					longTitleLaunchSetObjectEntry.getObjectEntryId()));
 
-			_assertLogEntry(longTitleLaunchEntryObjectEntry, logCapture);
+			_assertLogEntry(
+				NoSuchArticleException.class,
+				"No JournalArticle exists with the key {resourcePrimKey=" +
+					longTitleDraftId + "}",
+				longTitleLaunchEntryObjectEntry, logCapture);
 		}
 
 		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries(
@@ -483,6 +493,7 @@ public class LaunchSetPublisherTest {
 			concurrentLaunchSetObjectEntry.getObjectEntryId();
 
 		String concurrentClassName = RandomTestUtil.randomString();
+		String concurrentMessage = RandomTestUtil.randomString();
 
 		ObjectEntry concurrentLaunchEntryObjectEntry =
 			_addLaunchEntryObjectEntry(
@@ -498,7 +509,7 @@ public class LaunchSetPublisherTest {
 						TestPropsValues.getUserId(), concurrentLaunchSetId,
 						WorkflowConstants.STATUS_APPROVED, _serviceContext));
 
-				throw new PortalException(RandomTestUtil.randomString());
+				throw new PortalException(concurrentMessage);
 			});
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
@@ -510,7 +521,9 @@ public class LaunchSetPublisherTest {
 				PortalException.class,
 				() -> _launchSetPublisher.publish(concurrentLaunchSetId));
 
-			_assertLogEntry(concurrentLaunchEntryObjectEntry, logCapture);
+			_assertLogEntry(
+				PortalException.class, concurrentMessage,
+				concurrentLaunchEntryObjectEntry, logCapture);
 		}
 		finally {
 			serviceRegistration.unregister();
@@ -681,6 +694,7 @@ public class LaunchSetPublisherTest {
 	}
 
 	private void _assertLogEntry(
+		Class<?> exceptionClass, String exceptionMessage,
 		ObjectEntry launchEntryObjectEntry, LogCapture logCapture) {
 
 		List<LogEntry> logEntries = logCapture.getLogEntries();
@@ -693,6 +707,12 @@ public class LaunchSetPublisherTest {
 			"Unable to publish launch entry " +
 				launchEntryObjectEntry.getObjectEntryId(),
 			logEntry.getMessage());
+		Assert.assertEquals("WARN", logEntry.getPriority());
+
+		Throwable throwable = logEntry.getThrowable();
+
+		Assert.assertSame(exceptionClass, throwable.getClass());
+		Assert.assertEquals(exceptionMessage, throwable.getMessage());
 	}
 
 	private void _assertPublished(

@@ -145,10 +145,12 @@ public class PublishLaunchMVCActionCommandTest {
 				"name", RandomTestUtil.randomString()
 			).build());
 
+		String className = RandomTestUtil.randomString();
+
 		ObjectEntry launchEntryObjectEntry = _addObjectEntry(
 			"LaunchEntry",
 			HashMapBuilder.<String, Serializable>put(
-				"className", RandomTestUtil.randomString()
+				"className", className
 			).put(
 				"classPK", RandomTestUtil.randomInt()
 			).put(
@@ -180,6 +182,14 @@ public class PublishLaunchMVCActionCommandTest {
 				"Unable to publish launch entry " +
 					launchEntryObjectEntry.getObjectEntryId(),
 				logEntry.getMessage());
+			Assert.assertEquals("WARN", logEntry.getPriority());
+
+			Throwable throwable = logEntry.getThrowable();
+
+			Assert.assertSame(PortalException.class, throwable.getClass());
+			Assert.assertEquals(
+				"No launch entry manager exists for " + className,
+				throwable.getMessage());
 		}
 
 		Assert.assertTrue(

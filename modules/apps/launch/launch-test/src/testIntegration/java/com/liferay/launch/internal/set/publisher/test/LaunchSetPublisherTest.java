@@ -351,6 +351,68 @@ public class LaunchSetPublisherTest {
 		Assert.assertEquals(
 			longTitle, MapUtil.getString(values, "launchEntryTitle"));
 
+		// Launch entry whose publish fails with a blank message
+
+		ObjectEntry blankMessageLaunchSetObjectEntry =
+			_addLaunchSetObjectEntry();
+
+		long blankMessageLaunchSetId =
+			blankMessageLaunchSetObjectEntry.getObjectEntryId();
+
+		String blankMessageClassName = RandomTestUtil.randomString();
+
+		ObjectEntry blankMessageLaunchEntryObjectEntry =
+			_addLaunchEntryObjectEntry(
+				blankMessageLaunchSetObjectEntry.getObjectEntryId(),
+				blankMessageClassName, RandomTestUtil.randomInt(), null);
+
+		ServiceRegistration<LaunchEntryManager> serviceRegistration =
+			_registerLaunchEntryManager(
+				blankMessageClassName,
+				() -> {
+					throw new PortalException(StringPool.SPACE);
+				});
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.launch.internal.set.publisher." +
+					"LaunchSetPublisherImpl",
+				LoggerTestUtil.WARN)) {
+
+			Assert.assertThrows(
+				PortalException.class,
+				() -> _launchSetPublisher.publish(blankMessageLaunchSetId));
+
+			_assertLogEntry(blankMessageLaunchEntryObjectEntry, logCapture);
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
+
+		blankMessageLaunchSetObjectEntry =
+			_objectEntryLocalService.getObjectEntry(blankMessageLaunchSetId);
+
+		Assert.assertEquals(
+			WorkflowConstants.STATUS_DRAFT,
+			blankMessageLaunchSetObjectEntry.getStatus());
+
+		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries(
+			blankMessageLaunchSetObjectEntry);
+
+		Assert.assertEquals(
+			launchSetErrorObjectEntries.toString(), 1,
+			launchSetErrorObjectEntries.size());
+
+		launchSetErrorObjectEntry = launchSetErrorObjectEntries.get(0);
+
+		values = launchSetErrorObjectEntry.getValues();
+
+		Assert.assertEquals(
+			blankMessageLaunchEntryObjectEntry.getObjectEntryId(),
+			MapUtil.getLong(values, "launchEntryId"));
+		Assert.assertEquals(
+			PortalException.class.getName(),
+			MapUtil.getString(values, "message"));
+
 		// Launch set published by another publish while this one fails
 
 		ObjectEntry concurrentLaunchSetObjectEntry = _addLaunchSetObjectEntry();
@@ -365,19 +427,17 @@ public class LaunchSetPublisherTest {
 				concurrentLaunchSetObjectEntry.getObjectEntryId(),
 				concurrentClassName, RandomTestUtil.randomInt(), null);
 
-		ServiceRegistration<LaunchEntryManager> serviceRegistration =
-			_registerLaunchEntryManager(
-				concurrentClassName,
-				() -> {
-					TransactionInvokerUtil.invoke(
-						_requiresNewTransactionConfig,
-						() -> _objectEntryLocalService.updateStatus(
-							TestPropsValues.getUserId(), concurrentLaunchSetId,
-							WorkflowConstants.STATUS_APPROVED,
-							_serviceContext));
+		serviceRegistration = _registerLaunchEntryManager(
+			concurrentClassName,
+			() -> {
+				TransactionInvokerUtil.invoke(
+					_requiresNewTransactionConfig,
+					() -> _objectEntryLocalService.updateStatus(
+						TestPropsValues.getUserId(), concurrentLaunchSetId,
+						WorkflowConstants.STATUS_APPROVED, _serviceContext));
 
-					throw new PortalException(RandomTestUtil.randomString());
-				});
+				throw new PortalException(RandomTestUtil.randomString());
+			});
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				"com.liferay.launch.internal.set.publisher." +

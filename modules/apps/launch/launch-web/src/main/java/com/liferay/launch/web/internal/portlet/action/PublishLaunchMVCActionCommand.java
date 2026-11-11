@@ -10,6 +10,7 @@ import com.liferay.launch.web.internal.constants.LaunchPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import jakarta.portlet.ActionRequest;
@@ -41,6 +42,9 @@ public class PublishLaunchMVCActionCommand extends BaseMVCActionCommand {
 				ParamUtil.getLong(actionRequest, "launchSetId"));
 		}
 		catch (PortalException portalException) {
+			SessionErrors.add(
+				actionRequest, PortalException.class, portalException);
+
 			hideDefaultErrorMessage(actionRequest);
 
 			throw portalException;

@@ -168,7 +168,7 @@ public class LaunchSetPublisherTest {
 			WorkflowConstants.STATUS_DRAFT, launchSetObjectEntry.getStatus());
 
 		List<ObjectEntry> launchSetErrorObjectEntries =
-			_getLaunchSetErrorObjectEntries();
+			_getLaunchSetErrorObjectEntries(_launchSetObjectEntry);
 
 		Assert.assertEquals(
 			launchSetErrorObjectEntries.toString(), 2,
@@ -208,7 +208,8 @@ public class LaunchSetPublisherTest {
 			WorkflowConstants.STATUS_APPROVED,
 			launchSetObjectEntry.getStatus());
 
-		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries();
+		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries(
+			_launchSetObjectEntry);
 
 		Assert.assertEquals(
 			launchSetErrorObjectEntries.toString(), 0,
@@ -260,6 +261,53 @@ public class LaunchSetPublisherTest {
 		_assertPublished(
 			otherDraftId, otherLaunchEntryObjectEntry, launchEntryManager,
 			otherPublishedVersion);
+
+		// Launch entry with a title longer than a text field
+
+		String longTitle = RandomTestUtil.randomString(300);
+
+		JournalArticle longTitleJournalArticle = JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, longTitle,
+			RandomTestUtil.randomString());
+
+		ObjectEntry longTitleLaunchSetObjectEntry = _addLaunchSetObjectEntry();
+
+		ObjectEntry longTitleLaunchEntryObjectEntry =
+			_addLaunchEntryObjectEntry(
+				longTitleLaunchSetObjectEntry.getObjectEntryId(),
+				JournalArticle.class.getName(),
+				longTitleJournalArticle.getResourcePrimKey(),
+				String.valueOf(longTitleJournalArticle.getVersion()));
+
+		launchEntryManager.deleteDraft(
+			longTitleJournalArticle.getResourcePrimKey(),
+			MapUtil.getLong(
+				_getValues(longTitleLaunchEntryObjectEntry), "draftId"));
+
+		Assert.assertThrows(
+			PortalException.class,
+			() -> _launchSetPublisher.publish(
+				longTitleLaunchSetObjectEntry.getObjectEntryId()));
+
+		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries(
+			longTitleLaunchSetObjectEntry);
+
+		Assert.assertEquals(
+			launchSetErrorObjectEntries.toString(), 1,
+			launchSetErrorObjectEntries.size());
+
+		ObjectEntry launchSetErrorObjectEntry = launchSetErrorObjectEntries.get(
+			0);
+
+		Map<String, Serializable> values =
+			launchSetErrorObjectEntry.getValues();
+
+		Assert.assertEquals(
+			longTitleLaunchEntryObjectEntry.getObjectEntryId(),
+			MapUtil.getLong(values, "launchEntryId"));
+		Assert.assertEquals(
+			longTitle, MapUtil.getString(values, "launchEntryTitle"));
 	}
 
 	@Test
@@ -475,18 +523,19 @@ public class LaunchSetPublisherTest {
 			JournalArticle.class.getName());
 	}
 
-	private List<ObjectEntry> _getLaunchSetErrorObjectEntries()
+	private List<ObjectEntry> _getLaunchSetErrorObjectEntries(
+			ObjectEntry launchSetObjectEntry)
 		throws Exception {
 
 		ObjectRelationship objectRelationship =
 			_objectRelationshipLocalService.getObjectRelationship(
-				_launchSetObjectEntry.getObjectDefinitionId(),
+				launchSetObjectEntry.getObjectDefinitionId(),
 				"launchSetToLaunchSetErrors");
 
 		return _objectEntryLocalService.getOneToManyObjectEntries(
-			_launchSetObjectEntry.getGroupId(),
+			launchSetObjectEntry.getGroupId(),
 			objectRelationship.getObjectRelationshipId(), null, false,
-			_launchSetObjectEntry.getObjectEntryId(), true, null,
+			launchSetObjectEntry.getObjectEntryId(), true, null,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 

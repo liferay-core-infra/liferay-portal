@@ -22,6 +22,10 @@ public class InfrastructureUtil {
 		return _dataSource;
 	}
 
+	public static Object getDialect() {
+		return _dialect;
+	}
+
 	public static Object getSessionFactory() {
 		try {
 			return _sessionFactoryDefaultNoticeableFuture.get();
@@ -48,6 +52,10 @@ public class InfrastructureUtil {
 		_dataSource = dataSource;
 	}
 
+	public static void setDialect(Object dialect) {
+		_dialect = dialect;
+	}
+
 	public static void setReadWriteDataSource(boolean readWriteDataSource) {
 		_readWriteDataSource = readWriteDataSource;
 	}
@@ -61,6 +69,7 @@ public class InfrastructureUtil {
 	}
 
 	private static DataSource _dataSource;
+	private static Object _dialect;
 	private static boolean _readWriteDataSource;
 	private static final DefaultNoticeableFuture<Object>
 		_sessionFactoryDefaultNoticeableFuture =

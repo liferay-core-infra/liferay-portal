@@ -39,6 +39,8 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.hibernate.dialect.Dialect;
+
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 /**
@@ -78,10 +80,10 @@ public class DBInitUtil {
 
 		DBManager dbManager = new DBManagerImpl();
 
+		Dialect dialect = DialectDetector.getDialect(dataSource);
+
 		dbManager.setDB(
-			dbManager.getDB(
-				dbManager.getDBType(DialectDetector.getDialect(dataSource)),
-				dataSource));
+			dbManager.getDB(dbManager.getDBType(dialect), dataSource));
 
 		DBManagerUtil.setDBManager(dbManager);
 
@@ -92,6 +94,7 @@ public class DBInitUtil {
 		InfrastructureUtil.setDataSource(
 			new LazyConnectionDataSourceProxy(dataSource));
 
+		InfrastructureUtil.setDialect(dialect);
 		InfrastructureUtil.setReadWriteDataSource(readWriteDataSource);
 
 		try (Connection connection = dataSource.getConnection()) {

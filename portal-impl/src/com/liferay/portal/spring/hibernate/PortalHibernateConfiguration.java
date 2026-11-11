@@ -55,7 +55,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.resource.beans.internal.ManagedBeanRegistryImpl;
 import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
@@ -78,63 +77,12 @@ public class PortalHibernateConfiguration
 	implements FactoryBean<SessionFactory>, PersistenceExceptionTranslator {
 
 	public void afterPropertiesSet() {
-		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
-			new BootstrapServiceRegistryBuilder();
-
-		bootstrapServiceRegistryBuilder.applyClassLoaderService(
-			new ClassLoaderServiceImpl(getConfigurationClassLoader()) {
-
-				@Override
-				public <S> Collection<S> loadJavaServices(
-					Class<S> serviceContract) {
-
-					return (Collection<S>)_javaServices.computeIfAbsent(
-						serviceContract,
-						key -> super.loadJavaServices(serviceContract));
-				}
-
-			});
-
-		bootstrapServiceRegistryBuilder.applyIntegrator(
-			GlobalEventListenerIntegrator.INSTANCE);
-
-		if (_mvccEnabled) {
-			bootstrapServiceRegistryBuilder.applyIntegrator(
-				new CTModelIntegrator());
-			bootstrapServiceRegistryBuilder.applyIntegrator(
-				MVCCEventListenerIntegrator.INSTANCE);
-		}
-
-		Configuration configuration = new Configuration(
-			new MetadataSources(bootstrapServiceRegistryBuilder.build()));
-
-		if (_mvccEnabled) {
-			configuration.setStatementInspector(new CTSQLInterceptor());
-		}
-
-		configuration.addProperties(PropsUtil.getProperties());
-
-		Properties properties = configuration.getProperties();
-
 		Dialect dialect = DialectUtil.getDialect(_dataSource);
 
 		Class<?> clazz = dialect.getClass();
 
-		properties.setProperty("hibernate.dialect", clazz.getName());
-
-		DatabaseVersion databaseVersion = dialect.getVersion();
-
-		properties.setProperty(
-			"jakarta.persistence.database-product-version",
-			databaseVersion.toString());
-
-		properties.put("hibernate.connection.datasource", _dataSource);
-
-		properties.put(
-			"hibernate.connection.handling_mode",
-			PhysicalConnectionHandlingMode.DELAYED_ACQUISITION_AND_HOLD);
-
-		_sessionFactory = _buildSessionFactory(configuration);
+		_sessionFactory = _buildSessionFactory(
+			_dataSource, clazz.getName(), String.valueOf(dialect.getVersion()));
 
 		SQLTransformer.populateSQLFunctions(_sessionFactory);
 	}
@@ -213,8 +161,58 @@ public class PortalHibernateConfiguration
 		return _configurationResources;
 	}
 
-	private SessionFactory _buildSessionFactory(Configuration configuration)
+	private SessionFactory _buildSessionFactory(
+			DataSource dataSource, String dialectClassName,
+			String dialectVersion)
 		throws HibernateException {
+
+		BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder =
+			new BootstrapServiceRegistryBuilder();
+
+		bootstrapServiceRegistryBuilder.applyClassLoaderService(
+			new ClassLoaderServiceImpl(getConfigurationClassLoader()) {
+
+				@Override
+				public <S> Collection<S> loadJavaServices(
+					Class<S> serviceContract) {
+
+					return (Collection<S>)_javaServices.computeIfAbsent(
+						serviceContract,
+						key -> super.loadJavaServices(serviceContract));
+				}
+
+			});
+
+		bootstrapServiceRegistryBuilder.applyIntegrator(
+			GlobalEventListenerIntegrator.INSTANCE);
+
+		if (_mvccEnabled) {
+			bootstrapServiceRegistryBuilder.applyIntegrator(
+				new CTModelIntegrator());
+			bootstrapServiceRegistryBuilder.applyIntegrator(
+				MVCCEventListenerIntegrator.INSTANCE);
+		}
+
+		Configuration configuration = new Configuration(
+			new MetadataSources(bootstrapServiceRegistryBuilder.build()));
+
+		if (_mvccEnabled) {
+			configuration.setStatementInspector(new CTSQLInterceptor());
+		}
+
+		configuration.addProperties(PropsUtil.getProperties());
+
+		Properties properties = configuration.getProperties();
+
+		properties.setProperty("hibernate.dialect", dialectClassName);
+		properties.setProperty(
+			"jakarta.persistence.database-product-version", dialectVersion);
+
+		properties.put("hibernate.connection.datasource", dataSource);
+
+		properties.put(
+			"hibernate.connection.handling_mode",
+			PhysicalConnectionHandlingMode.DELAYED_ACQUISITION_AND_HOLD);
 
 		try {
 			String[] resources = getConfigurationResources();

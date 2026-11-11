@@ -56,7 +56,7 @@ public class CustomFieldsUtil {
 
 		return toCustomFields(
 			acceptAllLanguages, className, classPK, companyId,
-			expandoBridge.getAttributes(), locale);
+			expandoBridge.getRowAttributes(), locale);
 	}
 
 	public static CustomField[] toCustomFields(

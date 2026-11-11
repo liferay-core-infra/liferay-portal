@@ -132,7 +132,7 @@ public class OrderDTOConverter implements DTOConverter<CommerceOrder, Order> {
 						ExpandoBridge expandoBridge =
 							commerceOrder.getExpandoBridge();
 
-						return expandoBridge.getAttributes();
+						return expandoBridge.getRowAttributes();
 					});
 				setDeliveryTermDescription(
 					commerceOrder::getDeliveryCommerceTermEntryDescription);

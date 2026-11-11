@@ -10,12 +10,14 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
@@ -79,7 +81,65 @@ public class PublishLaunchMVCActionCommandTest {
 
 	@Test
 	public void testProcessAction() throws Exception {
+
+		// Launch set
+
 		ObjectEntry launchSetObjectEntry = _addObjectEntry(
+			"LaunchSet",
+			HashMapBuilder.<String, Serializable>put(
+				"name", RandomTestUtil.randomString()
+			).build());
+
+		MockLiferayPortletActionRequest successMockLiferayPortletActionRequest =
+			_getMockLiferayPortletActionRequest(launchSetObjectEntry);
+
+		_mvcActionCommand.processAction(
+			successMockLiferayPortletActionRequest,
+			new MockLiferayPortletActionResponse());
+
+		Assert.assertTrue(
+			SessionMessages.contains(
+				successMockLiferayPortletActionRequest, "requestProcessed"));
+		Assert.assertNull(
+			SessionMessages.get(
+				successMockLiferayPortletActionRequest,
+				_portal.getPortletId(successMockLiferayPortletActionRequest) +
+					SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE));
+
+		launchSetObjectEntry = _objectEntryLocalService.getObjectEntry(
+			launchSetObjectEntry.getObjectEntryId());
+
+		Assert.assertEquals(
+			WorkflowConstants.STATUS_APPROVED,
+			launchSetObjectEntry.getStatus());
+
+		// Launch set that does not exist
+
+		ObjectEntry deletedLaunchSetObjectEntry = _addObjectEntry(
+			"LaunchSet",
+			HashMapBuilder.<String, Serializable>put(
+				"name", RandomTestUtil.randomString()
+			).build());
+
+		_objectEntryLocalService.deleteObjectEntry(deletedLaunchSetObjectEntry);
+
+		MockLiferayPortletActionRequest deletedMockLiferayPortletActionRequest =
+			_getMockLiferayPortletActionRequest(deletedLaunchSetObjectEntry);
+
+		Assert.assertThrows(
+			PortletException.class,
+			() -> _mvcActionCommand.processAction(
+				deletedMockLiferayPortletActionRequest,
+				new MockLiferayPortletActionResponse()));
+
+		Assert.assertTrue(
+			SessionErrors.contains(
+				deletedMockLiferayPortletActionRequest,
+				PortalException.class.getName()));
+
+		// Launch set whose publish fails
+
+		launchSetObjectEntry = _addObjectEntry(
 			"LaunchSet",
 			HashMapBuilder.<String, Serializable>put(
 				"name", RandomTestUtil.randomString()
@@ -122,6 +182,10 @@ public class PublishLaunchMVCActionCommandTest {
 				logEntry.getMessage());
 		}
 
+		Assert.assertTrue(
+			SessionErrors.contains(
+				mockLiferayPortletActionRequest,
+				PortalException.class.getName()));
 		Assert.assertNotNull(
 			SessionMessages.get(
 				mockLiferayPortletActionRequest,
@@ -133,35 +197,6 @@ public class PublishLaunchMVCActionCommandTest {
 
 		Assert.assertEquals(
 			WorkflowConstants.STATUS_DRAFT, launchSetObjectEntry.getStatus());
-
-		launchSetObjectEntry = _addObjectEntry(
-			"LaunchSet",
-			HashMapBuilder.<String, Serializable>put(
-				"name", RandomTestUtil.randomString()
-			).build());
-
-		MockLiferayPortletActionRequest successMockLiferayPortletActionRequest =
-			_getMockLiferayPortletActionRequest(launchSetObjectEntry);
-
-		_mvcActionCommand.processAction(
-			successMockLiferayPortletActionRequest,
-			new MockLiferayPortletActionResponse());
-
-		Assert.assertTrue(
-			SessionMessages.contains(
-				successMockLiferayPortletActionRequest, "requestProcessed"));
-		Assert.assertNull(
-			SessionMessages.get(
-				successMockLiferayPortletActionRequest,
-				_portal.getPortletId(successMockLiferayPortletActionRequest) +
-					SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE));
-
-		launchSetObjectEntry = _objectEntryLocalService.getObjectEntry(
-			launchSetObjectEntry.getObjectEntryId());
-
-		Assert.assertEquals(
-			WorkflowConstants.STATUS_APPROVED,
-			launchSetObjectEntry.getStatus());
 	}
 
 	private ObjectEntry _addObjectEntry(

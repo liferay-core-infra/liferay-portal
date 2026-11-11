@@ -13,7 +13,6 @@ import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -120,7 +119,11 @@ public class LaunchSetErrorHelper {
 				});
 		}
 		catch (Throwable throwable) {
-			ReflectionUtil.throwException(throwable);
+			if (throwable instanceof PortalException) {
+				throw (PortalException)throwable;
+			}
+
+			throw new PortalException(throwable);
 		}
 	}
 

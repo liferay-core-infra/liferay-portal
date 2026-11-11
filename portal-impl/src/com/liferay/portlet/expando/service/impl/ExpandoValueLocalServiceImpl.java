@@ -1604,6 +1604,61 @@ public class ExpandoValueLocalServiceImpl
 	}
 
 	@Override
+	public Map<String, Serializable> getRowData(
+			long companyId, String className, String tableName, long classPK)
+		throws PortalException {
+
+		Map<String, Serializable> rowData = new HashMap<>();
+
+		ExpandoTable table = _expandoTablePersistence.fetchByC_C_N(
+			companyId, _classNameLocalService.getClassNameId(className),
+			tableName);
+
+		if (table == null) {
+			return rowData;
+		}
+
+		List<ExpandoColumn> columns = _expandoColumnPersistence.findByTableId(
+			table.getTableId());
+
+		if (columns.isEmpty()) {
+			return rowData;
+		}
+
+		Map<Long, ExpandoValue> values = new HashMap<>();
+
+		for (ExpandoValue value :
+				expandoValuePersistence.findByT_CPK(
+					table.getTableId(), classPK)) {
+
+			values.put(value.getColumnId(), value);
+		}
+
+		for (ExpandoColumn column : columns) {
+			ExpandoValue value = values.get(column.getColumnId());
+
+			if (value == null) {
+				value = new ExpandoValueImpl();
+
+				int type = column.getType();
+
+				if (!isTypeArray(type) &&
+					(type != ExpandoColumnConstants.STRING_ARRAY_LOCALIZED) &&
+					(type != ExpandoColumnConstants.STRING_LOCALIZED)) {
+
+					value.setData(column.getDefaultData());
+				}
+			}
+
+			value.setColumn(column);
+
+			rowData.put(column.getName(), value.getSerializable());
+		}
+
+		return rowData;
+	}
+
+	@Override
 	public List<ExpandoValue> getRowValues(long rowId) {
 		return expandoValuePersistence.findByRowId(rowId);
 	}

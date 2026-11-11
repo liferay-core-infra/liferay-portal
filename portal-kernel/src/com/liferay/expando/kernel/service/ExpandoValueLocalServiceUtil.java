@@ -874,6 +874,14 @@ public class ExpandoValueLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static Map<String, Serializable> getRowData(
+			long companyId, String className, String tableName, long classPK)
+		throws PortalException {
+
+		return getService().getRowData(
+			companyId, className, tableName, classPK);
+	}
+
 	public static List<ExpandoValue> getRowValues(long rowId) {
 		return getService().getRowValues(rowId);
 	}
@@ -978,4 +986,4 @@ public class ExpandoValueLocalServiceUtil {
 	private static volatile ExpandoValueLocalService _service;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1643081554
+// LIFERAY-SERVICE-BUILDER-HASH:161825442

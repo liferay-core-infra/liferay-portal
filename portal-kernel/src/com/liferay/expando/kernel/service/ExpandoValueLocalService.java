@@ -622,6 +622,11 @@ public interface ExpandoValueLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<String, Serializable> getRowData(
+			long companyId, String className, String tableName, long classPK)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ExpandoValue> getRowValues(long rowId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -700,4 +705,4 @@ public interface ExpandoValueLocalService
 		throws E;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1195626595
+// LIFERAY-SERVICE-BUILDER-HASH:-1224360835

@@ -368,6 +368,60 @@ public class LaunchSetPublisherTest {
 			PortalException.class.getName(),
 			MapUtil.getString(values, "message"));
 
+		// Launch entry whose publish fails with a long message
+
+		ObjectEntry longMessageLaunchSetObjectEntry =
+			_addLaunchSetObjectEntry();
+
+		long longMessageLaunchSetId =
+			longMessageLaunchSetObjectEntry.getObjectEntryId();
+
+		String longMessageClassName = RandomTestUtil.randomString();
+
+		ObjectEntry longMessageLaunchEntryObjectEntry =
+			_addLaunchEntryObjectEntry(
+				longMessageLaunchSetObjectEntry.getObjectEntryId(),
+				longMessageClassName, RandomTestUtil.randomInt(), null);
+
+		String longMessage = RandomTestUtil.randomString(70000);
+
+		serviceRegistration = _registerLaunchEntryManager(
+			longMessageClassName,
+			() -> {
+				throw new PortalException(longMessage);
+			});
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.launch.internal.set.publisher." +
+					"LaunchSetPublisherImpl",
+				LoggerTestUtil.WARN)) {
+
+			Assert.assertThrows(
+				PortalException.class,
+				() -> _launchSetPublisher.publish(longMessageLaunchSetId));
+
+			_assertLogEntry(longMessageLaunchEntryObjectEntry, logCapture);
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
+
+		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries(
+			longMessageLaunchSetObjectEntry);
+
+		Assert.assertEquals(
+			launchSetErrorObjectEntries.toString(), 1,
+			launchSetErrorObjectEntries.size());
+
+		launchSetErrorObjectEntry = launchSetErrorObjectEntries.get(0);
+
+		values = launchSetErrorObjectEntry.getValues();
+
+		String message = MapUtil.getString(values, "message");
+
+		Assert.assertEquals(65000, message.length());
+		Assert.assertTrue(message.startsWith(longMessage.substring(0, 64000)));
+
 		// Launch entry with a title longer than a text field
 
 		String longTitle = RandomTestUtil.randomString(300);

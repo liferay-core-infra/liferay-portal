@@ -19,6 +19,7 @@ import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -34,9 +35,14 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -53,6 +59,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -61,6 +68,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Alejandro Tardín
@@ -338,6 +350,64 @@ public class LaunchSetPublisherTest {
 			MapUtil.getLong(values, "launchEntryId"));
 		Assert.assertEquals(
 			longTitle, MapUtil.getString(values, "launchEntryTitle"));
+
+		// Launch set published by another publish while this one fails
+
+		ObjectEntry concurrentLaunchSetObjectEntry = _addLaunchSetObjectEntry();
+
+		long concurrentLaunchSetId =
+			concurrentLaunchSetObjectEntry.getObjectEntryId();
+
+		String concurrentClassName = RandomTestUtil.randomString();
+
+		ObjectEntry concurrentLaunchEntryObjectEntry =
+			_addLaunchEntryObjectEntry(
+				concurrentLaunchSetObjectEntry.getObjectEntryId(),
+				concurrentClassName, RandomTestUtil.randomInt(), null);
+
+		ServiceRegistration<LaunchEntryManager> serviceRegistration =
+			_registerLaunchEntryManager(
+				concurrentClassName,
+				() -> {
+					TransactionInvokerUtil.invoke(
+						_requiresNewTransactionConfig,
+						() -> _objectEntryLocalService.updateStatus(
+							TestPropsValues.getUserId(), concurrentLaunchSetId,
+							WorkflowConstants.STATUS_APPROVED,
+							_serviceContext));
+
+					throw new PortalException(RandomTestUtil.randomString());
+				});
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.launch.internal.set.publisher." +
+					"LaunchSetPublisherImpl",
+				LoggerTestUtil.WARN)) {
+
+			Assert.assertThrows(
+				PortalException.class,
+				() -> _launchSetPublisher.publish(concurrentLaunchSetId));
+
+			_assertLogEntry(concurrentLaunchEntryObjectEntry, logCapture);
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
+
+		concurrentLaunchSetObjectEntry =
+			_objectEntryLocalService.getObjectEntry(
+				concurrentLaunchSetObjectEntry.getObjectEntryId());
+
+		Assert.assertEquals(
+			WorkflowConstants.STATUS_APPROVED,
+			concurrentLaunchSetObjectEntry.getStatus());
+
+		launchSetErrorObjectEntries = _getLaunchSetErrorObjectEntries(
+			concurrentLaunchSetObjectEntry);
+
+		Assert.assertEquals(
+			launchSetErrorObjectEntries.toString(), 0,
+			launchSetErrorObjectEntries.size());
 	}
 
 	@Test
@@ -488,6 +558,21 @@ public class LaunchSetPublisherTest {
 		Assert.assertEquals("error", MapUtil.getString(values, "severity"));
 	}
 
+	private void _assertLogEntry(
+		ObjectEntry launchEntryObjectEntry, LogCapture logCapture) {
+
+		List<LogEntry> logEntries = logCapture.getLogEntries();
+
+		Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+		LogEntry logEntry = logEntries.get(0);
+
+		Assert.assertEquals(
+			"Unable to publish launch entry " +
+				launchEntryObjectEntry.getObjectEntryId(),
+			logEntry.getMessage());
+	}
+
 	private void _assertPublished(
 			long draftId, ObjectEntry launchEntryObjectEntry,
 			LaunchEntryManager launchEntryManager,
@@ -588,6 +673,31 @@ public class LaunchSetPublisherTest {
 		return reloadedObjectEntry.getValues();
 	}
 
+	private ServiceRegistration<LaunchEntryManager> _registerLaunchEntryManager(
+		String className,
+		UnsafeSupplier<LaunchEntryManager.Version, Throwable> unsafeSupplier) {
+
+		Bundle bundle = FrameworkUtil.getBundle(LaunchSetPublisherTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		return bundleContext.registerService(
+			LaunchEntryManager.class,
+			(LaunchEntryManager)ProxyUtil.newProxyInstance(
+				LaunchEntryManager.class.getClassLoader(),
+				new Class<?>[] {LaunchEntryManager.class},
+				(proxy, method, arguments) -> {
+					if (Objects.equals(method.getName(), "publishDraft")) {
+						return unsafeSupplier.get();
+					}
+
+					return null;
+				}),
+			HashMapDictionaryBuilder.<String, Object>put(
+				"launch.entry.manager.class.name", className
+			).build());
+	}
+
 	private long _updateLaunchDraft(
 			ObjectEntry launchEntryObjectEntry, String title)
 		throws Exception {
@@ -621,6 +731,10 @@ public class LaunchSetPublisherTest {
 
 		return draftId;
 	}
+
+	private static final TransactionConfig _requiresNewTransactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRES_NEW, new Class<?>[] {Exception.class});
 
 	private Group _group;
 

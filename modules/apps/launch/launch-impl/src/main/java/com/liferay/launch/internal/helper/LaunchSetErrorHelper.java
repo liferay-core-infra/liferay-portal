@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -95,9 +96,9 @@ public class LaunchSetErrorHelper {
 		return HashMapBuilder.<String, Serializable>put(
 			"launchEntryId", launchEntryId
 		).put(
-			"launchEntryTitle", launchEntryTitle
+			"launchEntryTitle", StringUtil.shorten(launchEntryTitle, 65000)
 		).put(
-			"message", message
+			"message", StringUtil.shorten(message, 65000)
 		).put(
 			"severity", "error"
 		).build();

@@ -18,6 +18,7 @@ import com.liferay.expando.kernel.service.persistence.ExpandoTablePersistence;
 import com.liferay.expando.kernel.util.ExpandoValueDeleteHandler;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -1190,17 +1191,41 @@ public class ExpandoValueLocalServiceImpl
 		Map<String, Serializable> attributeValues = new HashMap<>(
 			(int)(columnNames.size() * 1.4));
 
-		ExpandoValue value = new ExpandoValueImpl();
+		if (columns.isEmpty()) {
+			return attributeValues;
+		}
+
+		Map<Long, ExpandoValue> values = new HashMap<>();
+
+		for (ExpandoValue value :
+				expandoValuePersistence.findByT_C_C(
+					table.getTableId(),
+					TransformUtil.transformToLongArray(
+						columns, ExpandoColumn::getColumnId),
+					classPK)) {
+
+			values.put(value.getColumnId(), value);
+		}
 
 		for (ExpandoColumn column : columns) {
+			ExpandoValue value = values.get(column.getColumnId());
+
+			if (value == null) {
+				value = new ExpandoValueImpl();
+
+				int type = column.getType();
+
+				if (!isTypeArray(type) &&
+					(type != ExpandoColumnConstants.STRING_ARRAY_LOCALIZED) &&
+					(type != ExpandoColumnConstants.STRING_LOCALIZED)) {
+
+					value.setData(column.getDefaultData());
+				}
+			}
+
 			value.setColumn(column);
-			value.setData(column.getDefaultData());
 
-			Serializable attributeValue = doGetData(
-				companyId, className, tableName, column.getName(), classPK,
-				value, column.getType());
-
-			attributeValues.put(column.getName(), attributeValue);
+			attributeValues.put(column.getName(), value.getSerializable());
 		}
 
 		return attributeValues;

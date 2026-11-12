@@ -13,7 +13,8 @@ import com.liferay.frontend.js.loader.modules.extender.npm.JSModuleAlias;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackage;
 import com.liferay.frontend.js.loader.modules.extender.npm.ModuleNameUtil;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMRegistry;
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -32,7 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -41,7 +41,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -81,15 +80,40 @@ public class BrowserModulesResolver {
 		_details = ConfigurableUtil.createConfigurable(
 			Details.class, properties);
 
-		_serviceTracker = ServiceTrackerFactory.open(
-			bundleContext,
-			"(&(objectClass=" + ServletContext.class.getName() +
-				")(osgi.web.contextpath=*))",
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, ServletContext.class, "(osgi.web.contextpath=*)",
+			(serviceReference, emitter) -> {
+				Bundle bundle = serviceReference.getBundle();
+
+				URL url = bundle.getEntry(Details.CONFIG_JSON);
+
+				if (url == null) {
+					return;
+				}
+
+				JSConfigGeneratorPackage jsConfigGeneratorPackage =
+					new JSConfigGeneratorPackage(
+						_details.applyVersioning(), bundle,
+						(String)serviceReference.getProperty(
+							"osgi.web.contextpath"));
+
+				for (JSConfigGeneratorModule jsConfigGeneratorModule :
+						jsConfigGeneratorPackage.
+							getJSConfigGeneratorModules()) {
+
+					JSConfigGeneratorBrowserModule
+						jsConfigGeneratorBrowserModule =
+							new JSConfigGeneratorBrowserModule(
+								jsConfigGeneratorModule);
+
+					emitter.emit(jsConfigGeneratorBrowserModule.getName());
+				}
+			},
 			new ServiceTrackerCustomizer
-				<ServletContext, JSConfigGeneratorPackage>() {
+				<ServletContext, Map<String, BrowserModule>>() {
 
 				@Override
-				public JSConfigGeneratorPackage addingService(
+				public Map<String, BrowserModule> addingService(
 					ServiceReference<ServletContext> serviceReference) {
 
 					Bundle bundle = serviceReference.getBundle();
@@ -102,10 +126,12 @@ public class BrowserModulesResolver {
 
 					JSConfigGeneratorPackage jsConfigGeneratorPackage =
 						new JSConfigGeneratorPackage(
-							_details.applyVersioning(),
-							serviceReference.getBundle(),
+							_details.applyVersioning(), bundle,
 							(String)serviceReference.getProperty(
 								"osgi.web.contextpath"));
+
+					Map<String, BrowserModule> browserModulesMap =
+						new HashMap<>();
 
 					for (JSConfigGeneratorModule jsConfigGeneratorModule :
 							jsConfigGeneratorPackage.
@@ -116,32 +142,26 @@ public class BrowserModulesResolver {
 								new JSConfigGeneratorBrowserModule(
 									jsConfigGeneratorModule);
 
-						_browserModulesMap.put(
+						browserModulesMap.put(
 							jsConfigGeneratorBrowserModule.getName(),
 							jsConfigGeneratorBrowserModule);
 					}
 
-					return jsConfigGeneratorPackage;
+					return browserModulesMap;
 				}
 
 				@Override
 				public void modifiedService(
 					ServiceReference<ServletContext> serviceReference,
-					JSConfigGeneratorPackage jsConfigGeneratorPackage) {
+					Map<String, BrowserModule> browserModulesMap) {
 				}
 
 				@Override
 				public void removedService(
 					ServiceReference<ServletContext> serviceReference,
-					JSConfigGeneratorPackage jsConfigGeneratorPackage) {
+					Map<String, BrowserModule> browserModulesMap) {
 
-					for (JSConfigGeneratorModule jsConfigGeneratorModule :
-							jsConfigGeneratorPackage.
-								getJSConfigGeneratorModules()) {
-
-						_browserModulesMap.remove(
-							jsConfigGeneratorModule.getId());
-					}
+					bundleContext.ungetService(serviceReference);
 				}
 
 			});
@@ -149,7 +169,26 @@ public class BrowserModulesResolver {
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTracker.close();
+		_serviceTrackerMap.close();
+	}
+
+	private BrowserModule _getBrowserModule(
+		BrowserModulesMap browserModulesMap, String moduleName) {
+
+		BrowserModule browserModule = browserModulesMap.get(moduleName);
+
+		if (browserModule != null) {
+			return browserModule;
+		}
+
+		Map<String, BrowserModule> registeredBrowserModulesMap =
+			_serviceTrackerMap.getService(moduleName);
+
+		if (registeredBrowserModulesMap != null) {
+			return registeredBrowserModulesMap.get(moduleName);
+		}
+
+		return null;
 	}
 
 	private void _populateMappedModuleNames(
@@ -213,8 +252,8 @@ public class BrowserModulesResolver {
 
 			dependenciesMap.put(dependency, dependencyModuleName);
 
-			BrowserModule dependencyBrowserModule = browserModulesMap.get(
-				dependencyModuleName);
+			BrowserModule dependencyBrowserModule = _getBrowserModule(
+				browserModulesMap, dependencyModuleName);
 
 			if (dependencyBrowserModule != null) {
 				_processBrowserModule(
@@ -264,7 +303,8 @@ public class BrowserModulesResolver {
 		String mappedModuleName = BrowserModuleNameMapper.mapModuleName(
 			_npmRegistry, moduleName);
 
-		BrowserModule browserModule = browserModulesMap.get(mappedModuleName);
+		BrowserModule browserModule = _getBrowserModule(
+			browserModulesMap, mappedModuleName);
 
 		if (browserModule == null) {
 			browserModulesResolution.addError(
@@ -287,8 +327,6 @@ public class BrowserModulesResolver {
 	@Reference
 	private AbsolutePortalURLBuilderFactory _absolutePortalURLBuilderFactory;
 
-	private final Map<String, BrowserModule> _browserModulesMap =
-		new ConcurrentHashMap<>();
 	private Details _details;
 
 	@Reference
@@ -297,7 +335,7 @@ public class BrowserModulesResolver {
 	@Reference
 	private NPMRegistry _npmRegistry;
 
-	private ServiceTracker<ServletContext, JSConfigGeneratorPackage>
-		_serviceTracker;
+	private ServiceTrackerMap<String, Map<String, BrowserModule>>
+		_serviceTrackerMap;
 
 }

@@ -303,9 +303,9 @@ public class MCPServerTestUtil {
 	public static String getAuditedDeleteReason(ObjectEntry objectEntry)
 		throws Exception {
 
-		long timeout = System.currentTimeMillis() + _TIMEOUT;
+		long deadline = System.currentTimeMillis() + 10000;
 
-		while (System.currentTimeMillis() < timeout) {
+		while (System.currentTimeMillis() < deadline) {
 			List<AuditEvent> auditEvents =
 				AuditEventLocalServiceUtil.getAuditEvents(
 					0, 0, 0, null, null, null, null, null,
@@ -529,7 +529,5 @@ public class MCPServerTestUtil {
 
 	private static final String _DATA_MASK_BATCH_FILE_NAME =
 		"com.liferay.headless.data.mask.impl_test";
-
-	private static final long _TIMEOUT = 10000;
 
 }

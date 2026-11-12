@@ -97,7 +97,7 @@ public class BatchProcessorTest {
 	}
 
 	@Test
-	public void testConfigureWithFailingConsumer() throws Exception {
+	public void testAddWithFailingConsumerAndLargeBatchSize() throws Exception {
 		AtomicInteger atomicInteger = new AtomicInteger();
 		CountDownLatch failedCountDownLatch = new CountDownLatch(1);
 		CountDownLatch flushedCountDownLatch = new CountDownLatch(1);

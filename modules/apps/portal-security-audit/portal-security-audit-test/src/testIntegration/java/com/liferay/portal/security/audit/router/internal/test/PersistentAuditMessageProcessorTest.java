@@ -116,9 +116,9 @@ public class PersistentAuditMessageProcessorTest {
 	private AuditEvent _getAuditEvent(long companyId, String eventType)
 		throws Exception {
 
-		long timeout = System.currentTimeMillis() + _TIMEOUT;
+		long deadline = System.currentTimeMillis() + 10000;
 
-		while (System.currentTimeMillis() < timeout) {
+		while (System.currentTimeMillis() < deadline) {
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setCompanyIdWithSafeCloseable(
 						companyId)) {
@@ -137,7 +137,7 @@ public class PersistentAuditMessageProcessorTest {
 			Thread.sleep(100);
 		}
 
-		throw new AssertionError("No audit event with event type " + eventType);
+		throw new AssertionError("No audit event was found with event type " + eventType);
 	}
 
 	private int _getAuditEventsCount(long companyId, String eventType) {
@@ -371,8 +371,6 @@ public class PersistentAuditMessageProcessorTest {
 	}
 
 	private static final long _FLUSH_INTERVAL = 86400000;
-
-	private static final long _TIMEOUT = 10000;
 
 	@Inject
 	private AuditEventLocalService _auditEventLocalService;

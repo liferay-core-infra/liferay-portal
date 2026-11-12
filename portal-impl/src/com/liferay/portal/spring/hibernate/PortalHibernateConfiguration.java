@@ -55,6 +55,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.resource.beans.internal.ManagedBeanRegistryImpl;
 import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
@@ -120,6 +121,12 @@ public class PortalHibernateConfiguration
 		Class<?> clazz = dialect.getClass();
 
 		properties.setProperty("hibernate.dialect", clazz.getName());
+
+		DatabaseVersion databaseVersion = dialect.getVersion();
+
+		properties.setProperty(
+			"jakarta.persistence.database-product-version",
+			databaseVersion.toString());
 
 		properties.put("hibernate.connection.datasource", _dataSource);
 

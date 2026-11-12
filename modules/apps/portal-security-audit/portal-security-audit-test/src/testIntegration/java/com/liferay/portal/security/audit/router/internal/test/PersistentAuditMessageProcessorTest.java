@@ -137,7 +137,8 @@ public class PersistentAuditMessageProcessorTest {
 			Thread.sleep(100);
 		}
 
-		throw new AssertionError("No audit event was found with event type " + eventType);
+		throw new AssertionError(
+			"No audit event was found with event type " + eventType);
 	}
 
 	private int _getAuditEventsCount(long companyId, String eventType) {

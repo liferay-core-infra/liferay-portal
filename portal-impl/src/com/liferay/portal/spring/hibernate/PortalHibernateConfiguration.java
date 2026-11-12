@@ -9,14 +9,18 @@ import com.liferay.petra.io.Deserializer;
 import com.liferay.petra.io.Serializer;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.lang.ThreadContextClassLoaderUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.internal.change.tracking.hibernate.CTSQLInterceptor;
+import com.liferay.portal.kernel.dao.jdbc.DataSourceWrapper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.PropsValues;
@@ -26,13 +30,19 @@ import jakarta.persistence.PersistenceException;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 
 import java.net.URL;
 import java.net.URLConnection;
 
 import java.nio.ByteBuffer;
+
+import java.sql.Connection;
 
 import java.util.Collection;
 import java.util.Enumeration;
@@ -56,9 +66,15 @@ import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.spi.XmlMappingBinderAccess;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.config.spi.ConfigurationService;
+import org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentImpl;
+import org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl;
+import org.hibernate.engine.jdbc.spi.JdbcServices;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.resource.beans.internal.ManagedBeanRegistryImpl;
 import org.hibernate.resource.beans.spi.ManagedBeanRegistry;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
+import org.hibernate.service.spi.ServiceRegistryImplementor;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -81,10 +97,72 @@ public class PortalHibernateConfiguration
 
 		Class<?> clazz = dialect.getClass();
 
-		_sessionFactory = _buildSessionFactory(
-			_dataSource, clazz.getName(), String.valueOf(dialect.getVersion()));
+		String dialectVersion = String.valueOf(dialect.getVersion());
+
+		if (_offlineSessionFactory != null) {
+			_sessionFactory = _offlineSessionFactory.connect(
+				_dataSource, clazz.getName(), dialectVersion);
+		}
+
+		if (_sessionFactory == null) {
+			_sessionFactory = _buildSessionFactory(
+				_dataSource, clazz.getName(), dialectVersion);
+
+			if (_dialectPropertiesFile != null) {
+				try {
+					FileUtil.write(
+						_dialectPropertiesFile,
+						StringBundler.concat(
+							"hibernate.dialect=", clazz.getName(),
+							"\njakarta.persistence.database-product-version=",
+							dialectVersion));
+				}
+				catch (IOException ioException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Unable to write " + _dialectPropertiesFile,
+							ioException);
+					}
+
+					_dialectPropertiesFile.delete();
+				}
+			}
+		}
 
 		SQLTransformer.populateSQLFunctions(_sessionFactory);
+	}
+
+	public void buildOfflineSessionFactory() {
+		_dialectPropertiesFile = new File(
+			PropsValues.LIFERAY_HOME, "data/hibernate/dialect.properties");
+
+		if (!_dialectPropertiesFile.exists()) {
+			return;
+		}
+
+		try {
+			Properties properties = PropertiesUtil.load(
+				FileUtil.read(_dialectPropertiesFile));
+
+			String dialectClassName = properties.getProperty(
+				"hibernate.dialect");
+			String dialectVersion = properties.getProperty(
+				"jakarta.persistence.database-product-version");
+
+			DataSourceWrapper dataSourceWrapper = new DataSourceWrapper(null);
+
+			_offlineSessionFactory = new OfflineSessionFactory(
+				dataSourceWrapper, dialectClassName, dialectVersion,
+				_buildSessionFactory(
+					dataSourceWrapper, dialectClassName, dialectVersion));
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Unable to build the portal session factory offline",
+					exception);
+			}
+		}
 	}
 
 	public void destroy() {
@@ -203,6 +281,14 @@ public class PortalHibernateConfiguration
 		configuration.addProperties(PropsUtil.getProperties());
 
 		Properties properties = configuration.getProperties();
+
+		if (_dataSource == null) {
+			properties.put(
+				"hibernate.boot.allow_jdbc_metadata_access", "false");
+		}
+		else {
+			properties.put("hibernate.boot.allow_jdbc_metadata_access", "true");
+		}
 
 		properties.setProperty("hibernate.dialect", dialectClassName);
 		properties.setProperty(
@@ -399,7 +485,85 @@ public class PortalHibernateConfiguration
 
 	private String[] _configurationResources;
 	private DataSource _dataSource;
+	private File _dialectPropertiesFile;
 	private boolean _mvccEnabled = true;
+	private OfflineSessionFactory _offlineSessionFactory;
 	private SessionFactory _sessionFactory;
+
+	private static class OfflineSessionFactory {
+
+		public SessionFactory connect(
+			DataSource dataSource, String dialectClassName,
+			String dialectVersion) {
+
+			if (!_dialectClassName.equals(dialectClassName) ||
+				!_dialectVersion.equals(dialectVersion)) {
+
+				_sessionFactory.close();
+
+				return null;
+			}
+
+			_dataSourceWrapper.setWrappedDataSource(dataSource);
+
+			SessionFactoryImplementor sessionFactoryImplementor =
+				_sessionFactory.unwrap(SessionFactoryImplementor.class);
+
+			JdbcServices jdbcServices =
+				sessionFactoryImplementor.getJdbcServices();
+
+			ServiceRegistryImplementor serviceRegistryImplementor =
+				sessionFactoryImplementor.getServiceRegistry();
+
+			ConfigurationService configurationService =
+				serviceRegistryImplementor.requireService(
+					ConfigurationService.class);
+
+			try (Connection connection = dataSource.getConnection()) {
+				_lobCreatorBuilderMethodHandle.invoke(
+					jdbcServices.getJdbcEnvironment(),
+					LobCreatorBuilderImpl.makeLobCreatorBuilder(
+						jdbcServices.getDialect(),
+						configurationService.getSettings(), connection));
+			}
+			catch (Throwable throwable) {
+				ReflectionUtil.throwException(throwable);
+			}
+
+			return _sessionFactory;
+		}
+
+		private OfflineSessionFactory(
+			DataSourceWrapper dataSourceWrapper, String dialectClassName,
+			String dialectVersion, SessionFactory sessionFactory) {
+
+			_dataSourceWrapper = dataSourceWrapper;
+			_dialectClassName = dialectClassName;
+			_dialectVersion = dialectVersion;
+			_sessionFactory = sessionFactory;
+		}
+
+		private static final MethodHandle _lobCreatorBuilderMethodHandle;
+
+		static {
+			try {
+				MethodHandles.Lookup lookup = ReflectionUtil.getImplLookup();
+
+				_lobCreatorBuilderMethodHandle = lookup.findSetter(
+					JdbcEnvironmentImpl.class, "lobCreatorBuilder",
+					LobCreatorBuilderImpl.class);
+			}
+			catch (ReflectiveOperationException reflectiveOperationException) {
+				throw new ExceptionInInitializerError(
+					reflectiveOperationException);
+			}
+		}
+
+		private final DataSourceWrapper _dataSourceWrapper;
+		private final String _dialectClassName;
+		private final String _dialectVersion;
+		private final SessionFactory _sessionFactory;
+
+	}
 
 }

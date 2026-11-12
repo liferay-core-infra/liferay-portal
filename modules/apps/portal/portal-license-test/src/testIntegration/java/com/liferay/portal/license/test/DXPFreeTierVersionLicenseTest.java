@@ -7,8 +7,11 @@ package com.liferay.portal.license.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.log.LogEntry;
@@ -49,47 +52,65 @@ public class DXPFreeTierVersionLicenseTest extends BaseLicenseTestCase {
 	}
 
 	@Test
-	public void testIgnoredPatchedVersion() throws Exception {
-		_testVersion(true, true, true);
-		_testVersion(true, false, true);
-	}
-
-	@Test
 	public void testIgnoredVersion() throws Exception {
 		String ignoredVersion = _getIgnoredVersion();
 
-		if (Validator.isNotNull(ignoredVersion)) {
-			Assert.assertEquals(ignoredVersion, getCurrentVersion());
+		if (Validator.isNull(ignoredVersion)) {
+			return;
+		}
+
+		Assert.assertEquals(ignoredVersion, getCurrentVersion());
+
+		String[] parts = StringUtil.split(ignoredVersion, CharPool.PERIOD);
+
+		if (GetterUtil.getInteger(parts[0]) < 2027) {
+			_testVersion(true, 6, true, ignoredVersion);
+		}
+		else {
+			_testVersion(true, 7, true, ignoredVersion);
 		}
 	}
 
 	@Test
 	public void testNonignoredNonpatchedVersions() throws Exception {
-		_testVersion(false, true, false);
-		_testVersion(false, false, false);
+		_testNonignoredVersion(6, true, false);
+		_testNonignoredVersion(6, false, false);
+		_testNonignoredVersion(7, true, false);
+		_testNonignoredVersion(7, false, false);
 	}
 
 	@Test
 	public void testNonignoredPatchedVersions() throws Exception {
-		_testVersion(false, true, true);
-		_testVersion(false, false, true);
+		_testNonignoredVersion(6, true, true);
+		_testNonignoredVersion(6, false, true);
+		_testNonignoredVersion(7, true, true);
+		_testNonignoredVersion(7, false, true);
 	}
 
-	private String _generateRandomVersion(boolean ltsVersion, boolean patch) {
-		int year = RandomTestUtil.randomInt(1000, 9999);
+	private String _generateRandomVersion(
+		int licenseVersion, boolean ltsVersion, boolean patch) {
 
-		int patchVersison = 0;
+		int year;
+
+		if (licenseVersion < 7) {
+			year = RandomTestUtil.randomInt(1000, 2026);
+		}
+		else {
+			year = RandomTestUtil.randomInt(2027, 9999);
+		}
+
+		int patchVersion = 0;
 
 		if (patch) {
-			patchVersison = RandomTestUtil.randomInt(1, 9999);
+			patchVersion = RandomTestUtil.randomInt(1, 9999);
 		}
 
 		if (ltsVersion) {
-			return StringBundler.concat(year, ".Q1.", patchVersison, " LTS");
+			return StringBundler.concat(year, ".Q1.", patchVersion, " LTS");
 		}
 
 		return StringBundler.concat(
-			year, ".Q", RandomTestUtil.randomInt(1, 4), ".", patchVersison);
+			year, ".Q", RandomTestUtil.randomInt(1, 4), ".", patchVersion);
 	}
 
 	private String _getIgnoredVersion() throws Exception {
@@ -98,25 +119,33 @@ public class DXPFreeTierVersionLicenseTest extends BaseLicenseTestCase {
 		return properties.getProperty("license.free.tier.ignored.version");
 	}
 
-	private void _testVersion(
-			boolean ignored, boolean ltsVersion, boolean patch)
+	private void _testNonignoredVersion(
+			int licenseVersion, boolean ltsVersion, boolean patch)
 		throws Exception {
 
 		String ignoredVersion = _getIgnoredVersion();
 
 		String version = null;
 
-		if (ignored) {
-			version = ignoredVersion;
-		}
-		else {
-			while (true) {
-				version = _generateRandomVersion(ltsVersion, patch);
+		while (true) {
+			version = _generateRandomVersion(licenseVersion, ltsVersion, patch);
 
-				if (!Objects.equals(ignoredVersion, version)) {
-					break;
-				}
+			if (!Objects.equals(ignoredVersion, version)) {
+				break;
 			}
+		}
+
+		_testVersion(false, licenseVersion, patch, version);
+	}
+
+	private void _testVersion(
+			boolean ignored, int licenseVersion, boolean patch, String version)
+		throws Exception {
+
+		String installationId = null;
+
+		if (licenseVersion >= 7) {
+			installationId = RandomTestUtil.randomString();
 		}
 
 		assertLicensePropertiesNotExisted(getPortalProductId());
@@ -125,9 +154,12 @@ public class DXPFreeTierVersionLicenseTest extends BaseLicenseTestCase {
 
 		try (SafeCloseable safeCloseable1 = setVersionWithSafeCloseable(
 				version);
-			SafeCloseable safeCloseable2 = resetLicenseDataWithSafeCloseble()) {
+			SafeCloseable safeCloseable2 = resetLicenseDataWithSafeCloseble();
+			SafeCloseable safeCloseable3 = setInstallationIdWithSafeCloseable(
+				installationId)) {
 
-			deployFreeTierPortalLicense(Time.HOUR);
+			deployFreeTierPortalLicense(
+				installationId, licenseVersion, Time.HOUR);
 
 			if (!patch || ignored) {
 				assertLicensePropertiesExisted(getPortalProductId());

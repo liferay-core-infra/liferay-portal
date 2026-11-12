@@ -239,19 +239,18 @@ public class PublishLaunchMVCActionCommandTest {
 
 		String portletId = "com_liferay_launch_web_portlet_LaunchPortlet";
 
-		mockLiferayPortletActionRequest.setAttribute(
-			JavaConstants.JAKARTA_PORTLET_CONFIG,
-			PortletConfigFactoryUtil.create(
-				_portletLocalService.getPortletById(portletId), null));
-		mockLiferayPortletActionRequest.setAttribute(
-			WebKeys.PORTLET_ID, portletId);
-
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		themeDisplay.setLayout(
 			_layoutLocalService.getLayout(
 				_portal.getControlPanelPlid(TestPropsValues.getCompanyId())));
 
+		mockLiferayPortletActionRequest.setAttribute(
+			JavaConstants.JAKARTA_PORTLET_CONFIG,
+			PortletConfigFactoryUtil.create(
+				_portletLocalService.getPortletById(portletId), null));
+		mockLiferayPortletActionRequest.setAttribute(
+			WebKeys.PORTLET_ID, portletId);
 		mockLiferayPortletActionRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
 

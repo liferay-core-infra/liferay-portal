@@ -345,18 +345,20 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 			ObjectEntry launchEntryObjectEntry, long userId)
 		throws Exception {
 
-		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.launch.internal.background.task." +
-					"LaunchSetScheduledPublishBackgroundTaskExecutor",
-				LoggerTestUtil.ERROR);
-			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.launch.internal.set.publisher." +
-					"LaunchSetPublisherImpl",
-				LoggerTestUtil.WARN)) {
+		try (LogCapture executorLogCapture =
+				LoggerTestUtil.configureLog4JLogger(
+					"com.liferay.launch.internal.background.task." +
+						"LaunchSetScheduledPublishBackgroundTaskExecutor",
+					LoggerTestUtil.ERROR);
+			LogCapture publisherLogCapture =
+				LoggerTestUtil.configureLog4JLogger(
+					"com.liferay.launch.internal.set.publisher." +
+						"LaunchSetPublisherImpl",
+					LoggerTestUtil.WARN)) {
 
 			_receive(_launchSetObjectEntry.getObjectEntryId(), userId);
 
-			List<LogEntry> logEntries = logCapture1.getLogEntries();
+			List<LogEntry> logEntries = executorLogCapture.getLogEntries();
 
 			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
 
@@ -373,7 +375,7 @@ public class LaunchSetScheduledPublishMessageListenerTest {
 			Assert.assertSame(exceptionClass, throwable.getClass());
 			Assert.assertEquals(exceptionMessage, throwable.getMessage());
 
-			logEntries = logCapture2.getLogEntries();
+			logEntries = publisherLogCapture.getLogEntries();
 
 			if (launchEntryObjectEntry == null) {
 				Assert.assertEquals(

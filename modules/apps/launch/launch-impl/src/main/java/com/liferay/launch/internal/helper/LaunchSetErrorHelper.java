@@ -105,7 +105,7 @@ public class LaunchSetErrorHelper {
 	}
 
 	public void markPublishFailed(
-			List<Map<String, Serializable>> launchSetErrorValuesList,
+			List<Map<String, Serializable>> launchSetErrorValuesMaps,
 			ObjectEntry launchSetObjectEntry, long userId)
 		throws PortalException {
 
@@ -114,7 +114,7 @@ public class LaunchSetErrorHelper {
 				_transactionConfig,
 				() -> {
 					_markPublishFailed(
-						launchSetErrorValuesList, launchSetObjectEntry, userId);
+						launchSetErrorValuesMaps, launchSetObjectEntry, userId);
 
 					return null;
 				});
@@ -171,7 +171,7 @@ public class LaunchSetErrorHelper {
 	}
 
 	private void _markPublishFailed(
-			List<Map<String, Serializable>> launchSetErrorValuesList,
+			List<Map<String, Serializable>> launchSetErrorValuesMaps,
 			ObjectEntry launchSetObjectEntry, long userId)
 		throws PortalException {
 
@@ -208,7 +208,7 @@ public class LaunchSetErrorHelper {
 				launchSetObjectEntry.getCompanyId(), "LaunchSetError");
 
 		for (Map<String, Serializable> launchSetErrorValues :
-				launchSetErrorValuesList) {
+				launchSetErrorValuesMaps) {
 
 			_objectEntryLocalService.addObjectEntry(
 				0, statusByUserId, objectDefinition.getObjectDefinitionId(), 0,

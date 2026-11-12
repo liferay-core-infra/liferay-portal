@@ -68,7 +68,7 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 				"Launch set " + launchSetId + " was already published");
 		}
 
-		List<Map<String, Serializable>> launchSetErrorValuesList =
+		List<Map<String, Serializable>> launchSetErrorValuesMaps =
 			new ArrayList<>();
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
@@ -78,22 +78,22 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 				_transactionConfig,
 				() -> {
 					_publish(
-						launchSetErrorValuesList, launchSetObjectEntry,
+						launchSetErrorValuesMaps, launchSetObjectEntry,
 						serviceContext);
 
 					return null;
 				});
 		}
 		catch (Throwable throwable) {
-			if (launchSetErrorValuesList.isEmpty()) {
-				launchSetErrorValuesList.add(
+			if (launchSetErrorValuesMaps.isEmpty()) {
+				launchSetErrorValuesMaps.add(
 					_launchSetErrorHelper.getLaunchSetErrorValues(
 						null, throwable));
 			}
 
 			try {
 				_launchSetErrorHelper.markPublishFailed(
-					launchSetErrorValuesList, launchSetObjectEntry,
+					launchSetErrorValuesMaps, launchSetObjectEntry,
 					serviceContext.getUserId());
 			}
 			catch (Throwable throwable2) {
@@ -248,7 +248,7 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 	}
 
 	private void _publish(
-			List<Map<String, Serializable>> launchSetErrorValuesList,
+			List<Map<String, Serializable>> launchSetErrorValuesMaps,
 			ObjectEntry launchSetObjectEntry, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -285,16 +285,16 @@ public class LaunchSetPublisherImpl implements LaunchSetPublisher {
 						throwable);
 				}
 
-				launchSetErrorValuesList.add(
+				launchSetErrorValuesMaps.add(
 					_launchSetErrorHelper.getLaunchSetErrorValues(
 						launchEntryObjectEntry, throwable));
 			}
 		}
 
-		if (!launchSetErrorValuesList.isEmpty()) {
+		if (!launchSetErrorValuesMaps.isEmpty()) {
 			throw new PortalException(
 				StringBundler.concat(
-					"Unable to publish ", launchSetErrorValuesList.size(),
+					"Unable to publish ", launchSetErrorValuesMaps.size(),
 					" launch entries of launch set ",
 					launchSetObjectEntry.getObjectEntryId()));
 		}

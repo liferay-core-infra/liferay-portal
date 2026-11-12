@@ -493,12 +493,13 @@ public class LaunchSetPublisherTest {
 			concurrentLaunchSetObjectEntry.getObjectEntryId();
 
 		String concurrentClassName = RandomTestUtil.randomString();
-		String concurrentMessage = RandomTestUtil.randomString();
 
 		ObjectEntry concurrentLaunchEntryObjectEntry =
 			_addLaunchEntryObjectEntry(
 				concurrentLaunchSetObjectEntry.getObjectEntryId(),
 				concurrentClassName, RandomTestUtil.randomInt(), null);
+
+		String concurrentMessage = RandomTestUtil.randomString();
 
 		serviceRegistration = _registerLaunchEntryManager(
 			concurrentClassName,

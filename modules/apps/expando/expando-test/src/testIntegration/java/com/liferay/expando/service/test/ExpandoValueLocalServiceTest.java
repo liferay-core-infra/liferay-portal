@@ -569,13 +569,13 @@ public class ExpandoValueLocalServiceTest {
 			_expandoValueLocalService.getData(
 				TestPropsValues.getCompanyId(),
 				PortalUtil.getClassName(_classNameId), _expandoTable.getName(),
-				columnNames, classPK));
+				classPK));
 		_assertGetData(
 			columnNames, classPK,
 			_expandoValueLocalService.getData(
 				TestPropsValues.getCompanyId(),
 				PortalUtil.getClassName(_classNameId), _expandoTable.getName(),
-				classPK));
+				columnNames, classPK));
 	}
 
 	private void _assertGetData(
@@ -599,8 +599,7 @@ public class ExpandoValueLocalServiceTest {
 				continue;
 			}
 
-			Assert.assertTrue(
-				columnName, Objects.deepEquals(expectedValue, value));
+			Assert.assertTrue(Objects.deepEquals(expectedValue, value));
 		}
 	}
 

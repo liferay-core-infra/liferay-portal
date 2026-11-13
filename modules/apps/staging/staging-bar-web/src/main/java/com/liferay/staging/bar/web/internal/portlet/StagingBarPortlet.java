@@ -8,11 +8,13 @@ package com.liferay.staging.bar.web.internal.portlet;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.LinkedAssetEntryIdsUtil;
+import com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames;
 import com.liferay.exportimport.kernel.exception.RemoteExportException;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.exportimport.kernel.staging.StagingURLHelper;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.bean.BeanProperties;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
@@ -189,6 +191,7 @@ public class StagingBarPortlet extends MVCPortlet {
 			}
 		}
 
+		int incompleteBackgroundTasksCount = 0;
 		List<LayoutSetBranch> layoutSetBranches = null;
 		Group liveGroup = _staging.getLiveGroup(group.getGroupId());
 		String liveURL = null;
@@ -231,6 +234,15 @@ public class StagingBarPortlet extends MVCPortlet {
 
 					liveURL = liveGroup.getDisplayURL(
 						themeDisplay, layout.isPrivateLayout());
+				}
+
+				if (!group.isStagingGroup() && !group.isStagedRemotely()) {
+					incompleteBackgroundTasksCount =
+						_backgroundTaskManager.getBackgroundTasksCount(
+							liveGroup.getGroupId(),
+							BackgroundTaskExecutorNames.
+								LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR,
+							false);
 				}
 			}
 
@@ -330,6 +342,9 @@ public class StagingBarPortlet extends MVCPortlet {
 		renderRequest.setAttribute(
 			StagingProcessesWebKeys.BRANCHING_ENABLED,
 			String.valueOf(branchingEnabled));
+		renderRequest.setAttribute(
+			StagingProcessesWebKeys.INCOMPLETE_BACKGROUND_TASKS_COUNT,
+			incompleteBackgroundTasksCount);
 		renderRequest.setAttribute(
 			StagingProcessesWebKeys.LAYOUT_BRANCH, layoutBranch);
 		renderRequest.setAttribute(
@@ -604,6 +619,9 @@ public class StagingBarPortlet extends MVCPortlet {
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private BackgroundTaskManager _backgroundTaskManager;
 
 	@Reference
 	private BeanProperties _beanProperties;

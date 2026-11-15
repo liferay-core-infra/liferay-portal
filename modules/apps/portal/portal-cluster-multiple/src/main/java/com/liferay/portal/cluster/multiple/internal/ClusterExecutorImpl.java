@@ -58,6 +58,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -290,6 +291,20 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			return defaultNoticeableFuture.get(
 				clusterExecutorConfiguration.clusterNodeAddressTimeout(),
 				TimeUnit.MILLISECONDS);
+		}
+		catch (TimeoutException timeoutException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"Unable to get cluster node with address ", address,
+						"; requesting its status again"),
+					timeoutException);
+			}
+
+			_clusterChannel.sendUnicastMessage(
+				ClusterRequest.createMulticastRequest(
+					_localClusterNodeStatus, true),
+				address);
 		}
 		catch (Exception exception) {
 			_log.error(

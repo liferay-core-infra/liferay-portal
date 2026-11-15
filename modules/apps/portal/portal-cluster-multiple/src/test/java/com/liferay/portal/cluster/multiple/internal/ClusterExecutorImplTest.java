@@ -268,6 +268,49 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		Assert.assertTrue(ClusterInvokeThreadLocal.isEnabled());
 	}
 
+	@Test
+	public void testGetClusterNodeId() {
+		ClusterExecutorImpl newClusterExecutorImpl = _getClusterExecutorImpl();
+
+		ClusterChannel newClusterChannel =
+			newClusterExecutorImpl.getClusterChannel();
+
+		Address newAddress = newClusterChannel.getLocalAddress();
+
+		ClusterExecutorImpl clusterExecutorImpl = _getClusterExecutorImpl();
+
+		TestClusterChannel.clearAllMessages();
+
+		// Test 1, request the status again when the lookup times out
+
+		Assert.assertNull(clusterExecutorImpl.getClusterNodeId(newAddress));
+
+		List<ObjectValuePair<Serializable, Address>> unicastMessages =
+			TestClusterChannel.getUnicastMessages();
+
+		Assert.assertEquals(
+			unicastMessages.toString(), 1, unicastMessages.size());
+
+		ObjectValuePair<Serializable, Address> unicastMessage =
+			unicastMessages.get(0);
+
+		Assert.assertEquals(newAddress, unicastMessage.getValue());
+
+		// Test 2, the reply completes the lookup
+
+		clusterExecutorImpl.handleReceivedClusterNodeResponse(
+			(ClusterNodeResponse)
+				newClusterExecutorImpl.handleReceivedClusterRequest(
+					(ClusterRequest)unicastMessage.getKey()));
+
+		ClusterNode newClusterNode =
+			newClusterExecutorImpl.getLocalClusterNode();
+
+		Assert.assertEquals(
+			newClusterNode.getClusterNodeId(),
+			clusterExecutorImpl.getClusterNodeId(newAddress));
+	}
+
 	private ClusterExecutorImpl _getClusterExecutorImpl() {
 		ClusterExecutorImpl clusterExecutorImpl = new ClusterExecutorImpl() {
 

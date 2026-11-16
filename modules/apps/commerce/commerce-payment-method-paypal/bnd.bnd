@@ -6,3 +6,4 @@ Import-Package:\
 	\
 	*
 Web-ContextPath: /commerce-payment-method-paypal
+-fixupmessages "Classes found in the wrong directory"; restrict:=error; is:=warning

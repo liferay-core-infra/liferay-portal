@@ -664,4 +664,4 @@ public class ObjectValidationRulePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:445335309
+// LIFERAY-SERVICE-BUILDER-HASH:-728241593

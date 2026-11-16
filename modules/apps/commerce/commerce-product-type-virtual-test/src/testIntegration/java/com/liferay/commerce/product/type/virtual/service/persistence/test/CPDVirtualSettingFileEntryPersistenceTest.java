@@ -635,4 +635,4 @@ public class CPDVirtualSettingFileEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-2020950136
+// LIFERAY-SERVICE-BUILDER-HASH:2096352428

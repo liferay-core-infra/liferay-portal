@@ -9,7 +9,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.dao.jdbc.util.DBInfo;
 import com.liferay.portal.dao.jdbc.util.DBInfoUtil;
 import com.liferay.portal.dao.orm.hibernate.DialectImpl;
-import com.liferay.portal.dao.orm.hibernate.MariaDBDialect;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactory;
@@ -18,12 +17,9 @@ import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InfrastructureUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.PropsValues;
-import com.liferay.portal.spring.hibernate.DialectDetector;
+import com.liferay.portal.spring.hibernate.DialectUtil;
 
 import java.util.EnumMap;
 import java.util.LinkedHashSet;
@@ -33,12 +29,11 @@ import java.util.Set;
 import javax.sql.DataSource;
 
 import org.hibernate.dialect.DB2Dialect;
-import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.Oracle8iDialect;
-import org.hibernate.dialect.Oracle9Dialect;
-import org.hibernate.dialect.PostgreSQL82Dialect;
+import org.hibernate.dialect.OracleDialect;
+import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
 
 /**
@@ -59,25 +54,6 @@ public class DBManagerImpl implements DBManager {
 
 	@Override
 	public DB getDB() {
-		if (_db == null) {
-			try {
-				if (_log.isInfoEnabled()) {
-					_log.info("Using dialect " + PropsValues.HIBERNATE_DIALECT);
-				}
-
-				Dialect dialect = (Dialect)InstanceFactory.newInstance(
-					PropsValues.HIBERNATE_DIALECT);
-
-				setDB(
-					getDB(
-						getDBType(dialect),
-						InfrastructureUtil.getDataSource()));
-			}
-			catch (Exception exception) {
-				_log.error(exception);
-			}
-		}
-
 		return _db;
 	}
 
@@ -136,16 +112,12 @@ public class DBManagerImpl implements DBManager {
 
 	@Override
 	public DBType getDBType() {
-		if (_db == null) {
-			getDB();
-		}
-
 		return _db.getDBType();
 	}
 
 	@Override
 	public DBType getDBType(DataSource dataSource) {
-		return getDBType(DialectDetector.getDialect(dataSource));
+		return getDBType(DialectUtil.getDialect(dataSource));
 	}
 
 	@Override
@@ -172,13 +144,11 @@ public class DBManagerImpl implements DBManager {
 			return DBType.MYSQL;
 		}
 
-		if (dialect instanceof Oracle8iDialect ||
-			dialect instanceof Oracle9Dialect) {
-
+		if (dialect instanceof OracleDialect) {
 			return DBType.ORACLE;
 		}
 
-		if (dialect instanceof PostgreSQL82Dialect) {
+		if (dialect instanceof PostgreSQLDialect) {
 			return DBType.POSTGRESQL;
 		}
 

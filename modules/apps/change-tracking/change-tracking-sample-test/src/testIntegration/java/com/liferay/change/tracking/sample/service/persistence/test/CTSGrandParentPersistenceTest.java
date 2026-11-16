@@ -412,4 +412,4 @@ public class CTSGrandParentPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:499573445
+// LIFERAY-SERVICE-BUILDER-HASH:-1965109915

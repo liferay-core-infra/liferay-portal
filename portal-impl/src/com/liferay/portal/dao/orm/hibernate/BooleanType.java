@@ -13,35 +13,35 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.EnhancedUserType;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class BooleanType implements EnhancedUserType, Serializable {
+public class BooleanType implements EnhancedUserType<Boolean>, Serializable {
 
 	public static final Boolean DEFAULT_VALUE = Boolean.FALSE;
 
 	@Override
-	public Object assemble(Serializable cached, Object owner) {
-		return cached;
+	public Boolean assemble(Serializable cached, Object owner) {
+		return (Boolean)cached;
 	}
 
 	@Override
-	public Object deepCopy(Object object) {
+	public Boolean deepCopy(Boolean object) {
 		return object;
 	}
 
 	@Override
-	public Serializable disassemble(Object value) {
-		return (Serializable)value;
+	public Serializable disassemble(Boolean value) {
+		return value;
 	}
 
 	@Override
-	public boolean equals(Object x, Object y) {
+	public boolean equals(Boolean x, Boolean y) {
 		if (x == y) {
 			return true;
 		}
@@ -53,12 +53,17 @@ public class BooleanType implements EnhancedUserType, Serializable {
 	}
 
 	@Override
-	public Object fromXMLString(String xmlValue) {
-		return Boolean.valueOf(xmlValue);
+	public Boolean fromStringValue(CharSequence sequence) {
+		return Boolean.valueOf(sequence.toString());
 	}
 
 	@Override
-	public int hashCode(Object x) {
+	public int getSqlType() {
+		return Types.BOOLEAN;
+	}
+
+	@Override
+	public int hashCode(Boolean x) {
 		return x.hashCode();
 	}
 
@@ -68,16 +73,13 @@ public class BooleanType implements EnhancedUserType, Serializable {
 	}
 
 	@Override
-	public Object nullSafeGet(
-			ResultSet resultSet, String[] names,
-			SharedSessionContractImplementor sharedSessionContractImplementor,
-			Object owner)
+	public Boolean nullSafeGet(
+			ResultSet resultSet, int index, WrapperOptions wrapperOptions)
 		throws SQLException {
 
-		Boolean value = StandardBasicTypes.BOOLEAN.nullSafeGet(
-			resultSet, names[0], sharedSessionContractImplementor);
+		boolean value = resultSet.getBoolean(index);
 
-		if (value == null) {
+		if (resultSet.wasNull()) {
 			return DEFAULT_VALUE;
 		}
 
@@ -86,19 +88,29 @@ public class BooleanType implements EnhancedUserType, Serializable {
 
 	@Override
 	public void nullSafeSet(
-			PreparedStatement preparedStatement, Object target, int index,
-			SharedSessionContractImplementor sharedSessionContractImplementor)
+			PreparedStatement preparedStatement, Boolean target, int index,
+			WrapperOptions wrapperOptions)
 		throws SQLException {
 
 		if (target == null) {
 			target = DEFAULT_VALUE;
 		}
 
-		preparedStatement.setBoolean(index, (Boolean)target);
+		preparedStatement.setBoolean(index, target);
 	}
 
 	@Override
-	public String objectToSQLString(Object value) {
+	public Boolean replace(Boolean original, Boolean target, Object owner) {
+		return original;
+	}
+
+	@Override
+	public Class<Boolean> returnedClass() {
+		return Boolean.class;
+	}
+
+	@Override
+	public String toSqlLiteral(Boolean value) {
 		DB db = DBManagerUtil.getDB();
 
 		if (Boolean.TRUE.equals(value)) {
@@ -109,22 +121,7 @@ public class BooleanType implements EnhancedUserType, Serializable {
 	}
 
 	@Override
-	public Object replace(Object original, Object target, Object owner) {
-		return original;
-	}
-
-	@Override
-	public Class<Boolean> returnedClass() {
-		return Boolean.class;
-	}
-
-	@Override
-	public int[] sqlTypes() {
-		return new int[] {StandardBasicTypes.BOOLEAN.sqlType()};
-	}
-
-	@Override
-	public String toXMLString(Object value) {
+	public String toString(Boolean value) {
 		return value.toString();
 	}
 

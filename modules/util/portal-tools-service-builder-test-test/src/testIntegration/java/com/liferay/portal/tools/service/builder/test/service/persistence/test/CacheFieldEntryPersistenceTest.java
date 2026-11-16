@@ -403,4 +403,4 @@ public class CacheFieldEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:251291650
+// LIFERAY-SERVICE-BUILDER-HASH:-1911346372

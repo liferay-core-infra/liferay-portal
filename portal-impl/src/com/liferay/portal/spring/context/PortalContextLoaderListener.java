@@ -259,26 +259,28 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 			}
 		}
 
+		ExecutorService executorService =
+			SystemExecutorServiceUtil.getExecutorService();
+
+		PortalHibernateConfiguration portalHibernateConfiguration =
+			new PortalHibernateConfiguration();
+
+		Future<?> future1 = executorService.submit(
+			portalHibernateConfiguration::buildOfflineSessionFactory);
+
 		AutoDeployDir.scanDirectory();
 
 		ModuleFrameworkUtil.createFramework();
 
-		ExecutorService executorService =
-			SystemExecutorServiceUtil.getExecutorService();
-
-		Future<Future<?>> future1 = executorService.submit(
+		Future<Future<?>> future2 = executorService.submit(
 			() -> {
 				DBInitUtil.init();
 
-				DataSource dataSource = DBInitUtil.getDataSource();
-
-				InfrastructureUtil.setDataSource(dataSource);
+				DataSource dataSource = InfrastructureUtil.getDataSource();
 
 				return executorService.submit(
 					() -> {
-						PortalHibernateConfiguration
-							portalHibernateConfiguration =
-								new PortalHibernateConfiguration();
+						future1.get();
 
 						portalHibernateConfiguration.setDataSource(dataSource);
 
@@ -299,9 +301,9 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		ModuleFrameworkUtil.initFramework();
 
-		Future<?> future2 = future1.get();
+		Future<?> future3 = future2.get();
 
-		future2.get();
+		future3.get();
 
 		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
 

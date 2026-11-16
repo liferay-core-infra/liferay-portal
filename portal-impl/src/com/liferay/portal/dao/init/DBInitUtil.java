@@ -7,10 +7,12 @@ package com.liferay.portal.dao.init;
 
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.dao.db.DBManagerImpl;
 import com.liferay.portal.dao.jdbc.util.DynamicDataSource;
 import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManager;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
@@ -21,10 +23,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.InfrastructureUtil;
+import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.PropsValues;
 import com.liferay.portal.kernel.util.ReleaseInfo;
-import com.liferay.portal.spring.hibernate.DialectDetector;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.spring.hibernate.DialectUtil;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
 
 import java.sql.Connection;
@@ -45,44 +51,78 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
  */
 public class DBInitUtil {
 
-	public static DataSource getDataSource() {
-		return _dataSource;
-	}
-
 	public static void init() throws Exception {
-		_readDataSource = _initDataSource("jdbc.read.");
+		Properties readDataSourceProperties = PropsUtil.getProperties(
+			"jdbc.read.", true);
+		Properties writeDataSourceProperties = PropsUtil.getProperties(
+			"jdbc.write.", true);
 
-		_writeDataSource = _initDataSource("jdbc.write.");
+		DataSource dataSource = null;
+		boolean readWriteDataSource = false;
 
-		if (isReadWriteDataSource()) {
-			_dataSource = new DynamicDataSource(
-				_readDataSource, _writeDataSource);
+		if (!readDataSourceProperties.isEmpty() &&
+			!writeDataSourceProperties.isEmpty()) {
+
+			dataSource = new DynamicDataSource(
+				DataSourceFactoryUtil.initDataSource(readDataSourceProperties),
+				DataSourceFactoryUtil.initDataSource(
+					writeDataSourceProperties));
+			readWriteDataSource = true;
 		}
 		else {
-			_dataSource = _initDataSource("jdbc.default.");
+			Properties defaultDataSourceProperties = PropsUtil.getProperties(
+				"jdbc.default.", true);
+
+			if (defaultDataSourceProperties.isEmpty()) {
+				throw new IllegalStateException("Data source is null");
+			}
+
+			dataSource = DataSourceFactoryUtil.initDataSource(
+				defaultDataSourceProperties);
 		}
 
-		if (_dataSource == null) {
-			throw new IllegalStateException("Data source is null");
+		DBManager dbManager = new DBManagerImpl();
+
+		Dialect dialect = DialectUtil.getDialect(dataSource);
+
+		if (Validator.isNotNull(PropsValues.HIBERNATE_DIALECT)) {
+			Dialect configuredDialect = (Dialect)InstanceFactory.newInstance(
+				PropsValues.HIBERNATE_DIALECT);
+
+			DBType configuredDBType = dbManager.getDBType(configuredDialect);
+
+			DBType dbType = dbManager.getDBType(dialect);
+
+			if (configuredDBType != dbType) {
+				throw new IllegalArgumentException(
+					StringBundler.concat(
+						"The configured dialect ",
+						PropsValues.HIBERNATE_DIALECT, " is for ",
+						configuredDBType, ", but the database is ", dbType));
+			}
+
+			dialect = configuredDialect;
+
+			DialectUtil.setDialect(dataSource, dialect);
 		}
+
+		dbManager.setDB(
+			dbManager.getDB(dbManager.getDBType(dialect), dataSource));
+
+		DBManagerUtil.setDBManager(dbManager);
 
 		DBPartitionUtil.checkDatabasePartitionSchemaNamePrefix();
 
-		_dataSource = DBPartitionUtil.wrapDataSource(_dataSource);
+		dataSource = DBPartitionUtil.wrapDataSource(dataSource);
 
-		try (Connection connection = _dataSource.getConnection()) {
+		InfrastructureUtil.setDataSource(
+			new LazyConnectionDataSourceProxy(dataSource));
+
+		InfrastructureUtil.setReadWriteDataSource(readWriteDataSource);
+
+		try (Connection connection = dataSource.getConnection()) {
 			_init(DBManagerUtil.getDB(), connection);
 		}
-
-		_dataSource = new LazyConnectionDataSourceProxy(_dataSource);
-	}
-
-	public static boolean isReadWriteDataSource() {
-		if ((_readDataSource != null) && (_writeDataSource != null)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private static boolean _checkDefaultRelease(Connection connection) {
@@ -109,10 +149,8 @@ public class DBInitUtil {
 		return false;
 	}
 
-	private static void _checkSQLServer(DataSource dataSource) {
-		try (Connection connection = dataSource.getConnection();
-
-			PreparedStatement preparedStatement = connection.prepareStatement(
+	private static void _checkSQLServer(Connection connection) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select name, is_read_committed_snapshot_on from " +
 					"sys.databases where name = db_name()");
 
@@ -159,6 +197,10 @@ public class DBInitUtil {
 	}
 
 	private static void _init(DB db, Connection connection) throws Exception {
+		if (db.getDBType() == DBType.SQLSERVER) {
+			_checkSQLServer(connection);
+		}
+
 		try {
 			DBPartitionUtil.setDefaultCompanyId(connection);
 		}
@@ -235,29 +277,6 @@ public class DBInitUtil {
 		}
 	}
 
-	private static DataSource _initDataSource(String prefix) throws Exception {
-		Properties properties = PropsUtil.getProperties(prefix, true);
-
-		if ((properties == null) || properties.isEmpty()) {
-			return null;
-		}
-
-		DataSource dataSource = DataSourceFactoryUtil.initDataSource(
-			properties);
-
-		Dialect dialect = DialectDetector.getDialect(dataSource);
-
-		DBType dbType = DBManagerUtil.getDBType(dialect);
-
-		if (dbType == DBType.SQLSERVER) {
-			_checkSQLServer(dataSource);
-		}
-
-		DBManagerUtil.setDB(dialect, dataSource);
-
-		return dataSource;
-	}
-
 	private static void _runSQLFile(
 			DB db, Connection connection, ClassLoader classLoader, String path)
 		throws Exception {
@@ -302,9 +321,5 @@ public class DBInitUtil {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(DBInitUtil.class);
-
-	private static DataSource _dataSource;
-	private static DataSource _readDataSource;
-	private static DataSource _writeDataSource;
 
 }

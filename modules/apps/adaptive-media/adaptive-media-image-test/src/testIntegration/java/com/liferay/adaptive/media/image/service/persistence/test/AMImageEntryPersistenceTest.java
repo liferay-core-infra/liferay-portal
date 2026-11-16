@@ -586,4 +586,4 @@ public class AMImageEntryPersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-379078423
+// LIFERAY-SERVICE-BUILDER-HASH:-151478621

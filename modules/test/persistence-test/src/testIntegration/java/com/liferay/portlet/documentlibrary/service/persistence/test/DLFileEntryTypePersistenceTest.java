@@ -713,4 +713,4 @@ public class DLFileEntryTypePersistenceTest {
 	private ClassLoader _dynamicQueryClassLoader;
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1864396004
+// LIFERAY-SERVICE-BUILDER-HASH:-2081911850

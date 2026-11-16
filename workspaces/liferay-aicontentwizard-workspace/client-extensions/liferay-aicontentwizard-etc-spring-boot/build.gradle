@@ -30,7 +30,7 @@ dependencies {
 	implementation group: "dev.langchain4j", name: "langchain4j", version: "0.35.0"
 	implementation group: "dev.langchain4j", name: "langchain4j-open-ai", version: "0.35.0"
 	implementation group: "org.apache.httpcomponents", name: "httpclient", version: "4.5.13"
-	implementation group: "org.json", name: "json", version: "20231013"
+	implementation group: "org.json", name: "json", version: "20260814"
 	implementation group: "org.slf4j", name: "slf4j-api", version: "1.7.26"
 	implementation group: "org.slf4j", name: "slf4j-log4j12", version: "2.0.16"
 	implementation group: "org.springframework.boot", name: "spring-boot-starter-oauth2-resource-server", version: "2.7.18"

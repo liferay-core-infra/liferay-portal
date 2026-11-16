@@ -20,7 +20,7 @@ dependencies {
 	api group: "org.apache.httpcomponents", name: "httpclient", version: "4.5.13"
 	api group: "org.dom4j", name: "dom4j", version: "2.1.3"
 	api group: "org.eclipse.angus", name: "jakarta.mail", version: "2.0.5"
-	api group: "org.json", name: "json", version: "20231013"
+	api group: "org.json", name: "json", version: "20260814"
 	testImplementation group: "org.mockito", name: "mockito-core", version: "4.5.1"
 	testImplementation group: "org.mockito", name: "mockito-inline", version: "4.5.1"
 }

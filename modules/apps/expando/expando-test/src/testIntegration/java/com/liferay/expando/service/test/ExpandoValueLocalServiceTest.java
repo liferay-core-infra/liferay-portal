@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
@@ -40,11 +41,15 @@ import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
 
 import java.io.Serializable;
 
+import java.math.BigDecimal;
+
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -461,6 +466,137 @@ public class ExpandoValueLocalServiceTest {
 		Assert.assertEquals("um", value.getString(_ptLocale));
 		Assert.assertEquals("one", value.getString(_enLocale));
 		Assert.assertEquals("um", value.getString(_frLocale));
+	}
+
+	@Test
+	public void testGetSerializable() throws Exception {
+		Map<Integer, Object> values = HashMapBuilder.<Integer, Object>put(
+			ExpandoColumnConstants.BOOLEAN, RandomTestUtil.randomBoolean()
+		).put(
+			ExpandoColumnConstants.BOOLEAN_ARRAY,
+			new boolean[] {
+				RandomTestUtil.randomBoolean(), RandomTestUtil.randomBoolean()
+			}
+		).put(
+			ExpandoColumnConstants.DATE, RandomTestUtil.nextDate()
+		).put(
+			ExpandoColumnConstants.DATE_ARRAY,
+			new Date[] {RandomTestUtil.nextDate(), RandomTestUtil.nextDate()}
+		).put(
+			ExpandoColumnConstants.DOUBLE, RandomTestUtil.randomDouble()
+		).put(
+			ExpandoColumnConstants.DOUBLE_ARRAY,
+			new double[] {
+				RandomTestUtil.randomDouble(), RandomTestUtil.randomDouble()
+			}
+		).put(
+			ExpandoColumnConstants.FLOAT, RandomTestUtil.randomFloat()
+		).put(
+			ExpandoColumnConstants.FLOAT_ARRAY,
+			new float[] {
+				RandomTestUtil.randomFloat(), RandomTestUtil.randomFloat()
+			}
+		).put(
+			ExpandoColumnConstants.GEOLOCATION,
+			JSONUtil.put(
+				"latitude", RandomTestUtil.randomDouble()
+			).put(
+				"longitude", RandomTestUtil.randomDouble()
+			)
+		).put(
+			ExpandoColumnConstants.INTEGER, RandomTestUtil.randomInt()
+		).put(
+			ExpandoColumnConstants.INTEGER_ARRAY,
+			new int[] {RandomTestUtil.randomInt(), RandomTestUtil.randomInt()}
+		).put(
+			ExpandoColumnConstants.LONG, RandomTestUtil.randomLong()
+		).put(
+			ExpandoColumnConstants.LONG_ARRAY,
+			new long[] {
+				RandomTestUtil.randomLong(), RandomTestUtil.randomLong()
+			}
+		).put(
+			ExpandoColumnConstants.NUMBER,
+			BigDecimal.valueOf(RandomTestUtil.randomLong())
+		).put(
+			ExpandoColumnConstants.NUMBER_ARRAY,
+			new Number[] {
+				BigDecimal.valueOf(RandomTestUtil.randomLong()),
+				BigDecimal.valueOf(RandomTestUtil.randomLong())
+			}
+		).put(
+			ExpandoColumnConstants.SHORT, (short)RandomTestUtil.randomInt()
+		).put(
+			ExpandoColumnConstants.SHORT_ARRAY,
+			new short[] {
+				(short)RandomTestUtil.randomInt(),
+				(short)RandomTestUtil.randomInt()
+			}
+		).put(
+			ExpandoColumnConstants.STRING, RandomTestUtil.randomString()
+		).put(
+			ExpandoColumnConstants.STRING_ARRAY,
+			new String[] {
+				RandomTestUtil.randomString(), RandomTestUtil.randomString()
+			}
+		).put(
+			ExpandoColumnConstants.STRING_ARRAY_LOCALIZED,
+			HashMapBuilder.put(
+				_enLocale,
+				new String[] {
+					RandomTestUtil.randomString(), RandomTestUtil.randomString()
+				}
+			).put(
+				_ptLocale,
+				new String[] {
+					RandomTestUtil.randomString(), RandomTestUtil.randomString()
+				}
+			).build()
+		).put(
+			ExpandoColumnConstants.STRING_LOCALIZED,
+			HashMapBuilder.put(
+				_enLocale, RandomTestUtil.randomString()
+			).put(
+				_ptLocale, RandomTestUtil.randomString()
+			).build()
+		).build();
+
+		Assert.assertEquals(
+			values.toString(), ExpandoColumnConstants.TYPES.length,
+			values.size());
+
+		for (Map.Entry<Integer, Object> entry : values.entrySet()) {
+			ExpandoColumn column = ExpandoTestUtil.addColumn(
+				_expandoTable, RandomTestUtil.randomString(), entry.getKey());
+
+			ExpandoValue value = ExpandoTestUtil.addValue(
+				_expandoTable, column, entry.getValue());
+
+			Object expectedValue = entry.getValue();
+			Serializable serializable = value.getSerializable();
+
+			if (expectedValue instanceof JSONObject) {
+				Assert.assertTrue(serializable instanceof JSONObject);
+				Assert.assertEquals(
+					expectedValue.toString(), serializable.toString());
+			}
+			else if (expectedValue instanceof Map) {
+				Map<Locale, ?> expectedMap = (Map<Locale, ?>)expectedValue;
+				Map<Locale, ?> map = (Map<Locale, ?>)serializable;
+
+				Assert.assertEquals(expectedMap.keySet(), map.keySet());
+
+				for (Locale locale : expectedMap.keySet()) {
+					Assert.assertTrue(
+						Objects.deepEquals(
+							expectedMap.get(locale), map.get(locale)));
+				}
+			}
+			else {
+				Assert.assertTrue(
+					Objects.deepEquals(expectedValue, serializable));
+			}
+		}
 	}
 
 	@Test

@@ -369,6 +369,8 @@ classes.
 <!--
 If the versioned value is true, then the service will generate a version table,
 columns, and methods to version the entity.
+
+The versioned attribute is deprecated and will be removed in a future release.
 -->
 <!ATTLIST entity
 	versioned CDATA #IMPLIED

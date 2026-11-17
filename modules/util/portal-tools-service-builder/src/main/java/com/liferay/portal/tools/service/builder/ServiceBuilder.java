@@ -809,6 +809,17 @@ public class ServiceBuilder {
 			List<Element> entityElements = rootElement.elements("entity");
 
 			for (Element entityElement : entityElements) {
+				if (GetterUtil.getBoolean(
+						entityElement.attributeValue("versioned"))) {
+
+					System.err.println(
+						StringBundler.concat(
+							"The versioned attribute of entity ",
+							entityElement.attributeValue("name"),
+							" is deprecated and will be removed in a future ",
+							"release"));
+				}
+
 				_parseEntity(entityElement);
 			}
 

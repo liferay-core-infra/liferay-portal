@@ -199,7 +199,16 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
-			doAddressesUpdated(_oldAddresses, _newAddresses);
+			try {
+				doAddressesUpdated(_oldAddresses, _newAddresses);
+			}
+			catch (Exception exception) {
+				_log.error(
+					StringBundler.concat(
+						"Unable to handle view update from ", _oldAddresses,
+						" to ", _newAddresses),
+					exception);
+			}
 		}
 
 		private AddressesUpdatedRunnable(
@@ -218,8 +227,17 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
-			doCoordinatorAddressUpdated(
-				_oldCoordinatorAddress, _newCoordinatorAddress);
+			try {
+				doCoordinatorAddressUpdated(
+					_oldCoordinatorAddress, _newCoordinatorAddress);
+			}
+			catch (Exception exception) {
+				_log.error(
+					StringBundler.concat(
+						"Unable to handle coordinator address update from ",
+						_oldCoordinatorAddress, " to ", _newCoordinatorAddress),
+					exception);
+			}
 		}
 
 		private CoordinatorAddressUpdatedRunnable(
@@ -238,7 +256,14 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
-			doReceive(_messagePayload, _srcAddress);
+			try {
+				doReceive(_messagePayload, _srcAddress);
+			}
+			catch (Exception exception) {
+				_log.error(
+					"Unable to handle received message " + _messagePayload,
+					exception);
+			}
 		}
 
 		private ReceiveRunnable(Object messagePayload, Address srcAddress) {

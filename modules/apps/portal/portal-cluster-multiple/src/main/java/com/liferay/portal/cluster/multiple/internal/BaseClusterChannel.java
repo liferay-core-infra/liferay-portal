@@ -35,7 +35,17 @@ public abstract class BaseClusterChannel implements ClusterChannel {
 		}
 
 		try {
-			_executorService.execute(() -> doSendMessage(message, null));
+			_executorService.execute(
+				() -> {
+					try {
+						doSendMessage(message, null);
+					}
+					catch (Exception exception) {
+						_log.error(
+							"Unable to send multicast message " + message,
+							exception);
+					}
+				});
 		}
 		catch (RejectedExecutionException rejectedExecutionException) {
 			_log.error(
@@ -55,7 +65,19 @@ public abstract class BaseClusterChannel implements ClusterChannel {
 		}
 
 		try {
-			_executorService.execute(() -> doSendMessage(message, address));
+			_executorService.execute(
+				() -> {
+					try {
+						doSendMessage(message, address);
+					}
+					catch (Exception exception) {
+						_log.error(
+							StringBundler.concat(
+								"Unable to send unitcast message ", message,
+								" to ", address),
+							exception);
+					}
+				});
 		}
 		catch (RejectedExecutionException rejectedExecutionException) {
 			_log.error(

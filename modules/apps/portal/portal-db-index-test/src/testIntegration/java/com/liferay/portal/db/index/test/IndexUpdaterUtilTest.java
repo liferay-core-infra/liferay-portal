@@ -33,6 +33,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -330,6 +332,101 @@ public class IndexUpdaterUtilTest {
 	}
 
 	@Test
+	public void testUpdateIndexRetryBinaryColumns() throws Exception {
+		_createTestTable(", column5 SBLOB", true);
+
+		try {
+			try (Connection connection = DataAccess.getConnection();
+
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"insert into TestTable values(?, ?, 3, 4, ?, '6', " +
+							"?)")) {
+
+				_insertTestTableRow(
+					"5", new byte[] {(byte)0x80}, 1, 2, preparedStatement);
+				_insertTestTableRow(
+					"5", new byte[] {(byte)0x81}, 4, 5, preparedStatement);
+				_insertTestTableRow(
+					"5", new byte[] {(byte)0x81}, 7, 8, preparedStatement);
+				_insertTestTableRow("9", null, 10, 11, preparedStatement);
+				_insertTestTableRow("9", null, 12, 13, preparedStatement);
+			}
+
+			boolean upgrading = StartupHelperUtil.isUpgrading();
+
+			StartupHelperUtil.setUpgrading(true);
+
+			try (AutoCloseable autoCloseable =
+					() -> StartupHelperUtil.setUpgrading(upgrading);
+				LogCapture duplicateUniqueFinderRowsCleanerLogCapture =
+					LoggerTestUtil.configureLog4JLogger(
+						DuplicateUniqueFinderRowsCleaner.class.getName(),
+						LoggerTestUtil.WARN);
+				LogCapture indexUpdaterUtilLogCapture =
+					LoggerTestUtil.configureLog4JLogger(
+						IndexUpdaterUtil.class.getName(),
+						LoggerTestUtil.WARN)) {
+
+				ReflectionTestUtil.invoke(
+					IndexUpdaterUtil.class, "_updateIndexes",
+					new Class<?>[] {String.class, String.class}, "TestTable",
+					"create unique index IX_TestTable on TestTable(column3" +
+						"[$COLUMN_LENGTH:255$], column4[$COLUMN_LENGTH:255$])");
+
+				List<LogEntry> logEntries =
+					duplicateUniqueFinderRowsCleanerLogCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 1, logEntries.size());
+
+				LogEntry logEntry = logEntries.get(0);
+
+				Assert.assertTrue(
+					StringUtil.equalsIgnoreCase(
+						StringBundler.concat(
+							"Unable to delete row from table TestTable due to ",
+							"duplicate values in finder columns column3, ",
+							"column4 because it differs from the kept row in ",
+							"columns column5"),
+						logEntry.getMessage()));
+
+				logEntries = indexUpdaterUtilLogCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 2, logEntries.size());
+
+				logEntry = logEntries.get(0);
+
+				Assert.assertEquals(
+					"Deleted duplicate records from table TestTable before " +
+						"retrying unique index creation",
+					logEntry.getMessage());
+			}
+
+			try (Connection connection = DataAccess.getConnection();
+
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"select id1 from TestTable order by id1")) {
+
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					List<Integer> id1s = new ArrayList<>();
+
+					while (resultSet.next()) {
+						id1s.add(resultSet.getInt("id1"));
+					}
+
+					Assert.assertEquals(Arrays.asList(1, 7, 12), id1s);
+				}
+			}
+		}
+		finally {
+			_dropTestTable();
+		}
+	}
+
+	@Test
 	public void testUpdateIndexRetryDistinctRows() throws Exception {
 		_createTestTable(true);
 
@@ -396,8 +493,7 @@ public class IndexUpdaterUtilTest {
 				List<IndexMetadata> indexMetadatas = _db.getIndexMetadatas(
 					connection, "TestTable", "column3", true);
 
-				Assert.assertTrue(
-					indexMetadatas.toString(), indexMetadatas.isEmpty());
+				Assert.assertTrue(indexMetadatas.isEmpty());
 			}
 		}
 		finally {
@@ -549,12 +645,16 @@ public class IndexUpdaterUtilTest {
 
 				PreparedStatement preparedStatement =
 					connection.prepareStatement(
-						"select count(*) as count from TestTable")) {
+						"select id1 from TestTable order by id1")) {
 
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
-					Assert.assertTrue(resultSet.next());
+					List<Integer> id1s = new ArrayList<>();
 
-					Assert.assertEquals(3, resultSet.getLong("count"));
+					while (resultSet.next()) {
+						id1s.add(resultSet.getInt("id1"));
+					}
+
+					Assert.assertEquals(Arrays.asList(7, 10, 14), id1s);
 				}
 
 				List<IndexMetadata> indexMetadatas = _db.getIndexMetadatas(
@@ -566,8 +666,7 @@ public class IndexUpdaterUtilTest {
 				indexMetadatas = _db.getIndexMetadatas(
 					connection, "TestTable", "column4", true);
 
-				Assert.assertTrue(
-					indexMetadatas.toString(), indexMetadatas.isEmpty());
+				Assert.assertTrue(indexMetadatas.isEmpty());
 			}
 		}
 		finally {
@@ -704,6 +803,19 @@ public class IndexUpdaterUtilTest {
 	private void _dropTestTable() throws Exception {
 		DBPartitionUtil.forEachCompanyId(
 			companyId -> _db.runSQL("DROP_TABLE_IF_EXISTS(TestTable)"));
+	}
+
+	private void _insertTestTableRow(
+			String column3, byte[] column5, int id1, int id2,
+			PreparedStatement preparedStatement)
+		throws Exception {
+
+		preparedStatement.setInt(1, id1);
+		preparedStatement.setInt(2, id2);
+		preparedStatement.setString(3, column3);
+		preparedStatement.setBytes(4, column5);
+
+		preparedStatement.executeUpdate();
 	}
 
 	private static Connection _connection;

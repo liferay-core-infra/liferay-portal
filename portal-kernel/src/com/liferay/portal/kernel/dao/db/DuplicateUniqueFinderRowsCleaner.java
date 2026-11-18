@@ -10,6 +10,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -125,8 +126,7 @@ public class DuplicateUniqueFinderRowsCleaner {
 									" because it differs from the kept row in ",
 									"columns ",
 									StringUtil.merge(
-										differentColumnNames, ", "),
-									": ", duplicateRow));
+										differentColumnNames, ", ")));
 						}
 
 						continue;
@@ -279,10 +279,23 @@ public class DuplicateUniqueFinderRowsCleaner {
 				while (resultSet.next()) {
 					Map<String, String> duplicateRow = new LinkedHashMap<>();
 
-					for (String columnName : columnNames) {
-						duplicateRow.put(
-							dbInspector.normalizeName(columnName),
-							resultSet.getString(columnName));
+					for (int i = 0; i < columnNames.length; i++) {
+						String columnName = columnNames[i];
+
+						if (_isBinaryType(
+								resultSetMetaData.getColumnType(i + 1))) {
+
+							byte[] bytes = resultSet.getBytes(columnName);
+
+							duplicateRow.put(
+								dbInspector.normalizeName(columnName),
+								(bytes == null) ? null : Base64.encode(bytes));
+						}
+						else {
+							duplicateRow.put(
+								dbInspector.normalizeName(columnName),
+								resultSet.getString(columnName));
+						}
 					}
 
 					duplicateRows.add(duplicateRow);
@@ -363,6 +376,17 @@ public class DuplicateUniqueFinderRowsCleaner {
 					return true;
 				}
 			}
+		}
+
+		return false;
+	}
+
+	private boolean _isBinaryType(int dataType) {
+		if ((dataType == Types.BINARY) || (dataType == Types.BLOB) ||
+			(dataType == Types.LONGVARBINARY) ||
+			(dataType == Types.VARBINARY)) {
+
+			return true;
 		}
 
 		return false;

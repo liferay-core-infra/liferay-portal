@@ -5,9 +5,12 @@
 
 package com.liferay.portal.kernel.dao.db;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.Connection;
@@ -23,6 +26,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Mariano Álvaro Sáiz
@@ -42,6 +47,14 @@ public class DuplicateUniqueFinderRowsCleaner {
 	}
 
 	public boolean deleteDuplicates() throws Exception {
+		return _deleteDuplicates(false);
+	}
+
+	public boolean deleteIdenticalDuplicates() throws Exception {
+		return _deleteDuplicates(true);
+	}
+
+	private boolean _deleteDuplicates(boolean identicalOnly) throws Exception {
 		if (_hasUnpopulatedColumn()) {
 			return false;
 		}
@@ -71,11 +84,53 @@ public class DuplicateUniqueFinderRowsCleaner {
 			List<Map<String, String>> duplicateRows = _getDuplicateRows(
 				duplicateColumnValues);
 
-			int duplicateRowsCount = duplicateRows.size();
+			if (duplicateRows.size() < 2) {
+				continue;
+			}
 
-			for (Map<String, String> duplicateRow : duplicateRows) {
-				if (duplicateRowsCount == 1) {
-					break;
+			Map<String, String> keptRow = duplicateRows.get(
+				duplicateRows.size() - 1);
+
+			for (Map<String, String> duplicateRow :
+					duplicateRows.subList(0, duplicateRows.size() - 1)) {
+
+				if (identicalOnly) {
+					List<String> differentColumnNames = TransformUtil.transform(
+						duplicateRow.entrySet(),
+						entry -> {
+							String name = entry.getKey();
+
+							if (ArrayUtil.contains(
+									primaryKeyColumnNames, name) ||
+								_generatedColumnNames.contains(
+									StringUtil.toLowerCase(name)) ||
+								Objects.equals(
+									entry.getValue(), keptRow.get(name))) {
+
+								return null;
+							}
+
+							return name;
+						});
+
+					if (!differentColumnNames.isEmpty()) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								StringBundler.concat(
+									"Unable to delete row from table ",
+									_tableName,
+									" due to duplicate values in finder ",
+									"columns ",
+									StringUtil.merge(_columnNames, ", "),
+									" because it differs from the kept row in ",
+									"columns ",
+									StringUtil.merge(
+										differentColumnNames, ", "),
+									": ", duplicateRow));
+						}
+
+						continue;
+					}
 				}
 
 				StringBundler sb = new StringBundler();
@@ -113,9 +168,6 @@ public class DuplicateUniqueFinderRowsCleaner {
 						"Unable to delete row from table " + _tableName +
 							duplicateRow.toString(),
 						sqlException);
-				}
-				finally {
-					duplicateRowsCount--;
 				}
 			}
 		}
@@ -329,6 +381,10 @@ public class DuplicateUniqueFinderRowsCleaner {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DuplicateUniqueFinderRowsCleaner.class);
+
+	private static final Set<String> _generatedColumnNames = SetUtil.fromArray(
+		"createdate", "externalreferencecode", "lastpublishdate",
+		"modifieddate", "mvccversion", "uuid_");
 
 	private final String[] _columnNames;
 	private final Connection _connection;

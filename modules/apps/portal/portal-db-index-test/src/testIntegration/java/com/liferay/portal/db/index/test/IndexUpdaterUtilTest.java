@@ -255,7 +255,7 @@ public class IndexUpdaterUtilTest {
 
 		try {
 			_db.runSQL("insert into TestTable values(1, 2, 3, 4, '5', '6')");
-			_db.runSQL("insert into TestTable values(7, 9, 10, 11, '5', '6')");
+			_db.runSQL("insert into TestTable values(7, 9, 3, 4, '5', '6')");
 
 			boolean upgrading = StartupHelperUtil.isUpgrading();
 
@@ -322,6 +322,252 @@ public class IndexUpdaterUtilTest {
 
 				Assert.assertEquals(
 					indexMetadatas.toString(), 1, indexMetadatas.size());
+			}
+		}
+		finally {
+			_dropTestTable();
+		}
+	}
+
+	@Test
+	public void testUpdateIndexRetryDistinctRows() throws Exception {
+		_createTestTable(true);
+
+		try {
+			_db.runSQL("insert into TestTable values(1, 2, 3, 4, '5', '6')");
+			_db.runSQL("insert into TestTable values(7, 9, 10, 11, '5', '6')");
+
+			boolean upgrading = StartupHelperUtil.isUpgrading();
+
+			StartupHelperUtil.setUpgrading(true);
+
+			try (AutoCloseable autoCloseable =
+					() -> StartupHelperUtil.setUpgrading(upgrading);
+				LogCapture duplicateUniqueFinderRowsCleanerLogCapture =
+					LoggerTestUtil.configureLog4JLogger(
+						DuplicateUniqueFinderRowsCleaner.class.getName(),
+						LoggerTestUtil.WARN);
+				LogCapture indexUpdaterUtilLogCapture =
+					LoggerTestUtil.configureLog4JLogger(
+						IndexUpdaterUtil.class.getName(),
+						LoggerTestUtil.WARN)) {
+
+				ReflectionTestUtil.invoke(
+					IndexUpdaterUtil.class, "_updateIndexes",
+					new Class<?>[] {String.class, String.class}, "TestTable",
+					"create unique index IX_TestTable on TestTable(column3" +
+						"[$COLUMN_LENGTH:255$], column4[$COLUMN_LENGTH:255$])");
+
+				List<LogEntry> logEntries =
+					duplicateUniqueFinderRowsCleanerLogCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 1, logEntries.size());
+
+				LogEntry logEntry = logEntries.get(0);
+
+				Assert.assertTrue(
+					StringUtil.equalsIgnoreCase(
+						StringBundler.concat(
+							"Unable to delete row from table TestTable due to ",
+							"duplicate values in finder columns column3, ",
+							"column4 because it differs from the kept row in ",
+							"columns column1, column2"),
+						logEntry.getMessage()));
+
+				logEntries = indexUpdaterUtilLogCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 1, logEntries.size());
+			}
+
+			try (Connection connection = DataAccess.getConnection();
+
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"select count(*) as count from TestTable")) {
+
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					Assert.assertTrue(resultSet.next());
+
+					Assert.assertEquals(2, resultSet.getLong("count"));
+				}
+
+				List<IndexMetadata> indexMetadatas = _db.getIndexMetadatas(
+					connection, "TestTable", "column3", true);
+
+				Assert.assertTrue(
+					indexMetadatas.toString(), indexMetadatas.isEmpty());
+			}
+		}
+		finally {
+			_dropTestTable();
+		}
+	}
+
+	@Test
+	public void testUpdateIndexRetryGeneratedColumns() throws Exception {
+		_createTestTable(
+			StringBundler.concat(
+				", uuid_ VARCHAR(75), externalReferenceCode VARCHAR(75), ",
+				"createDate VARCHAR(75), modifiedDate VARCHAR(75), ",
+				"lastPublishDate VARCHAR(75), mvccVersion VARCHAR(75)"),
+			true);
+
+		try {
+			_db.runSQL(
+				"insert into TestTable values(1, 2, 3, 4, '5', '6', 'a', " +
+					"'a', 'a', 'a', 'a', 'a')");
+			_db.runSQL(
+				"insert into TestTable values(7, 9, 3, 4, '5', '6', 'b', " +
+					"'b', 'b', 'b', 'b', 'b')");
+
+			boolean upgrading = StartupHelperUtil.isUpgrading();
+
+			StartupHelperUtil.setUpgrading(true);
+
+			try (AutoCloseable autoCloseable =
+					() -> StartupHelperUtil.setUpgrading(upgrading);
+				LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+					DuplicateUniqueFinderRowsCleaner.class.getName(),
+					LoggerTestUtil.INFO)) {
+
+				ReflectionTestUtil.invoke(
+					IndexUpdaterUtil.class, "_updateIndexes",
+					new Class<?>[] {String.class, String.class}, "TestTable",
+					"create unique index IX_TestTable on TestTable(column3" +
+						"[$COLUMN_LENGTH:255$], column4[$COLUMN_LENGTH:255$])");
+
+				List<LogEntry> logEntries = logCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 1, logEntries.size());
+
+				LogEntry logEntry = logEntries.get(0);
+
+				Assert.assertTrue(
+					StringUtil.startsWith(
+						logEntry.getMessage(),
+						"Deleted row from table TestTable due to duplicate " +
+							"values in finder columns column3, column4"));
+			}
+
+			try (Connection connection = DataAccess.getConnection();
+
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"select id1, uuid_ from TestTable")) {
+
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					Assert.assertTrue(resultSet.next());
+
+					Assert.assertEquals(7, resultSet.getLong("id1"));
+					Assert.assertEquals("b", resultSet.getString("uuid_"));
+
+					Assert.assertFalse(resultSet.next());
+				}
+
+				List<IndexMetadata> indexMetadatas = _db.getIndexMetadatas(
+					connection, "TestTable", "column3", true);
+
+				Assert.assertEquals(
+					indexMetadatas.toString(), 1, indexMetadatas.size());
+			}
+		}
+		finally {
+			_dropTestTable();
+		}
+	}
+
+	@Test
+	public void testUpdateIndexRetryMixedRows() throws Exception {
+		_createTestTable(true);
+
+		try {
+			_db.runSQL("insert into TestTable values(1, 2, null, 4, '5', '6')");
+			_db.runSQL("insert into TestTable values(7, 9, null, 4, '5', '6')");
+			_db.runSQL(
+				"insert into TestTable values(10, 11, 3, 4, '12', '13')");
+			_db.runSQL(
+				"insert into TestTable values(14, 15, 16, 17, '18', '13')");
+
+			boolean upgrading = StartupHelperUtil.isUpgrading();
+
+			StartupHelperUtil.setUpgrading(true);
+
+			try (AutoCloseable autoCloseable =
+					() -> StartupHelperUtil.setUpgrading(upgrading);
+				LogCapture duplicateUniqueFinderRowsCleanerLogCapture =
+					LoggerTestUtil.configureLog4JLogger(
+						DuplicateUniqueFinderRowsCleaner.class.getName(),
+						LoggerTestUtil.WARN);
+				LogCapture indexUpdaterUtilLogCapture =
+					LoggerTestUtil.configureLog4JLogger(
+						IndexUpdaterUtil.class.getName(),
+						LoggerTestUtil.WARN)) {
+
+				ReflectionTestUtil.invoke(
+					IndexUpdaterUtil.class, "_updateIndexes",
+					new Class<?>[] {String.class, String.class}, "TestTable",
+					StringBundler.concat(
+						"create unique index IX_TestTable1 on TestTable(",
+						"column3[$COLUMN_LENGTH:255$])\ncreate unique index ",
+						"IX_TestTable2 on TestTable(column4",
+						"[$COLUMN_LENGTH:255$])"));
+
+				List<LogEntry> logEntries =
+					duplicateUniqueFinderRowsCleanerLogCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 1, logEntries.size());
+
+				LogEntry logEntry = logEntries.get(0);
+
+				Assert.assertTrue(
+					StringUtil.equalsIgnoreCase(
+						StringBundler.concat(
+							"Unable to delete row from table TestTable due to ",
+							"duplicate values in finder columns column4 ",
+							"because it differs from the kept row in columns ",
+							"column1, column2, column3"),
+						logEntry.getMessage()));
+
+				logEntries = indexUpdaterUtilLogCapture.getLogEntries();
+
+				Assert.assertEquals(
+					logEntries.toString(), 2, logEntries.size());
+
+				logEntry = logEntries.get(0);
+
+				Assert.assertEquals(
+					"Deleted duplicate records from table TestTable before " +
+						"retrying unique index creation",
+					logEntry.getMessage());
+			}
+
+			try (Connection connection = DataAccess.getConnection();
+
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"select count(*) as count from TestTable")) {
+
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					Assert.assertTrue(resultSet.next());
+
+					Assert.assertEquals(3, resultSet.getLong("count"));
+				}
+
+				List<IndexMetadata> indexMetadatas = _db.getIndexMetadatas(
+					connection, "TestTable", "column3", true);
+
+				Assert.assertEquals(
+					indexMetadatas.toString(), 1, indexMetadatas.size());
+
+				indexMetadatas = _db.getIndexMetadatas(
+					connection, "TestTable", "column4", true);
+
+				Assert.assertTrue(
+					indexMetadatas.toString(), indexMetadatas.isEmpty());
 			}
 		}
 		finally {
@@ -432,12 +678,18 @@ public class IndexUpdaterUtilTest {
 	}
 
 	private void _createTestTable(boolean primaryKey) throws Exception {
+		_createTestTable(StringPool.BLANK, primaryKey);
+	}
+
+	private void _createTestTable(String columnsSQL, boolean primaryKey)
+		throws Exception {
+
 		DBPartitionUtil.forEachCompanyId(
 			companyId -> _db.runSQL(
 				StringBundler.concat(
 					"create table TestTable (id1 INTEGER, id2 INTEGER, ",
 					"column1 INTEGER, column2 INTEGER, column3 VARCHAR(255), ",
-					"column4 VARCHAR(255)",
+					"column4 VARCHAR(255)", columnsSQL,
 					primaryKey ? ", primary key (id1, id2)" : StringPool.BLANK,
 					")")));
 	}

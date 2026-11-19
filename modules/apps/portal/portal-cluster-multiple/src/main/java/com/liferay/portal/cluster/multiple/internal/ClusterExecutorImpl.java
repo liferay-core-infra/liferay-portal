@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MethodHandler;
@@ -46,6 +45,8 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
+import java.nio.charset.StandardCharsets;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -57,7 +58,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -282,22 +282,12 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 	}
 
 	protected String getClusterNodeId(Address address) {
-		DefaultNoticeableFuture<String> defaultNoticeableFuture =
-			_clusterNodeIdDefaultNoticeableFutures.computeIfAbsent(
-				address, key -> new DefaultNoticeableFuture<>());
+		String addressString = address.toString();
 
-		try {
-			return defaultNoticeableFuture.get(
-				clusterExecutorConfiguration.clusterNodeAddressTimeout(),
-				TimeUnit.MILLISECONDS);
-		}
-		catch (Exception exception) {
-			_log.error(
-				"Unable to get cluster node with address " + address,
-				exception);
-		}
+		UUID uuid = UUID.nameUUIDFromBytes(
+			addressString.getBytes(StandardCharsets.UTF_8));
 
-		return null;
+		return uuid.toString();
 	}
 
 	protected ExecutorService getExecutorService() {
@@ -387,11 +377,14 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			_executorService, channelLogicName, channelPropertiesLocation,
 			channelName, clusterReceiver);
 
+		Address localAddress = _clusterChannel.getLocalAddress();
+
 		ClusterNode localClusterNode = new ClusterNode(
-			_generateClusterNodeId(), _clusterChannel.getBindInetAddress());
+			getClusterNodeId(localAddress),
+			_clusterChannel.getBindInetAddress());
 
 		_localClusterNodeStatus = new ClusterNodeStatus(
-			localClusterNode, _clusterChannel.getLocalAddress());
+			localClusterNode, localAddress);
 
 		_memberJoined(_localClusterNodeStatus);
 
@@ -468,13 +461,6 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			PropsUtil.get(PropsKeys.PORTAL_INSTANCE_PROTOCOL));
 		localClusterNode.setPortalInetSocketAddress(
 			_getConfiguredPortalInetSocketAddress());
-	}
-
-	private String _generateClusterNodeId() {
-		UUID uuid = new UUID(
-			SecureRandomUtil.nextLong(), SecureRandomUtil.nextLong());
-
-		return uuid.toString();
 	}
 
 	private InetSocketAddress _getConfiguredPortalInetSocketAddress() {

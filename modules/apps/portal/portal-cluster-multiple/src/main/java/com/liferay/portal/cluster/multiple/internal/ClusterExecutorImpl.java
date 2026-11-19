@@ -179,7 +179,11 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Override
 	public boolean isClusterNodeAlive(String clusterNodeId) {
-		return _clusterNodeStatuses.containsKey(clusterNodeId);
+		if (_getAddress(clusterNodeId) != null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

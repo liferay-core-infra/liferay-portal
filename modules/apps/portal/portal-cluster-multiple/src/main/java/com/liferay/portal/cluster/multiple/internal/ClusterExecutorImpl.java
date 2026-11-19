@@ -47,12 +47,11 @@ import java.net.UnknownHostException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
@@ -76,29 +75,54 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Override
 	public FutureClusterResponses execute(ClusterRequest clusterRequest) {
-		Set<String> clusterNodeIds = new HashSet<>();
+		Map<String, Address> addresses = new HashMap<>();
 
 		if (clusterRequest.isMulticast()) {
-			clusterNodeIds = new HashSet<>(_clusterNodeStatuses.keySet());
+			ClusterReceiver clusterReceiver =
+				_clusterChannel.getClusterReceiver();
 
-			if (clusterRequest.isSkipLocal()) {
-				clusterNodeIds.remove(
-					_localClusterNodeStatus.getClusterNodeId());
+			for (Address address : clusterReceiver.getAddresses()) {
+				if (clusterRequest.isSkipLocal() &&
+					address.equals(_clusterChannel.getLocalAddress())) {
+
+					continue;
+				}
+
+				addresses.put(getClusterNodeId(address), address);
 			}
 		}
 		else {
-			clusterNodeIds.addAll(clusterRequest.getTargetClusterNodeIds());
+			for (String clusterNodeId :
+					clusterRequest.getTargetClusterNodeIds()) {
+
+				Address address = _getAddress(clusterNodeId);
+
+				if (address == null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Unable to get cluster node ", clusterNodeId,
+								" while executing ", clusterRequest));
+					}
+
+					continue;
+				}
+
+				addresses.put(clusterNodeId, address);
+			}
 		}
 
 		FutureClusterResponses futureClusterResponses =
-			new FutureClusterResponses(clusterNodeIds);
+			new FutureClusterResponses(addresses.keySet());
 
 		if (!clusterRequest.isFireAndForget()) {
 			_futureClusterResponses.put(
 				clusterRequest.getUuid(), futureClusterResponses);
 		}
 
-		if (clusterNodeIds.remove(_localClusterNodeStatus.getClusterNodeId())) {
+		Collection<Address> targetAddresses = addresses.values();
+
+		if (targetAddresses.remove(_clusterChannel.getLocalAddress())) {
 			ClusterNodeResponse clusterNodeResponse = executeClusterRequest(
 				clusterRequest);
 
@@ -112,23 +136,8 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			_clusterChannel.sendMulticastMessage(clusterRequest);
 		}
 		else {
-			for (String clusterNodeId : clusterNodeIds) {
-				ClusterNodeStatus clusterNodeStatus = _clusterNodeStatuses.get(
-					clusterNodeId);
-
-				if (clusterNodeStatus == null) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							StringBundler.concat(
-								"Unable to get cluster node ", clusterNodeId,
-								" while executing ", clusterRequest));
-					}
-
-					continue;
-				}
-
-				_clusterChannel.sendUnicastMessage(
-					clusterRequest, clusterNodeStatus.getAddress());
+			for (Address address : targetAddresses) {
+				_clusterChannel.sendUnicastMessage(clusterRequest, address);
 			}
 		}
 
@@ -451,6 +460,18 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 			PropsUtil.get(PropsKeys.PORTAL_INSTANCE_PROTOCOL));
 		localClusterNode.setPortalInetSocketAddress(
 			_getConfiguredPortalInetSocketAddress());
+	}
+
+	private Address _getAddress(String clusterNodeId) {
+		ClusterReceiver clusterReceiver = _clusterChannel.getClusterReceiver();
+
+		for (Address address : clusterReceiver.getAddresses()) {
+			if (clusterNodeId.equals(getClusterNodeId(address))) {
+				return address;
+			}
+		}
+
+		return null;
 	}
 
 	private InetSocketAddress _getConfiguredPortalInetSocketAddress() {

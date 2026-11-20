@@ -206,9 +206,41 @@ if (liveLayout != null) {
 								<clay:col
 									cssClass="staging-alert-container"
 								>
-									<div class="alert alert-warning hide warning-content" id="<portlet:namespace />warningMessage">
-										<liferay-ui:message key="an-initial-staging-publish-process-is-in-progress" />
-									</div>
+									<c:if test="<%= BackgroundTaskManagerUtil.getBackgroundTasksCount(liveGroup.getGroupId(), BackgroundTaskExecutorNames.LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR, false) > 0 %>">
+										<div class="alert alert-warning warning-content" id="<portlet:namespace />warningMessage">
+											<liferay-ui:message key="an-initial-staging-publish-process-is-in-progress" />
+										</div>
+
+										<aui:script>
+											const checkWarningMessage = () => {
+												Liferay.Util.fetch(
+													'<%= HtmlUtil.escapeJS(PortalUtil.getLayoutFullURL(layout, themeDisplay)) %>'
+												)
+													.then((response) => response.text())
+													.then((html) => {
+														const fetchedDocument = new DOMParser().parseFromString(
+															html,
+															'text/html'
+														);
+
+														if (
+															fetchedDocument.getElementById(
+																'<portlet:namespace />warningMessage'
+															)
+														) {
+															setTimeout(checkWarningMessage, 10000);
+														}
+														else {
+															document
+																.getElementById('<portlet:namespace />warningMessage')
+																?.remove();
+														}
+													});
+											};
+
+											setTimeout(checkWarningMessage, 10000);
+										</aui:script>
+									</c:if>
 
 									<liferay-util:include page="/last_publication_date_message.jsp" servletContext="<%= application %>" />
 								</clay:col>
@@ -266,48 +298,5 @@ if (liveLayout != null) {
 				});
 			}
 		}
-
-		var stagingLink = document.getElementById('<portlet:namespace />stagingLink');
-		var warningMessage = document.getElementById(
-			'<portlet:namespace />warningMessage'
-		);
-
-		var checkBackgroundTasks = function () {
-			Liferay.Service(
-				'/backgroundtask.backgroundtask/get-background-tasks-count',
-				{
-					completed: false,
-					groupId: '<%= liveGroup.getGroupId() %>',
-					taskExecutorClassName:
-						'<%= BackgroundTaskExecutorNames.LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR %>',
-				},
-				(obj) => {
-					var incomplete = obj > 0;
-
-					if (incomplete) {
-						if (stagingLink) {
-							stagingLink.classList.add('hide');
-						}
-
-						if (warningMessage) {
-							warningMessage.classList.remove('hide');
-						}
-
-						setTimeout(checkBackgroundTasks, 5000);
-					}
-					else {
-						if (stagingLink) {
-							stagingLink.classList.remove('hide');
-						}
-
-						if (warningMessage) {
-							warningMessage.classList.add('hide');
-						}
-					}
-				}
-			);
-		};
-
-		checkBackgroundTasks();
 	</aui:script>
 </c:if>

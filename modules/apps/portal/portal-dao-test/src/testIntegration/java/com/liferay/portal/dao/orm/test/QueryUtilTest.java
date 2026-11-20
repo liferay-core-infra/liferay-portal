@@ -197,6 +197,24 @@ public class QueryUtilTest {
 	}
 
 	@Test
+	public void testSQLWithLimitWithOuterOrderMultipleColumns()
+		throws Exception {
+
+		testSQLWithLimitWithOuterOrder(
+			"id ASC, value DESC", 0, 10,
+			Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+	}
+
+	@Test
+	public void testSQLWithLimitWithOuterOrderMultipleColumnsIncludingCastClobText()
+		throws Exception {
+
+		testSQLWithLimitWithOuterOrder(
+			"id ASC, CAST_CLOB_TEXT(name) DESC", 0, 10,
+			Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+	}
+
+	@Test
 	public void testUnionSQL1() throws Exception {
 		testUnionSQL(
 			"ASC", _SIZE / 2, _SIZE + (_SIZE / 2), _SIZE, "id", "value");
@@ -353,12 +371,12 @@ public class QueryUtilTest {
 
 	private static final String _SQL_CREATE_TABLE =
 		"CREATE TABLE QueryUtilTest (id INTEGER NOT NULL PRIMARY KEY, value " +
-			"INTEGER)";
+			"INTEGER, name TEXT)";
 
 	private static final String _SQL_DROP_TABLE = "DROP TABLE QueryUtilTest";
 
 	private static final String _SQL_INSERT =
-		"INSERT INTO QueryUtilTest VALUES ([$ID$], [$VALUE$])";
+		"INSERT INTO QueryUtilTest VALUES ([$ID$], [$VALUE$], '[$VALUE$]')";
 
 	private static final String _SQL_SELECT =
 		"SELECT id, value FROM QueryUtilTest ORDER BY id ASC";

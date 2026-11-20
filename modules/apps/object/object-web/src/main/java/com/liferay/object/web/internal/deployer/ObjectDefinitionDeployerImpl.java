@@ -118,6 +118,7 @@ import com.liferay.object.web.internal.notifications.ObjectUserNotificationsHand
 import com.liferay.object.web.internal.object.entries.application.list.ObjectEntriesPanelApp;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.factory.ObjectFieldFDSFilterFactoryRegistry;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.view.table.ObjectEntriesTableFDSView;
+import com.liferay.object.web.internal.object.entries.portlet.ObjectEntriesControlPanelEntry;
 import com.liferay.object.web.internal.object.entries.portlet.ObjectEntriesPortlet;
 import com.liferay.object.web.internal.object.entries.portlet.action.AutocompleteAssigneeMVCResourceCommand;
 import com.liferay.object.web.internal.object.entries.portlet.action.DeleteAttachmentMVCActionCommand;
@@ -139,6 +140,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.notifications.UserNotificationHandler;
+import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolver;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
@@ -161,6 +163,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MimeTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortletCategoryKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -695,6 +698,18 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 		if (!objectDefinition.isAllowStandaloneObjectEntry()) {
 			panelCategoryKey = StringPool.BLANK;
+		}
+
+		if (panelCategoryKey.startsWith(
+				PortletCategoryKeys.SITE_ADMINISTRATION)) {
+
+			serviceRegistrations.add(
+				_bundleContext.registerService(
+					ControlPanelEntry.class,
+					new ObjectEntriesControlPanelEntry(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"jakarta.portlet.name", objectDefinition.getPortletId()
+					).build()));
 		}
 
 		if (Validator.isNotNull(panelCategoryKey)) {

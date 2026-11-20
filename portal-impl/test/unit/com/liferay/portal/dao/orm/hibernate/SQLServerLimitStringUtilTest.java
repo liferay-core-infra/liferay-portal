@@ -35,10 +35,10 @@ public class SQLServerLimitStringUtilTest {
 	}
 
 	@Test
-	public void testInnerOrderBy() throws Exception {
+	public void testOrderByWithColumnInSelectList() throws Exception {
 		String sql =
 			"SELECT articleId, userName FROM JournalArticle ORDER BY " +
-				"modifiedDate ASC";
+				"userName ASC";
 
 		Assert.assertEquals(
 			sql + " offset 10 rows fetch next 20 rows only",
@@ -46,10 +46,10 @@ public class SQLServerLimitStringUtilTest {
 	}
 
 	@Test
-	public void testNoInnerOrderBy() throws Exception {
+	public void testOrderByWithColumnNotInSelectList() throws Exception {
 		String sql =
 			"SELECT articleId, userName FROM JournalArticle ORDER BY " +
-				"userName ASC";
+				"modifiedDate ASC";
 
 		Assert.assertEquals(
 			sql + " offset 10 rows fetch next 20 rows only",

@@ -25,37 +25,35 @@ public class SQLServerLimitStringUtilTest {
 
 	@Test
 	public void testDistinct() throws Exception {
-		String sql = SQLServerLimitStringUtil.getLimitString(
+		String sql =
 			"SELECT DISTINCT JournalArticle.* FROM JournalArticle ORDER BY " +
-				"userName ASC",
-			10, 30);
+				"userName ASC";
 
-		Assert.assertFalse(sql.contains("SELECT top DISTINCT"));
-		Assert.assertTrue(sql.contains("SELECT DISTINCT top"));
+		Assert.assertEquals(
+			sql + " offset 10 rows fetch next 20 rows only",
+			SQLServerLimitStringUtil.getLimitString(sql, 10, 30));
 	}
 
 	@Test
 	public void testInnerOrderBy() throws Exception {
-		String sql = SQLServerLimitStringUtil.getLimitString(
+		String sql =
 			"SELECT articleId, userName FROM JournalArticle ORDER BY " +
-				"modifiedDate ASC",
-			10, 30);
+				"modifiedDate ASC";
 
-		Assert.assertTrue(sql.indexOf("30") > 0);
-		Assert.assertTrue(sql.indexOf("11") > 0);
-		Assert.assertTrue(sql.indexOf("top") > 0);
+		Assert.assertEquals(
+			sql + " offset 10 rows fetch next 20 rows only",
+			SQLServerLimitStringUtil.getLimitString(sql, 10, 30));
 	}
 
 	@Test
 	public void testNoInnerOrderBy() throws Exception {
-		String sql = SQLServerLimitStringUtil.getLimitString(
+		String sql =
 			"SELECT articleId, userName FROM JournalArticle ORDER BY " +
-				"userName ASC",
-			10, 30);
+				"userName ASC";
 
-		Assert.assertTrue(sql.indexOf("30") > 0);
-		Assert.assertTrue(sql.indexOf("11") > 0);
-		Assert.assertTrue(sql.indexOf("top") != 0);
+		Assert.assertEquals(
+			sql + " offset 10 rows fetch next 20 rows only",
+			SQLServerLimitStringUtil.getLimitString(sql, 10, 30));
 	}
 
 	@Test
@@ -89,17 +87,14 @@ public class SQLServerLimitStringUtilTest {
 
 	@Test
 	public void testOrderByWithTextCast() throws Exception {
-		String sql = SQLServerLimitStringUtil.getLimitString(
-			StringBundler.concat(
-				"select DDMStructure.* from DDMStructure where ",
-				"DDMStructure.companyId = ? order by CAST(DDMStructure.name ",
-				"AS NVARCHAR(MAX)) ASC"),
-			20, 40);
+		String sql = StringBundler.concat(
+			"select DDMStructure.* from DDMStructure where ",
+			"DDMStructure.companyId = ? order by CAST(DDMStructure.name AS ",
+			"NVARCHAR(MAX)) ASC");
 
-		Assert.assertTrue(
-			sql.contains(
-				"order by CAST(DDMStructure.name AS NVARCHAR(MAX)) ASC"));
-		Assert.assertTrue(sql.contains("select top 40 DDMStructure.*"));
+		Assert.assertEquals(
+			sql + " offset 20 rows fetch next 20 rows only",
+			SQLServerLimitStringUtil.getLimitString(sql, 20, 40));
 	}
 
 	@Test

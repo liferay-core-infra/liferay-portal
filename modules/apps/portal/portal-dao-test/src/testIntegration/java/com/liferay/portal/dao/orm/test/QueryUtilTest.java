@@ -8,6 +8,7 @@ package com.liferay.portal.dao.orm.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
@@ -157,6 +158,57 @@ public class QueryUtilTest {
 	}
 
 	@Test
+	public void testSQLWithLimitWithDistinct() throws Exception {
+		Session session = null;
+
+		try {
+			session = _sessionFactory.openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
+				"SELECT DISTINCT id FROM (SELECT id FROM QueryUtilTest UNION " +
+					"ALL SELECT id FROM QueryUtilTest) unionTable ORDER BY " +
+						"id DESC");
+
+			sqlQuery.addScalar("id", Type.INTEGER);
+
+			Assert.assertEquals(
+				Arrays.asList(14, 13, 12, 11, 10),
+				QueryUtil.list(
+					sqlQuery, _sessionFactory.getDialect(), 5, 10, true));
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
+	}
+
+	@Test
+	public void testSQLWithLimitWithOrderByParameter() throws Exception {
+		Session session = null;
+
+		try {
+			session = _sessionFactory.openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
+				"SELECT id FROM QueryUtilTest ORDER BY CASE WHEN value < ? " +
+					"THEN 1 ELSE 0 END ASC, id ASC");
+
+			sqlQuery.addScalar("id", Type.INTEGER);
+
+			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+
+			queryPos.add(10);
+
+			Assert.assertEquals(
+				Arrays.asList(10, 11, 12, 13, 14),
+				QueryUtil.list(
+					sqlQuery, _sessionFactory.getDialect(), 0, 5, true));
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
+	}
+
+	@Test
 	public void testSQLWithLimitWithOuterOrder1Ascending() throws Exception {
 		testSQLWithLimitWithOuterOrder(
 			"value ASC", 0, 10, Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
@@ -215,6 +267,15 @@ public class QueryUtilTest {
 	}
 
 	@Test
+	public void testSQLWithLimitWithOuterOrderParenthesisInLiteral()
+		throws Exception {
+
+		testSQLWithLimitWithOuterOrder(
+			"CASE WHEN id < 10 THEN 'b)' ELSE 'a)' END ASC, id ASC", 0, 5,
+			Arrays.asList(10, 11, 12, 13, 14));
+	}
+
+	@Test
 	public void testUnionSQL1() throws Exception {
 		testUnionSQL(
 			"ASC", _SIZE / 2, _SIZE + (_SIZE / 2), _SIZE, "id", "value");
@@ -244,6 +305,27 @@ public class QueryUtilTest {
 	@Test
 	public void testUnionSQL6() throws Exception {
 		testUnionSQL("DESC", _SIZE, _SIZE * 2, _SIZE, "id", "id");
+	}
+
+	@Test
+	public void testUnionSQLWithoutOrderBy() throws Exception {
+		Session session = null;
+
+		try {
+			session = _sessionFactory.openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
+				_SQL_UNION_SELECT);
+
+			List<Object[]> result = (List<Object[]>)QueryUtil.list(
+				sqlQuery, _sessionFactory.getDialect(), _SIZE / 2,
+				_SIZE + (_SIZE / 2), true);
+
+			Assert.assertEquals(result.toString(), _SIZE, result.size());
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
 	}
 
 	protected static String[] createInserts(int amount) {

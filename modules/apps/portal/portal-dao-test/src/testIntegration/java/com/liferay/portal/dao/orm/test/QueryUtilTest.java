@@ -210,41 +210,41 @@ public class QueryUtilTest {
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder1Ascending() throws Exception {
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"value ASC", 0, 10, Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder1Descending() throws Exception {
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"value DESC", 0, 10,
 			Arrays.asList(19, 18, 17, 16, 15, 14, 13, 12, 11, 10));
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder2Ascending() throws Exception {
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"value ASC", 5, 15,
 			Arrays.asList(5, 6, 7, 8, 9, 10, 11, 12, 13, 14));
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder2Descending() throws Exception {
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"value DESC", 5, 15,
 			Arrays.asList(14, 13, 12, 11, 10, 9, 8, 7, 6, 5));
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder3Ascending() throws Exception {
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"value ASC", 10, 20,
 			Arrays.asList(10, 11, 12, 13, 14, 15, 16, 17, 18, 19));
 	}
 
 	@Test
 	public void testSQLWithLimitWithOuterOrder3Descending() throws Exception {
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"value DESC", 10, 20, Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 	}
 
@@ -252,7 +252,7 @@ public class QueryUtilTest {
 	public void testSQLWithLimitWithOuterOrderMultipleColumns()
 		throws Exception {
 
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"id ASC, value DESC", 0, 10,
 			Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
 	}
@@ -261,7 +261,7 @@ public class QueryUtilTest {
 	public void testSQLWithLimitWithOuterOrderMultipleColumnsIncludingCastClobText()
 		throws Exception {
 
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"id ASC, CAST_CLOB_TEXT(name) DESC", 0, 10,
 			Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
 	}
@@ -270,7 +270,7 @@ public class QueryUtilTest {
 	public void testSQLWithLimitWithOuterOrderParenthesisInLiteral()
 		throws Exception {
 
-		testSQLWithLimitWithOuterOrder(
+		_testSQLWithLimitWithOuterOrder(
 			"CASE WHEN id < 10 THEN 'b)' ELSE 'a)' END ASC, id ASC", 0, 5,
 			Arrays.asList(10, 11, 12, 13, 14));
 	}
@@ -390,30 +390,6 @@ public class QueryUtilTest {
 		}
 	}
 
-	protected void testSQLWithLimitWithOuterOrder(
-			String orderBy, int start, int end, List<Integer> expectedIds)
-		throws Exception {
-
-		Session session = null;
-
-		try {
-			session = _sessionFactory.openSession();
-
-			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
-				"SELECT id FROM QueryUtilTest ORDER BY ".concat(orderBy));
-
-			sqlQuery.addScalar("id", Type.INTEGER);
-
-			Assert.assertEquals(
-				expectedIds,
-				QueryUtil.list(
-					sqlQuery, _sessionFactory.getDialect(), start, end, true));
-		}
-		finally {
-			_sessionFactory.closeSession(session);
-		}
-	}
-
 	protected void testUnionSQL(
 			String order, int start, int end, int size, String firstType,
 			String lastType)
@@ -443,6 +419,30 @@ public class QueryUtilTest {
 			Assert.assertEquals(
 				firstType, StringUtil.trim((String)firstRow[0]));
 			Assert.assertEquals(lastType, StringUtil.trim((String)lastRow[0]));
+		}
+		finally {
+			_sessionFactory.closeSession(session);
+		}
+	}
+
+	private void _testSQLWithLimitWithOuterOrder(
+			String orderBy, int start, int end, List<Integer> expectedIds)
+		throws Exception {
+
+		Session session = null;
+
+		try {
+			session = _sessionFactory.openSession();
+
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(
+				"SELECT id FROM QueryUtilTest ORDER BY ".concat(orderBy));
+
+			sqlQuery.addScalar("id", Type.INTEGER);
+
+			Assert.assertEquals(
+				expectedIds,
+				QueryUtil.list(
+					sqlQuery, _sessionFactory.getDialect(), start, end, true));
 		}
 		finally {
 			_sessionFactory.closeSession(session);

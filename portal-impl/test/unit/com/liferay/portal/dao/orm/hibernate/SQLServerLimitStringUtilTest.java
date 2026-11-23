@@ -73,6 +73,21 @@ public class SQLServerLimitStringUtilTest {
 	}
 
 	@Test
+	public void testOrderByWithMultipleColumnsIncludingTextCast()
+		throws Exception {
+
+		String sql = SQLServerLimitStringUtil.getLimitString(
+			"select Layout.priority, Layout.name from Layout order by " +
+				"Layout.priority ASC, CAST(Layout.name AS NVARCHAR(MAX)) ASC",
+			20, 40);
+
+		Assert.assertTrue(
+			sql.contains(
+				"order by Layout.priority ASC, CAST(Layout.name AS " +
+					"NVARCHAR(MAX)) ASC"));
+	}
+
+	@Test
 	public void testOrderByWithTextCast() throws Exception {
 		String sql = SQLServerLimitStringUtil.getLimitString(
 			StringBundler.concat(

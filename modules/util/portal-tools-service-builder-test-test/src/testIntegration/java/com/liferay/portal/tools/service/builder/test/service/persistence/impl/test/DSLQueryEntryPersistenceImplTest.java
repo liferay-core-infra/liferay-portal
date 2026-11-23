@@ -317,6 +317,23 @@ public class DSLQueryEntryPersistenceImplTest {
 	}
 
 	@Test
+	public void testDSLQueryLimitWithOrderByMultipleColumns() {
+		Assert.assertEquals(
+			Arrays.asList(_TEST_NAME_3, _TEST_NAME_2),
+			_dslQueryEntryPersistence.dslQuery(
+				DSLQueryFactoryUtil.select(
+					DSLQueryEntryTable.INSTANCE.name
+				).from(
+					DSLQueryEntryTable.INSTANCE
+				).orderBy(
+					DSLQueryEntryTable.INSTANCE.name.descending(),
+					DSLQueryEntryTable.INSTANCE.dslQueryEntryId.ascending()
+				).limit(
+					0, 2
+				)));
+	}
+
+	@Test
 	public void testDSLQueryOrderBy() {
 		Assert.assertEquals(
 			Arrays.asList(1L, 3L, 2L),

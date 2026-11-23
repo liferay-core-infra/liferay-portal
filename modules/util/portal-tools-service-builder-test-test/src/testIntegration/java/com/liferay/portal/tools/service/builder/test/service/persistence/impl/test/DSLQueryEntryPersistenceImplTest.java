@@ -302,6 +302,22 @@ public class DSLQueryEntryPersistenceImplTest {
 	}
 
 	@Test
+	public void testDSLQueryLimitWithDistinctAndWithOrderBy() {
+		Assert.assertEquals(
+			Arrays.asList(3L, 2L),
+			_dslQueryEntryPersistence.dslQuery(
+				DSLQueryFactoryUtil.selectDistinct(
+					DSLQueryEntryTable.INSTANCE.dslQueryEntryId
+				).from(
+					DSLQueryEntryTable.INSTANCE
+				).orderBy(
+					DSLQueryEntryTable.INSTANCE.dslQueryEntryId.descending()
+				).limit(
+					0, 2
+				)));
+	}
+
+	@Test
 	public void testDSLQueryLimitWithDistinctAndWithoutOrderBy() {
 		List<Long> dslQueryEntryIds = _dslQueryEntryPersistence.dslQuery(
 			DSLQueryFactoryUtil.selectDistinct(

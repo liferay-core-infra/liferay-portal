@@ -35,6 +35,21 @@ public class SQLServerLimitStringUtilTest {
 	}
 
 	@Test
+	public void testOrderByInSubquery() throws Exception {
+		String sql =
+			"select t.articleId from (select top 10 articleId from " +
+				"JournalArticle order by modifiedDate DESC) t";
+
+		Assert.assertEquals(
+			StringBundler.concat(
+				"select * from (select *, row_number() over ( order by ",
+				"CURRENT_TIMESTAMP) as _page_row_num from (", sql,
+				" ) _temp_table_1 ) _temp_table_2 where _page_row_num between ",
+				"1 and 5 order by _page_row_num"),
+			SQLServerLimitStringUtil.getLimitString(sql, 0, 5));
+	}
+
+	@Test
 	public void testOrderByWithColumnInSelectList() throws Exception {
 		String sql =
 			"SELECT articleId, userName FROM JournalArticle ORDER BY " +
@@ -83,6 +98,17 @@ public class SQLServerLimitStringUtilTest {
 			sql.contains(
 				"order by Layout.priority ASC, CAST(Layout.name AS " +
 					"NVARCHAR(MAX)) ASC"));
+	}
+
+	@Test
+	public void testOrderByWithParenthesisInLiteral() throws Exception {
+		String sql =
+			"SELECT articleId, userName FROM JournalArticle ORDER BY CASE " +
+				"WHEN userName = ')' THEN 0 ELSE 1 END ASC";
+
+		Assert.assertEquals(
+			sql + " offset 10 rows fetch next 20 rows only",
+			SQLServerLimitStringUtil.getLimitString(sql, 10, 30));
 	}
 
 	@Test

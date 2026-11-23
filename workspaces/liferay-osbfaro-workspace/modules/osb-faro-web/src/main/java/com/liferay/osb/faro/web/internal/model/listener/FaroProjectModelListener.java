@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.transaction.TransactionCallbackUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -31,12 +32,17 @@ public class FaroProjectModelListener extends BaseModelListener<FaroProject> {
 			return;
 		}
 
-		try {
-			_workspaceSiteHelper.initialize(faroProject);
-		}
-		catch (Exception exception) {
-			_log.error(exception);
-		}
+		TransactionCallbackUtil.registerCommitCallback(
+			() -> {
+				try {
+					_workspaceSiteHelper.initialize(faroProject);
+				}
+				catch (Exception exception) {
+					_log.error(exception);
+				}
+
+				return null;
+			});
 	}
 
 	@Override

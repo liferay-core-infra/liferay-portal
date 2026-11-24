@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
  * @author Alejandro Tardín
  */
 @RunWith(Arquillian.class)
-public class ObjectEntryResourcePerformanceTest
+public class ObjectEntryResourceQueryCountTest
 	extends BaseObjectEntryResourceTestCase {
 
 	@ClassRule

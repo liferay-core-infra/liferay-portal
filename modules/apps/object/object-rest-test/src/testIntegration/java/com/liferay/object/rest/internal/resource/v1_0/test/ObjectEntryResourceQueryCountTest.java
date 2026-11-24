@@ -58,12 +58,12 @@ public class ObjectEntryResourceQueryCountTest
 					OBJECT_FIELD_NAME_TEXT, " eq '", _OBJECT_FIELD_VALUE, "'")),
 			"&pageSize=20");
 
-		int queriesCount = _getObjectEntryQueriesCount(5, endpoint);
+		int queriesCount = _getObjectEntryQueriesCount(endpoint, 5);
 
 		_addObjectEntries(5);
 
 		Assert.assertEquals(
-			queriesCount, _getObjectEntryQueriesCount(10, endpoint));
+			queriesCount, _getObjectEntryQueriesCount(endpoint, 10));
 	}
 
 	private void _addObjectEntries(int count) throws Exception {
@@ -75,7 +75,7 @@ public class ObjectEntryResourceQueryCountTest
 	}
 
 	private int _getObjectEntryQueriesCount(
-			int expectedItemsCount, String endpoint)
+			String endpoint, int expectedItemsCount)
 		throws Exception {
 
 		HTTPTestUtil.invokeToJSONObject(null, endpoint, Http.Method.GET);

@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import org.junit.Assert;
@@ -39,16 +40,27 @@ public class TemplateRestrictedMethodsTest {
 	public void testGetRestrictedMethods() throws Exception {
 		User user = TestPropsValues.getUser();
 
-		_testGetRestrictedMethods("${object.attributeGetterFunctions}", user);
-		_testGetRestrictedMethods("${object.digest}", user);
-		_testGetRestrictedMethods("${object.modelAttributes.digest}", user);
-		_testGetRestrictedMethods("${object.modelAttributes.password}", user);
+		_testGetRestrictedMethods(user, "${object.attributeGetterFunctions}");
+		_testGetRestrictedMethods(user, "${object.digest}");
+		_testGetRestrictedMethods(user, "${object.modelAttributes.digest}");
+		_testGetRestrictedMethods(user, "${object.modelAttributes.password}");
 		_testGetRestrictedMethods(
-			"${object.modelAttributes.reminderQueryAnswer}", user);
-		_testGetRestrictedMethods("${object.toCacheModel()}", user);
+			user, "${object.modelAttributes.reminderQueryAnswer}");
+		_testGetRestrictedMethods(user, "${object.toCacheModel()}");
+
+		Object portletPreferences = PrefsPropsUtil.getPreferences(
+			TestPropsValues.getCompanyId());
+
+		_testGetRestrictedMethods(
+			portletPreferences, "${object.getPortalPreferencesImpl()}");
+		_testGetRestrictedMethods(portletPreferences, "${object.reset}");
+		_testGetRestrictedMethods(portletPreferences, "${object.setValues}");
+		_testGetRestrictedMethods(portletPreferences, "${object.setValue}");
+		_testGetRestrictedMethods(portletPreferences, "${object.store()}");
 	}
 
-	private void _testGetRestrictedMethods(String templateContent, User user)
+	private void _testGetRestrictedMethods(
+			Object object, String templateContent)
 		throws Exception {
 
 		Template template = TemplateManagerUtil.getTemplate(
@@ -57,7 +69,7 @@ public class TemplateRestrictedMethodsTest {
 				RandomTestUtil.randomString(), templateContent),
 			true);
 
-		template.put("object", user);
+		template.put("object", object);
 
 		try {
 			template.processTemplate(new UnsyncStringWriter());

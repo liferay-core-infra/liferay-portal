@@ -84,6 +84,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -373,6 +374,36 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				}
 
 				return null;
+			});
+	}
+
+	@Override
+	public List<ObjectEntry> getObjectEntries(long[] objectEntryIds)
+		throws PortalException {
+
+		Map<Serializable, ObjectEntry> objectEntriesMap =
+			objectEntryPersistence.fetchByPrimaryKeys(
+				new HashSet<>(ListUtil.fromArray(objectEntryIds)));
+
+		return TransformUtil.unsafeTransformToList(
+			objectEntryIds,
+			objectEntryId -> {
+				ObjectEntry objectEntry = objectEntriesMap.get(objectEntryId);
+
+				if (objectEntry == null) {
+					objectEntry = objectEntryPersistence.findByPrimaryKey(
+						objectEntryId);
+				}
+
+				if (!ObjectEntryThreadLocal.
+						isSkipObjectEntryResourcePermission()) {
+
+					_checkPermission(
+						ActionKeys.VIEW, objectEntry.getObjectDefinitionId(),
+						objectEntry);
+				}
+
+				return objectEntry;
 			});
 	}
 

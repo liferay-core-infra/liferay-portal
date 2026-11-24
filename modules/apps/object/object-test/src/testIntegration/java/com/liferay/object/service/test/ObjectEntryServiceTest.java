@@ -908,6 +908,9 @@ public class ObjectEntryServiceTest {
 		ObjectEntry objectEntry2 = _addObjectEntry(_user);
 
 		Assert.assertEquals(
+			Arrays.asList(objectEntry1, objectEntry2),
+			_getObjectEntries(_user, objectEntry1, objectEntry2));
+		Assert.assertEquals(
 			Arrays.asList(objectEntry2, objectEntry1),
 			_getObjectEntries(_user, objectEntry2, objectEntry1));
 

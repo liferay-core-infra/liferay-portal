@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.PortalPreferenceValueLocalService;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
+import com.liferay.portal.kernel.template.TemplateRestricted;
 import com.liferay.portal.kernel.transaction.TransactionCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
@@ -566,6 +567,7 @@ public class PrefsPropsImpl implements PrefsProps {
 		}
 
 		@Override
+		@TemplateRestricted
 		public void reset(String key) throws ReadOnlyException {
 			_ensureLoaded();
 
@@ -573,6 +575,7 @@ public class PrefsPropsImpl implements PrefsProps {
 		}
 
 		@Override
+		@TemplateRestricted
 		public void setValue(String key, String value)
 			throws ReadOnlyException {
 
@@ -582,6 +585,7 @@ public class PrefsPropsImpl implements PrefsProps {
 		}
 
 		@Override
+		@TemplateRestricted
 		public void setValues(String key, String... values)
 			throws ReadOnlyException {
 
@@ -591,6 +595,7 @@ public class PrefsPropsImpl implements PrefsProps {
 		}
 
 		@Override
+		@TemplateRestricted
 		public void store() throws IOException, ValidatorException {
 			_ensureLoaded();
 

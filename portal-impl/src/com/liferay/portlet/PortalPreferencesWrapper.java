@@ -5,6 +5,8 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.template.TemplateRestricted;
+
 import jakarta.portlet.PortletPreferences;
 
 import java.io.IOException;
@@ -40,6 +42,7 @@ public class PortalPreferencesWrapper
 		return _portalPreferencesImpl.getNames(null);
 	}
 
+	@TemplateRestricted
 	public PortalPreferencesImpl getPortalPreferencesImpl() {
 		return _portalPreferencesImpl;
 	}
@@ -60,21 +63,25 @@ public class PortalPreferencesWrapper
 	}
 
 	@Override
+	@TemplateRestricted
 	public void reset(String key) {
 		_portalPreferencesImpl.reset(null, key);
 	}
 
 	@Override
+	@TemplateRestricted
 	public void setValue(String key, String value) {
 		_portalPreferencesImpl.setValue(null, key, value);
 	}
 
 	@Override
+	@TemplateRestricted
 	public void setValues(String key, String... values) {
 		_portalPreferencesImpl.setValues(null, key, values);
 	}
 
 	@Override
+	@TemplateRestricted
 	public void store() throws IOException {
 		_portalPreferencesImpl.store();
 	}

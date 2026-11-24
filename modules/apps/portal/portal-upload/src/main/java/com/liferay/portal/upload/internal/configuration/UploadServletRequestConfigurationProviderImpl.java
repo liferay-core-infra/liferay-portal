@@ -27,6 +27,11 @@ public class UploadServletRequestConfigurationProviderImpl
 	implements UploadServletRequestConfigurationProvider {
 
 	@Override
+	public long getMaxPartsCount() {
+		return _uploadServletRequestConfiguration.maxPartsCount();
+	}
+
+	@Override
 	public long getMaxSize() {
 		return _uploadServletRequestConfiguration.maxSize();
 	}

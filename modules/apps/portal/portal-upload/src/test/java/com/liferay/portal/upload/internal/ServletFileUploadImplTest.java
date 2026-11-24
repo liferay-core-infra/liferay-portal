@@ -61,6 +61,12 @@ public class ServletFileUploadImplTest {
 					UploadServletRequestConfigurationProviderUtil.class)) {
 
 			mockedStatic.when(
+				UploadServletRequestConfigurationProviderUtil::getMaxPartsCount
+			).thenReturn(
+				2L
+			);
+
+			mockedStatic.when(
 				UploadServletRequestConfigurationProviderUtil::
 					getMaxSizeWithPadding
 			).thenReturn(

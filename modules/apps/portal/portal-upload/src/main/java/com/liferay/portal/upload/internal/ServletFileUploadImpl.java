@@ -47,6 +47,8 @@ public class ServletFileUploadImpl implements ServletFileUpload {
 			UploadServletRequestConfigurationProviderUtil.
 				getMaxSizeWithPadding();
 
+		servletFileUpload.setFileCountMax(
+			UploadServletRequestConfigurationProviderUtil.getMaxPartsCount());
 		servletFileUpload.setFileSizeMax(fileMaxSize);
 		servletFileUpload.setSizeMax(fileMaxSize);
 

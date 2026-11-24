@@ -5,10 +5,12 @@
 
 package com.liferay.portal.upload.internal;
 
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.upload.FileItem;
 import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.configuration.UploadServletRequestConfigurationProviderUtil;
 import com.liferay.portal.upload.ServletFileUpload;
+import com.liferay.portal.upload.internal.configuration.UploadServletRequestConfiguration;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -16,16 +18,22 @@ import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 
 /**
  * @author Shuyang Zhou
  */
-@Component(service = ServletFileUpload.class)
+@Component(
+	configurationPid = "com.liferay.portal.upload.internal.configuration.UploadServletRequestConfiguration",
+	service = ServletFileUpload.class
+)
 public class ServletFileUploadImpl implements ServletFileUpload {
 
 	@Override
@@ -47,6 +55,8 @@ public class ServletFileUploadImpl implements ServletFileUpload {
 			UploadServletRequestConfigurationProviderUtil.
 				getMaxSizeWithPadding();
 
+		servletFileUpload.setFileCountMax(
+			_uploadServletRequestConfiguration.maxPartsCount());
 		servletFileUpload.setFileSizeMax(fileMaxSize);
 		servletFileUpload.setSizeMax(fileMaxSize);
 
@@ -77,5 +87,16 @@ public class ServletFileUploadImpl implements ServletFileUpload {
 			throw uploadException;
 		}
 	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_uploadServletRequestConfiguration =
+			ConfigurableUtil.createConfigurable(
+				UploadServletRequestConfiguration.class, properties);
+	}
+
+	private volatile UploadServletRequestConfiguration
+		_uploadServletRequestConfiguration;
 
 }

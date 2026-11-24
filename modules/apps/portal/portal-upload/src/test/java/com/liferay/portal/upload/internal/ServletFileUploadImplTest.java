@@ -13,6 +13,8 @@ import com.liferay.portal.kernel.upload.configuration.UploadServletRequestConfig
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.HashMap;
+
 import org.apache.commons.fileupload.FileCountLimitExceededException;
 
 import org.junit.Assert;
@@ -39,6 +41,8 @@ public class ServletFileUploadImplTest {
 	public void testParseRequest() throws Exception {
 		ServletFileUploadImpl servletFileUploadImpl =
 			new ServletFileUploadImpl();
+
+		servletFileUploadImpl.activate(new HashMap<>());
 
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();

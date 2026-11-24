@@ -17,9 +17,9 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.test.log.LogCapture;
-import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -92,19 +92,13 @@ public class ObjectEntryResourcePerformanceTest
 
 			Assert.assertEquals(expectedItemsCount, itemsJSONArray.length());
 
-			int queriesCount = 0;
+			return ListUtil.count(
+				logCapture.getLogEntries(),
+				logEntry -> {
+					String message = logEntry.getMessage();
 
-			for (LogEntry logEntry : logCapture.getLogEntries()) {
-				String message = logEntry.getMessage();
-
-				if (!message.contains(" ObjectEntry ")) {
-					continue;
-				}
-
-				queriesCount++;
-			}
-
-			return queriesCount;
+					return message.contains(" ObjectEntry ");
+				});
 		}
 	}
 

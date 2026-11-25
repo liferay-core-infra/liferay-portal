@@ -49,6 +49,7 @@ import com.liferay.object.tree.Node;
 import com.liferay.object.tree.Tree;
 import com.liferay.object.tree.constants.TreeConstants;
 import com.liferay.petra.function.UnsafeBiFunction;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -895,6 +896,35 @@ public class ObjectEntryServiceTest {
 		_testGetObjectEntries(
 			true, true, ObjectRelationshipConstants.TYPE_MANY_TO_MANY,
 			unsafeBiFunction);
+	}
+
+	@Test
+	@TestInfo("LPD-117379")
+	public void testGetObjectEntries() throws Exception {
+
+		// Can get object entries with owner permission
+
+		ObjectEntry objectEntry1 = _addObjectEntry(_user);
+		ObjectEntry objectEntry2 = _addObjectEntry(_user);
+
+		Assert.assertEquals(
+			Arrays.asList(objectEntry1, objectEntry2),
+			_getObjectEntries(_user, objectEntry1, objectEntry2));
+		Assert.assertEquals(
+			Arrays.asList(objectEntry2, objectEntry1),
+			_getObjectEntries(_user, objectEntry2, objectEntry1));
+
+		// Cannot get object entries without model permission
+
+		ObjectEntry objectEntry3 = _addObjectEntry(_adminUser);
+
+		AssertUtils.assertFailure(
+			PrincipalException.MustHavePermission.class,
+			StringBundler.concat(
+				"User ", _user.getUserId(), " must have ", ActionKeys.VIEW,
+				" permission for ", _objectDefinition.getClassName(),
+				StringPool.SPACE, objectEntry3.getObjectEntryId()),
+			() -> _getObjectEntries(_user, objectEntry1, objectEntry3));
 	}
 
 	@Test
@@ -2012,6 +2042,19 @@ public class ObjectEntryServiceTest {
 			}
 
 			Assert.assertEquals(1, count);
+		}
+	}
+
+	private List<ObjectEntry> _getObjectEntries(
+			User user, ObjectEntry... objectEntries)
+		throws Exception {
+
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				user)) {
+
+			return _objectEntryService.getObjectEntries(
+				TransformUtil.transformToLongArray(
+					objectEntries, ObjectEntry::getObjectEntryId));
 		}
 	}
 

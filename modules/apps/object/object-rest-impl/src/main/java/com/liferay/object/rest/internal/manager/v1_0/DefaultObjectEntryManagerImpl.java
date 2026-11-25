@@ -3110,12 +3110,12 @@ public class DefaultObjectEntryManagerImpl
 				groupIds, objectDefinition, predicate, preferApproved, search,
 				sorts)) {
 
-			serviceBuilderObjectEntries = TransformUtil.transform(
-				objectEntryLocalService.getPrimaryKeys(
-					groupIds, companyId, dtoConverterContext.getUserId(),
-					objectDefinition.getObjectDefinitionId(), predicate,
-					preferApproved, search, start, end, sorts),
-				primaryKey -> _objectEntryService.getObjectEntry(primaryKey));
+			serviceBuilderObjectEntries = _objectEntryService.getObjectEntries(
+				ArrayUtil.toLongArray(
+					objectEntryLocalService.getPrimaryKeys(
+						groupIds, companyId, dtoConverterContext.getUserId(),
+						objectDefinition.getObjectDefinitionId(), predicate,
+						preferApproved, search, start, end, sorts)));
 			objectEntriesCount = objectEntryLocalService.getValuesListCount(
 				groupIds, companyId, dtoConverterContext.getUserId(),
 				objectDefinition.getObjectDefinitionId(), predicate,

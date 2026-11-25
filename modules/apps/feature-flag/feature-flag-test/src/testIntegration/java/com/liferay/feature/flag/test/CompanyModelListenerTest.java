@@ -41,7 +41,7 @@ public class CompanyModelListenerTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testDeprecationFeatureFlags() throws Exception {
+	public void testOnAfterCreate() throws Exception {
 		PortalPreferencesWrapper portalPreferencesWrapper =
 			(PortalPreferencesWrapper)
 				_portalPreferencesLocalService.getPreferences(

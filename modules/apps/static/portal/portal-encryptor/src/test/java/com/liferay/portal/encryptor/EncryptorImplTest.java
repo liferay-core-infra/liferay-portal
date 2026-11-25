@@ -109,6 +109,30 @@ public class EncryptorImplTest {
 	}
 
 	@Test
+	public void testEncryptWithKeysOfTheSameHashCode() throws Exception {
+		Encryptor encryptor = new EncryptorImpl();
+
+		Key key1 = encryptor.generateKey();
+
+		byte[] bytes = key1.getEncoded();
+
+		bytes[0] ^= 0x01;
+
+		Key key2 = new SecretKeySpec(bytes, key1.getAlgorithm());
+
+		Assert.assertEquals(key1.hashCode(), key2.hashCode());
+
+		String encryptedString1 = encryptor.encrypt(key1, _PLAINTEXT);
+		String encryptedString2 = encryptor.encrypt(key2, _PLAINTEXT);
+
+		Assert.assertEquals(
+			_PLAINTEXT, encryptor.decrypt(key1, encryptedString1));
+		Assert.assertEquals(
+			_PLAINTEXT, encryptor.decrypt(key2, encryptedString2));
+		Assert.assertNotEquals(encryptedString1, encryptedString2);
+	}
+
+	@Test
 	public void testSerializeKey() throws Exception {
 		Encryptor encryptor = new EncryptorImpl();
 

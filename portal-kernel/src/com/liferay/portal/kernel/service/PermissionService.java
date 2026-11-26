@@ -72,4 +72,4 @@ public interface PermissionService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:1997576232
+// LIFERAY-SERVICE-BUILDER-HASH:-233742730

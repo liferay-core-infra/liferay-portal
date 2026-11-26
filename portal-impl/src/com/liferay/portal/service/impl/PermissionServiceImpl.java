@@ -14,7 +14,9 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
@@ -28,6 +30,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionRegistryUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionUtil;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.service.permission.TeamPermissionUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutPersistence;
@@ -36,6 +39,7 @@ import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.TeamPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.service.base.PermissionServiceBaseImpl;
 
 import java.util.List;
@@ -139,6 +143,9 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 			if (portletNames.contains(name)) {
 				groupId = 0;
 			}
+			else {
+				groupId = _getGroupId(groupId, name, primKey);
+			}
 		}
 
 		if (checkModelResourcePermission(
@@ -233,6 +240,43 @@ public class PermissionServiceImpl extends PermissionServiceBaseImpl {
 				}
 			}
 		}
+	}
+
+	private long _getGroupId(long groupId, String name, String primKey)
+		throws PortalException {
+
+		int index = name.indexOf(
+			ResourceActionsUtil.getCompositeModelNameSeparator());
+
+		String className = name;
+
+		if (index != -1) {
+			className = name.substring(0, index);
+		}
+
+		PersistedModelLocalService persistedModelLocalService =
+			PersistedModelLocalServiceRegistryUtil.
+				getPersistedModelLocalService(className);
+
+		if (persistedModelLocalService == null) {
+			return groupId;
+		}
+
+		PersistedModel persistedModel =
+			persistedModelLocalService.fetchPersistedModel(
+				GetterUtil.getLong(primKey));
+
+		if (persistedModel == null) {
+			return groupId;
+		}
+
+		if (persistedModel instanceof GroupedModel) {
+			GroupedModel groupedModel = (GroupedModel)persistedModel;
+
+			return groupedModel.getGroupId();
+		}
+
+		return 0;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

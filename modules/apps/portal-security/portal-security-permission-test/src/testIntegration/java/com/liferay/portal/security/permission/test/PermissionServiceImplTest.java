@@ -6,6 +6,12 @@
 package com.liferay.portal.security.permission.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.layout.test.util.LayoutTestUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
@@ -13,6 +19,8 @@ import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.PermissionService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -102,13 +110,15 @@ public class PermissionServiceImplTest {
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 
+		long[] groupIds = {RandomTestUtil.randomLong()};
+
 		PermissionThreadLocal.setPermissionChecker(
 			(PermissionChecker)ProxyUtil.newProxyInstance(
 				PermissionChecker.class.getClassLoader(),
 				new Class<?>[] {PermissionChecker.class},
 				(proxy, method, args) -> {
 					if (Objects.equals(method.getName(), "hasPermission")) {
-						groupId[0] = (Long)args[0];
+						groupIds[0] = (Long)args[0];
 
 						return true;
 					}
@@ -140,12 +150,12 @@ public class PermissionServiceImplTest {
 			_permissionService.checkPermission(
 				RandomTestUtil.randomLong(), modelName, modelName);
 
-			Assert.assertEquals(0, groupId[0]);
+			Assert.assertEquals(0, groupIds[0]);
 
 			_permissionService.checkPermission(
 				RandomTestUtil.randomLong(), portletName, portletName);
 
-			Assert.assertEquals(0, groupId[0]);
+			Assert.assertEquals(0, groupIds[0]);
 		}
 		finally {
 			resourceActionsUtil.setResourceActions(_resourceActions);
@@ -153,7 +163,56 @@ public class PermissionServiceImplTest {
 		}
 	}
 
+	@Test
+	public void testCheckPermissionWithModelResource() throws Exception {
+		_group = GroupTestUtil.addGroup();
+
+		long[] groupIds = {RandomTestUtil.randomLong()};
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		PermissionThreadLocal.setPermissionChecker(
+			(PermissionChecker)ProxyUtil.newProxyInstance(
+				PermissionChecker.class.getClassLoader(),
+				new Class<?>[] {PermissionChecker.class},
+				(proxy, method, args) -> {
+					if (Objects.equals(method.getName(), "hasPermission")) {
+						groupIds[0] = (Long)args[0];
+
+						return true;
+					}
+
+					return method.invoke(permissionChecker, args);
+				}));
+
+		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
+			_group.getGroupId(), JournalArticle.class.getName());
+
+		_permissionService.checkPermission(
+			RandomTestUtil.randomLong(),
+			ResourceActionsUtil.getCompositeModelName(
+				DDMStructure.class.getName(), JournalArticle.class.getName()),
+			ddmStructure.getStructureId());
+
+		Assert.assertEquals(_group.getGroupId(), groupIds[0]);
+
+		_layoutSetPrototype = LayoutTestUtil.addLayoutSetPrototype(
+			RandomTestUtil.randomString());
+
+		_permissionService.checkPermission(
+			RandomTestUtil.randomLong(), LayoutSetPrototype.class.getName(),
+			_layoutSetPrototype.getLayoutSetPrototypeId());
+
+		Assert.assertEquals(0, groupIds[0]);
+	}
+
 	private static final String _CLASS_NAME = "PermissionServiceImplTest";
+
+	@DeleteAfterTestRun
+	private Group _group;
+
+	@DeleteAfterTestRun
+	private LayoutSetPrototype _layoutSetPrototype;
 
 	@Inject
 	private PermissionService _permissionService;

@@ -18,6 +18,7 @@ package org.apache.axis.message;
 import org.apache.axis.AxisFault;
 import org.apache.axis.Constants;
 import org.apache.axis.MessageContext;
+import org.apache.axis.components.logger.LogFactory;
 import org.apache.axis.description.FaultDesc;
 import org.apache.axis.description.OperationDesc;
 import org.apache.axis.encoding.Callback;
@@ -28,6 +29,7 @@ import org.apache.axis.encoding.DeserializerImpl;
 import org.apache.axis.soap.SOAPConstants;
 import org.apache.axis.utils.ClassUtils;
 import org.apache.axis.utils.Messages;
+import org.apache.commons.logging.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -42,6 +44,9 @@ import java.util.Iterator;
  */
 public class SOAPFaultDetailsBuilder extends SOAPHandler implements Callback
 {
+    protected static Log log =
+            LogFactory.getLog(SOAPFaultDetailsBuilder.class.getName());
+
     protected SOAPFaultBuilder builder;
     
     public SOAPFaultDetailsBuilder(SOAPFaultBuilder builder) {
@@ -180,8 +185,13 @@ public class SOAPFaultDetailsBuilder extends SOAPHandler implements Callback
         } else if ("exceptionName".equals(hint)) {
             String faultClassName = (String) value;
             try {
-                Class faultClass = ClassUtils.forName(faultClassName);
-                builder.setFaultClass(faultClass);
+                Class faultClass = ClassUtils.forName(faultClassName, false);
+                if (AxisFault.class.isAssignableFrom(faultClass)) {
+                    builder.setFaultClass(faultClass);
+                } else if (log.isDebugEnabled()) {
+                    log.debug("Ignoring fault exceptionName '" + faultClassName
+                            + "': not an org.apache.axis.AxisFault subtype");
+                }
             } catch (ClassNotFoundException e) {
                 // Just create an AxisFault, no custom exception
             }
@@ -191,3 +201,4 @@ public class SOAPFaultDetailsBuilder extends SOAPHandler implements Callback
 }
 
 
+/* @generated */

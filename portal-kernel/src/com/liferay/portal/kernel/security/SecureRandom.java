@@ -16,7 +16,7 @@ public class SecureRandom extends Random {
 	protected int next(int bits) {
 		int bytes = (bits + 7) / 8;
 
-		int result = SecureRandomUtil.nextByte();
+		int result = SecureRandomUtil.nextByte() & 0xFF;
 
 		for (int i = 1; i < bytes; i++) {
 			result = (result << 8) + (SecureRandomUtil.nextByte() & 0xFF);

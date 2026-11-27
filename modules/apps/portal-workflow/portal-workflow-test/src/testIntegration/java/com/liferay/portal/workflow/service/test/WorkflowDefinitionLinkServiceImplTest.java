@@ -114,6 +114,47 @@ public class WorkflowDefinitionLinkServiceImplTest {
 	}
 
 	@Test
+	public void testFetchWorkflowDefinitionLinkByExternalReferenceCode()
+		throws Exception {
+
+		ConfigurationTestUtil.saveConfiguration(
+			_configuration,
+			HashMapDictionaryBuilder.<String, Object>put(
+				"company.administrator.can.publish", true
+			).build());
+
+		Group group = GroupTestUtil.addGroup();
+
+		WorkflowDefinitionLink workflowDefinitionLink =
+			_addWorkflowDefinitionLink(
+				TestPropsValues.getUserId(), TestPropsValues.getCompanyId(),
+				group.getGroupId());
+
+		try (ContextUserReplace contextUserReplace = new ContextUserReplace(
+				_companyAdminUser)) {
+
+			AssertUtils.assertFailure(
+				PrincipalException.class,
+				StringBundler.concat(
+					"User ", _companyAdminUser.getUserId(),
+					" must be an omniadmin to act in company ",
+					TestPropsValues.getCompanyId()),
+				() ->
+					_workflowDefinitionLinkService.
+						fetchWorkflowDefinitionLinkByExternalReferenceCode(
+							workflowDefinitionLink.getExternalReferenceCode(),
+							group.getGroupId()));
+		}
+
+		Assert.assertEquals(
+			workflowDefinitionLink,
+			_workflowDefinitionLinkService.
+				fetchWorkflowDefinitionLinkByExternalReferenceCode(
+					workflowDefinitionLink.getExternalReferenceCode(),
+					group.getGroupId()));
+	}
+
+	@Test
 	public void testGetWorkflowDefinitionLinks() throws Exception {
 		ConfigurationTestUtil.saveConfiguration(
 			_configuration,
@@ -158,6 +199,15 @@ public class WorkflowDefinitionLinkServiceImplTest {
 			Assert.assertEquals(
 				"Single Approver",
 				workflowDefinitionLink.getWorkflowDefinitionName());
+
+			AssertUtils.assertFailure(
+				PrincipalException.class,
+				StringBundler.concat(
+					"User ", _companyAdminUser.getUserId(),
+					" must be an omniadmin to act in company ",
+					TestPropsValues.getCompanyId()),
+				() -> _workflowDefinitionLinkService.getWorkflowDefinitionLinks(
+					TestPropsValues.getCompanyId(), "Single Approver", 1));
 		}
 	}
 

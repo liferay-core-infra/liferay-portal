@@ -53,15 +53,8 @@ public class WorkflowDefinitionLinkServiceImpl
 				externalReferenceCode, groupId);
 
 		if (workflowDefinitionLink != null) {
-			ModelResourcePermission<WorkflowDefinitionLink>
-				modelResourcePermission =
-					ModelResourcePermissionRegistryUtil.
-						getModelResourcePermission(
-							"com.liferay.portal.workflow.kaleo.model." +
-								"KaleoDefinition");
-
-			modelResourcePermission.check(
-				getPermissionChecker(), null, ActionKeys.VIEW);
+			_checkPermission(
+				ActionKeys.VIEW, workflowDefinitionLink.getCompanyId());
 		}
 
 		return workflowDefinitionLink;
@@ -73,13 +66,7 @@ public class WorkflowDefinitionLinkServiceImpl
 			int workflowDefinitionVersion)
 		throws PortalException {
 
-		ModelResourcePermission<WorkflowDefinitionLink>
-			modelResourcePermission =
-				ModelResourcePermissionRegistryUtil.getModelResourcePermission(
-					"com.liferay.portal.workflow.kaleo.model.KaleoDefinition");
-
-		modelResourcePermission.check(
-			getPermissionChecker(), null, ActionKeys.VIEW);
+		_checkPermission(ActionKeys.VIEW, companyId);
 
 		return workflowDefinitionLinkLocalService.getWorkflowDefinitionLinks(
 			companyId, workflowDefinitionName, workflowDefinitionVersion);
@@ -99,8 +86,7 @@ public class WorkflowDefinitionLinkServiceImpl
 			classPK, typePK, workflowDefinitionName, workflowDefinitionVersion);
 	}
 
-	private void _checkPermission(
-			String actionId, long companyId, long groupId, long userId)
+	private void _checkPermission(String actionId, long companyId)
 		throws PortalException {
 
 		PermissionChecker permissionChecker = getPermissionChecker();
@@ -120,6 +106,15 @@ public class WorkflowDefinitionLinkServiceImpl
 					"User ", permissionChecker.getUserId(),
 					" must be an omniadmin to act in company ", companyId));
 		}
+	}
+
+	private void _checkPermission(
+			String actionId, long companyId, long groupId, long userId)
+		throws PortalException {
+
+		_checkPermission(actionId, companyId);
+
+		PermissionChecker permissionChecker = getPermissionChecker();
 
 		if (userId != permissionChecker.getUserId()) {
 			throw new PrincipalException(

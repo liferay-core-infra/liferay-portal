@@ -6,6 +6,7 @@
 package com.liferay.portal.json;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.json.JSONDeserializer;
 
 import jodd.json.JsonException;
 import jodd.json.JsonParser;
@@ -22,8 +23,10 @@ public class PortalJsonParser extends JsonParser {
 		if (targetClass != null) {
 			String targetClassName = targetClass.getName();
 
-			if (targetClassName.contains("com.liferay") &&
-				targetClassName.contains("Util")) {
+			if ((targetClassName.contains("com.liferay") &&
+				 targetClassName.contains("Util")) ||
+				JSONDeserializer.class.isAssignableFrom(targetClass) ||
+				JsonParser.class.isAssignableFrom(targetClass)) {
 
 				throw new JsonException(
 					StringBundler.concat(

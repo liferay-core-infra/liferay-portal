@@ -5,7 +5,6 @@
 
 package com.liferay.portal.encryptor;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.encryptor.Encryptor;
 import com.liferay.portal.kernel.encryptor.EncryptorException;
 import com.liferay.portal.kernel.log.Log;
@@ -23,8 +22,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.security.Key;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -89,23 +86,11 @@ public class EncryptorImpl implements Encryptor {
 		}
 
 		try {
-			String algorithm = key.getAlgorithm();
+			Cipher cipher = Cipher.getInstance(key.getAlgorithm());
 
-			String decryptCiphersKey = algorithm + StringPool.POUND + key;
+			cipher.init(Cipher.DECRYPT_MODE, key);
 
-			Cipher cipher = _decryptCiphers.get(decryptCiphersKey);
-
-			if (cipher == null) {
-				cipher = Cipher.getInstance(algorithm);
-
-				cipher.init(Cipher.DECRYPT_MODE, key);
-
-				_decryptCiphers.put(decryptCiphersKey, cipher);
-			}
-
-			synchronized (cipher) {
-				return cipher.doFinal(encryptedBytes);
-			}
+			return cipher.doFinal(encryptedBytes);
 		}
 		catch (Exception exception) {
 			throw new EncryptorException(exception);
@@ -164,23 +149,11 @@ public class EncryptorImpl implements Encryptor {
 		}
 
 		try {
-			String algorithm = key.getAlgorithm();
+			Cipher cipher = Cipher.getInstance(key.getAlgorithm());
 
-			String encryptCiphersKey = algorithm + StringPool.POUND + key;
+			cipher.init(Cipher.ENCRYPT_MODE, key);
 
-			Cipher cipher = _encryptCiphers.get(encryptCiphersKey);
-
-			if (cipher == null) {
-				cipher = Cipher.getInstance(algorithm);
-
-				cipher.init(Cipher.ENCRYPT_MODE, key);
-
-				_encryptCiphers.put(encryptCiphersKey, cipher);
-			}
-
-			synchronized (cipher) {
-				return cipher.doFinal(plainBytes);
-			}
+			return cipher.doFinal(plainBytes);
 		}
 		catch (Exception exception) {
 			throw new EncryptorException(exception);
@@ -310,10 +283,5 @@ public class EncryptorImpl implements Encryptor {
 	private static final int _GCM_TAG_LENGTH_BITS = 128;
 
 	private static final Log _log = LogFactoryUtil.getLog(EncryptorImpl.class);
-
-	private final Map<String, Cipher> _decryptCiphers = new ConcurrentHashMap<>(
-		1, 1F, 1);
-	private final Map<String, Cipher> _encryptCiphers = new ConcurrentHashMap<>(
-		1, 1F, 1);
 
 }

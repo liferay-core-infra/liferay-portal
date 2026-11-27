@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.persistence.PortletPersistence;
+import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
@@ -894,6 +895,31 @@ public class PermissionCheckerTest {
 		Assert.assertTrue(
 			permissionChecker.isContentReviewer(
 				TestPropsValues.getCompanyId(), _group.getGroupId()));
+	}
+
+	@Test
+	@TestInfo("LPD-116065")
+	public void testIsContentReviewerWithDifferentCompanyAdmin()
+		throws Exception {
+
+		_company = CompanyTestUtil.addCompany();
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setCompanyIdWithSafeCloseable(
+					_company.getCompanyId())) {
+
+			_user = UserTestUtil.addCompanyAdminUser(_company);
+
+			PermissionChecker permissionChecker =
+				_permissionCheckerFactory.create(_user);
+
+			Assert.assertFalse(
+				permissionChecker.isContentReviewer(
+					_company.getCompanyId(), _group.getGroupId()));
+			Assert.assertFalse(
+				permissionChecker.isContentReviewer(
+					_group.getCompanyId(), _group.getGroupId()));
+		}
 	}
 
 	@Test

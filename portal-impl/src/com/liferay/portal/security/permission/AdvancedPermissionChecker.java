@@ -759,11 +759,11 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	protected boolean isContentReviewerImpl(long groupId)
 		throws PortalException {
 
-		if (isCompanyAdmin() || isGroupAdmin(groupId)) {
+		Group group = GroupLocalServiceUtil.getGroup(groupId);
+
+		if (isCompanyAdmin(group.getCompanyId()) || isGroupAdmin(groupId)) {
 			return true;
 		}
-
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				getUserId(), group.getCompanyId(),
@@ -786,15 +786,17 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return false;
 		}
 
-		if (isOmniadmin() || isCompanyAdmin(companyId)) {
+		if (isOmniadmin()) {
 			return true;
 		}
 
 		if (groupId <= 0) {
-			return false;
+			return isCompanyAdmin(companyId);
 		}
 
-		if (isGroupAdmin(groupId)) {
+		Group group = GroupLocalServiceUtil.getGroup(groupId);
+
+		if (isCompanyAdmin(group.getCompanyId()) || isGroupAdmin(groupId)) {
 			return true;
 		}
 
